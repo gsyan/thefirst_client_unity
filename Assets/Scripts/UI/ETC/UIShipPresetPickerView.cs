@@ -13,12 +13,14 @@ public class UIShipPresetPickerView : MonoBehaviour
     [SerializeField] private Button m_cancelButton;
 
     [SerializeField] private UIStatRow m_statsRowPrefab; // 선택된 프리셋의 스탯 — Column_Stats와 동일한 구조/프리팹 재사용
-    [SerializeField] private RectTransform m_statsContainer;
+    [SerializeField] private InfiniteScrollView m_statsScrollView;
 
     [SerializeField] private RowLabelValue m_commandPowerRow; // 선택 후보를 적용했을 때의 지휘력 미리보기 — UIPanelFleet 성능 컬럼의 지휘력 행과 동일한 구성
 
+    [SerializeField] private RawImage m_previewImage; // 선택된 프리셋의 3D 바디 미리보기 — ShipPreviewManager가 렌더링한 텍스처
+
     private readonly List<ShipPresetData> m_presetsCache = new();
-    private readonly List<UIStatRow> m_statsRows = new();
+    private List<ShipStatRowEntry> m_statEntries = new();
     private Dictionary<string, ShipStatRowEntry> m_currentEntriesByLabel; // 비교 기준(현재 장착 프리셋) — 라벨로 조회
 
     private string m_selectedPresetId;
@@ -35,6 +37,8 @@ public class UIShipPresetPickerView : MonoBehaviour
             m_cancelButton.onClick.AddListener(OnCancelClicked);
         if (m_scrollView != null)
             m_scrollView.onItemBind = OnItemBind;
+        if (m_statsScrollView != null)
+            m_statsScrollView.onItemBind = OnStatsItemBind;
 
         gameObject.SetActive(false);
     }
@@ -66,6 +70,7 @@ public class UIShipPresetPickerView : MonoBehaviour
         m_scrollView.Initialize(m_presetsCache.Count, m_rowPrefab.gameObject);
         RefreshStatsDisplay();
         RefreshCommandPowerPreview();
+        RefreshPreview();
     }
 
     public void Close()
@@ -73,6 +78,19 @@ public class UIShipPresetPickerView : MonoBehaviour
         gameObject.SetActive(false);
         m_onConfirm = null;
         m_onCancel = null;
+        ShipPreviewManager.Instance.Clear();
+    }
+
+    private void RefreshPreview()
+    {
+        if (m_previewImage == null) return;
+
+        Rect previewRect = m_previewImage.rectTransform.rect;
+        float aspect = previewRect.height > 0f ? previewRect.width / previewRect.height : 1f;
+
+        m_previewImage.texture = ShipPreviewManager.Instance.GetPreviewTexture(aspect);
+        ShipPresetData selectedPreset = m_presetsCache.Find(p => p.presetId == m_selectedPresetId);
+        ShipPreviewManager.Instance.ShowPreset(selectedPreset);
     }
 
     private void OnItemBind(int dataIndex, GameObject rowObject)
@@ -95,6 +113,7 @@ public class UIShipPresetPickerView : MonoBehaviour
         m_scrollView.RefreshVisible(); // 재바인드되며 OnItemBind가 다시 불려 하이라이트가 새 선택으로 갱신됨
         RefreshStatsDisplay();
         RefreshCommandPowerPreview();
+        RefreshPreview();
     }
 
     // 선택 후보를 실제로 적용했다고 가정했을 때의 지휘력 사용량을 미리 계산해서 보여줌 — 최대치 초과 시 경고색 + 확인 버튼 비활성화
@@ -114,43 +133,42 @@ public class UIShipPresetPickerView : MonoBehaviour
             m_confirmButton.interactable = isOverCommandPower == false;
     }
 
-    // 선택된 프리셋의 스탯을 현재 장착 프리셋과 비교해서 표시 — Column_Stats(UIPanelFleet)와 동일한 풀링 패턴
+    // 선택된 프리셋의 스탯을 현재 장착 프리셋과 비교해서 표시 — InfiniteScrollView가 화면에 보이는 행만 OnStatsItemBind로 바인딩하므로
+    // 여기서는 m_statEntries만 갱신하고 Initialize로 스크롤뷰에 개수만 알려줌
     private void RefreshStatsDisplay()
     {
         ShipPresetData selectedPreset = m_presetsCache.Find(p => p.presetId == m_selectedPresetId);
         if (selectedPreset == null)
         {
-            for (int i = 0; i < m_statsRows.Count; i++)
-                m_statsRows[i].Hide();
-
-            if (m_statsContainer != null)
-                LayoutRebuilder.ForceRebuildLayoutImmediate(m_statsContainer);
+            m_statEntries.Clear();
+            if (m_statsScrollView != null && m_statsRowPrefab != null)
+                m_statsScrollView.Initialize(0, m_statsRowPrefab.gameObject);
             return;
         }
 
         List<ShipStatRowEntry> entries = ShipStatGaugeBuilder.Build(selectedPreset);
         AppendRemovedStatEntries(entries);
-        EnsureStatsRowCount(entries.Count);
+        m_statEntries = entries;
 
-        for (int i = 0; i < m_statsRows.Count; i++)
-        {
-            if (i >= entries.Count)
-            {
-                m_statsRows[i].Hide();
-                continue;
-            }
+        if (m_statsScrollView != null && m_statsRowPrefab != null)
+            m_statsScrollView.Initialize(m_statEntries.Count, m_statsRowPrefab.gameObject);
+    }
 
-            ShipStatRowEntry entry = entries[i];
-            string diffText = BuildDiffText(entry);
+    // InfiniteScrollView가 dataIndex번 스탯 행을 화면에 배치할 때마다 호출 — 캐시된 m_statEntries로 바인딩
+    private void OnStatsItemBind(int dataIndex, GameObject rowObject)
+    {
+        if (dataIndex < 0 || dataIndex >= m_statEntries.Count) return;
 
-            if (entry.isNumericValue == true)
-                m_statsRows[i].SetStatRow(entry.label, entry.value, diffText);
-            else
-                m_statsRows[i].SetValueOnly(entry.label, entry.rawValueText, diffText);
-        }
+        UIStatRow row = rowObject.GetComponent<UIStatRow>();
+        if (row == null) return;
 
-        if (m_statsContainer != null)
-            LayoutRebuilder.ForceRebuildLayoutImmediate(m_statsContainer);
+        ShipStatRowEntry entry = m_statEntries[dataIndex];
+        string diffText = BuildDiffText(entry);
+
+        if (entry.isNumericValue == true)
+            row.SetStatRow(entry.label, entry.value, diffText);
+        else
+            row.SetValueOnly(entry.label, entry.rawValueText, diffText);
     }
 
     // 현재 장착 프리셋엔 있었지만 선택한 프리셋에는 없어진 스탯(예: 미사일 미장착으로 변경)도 0값 항목으로 추가해
@@ -181,14 +199,6 @@ public class UIShipPresetPickerView : MonoBehaviour
     private string BuildDiffText(ShipStatRowEntry entry)
     {
         return ShipStatGaugeBuilder.BuildDiffText(entry, m_currentEntriesByLabel);
-    }
-
-    private void EnsureStatsRowCount(int neededCount)
-    {
-        if (m_statsContainer == null || m_statsRowPrefab == null) return;
-
-        while (m_statsRows.Count < neededCount)
-            m_statsRows.Add(Instantiate(m_statsRowPrefab, m_statsContainer));
     }
 
     private void OnConfirmClicked()

@@ -15,10 +15,11 @@ public struct CapabilityProfile
     public int totalWeapons;
     
     // 세부 전투 능력치
-    public float attack;                // 공격력
     public float health;                // 체력
     public float speed;                 // 속력 (이동+회전 통합)
     public float repair;                // 수리 능력
+    public float beamAttack;            // 빔 공격력 합계
+    public float missileAttack;         // 미사일 공격력 합계
     public float airAttack;              // 함재기 공격력
     public int airCount;                // 함재기 수
 }
@@ -799,9 +800,10 @@ public class SpaceShip : MonoBehaviour
             {
                 CapabilityProfile bodyStats = body.GetModuleCapabilityProfile(false);
                 stats.totalWeapons += bodyStats.totalWeapons;
-                stats.attack += bodyStats.attack;
+                stats.beamAttack += bodyStats.beamAttack;
+                stats.missileAttack += bodyStats.missileAttack;
                 stats.health += bodyStats.health;
-                stats.speed += bodyStats.speed;    
+                stats.speed += bodyStats.speed;
                 stats.repair += bodyStats.repair;
                 stats.airAttack += bodyStats.airAttack;
                 stats.airCount += bodyStats.airCount;

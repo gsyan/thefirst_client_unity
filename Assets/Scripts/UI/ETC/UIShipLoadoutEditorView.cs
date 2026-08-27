@@ -17,7 +17,7 @@ public class UIShipLoadoutEditorView : MonoBehaviour
     [SerializeField] private Button m_cancelButton;
 
     [SerializeField] private UIStatRow m_statsRowPrefab; // 토글 미리보기 스탯 — UIShipPresetPickerView.Column_Stats와 동일 구조/프리팹 재사용
-    [SerializeField] private RectTransform m_statsContainer;
+    [SerializeField] private InfiniteScrollView m_statsScrollView;
 
     // 빔 slot0(항상 장착 고정) 여부까지 포함해 미리 계산해둔 슬롯 목록 — dataIndex 순서 = 빔 전체 → 미사일 전체 → 격납고 전체
     private readonly struct ModuleSlotEntry
@@ -37,7 +37,7 @@ public class UIShipLoadoutEditorView : MonoBehaviour
     private readonly List<bool> m_pendingInstalled = new(); // m_moduleSlotEntries와 1:1 대응 — 로컬 편집 상태(Confirm 전까지 서버 미반영)
     private ModuleBodyInfo m_originalModules; // Confirm 시 이 값과 비교해 실제로 바뀐 슬롯만 서버로 전송
 
-    private readonly List<UIStatRow> m_statsRows = new();
+    private List<ShipStatRowEntry> m_statEntries = new();
     private Dictionary<string, ShipStatRowEntry> m_originalEntriesByLabel; // 비교 기준(팝업을 열 때의 장착 상태) — RefreshRows에서 1회만 계산, 토글해도 안 바뀜
     private string m_presetId; // Stats 재계산(RefreshStatsDisplay)에서도 필요해 필드로 승격
 
@@ -52,6 +52,8 @@ public class UIShipLoadoutEditorView : MonoBehaviour
             m_cancelButton.onClick.AddListener(OnCancelClicked);
         if (m_moduleScrollView != null)
             m_moduleScrollView.onItemBind = OnModuleSlotItemBind;
+        if (m_statsScrollView != null)
+            m_statsScrollView.onItemBind = OnStatsItemBind;
 
         gameObject.SetActive(false);
     }
@@ -144,48 +146,40 @@ public class UIShipLoadoutEditorView : MonoBehaviour
     }
 
     // 현재 m_pendingInstalled(로컬 토글 상태) 기준으로 스탯을 다시 계산해 비교 기준(m_originalEntriesByLabel)과 비교 표시
-    // — UIShipPresetPickerView.RefreshStatsDisplay와 동일한 풀링 패턴
+    // — InfiniteScrollView가 화면에 보이는 행만 OnStatsItemBind로 바인딩하므로 여기서는 m_statEntries만 갱신
     private void RefreshStatsDisplay()
     {
         ShipPresetData presetData = DataManager.Instance.m_dataTableShipPreset.GetShipPreset(m_presetId);
         if (presetData == null)
         {
-            for (int i = 0; i < m_statsRows.Count; i++)
-                m_statsRows[i].Hide();
+            m_statEntries.Clear();
+            if (m_statsScrollView != null && m_statsRowPrefab != null)
+                m_statsScrollView.Initialize(0, m_statsRowPrefab.gameObject);
             return;
         }
 
         ModuleBodyInfo pending = BuildPendingModuleBodyInfo();
-        List<ShipStatRowEntry> entries = ShipStatGaugeBuilder.Build(presetData, pending);
-        EnsureStatsRowCount(entries.Count);
+        m_statEntries = ShipStatGaugeBuilder.Build(presetData, pending);
 
-        for (int i = 0; i < m_statsRows.Count; i++)
-        {
-            if (i >= entries.Count)
-            {
-                m_statsRows[i].Hide();
-                continue;
-            }
-
-            ShipStatRowEntry entry = entries[i];
-            string diffText = ShipStatGaugeBuilder.BuildDiffText(entry, m_originalEntriesByLabel);
-
-            if (entry.isNumericValue == true)
-                m_statsRows[i].SetStatRow(entry.label, entry.value, diffText);
-            else
-                m_statsRows[i].SetValueOnly(entry.label, entry.rawValueText, diffText);
-        }
-
-        if (m_statsContainer != null)
-            LayoutRebuilder.ForceRebuildLayoutImmediate(m_statsContainer);
+        if (m_statsScrollView != null && m_statsRowPrefab != null)
+            m_statsScrollView.Initialize(m_statEntries.Count, m_statsRowPrefab.gameObject);
     }
 
-    private void EnsureStatsRowCount(int neededCount)
+    // InfiniteScrollView가 dataIndex번 스탯 행을 화면에 배치할 때마다 호출 — 캐시된 m_statEntries로 바인딩
+    private void OnStatsItemBind(int dataIndex, GameObject rowObject)
     {
-        if (m_statsContainer == null || m_statsRowPrefab == null) return;
+        if (dataIndex < 0 || dataIndex >= m_statEntries.Count) return;
 
-        while (m_statsRows.Count < neededCount)
-            m_statsRows.Add(Instantiate(m_statsRowPrefab, m_statsContainer));
+        UIStatRow row = rowObject.GetComponent<UIStatRow>();
+        if (row == null) return;
+
+        ShipStatRowEntry entry = m_statEntries[dataIndex];
+        string diffText = ShipStatGaugeBuilder.BuildDiffText(entry, m_originalEntriesByLabel);
+
+        if (entry.isNumericValue == true)
+            row.SetStatRow(entry.label, entry.value, diffText);
+        else
+            row.SetValueOnly(entry.label, entry.rawValueText, diffText);
     }
 
     // 현재 로컬 토글 상태(m_pendingInstalled)를 ModuleBodyInfo로 구성 — OnConfirmClicked의 desired 구성과 동일 로직

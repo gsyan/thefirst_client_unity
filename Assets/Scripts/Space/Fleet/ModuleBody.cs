@@ -614,7 +614,8 @@ public class ModuleBody : ModuleBase
                 {
                     CapabilityProfile moduleStats = module.GetModuleCapabilityProfile(false);
                     stats.totalWeapons += moduleStats.totalWeapons;
-                    stats.attack += moduleStats.attack;
+                    stats.beamAttack += moduleStats.beamAttack;
+                    stats.missileAttack += moduleStats.missileAttack;
                     stats.health += moduleStats.health;
                     stats.speed += moduleStats.speed;
                     stats.airAttack += moduleStats.airAttack;

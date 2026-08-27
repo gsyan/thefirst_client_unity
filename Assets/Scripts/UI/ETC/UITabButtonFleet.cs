@@ -79,7 +79,7 @@ public class UITabButtonFleet : MonoBehaviour
         //CapabilityProfile cur = m_fleet.GetFleetCapabilityProfile(true);
         CapabilityProfile org = m_fleet.GetFleetCapabilityProfile(false);
 
-        m_fleetStatRows[0].SetTextWithString(CommonUtility.FormatBigNumber(org.attack));
+        m_fleetStatRows[0].SetTextWithString(CommonUtility.FormatBigNumber(org.beamAttack + org.missileAttack));
         m_fleetStatRows[1].SetTextWithString(CommonUtility.FormatBigNumber(org.health));
 
         for (int i = 0; i < m_fleetStatRows.Length; i++)

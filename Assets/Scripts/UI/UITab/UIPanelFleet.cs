@@ -22,7 +22,7 @@ public class UIPanelFleet : UIPanelBase
     [SerializeField] private RectTransform m_columnContainer; // 2열(함대구성/성능)을 감싸는 최상위 컨테이너 — Horizontal Layout Group. 각 열 안에도 Title+행 컨테이너를 감싸는 Vertical Layout Group이 있어, 리빌드는 이 최상위에서 한 번만 해도 하위가 전부 재계산됨
     [SerializeField] private RectTransform m_fleetStatsContainer; // 상단 요약 영역(FleetStats/Container)
     [SerializeField] private InfiniteScrollView m_statsScrollView; // 성능 컬럼 — 하단 "함선 수정" 버튼 자리 확보 위해 고정 높이+가상 스크롤로 변경(PlacedShipsScrollView와 동일 패턴)
-    [SerializeField] private Button m_increaseCommandPowerButton; // 탐험 포인트 100 소모 -> 지휘력 최대치 10 증가(교환비는 ExplorationService 서버값과 항상 함께 수정)
+    [SerializeField] private Button m_increaseCommandPowerButton; // 탐험 포인트 -> 지휘력 최대치 변환 팝업(UIPopupConvertExplorationPoint)을 염 — 교환비는 ExplorationService 서버값과 항상 함께 수정
 
     [Header("카메라 Viewport 애니메이션")]
     [SerializeField] private float m_animDuration = 0.3f;
@@ -496,39 +496,10 @@ public class UIPanelFleet : UIPanelBase
 
     }
 
-    // 클라에서 지정하는 소모량 — 서버와 교환비 1:1(소모한 탐험 포인트만큼 지휘력 최대치 증가), 추후 원하는 수치로 변환 가능하도록 확장 예정
-    private const int k_increaseCommandPowerExplorationPointCost = 100;
-
-    // 확인 팝업 없이 즉시 소모 — 탐험 포인트 k_increaseCommandPowerExplorationPointCost -> 동일 수치만큼 지휘력 최대치 증가(서버 교환비 1:1)
+    // 소모량 조정 팝업(UIPopupConvertExplorationPoint)을 열어 사용자가 직접 수치를 정하도록 함
     private void OnIncreaseCommandPowerButtonClicked()
     {
-        CommanderInfo currentCommanderInfo = DataManager.Instance.m_currentCommander != null ? DataManager.Instance.m_currentCommander.m_commanderInfo : null;
-        int currentExplorationPoint = currentCommanderInfo != null ? currentCommanderInfo.explorationPoint : 0;
-        if (currentExplorationPoint < k_increaseCommandPowerExplorationPointCost) return;
-
-        IncreaseCommandPowerMaxRequest request = new IncreaseCommandPowerMaxRequest();
-        request.amount = k_increaseCommandPowerExplorationPointCost;
-        NetworkManager.Instance.IncreaseCommandPowerMax(request, response =>
-        {
-            if (response.errorCode != 0)
-            {
-                Debug.LogError($"[UIPanelFleet] IncreaseCommandPowerMax 실패: {response.errorCode}");
-                return;
-            }
-
-            FleetComposition composition = DataManager.Instance.m_currentFleetComposition;
-            if (composition != null)
-                composition.SetMaxCommandPower(response.data.commandPowerMax);
-
-            CommanderInfo commanderInfo = DataManager.Instance.m_currentCommander != null ? DataManager.Instance.m_currentCommander.m_commanderInfo : null;
-            if (commanderInfo != null)
-                commanderInfo.commandPowerMax = response.data.commandPowerMax;
-            // Commander.UpdateExplorationPoint()를 거쳐야 EventManager.OnExplorationPointChanged가 발행되어 다른 열린 패널도 즉시 갱신됨
-            if (DataManager.Instance.m_currentCommander != null)
-                DataManager.Instance.m_currentCommander.UpdateExplorationPoint(response.data.explorationPointRemain);
-
-            RefreshFleetComposition();
-        });
+        UIManager.Instance.ShowConvertExplorationPointPopup(onConfirmed: RefreshFleetComposition);
     }
 
     private void RefreshPlacedShips()
@@ -806,17 +777,37 @@ public class UIPanelFleet : UIPanelBase
             slotIndex = slotIndex,
             shipPresetId = presetId,
             isFront = slotIsFront,
-        });
+        }, OnPlaceFleetPresetShipResponse);
 
         ObjectManager.Instance.ReplaceMyFleetShipAt(slotIndex, presetId, slotIsFront);
         RefreshFleetComposition();
     }
 
-    private void ShowPlaceFailedPopup(string messageKey)
+    // 클라 사전검증(TryPlaceShipAt)과 서버 검증(FleetService.placeFleetPresetShip) 조건은 동일해 정상 플레이에선 실패하지 않음 —
+    // 이 콜백은 조작된 요청 등으로 서버가 거부한 경우를 대비한 방어선. 이미 낙관적으로 반영해둔 상태를 서버 실제값으로 되돌림
+    private void OnPlaceFleetPresetShipResponse(ApiResponse<string> response)
+    {
+        if (response.errorCode == 0) return;
+
+        ServerErrorCode errorCode = (ServerErrorCode)response.errorCode;
+        string messageKey = null;
+        if (errorCode == ServerErrorCode.PLACE_FLEET_PRESET_SHIP_FAIL_INSUFFICIENT_COMMANDER_LEVEL || errorCode == ServerErrorCode.PLACE_FLEET_PRESET_SHIP_FAIL_SLOT_LOCKED)
+            messageKey = "UIFleet_PlaceFailed_Locked";
+        else if (errorCode == ServerErrorCode.PLACE_FLEET_PRESET_SHIP_FAIL_NOT_ENOUGH_COMMAND_POWER)
+            messageKey = "UIFleet_PlaceFailed_NotEnoughCommandPower";
+        else if (errorCode == ServerErrorCode.PLACE_FLEET_PRESET_SHIP_FAIL_PRESET_NOT_FOUND)
+            messageKey = "UIFleet_PlaceFailed_PresetNotFound";
+
+        string message = messageKey != null ? LocalizationManager.Instance.Get(messageKey) : ErrorCodeMapping.GetMessage(response.errorCode);
+        ShowPlaceFailedPopup(message, isLocalizationKey: false);
+        RefreshFleetComposition();
+    }
+
+    private void ShowPlaceFailedPopup(string messageOrKey, bool isLocalizationKey = true)
     {
         UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig
         {
-            message = LocalizationManager.Instance.Get(messageKey),
+            message = isLocalizationKey == true ? LocalizationManager.Instance.Get(messageOrKey) : messageOrKey,
             onConfirm = () => { },
             autoCloseSec = 2.5f,
         });

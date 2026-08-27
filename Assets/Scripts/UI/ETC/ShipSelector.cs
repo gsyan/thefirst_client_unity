@@ -74,7 +74,7 @@ public class ShipSelector : MonoBehaviour
 
         if (m_statRows != null && m_statRows.Length > 0)
         {
-            m_statRows[0].SetRow("bubbling-beam", $"{CommonUtility.FormatBigNumber((long)Ship.m_spaceShipStatsOrg.attack)}");
+            m_statRows[0].SetRow("bubbling-beam", $"{CommonUtility.FormatBigNumber((long)(Ship.m_spaceShipStatsOrg.beamAttack + Ship.m_spaceShipStatsOrg.missileAttack))}");
 
             // 함재기 보유 함선만 함재기 공격력/수 표시, 나머지는 숨김
             bool hasAircraft = Ship.m_spaceShipStatsOrg.airCount > 0;

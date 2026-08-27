@@ -663,10 +663,10 @@ public class NetworkManager : MonoSingleton<NetworkManager>
         StartCoroutine(RunAsync(() => m_apiClient.FleetHealthSaveAsync(request), null));
     }
 
-    public void PlaceFleetPresetShip(FleetPresetPlaceShipRequest request)
+    public void PlaceFleetPresetShip(FleetPresetPlaceShipRequest request, System.Action<ApiResponse<string>> onComplete = null)
     {
         if (m_bConnected == false) return;
-        StartCoroutine(RunAsync(() => m_apiClient.PlaceFleetPresetShipAsync(request), null));
+        StartCoroutine(RunAsync(() => m_apiClient.PlaceFleetPresetShipAsync(request), onComplete));
     }
 
     public void SetFleetPresetShipFront(FleetPresetSetFrontRequest request)

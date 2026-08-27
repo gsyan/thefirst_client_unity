@@ -936,7 +936,8 @@ public class SpaceFleet : MonoBehaviour
             shipCount++;
             CapabilityProfile shipStats = useCurrent ? ship.m_spaceShipStatsCur : ship.m_spaceShipStatsOrg;
             totalStats.totalWeapons += shipStats.totalWeapons;
-            totalStats.attack += shipStats.attack;
+            totalStats.beamAttack += shipStats.beamAttack;
+            totalStats.missileAttack += shipStats.missileAttack;
             totalStats.health += shipStats.health;
             totalStats.speed += shipStats.speed;
             totalStats.repair += shipStats.repair;

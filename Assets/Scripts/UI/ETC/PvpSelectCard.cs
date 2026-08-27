@@ -57,10 +57,14 @@ public class PvpSelectCard : MonoBehaviour
         {
             (loc.Get("fleet_ship_count"), shipCount.ToString()),
             (loc.Get("UIFleet_Stats_Health"), CommonUtility.FormatBigNumber(stats.health)),
-            (loc.Get("Simple_Attack"), CommonUtility.FormatBigNumber(stats.attack)),
+            (loc.Get("Simple_BeamAttack"), CommonUtility.FormatBigNumber(stats.beamAttack)),
+            (loc.Get("Simple_MissileAttack"), CommonUtility.FormatBigNumber(stats.missileAttack)),
         };
         if (stats.airCount > 0)
+        {
+            rows.Add((loc.Get("Simple_AirAttack"), CommonUtility.FormatBigNumber(stats.airAttack)));
             rows.Add((loc.Get("Simple_AirCount"), stats.airCount.ToString()));
+        }
 
         EnsureStatRowCount(rows.Count);
         for (int i = 0; i < m_statRows.Count; i++)

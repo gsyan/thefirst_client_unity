@@ -10,7 +10,7 @@ public class UIPopupRewardCardSelect : UIPopupBase
 {
     [Header("Reward Card Select Popup")]
     [SerializeField] private TMP_Text m_titleText;
-    [SerializeField] private TMP_Text m_rewardSummaryText; // "탐험 포인트 +N, 경험치 +N" 안내
+    [SerializeField] private TMP_Text m_rewardSummaryText; // "탐험 포인트 / 경험치" 안내 — 줄마다 라벨\t값 형태, 좌/우 정렬은 TMP 탭 스톱(Tab Size) 설정에 의존
     [SerializeField] private GameObject m_rewardCardButtonContainer; // 카드 버튼 3개를 담은 오브젝트 — 카드 후보가 없을 때(탈출 셀 등) 통째로 숨김
     [SerializeField] private Button m_confirmButton;
 
@@ -33,15 +33,21 @@ public class UIPopupRewardCardSelect : UIPopupBase
         m_onConfirmed = onConfirmed;
         m_selectedIndex = -1;
 
-        CommonUtility.SetUILocText(m_titleText, "UIPopupRewardCardSelect_Title");
+        // 카드 후보가 없는 경우(탈출 셀)는 일반 셀 클리어와 다른 타이틀로 구분 — "탈출 지점 발견"
+        bool hasCardCandidates = candidateCardIds != null && candidateCardIds.Count > 0;
+        string titleKey = hasCardCandidates == true ? "UIPopupRewardCardSelect_Title" : "UIPopupRewardCardSelect_EscapeTitle";
+        CommonUtility.SetUILocText(m_titleText, titleKey);
 
         // 재접속 복구로 뜬 경우(포인트/경험치가 이미 반영되어 0으로 전달됨) 어색한 "+0" 문구 대신 요약 자체를 숨김
         bool hasRewardSummary = explorationPointGained > 0 || expGained > 0;
         m_rewardSummaryText.gameObject.SetActive(hasRewardSummary);
         if (hasRewardSummary == true)
-            m_rewardSummaryText.text = LocalizationManager.Instance.Get("UIPopupRewardCardSelect_RewardSummary", explorationPointGained, expGained);
+        {
+            string pointLabel = LocalizationManager.Instance.Get("UIPanelExplorationGrid_OwnedPoint");
+            string expLabel = LocalizationManager.Instance.Get("UIPopupConfirm_ExpLabel");
+            m_rewardSummaryText.text = $"{pointLabel}\t{explorationPointGained}\n{expLabel}\t{expGained}";
+        }
 
-        bool hasCardCandidates = candidateCardIds != null && candidateCardIds.Count > 0;
         m_rewardCardButtonContainer.SetActive(hasCardCandidates);
         if (hasCardCandidates == true)
             BindCardButtons(candidateCardIds);

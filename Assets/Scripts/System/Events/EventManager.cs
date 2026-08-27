@@ -40,6 +40,12 @@ public static class EventManager
         OnCommanderLevelChanged -= callback;
     }
 
+    // exp — 값을 직접 대입하지 말고 반드시 Commander.UpdateExp()를 거칠 것(이 이벤트가 자동 발행됨)
+    public static event Action<int> OnCommanderExpChanged;
+    public static void TriggerCommanderExpChanged(int exp) { OnCommanderExpChanged?.Invoke(exp); }
+    public static void Subscribe_CommanderExpChanged(Action<int> callback)   { OnCommanderExpChanged += callback; }
+    public static void Unsubscribe_CommanderExpChanged(Action<int> callback) { OnCommanderExpChanged -= callback; }
+
     // pvpPoint
     public static event Action<int> OnPvpPointChanged;
     public static void TriggerPvpPointChanged(int pvpPoint) { OnPvpPointChanged?.Invoke(pvpPoint); }

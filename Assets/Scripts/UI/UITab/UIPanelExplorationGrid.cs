@@ -46,7 +46,7 @@ public class UIPanelExplorationGrid : UIPanelBase
     private ExplorationGridData m_activeZoneSnapshotGridData;
     private int m_activeZoneSnapshotRow;
     private int m_activeZoneSnapshotCol;
-    private int m_activeZoneSnapshotBankedPoint;
+    private BankedRunReward m_activeZoneSnapshotBankedReward = new();
 
     private bool m_pendingCellEntry;
     private int m_pendingCellRow;
@@ -61,8 +61,8 @@ public class UIPanelExplorationGrid : UIPanelBase
     private Vector3 m_previousFleetWorldPos;
     private SpaceFleet m_standoffEnemyFleet;
 
-    private int m_bankedExplorationPoint; // 진행 중인 런의 적립(미확정) 탐험 포인트 — 클리어마다 누적, 탈출/포기 확정 시 0으로 리셋
-    private int m_pendingBankedPointGain; // 전투 중(패널 비활성 상태)에 획득해서 아직 화면에 반영 안 한 적립량 — 패널이 열릴 때 한 번에 반영+애니메이션
+    private BankedRunReward m_bankedReward = new(); // 진행 중인 런의 적립(미확정) 보상(탐험 포인트/경험치 등) — 클리어마다 누적, 탈출/포기 확정 시 리셋
+    private BankedRunReward m_pendingBankedRewardGain = new(); // 전투 중(패널 비활성 상태)에 획득해서 아직 화면에 반영 안 한 적립량 — 패널이 열릴 때 한 번에 반영+애니메이션
     private bool m_pendingShowEscapeConfirmOnSettle; // 탈출 셀 클리어 직후 세팅 — SettleZoneEntry가 현재 존 그리드에 최종 적립 포인트를 반영한 뒤에만 탈출 확정 팝업을 띄우기 위함
     private long m_displayedBankedPoint = -1; // 롤링 애니메이션의 시작값 추적 — 최초 1회는 -1이라 즉시 표시됨(UIResourceBar와 동일 패턴)
     private long m_displayedOwnedPoint = -1;
@@ -210,13 +210,11 @@ public class UIPanelExplorationGrid : UIPanelBase
     // "실제로 이 존에 정착한다"는 단일 지점 — 존 탭/보유 포인트/그리드(좌표·적립포인트·버튼)를 전부 이 시점에 한 번에 확정
     private void SettleZoneEntry(int zoneNumber)
     {
-        // 전투 중(패널 비활성 상태)에 획득한 적립 포인트는 m_pendingBankedPointGain에 쌓여있음 —
+        // 전투 중(패널 비활성 상태)에 획득한 적립 보상은 m_pendingBankedRewardGain에 쌓여있음 —
         // GameObject가 active인 지금 한 번에 반영해야 롤링 애니메이션 코루틴이 실제로 재생됨
-        if (m_pendingBankedPointGain > 0)
-        {
-            m_bankedExplorationPoint += m_pendingBankedPointGain;
-            m_pendingBankedPointGain = 0;
-        }
+        m_bankedReward.Add(EBankedRewardType.ExplorationPoint, m_pendingBankedRewardGain.Get(EBankedRewardType.ExplorationPoint));
+        m_bankedReward.Add(EBankedRewardType.Exp, m_pendingBankedRewardGain.Get(EBankedRewardType.Exp));
+        m_pendingBankedRewardGain.Clear();
 
         // 탈출 셀 클리어로 여기까지 왔으면, 롤링 애니메이션이 실제로 끝나는 콜백 시점에 탈출 확정 팝업을 띄움(별도 타이머 추정 없이 정확한 동기화)
         System.Action onBankedPointAnimComplete = null;
@@ -329,7 +327,7 @@ public class UIPanelExplorationGrid : UIPanelBase
         m_activeZoneSnapshotGridData = m_gridData;
         m_activeZoneSnapshotRow = m_currentRow;
         m_activeZoneSnapshotCol = m_currentCol;
-        m_activeZoneSnapshotBankedPoint = m_bankedExplorationPoint;
+        m_activeZoneSnapshotBankedReward.CopyFrom(m_bankedReward);
     }
 
     public void SelectZoneTab(int zoneNumber, int seed)
@@ -358,7 +356,7 @@ public class UIPanelExplorationGrid : UIPanelBase
             m_gridData = m_activeZoneSnapshotGridData;
             m_currentRow = m_activeZoneSnapshotRow;
             m_currentCol = m_activeZoneSnapshotCol;
-            m_bankedExplorationPoint = m_activeZoneSnapshotBankedPoint;
+            m_bankedReward.CopyFrom(m_activeZoneSnapshotBankedReward);
             RefreshBankedPointText();
 
             BuildCellButtons();
@@ -396,7 +394,7 @@ public class UIPanelExplorationGrid : UIPanelBase
         // 존 자체가 바뀌는 진입(재진입 제외)에서는 로컬 적립 표시를 일단 비움 — 진행 중인 런이면 아래 서버 응답으로 곧 채워짐
         if (isSameZoneReentry == false)
         {
-            m_bankedExplorationPoint = 0;
+            m_bankedReward.Clear();
             RefreshBankedPointText();
         }
 
@@ -430,7 +428,8 @@ public class UIPanelExplorationGrid : UIPanelBase
         // 응답 도착 전 유저가 이미 다른 존으로 이동했으면 지금 그리드와 무관한 데이터이므로 버림
         if (requestedZoneNumber != m_currentZoneNumber || response.data.zoneNumber != m_currentZoneNumber) return;
 
-        m_bankedExplorationPoint = response.data.explorationPointBanked;
+        m_bankedReward.Set(EBankedRewardType.ExplorationPoint, response.data.explorationPointBanked);
+        m_bankedReward.Set(EBankedRewardType.Exp, response.data.commanderExpBanked);
         RefreshBankedPointText();
         RefreshAbandonRunButtonState();
         ApplyFleetHealthSnapshot(response.data.shipHealthRatios);
@@ -576,7 +575,7 @@ public class UIPanelExplorationGrid : UIPanelBase
     }
 
     // 다른 존에 진행 중인 런의 최신 정보(존/셀/적립량)를 서버에서 받아와 포기 여부를 묻는 팝업 표시
-    // — 로컬 캐시(m_bankedExplorationPoint)는 그 존을 벗어나며 리셋되므로 여기선 신뢰할 수 없어 서버에 재조회
+    // — 로컬 캐시(m_bankedReward)는 그 존을 벗어나며 리셋되므로 여기선 신뢰할 수 없어 서버에 재조회
     private void ShowSwitchZoneAbandonPopup(int newRow, int newCol)
     {
         NetworkManager.Instance.GetActiveZoneRunProgress(new GetActiveZoneRunProgressRequest(), response =>
@@ -853,7 +852,8 @@ public class UIPanelExplorationGrid : UIPanelBase
             expGained = response.data.expGained;
             rewardCardCandidates = response.data.rewardCardCandidates; // 탈출 셀/빈 셀은 null — 카드 선택 단계를 건너뜀
             // 이 시점엔 패널이 비활성 상태(전투 화면에 가려짐) — 값은 버퍼에만 쌓아두고, 화면 반영은 OnShowUIPanel에서 처리
-            m_pendingBankedPointGain += pointGained;
+            m_pendingBankedRewardGain.Add(EBankedRewardType.ExplorationPoint, pointGained);
+            m_pendingBankedRewardGain.Add(EBankedRewardType.Exp, expGained);
         }
 
         if (m_gridData != null && m_gridData.IsInBounds(m_currentRow, m_currentCol) == true)
@@ -918,8 +918,7 @@ public class UIPanelExplorationGrid : UIPanelBase
         }
         // Instant_ShieldHeal / Instant_InterceptorHeal — 실드/요격체 시스템이 아직 없어 향후 연결 예정(TODO)
 
-        if (explorationPointGainedFromCard > 0)
-            m_pendingBankedPointGain += explorationPointGainedFromCard;
+        m_pendingBankedRewardGain.Add(EBankedRewardType.ExplorationPoint, explorationPointGainedFromCard);
     }
 
     // 셀 클리어 후 그리드 흐름 계속 — 탈출 셀이든 아니든 먼저 그리드로 복귀시켜 최종 적립 포인트를 화면에 반영하고,
@@ -936,7 +935,7 @@ public class UIPanelExplorationGrid : UIPanelBase
         UIManager.Instance.ShowPanel(panelName);
     }
 
-    // 탈출 셀 클리어 직후(SettleZoneEntry 콜백)에만 호출됨 — 탈출 확정 여부 확인
+    // 탈출 셀 클리어 직후(SettleZoneEntry 콜백)에만 호출됨 — 확정 전 실제로 받게 될 보상(경험치/탐험 포인트)을 미리 보여줌
     private void ShowEscapeConfirmPopup()
     {
         if (m_inputBlockOverlay != null)
@@ -944,7 +943,8 @@ public class UIPanelExplorationGrid : UIPanelBase
 
         UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig
         {
-            message = "탈출하시겠습니까? 지금까지 쌓인 탐험 포인트를 100% 획득합니다.",
+            message = LocalizationManager.Instance.Get("UIPanelExplorationGrid_EscapeConfirmMessage"),
+            rewardAmounts = new List<int> { m_bankedReward.Get(EBankedRewardType.Exp), m_bankedReward.Get(EBankedRewardType.ExplorationPoint) },
             onConfirm = OnConfirmEscape,
         });
     }
@@ -965,8 +965,8 @@ public class UIPanelExplorationGrid : UIPanelBase
                 return;
             }
 
-            m_bankedExplorationPoint = 0;
-            m_pendingBankedPointGain = 0; // 탈출로 이미 100% 정산됨 — 다음 존으로 누수되지 않도록 함께 리셋
+            m_bankedReward.Clear();
+            m_pendingBankedRewardGain.Clear(); // 탈출로 이미 100% 정산됨 — 다음 존으로 누수되지 않도록 함께 리셋
             RefreshBankedPointText();
             RefreshAbandonRunButtonState();
             ApplyOwnedPointRemain(response.data.explorationPointRemain);
@@ -1006,7 +1006,7 @@ public class UIPanelExplorationGrid : UIPanelBase
     private void RefreshAbandonRunButtonState()
     {
         if (m_abandonRunButton != null)
-            m_abandonRunButton.gameObject.SetActive(m_bankedExplorationPoint > 0);
+            m_abandonRunButton.gameObject.SetActive(m_bankedReward.Get(EBankedRewardType.ExplorationPoint) > 0);
     }
 
     // onAnimComplete: 롤링 애니메이션이 실제로 끝난 프레임에 호출됨(코루틴을 아예 못 도는 경로에서도 즉시 호출됨) — 애니메이션과 정확히 동기화해야 하는 후속 로직(예: 탈출 확정 팝업)에 사용
@@ -1018,9 +1018,10 @@ public class UIPanelExplorationGrid : UIPanelBase
             return;
         }
 
+        int bankedExplorationPoint = m_bankedReward.Get(EBankedRewardType.ExplorationPoint);
         m_bankedExplorationPointRow.SetLabel("UIPanelExplorationGrid_BankedPoint");
-        m_bankedExplorationPointRow.SetValueAnimated(m_displayedBankedPoint, m_bankedExplorationPoint, onAnimComplete);
-        m_displayedBankedPoint = m_bankedExplorationPoint;
+        m_bankedExplorationPointRow.SetValueAnimated(m_displayedBankedPoint, bankedExplorationPoint, onAnimComplete);
+        m_displayedBankedPoint = bankedExplorationPoint;
         UnityEngine.UI.LayoutRebuilder.ForceRebuildLayoutImmediate(m_bankedExplorationPointRow.transform as RectTransform);
     }
 
@@ -1104,8 +1105,8 @@ public class UIPanelExplorationGrid : UIPanelBase
                 return;
             }
 
-            m_bankedExplorationPoint = 0;
-            m_pendingBankedPointGain = 0; // 포기로 이미 정산됨 — 다음 진입 시 누수되지 않도록 함께 리셋
+            m_bankedReward.Clear();
+            m_pendingBankedRewardGain.Clear(); // 포기로 이미 정산됨 — 다음 진입 시 누수되지 않도록 함께 리셋
             RefreshBankedPointText();
             RefreshAbandonRunButtonState();
             ApplyOwnedPointRemain(response.data.explorationPointRemain);

@@ -68,8 +68,8 @@ public class UIPopupRedeemCode : UIPopupBase
         Commander currentCommander = DataManager.Instance.m_currentCommander;
         if (currentCommander != null)
         {
-            currentCommander.UpdateCommanderLevel(response.data.commanderLevel);
             currentCommander.UpdateExp(response.data.exp);
+            currentCommander.UpdateCommanderLevel(response.data.commanderLevel);
         }
 
         SetResultText(LocalizationManager.Instance.Get("UIPopupRedeemCode_Success"), m_colorSuccess);

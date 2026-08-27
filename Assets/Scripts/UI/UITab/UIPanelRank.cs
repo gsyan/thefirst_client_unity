@@ -202,10 +202,14 @@ public class UIPanelRank : UIPanelBase
         {
             ("UIFleet_PlacedShipCount", shipCount.ToString()),
             ("UIFleet_Stats_Health",    CommonUtility.FormatBigNumber(stats.health)),
-            ("Simple_Attack",           CommonUtility.FormatBigNumber(stats.attack)),
+            ("Simple_BeamAttack",       CommonUtility.FormatBigNumber(stats.beamAttack)),
+            ("Simple_MissileAttack",    CommonUtility.FormatBigNumber(stats.missileAttack)),
         };
         if (stats.airCount > 0)
+        {
+            rows.Add(("Simple_AirAttack", CommonUtility.FormatBigNumber(stats.airAttack)));
             rows.Add(("Simple_AirCount", stats.airCount.ToString()));
+        }
 
         string opponentName = Commander.GetDisplayName(opponent.commanderName, opponent.commanderId);
         UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig

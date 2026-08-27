@@ -128,10 +128,6 @@ MonoBehaviour:
   m_health: 0
   m_healthMax: 0
   m_attack: 0
-  m_modulePointCostLevelup: 0
-  m_investedModulePoint: 0
-  m_investedMineral: 0
-  m_isMineralMode: 0
   m_parentBody: {fileID: 0}
   m_moduleInfo:
     moduleType: 0
@@ -139,8 +135,6 @@ MonoBehaviour:
     moduleLevel: 0
     bodyIndex: 0
     slotIndex: 0
-    investedModulePoint: 0
-    investedMineral: 0
 --- !u!1 &237723820992876576
 GameObject:
   m_ObjectHideFlags: 0
@@ -318,10 +312,6 @@ MonoBehaviour:
   m_health: 0
   m_healthMax: 0
   m_attack: 0
-  m_modulePointCostLevelup: 0
-  m_investedModulePoint: 0
-  m_investedMineral: 0
-  m_isMineralMode: 0
   m_parentBody: {fileID: 0}
   m_moduleInfo:
     moduleType: 0
@@ -329,8 +319,6 @@ MonoBehaviour:
     moduleLevel: 0
     bodyIndex: 0
     slotIndex: 0
-    investedModulePoint: 0
-    investedMineral: 0
 --- !u!1 &421243450025207017
 GameObject:
   m_ObjectHideFlags: 0
@@ -1337,10 +1325,6 @@ MonoBehaviour:
   m_health: 0
   m_healthMax: 0
   m_attack: 0
-  m_modulePointCostLevelup: 0
-  m_investedModulePoint: 0
-  m_investedMineral: 0
-  m_isMineralMode: 0
   m_parentBody: {fileID: 0}
   m_moduleInfo:
     moduleType: 0
@@ -1348,8 +1332,6 @@ MonoBehaviour:
     moduleLevel: 0
     bodyIndex: 0
     slotIndex: 0
-    investedModulePoint: 0
-    investedMineral: 0
 --- !u!1 &1353623180511050299
 GameObject:
   m_ObjectHideFlags: 0
@@ -1564,10 +1546,6 @@ MonoBehaviour:
   m_health: 0
   m_healthMax: 0
   m_attack: 0
-  m_modulePointCostLevelup: 0
-  m_investedModulePoint: 0
-  m_investedMineral: 0
-  m_isMineralMode: 0
   m_moduleBodyInfo:
     moduleType: 0
     moduleSubType: 0
@@ -1575,14 +1553,14 @@ MonoBehaviour:
     bodyIndex: 0
     beams: []
     missiles: []
-    hangers: []
-    investedModulePoint: 0
+    hangars: []
+    shieldModuleSubType: 
+    interceptorModuleSubType: 
     currentHealth: 0
-    investedMineral: 0
   m_moduleSlots: []
   m_beams: []
   m_missiles: []
-  m_hangers: []
+  m_hangars: []
   m_hitPoints:
   - {x: -0.62215734, y: 0.7289416, z: 0.94885445}
   - {x: -0.8288011, y: 0.28830785, z: 1.6632781}
@@ -2798,10 +2776,6 @@ MonoBehaviour:
   m_health: 0
   m_healthMax: 0
   m_attack: 0
-  m_modulePointCostLevelup: 0
-  m_investedModulePoint: 0
-  m_investedMineral: 0
-  m_isMineralMode: 0
   m_parentBody: {fileID: 0}
   m_moduleInfo:
     moduleType: 0
@@ -2809,8 +2783,6 @@ MonoBehaviour:
     moduleLevel: 0
     bodyIndex: 0
     slotIndex: 0
-    investedModulePoint: 0
-    investedMineral: 0
 --- !u!1 &3429005709067142942
 GameObject:
   m_ObjectHideFlags: 0
@@ -3149,10 +3121,6 @@ MonoBehaviour:
   m_health: 0
   m_healthMax: 0
   m_attack: 0
-  m_modulePointCostLevelup: 0
-  m_investedModulePoint: 0
-  m_investedMineral: 0
-  m_isMineralMode: 0
   m_parentBody: {fileID: 0}
   m_moduleInfo:
     moduleType: 0
@@ -3160,8 +3128,6 @@ MonoBehaviour:
     moduleLevel: 0
     bodyIndex: 0
     slotIndex: 0
-    investedModulePoint: 0
-    investedMineral: 0
 --- !u!1 &3605391449316862333
 GameObject:
   m_ObjectHideFlags: 0
@@ -4099,10 +4065,6 @@ MonoBehaviour:
   m_health: 0
   m_healthMax: 0
   m_attack: 0
-  m_modulePointCostLevelup: 0
-  m_investedModulePoint: 0
-  m_investedMineral: 0
-  m_isMineralMode: 0
   m_parentBody: {fileID: 0}
   m_moduleInfo:
     moduleType: 0
@@ -4110,8 +4072,6 @@ MonoBehaviour:
     moduleLevel: 0
     bodyIndex: 0
     slotIndex: 0
-    investedModulePoint: 0
-    investedMineral: 0
 --- !u!1 &4611265515348185866
 GameObject:
   m_ObjectHideFlags: 0
@@ -4572,10 +4532,6 @@ MonoBehaviour:
   m_health: 0
   m_healthMax: 0
   m_attack: 0
-  m_modulePointCostLevelup: 0
-  m_investedModulePoint: 0
-  m_investedMineral: 0
-  m_isMineralMode: 0
   m_parentBody: {fileID: 0}
   m_moduleInfo:
     moduleType: 0
@@ -4583,8 +4539,6 @@ MonoBehaviour:
     moduleLevel: 0
     bodyIndex: 0
     slotIndex: 0
-    investedModulePoint: 0
-    investedMineral: 0
 --- !u!1 &5126183846569431084
 GameObject:
   m_ObjectHideFlags: 0
@@ -5627,10 +5581,6 @@ MonoBehaviour:
   m_health: 0
   m_healthMax: 0
   m_attack: 0
-  m_modulePointCostLevelup: 0
-  m_investedModulePoint: 0
-  m_investedMineral: 0
-  m_isMineralMode: 0
   m_parentBody: {fileID: 0}
   m_moduleInfo:
     moduleType: 0
@@ -5638,8 +5588,6 @@ MonoBehaviour:
     moduleLevel: 0
     bodyIndex: 0
     slotIndex: 0
-    investedModulePoint: 0
-    investedMineral: 0
 --- !u!1 &6394943953849631516
 GameObject:
   m_ObjectHideFlags: 0
@@ -5927,10 +5875,6 @@ MonoBehaviour:
   m_health: 0
   m_healthMax: 0
   m_attack: 0
-  m_modulePointCostLevelup: 0
-  m_investedModulePoint: 0
-  m_investedMineral: 0
-  m_isMineralMode: 0
   m_parentBody: {fileID: 0}
   m_moduleInfo:
     moduleType: 0
@@ -5938,8 +5882,6 @@ MonoBehaviour:
     moduleLevel: 0
     bodyIndex: 0
     slotIndex: 0
-    investedModulePoint: 0
-    investedMineral: 0
 --- !u!1 &6795888220593433070
 GameObject:
   m_ObjectHideFlags: 0
@@ -6299,10 +6241,6 @@ MonoBehaviour:
   m_health: 0
   m_healthMax: 0
   m_attack: 0
-  m_modulePointCostLevelup: 0
-  m_investedModulePoint: 0
-  m_investedMineral: 0
-  m_isMineralMode: 0
   m_parentBody: {fileID: 0}
   m_moduleInfo:
     moduleType: 0
@@ -6310,8 +6248,6 @@ MonoBehaviour:
     moduleLevel: 0
     bodyIndex: 0
     slotIndex: 0
-    investedModulePoint: 0
-    investedMineral: 0
 --- !u!1 &7417337918340860617
 GameObject:
   m_ObjectHideFlags: 0
@@ -6501,10 +6437,6 @@ MonoBehaviour:
   m_health: 0
   m_healthMax: 0
   m_attack: 0
-  m_modulePointCostLevelup: 0
-  m_investedModulePoint: 0
-  m_investedMineral: 0
-  m_isMineralMode: 0
   m_parentBody: {fileID: 0}
   m_moduleInfo:
     moduleType: 0
@@ -6512,8 +6444,6 @@ MonoBehaviour:
     moduleLevel: 0
     bodyIndex: 0
     slotIndex: 0
-    investedModulePoint: 0
-    investedMineral: 0
 --- !u!1 &8027828741376625678
 GameObject:
   m_ObjectHideFlags: 0

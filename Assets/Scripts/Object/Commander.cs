@@ -32,6 +32,7 @@ public class Commander
     {
         if (m_commanderInfo == null) return;
         m_commanderInfo.exp = exp;
+        EventManager.TriggerCommanderExpChanged(exp);
     }
 
     public int GetPvpPoint()

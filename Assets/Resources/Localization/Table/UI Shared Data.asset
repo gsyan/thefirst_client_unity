@@ -371,8 +371,16 @@ MonoBehaviour:
     m_Key: UIPopupRewardCardSelect_Title
     m_Metadata:
       m_Items: []
+  - m_Id: 72478145264877568
+    m_Key: UIPopupRewardCardSelect_EscapeTitle
+    m_Metadata:
+      m_Items: []
   - m_Id: 66827767366156288
     m_Key: UIPopupRewardCardSelect_RewardSummary
+    m_Metadata:
+      m_Items: []
+  - m_Id: 72478145331986432
+    m_Key: UIPanelExplorationGrid_EscapeConfirmMessage
     m_Metadata:
       m_Items: []
   - m_Id: 66832217589809152
@@ -899,6 +907,14 @@ MonoBehaviour:
     m_Key: Simple_Attack
     m_Metadata:
       m_Items: []
+  - m_Id: 71737662238490624
+    m_Key: Simple_BeamAttack
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71737662288822272
+    m_Key: Simple_MissileAttack
+    m_Metadata:
+      m_Items: []
   - m_Id: 57079978742644736
     m_Key: Simple_Health
     m_Metadata:
@@ -1005,6 +1021,10 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 34285289056632833
     m_Key: UIButton_Reset
+    m_Metadata:
+      m_Items: []
+  - m_Id: 72095040133791744
+    m_Key: UIButton_All
     m_Metadata:
       m_Items: []
   - m_Id: 34837143712825344
@@ -1209,6 +1229,26 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 51571244805259266
     m_Key: UIPopupMessage_PvpCommanderLevelRequiredMessage
+    m_Metadata:
+      m_Items: []
+  - m_Id: 72095040133791745
+    m_Key: UIPopupMessage_ConvertPointMessage
+    m_Metadata:
+      m_Items: []
+  - m_Id: 72096273103978496
+    m_Key: ExplorationPoint
+    m_Metadata:
+      m_Items: []
+  - m_Id: 72096273103978497
+    m_Key: CommandPower
+    m_Metadata:
+      m_Items: []
+  - m_Id: 72099489506000896
+    m_Key: ConvertPointReset
+    m_Metadata:
+      m_Items: []
+  - m_Id: 72099489506000897
+    m_Key: ConvertPointAll
     m_Metadata:
       m_Items: []
   - m_Id: 50053580165349376

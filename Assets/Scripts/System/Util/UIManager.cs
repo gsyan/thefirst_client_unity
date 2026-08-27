@@ -477,17 +477,17 @@ public class UIManager : MonoSingleton<UIManager>
         popup.ShowPopupConfirm(config);
     }
 
-    // 커맨더 레벨업 알림 팝업 (서버 자동 레벨업 감지 시 호출)
+    // 커맨더 레벨업 알림 팝업 (서버 자동 레벨업 감지 시 호출) — 레벨/배치가능 함선수를 항상 표시
     public void ShowCommanderLevelupNotify(int newLevel)
     {
         SoundManager.Instance.PlayFX(EFx.Commander_Level_Up);
-        int prevLevel        = newLevel - 1;
-        int shipCount        = DataManager.Instance.m_dataTableCommander.GetShipCount(newLevel);
-        int prevShipCount    = DataManager.Instance.m_dataTableCommander.GetShipCount(prevLevel);
+        int shipCount = DataManager.Instance.m_dataTableCommander.GetShipCount(newLevel);
         Color defaultColor = CommonUtility.PaletteColor("General.Bright1");
-        var rows = new List<(string label, string value, Color? color)>();
-        if (shipCount != prevShipCount)
-            rows.Add(("UITabCommander_ShipCountMaxTitle", shipCount.ToString(), defaultColor));
+        var rows = new List<(string label, string value, Color? color)>
+        {
+            ("UITabCommander_LevelTitle", newLevel.ToString(), defaultColor),
+            ("UITabCommander_ShipCountMaxTitle", shipCount.ToString(), defaultColor),
+        };
         ShowConfirmPopup(new ConfirmPopupConfig
         {
             message            = LocalizationManager.Instance.Get("UIPopupMessage_CommanderLevelupMessage"),
@@ -568,6 +568,16 @@ public class UIManager : MonoSingleton<UIManager>
 
         ReplacePopup(popup, EPopupLayer.Normal);
         popup.ShowPopupRedeemCode(onClose: () => CloseTopPopup(EPopupLayer.Normal));
+    }
+
+    // 탐사포인트 -> 지휘력 최대치 변환 팝업
+    public void ShowConvertExplorationPointPopup(System.Action onConfirmed = null)
+    {
+        UIPopupConvertExplorationPoint popup = GetOrCreatePopup<UIPopupConvertExplorationPoint>("UIPopupConvertExplorationPoint", EPopupLayer.Normal);
+        if (popup == null) return;
+
+        ReplacePopup(popup, EPopupLayer.Normal);
+        popup.ShowPopupConvertExplorationPoint(onClose: () => CloseTopPopup(EPopupLayer.Normal), onConfirmed: onConfirmed);
     }
 
     // 외부 라이센스 고지 팝업

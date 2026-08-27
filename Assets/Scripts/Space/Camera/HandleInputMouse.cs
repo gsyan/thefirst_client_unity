@@ -9,6 +9,7 @@ public class HandleInputMouse
 
     private CameraController m_camera;
     private bool m_inputBlockedByUI;
+    private bool m_rightDragBlockedByUI;
     private Collider m_tapHitCollider;
     private bool m_tutorialWaitingForAnyClick;
     private bool m_wasWaitingForAnyClickAtPress;
@@ -41,16 +42,18 @@ public class HandleInputMouse
         Vector3 mousePos = mouse.position.ReadValue();
         bool cameraInputAllowed = cameraInputEnabled == true && m_camera.IsScreenPositionInInputRange(mousePos);
 
-        if (cameraInputAllowed == true)
+        // 우클릭 드래그(카메라 회전)도 왼쪽 클릭/터치와 동일하게 press 시점에 UI 위였는지 확인 — 안 그러면 UI(이 프리뷰 등) 위에서
+        // 드래그해도 그대로 아래 3D 카메라가 같이 돌아감
+        if (mouse.rightButton.wasPressedThisFrame == true)
         {
-            if (mouse.rightButton.wasPressedThisFrame == true)
-            {
+            m_rightDragBlockedByUI = IsPointerOverUIObject(mousePos);
+            if (cameraInputAllowed == true && m_rightDragBlockedByUI == false)
                 m_camera.OnDragStart(mousePos);
-            }
-            else if (mouse.rightButton.isPressed == true)
-            {
+        }
+        else if (mouse.rightButton.isPressed == true)
+        {
+            if (cameraInputAllowed == true && m_rightDragBlockedByUI == false)
                 m_camera.OnDragMove(mousePos);
-            }
         }
 
         if (mouse.leftButton.wasPressedThisFrame == true)

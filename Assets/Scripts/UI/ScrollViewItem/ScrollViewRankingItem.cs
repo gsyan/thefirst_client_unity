@@ -1,4 +1,5 @@
-// 랭킹 보드 단일 아이템 - 순위/이름/점수/능력치 표시, 내 순위 강조
+// 랭킹 보드 단일 아이템 - 순위/이름/점수 표시, 내 순위 강조, 터치 시 상세 스탯 팝업
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,7 +9,8 @@ public class ScrollViewRankingItem : MonoBehaviour
     [SerializeField] private TMP_Text m_rankText;
     [SerializeField] private TMP_Text m_nameText;
     [SerializeField] private TMP_Text m_scoreText;
-    [SerializeField] private Image m_highlightImage;
+    [SerializeField] private GameObject m_myInfoImage;
+    [SerializeField] private Button m_button;
 
     // tierName → 팔레트 키 (rank 4 이상)
     private static readonly (string tierName, string paletteKey)[] TIER_PALETTE_KEYS =
@@ -20,18 +22,18 @@ public class ScrollViewRankingItem : MonoBehaviour
         ("Diamond",  "PvpDiamond"),
     };
 
-    [SerializeField] private Transform m_statContainer;
-
-    private RowImageText[] m_statRows;
+    private RankingEntry m_entry;
 
     private void Awake()
     {
-        if (m_statContainer != null)
-            m_statRows = m_statContainer.GetComponentsInChildren<RowImageText>(true);
+        if (m_button != null)
+            m_button.onClick.AddListener(OnClicked);
     }
 
     public void SetData(RankingEntry entry, bool isMyRank)
     {
+        m_entry = entry;
+
         if (m_rankText != null)
         {
             m_rankText.text = entry.rank > 0 ? $"#{entry.rank}" : "-";
@@ -39,8 +41,7 @@ public class ScrollViewRankingItem : MonoBehaviour
         }
         if (m_nameText != null) m_nameText.text = Commander.GetDisplayName(entry.commanderName, entry.commanderId);
         if (m_scoreText != null) m_scoreText.text = entry.score ?? "";
-        if (m_highlightImage != null) m_highlightImage.color = isMyRank ? CommonUtility.PaletteColor("General.Bright1") : CommonUtility.PaletteColor("General.Dark1");
-        PopulateStats(entry);
+        if (m_myInfoImage != null) m_myInfoImage.SetActive(isMyRank);
     }
 
     private static Color GetRankTextColor(int rank, string scoreStr)
@@ -66,39 +67,37 @@ public class ScrollViewRankingItem : MonoBehaviour
 
     public void SetLoading()
     {
+        m_entry = null;
         if (m_rankText != null) m_rankText.text = "...";
         if (m_nameText != null) m_nameText.text = "...";
         if (m_scoreText != null) m_scoreText.text = "...";
-        if (m_highlightImage != null) m_highlightImage.color = CommonUtility.PaletteColor("General.Dark1");
-        HideAllStats();
+        if (m_myInfoImage != null) m_myInfoImage.SetActive(false);
     }
 
-    private void PopulateStats(RankingEntry entry)
+    private void OnClicked()
     {
-        HideAllStats();
-        if (m_statRows == null || m_statRows.Length == 0) return;
+        if (m_entry == null) return;
+        SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true);
 
-        int idx = 0;
-        if (idx < m_statRows.Length && entry.shipCount > 0)
-            m_statRows[idx++].SetRow("icon_ship", entry.shipCount.ToString());
-        if (idx < m_statRows.Length && entry.statAttack > 0f)
-            m_statRows[idx++].SetRow("bubbling-beam", CommonUtility.FormatBigNumber(entry.statAttack));
-        if (idx < m_statRows.Length && entry.statHealth > 0f)
-            m_statRows[idx++].SetRow("techno-heart", CommonUtility.FormatBigNumber(entry.statHealth));
-        
-        if (idx < m_statRows.Length && entry.statAirCount > 0)
-            m_statRows[idx++].SetRow("jet-fighter", entry.statAirCount.ToString());
-        if (idx < m_statRows.Length && entry.statAirAttack > 0)
-            m_statRows[idx++].SetRow("strafe", entry.statAirAttack.ToString());
+        var rows = new List<(string label, string value)>
+        {
+            ("fleet_ship_count", m_entry.shipCount.ToString()),
+            ("UIFleet_Stats_Health", CommonUtility.FormatBigNumber(m_entry.statHealth)),
+            ("Simple_Attack", CommonUtility.FormatBigNumber(m_entry.statAttack)),
+        };
+        if (m_entry.statAirCount > 0)
+        {
+            rows.Add(("Simple_AirAttack", m_entry.statAirAttack.ToString()));
+            rows.Add(("Simple_AirCount", m_entry.statAirCount.ToString()));
+        }
 
-        Canvas.ForceUpdateCanvases();
-        LayoutRebuilder.ForceRebuildLayoutImmediate(m_statContainer as RectTransform);
-    }
-
-    private void HideAllStats()
-    {
-        if (m_statRows == null) return;
-        for (int i = 0; i < m_statRows.Length; i++)
-            m_statRows[i].Hide();
+        string name = Commander.GetDisplayName(m_entry.commanderName, m_entry.commanderId);
+        string rankStr = m_entry.rank > 0 ? $"#{m_entry.rank}" : "-";
+        UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig
+        {
+            message         = $"{name}\n{rankStr}  {m_entry.score}",
+            pvpOpponentRows = rows,
+            onConfirm       = () => { },
+        });
     }
 }

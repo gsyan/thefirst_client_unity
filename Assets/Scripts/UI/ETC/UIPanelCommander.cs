@@ -36,6 +36,7 @@ public class UIPanelCommander : UIPanelBase
         // 패널 초기화 시점에 함대가 아직 스폰되지 않았을 수 있음 — 스폰 시점에 뒤늦게 갱신
         EventManager.Subscribe_MyFleetSet(OnMyFleetSet);
         EventManager.Subscribe_CommanderLevelChanged(OnCommanderLevelChanged);
+        EventManager.Subscribe_CommanderExpChanged(OnCommanderExpChanged);
 
         // 이미 함대가 존재하면 즉시 갱신
         if (DataManager.Instance.m_currentCommander != null && ObjectManager.Instance.GetMyFleet() != null)
@@ -156,6 +157,11 @@ public class UIPanelCommander : UIPanelBase
     }
 
     private void OnCommanderLevelChanged(int commanderLevel)
+    {
+        UpdateCommanderLevelDisplay();
+    }
+
+    private void OnCommanderExpChanged(int exp)
     {
         UpdateCommanderLevelDisplay();
     }

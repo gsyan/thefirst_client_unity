@@ -1179,7 +1179,9 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 66827767366156288
-    m_Localized: Exploration Point +{0}  Exp +{1}
+    m_Localized: 'Exploration Point +{0}
+
+      Exp +{1}'
     m_Metadata:
       m_Items: []
   - m_Id: 66832217589809152
@@ -1292,6 +1294,46 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 71138710669623296
     m_Localized: This zone is still locked. Clear the previous zone first.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71737662238490624
+    m_Localized: Beam Att
+    m_Metadata:
+      m_Items: []
+  - m_Id: 71737662288822272
+    m_Localized: Missile Att
+    m_Metadata:
+      m_Items: []
+  - m_Id: 72095040133791744
+    m_Localized: ALL
+    m_Metadata:
+      m_Items: []
+  - m_Id: 72095040133791745
+    m_Localized: "Convert Exploration Point <voffset=6>\u2192</voffset> Command Power"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 72096273103978496
+    m_Localized: Exploration Point
+    m_Metadata:
+      m_Items: []
+  - m_Id: 72096273103978497
+    m_Localized: Command Power
+    m_Metadata:
+      m_Items: []
+  - m_Id: 72099489506000896
+    m_Localized: Reset
+    m_Metadata:
+      m_Items: []
+  - m_Id: 72099489506000897
+    m_Localized: MAX
+    m_Metadata:
+      m_Items: []
+  - m_Id: 72478145264877568
+    m_Localized: Escape Point Found
+    m_Metadata:
+      m_Items: []
+  - m_Id: 72478145331986432
+    m_Localized: Escape Reward
     m_Metadata:
       m_Items: []
   references:

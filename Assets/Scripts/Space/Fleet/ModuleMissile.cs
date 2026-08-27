@@ -226,7 +226,7 @@ public class ModuleMissile : ModuleBase
 
         CapabilityProfile stats = new CapabilityProfile();
         stats.totalWeapons = 1;
-        stats.attack = m_attack;
+        stats.missileAttack = m_attack;
         return stats;
     }
 

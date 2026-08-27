@@ -1065,21 +1065,33 @@ MonoBehaviour:
     0.0,\r\n        \"airAvoidRadius\": 0.0,\r\n        \"airDisrupt\": 0.0,\r\n       
     \"shieldGauge\": 0.0,\r\n        \"shieldDelay\": 0.0,\r\n        \"shieldRegenRate\":
     0.0,\r\n        \"interceptorCount\": 0,\r\n        \"interceptorDelay\": 0.0,\r\n       
-    \"interceptorRegenRate\": 0.0\r\n      }\r\n    ],\r\n    \"4\": [],\r\n    \"5\":
-    [\r\n      {\r\n        \"moduleName\": \"shield_t1\",\r\n        \"moduleSubType\":
-    \"shield_t1\",\r\n        \"statPoint\": 20,\r\n        \"description\": \"\",\r\n       
-    \"moduleSlots\": [],\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n       
-    \"speed\": 0.0,\r\n        \"turnRate\": 0.0,\r\n        \"attack\": 0.0,\r\n       
-    \"splashRadius\": 0.0,\r\n        \"attackCool\": 0.0,\r\n        \"silenceTime\":
-    0.0,\r\n        \"airCount\": 0,\r\n        \"airMaintenanceTime\": 0.0,\r\n       
-    \"airHealth\": 0.0,\r\n        \"airAttack\": 0.0,\r\n        \"airAttackRange\":
-    0.0,\r\n        \"airAttackCool\": 0.0,\r\n        \"airSpeed\": 0.0,\r\n       
-    \"airAmmo\": 0,\r\n        \"airDetectRadius\": 0.0,\r\n        \"airAvoidRadius\":
-    0.0,\r\n        \"airDisrupt\": 0.0,\r\n        \"shieldGauge\": 100.0,\r\n       
-    \"shieldDelay\": 5.0,\r\n        \"shieldRegenRate\": 5.0,\r\n        \"interceptorCount\":
-    0,\r\n        \"interceptorDelay\": 0.0,\r\n        \"interceptorRegenRate\":
-    0.0\r\n      }\r\n    ],\r\n    \"6\": [\r\n      {\r\n        \"moduleName\":
-    \"interceptor_t1\",\r\n        \"moduleSubType\": \"interceptor_t1\",\r\n       
+    \"interceptorRegenRate\": 0.0\r\n      }\r\n    ],\r\n    \"4\": [\r\n      {\r\n       
+    \"moduleName\": \"hangar_t1\",\r\n        \"moduleSubType\": \"hangar_t1\",\r\n       
+    \"statPoint\": 20,\r\n        \"description\": \"\",\r\n        \"moduleSlots\":
+    [],\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\":
+    0.0,\r\n        \"turnRate\": 0.0,\r\n        \"attack\": 0.0,\r\n        \"splashRadius\":
+    0.0,\r\n        \"attackCool\": 3.0,\r\n        \"silenceTime\": 0.0,\r\n       
+    \"airCount\": 3,\r\n        \"airMaintenanceTime\": 15.0,\r\n        \"airHealth\":
+    50.0,\r\n        \"airAttack\": 10.0,\r\n        \"airAttackRange\": 4.0,\r\n       
+    \"airAttackCool\": 4.0,\r\n        \"airSpeed\": 10.0,\r\n        \"airAmmo\":
+    10,\r\n        \"airDetectRadius\": 10.0,\r\n        \"airAvoidRadius\": 2.0,\r\n       
+    \"airDisrupt\": 0.1,\r\n        \"shieldGauge\": 0.0,\r\n        \"shieldDelay\":
+    0.0,\r\n        \"shieldRegenRate\": 0.0,\r\n        \"interceptorCount\": 0,\r\n       
+    \"interceptorDelay\": 0.0,\r\n        \"interceptorRegenRate\": 0.0\r\n     
+    }\r\n    ],\r\n    \"5\": [\r\n      {\r\n        \"moduleName\": \"shield_t1\",\r\n       
+    \"moduleSubType\": \"shield_t1\",\r\n        \"statPoint\": 20,\r\n        \"description\":
+    \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\": 0.0,\r\n       
+    \"repair\": 0.0,\r\n        \"speed\": 0.0,\r\n        \"turnRate\": 0.0,\r\n       
+    \"attack\": 0.0,\r\n        \"splashRadius\": 0.0,\r\n        \"attackCool\":
+    0.0,\r\n        \"silenceTime\": 0.0,\r\n        \"airCount\": 0,\r\n       
+    \"airMaintenanceTime\": 0.0,\r\n        \"airHealth\": 0.0,\r\n        \"airAttack\":
+    0.0,\r\n        \"airAttackRange\": 0.0,\r\n        \"airAttackCool\": 0.0,\r\n       
+    \"airSpeed\": 0.0,\r\n        \"airAmmo\": 0,\r\n        \"airDetectRadius\":
+    0.0,\r\n        \"airAvoidRadius\": 0.0,\r\n        \"airDisrupt\": 0.0,\r\n       
+    \"shieldGauge\": 100.0,\r\n        \"shieldDelay\": 5.0,\r\n        \"shieldRegenRate\":
+    5.0,\r\n        \"interceptorCount\": 0,\r\n        \"interceptorDelay\": 0.0,\r\n       
+    \"interceptorRegenRate\": 0.0\r\n      }\r\n    ],\r\n    \"6\": [\r\n      {\r\n       
+    \"moduleName\": \"interceptor_t1\",\r\n        \"moduleSubType\": \"interceptor_t1\",\r\n       
     \"statPoint\": 20,\r\n        \"description\": \"\",\r\n        \"moduleSlots\":
     [],\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\":
     0.0,\r\n        \"turnRate\": 0.0,\r\n        \"attack\": 0.0,\r\n        \"splashRadius\":

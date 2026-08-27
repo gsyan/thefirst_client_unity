@@ -132,9 +132,14 @@ public static class CommonUtility
         if (moduleData == null) return stats;
 
         // 모듈 타입에 따라 능력치 설정
-        if (moduleInfo.moduleType == EModuleType.beam || moduleInfo.moduleType == EModuleType.missile)
+        if (moduleInfo.moduleType == EModuleType.beam)
         {
-            stats.attack = moduleData.attack;
+            stats.beamAttack = moduleData.attack;
+            stats.totalWeapons = 1;
+        }
+        else if (moduleInfo.moduleType == EModuleType.missile)
+        {
+            stats.missileAttack = moduleData.attack;
             stats.totalWeapons = 1;
         }
         else if (moduleInfo.moduleType == EModuleType.hangar)
@@ -176,7 +181,8 @@ public static class CommonUtility
         {
             CapabilityProfile shipStats = GetShipCapabilityProfile(shipInfo);
             stats.totalWeapons += shipStats.totalWeapons;
-            stats.attack += shipStats.attack;
+            stats.beamAttack += shipStats.beamAttack;
+            stats.missileAttack += shipStats.missileAttack;
             stats.health += shipStats.health;
             stats.speed += shipStats.speed;
             stats.repair += shipStats.repair;
@@ -209,8 +215,8 @@ public static class CommonUtility
                 foreach (ModuleInfo moduleInfo in bodyInfo.beams)
                 {
                     CapabilityProfile moduleStats = GetModuleCapabilityProfile(moduleInfo);
-                    stats.attack += moduleStats.attack;
-                    
+                    stats.beamAttack += moduleStats.beamAttack;
+
                     stats.totalWeapons += moduleStats.totalWeapons;
                 }
             }
@@ -221,7 +227,7 @@ public static class CommonUtility
                 foreach (ModuleInfo moduleInfo in bodyInfo.missiles)
                 {
                     CapabilityProfile moduleStats = GetModuleCapabilityProfile(moduleInfo);
-                    stats.attack += moduleStats.attack;
+                    stats.missileAttack += moduleStats.missileAttack;
 
                     stats.totalWeapons += moduleStats.totalWeapons;
                 }

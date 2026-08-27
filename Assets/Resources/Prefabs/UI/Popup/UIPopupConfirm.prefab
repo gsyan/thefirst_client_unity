@@ -1058,13 +1058,9 @@ MonoBehaviour:
   m_sectionsRoot: {fileID: 951647117379518257}
   m_sectionPrefab: {fileID: 8597438640890914472, guid: e74b9df093200d84d867f9f15fc6498e, type: 3}
   cancelButton: {fileID: 1005794173549372683}
-  m_cancelImage: {fileID: 0}
   m_cancelText1: {fileID: 328737400085455059}
-  m_cancelText2: {fileID: 0}
   confirmButton: {fileID: 8102772182830076038}
-  m_confirmImage: {fileID: 0}
   m_confirmText1: {fileID: 702868210318319230}
-  m_confirmText2: {fileID: 0}
 --- !u!1 &6936226127420060467
 GameObject:
   m_ObjectHideFlags: 0

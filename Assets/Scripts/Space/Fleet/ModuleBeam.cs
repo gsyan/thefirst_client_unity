@@ -194,7 +194,7 @@ public class ModuleBeam : ModuleBase
 
         CapabilityProfile stats = new CapabilityProfile();
         stats.totalWeapons = 1;
-        stats.attack = m_attack;
+        stats.beamAttack = m_attack;
         return stats;
     }
 

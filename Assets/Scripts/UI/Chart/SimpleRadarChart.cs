@@ -51,7 +51,7 @@ public class SimpleRadarChart : Graphic
         m_stats.Clear();
         m_statNames.Clear();
 
-        m_stats.Add(stats.attack);
+        m_stats.Add(stats.beamAttack + stats.missileAttack);
         m_statNames.Add("Attack");
 
         m_stats.Add(stats.health);
