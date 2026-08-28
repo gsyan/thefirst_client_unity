@@ -94,6 +94,9 @@ public class UIPopupConfirm : UIPopupBase
 
         BuildStatGaugeRows(config.statGaugeRows);
 
+        // 섹션 빌드 시작 전 무조건 켜두고, 끝난 뒤 필요 여부에 따라 다시 정리
+        if (m_sectionsRoot != null) m_sectionsRoot.gameObject.SetActive(true);
+
         int sectionIdx = 0;
         BuildResultRows(config.resultRows, config.resultRowsVertical, config.resultSectionTitle, ref sectionIdx);
         BuildPvpOpponentSection(config.pvpOpponentRows, ref sectionIdx);

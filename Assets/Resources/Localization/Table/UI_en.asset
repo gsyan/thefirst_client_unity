@@ -1178,12 +1178,6 @@ MonoBehaviour:
     m_Localized: Choose a Reward Card
     m_Metadata:
       m_Items: []
-  - m_Id: 66827767366156288
-    m_Localized: 'Exploration Point +{0}
-
-      Exp +{1}'
-    m_Metadata:
-      m_Items: []
   - m_Id: 66832217589809152
     m_Localized: Beam Power Up
     m_Metadata:
@@ -1334,6 +1328,10 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 72478145331986432
     m_Localized: Escape Reward
+    m_Metadata:
+      m_Items: []
+  - m_Id: 73189850148110336
+    m_Localized: Commander Level
     m_Metadata:
       m_Items: []
   references:

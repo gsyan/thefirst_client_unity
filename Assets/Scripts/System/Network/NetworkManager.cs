@@ -219,7 +219,9 @@ public class NetworkManager : MonoSingleton<NetworkManager>
 
             if (SceneManager.GetActiveScene().name == "MainScene")
             {
+                Debug.Log($"[임시로그] AutoLogin 호출 시각={System.DateTime.Now:HH:mm:ss} storedRefreshTokenExists={PlayerPrefs.HasKey("RefreshToken")}");
                 AutoLogin((response) => {
+                    Debug.Log($"[임시로그] AutoLogin 응답 시각={System.DateTime.Now:HH:mm:ss} errorCode={response.errorCode}");
                     if (response.errorCode == 0 && m_uIManager != null)
                     {
                         UIMain uiMain = m_uIManager as UIMain;
@@ -250,7 +252,7 @@ public class NetworkManager : MonoSingleton<NetworkManager>
                                 break;
                             default:
                                 // 기타 에러
-                                Debug.LogError($"AutoLogin failed with error: {response.errorCode}");
+                                Debug.LogError($"[임시로그] AutoLogin failed with error: {response.errorCode} storedRefreshTokenExistsAfter={PlayerPrefs.HasKey("RefreshToken")} (화면 전환 없이 여기서 멈추는지 확인용)");
                                 break;
                         }
                     }

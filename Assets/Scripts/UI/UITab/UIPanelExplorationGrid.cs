@@ -709,7 +709,8 @@ public class UIPanelExplorationGrid : UIPanelBase
             if (response.errorCode != 0)
                 Debug.LogError($"[UIPanelExplorationGrid] SyncRevisitedCellPosition 실패: {response.errorCode}");
 
-            UIManager.Instance.ShowPanel(panelName);
+            // 재방문 셀이 탈출 셀인 경우도 있음(예: 탈출 확정 팝업 전에 앱 종료 후 재접속) — 첫 클리어와 동일하게 탈출 확정 흐름을 태워야 함
+            ContinueAfterCellClear();
         });
     }
 
@@ -936,15 +937,20 @@ public class UIPanelExplorationGrid : UIPanelBase
     }
 
     // 탈출 셀 클리어 직후(SettleZoneEntry 콜백)에만 호출됨 — 확정 전 실제로 받게 될 보상(경험치/탐험 포인트)을 미리 보여줌
+    // 탐험 포인트는 ExplorationService.settleZoneRun()과 동일한 계산식(적립값 * 배율, 올림)으로 미리 계산 —
+    // 서버 왕복 없이 로컬에서 정확한 예상 지급액을 보여주기 위함(서버 확정 전 미리보기로 설계됨)
     private void ShowEscapeConfirmPopup()
     {
         if (m_inputBlockOverlay != null)
             m_inputBlockOverlay.SetActive(false);
 
+        float pointRateMultiplier = ObjectManager.Instance.m_rewardCardSessionState.GetExplorationPointRateMultiplier();
+        int bankedPointWithRate = Mathf.CeilToInt(m_bankedReward.Get(EBankedRewardType.ExplorationPoint) * pointRateMultiplier);
+
         UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig
         {
             message = LocalizationManager.Instance.Get("UIPanelExplorationGrid_EscapeConfirmMessage"),
-            rewardAmounts = new List<int> { m_bankedReward.Get(EBankedRewardType.Exp), m_bankedReward.Get(EBankedRewardType.ExplorationPoint) },
+            rewardAmounts = new List<int> { m_bankedReward.Get(EBankedRewardType.Exp), bankedPointWithRate },
             onConfirm = OnConfirmEscape,
         });
     }

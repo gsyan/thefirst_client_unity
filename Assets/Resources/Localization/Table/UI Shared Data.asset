@@ -327,6 +327,10 @@ MonoBehaviour:
     m_Key: UITabCommander_Title
     m_Metadata:
       m_Items: []
+  - m_Id: 73189850148110336
+    m_Key: UITabCommander_LevelTitle
+    m_Metadata:
+      m_Items: []
   - m_Id: 51580479907692544
     m_Key: UITabCommander_ShipCountMaxTitle
     m_Metadata:
@@ -373,10 +377,6 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 72478145264877568
     m_Key: UIPopupRewardCardSelect_EscapeTitle
-    m_Metadata:
-      m_Items: []
-  - m_Id: 66827767366156288
-    m_Key: UIPopupRewardCardSelect_RewardSummary
     m_Metadata:
       m_Items: []
   - m_Id: 72478145331986432

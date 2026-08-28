@@ -66,6 +66,7 @@ public class ApiClient
         refreshToken = refresh;
         PlayerPrefs.SetString("RefreshToken", EncryptToken(refreshToken));
         PlayerPrefs.Save();
+        Debug.Log($"[임시로그] SetTokens 시각={System.DateTime.Now:HH:mm:ss} newTokenHash={ShortHash(refreshToken)}");
     }
 
     public string GetRefreshToken()
@@ -77,6 +78,7 @@ public class ApiClient
     {
         string storedValue = PlayerPrefs.GetString("RefreshToken", "");
         refreshToken = DecryptToken(storedValue);
+        Debug.Log($"[임시로그] LoadRefreshToken 시각={System.DateTime.Now:HH:mm:ss} storedValueExists={string.IsNullOrEmpty(storedValue) == false} decryptOk={string.IsNullOrEmpty(refreshToken) == false} tokenHash={ShortHash(refreshToken)}");
 
         // 복호화 실패(기기 변경, 구버전 평문 저장 등) — 조용히 폐기하고 재로그인 유도
         bool bDecryptFailed = string.IsNullOrEmpty(storedValue) == false && string.IsNullOrEmpty(refreshToken) == true;
@@ -294,15 +296,34 @@ public class ApiClient
     {
         if (string.IsNullOrEmpty(refreshToken) == true) return ApiResponse<AuthResponse>.error((int)ServerErrorCode.CLIENT_REFRESH_TOKEN_NULL);
 
+        Debug.Log($"[임시로그] RefreshAccessTokenAsync 요청 전송 시각={System.DateTime.Now:HH:mm:ss} tokenHash={ShortHash(refreshToken)}");
         var requestDto = new RefreshTokenRequest { refreshToken = refreshToken };
         var response = await PostAsync<AuthResponse>("/account/refresh", requestDto, requireAuth: false);
+        Debug.Log($"[임시로그] RefreshAccessTokenAsync 응답 수신 시각={System.DateTime.Now:HH:mm:ss} errorCode={response.errorCode}");
 
         if (response.errorCode == 0)
+        {
             SetTokens(response.data.accessToken, response.data.refreshToken);
+            Debug.Log($"[임시로그] RefreshAccessTokenAsync 성공, 새 tokenHash={ShortHash(response.data.refreshToken)}");
+        }
         else
+        {
+            Debug.Log($"[임시로그] RefreshAccessTokenAsync 실패로 ClearTokens() 호출됨 errorCode={response.errorCode}");
             ClearTokens();
+        }
 
         return response;
+    }
+
+    // 디버깅용 — 토큰 원문을 로그에 남기지 않고 짧은 식별용 해시만 남김(임시)
+    private static string ShortHash(string token)
+    {
+        if (string.IsNullOrEmpty(token) == true) return "(empty)";
+        using (SHA256 sha = SHA256.Create())
+        {
+            byte[] hash = sha.ComputeHash(Encoding.UTF8.GetBytes(token));
+            return Convert.ToBase64String(hash, 0, 6);
+        }
     }
 
     public async Task<ApiResponse<AuthResponse>> GoogleLoginAsync(string idToken)

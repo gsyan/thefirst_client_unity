@@ -10,7 +10,9 @@ public class UIPopupRewardCardSelect : UIPopupBase
 {
     [Header("Reward Card Select Popup")]
     [SerializeField] private TMP_Text m_titleText;
-    [SerializeField] private TMP_Text m_rewardSummaryText; // "탐험 포인트 / 경험치" 안내 — 줄마다 라벨\t값 형태, 좌/우 정렬은 TMP 탭 스톱(Tab Size) 설정에 의존
+    [SerializeField] private GameObject m_rewardSummaryContainer; // 탐험 포인트/경험치 안내 행 2개를 담은 부모 — 통째로 표시/숨김
+    [SerializeField] private RowLabelValue m_rewardPointRow; // 라벨 좌측/값 우측 정렬(UIPopupConfirm의 REWARD 섹션 행과 동일한 RowLabelValue 재사용)
+    [SerializeField] private RowLabelValue m_rewardExpRow;
     [SerializeField] private GameObject m_rewardCardButtonContainer; // 카드 버튼 3개를 담은 오브젝트 — 카드 후보가 없을 때(탈출 셀 등) 통째로 숨김
     [SerializeField] private Button m_confirmButton;
 
@@ -40,17 +42,22 @@ public class UIPopupRewardCardSelect : UIPopupBase
 
         // 재접속 복구로 뜬 경우(포인트/경험치가 이미 반영되어 0으로 전달됨) 어색한 "+0" 문구 대신 요약 자체를 숨김
         bool hasRewardSummary = explorationPointGained > 0 || expGained > 0;
-        m_rewardSummaryText.gameObject.SetActive(hasRewardSummary);
+        m_rewardSummaryContainer.SetActive(hasRewardSummary);
         if (hasRewardSummary == true)
         {
-            string pointLabel = LocalizationManager.Instance.Get("UIPanelExplorationGrid_OwnedPoint");
-            string expLabel = LocalizationManager.Instance.Get("UIPopupConfirm_ExpLabel");
-            m_rewardSummaryText.text = $"{pointLabel}\t{explorationPointGained}\n{expLabel}\t{expGained}";
+            m_rewardPointRow.SetRow("UIPanelExplorationGrid_OwnedPoint", explorationPointGained.ToString(), rawValue: true);
+            m_rewardExpRow.SetRow("UIPopupConfirm_ExpLabel", expGained.ToString(), rawValue: true);
         }
 
         m_rewardCardButtonContainer.SetActive(hasCardCandidates);
         if (hasCardCandidates == true)
+        {
             BindCardButtons(candidateCardIds);
+
+            // 생각 없이 CONFIRM만 눌러도 진행되도록 가운데 카드를 기본 선택 상태로 시작
+            int defaultIndex = candidateCardIds.Count / 2;
+            OnCardClicked(defaultIndex);
+        }
 
         RefreshConfirmButtonState();
     }

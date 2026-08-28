@@ -3,20 +3,22 @@ using TMPro;
 using UnityEngine;
 
 // 섹션 헤더 구분선 + RowLabelValue(라벨+값) 행들을 묶는 섹션 단위 컴포넌트.
-// 행은 개수 제한 없이 필요한 만큼 풀링(Instantiate)해서 씀 — 아이콘 그리드 시절의 컨테이너 개념은 없음(라벨+값은 항상 한 줄에 한 항목).
+// 행은 런타임 동적 생성(Instantiate) 없이 프리팹에 필요한 최대 개수만큼 미리 배치해두고 재사용 —
+// 모자라면 GetOrCreateRow가 범위를 벗어나 명확한 예외를 던지므로 배치 누락이 바로 드러남
 public class UISection : MonoBehaviour
 {
     [SerializeField] private TMP_Text m_titleText;
-    [SerializeField] private RowLabelValue m_rowPrefab;
     [SerializeField] private Transform m_rowsRoot;
 
     private List<RowLabelValue> m_rowCache = new List<RowLabelValue>();
 
     private void Awake()
     {
-        // 에디터에서 m_rowsRoot 밑에 미리 배치해둔 행이 있으면 그것부터 풀로 사용 — 부족한 만큼만 런타임에 Instantiate
+        Debug.Log($"[버그수정] UISection.Awake 호출됨 name={gameObject.name} activeInHierarchy={gameObject.activeInHierarchy} m_rowsRoot={(m_rowsRoot != null ? m_rowsRoot.name : "null")} rowsRootActiveInHierarchy={(m_rowsRoot != null ? m_rowsRoot.gameObject.activeInHierarchy.ToString() : "N/A")}");
+        // m_rowsRoot 밑에 미리 배치해둔 행을 그대로 풀로 사용
         if (m_rowsRoot != null)
             m_rowCache.AddRange(m_rowsRoot.GetComponentsInChildren<RowLabelValue>(true));
+        Debug.Log($"[버그수정] UISection.Awake 완료 name={gameObject.name} m_rowCache.Count={m_rowCache.Count}");
     }
 
     public void SetTitle(string title)
@@ -30,20 +32,11 @@ public class UISection : MonoBehaviour
         gameObject.SetActive(visible);
     }
 
-    // 풀에서 index번째 행을 꺼냄 — 미리 배치된 행/이전에 만든 행이 있으면 그걸 재사용, 없으면 새로 Instantiate
+    // 풀에서 index번째 행을 꺼냄 — 프리팹에 미리 배치해둔 행만 사용, 개수가 모자라면 여기서 바로 예외가 발생해 배치 누락을 드러냄
     private RowLabelValue GetOrCreateRow(int index)
     {
-        RowLabelValue row;
-        if (index < m_rowCache.Count)
-        {
-            row = m_rowCache[index];
-        }
-        else
-        {
-            row = Instantiate(m_rowPrefab, m_rowsRoot);
-            m_rowCache.Add(row);
-        }
-        return row;
+        Debug.Log($"[버그수정] GetOrCreateRow name={gameObject.name} index={index} m_rowCache.Count={m_rowCache.Count}");
+        return m_rowCache[index];
     }
 
     // 풀 전체를 숨김
