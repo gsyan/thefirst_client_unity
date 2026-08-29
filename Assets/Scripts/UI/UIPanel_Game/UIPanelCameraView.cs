@@ -10,7 +10,7 @@ public class UIPanelCameraView : UIPanelBase
     [SerializeField] private ButtonGroupSystem buttonGroup;
 
     [Header("Game Speed")]
-    [SerializeField] private UIButtonHasChildren m_speedButton;
+    [SerializeField] private Button m_speedButton;
     [SerializeField] private TextMeshProUGUI m_speedLabel;
 
     [Header("존 진행 정보")]
@@ -18,10 +18,8 @@ public class UIPanelCameraView : UIPanelBase
 
     [Header("함대 전술 토글")]
     [SerializeField] private Transform m_tacticsButtonContainer;
-    private UIButtonHasChildren[] m_tacticsButtons;
-
-    [SerializeField] private UIButtonHasChildren m_tacticsFormationButton;
-    [SerializeField] private Image m_tacticsFormationImage;
+    private Button[] m_tacticsButtons;
+    private GameObject[] m_tacticsUsingImages; // 버튼 자식의 "사용중" 표시 아이콘 — on/off를 색상 대신 이 오브젝트 활성화로 표현
 
     private RectTransform m_rectTransform;
     private float m_lastViewportRatio = 0f; // 패널 비활성 중 놓친 이벤트 대비
@@ -40,11 +38,8 @@ public class UIPanelCameraView : UIPanelBase
         EventManager.Subscribe_ExplorationTabOpened(OnExplorationTabOpened);
         EventManager.Subscribe_ExplorationTabClosed(OnExplorationTabClosed);
         EventManager.Subscribe_TacticOptionsChanged(OnTacticOptionsChanged);
-        EventManager.Subscribe_FleetShipCountChanged(OnFleetShipCountChanged);
-        EventManager.Subscribe_FormationChanged(OnFormationChanged);
 
         SetupTacticsButtons();
-        SetupFormationButton();
     }
 
     void Start()
@@ -70,11 +65,7 @@ public class UIPanelCameraView : UIPanelBase
         // 버튼 콜백은 OnFleetStateChanged에서 전투 종류에 따라 동적으로 세팅
 
         if (m_speedButton != null)
-        {
-            m_speedButton.GetButton().onClick.AddListener(OnSpeedButtonClicked);
-            m_speedButton.SetActiveColorKey("Vip");
-            m_speedButton.SetInactiveColorKey("VipDark");
-        }
+            m_speedButton.onClick.AddListener(OnSpeedButtonClicked);
 
         RefreshSpeedLabel(GameSpeedController.CurrentSpeed);
     }
@@ -89,31 +80,33 @@ public class UIPanelCameraView : UIPanelBase
         EventManager.Unsubscribe_ExplorationTabOpened(OnExplorationTabOpened);
         EventManager.Unsubscribe_ExplorationTabClosed(OnExplorationTabClosed);
         EventManager.Unsubscribe_TacticOptionsChanged(OnTacticOptionsChanged);
-        EventManager.Unsubscribe_FleetShipCountChanged(OnFleetShipCountChanged);
-        EventManager.Unsubscribe_FormationChanged(OnFormationChanged);
     }
 
     private void SetupTacticsButtons()
     {
         if (m_tacticsButtonContainer == null) return;
 
-        m_tacticsButtons = m_tacticsButtonContainer.GetComponentsInChildren<UIButtonHasChildren>();
+        m_tacticsButtons = m_tacticsButtonContainer.GetComponentsInChildren<Button>();
+        m_tacticsUsingImages = new GameObject[m_tacticsButtons.Length];
         for (int i = 0; i < m_tacticsButtons.Length; i++)
         {
             int idx = i;
-            m_tacticsButtons[idx].GetButton().onClick.AddListener(() => { SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true); EventManager.Trigger_TacticToggleRequested(idx); });
+            m_tacticsButtons[idx].onClick.AddListener(() => { SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true); EventManager.Trigger_TacticToggleRequested(idx); });
+
+            Transform usingImage = m_tacticsButtons[idx].transform.Find("UsingImage");
+            m_tacticsUsingImages[idx] = usingImage != null ? usingImage.gameObject : null;
         }
     }
 
     private void OnTacticOptionsChanged(int options)
     {
-        if (m_tacticsButtons == null) return;
+        if (m_tacticsUsingImages == null) return;
 
-        Color colorOn  = CommonUtility.PaletteColor("Mineral");
-        Color colorOff = CommonUtility.PaletteColor("MineralDark");
-
-        for (int i = 0; i < m_tacticsButtons.Length; i++)
-            m_tacticsButtons[i].SetColor((options & (1 << i)) != 0 ? colorOn : colorOff);
+        for (int i = 0; i < m_tacticsUsingImages.Length; i++)
+        {
+            if (m_tacticsUsingImages[i] == null) continue;
+            m_tacticsUsingImages[i].SetActive((options & (1 << i)) != 0);
+        }
     }
 
     private void OnFleetStateChanged(EUnitState state)
@@ -189,7 +182,7 @@ public class UIPanelCameraView : UIPanelBase
         //isVip = true;
 #endif
         if (m_speedButton != null)
-            m_speedButton.SetInteractable(isVip);
+            m_speedButton.interactable = isVip;
         m_speedLabel.text = isVip == true
             ? (speed == (int)speed ? $"x{(int)speed}" : $"x{CommonUtility.FloorToDecimals(speed, 1):F1}")
             : LocalizationManager.Instance.Get("UICOMMON_AdmiralFeature");
@@ -202,7 +195,11 @@ public class UIPanelCameraView : UIPanelBase
         // OnViewportChanged는 인자(ratio)를 쓰지 않고 항상 CameraController의 "현재" 실제값을 다시 읽으므로 어떤 값을 넘기든 안전.
         OnViewportChanged(0f);
 
-        RefreshFormationButton();
+        // OnTacticOptionsChanged는 옵션이 실제로 바뀔 때만 발행되는 이벤트라, 패널이 처음 뜰 때는 아무도 쏘지 않아
+        // UsingImage가 프리팹 저장값(전부 활성) 그대로 보이는 문제가 있었음 — 패널이 뜰 때마다 현재 함대 상태로 직접 동기화
+        SpaceFleet myFleet = ObjectManager.Instance.GetMyFleet();
+        if (myFleet != null)
+            OnTacticOptionsChanged(myFleet.m_fleetInfo.tacticOptions);
     }
 
     private void OnZoneEntered(string zoneName, bool isFirstClear)
@@ -232,54 +229,5 @@ public class UIPanelCameraView : UIPanelBase
         max.x = centerX;
         m_rectTransform.anchorMin = min;
         m_rectTransform.anchorMax = max;
-    }
-
-    private void SetupFormationButton()
-    {
-        if (m_tacticsFormationButton == null) return;
-        m_tacticsFormationButton.GetButton().onClick.AddListener(OnFormationButtonClicked);
-        m_tacticsFormationButton.SetActiveColorKey("Action.Primary");
-        RefreshFormationButton();
-    }
-
-    private void OnFormationButtonClicked()
-    {
-        SpaceFleet fleet = ObjectManager.Instance.GetMyFleet();
-        if (fleet == null) return;
-        fleet.CycleFormation();
-    }
-
-    private void OnFleetShipCountChanged()
-    {
-        RefreshFormationButtonInteractable();
-    }
-
-    private void OnFormationChanged(EFormationType formation)
-    {
-        RefreshFormationIcon(formation);
-    }
-
-    private void RefreshFormationButton()
-    {
-        SpaceFleet fleet = ObjectManager.Instance.GetMyFleet();
-        RefreshFormationButtonInteractable();
-        if (fleet != null)
-            RefreshFormationIcon(fleet.m_currentFormationType);
-    }
-
-    private void RefreshFormationButtonInteractable()
-    {
-        if (m_tacticsFormationButton == null) return;
-        SpaceFleet fleet = ObjectManager.Instance.GetMyFleet();
-        int shipCount = fleet != null ? fleet.GetAliveShipCount() : 0;
-        m_tacticsFormationButton.SetInteractable(shipCount >= 3);
-    }
-
-    private void RefreshFormationIcon(EFormationType formation)
-    {
-        if (m_tacticsFormationImage == null) return;
-        FormationPreset preset = FormationPresetDB.Get(formation);
-        if (preset == null || preset.formationIcon == null) return;
-        m_tacticsFormationImage.sprite = preset.formationIcon;
     }
 }

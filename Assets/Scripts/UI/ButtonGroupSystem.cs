@@ -7,11 +7,14 @@ using UnityEngine.UI;
 public class ButtonGroupItem
 {
     public Button button;
-    public Graphic[] childGraphics; // 자식 Image, TMP_Text 등 색상 연동 대상
+    public Graphic[] childGraphics; // UsingImage가 없을 때만 쓰이는 색상 연동 대상(자식 Image, TMP_Text 등)
     [System.NonSerialized] public Color activeColor = Color.white;
     [System.NonSerialized] public Color inactiveColor = Color.gray;
     [System.NonSerialized] public System.Action onSelected;
     [System.NonSerialized] public System.Action onDeselected;
+
+    // button 자식 중 "UsingImage" 이름을 가진 오브젝트 — 있으면 선택 상태를 색상 대신 이 오브젝트의 활성화로 표시
+    [System.NonSerialized] public GameObject usingImage;
 }
 
 public class ButtonGroupSystem : MonoBehaviour
@@ -46,14 +49,17 @@ public class ButtonGroupSystem : MonoBehaviour
             {
                 int idx = i;
                 items[i].button.onClick.AddListener(() => { SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true); Select(idx); });
+
+                Transform usingImage = items[i].button.transform.Find("UsingImage");
+                items[i].usingImage = usingImage != null ? usingImage.gameObject : null;
             }
         }
 
         initialized = true;
 
-        // 전체 버튼에 inactiveColor 초기 적용 후 defaultIndex만 activeColor로 덮어씀
+        // 전체 버튼을 비선택 상태로 초기화한 뒤 defaultIndex만 선택 상태로 덮어씀
         for (int i = 0; i < items.Count; i++)
-            ApplyColor(items[i], items[i].inactiveColor);
+            ApplyState(items[i], false);
 
         if (defaultIndex >= 0)
             Select(defaultIndex);
@@ -76,14 +82,14 @@ public class ButtonGroupSystem : MonoBehaviour
         if (currentIndex >= 0)
         {
             var prev = items[currentIndex];
-            ApplyColor(prev, prev.inactiveColor);
+            ApplyState(prev, false);
             prev.onDeselected?.Invoke();
         }
 
         // 새 버튼 활성화
         currentIndex = index;
         var cur = items[currentIndex];
-        ApplyColor(cur, cur.activeColor);
+        ApplyState(cur, true);
         cur.onSelected?.Invoke();
     }
 
@@ -92,15 +98,24 @@ public class ButtonGroupSystem : MonoBehaviour
     {
         if (currentIndex < 0) return;
         var prev = items[currentIndex];
-        ApplyColor(prev, prev.inactiveColor);
+        ApplyState(prev, false);
         currentIndex = -1; // 콜백 전에 -1 설정 (TabSystem이 GetCurrentIndex로 확인하기 때문)
         prev.onDeselected?.Invoke();
     }
 
     public int GetCurrentIndex() => currentIndex;
 
-    private void ApplyColor(ButtonGroupItem item, Color color)
+    // usingImage가 있으면 색상 대신 그 오브젝트의 활성화로 선택 상태를 표시, 없으면 기존 색상 전환으로 폴백
+    private void ApplyState(ButtonGroupItem item, bool isSelected)
     {
+        if (item.usingImage != null)
+        {
+            item.usingImage.SetActive(isSelected);
+            return;
+        }
+
+        Color color = isSelected ? item.activeColor : item.inactiveColor;
+
         if (item.button != null)
         {
             var colors = item.button.colors;
