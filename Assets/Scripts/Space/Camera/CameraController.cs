@@ -415,6 +415,11 @@ public class CameraController : MonoSingleton<CameraController>
     // 처리할지 말지는 각 리스너(UIPanelSpace/UIPanelFleet 등)가 자기 활성 상태에 맞춰 스스로 판단(구독/해제)
     public void HandleModuleSelection(Vector3? screenPosition = null)
     {
+        // 전투 중엔 함선 클릭 자체를 무시 — 선택(아웃라인)/카메라 추적 전환/함대관리 UI 오픈이 전부 발생하면 안 됨.
+        // 3D 드래그 회전 등 다른 입력은 이 함수와 무관하므로 영향 없음
+        SpaceFleet myFleet = ObjectManager.Instance.GetMyFleet();
+        if (myFleet != null && myFleet.m_fleetState.IsBattleState() == true) return;
+
         LayerMask pickMask = ~m_layerMaskShield;
         if (!GetCameraRaycast(out RaycastHit hit, pickMask, 3000f, screenPosition))
         {

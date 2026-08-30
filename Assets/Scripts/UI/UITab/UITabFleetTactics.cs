@@ -305,7 +305,7 @@ public class UITabFleetTactics : UITabBase
         return 0;
     }
 
-    // 외부(UIPanelCameraView 버튼 등)에서 진형이 변경되면 버튼 선택 상태 동기화
+    // 외부(UIBattleView 버튼 등)에서 진형이 변경되면 버튼 선택 상태 동기화
     private void OnExternalFormationChanged(EFormationType formation)
     {
         if (m_formationButtons == null) return;

@@ -377,7 +377,7 @@ public static class EventManager
     public static void Subscribe_TacticOptionsChanged(Action<int> callback)   { OnTacticOptionsChanged += callback; }
     public static void Unsubscribe_TacticOptionsChanged(Action<int> callback) { OnTacticOptionsChanged -= callback; }
 
-    // 전술 토글 요청 — UIPanelCameraView 등 외부에서 idx 토글을 UITabFleetTactics에 위임
+    // 전술 토글 요청 — UIBattleView 등 외부에서 idx 토글을 UITabFleetTactics에 위임
     public static event Action<int> OnTacticToggleRequested;
     public static void Trigger_TacticToggleRequested(int idx) { OnTacticToggleRequested?.Invoke(idx); }
     public static void Subscribe_TacticToggleRequested(Action<int> callback)   { OnTacticToggleRequested += callback; }

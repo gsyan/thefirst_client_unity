@@ -218,7 +218,7 @@ public class UITabPvp : UITabBase
         m_currentBattleToken = null;
         RefreshTabButtons();
 
-        UIManager.Instance.HidePanel("UIPanelCameraView");
+        UIManager.Instance.HidePanel("UIPanelBattle");
         CameraController.Instance.SetCameraFocusTarget(ECameraFocusTarget.camera_focus_my_fleet);
 
         ZoneStageConfig returnZoneStage = null;

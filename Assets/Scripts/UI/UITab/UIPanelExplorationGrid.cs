@@ -52,7 +52,7 @@ public class UIPanelExplorationGrid : UIPanelBase
     private int m_pendingCellRow;
     private int m_pendingCellCol;
     private Vector3 m_pendingCellWorldPos;
-    private Vector3 m_pendingEnemyRequestMyFleetPos; // EnterExplorationCellRequest 전송 시점의 내 함대 위치 — 응답 도착 후 적 함대 조우 위치 계산에 씀(재시도 시에도 재사용)
+    private FleetInfo m_pendingEnemyFleetInfo; // EnterExplorationCellResponse가 전투 있음으로 확정한 적 함대 구성 — 함대뷰 전환 완료(FleetViewRestored) 후 SpawnConfirmedEnemyFleet에서 스폰
     private string m_activeChallengeToken; // EnterExplorationCellResponse가 발급한 1회용 토큰 — ClearExplorationCellRequest에 그대로 실어 보냄(enter-cell 생략한 clear 반복 호출 차단용)
 
     // 대치 상태(UIPanelPrepareBattle) 중 퇴각 시 되돌아갈 이전 위치 — 로컬뷰 카메라 전환 이후엔 그리드 좌표→월드좌표 역산이 불가능(카메라 자세가 이미 바뀜)하므로 이동 직전 좌표를 스냅샷
@@ -89,7 +89,7 @@ public class UIPanelExplorationGrid : UIPanelBase
         EventManager.Unsubscribe_RetreatExploration(OnRetreatDuringBattle);
     }
 
-    // 전투 중 후퇴 버튼(UIPanelCameraView) — 확인 후 전투 강제 종료. 레거시 UITabExploration.OnRetreatZoneStage와 동일 패턴/로컬라이즈 키 재사용
+    // 전투 중 후퇴 버튼(UIBattleView) — 확인 후 전투 강제 종료. 레거시 UITabExploration.OnRetreatZoneStage와 동일 패턴/로컬라이즈 키 재사용
     private void OnRetreatDuringBattle()
     {
         UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig
@@ -638,18 +638,16 @@ public class UIPanelExplorationGrid : UIPanelBase
         });
     }
 
-    // 확인 팝업 승인 — 패널을 닫아 OnHideUIPanel이 갤럭시뷰 해제(ExitGalaxyView)를 시작하게 함.
-    // 실제 함대 이동/워프인은 카메라 복귀 완료(FleetViewRestored) 이후 OnFleetViewRestoredForCellEntry에서 처리
+    // 확인 팝업 승인 — 전투 여부를 아직 모르므로 카메라는 갤럭시뷰에 그대로 둔 채 서버(EnterExplorationCell)부터 물어봄.
+    // 함대뷰 전환(ExitGalaxyView)은 응답이 "전투 있음"으로 확정된 뒤(OnEnterExplorationCellResponse)에만 시작 — 전투 없는
+    // 재방문/빈 셀은 카메라 전환 자체가 불필요하므로 갤럭시뷰에 머문 채 위치만 갱신(MoveToConfirmedCellWithoutBattle)
     private void ConfirmEnterCell(int row, int col)
     {
-        m_pendingCellEntry = true;
         m_pendingCellRow = row;
         m_pendingCellCol = col;
         m_pendingCellWorldPos = m_gridData.GetCell(row, col).worldPos;
 
-        // false: 카메라가 로컬뷰로 복귀하고 적 함대가 스폰될 때까지는 UIPanelPrepareBattle을 곧 띄울 예정이므로,
-        // 그 사이에 메인 패널(UIPanelSpace)이 잠깐 비쳤다 사라지는 걸 막음
-        UIManager.Instance.HideCurrentPanel(showMainPanelIfEmpty: false);
+        RequestEnemyFleetForCurrentCell();
     }
 
     private void OnFleetViewRestoredForCellEntry()
@@ -660,69 +658,23 @@ public class UIPanelExplorationGrid : UIPanelBase
         SpaceFleet myFleet = ObjectManager.Instance.GetMyFleet();
         if (myFleet == null) return;
 
-        m_previousRow = m_currentRow;
-        m_previousCol = m_currentCol;
-        m_previousFleetWorldPos = myFleet.transform.position;
-
         m_currentRow = m_pendingCellRow;
         m_currentCol = m_pendingCellCol;
 
         ObjectManager.Instance.SetMyFleetPosition(m_pendingCellWorldPos, 0f);
-        EnterCellAndRequestEnemyFleet(m_currentRow, m_currentCol, m_pendingCellWorldPos, myFleet);
-    }
-
-    // 내 함대는 즉시 워프인, 적 함대는 서버 응답(실제 장착 모듈까지 포함된 값)이 온 뒤에 스폰 — 대치 패널도 그때 함께 뜸.
-    // 빈 셀 여부(적 있음/없음)는 로컬 프리뷰(GetCellEnemyWaves)로 미리 판단해서 빈 셀이면 서버 왕복 자체를 생략함
-    // TODO: 2번째 이후 웨이브는 이전 웨이브 전멸 시 이어서 스폰해야 함 — 전투 시스템(§1-3 6번) 미구현이라 아직 트리거 불가
-    private void EnterCellAndRequestEnemyFleet(int row, int col, Vector3 myFleetPos, SpaceFleet myFleet)
-    {
         myFleet.StartFleetWarpIn();
-
-        if (m_gridData.GetCell(row, col).isCleared == true)
-        {
-            SyncRevisitedCellPosition(row, col, myFleet);
-            return; // 이번 런에서 이미 클리어한 셀 — 전투 없이 바로 이동
-        }
-
-        List<FleetInfo> previewWaves = GetCellEnemyWaves(row, col);
-        FleetInfo previewFleetInfo = previewWaves != null && previewWaves.Count > 0 ? previewWaves[0] : null;
-        if (previewFleetInfo == null || previewFleetInfo.ships == null || previewFleetInfo.ships.Count == 0)
-            return; // 빈 셀(적 없음) — 탐험 포인트 지급 등은 후속 작업
-
-        m_pendingEnemyRequestMyFleetPos = myFleetPos;
-        RequestEnemyFleetForCurrentCell();
+        SpawnConfirmedEnemyFleet(myFleet);
     }
 
-    // 재방문(이미 클리어한 셀)은 전투 없이 패스하지만, 서버의 run.currentCell은 갱신해야 다음 이동의 인접성 검사가 어긋나지 않음
-    // ClearExplorationCellRequest를 그대로 재사용 — 서버가 재방문으로 판단하면 포인트/경험치/카드 지급 없이 위치만 갱신함
-    private void SyncRevisitedCellPosition(int row, int col, SpaceFleet myFleet)
-    {
-        ClearExplorationCellRequest request = new ClearExplorationCellRequest
-        {
-            zoneNumber = m_currentZoneNumber,
-            cellRow = row,
-            cellCol = col,
-            shipHealthRatios = myFleet != null ? myFleet.BuildHealthRatioSnapshot() : null,
-        };
-        NetworkManager.Instance.ClearExplorationCell(request, response =>
-        {
-            if (response.errorCode != 0)
-                Debug.LogError($"[UIPanelExplorationGrid] SyncRevisitedCellPosition 실패: {response.errorCode}");
-
-            // 재방문 셀이 탈출 셀인 경우도 있음(예: 탈출 확정 팝업 전에 앱 종료 후 재접속) — 첫 클리어와 동일하게 탈출 확정 흐름을 태워야 함
-            ContinueAfterCellClear();
-        });
-    }
-
-    // OnConfirmAbandonAnotherRunAndRetry(다른 존 런 포기 후 재시도)에서도 재사용 — m_currentRow/Col과 m_pendingEnemyRequestMyFleetPos는
-    // EnterCellAndRequestEnemyFleet가 이미 세팅해둔 값을 그대로 씀
+    // OnConfirmAbandonAnotherRunAndRetry(다른 존 런 포기 후 재시도)에서도 재사용 — m_pendingCellRow/Col은
+    // ConfirmEnterCell이 이미 세팅해둔 값을 그대로 씀
     private void RequestEnemyFleetForCurrentCell()
     {
         EnterExplorationCellRequest request = new EnterExplorationCellRequest
         {
             zoneNumber = m_currentZoneNumber,
-            cellRow = m_currentRow,
-            cellCol = m_currentCol,
+            cellRow = m_pendingCellRow,
+            cellCol = m_pendingCellCol,
             fleetInfo = DataManager.Instance.m_currentFleetComposition != null
                 ? DataManager.Instance.m_currentFleetComposition.ToNetworkFleetInfo()
                 : null,
@@ -771,15 +723,62 @@ public class UIPanelExplorationGrid : UIPanelBase
         if (commanderInfo != null)
             commanderInfo.explorationZoneNumber = m_currentZoneNumber;
 
+        List<StageEnemyFleetSpawnConfig> enemyFleets = response.data.enemyFleets;
+        FleetInfo enemyFleetInfo = enemyFleets != null && enemyFleets.Count > 0 ? enemyFleets[0].fleetInfo : null;
+        bool hasEnemies = enemyFleetInfo != null && enemyFleetInfo.ships != null && enemyFleetInfo.ships.Count > 0;
+
+        if (hasEnemies == false)
+        {
+            // 전투 없음(재방문/빈 셀) — 서버가 이미 위치를 확정해뒀으므로 카메라 전환(갤럭시뷰→함대뷰) 없이 그 자리에서 위치만 갱신
+            MoveToConfirmedCellWithoutBattle();
+            return;
+        }
+
         SpaceFleet myFleet = ObjectManager.Instance.GetMyFleet();
         if (myFleet == null) return;
 
-        List<StageEnemyFleetSpawnConfig> enemyFleets = response.data.enemyFleets;
-        FleetInfo enemyFleetInfo = enemyFleets != null && enemyFleets.Count > 0 ? enemyFleets[0].fleetInfo : null;
-        if (enemyFleetInfo == null || enemyFleetInfo.ships == null || enemyFleetInfo.ships.Count == 0) return; // 로컬 프리뷰와 서버가 다르게 판단할 경우의 방어
+        // 카메라 전환 전(그리드 좌표→월드좌표 역산이 가능한 마지막 시점)에 퇴각 복귀용 스냅샷 저장
+        m_previousRow = m_currentRow;
+        m_previousCol = m_currentCol;
+        m_previousFleetWorldPos = myFleet.transform.position;
 
-        Vector3 enemyPos = m_pendingEnemyRequestMyFleetPos + Vector3.forward * k_enemyEncounterDistance;
-        Quaternion enemyRot = Quaternion.LookRotation(m_pendingEnemyRequestMyFleetPos - enemyPos);
+        m_pendingEnemyFleetInfo = enemyFleetInfo;
+
+        // 전투가 확정된 뒤에야 함대뷰로 전환 — OnHideUIPanel(ExitGalaxyView) → FleetViewRestored 이후 OnFleetViewRestoredForCellEntry에서
+        // 실제 함대 이동/워프인 + 적 함대 스폰(SpawnConfirmedEnemyFleet) 처리
+        m_pendingCellEntry = true;
+        UIManager.Instance.HideCurrentPanel(showMainPanelIfEmpty: false);
+    }
+
+    // 전투 없이 확정된 셀(재방문/빈 셀)로 이동 — 카메라는 갤럭시뷰에 그대로 둔 채 함대 오브젝트만 워프인.
+    // 탈출 셀 재방문(예: 탈출 확정 팝업 뜨기 전에 앱 종료 후 재접속)도 여기서 처리 — 카메라 정착 대기 없이 이미 갤럭시뷰이므로 팝업 즉시 표시
+    private void MoveToConfirmedCellWithoutBattle()
+    {
+        SpaceFleet myFleet = ObjectManager.Instance.GetMyFleet();
+        if (myFleet == null) return;
+
+        m_currentRow = m_pendingCellRow;
+        m_currentCol = m_pendingCellCol;
+
+        ObjectManager.Instance.SetMyFleetPosition(m_pendingCellWorldPos, 0f);
+        myFleet.StartFleetWarpIn();
+
+        RefreshCellStates();
+
+        bool reachedEscape = m_gridData != null && m_gridData.GetCell(m_currentRow, m_currentCol).isEscape;
+        if (reachedEscape == true)
+            ShowEscapeConfirmPopup();
+    }
+
+    // 대치 상태로 전환, 전투시작/퇴각/함대설정 3버튼 노출 — 워프인 연출 완료를 기다리지 않고 스폰 즉시 표시
+    private void SpawnConfirmedEnemyFleet(SpaceFleet myFleet)
+    {
+        FleetInfo enemyFleetInfo = m_pendingEnemyFleetInfo;
+        m_pendingEnemyFleetInfo = null;
+        if (enemyFleetInfo == null) return;
+
+        Vector3 enemyPos = m_pendingCellWorldPos + Vector3.forward * k_enemyEncounterDistance;
+        Quaternion enemyRot = Quaternion.LookRotation(m_pendingCellWorldPos - enemyPos);
 
         ETeam enemyTeam = ObjectManager.Instance.GetOpposingTeam(ObjectManager.Instance.m_myTeam);
         // 체력/공격력 배율은 서버가 enemyFleetInfo.ships[i].healthMultiplier/attackMultiplier로 실어 보낸 값을 그대로 씀(SpawnFleetFromPreset 내부에서 처리)

@@ -8,7 +8,7 @@ using UnityEngine;
 public class UIPanelSpace : UIPanelBase
 {
     [Header("진입 버튼 그룹 (기본 상태에서만 노출)")]
-    [SerializeField] private GameObject m_tapButtons; // COMMANDER/FLEET/SETTINGS/RANK/EXPLORATION 진입 버튼 컨테이너 — 오버레이 패널이 하나라도 열리면 숨김
+    [SerializeField] private GameObject m_tapButtons; // COMMANDER/FLEET/SETTINGS/RANK/EXPLORATION 진입 버튼 컨테이너 — 오버레이 패널이 하나라도 열리면 숨김. 캘린더/VIP(Top)도 이 컨테이너의 자식으로 옮겨져 함께 숨겨짐
 
     public override void OnShowUIPanel()
     {
@@ -74,6 +74,11 @@ public class UIPanelSpace : UIPanelBase
     private void OnShipSelectedAutoTabSwitch(SpaceShip ship)
     {
         if (TutorialManager.Instance != null && TutorialManager.Instance.IsPlaying) return;
+
+        // 전투 중(실전투)에는 함선을 터치해도 함대관리 UI가 자동으로 열리지 않음 — 어색한 화면 전환 방지.
+        // 3D 클릭 자체(카메라 포커스 전환 등)는 CameraController.HandleModuleSelection에서 그대로 처리되므로 이 흐름만 막으면 됨
+        SpaceFleet myFleet = ObjectManager.Instance.GetMyFleet();
+        if (myFleet != null && myFleet.m_fleetState.IsBattleState() == true) return;
 
         const string panelName = "UIPanelFleet";
         if (UIManager.Instance.GetCurrentActivePanelName() != panelName)

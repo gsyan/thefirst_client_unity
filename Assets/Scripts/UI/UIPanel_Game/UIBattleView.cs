@@ -1,10 +1,10 @@
-// 카메라 포커스 전환 버튼 패널 — 존 전투 중 표시, 카메라 포커스 순환 및 속도 토글 버튼 포함
+// 카메라 포커스 전환 버튼 UI — UIPanelBattle의 자식 컴포넌트. 카메라 포커스 순환 및 속도 토글 버튼 포함
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class UIPanelCameraView : UIPanelBase
+public class UIBattleView : MonoBehaviour
 {
     [SerializeField] private Button m_retreatButton;
     [SerializeField] private ButtonGroupSystem buttonGroup;
@@ -21,22 +21,14 @@ public class UIPanelCameraView : UIPanelBase
     private Button[] m_tacticsButtons;
     private GameObject[] m_tacticsUsingImages; // 버튼 자식의 "사용중" 표시 아이콘 — on/off를 색상 대신 이 오브젝트 활성화로 표현
 
-    private RectTransform m_rectTransform;
-    private float m_lastViewportRatio = 0f; // 패널 비활성 중 놓친 이벤트 대비
-
     private EUnitState m_fleetState = EUnitState.Idle;
-    private bool m_isExplorationOpen = false;
 
     void Awake()
     {
-        m_rectTransform = GetComponent<RectTransform>();
         // start 에서 이벤트 등록 하면, 인스턴스 활성화 될때까지 이벤트 받지 못함. 그래서 여기로 이동
-        EventManager.Subscribe_CameraViewportChanged(OnViewportChanged);
         EventManager.Subscribe_GameSpeedChanged(OnGameSpeedChanged);
         EventManager.Subscribe_ZoneEntered(OnZoneEntered);
         EventManager.Subscribe_MyFleetStateChanged(OnFleetStateChanged);
-        EventManager.Subscribe_ExplorationTabOpened(OnExplorationTabOpened);
-        EventManager.Subscribe_ExplorationTabClosed(OnExplorationTabClosed);
         EventManager.Subscribe_TacticOptionsChanged(OnTacticOptionsChanged);
 
         SetupTacticsButtons();
@@ -73,12 +65,9 @@ public class UIPanelCameraView : UIPanelBase
     void OnDestroy()
     {
         EventManager.Unsubscribe_CameraFocusTargetChanged(OnCameraFocusTargetChanged);
-        EventManager.Unsubscribe_CameraViewportChanged(OnViewportChanged);
         EventManager.Unsubscribe_GameSpeedChanged(OnGameSpeedChanged);
         EventManager.Unsubscribe_ZoneEntered(OnZoneEntered);
         EventManager.Unsubscribe_MyFleetStateChanged(OnFleetStateChanged);
-        EventManager.Unsubscribe_ExplorationTabOpened(OnExplorationTabOpened);
-        EventManager.Unsubscribe_ExplorationTabClosed(OnExplorationTabClosed);
         EventManager.Unsubscribe_TacticOptionsChanged(OnTacticOptionsChanged);
     }
 
@@ -109,6 +98,16 @@ public class UIPanelCameraView : UIPanelBase
         }
     }
 
+    // UIPanelBattle.OnShowUIPanel()이 호출 — OnTacticOptionsChanged는 옵션이 실제로 바뀔 때만 발행되는 이벤트라,
+    // 패널이 처음 뜰 때는 아무도 쏘지 않아 UsingImage가 프리팹 저장값(전부 활성) 그대로 보이는 문제가 있었음 —
+    // 패널이 뜰 때마다 현재 함대 상태로 직접 동기화
+    public void RefreshTacticsDisplay()
+    {
+        SpaceFleet myFleet = ObjectManager.Instance.GetMyFleet();
+        if (myFleet != null)
+            OnTacticOptionsChanged(myFleet.m_fleetInfo.tacticOptions);
+    }
+
     private void OnFleetStateChanged(EUnitState state)
     {
         bool wasBattle = m_fleetState.IsBattleState();
@@ -116,6 +115,16 @@ public class UIPanelCameraView : UIPanelBase
 
         if (wasBattle == true && state.IsBattleState() == false)
             CameraController.Instance.SetCameraFocusTarget(ECameraFocusTarget.camera_focus_my_fleet);
+
+        // 전투 진입 순간엔 함선 클릭이 막혀(CameraController.HandleModuleSelection) 카메라가 더 이상 특정 함선을 따라갈 수 없으므로,
+        // 직전에 보고 있던 대상에 그대로 고정되지 않도록 기함(0번 함선)으로 강제 전환
+        if (wasBattle == false && state.IsBattleState() == true)
+        {
+            SpaceFleet myFleet = ObjectManager.Instance.GetMyFleet();
+            SpaceShip flagship = myFleet != null ? myFleet.GetFlagship() : null;
+            if (flagship != null)
+                CameraController.Instance.SetTargetOfCameraController(flagship.transform);
+        }
 
         if (m_retreatButton != null)
         {
@@ -130,31 +139,6 @@ public class UIPanelCameraView : UIPanelBase
             else if (state == EUnitState.BattlePvp)
                 m_retreatButton.onClick.AddListener(() => { SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true); EventManager.TriggerRetreatPvp(); });
         }
-
-        RefreshVisibility();
-    }
-
-    private void OnExplorationTabOpened()
-    {
-        m_isExplorationOpen = true;
-        RefreshVisibility();
-    }
-
-    private void OnExplorationTabClosed()
-    {
-        m_isExplorationOpen = false;
-        RefreshVisibility();
-    }
-
-    private void RefreshVisibility()
-    {
-        // Tutorial_FirstPlay_Battle 연출 중에는 이 패널(존 정보/전술 토글 등)을 노출하지 않음
-        bool isTutorialBattle = TutorialActionGate.IsTutorial("Tutorial_FirstPlay_Battle");
-
-        if (m_fleetState.IsBattleState() == true && m_isExplorationOpen == false && isTutorialBattle == false)
-            UIManager.Instance.ShowPanel(panelName);
-        else
-            UIManager.Instance.HidePanel(panelName);
     }
 
     private void OnCameraFocusTargetChanged(ECameraFocusTarget target)
@@ -188,20 +172,6 @@ public class UIPanelCameraView : UIPanelBase
             : LocalizationManager.Instance.Get("UICOMMON_AdmiralFeature");
     }
 
-    public override void OnShowUIPanel()
-    {
-        // 패널이 뜨는 시점에 실제 카메라 viewport로 강제 재동기화 — SetViewportRect()처럼 이벤트를 발행하지 않는 경로로
-        // 뷰포트가 바뀐 경우(UIFleetStandoffView.Close() 등) 이 패널이 그 변경을 이벤트로 못 받아 이전 값에 남아있던 문제 방지.
-        // OnViewportChanged는 인자(ratio)를 쓰지 않고 항상 CameraController의 "현재" 실제값을 다시 읽으므로 어떤 값을 넘기든 안전.
-        OnViewportChanged(0f);
-
-        // OnTacticOptionsChanged는 옵션이 실제로 바뀔 때만 발행되는 이벤트라, 패널이 처음 뜰 때는 아무도 쏘지 않아
-        // UsingImage가 프리팹 저장값(전부 활성) 그대로 보이는 문제가 있었음 — 패널이 뜰 때마다 현재 함대 상태로 직접 동기화
-        SpaceFleet myFleet = ObjectManager.Instance.GetMyFleet();
-        if (myFleet != null)
-            OnTacticOptionsChanged(myFleet.m_fleetInfo.tacticOptions);
-    }
-
     private void OnZoneEntered(string zoneName, bool isFirstClear)
     {
         if (m_zoneNameText != null)
@@ -211,23 +181,5 @@ public class UIPanelCameraView : UIPanelBase
             m_zoneNameText.color = CommonUtility.PaletteColor("Text.Dark1");
             LayoutRebuilder.ForceRebuildLayoutImmediate(m_zoneNameText.transform.parent as RectTransform);
         }
-    }
-
-    // 현재 카메라 viewport 너비 중앙에 버튼 배치
-    private void OnViewportChanged(float ratio)
-    {
-        m_lastViewportRatio = ratio;
-        if (m_rectTransform == null) return;
-
-        var cam = CameraController.Instance;
-        if (cam == null) return;
-
-        float centerX = cam.GetViewportWidth() / 2f;
-        Vector2 min = m_rectTransform.anchorMin;
-        Vector2 max = m_rectTransform.anchorMax;
-        min.x = centerX;
-        max.x = centerX;
-        m_rectTransform.anchorMin = min;
-        m_rectTransform.anchorMax = max;
     }
 }
