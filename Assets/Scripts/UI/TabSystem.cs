@@ -74,7 +74,7 @@ public class TabSystem : MonoBehaviour
 
     private void OnMyFleetStateChanged(EUnitState state)
     {
-        // Idle 복귀 시에는 탭이 열려있어도 pvp 버튼 등 갱신이 필요함
+        // Idle 복귀 시에는 탭이 열려있어도 탭 버튼 갱신이 필요함
         bool isTabOpen = currentActiveTab >= 0;
         bool isIdleRestored = state == EUnitState.Idle;
         if (isTabOpen == true && isIdleRestored == false) return;
@@ -83,32 +83,12 @@ public class TabSystem : MonoBehaviour
 
     public void RefreshTabButtonsByFleetState()
     {
-        SpaceFleet myFleet = ObjectManager.Instance != null ? ObjectManager.Instance.GetMyFleet() : null;
-        EUnitState state = myFleet != null ? myFleet.m_fleetState : EUnitState.Idle;
         for (int i = 0; i < tabs.Count; i++)
         {
             TabData tab = tabs[i];
             if (tab.tabButton == null) continue;
-            tab.tabButton.gameObject.SetActive(IsTabVisibleInState(tab, state));
+            tab.tabButton.gameObject.SetActive(true);
         }
-    }
-
-    private bool IsTabVisibleInState(TabData tab, EUnitState state)
-    {
-        if (tab.tabPanel == null) return true;
-#if false // UITabPvp 주석처리로 임시 비활성화
-        bool isPvpTab = tab.tabPanel.GetComponent<UITabPvp>() != null;
-#else
-        bool isPvpTab = false;
-#endif
-        if (isPvpTab == true)
-            return state == EUnitState.Idle || state == EUnitState.Move;
-#if false // UITabFleet 주석처리로 임시 비활성화
-        if (state == EUnitState.BattlePvp)
-            return tab.tabPanel.GetComponent<UITabCommander>() != null
-                || tab.tabPanel.GetComponent<UITabFleet>() != null;
-#endif
-        return true;
     }
 
     private void InitializeTabs()
@@ -141,22 +121,6 @@ public class TabSystem : MonoBehaviour
 
         m_bInitialized = true;
         buttonGroup.Initialize();
-    }
-
-    // 각 패널의 UITabBase를 찾아 라이프사이클 연결 — 게임 데이터 준비 후 외부에서 호출
-    public void InitializeTabBases()
-    {
-        for (int i = 0; i < tabs.Count; i++)
-        {
-            var tab = tabs[i];
-            if (tab.tabPanel == null) continue;
-            UITabBase tabBase = tab.tabPanel.GetComponent<UITabBase>();
-            if (tabBase == null) continue;
-            tabBase.m_tabSystemParent = this;
-            tabBase.InitializeUITab();
-            tab.onActivate = tabBase.OnTabActivated;
-            tab.onDeactivate = tabBase.OnTabDeactivated;
-        }
     }
 
     public void SwitchToTab(int tabIndex)

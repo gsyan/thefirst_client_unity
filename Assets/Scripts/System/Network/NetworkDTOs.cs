@@ -235,31 +235,6 @@ public class DevCommandRequest
 
 #region Fleet Upgrade Data Classes ############################################################################
 [System.Serializable]
-public class AddShipRequest
-{
-    public long? fleetId;
-}
-
-[System.Serializable]
-public class AddShipResponse
-{
-    public ShipInfo newShipInfo;
-}
-
-[System.Serializable]
-public class ChangeFormationRequest
-{
-    public long fleetId;
-    public EFormationType formationType;
-}
-
-[System.Serializable]
-public class ChangeFormationResponse
-{
-    public EFormationType formation;
-}
-
-[System.Serializable]
 public class ChangeTacticOptionsRequest
 {
     public long fleetId;
@@ -271,22 +246,6 @@ public class ChangeTacticOptionsResponse
 {
     public int tacticOptions;
 }
-
-[System.Serializable]
-public class ShipResetRemoveRequest
-{
-    public long shipId;
-}
-
-[System.Serializable]
-public class ShipResetRemoveResponse
-{
-    public long removedShipId;
-}
-
-
-
-
 #endregion
 
 #region Progress Data Classes #################################################################################
@@ -623,26 +582,6 @@ public class ZoneRankingResponse
 }
 
 [System.Serializable]
-public class FleetHealthSaveRequest
-{
-    public List<ShipHealthInfo> ships;
-}
-
-[System.Serializable]
-public class ShipHealthInfo
-{
-    public long shipId;
-    public List<BodyHealthEntry> bodies;
-}
-
-[System.Serializable]
-public class BodyHealthEntry
-{
-    public int bodyIndex;
-    public float currentHealth;
-}
-
-[System.Serializable]
 public class FleetPresetPlaceShipRequest
 {
     // 함대편성(FleetComposition) 슬롯에 함선 배치/교체 시 저장 — isFront는 그 슬롯의 현재 전/후방 값을 그대로 실어보냄
@@ -675,14 +614,6 @@ public class SetFleetPresetSlotModulesResponse
     public ModuleBodyInfo body;       // 갱신된 함선의 현재 로드아웃 전체(beams/missiles/hangars)
     public int commandCost;           // 갱신된 함선의 지휘력 코스트
     public int remainingCommandPower; // 커맨더의 남은 지휘력
-}
-
-[System.Serializable]
-public class FleetInstantRepairRequest { }
-
-[System.Serializable]
-public class FleetInstantRepairResponse
-{
 }
 
 #endregion

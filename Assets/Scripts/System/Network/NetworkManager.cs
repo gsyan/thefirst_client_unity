@@ -627,18 +627,6 @@ public class NetworkManager : MonoSingleton<NetworkManager>
         StartCoroutine(RunAsync(() => m_apiClient.RedeemCodeAsync(request), onComplete));
     }
 
-    public void AddShip(AddShipRequest request, System.Action<ApiResponse<AddShipResponse>> onComplete)
-    {
-        if (m_bConnected == false) return;
-        StartCoroutine(RunAsync(() => m_apiClient.AddShipAsync(request), onComplete));
-    }
-
-    public void ChangeFormation(ChangeFormationRequest request, System.Action<ApiResponse<ChangeFormationResponse>> onComplete)
-    {
-        if (m_bConnected == false) return;
-        StartCoroutine(RunAsync(() => m_apiClient.ChangeFormationAsync(request), onComplete));
-    }
-
     public void ChangeTacticOptions(ChangeTacticOptionsRequest request, System.Action<ApiResponse<ChangeTacticOptionsResponse>> onComplete)
     {
         if (m_bConnected == false) return;
@@ -646,24 +634,6 @@ public class NetworkManager : MonoSingleton<NetworkManager>
     }
 
 
-
-    // public void AddModuleBody(ModuleBodyAddRequest request, System.Action<ApiResponse<ShipInfo>> onComplete)
-    // {
-    //     if (m_bConnected == false) return;
-    //     StartCoroutine(RunAsync(() => m_apiClient.AddModuleBodyAsync(request), onComplete));
-    // }
-
-    public void ResetAndRemoveShip(ShipResetRemoveRequest request, System.Action<ApiResponse<ShipResetRemoveResponse>> onComplete)
-    {
-        if (m_bConnected == false) return;
-        StartCoroutine(RunAsync(() => m_apiClient.ResetAndRemoveShipAsync(request), onComplete));
-    }
-
-    public void FleetHealthSave(FleetHealthSaveRequest request)
-    {
-        if (m_bConnected == false) return;
-        StartCoroutine(RunAsync(() => m_apiClient.FleetHealthSaveAsync(request), null));
-    }
 
     public void PlaceFleetPresetShip(FleetPresetPlaceShipRequest request, System.Action<ApiResponse<string>> onComplete = null)
     {
@@ -681,12 +651,6 @@ public class NetworkManager : MonoSingleton<NetworkManager>
     {
         if (m_bConnected == false) return;
         StartCoroutine(RunAsync(() => m_apiClient.SetFleetPresetSlotModulesAsync(request), onComplete));
-    }
-
-    public void FleetInstantRepair(System.Action<ApiResponse<FleetInstantRepairResponse>> onComplete)
-    {
-        if (m_bConnected == false) return;
-        StartCoroutine(RunAsync(() => m_apiClient.FleetInstantRepairAsync(), onComplete));
     }
 
     // public void GetFleetStats(FleetStatsRequest request, System.Action<ApiResponse<FleetStatsResponse>> onComplete)

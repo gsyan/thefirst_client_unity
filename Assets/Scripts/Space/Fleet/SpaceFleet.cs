@@ -36,21 +36,8 @@ public class SpaceFleet : MonoBehaviour
     [SerializeField] public List<SpaceShip> m_ships = new List<SpaceShip>();
 
     private Coroutine m_warpInCoroutine;
-    
-    // 자연 수리 임계값 저장: 10%~100% 돌파 시 서버 저장 (Idle 한정)
-    private int m_lastSavedHealthTier = 0;
-    private static readonly float[] k_healthSaveTiers = { 0.10f, 0.20f, 0.30f, 0.40f, 0.50f, 0.60f, 0.70f, 0.80f, 0.90f, 1.00f };
 
-    private int GetHealthTier(float ratio)
-    {
-        for (int i = k_healthSaveTiers.Length - 1; i >= 0; i--)
-        {
-            if (ratio >= k_healthSaveTiers[i]) return i + 1;
-        }
-        return 0;
-    }
-
-    private float GetFleetHealthRatio()
+    public float GetFleetHealthRatio()
     {
         float total = 0f, max = 0f;
         foreach (SpaceShip ship in m_ships)
@@ -66,24 +53,9 @@ public class SpaceFleet : MonoBehaviour
         return max > 0f ? total / max : 1f;
     }
 
-    private void OnFleetHPUpdatedForSave()
-    {
-        if (m_fleetSource != EFleetSource.fleet_source_player) return;
-        if (m_fleetState != EUnitState.Idle) return;
-
-        float ratio = GetFleetHealthRatio();
-        int tier = GetHealthTier(ratio);
-        if (tier > m_lastSavedHealthTier)
-        {
-            m_lastSavedHealthTier = tier;
-            SaveHealthToServer();
-        }
-    }
-
     private void Start()
     {
         EventManager.Subscribe_ShipBodyChanged(OnShipBodyChanged);
-        EventManager.Subscribe_FleetUpdateHP(OnFleetHPUpdatedForSave);
     }
 
     // fleet 오브젝트를 현재 위치 뒤에서 targetPos까지 워프 이펙트로 진입, 도착 시 콜백
@@ -295,39 +267,9 @@ public class SpaceFleet : MonoBehaviour
     private void OnDestroy()
     {
         EventManager.Unsubscribe_ShipBodyChanged(OnShipBodyChanged);
-        EventManager.Unsubscribe_FleetUpdateHP(OnFleetHPUpdatedForSave);
     }
 
-    public void SaveHealthToServer()
-    {
-        if (m_fleetSource != EFleetSource.fleet_source_player) return;
-        if (NetworkManager.Instance == null) return;
-        
-        var request = new FleetHealthSaveRequest { ships = new List<ShipHealthInfo>() };
-        foreach (SpaceShip ship in m_ships)
-        {
-            if (ship == null) continue;
-            var shipHealth = new ShipHealthInfo
-            {
-                shipId = ship.m_shipInfo.id,
-                bodies = new List<BodyHealthEntry>()
-            };
-            foreach (ModuleBody body in ship.m_moduleBodys)
-            {
-                if (body == null) continue;
-                shipHealth.bodies.Add(new BodyHealthEntry
-                {
-                    bodyIndex = body.GetModuleBodyIndex(),
-                    currentHealth = body.m_health
-                });
-            }
-            request.ships.Add(shipHealth);
-        }
-        
-        NetworkManager.Instance.FleetHealthSave(request);
-    }
-
-    // 셀 클리어 보고에 실어 보낼 슬롯 포지션 인덱스별 체력 비율 스냅샷 — ZoneRun에 저장돼 재접속 시 복구용(SaveHealthToServer의 shipId 기반 시스템과 별개)
+    // 셀 클리어 보고에 실어 보낼 슬롯 포지션 인덱스별 체력 비율 스냅샷 — ZoneRun에 저장돼 재접속 시 복구용
     public List<ShipHealthRatioInfo> BuildHealthRatioSnapshot()
     {
         var result = new List<ShipHealthRatioInfo>();

@@ -449,41 +449,6 @@ public class DeveloperConsole : MonoSingleton<DeveloperConsole>
             });
         });
 
-        // 진형 개념 주석처리 — 새 시스템은 함선 단위 전위/후위만 사용
-        /*
-        RegisterCommand("changeformation", "Change fleet formation (usage: changeformation [formation name] or [index])", (args) =>
-        {
-            EFormationType[] formations = (EFormationType[])System.Enum.GetValues(typeof(EFormationType));
-
-            if (args.Length == 0) return;
-
-            EFormationType formationType;
-
-            if (int.TryParse(args[0], out int index))
-            {
-                if (index >= 0 && index < formations.Length)
-                    formationType = formations[index];
-                else
-                    return;
-            }
-            else if (!System.Enum.TryParse<EFormationType>(args[0], true, out formationType))
-                return;
-
-            var objectManager = ObjectManager.Instance;
-            if (objectManager?.GetMyFleet() == null) return;
-
-            var fleet = objectManager.GetMyFleet();
-            var request = new ChangeFormationRequest { fleetId = fleet.m_fleetInfo.id, formationType = formationType };
-            NetworkManager.Instance.ChangeFormation(request, (response) =>
-            {
-                if (response.errorCode == 0)
-                {
-                    fleet.UpdateShipFormation(formationType, bSmooth: true);
-                    DataManager.Instance.ApplyFleetFormation(response.data.formation);
-                }
-            });
-        });
-        */
 
         RegisterCommand("addtech", "Add technology level (usage: addtech [amount])", (args) =>
         {
@@ -512,35 +477,6 @@ public class DeveloperConsole : MonoSingleton<DeveloperConsole>
             });
         });
 
-        // 구식 ShipInfo 기반 함선 추가 주석처리
-        /*
-        RegisterCommand("addship", "Add a new ship to the fleet", (args) =>
-        {
-            if (NetworkManager.Instance == null) return;
-            NetworkManager.Instance.ExecuteDevCommand("addship", new string[0], (response) =>
-            {
-                if (response.errorCode == 0)
-                {
-                    try
-                    {
-                        var addShipResponse = JsonUtility.FromJson<AddShipResponse>(response.data);
-                        if (addShipResponse != null)
-                        {
-                            if (DataManager.Instance != null && addShipResponse.newShipInfo != null)
-                                DataManager.Instance.AddFleetShip(addShipResponse.newShipInfo);
-
-                            if (ObjectManager.Instance != null && addShipResponse.newShipInfo != null)
-                                ObjectManager.Instance.GetMyFleet().CreateSpaceShipById(addShipResponse.newShipInfo.id);
-                        }
-                    }
-                    catch (System.Exception e)
-                    {
-                        Debug.LogError($"RegisterCommand(addship) error {e.Message}");
-                    }
-                }
-            });
-        });
-        */
     }
 
     private void UpdateResourceFromResponse(string data)

@@ -1,6 +1,4 @@
-// PvP 패널 — 2단계: 전투 진입/퇴각/결과 정산까지 구현. 랭킹 리스트 탭은 다음 단계.
-// 구 로직 원본은 Assets/Scripts/UI/UITab/UITabPvp.cs, UITabPvp_MyInfo.cs, UITabPvp_Rank.cs에 #if false로 보존돼 있음
-// (함선 시스템 대격변으로 구식 ShipInfo/FleetInfo 기반이라 그대로 못 씀 — UIPanelBase 생명주기에 맞춰 이식)
+// PvP 패널 — 전투 진입/퇴각/결과 정산 + 랭킹 리스트 탭(UIPanelRank_Leaderboard)까지 구현
 // 존/좌표 계산은 레거시의 ZoneStageConfig 기반이 아니라, 현재 탐사 그리드가 쓰는 ZoneConfig/ExplorationGridGenerator 기준으로 새로 짬
 using System.Collections.Generic;
 using TMPro;

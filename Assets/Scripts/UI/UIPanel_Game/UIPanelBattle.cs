@@ -109,10 +109,16 @@ public class UIPanelBattle : UIPanelBase
             int tacticOptions = myFleet.m_fleetInfo.tacticOptions;
             GameSettings gameSettings = DataManager.Instance.m_dataTableConfig.gameSettings;
 
+            // 토글이 켜져 있어도 실질 효과가 없는 상태(체력 만땅/미사일·함재기 모듈 없음)면 전술력을 소모하지 않음 — 토글 자체는 유지(파괴 등으로 조건이 다시 성립하면 재소모)
+            bool repairHasEffect = myFleet.GetFleetHealthRatio() < 1f;
+            CapabilityProfile fleetProfile = myFleet.GetFleetCapabilityProfile();
+            bool missileHasEffect = fleetProfile.missileAttack > 0f;
+            bool aircraftHasEffect = fleetProfile.airCount > 0;
+
             int drainPerSec = 0;
-            if ((tacticOptions & (1 << 0)) != 0) drainPerSec += gameSettings.repairBoostExplorationPointPerSec;
-            if ((tacticOptions & (1 << 1)) != 0) drainPerSec += gameSettings.missileTacticExplorationPointPerSec;
-            if ((tacticOptions & (1 << 2)) != 0) drainPerSec += gameSettings.aircraftTacticExplorationPointPerSec;
+            if ((tacticOptions & (1 << 0)) != 0 && repairHasEffect == true) drainPerSec += gameSettings.repairBoostExplorationPointPerSec;
+            if ((tacticOptions & (1 << 1)) != 0 && missileHasEffect == true) drainPerSec += gameSettings.missileTacticExplorationPointPerSec;
+            if ((tacticOptions & (1 << 2)) != 0 && aircraftHasEffect == true) drainPerSec += gameSettings.aircraftTacticExplorationPointPerSec;
             if (drainPerSec <= 0) continue;
 
             commanderInfo.tacticPower = Mathf.Max(0, commanderInfo.tacticPower - drainPerSec);

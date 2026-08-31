@@ -428,29 +428,9 @@ public class ApiClient
     #endregion
 
     #region Fleet Upgrade API Methods -----------------------------------------------------------------------------
-    public async Task<ApiResponse<AddShipResponse>> AddShipAsync(AddShipRequest request)
-    {
-        return await PostAsync<AddShipResponse>("/fleet/add-ship", request);
-    }
-
-    public async Task<ApiResponse<ChangeFormationResponse>> ChangeFormationAsync(ChangeFormationRequest request)
-    {
-        return await PostAsync<ChangeFormationResponse>("/fleet/change-formation", request);
-    }
-
     public async Task<ApiResponse<ChangeTacticOptionsResponse>> ChangeTacticOptionsAsync(ChangeTacticOptionsRequest request)
     {
         return await PostAsync<ChangeTacticOptionsResponse>("/fleet/change-tactic-options", request);
-    }
-
-    public async Task<ApiResponse<ShipResetRemoveResponse>> ResetAndRemoveShipAsync(ShipResetRemoveRequest request)
-    {
-        return await PostAsync<ShipResetRemoveResponse>("/fleet/reset-ship", request);
-    }
-
-    public async Task<ApiResponse<string>> FleetHealthSaveAsync(FleetHealthSaveRequest request)
-    {
-        return await PostAsync<string>("/fleet/save-health", request);
     }
 
     public async Task<ApiResponse<string>> PlaceFleetPresetShipAsync(FleetPresetPlaceShipRequest request)
@@ -466,11 +446,6 @@ public class ApiClient
     public async Task<ApiResponse<SetFleetPresetSlotModulesResponse>> SetFleetPresetSlotModulesAsync(SetFleetPresetSlotModulesRequest request)
     {
         return await PostAsync<SetFleetPresetSlotModulesResponse>("/fleet/preset/set-modules", request);
-    }
-
-    public async Task<ApiResponse<FleetInstantRepairResponse>> FleetInstantRepairAsync()
-    {
-        return await PostAsync<FleetInstantRepairResponse>("/fleet/instant-repair", null);
     }
 
     #endregion

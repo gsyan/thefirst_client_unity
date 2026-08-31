@@ -1,7 +1,5 @@
 // UIPanelRank의 랭킹 리스트 탭(TabRankInfo) — PVP/Zone 순위표, InfiniteScrollView 기반
 // 서버가 내려준 nextUpdatedAt 기준으로 캐시 재활용, 만료 시 재요청
-// 구 로직 원본은 Assets/Scripts/UI/UITab/UITabPvp_Rank.cs에 #if false로 보존돼 있음 —
-// ShipInfo/FleetInfo 의존이 없어 그대로 이식 가능, UITabBase 생명주기(OnTabActivated)만 OnEnable로 교체
 using System;
 using System.Collections.Generic;
 using UnityEngine;
