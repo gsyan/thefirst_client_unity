@@ -102,6 +102,8 @@ public class CommanderInfo
     public int commanderLevel;
     public int exp;    
     public int commandPowerMax;  // 탐험 함대 편성 지휘력 최대치 — IncreaseCommandPowerMaxRequest로 영구 증가
+    public int tacticPowerMax;  // 전술 토글(체력회복/미사일/함재기) 공용 소모 게이지 상한 — IncreaseTacticPowerMaxRequest로 영구 증가
+    public int tacticPower;  // 진행 중인 탐험 런의 전술력 현재치(ZoneRun.tacticPower와 동일), 진행 중인 런이 없으면 tacticPowerMax와 동일값
     public int explorationSeedBase;  // 서버 월드 시드+커맨더 조합 고정값 — 존별 그리드/적함대 시드는 클라에서 이 값과 zoneNumber를 조합해 결정론적으로 계산
     public List<string> clearedZones;  // 클리어한 존 이름 목록 (순서 무관, 각 독립)
     public int explorationPoint;    // 보유(확정 지급된) 탐험 포인트 — 적립(ZoneRun.explorationPointBanked)과 별개
@@ -366,6 +368,7 @@ public class ClearExplorationCellRequest
     public int cellRow;
     public int cellCol;
     public List<ShipHealthRatioInfo> shipHealthRatios; // 셀 클리어 시점의 내 함대 체력 스냅샷 — ZoneRun에 저장돼 재접속 시 복구됨
+    public int tacticPower; // 셀 클리어 시점의 전술력 현재치 — ZoneRun.tacticPower에 확정 저장(전투 중엔 서버에 실시간 저장하지 않고 클리어 시에만 확정)
     public string challengeToken; // EnterExplorationCellResponse.challengeToken을 그대로 반환 — enter-cell 없이 clear-cell만 반복 호출하는 것을 막음
 }
 
@@ -449,6 +452,19 @@ public class IncreaseCommandPowerMaxRequest
 public class IncreaseCommandPowerMaxResponse
 {
     public int commandPowerMax;        // 갱신된 지휘력 최대치
+    public int explorationPointRemain; // 소모 후 은행 잔액
+}
+
+[System.Serializable]
+public class IncreaseTacticPowerMaxRequest
+{
+    public int amount; // 소모할 탐험 포인트 — 전술력 최대치도 동일 수치만큼 증가(교환비 1:1)
+}
+
+[System.Serializable]
+public class IncreaseTacticPowerMaxResponse
+{
+    public int tacticPowerMax;         // 갱신된 전술력 최대치
     public int explorationPointRemain; // 소모 후 은행 잔액
 }
 

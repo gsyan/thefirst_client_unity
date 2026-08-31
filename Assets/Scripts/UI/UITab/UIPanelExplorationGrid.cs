@@ -59,6 +59,9 @@ public class UIPanelExplorationGrid : UIPanelBase
     private int m_previousRow;
     private int m_previousCol;
     private Vector3 m_previousFleetWorldPos;
+    // 전투 진입 직전 체력/전술력 스냅샷 — 셀 클리어 실패(패배/퇴각) 시 이 상태로 롤백(성공 시엔 롤백하지 않고 클리어 시점 값을 그대로 확정)
+    private List<ShipHealthRatioInfo> m_previousShipHealthRatios;
+    private int m_previousTacticPower;
     private SpaceFleet m_standoffEnemyFleet;
 
     private BankedRunReward m_bankedReward = new(); // 진행 중인 런의 적립(미확정) 보상(탐험 포인트/경험치 등) — 클리어마다 누적, 탈출/포기 확정 시 리셋
@@ -463,7 +466,7 @@ public class UIPanelExplorationGrid : UIPanelBase
         }
     }
 
-    // 재접속으로 서버에 저장된 함대 체력 스냅샷을 받았을 때, 이미 만피로 스폰된 내 함선들에 슬롯 포지션 인덱스 기준으로 적용
+    // 슬롯 포지션 인덱스 기준으로 함대 체력 비율 스냅샷을 적용 — (1) 재접속 시 서버 저장값 복구, (2) 전투 퇴각/패배 시 진입 직전 상태로 롤백, 두 용도에 재사용
     private void ApplyFleetHealthSnapshot(List<ShipHealthRatioInfo> shipHealthRatios)
     {
         if (shipHealthRatios == null || shipHealthRatios.Count == 0) return;
@@ -741,6 +744,9 @@ public class UIPanelExplorationGrid : UIPanelBase
         m_previousRow = m_currentRow;
         m_previousCol = m_currentCol;
         m_previousFleetWorldPos = myFleet.transform.position;
+        m_previousShipHealthRatios = myFleet.BuildHealthRatioSnapshot();
+        CommanderInfo snapshotCommanderInfo = DataManager.Instance.m_currentCommander != null ? DataManager.Instance.m_currentCommander.m_commanderInfo : null;
+        m_previousTacticPower = snapshotCommanderInfo != null ? snapshotCommanderInfo.tacticPower : 0;
 
         m_pendingEnemyFleetInfo = enemyFleetInfo;
 
@@ -828,12 +834,14 @@ public class UIPanelExplorationGrid : UIPanelBase
 
         Debug.Log($"[DEBUG-CELL] ClearExplorationCellRequest zone={m_currentZoneNumber} row={m_currentRow} col={m_currentCol}");
         SpaceFleet myFleet = ObjectManager.Instance.GetMyFleet();
+        CommanderInfo commanderInfo = DataManager.Instance.m_currentCommander != null ? DataManager.Instance.m_currentCommander.m_commanderInfo : null;
         ClearExplorationCellRequest request = new ClearExplorationCellRequest
         {
             zoneNumber = m_currentZoneNumber,
             cellRow = m_currentRow,
             cellCol = m_currentCol,
             shipHealthRatios = myFleet != null ? myFleet.BuildHealthRatioSnapshot() : null,
+            tacticPower = commanderInfo != null ? commanderInfo.tacticPower : 0,
             challengeToken = m_activeChallengeToken,
         };
         NetworkManager.Instance.ClearExplorationCell(request, OnClearExplorationCellResponse);
@@ -1147,7 +1155,8 @@ public class UIPanelExplorationGrid : UIPanelBase
     }
 
     // 전투 중 퇴각(패배 포함) — OnConfirmRetreat(대치 화면 퇴각)와 동일한 위치 복원. 적 함대 제거는 ForceEndBattle이 이미 처리했으므로 생략.
-    // 서버에 셀 클리어 통지를 하지 않으므로 이 셀은 클리어되지 않은 채로 남아 나중에 다시 도전 가능
+    // 서버에 셀 클리어 통지를 하지 않으므로 이 셀은 클리어되지 않은 채로 남아 나중에 다시 도전 가능.
+    // 체력/전술력도 전투 진입 직전 스냅샷으로 롤백 — 클리어 실패 시 손실 없이 다시 도전 가능해야 퇴각 기능이 실질적 의미를 가짐(성공 시엔 롤백하지 않고 클리어 확정값을 그대로 서버에 전송)
     private void RestorePreviousCellAfterRetreat()
     {
         m_currentRow = m_previousRow;
@@ -1155,7 +1164,15 @@ public class UIPanelExplorationGrid : UIPanelBase
         ObjectManager.Instance.SetMyFleetPosition(m_previousFleetWorldPos, 0f);
         CameraController.Instance.SnapToTarget();
 
-        // 셀 단위 퇴각은 손상 유지(로그라이트성, 의도적) — 회복은 존 런 자체를 종료(탈출 확정, OnConfirmEscape)했을 때만
+        ApplyFleetHealthSnapshot(m_previousShipHealthRatios);
+
+        CommanderInfo commanderInfo = DataManager.Instance.m_currentCommander != null ? DataManager.Instance.m_currentCommander.m_commanderInfo : null;
+        if (commanderInfo != null)
+        {
+            commanderInfo.tacticPower = m_previousTacticPower;
+            EventManager.Trigger_TacticPowerChanged(commanderInfo.tacticPower, commanderInfo.tacticPowerMax);
+        }
+
         UIManager.Instance.ShowPanel(panelName);
     }
 

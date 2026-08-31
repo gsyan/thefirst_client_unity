@@ -377,11 +377,17 @@ public static class EventManager
     public static void Subscribe_TacticOptionsChanged(Action<int> callback)   { OnTacticOptionsChanged += callback; }
     public static void Unsubscribe_TacticOptionsChanged(Action<int> callback) { OnTacticOptionsChanged -= callback; }
 
-    // 전술 토글 요청 — UIBattleView 등 외부에서 idx 토글을 UITabFleetTactics에 위임
+    // 전술 토글 요청 — UIBattleView(버튼 클릭)가 idx를 발행하면 UIPanelBattle이 tacticOptions를 직접 토글/서버 통지
     public static event Action<int> OnTacticToggleRequested;
     public static void Trigger_TacticToggleRequested(int idx) { OnTacticToggleRequested?.Invoke(idx); }
     public static void Subscribe_TacticToggleRequested(Action<int> callback)   { OnTacticToggleRequested += callback; }
     public static void Unsubscribe_TacticToggleRequested(Action<int> callback) { OnTacticToggleRequested -= callback; }
+
+    // 전술력(TacticPower) 현재치 변경 — UIPanelBattle이 매 프레임 소모 계산 후 발행, UIBattleView가 게이지 표시만 갱신
+    public static event Action<float, int> OnTacticPowerChanged;
+    public static void Trigger_TacticPowerChanged(float current, int max) { OnTacticPowerChanged?.Invoke(current, max); }
+    public static void Subscribe_TacticPowerChanged(Action<float, int> callback)   { OnTacticPowerChanged += callback; }
+    public static void Unsubscribe_TacticPowerChanged(Action<float, int> callback) { OnTacticPowerChanged -= callback; }
 
     // Module Replaced (oldModule, newModule)
     public static event Action<ModuleBase, ModuleBase> OnModuleReplaced;

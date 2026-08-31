@@ -796,6 +796,12 @@ public class NetworkManager : MonoSingleton<NetworkManager>
         StartCoroutine(RunAsync(() => m_apiClient.IncreaseCommandPowerMaxAsync(request), onComplete));
     }
 
+    public void IncreaseTacticPowerMax(IncreaseTacticPowerMaxRequest request, System.Action<ApiResponse<IncreaseTacticPowerMaxResponse>> onComplete)
+    {
+        if (m_bConnected == false) return;
+        StartCoroutine(RunAsync(() => m_apiClient.IncreaseTacticPowerMaxAsync(request), onComplete));
+    }
+
     public void UnlockShipPreset(UnlockShipPresetRequest request, System.Action<ApiResponse<UnlockShipPresetResponse>> onComplete)
     {
         if (m_bConnected == false) return;

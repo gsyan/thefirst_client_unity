@@ -519,6 +519,11 @@ public class ApiClient
         return await PostAsync<IncreaseCommandPowerMaxResponse>("/exploration/increase-command-power", request);
     }
 
+    public async Task<ApiResponse<IncreaseTacticPowerMaxResponse>> IncreaseTacticPowerMaxAsync(IncreaseTacticPowerMaxRequest request)
+    {
+        return await PostAsync<IncreaseTacticPowerMaxResponse>("/exploration/increase-tactic-power", request);
+    }
+
     public async Task<ApiResponse<UnlockShipPresetResponse>> UnlockShipPresetAsync(UnlockShipPresetRequest request)
     {
         return await PostAsync<UnlockShipPresetResponse>("/exploration/unlock-ship-preset", request);

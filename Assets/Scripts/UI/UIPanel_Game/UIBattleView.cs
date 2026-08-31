@@ -18,6 +18,7 @@ public class UIBattleView : MonoBehaviour
 
     [Header("함대 전술 토글")]
     [SerializeField] private Transform m_tacticsButtonContainer;
+    [SerializeField] private Image m_tacticPowerGauge; // 전술 토글 3종이 공유하는 소모 게이지(Filled/Horizontal) — 소모 계산은 UIPanelBattle이 전담, 여기선 표시만
     private Button[] m_tacticsButtons;
     private GameObject[] m_tacticsUsingImages; // 버튼 자식의 "사용중" 표시 아이콘 — on/off를 색상 대신 이 오브젝트 활성화로 표현
 
@@ -30,6 +31,7 @@ public class UIBattleView : MonoBehaviour
         EventManager.Subscribe_ZoneEntered(OnZoneEntered);
         EventManager.Subscribe_MyFleetStateChanged(OnFleetStateChanged);
         EventManager.Subscribe_TacticOptionsChanged(OnTacticOptionsChanged);
+        EventManager.Subscribe_TacticPowerChanged(OnTacticPowerChanged);
 
         SetupTacticsButtons();
     }
@@ -69,6 +71,13 @@ public class UIBattleView : MonoBehaviour
         EventManager.Unsubscribe_ZoneEntered(OnZoneEntered);
         EventManager.Unsubscribe_MyFleetStateChanged(OnFleetStateChanged);
         EventManager.Unsubscribe_TacticOptionsChanged(OnTacticOptionsChanged);
+        EventManager.Unsubscribe_TacticPowerChanged(OnTacticPowerChanged);
+    }
+
+    private void OnTacticPowerChanged(float current, int max)
+    {
+        if (m_tacticPowerGauge == null) return;
+        m_tacticPowerGauge.fillAmount = max > 0 ? Mathf.Clamp01(current / max) : 0f;
     }
 
     private void SetupTacticsButtons()
