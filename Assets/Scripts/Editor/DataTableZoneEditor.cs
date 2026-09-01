@@ -955,13 +955,6 @@ public class DataTableZoneEditor : Editor
     // Blocked/Start/Event 셀은 실제 플레이에서도 적함대가 생성되지 않으므로 안내만 표시
     private int m_previewSeed = 20260722;
 
-    private DataTableShipPreset GetShipPresetTable()
-    {
-        string[] guids = AssetDatabase.FindAssets("t:DataTableShipPreset");
-        if (guids.Length == 0) return null;
-        return AssetDatabase.LoadAssetAtPath<DataTableShipPreset>(AssetDatabase.GUIDToAssetPath(guids[0]));
-    }
-
     private DataTableModule GetModuleTableForPreview()
     {
         string[] guids = AssetDatabase.FindAssets("t:DataTableModule");
@@ -979,22 +972,21 @@ public class DataTableZoneEditor : Editor
             return;
         }
 
-        DataTableShipPreset presetTable = GetShipPresetTable();
         DataTableModule moduleTable = GetModuleTableForPreview();
-        if (presetTable == null || moduleTable == null)
+        if (moduleTable == null)
         {
-            EditorGUILayout.HelpBox("DataTableShipPreset 또는 DataTableModule 에셋을 찾을 수 없습니다.", MessageType.Warning);
+            EditorGUILayout.HelpBox("DataTableModule 에셋을 찾을 수 없습니다.", MessageType.Warning);
             return;
         }
 
         m_previewSeed = EditorGUILayout.IntField(new GUIContent("Preview Seed", "실제 플레이 시드는 서버 world-seed+커맨더 조합값이라 에디터에서는 알 수 없음 — 값을 바꿔가며 편차/구성 다양성만 확인하는 용도"), m_previewSeed);
 
         int seed = CommonUtility.ComputeExplorationZoneSeed(zoneConfig.zoneIndex, m_previewSeed);
-        List<FleetInfo> waves = ExplorationEnemyFleetGenerator.GenerateWaves(zoneConfig, seed, m_selectedGridRow, m_selectedGridCol, presetTable, moduleTable);
+        List<FleetInfo> waves = ExplorationEnemyFleetGenerator.GenerateWaves(zoneConfig, seed, m_selectedGridRow, m_selectedGridCol, moduleTable);
 
         if (waves.Count == 0)
         {
-            EditorGUILayout.HelpBox("웨이브가 없습니다 (enemyFleetsPerCell=0이거나 프리셋 데이터가 비어있음).", MessageType.Info);
+            EditorGUILayout.HelpBox("웨이브가 없습니다 (enemyFleetsPerCell=0이거나 함체 데이터가 비어있음).", MessageType.Info);
             return;
         }
 
@@ -1012,13 +1004,8 @@ public class DataTableZoneEditor : Editor
                 int missileCount = modules != null && modules.missiles != null ? modules.missiles.Count : 0;
                 int hangarCount = modules != null && modules.hangars != null ? modules.hangars.Count : 0;
 
-                ShipPresetData preset = presetTable.GetShipPreset(ship.shipPresetId);
-                int bodyCost = 0;
-                if (preset != null && System.Enum.TryParse(preset.prefabName, out EModuleSubType bodySubType))
-                {
-                    ModuleData bodyData = moduleTable.GetModuleDataFromTable(bodySubType);
-                    bodyCost = bodyData != null ? bodyData.statPoint : 0;
-                }
+                ModuleData bodyData = moduleTable.GetModuleDataFromTable(ship.hullSubType);
+                int bodyCost = bodyData != null ? bodyData.statPoint : 0;
 
                 int modulesCost = SumModuleCost(moduleTable, modules != null ? modules.beams : null)
                     + SumModuleCost(moduleTable, modules != null ? modules.missiles : null)
@@ -1026,7 +1013,7 @@ public class DataTableZoneEditor : Editor
                 int shipCost = bodyCost + modulesCost;
                 totalSpent += shipCost;
 
-                EditorGUILayout.LabelField($"  {ship.shipPresetId} (body={bodyCost}, {(ship.isFront ? "전방" : "후방")}, 빔={beamCount}, 미사일={missileCount}, 격납고={hangarCount}, 지출={shipCost})");
+                EditorGUILayout.LabelField($"  {ship.hullSubType} (body={bodyCost}, {(ship.isFront ? "전방" : "후방")}, 빔={beamCount}, 미사일={missileCount}, 격납고={hangarCount}, 지출={shipCost})");
             }
 
             EditorGUILayout.LabelField($"  웨이브 총 지출: {totalSpent} / enemyBudget: {zoneConfig.enemyBudget}", EditorStyles.miniLabel);

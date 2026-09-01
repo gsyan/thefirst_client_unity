@@ -49,7 +49,7 @@ public class SpaceSceneDebugBootstrap : MonoBehaviour
         {
             ships = new List<ShipInfo>
             {
-                new ShipInfo { shipPresetId = "beam_light_01", isFront = true },
+                new ShipInfo { hullSubType = "h1_11100", isFront = true },
             },
         };
 

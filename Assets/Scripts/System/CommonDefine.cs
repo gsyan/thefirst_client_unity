@@ -11,60 +11,60 @@ public enum EModuleType
     interceptor     = 6,
     max             = 7
 }
-// 6자리 인코딩: T_tt_mmm (type 1자리, 타입(외형) 2자리, m 3자리)
-// 파싱: type=val/100000, tier=(val/1000)%100, m=val%1000
-// body만 m이 의미를 가짐(예: m111 = 빔1/미사일1/격납고1 슬롯 수) — 그 외 타입은 m=000 고정
+// 8자리 인코딩: T_tt_mmmmm (type 1자리, tier 2자리, model 5자리)
+// 파싱: type=val/10000000, tier=(val/100000)%100, model=val%100000
+// body만 model이 의미를 가짐(예: 11100 = 빔1/미사일1/격납고1/실드0/요격체0 슬롯 수, 각 1자리씩) — 그 외 타입은 model=00000 고정
 [System.Serializable]
 public enum EModuleSubType
 {
     none                = 0,
     // Body SubType
-    body_t1_m111        = 101111,
-    body_t1_m211        = 101211,
-    body_t1_m221        = 101221,
-    body_t1_m222        = 101222,
-    body_t1_m322        = 101322,
-    body_t1_m332        = 101332,   
-    body_t1_m333        = 101333,
-    body_t1_m433        = 101433,
-    body_t1_m443        = 101443,
-    body_t1_m444        = 101444,
-    body_t1_m544        = 101544,
-    body_t1_m554        = 101554,
+    h1_11100        = 10111100,
+    h1_21100        = 10121100,
+    h1_22100        = 10122100,
+    h1_22200        = 10122200,
+    h1_32200        = 10132200,
+    h1_33200        = 10133200,   
+    h1_33300        = 10133300,
+    h1_43300        = 10143300,
+    h1_44300        = 10144300,
+    h1_44400        = 10144400,
+    h1_54400        = 10154400,
+    h1_55400        = 10155400,
     // Beam SubType
-    beam_t1             = 201000,
+    beam1           = 20100000,
     // Missile SubType
-    missile_t1          = 301000,
+    missile1        = 30100000,
     // Hangar SubType
-    hangar_t1           = 401000,
+    hangar1         = 40100000,
     // Shield SubType
-    shield_t1           = 501000,
+    shield1         = 50100000,
     // Interceptor SubType
-    interceptor_t1      = 601000,
+    interceptor1    = 60100000,
 }
 
-// EModuleSubType 6자리 인코딩 파싱 유틸
+// EModuleSubType 8자리 인코딩 파싱 유틸
 public static class EModuleSubTypeExtensions
 {
-    public static int GetModuleType(this EModuleSubType subType)    => (int)subType / 100000;
-    public static int GetTechTier(this EModuleSubType subType) => ((int)subType / 1000) % 100;
-    public static int GetModuleModel(this EModuleSubType subType)    => (int)subType % 1000;
+    public static int GetModuleType(this EModuleSubType subType)    => (int)subType / 10000000;
+    public static int GetTechTier(this EModuleSubType subType) => ((int)subType / 100000) % 100;
+    public static int GetModuleModel(this EModuleSubType subType)    => (int)subType % 100000;
 
     // 인코딩에서 EModuleType 추출
     public static EModuleType GetModuleTypeEnum(this EModuleSubType subType)
-        => (EModuleType)((int)subType / 100000);
+        => (EModuleType)((int)subType / 10000000);
 
     // 타입(외형)+1 서브타입 반환 (없으면 EModuleSubType.none) — prerequisites 체인 없이 인코딩 산술로 계산
     public static EModuleSubType GetNextSubType(this EModuleSubType subType)
     {
-        int nextVal = (int)subType + 1000;
+        int nextVal = (int)subType + 100000;
         return System.Enum.IsDefined(typeof(EModuleSubType), nextVal) ? (EModuleSubType)nextVal : EModuleSubType.none;
     }
 
     // 타입(외형)-1 서브타입 반환 (없으면 EModuleSubType.none)
     public static EModuleSubType GetPrevSubType(this EModuleSubType subType)
     {
-        int prevVal = (int)subType - 1000;
+        int prevVal = (int)subType - 100000;
         return System.Enum.IsDefined(typeof(EModuleSubType), prevVal) ? (EModuleSubType)prevVal : EModuleSubType.none;
     }
 

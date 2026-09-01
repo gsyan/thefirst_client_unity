@@ -1,5 +1,5 @@
 // 셀 클리어 보상카드 종류 테이블 ScriptableObject
-// CSV Import(에디터 전용) → ScriptableObject 갱신 → JSON Export → 서버 배포 순서로 사용 (DataTableShipPreset과 동일 컨벤션)
+// CSV Import(에디터 전용) → ScriptableObject 갱신 → JSON Export → 서버 배포 순서로 사용 (DataTableModule과 동일 컨벤션)
 // CSV: Assets/Resources/DataTable/RewardCard/datatable_reward_card.csv
 using UnityEngine;
 using System.Collections.Generic;

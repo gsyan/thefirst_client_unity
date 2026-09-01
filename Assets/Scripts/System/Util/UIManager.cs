@@ -570,14 +570,27 @@ public class UIManager : MonoSingleton<UIManager>
         popup.ShowPopupRedeemCode(onClose: () => CloseTopPopup(EPopupLayer.Normal));
     }
 
-    // 탐사포인트 -> 지휘력 최대치 변환 팝업
-    public void ShowConvertExplorationPointPopup(System.Action onConfirmed = null)
+    // 탐사포인트 -> 지휘력/전술력 최대치 변환 팝업
+    public void ShowConvertExplorationPointPopup(EExplorationPointConvertTarget target, System.Action onConfirmed = null)
     {
         UIPopupConvertExplorationPoint popup = GetOrCreatePopup<UIPopupConvertExplorationPoint>("UIPopupConvertExplorationPoint", EPopupLayer.Normal);
         if (popup == null) return;
 
         ReplacePopup(popup, EPopupLayer.Normal);
-        popup.ShowPopupConvertExplorationPoint(onClose: () => CloseTopPopup(EPopupLayer.Normal), onConfirmed: onConfirmed);
+        popup.ShowPopupConvertExplorationPoint(target, onClose: () => CloseTopPopup(EPopupLayer.Normal), onConfirmed: onConfirmed);
+    }
+
+    // 함선 로드아웃 슬롯의 공격력 강화 포인트 편집 팝업(UIShipLoadoutEditorView의 ManageButton에서 오픈)
+    public void ShowModuleReinforcePopup(EModuleType moduleType, int initialAttackPoints, int initialAttackToFighterPoints,
+        int maxCommandPower, int usedByOtherSlots, int installCost, System.Action<int, int> onConfirm)
+    {
+        UIPopupModuleReinforce popup = GetOrCreatePopup<UIPopupModuleReinforce>("UIPopupModuleReinforce", EPopupLayer.Normal);
+        if (popup == null) return;
+
+        ReplacePopup(popup, EPopupLayer.Normal);
+        popup.ShowPopupModuleReinforce(moduleType, initialAttackPoints, initialAttackToFighterPoints,
+            maxCommandPower, usedByOtherSlots, installCost,
+            onClose: () => CloseTopPopup(EPopupLayer.Normal), onConfirm: onConfirm);
     }
 
     // 외부 라이센스 고지 팝업
@@ -590,14 +603,14 @@ public class UIManager : MonoSingleton<UIManager>
         popup.ShowPopupLicense(() => CloseTopPopup(EPopupLayer.Normal));
     }
 
-    // 함선 프리셋 상세 스탯 팝업 (함대편성 UI — 배치가능 프리셋 클릭 시) — 전용 팝업 대신 UIPopupConfirm의 stat gauge 섹션 재사용
-    public void ShowShipStatsPopup(ShipPresetData preset)
+    // 함체 상세 스탯 팝업 (함대편성 UI — 배치가능 함체 클릭 시) — 전용 팝업 대신 UIPopupConfirm의 stat gauge 섹션 재사용
+    public void ShowShipStatsPopup(ModuleData hull)
     {
-        // 함선 이름 로컬라이즈는 아직 미정 — 프리셋 코드(presetId)를 그대로 표시
+        // 함선 이름 로컬라이즈는 아직 미정 — 함체 코드(hullSubType)를 그대로 표시
         ShowConfirmPopup(new ConfirmPopupConfig
         {
-            message = preset.presetId,
-            statGaugeRows = ShipStatGaugeBuilder.Build(preset),
+            message = hull.moduleSubType.ToString(),
+            statGaugeRows = ShipStatGaugeBuilder.Build(hull),
             onConfirm = null,
         });
     }

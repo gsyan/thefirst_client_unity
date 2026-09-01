@@ -691,6 +691,7 @@ public class SpaceFleet : MonoBehaviour
     // 최대 체력 대비 healRatio만큼 가산 회복(즉시효과 보상카드용) — FullRepair/ApplyHealthRatio(절대 설정)와 달리 현재 체력에 더함
     public void HealAllShipsByRatio(float healRatio)
     {
+        Debug.Log($"[디버그-체력회복] HealAllShipsByRatio 진입 healRatio={healRatio} m_ships.Count={m_ships.Count}");
         if (healRatio <= 0f) return;
         foreach (SpaceShip ship in m_ships)
         {
@@ -698,7 +699,9 @@ public class SpaceFleet : MonoBehaviour
             foreach (ModuleBody body in ship.m_moduleBodys)
             {
                 if (body == null) continue;
+                float beforeHealth = body.m_health;
                 body.m_health = Mathf.Min(body.m_healthMax, body.m_health + body.m_healthMax * healRatio);
+                Debug.Log($"[디버그-체력회복] ship={ship.name} m_health {beforeHealth} -> {body.m_health} (m_healthMax={body.m_healthMax})");
             }
             ship.UpdateShipStatCur();
         }

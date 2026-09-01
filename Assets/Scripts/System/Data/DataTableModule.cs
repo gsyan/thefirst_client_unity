@@ -21,6 +21,7 @@ public class ModuleData
 
     // common ---------------------------------------------------------------------------
     public int statPoint; // 이 서브타입(티어)을 슬롯에 설치할 때 드는 성능포인트 비용 — 티어가 오를수록 가파르게 증가
+    public int unlockCommanderLevel; // body 전용 — 이 함체가 해금되는 지휘관 레벨. body 외 카테고리는 0(미사용)
 
     [Header("Description")]
     [TextArea(2, 4)]
@@ -240,6 +241,19 @@ public class DataTableModule : ScriptableObject
         return group.modules[0];
     }
 
+    // subTypeName(예: "h1_11100")을 EModuleSubType으로 파싱해 조회 — 파싱 실패 시 null(구 presetId 문자열 조회 대체용)
+    public ModuleData GetModuleDataFromTable(string subTypeName)
+    {
+        if (System.Enum.TryParse(subTypeName, out EModuleSubType subType) == false) return null;
+        return GetModuleDataFromTable(subType);
+    }
+
+    // 해금 커맨더 레벨 이하인 body(함체) 목록만 — 함대 편성 화면의 "선택 가능한 함체 목록"용
+    public List<ModuleData> GetUnlockedBodyModules(int commanderLevel)
+    {
+        return BodyModules.FindAll(data => data.unlockCommanderLevel <= commanderLevel);
+    }
+
     private ModuleSubTypeGroup FindGroup(EModuleSubType subType)
     {
         EModuleType moduleType = (EModuleType)subType.GetModuleType();
@@ -430,14 +444,14 @@ public class DataTableModule : ScriptableObject
         interceptorGroups.Clear();
         InitializeSubTypeGroups();
 
-        // 컬럼 순서 (datatable_module.csv 헤더 기준 고정 인덱스) — 레벨 축 삭제됨, 서브타입(티어)당 1행
-        // 0:sub_type, 1:stat_point, 2:health, 3:repair, 4:speed, 5:turn_rate,
-        // 6:attack, 7:splash_radius, 8:attack_cool, 9:silence_time,
-        // 10:air_count, 11:air_maintenance_time, 12:air_health, 13:air_attack,
-        // 14:air_attack_range, 15:air_attack_cool, 16:air_speed, 17:air_ammo,
-        // 18:air_detect_radius, 19:air_avoid_radius, 20:air_disrupt,
-        // 21:shield_gauge, 22:shield_delay, 23:shield_regen_rate,
-        // 24:interceptor_count, 25:interceptor_delay, 26:interceptor_regen_rate, 27:description
+        // 컬럼 순서 (datatable_module.csv 헤더 기준 고정 인덱스) — 서브타입(티어)당 1행
+        // 0:sub_type, 1:unlock_commander_level(body 전용), 2:stat_point, 3:health, 4:repair, 5:speed, 6:turn_rate,
+        // 7:attack, 8:splash_radius, 9:attack_cool, 10:silence_time,
+        // 11:air_count, 12:air_maintenance_time, 13:air_health, 14:air_attack,
+        // 15:air_attack_range, 16:air_attack_cool, 17:air_speed, 18:air_ammo,
+        // 19:air_detect_radius, 20:air_avoid_radius, 21:air_disrupt,
+        // 22:shield_gauge, 23:shield_delay, 24:shield_regen_rate,
+        // 25:interceptor_count, 26:interceptor_delay, 27:interceptor_regen_rate, 28:description
         // 발사체 이동속도(빔/미사일)는 별도 컬럼 없이 speed 컬럼을 재사용
         string[] lines = csvText.Split('\n');
         if (lines.Length < 2) return;
@@ -458,33 +472,34 @@ public class DataTableModule : ScriptableObject
             {
                 moduleName      = $"{moduleSubType}",
                 moduleSubType   = moduleSubType,
-                statPoint           = ParseCsvInt  (cols, 1),
-                health              = ParseCsvFloat(cols, 2),
-                repair              = ParseCsvFloat(cols, 3),
-                speed               = ParseCsvFloat(cols, 4),
-                turnRate            = ParseCsvFloat(cols, 5),
-                attack              = ParseCsvFloat(cols, 6),
-                splashRadius        = ParseCsvFloat(cols, 7),
-                attackCool          = ParseCsvFloat(cols, 8),
-                silenceTime         = ParseCsvFloat(cols, 9),
-                airCount            = ParseCsvInt  (cols, 10),
-                airMaintenanceTime  = ParseCsvFloat(cols, 11),
-                airHealth           = ParseCsvFloat(cols, 12),
-                airAttack           = ParseCsvFloat(cols, 13),
-                airAttackRange      = ParseCsvFloat(cols, 14),
-                airAttackCool       = ParseCsvFloat(cols, 15),
-                airSpeed            = ParseCsvFloat(cols, 16),
-                airAmmo             = ParseCsvInt  (cols, 17),
-                airDetectRadius     = ParseCsvFloat(cols, 18),
-                airAvoidRadius      = ParseCsvFloat(cols, 19),
-                airDisrupt          = ParseCsvFloat(cols, 20),
-                shieldGauge         = ParseCsvFloat(cols, 21),
-                shieldDelay         = ParseCsvFloat(cols, 22),
-                shieldRegenRate     = ParseCsvFloat(cols, 23),
-                interceptorCount        = ParseCsvInt  (cols, 24),
-                interceptorDelay        = ParseCsvFloat(cols, 25),
-                interceptorRegenRate    = ParseCsvFloat(cols, 26),
-                description         = cols.Length > 27 ? cols[27].Trim() : ""
+                unlockCommanderLevel = ParseCsvInt (cols, 1),
+                statPoint           = ParseCsvInt  (cols, 2),
+                health              = ParseCsvFloat(cols, 3),
+                repair              = ParseCsvFloat(cols, 4),
+                speed               = ParseCsvFloat(cols, 5),
+                turnRate            = ParseCsvFloat(cols, 6),
+                attack              = ParseCsvFloat(cols, 7),
+                splashRadius        = ParseCsvFloat(cols, 8),
+                attackCool          = ParseCsvFloat(cols, 9),
+                silenceTime         = ParseCsvFloat(cols, 10),
+                airCount            = ParseCsvInt  (cols, 11),
+                airMaintenanceTime  = ParseCsvFloat(cols, 12),
+                airHealth           = ParseCsvFloat(cols, 13),
+                airAttack           = ParseCsvFloat(cols, 14),
+                airAttackRange      = ParseCsvFloat(cols, 15),
+                airAttackCool       = ParseCsvFloat(cols, 16),
+                airSpeed            = ParseCsvFloat(cols, 17),
+                airAmmo             = ParseCsvInt  (cols, 18),
+                airDetectRadius     = ParseCsvFloat(cols, 19),
+                airAvoidRadius      = ParseCsvFloat(cols, 20),
+                airDisrupt          = ParseCsvFloat(cols, 21),
+                shieldGauge         = ParseCsvFloat(cols, 22),
+                shieldDelay         = ParseCsvFloat(cols, 23),
+                shieldRegenRate     = ParseCsvFloat(cols, 24),
+                interceptorCount        = ParseCsvInt  (cols, 25),
+                interceptorDelay        = ParseCsvFloat(cols, 26),
+                interceptorRegenRate    = ParseCsvFloat(cols, 27),
+                description         = cols.Length > 28 ? cols[28].Trim() : ""
             };
 
             // body 모듈만 prefab에서 슬롯 정보 추출

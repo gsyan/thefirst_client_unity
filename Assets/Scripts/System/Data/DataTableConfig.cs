@@ -65,6 +65,9 @@ public class ShipStatFormulaSettings
     [Tooltip("카테고리(빔/미사일/함재기/요격체)별 슬롯 상한 — 프리셋 데이터의 슬롯 배열 크기 기준값")]
     public int maxModuleSlots = 6;
 
+    [Tooltip("공격모듈(빔/미사일/격납고) 슬롯 1개당 투자 가능한 강화 포인트 상한")]
+    public int maxAttackReinforcePointsPerSlot = 10;
+
     public BeamFormula beam = new BeamFormula();
     public MissileFormula missile = new MissileFormula();
     public HangarFormula hangar = new HangarFormula();

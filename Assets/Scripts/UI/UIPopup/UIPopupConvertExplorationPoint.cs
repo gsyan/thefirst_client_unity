@@ -1,12 +1,20 @@
-// 탐사포인트 -> 지휘력 최대치 변환 팝업 — +10/+100/+1000, -10/-100/-1000, 전체, 초기화 버튼으로 소모량을 직접 조정 후 확인
+// 탐사포인트 -> 지휘력/전술력 최대치 변환 팝업 — +10/+100/+1000, -10/-100/-1000, 전체, 초기화 버튼으로 소모량을 직접 조정 후 확인
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+
+// 이 팝업이 어떤 자원의 최대치를 늘려주는 중인지 — 서버 API/응답 필드/DataManager 갱신 대상이 이 값에 따라 갈라짐
+public enum EExplorationPointConvertTarget
+{
+    CommandPower,
+    TacticPower,
+}
 
 public class UIPopupConvertExplorationPoint : UIPopupBase
 {
     [SerializeField] private TMP_Text m_ownedExplorationPointText;
     [SerializeField] private TMP_Text m_currentCommandPowerText;
+    [SerializeField] private TMP_Text m_targetLabelText; // "지휘력" / "전술력" — 대상에 따라 라벨 텍스트 교체
 
     // 증감 표시 색상 - 괄호와 그 안의 델타 수치("(-10)", "(+10)")를 강조
     private const string k_deltaColorHex = "#FF5555";
@@ -22,14 +30,15 @@ public class UIPopupConvertExplorationPoint : UIPopupBase
     [SerializeField] private Button m_confirmButton;
     [SerializeField] private Button m_cancelButton;
 
-    // 서버 ExplorationService.increaseCommandPowerMax()와 반드시 함께 수정 — 탐사포인트 1당 지휘력 최대치 증가량
-    private const float k_explorationPointToCommandPowerRatio = 1f;
+    // 서버 ExplorationService.increaseCommandPowerMax()/increaseTacticPowerMax()와 반드시 함께 수정 — 탐사포인트 1당 증가량(둘 다 1:1)
+    private const float k_explorationPointToPowerRatio = 1f;
 
     private System.Action m_onClose;
     private System.Action m_onConfirmed;
+    private EExplorationPointConvertTarget m_target;
 
     private int m_ownedExplorationPoint;
-    private int m_currentCommandPowerMax;
+    private int m_currentPowerMax;
     private int m_pendingAmount;
 
     protected override void Awake()
@@ -48,14 +57,23 @@ public class UIPopupConvertExplorationPoint : UIPopupBase
         if (m_cancelButton != null)    m_cancelButton.onClick.AddListener(OnCancelClicked);
     }
 
-    public void ShowPopupConvertExplorationPoint(System.Action onClose, System.Action onConfirmed = null)
+    public void ShowPopupConvertExplorationPoint(EExplorationPointConvertTarget target, System.Action onClose, System.Action onConfirmed = null)
     {
+        m_target      = target;
         m_onClose     = onClose;
         m_onConfirmed = onConfirmed;
 
         CommanderInfo commanderInfo = DataManager.Instance.m_currentCommander != null ? DataManager.Instance.m_currentCommander.m_commanderInfo : null;
-        m_ownedExplorationPoint  = commanderInfo != null ? commanderInfo.explorationPoint : 0;
-        m_currentCommandPowerMax = commanderInfo != null ? commanderInfo.commandPowerMax : 0;
+        m_ownedExplorationPoint = commanderInfo != null ? commanderInfo.explorationPoint : 0;
+        m_currentPowerMax = commanderInfo == null ? 0
+            : m_target == EExplorationPointConvertTarget.CommandPower ? commanderInfo.commandPowerMax
+            : commanderInfo.tacticPowerMax;
+
+        if (m_targetLabelText != null)
+        {
+            string labelKey = m_target == EExplorationPointConvertTarget.CommandPower ? "UITabCommander_CommandPower" : "TacticPower";
+            m_targetLabelText.text = LocalizationManager.Instance.Get(labelKey);
+        }
 
         m_pendingAmount = 0;
 
@@ -63,9 +81,9 @@ public class UIPopupConvertExplorationPoint : UIPopupBase
         base.ShowPopup();
     }
 
-    private int CalculateCommandPowerGain(int explorationPointAmount)
+    private int CalculatePowerGain(int explorationPointAmount)
     {
-        return Mathf.FloorToInt(explorationPointAmount * k_explorationPointToCommandPowerRatio);
+        return Mathf.FloorToInt(explorationPointAmount * k_explorationPointToPowerRatio);
     }
 
     // 기준값 옆에 델타를 빨간 괄호로 붙임 — 예: "60 <color=#FF5555>(-10)</color>", 델타가 0이면 괄호 생략
@@ -101,12 +119,12 @@ public class UIPopupConvertExplorationPoint : UIPopupBase
     private void RefreshUI()
     {
         int remaining = m_ownedExplorationPoint - m_pendingAmount;
-        int commandPowerGain = CalculateCommandPowerGain(m_pendingAmount);
+        int powerGain = CalculatePowerGain(m_pendingAmount);
 
         if (m_ownedExplorationPointText != null)
             m_ownedExplorationPointText.text = BuildValueWithDelta(m_ownedExplorationPoint, -m_pendingAmount);
         if (m_currentCommandPowerText != null)
-            m_currentCommandPowerText.text = BuildValueWithDelta(m_currentCommandPowerMax, commandPowerGain);
+            m_currentCommandPowerText.text = BuildValueWithDelta(m_currentPowerMax, powerGain);
 
         if (m_plus10Button != null)    m_plus10Button.interactable    = remaining >= 10;
         if (m_plus100Button != null)   m_plus100Button.interactable   = remaining >= 100;
@@ -126,9 +144,18 @@ public class UIPopupConvertExplorationPoint : UIPopupBase
 
         m_confirmButton.interactable = false;
 
-        IncreaseCommandPowerMaxRequest request = new IncreaseCommandPowerMaxRequest();
-        request.amount = m_pendingAmount;
-        NetworkManager.Instance.IncreaseCommandPowerMax(request, OnIncreaseCommandPowerResponse);
+        if (m_target == EExplorationPointConvertTarget.CommandPower)
+        {
+            IncreaseCommandPowerMaxRequest request = new IncreaseCommandPowerMaxRequest();
+            request.amount = m_pendingAmount;
+            NetworkManager.Instance.IncreaseCommandPowerMax(request, OnIncreaseCommandPowerResponse);
+        }
+        else
+        {
+            IncreaseTacticPowerMaxRequest request = new IncreaseTacticPowerMaxRequest();
+            request.amount = m_pendingAmount;
+            NetworkManager.Instance.IncreaseTacticPowerMax(request, OnIncreaseTacticPowerResponse);
+        }
     }
 
     private void OnIncreaseCommandPowerResponse(ApiResponse<IncreaseCommandPowerMaxResponse> response)
@@ -147,9 +174,35 @@ public class UIPopupConvertExplorationPoint : UIPopupBase
         CommanderInfo commanderInfo = DataManager.Instance.m_currentCommander != null ? DataManager.Instance.m_currentCommander.m_commanderInfo : null;
         if (commanderInfo != null)
             commanderInfo.commandPowerMax = response.data.commandPowerMax;
+
+        ApplyExplorationPointRemainAndClose(response.data.explorationPointRemain);
+    }
+
+    private void OnIncreaseTacticPowerResponse(ApiResponse<IncreaseTacticPowerMaxResponse> response)
+    {
+        if (response == null || response.errorCode != 0)
+        {
+            Debug.LogError($"[UIPopupConvertExplorationPoint] IncreaseTacticPowerMax 실패: {(response != null ? response.errorCode : -1)}");
+            if (m_confirmButton != null) m_confirmButton.interactable = true;
+            return;
+        }
+
+        CommanderInfo commanderInfo = DataManager.Instance.m_currentCommander != null ? DataManager.Instance.m_currentCommander.m_commanderInfo : null;
+        if (commanderInfo != null)
+        {
+            commanderInfo.tacticPowerMax = response.data.tacticPowerMax;
+            commanderInfo.tacticPower = response.data.tacticPower;
+            EventManager.Trigger_TacticPowerChanged(commanderInfo.tacticPower, commanderInfo.tacticPowerMax);
+        }
+
+        ApplyExplorationPointRemainAndClose(response.data.explorationPointRemain);
+    }
+
+    private void ApplyExplorationPointRemainAndClose(int explorationPointRemain)
+    {
         // Commander.UpdateExplorationPoint()를 거쳐야 EventManager.OnExplorationPointChanged가 발행되어 다른 열린 패널도 즉시 갱신됨
         if (DataManager.Instance.m_currentCommander != null)
-            DataManager.Instance.m_currentCommander.UpdateExplorationPoint(response.data.explorationPointRemain);
+            DataManager.Instance.m_currentCommander.UpdateExplorationPoint(explorationPointRemain);
 
         if (m_onConfirmed != null) m_onConfirmed.Invoke();
         if (m_onClose != null) m_onClose.Invoke();

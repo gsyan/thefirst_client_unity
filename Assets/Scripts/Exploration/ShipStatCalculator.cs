@@ -22,9 +22,9 @@ public static class ShipStatCalculator
             baseTurnRate = bodyModuleData.turnRate;
         }
 
-        stats.health = baseHealth + allocation.healthPoints * formula.flatStats.perPoint;
-        stats.turnRate = baseTurnRate + allocation.turnRatePoints * formula.flatStats.perPoint;
-        stats.repair = baseRepair + allocation.repairPoints * formula.flatStats.perPoint;
+        stats.health = baseHealth;
+        stats.turnRate = baseTurnRate;
+        stats.repair = baseRepair;
 
         CalculateWeaponSlots(moduleTable, allocation.beamModuleSubType, allocation.beamAttackPoints, allocation.beamFireRatePoints, allocation.beamProjectileSpeedPoints,
             formula.beam.attackPerPoint, formula.beam.attackCoolReductionPerPoint, formula.beam.attackCoolFloor, formula.beam.projectileSpeedPerPoint,
@@ -135,8 +135,8 @@ public static class ShipStatCalculator
 
             ModuleData hangarModuleData = GetModuleData(moduleTable, allocation.hangarModuleSubType[i]);
 
-            shipAttackList.Add(formula.hangar.baseShipAttack + allocation.hangarShipAttackPoints[i] * formula.hangar.reinforcePerPoint);
-            fighterAttackList.Add(formula.hangar.baseFighterAttack + allocation.hangarFighterAttackPoints[i] * formula.hangar.reinforcePerPoint);
+            shipAttackList.Add(formula.hangar.baseShipAttack + allocation.hangarAttackToShip[i] * formula.hangar.reinforcePerPoint);
+            fighterAttackList.Add(formula.hangar.baseFighterAttack + allocation.hangarAttackToFighter[i] * formula.hangar.reinforcePerPoint);
             ammoList.Add(formula.hangar.baseAmmo + allocation.hangarAmmoPoints[i] * formula.hangar.reinforcePerPoint);
             healthList.Add(formula.hangar.baseHealth + allocation.hangarHealthPoints[i] * formula.hangar.reinforcePerPoint);
             airDisruptList.Add(hangarModuleData != null ? hangarModuleData.airDisrupt : 0f);

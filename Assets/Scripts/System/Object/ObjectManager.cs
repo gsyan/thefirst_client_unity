@@ -749,33 +749,30 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         if (fleetInfo != null)
             fleet.m_currentFormationType = fleetInfo.formation;
 
-        DataTableShipPreset presetTable = DataManager.Instance.m_dataTableShipPreset;
+        DataTableModule moduleTable = DataManager.Instance.m_dataTableModule;
         ShipStatFormulaSettings formula = DataManager.Instance.m_dataTableConfig.gameSettings.shipStatFormula;
         if (fleetInfo != null && fleetInfo.ships != null)
         {
             for (int shipIndex = 0; shipIndex < fleetInfo.ships.Count; shipIndex++)
             {
                 ShipInfo shipSlot = fleetInfo.ships[shipIndex];
-                ShipPresetData preset = presetTable.GetShipPreset(shipSlot.shipPresetId);
-                if (preset == null)
+                ModuleData bodyModuleData = moduleTable.GetModuleDataFromTable(shipSlot.hullSubType);
+                if (bodyModuleData == null)
                 {
-                    Debug.LogError($"ShipPresetData not found: {shipSlot.shipPresetId}");
+                    Debug.LogError($"ModuleData(body) not found: {shipSlot.hullSubType}");
                     continue;
                 }
-                ModuleData bodyModuleData = null;
-                if (System.Enum.TryParse(preset.prefabName, out EModuleSubType bodySubType))
-                    bodyModuleData = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(bodySubType);
 
                 // shipSlot.bodies는 서버에 저장된 "이 함선에 실제로 장착된 모듈 구성"(로드아웃) — 있으면(내 함대) 그걸 우선 쓰고,
-                // 없으면(적 함대 등) preset.statAllocation(프리셋의 기본 장착 구성)을 그대로 씀
+                // 없으면(적 함대 등) 빈 로드아웃(기본 장착 구성)을 그대로 씀
                 ModuleBodyInfo actualModules = shipSlot.bodies != null && shipSlot.bodies.Count > 0 ? shipSlot.bodies[0] : null;
-                ShipStatAllocation allocation = ShipStatAllocation.BuildFromModuleBodyInfo(preset.statAllocation, actualModules);
+                ShipStatAllocation allocation = ShipStatAllocation.BuildFromModuleBodyInfo(formula.maxModuleSlots, actualModules);
 
                 // 보상카드 지속버프는 여기서 미리 곱해두지 않음 — 스폰되는 모듈들이 자기 자신의 RefreshRewardCardBuff()에서
                 // 그 시점의 최신 배율을 직접 읽어 반영함(내 함대가 아니면 배율은 항상 1). 이러면 스폰 이후 카드를 더 골라도
                 // ObjectManager.RefreshRewardCardBuffsOnMyFleet()가 같은 모듈들을 다시 갱신해주기만 하면 됨
-                ShipFinalStats finalStats = ShipStatCalculator.Calculate(allocation, formula, bodyModuleData, DataManager.Instance.m_dataTableModule);
-                ExplorationShipSpawnBridge.SpawnShip(fleet, preset, finalStats, shipIndex, shipSlot.isFront, shipSlot.healthMultiplier, shipSlot.attackMultiplier);
+                ShipFinalStats finalStats = ShipStatCalculator.Calculate(allocation, formula, bodyModuleData, moduleTable);
+                ExplorationShipSpawnBridge.SpawnShip(fleet, bodyModuleData, finalStats, shipIndex, shipSlot.isFront, shipSlot.healthMultiplier, shipSlot.attackMultiplier);
             }
         }
         // bWarp: false로 스폰된 함선들은 최종 대형 위치보다 뒤(-Z)에 멈춰있으므로, 연출 없이 즉시 최종 위치로 확정
@@ -809,8 +806,8 @@ public class ObjectManager : MonoSingleton<ObjectManager>
     }
 
     // 함대편성 UI(FleetComposition)에서 슬롯 하나에 배치/교체하거나 장착 모듈만 바뀌었을 때 호출 — 그 슬롯의 함선만 파괴/재생성, 나머지 함선은 그대로 유지
-    // modules를 생략하면(null) 프리셋 기본 장착 구성(바디 교체 시 리셋된 값)을 쓰고, 넘기면(모듈 편집 후) 그 실제 장착 구성으로 스탯을 계산함
-    public void ReplaceMyFleetShipAt(int positionIndex, string shipPresetId, bool isFront, ModuleBodyInfo modules = null)
+    // modules를 생략하면(null) 빈 로드아웃(함체 교체 시 리셋된 값)을 쓰고, 넘기면(모듈 편집 후) 그 실제 장착 구성으로 스탯을 계산함
+    public void ReplaceMyFleetShipAt(int positionIndex, string hullSubType, bool isFront, ModuleBodyInfo modules = null)
     {
         SpaceFleet myFleet = GetMyFleet();
         if (myFleet == null) return;
@@ -821,23 +818,19 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         if (oldShip != null)
             myFleet.RemoveShip(oldShip, refreshFormation: false, triggerDefeatEvents: false);
 
-        DataTableShipPreset presetTable = DataManager.Instance.m_dataTableShipPreset;
-        ShipPresetData preset = presetTable.GetShipPreset(shipPresetId);
-        if (preset == null)
+        DataTableModule moduleTable = DataManager.Instance.m_dataTableModule;
+        ModuleData bodyModuleData = moduleTable.GetModuleDataFromTable(hullSubType);
+        if (bodyModuleData == null)
         {
-            Debug.LogError($"ShipPresetData not found: {shipPresetId}");
+            Debug.LogError($"ModuleData(body) not found: {hullSubType}");
             return;
         }
 
-        ModuleData bodyModuleData = null;
-        if (System.Enum.TryParse(preset.prefabName, out EModuleSubType bodySubType))
-            bodyModuleData = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(bodySubType);
-
         ShipStatFormulaSettings formula = DataManager.Instance.m_dataTableConfig.gameSettings.shipStatFormula;
-        ShipStatAllocation allocation = ShipStatAllocation.BuildFromModuleBodyInfo(preset.statAllocation, modules);
-        ShipFinalStats finalStats = ShipStatCalculator.Calculate(allocation, formula, bodyModuleData, DataManager.Instance.m_dataTableModule);
+        ShipStatAllocation allocation = ShipStatAllocation.BuildFromModuleBodyInfo(formula.maxModuleSlots, modules);
+        ShipFinalStats finalStats = ShipStatCalculator.Calculate(allocation, formula, bodyModuleData, moduleTable);
 
-        SpaceShip newShip = ExplorationShipSpawnBridge.SpawnShip(myFleet, preset, finalStats, positionIndex, isFront);
+        SpaceShip newShip = ExplorationShipSpawnBridge.SpawnShip(myFleet, bodyModuleData, finalStats, positionIndex, isFront);
         // 존 런 진행 중이면 이전 함선의 손상 비율을 새 함선에 그대로 이전(회복 금지) — 평시 편성(런 없음)은 만피 유지
         if (newShip != null && IsExplorationRunActive() == true)
             newShip.ApplyHealthRatio(previousHealthRatio);

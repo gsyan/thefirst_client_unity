@@ -7,7 +7,6 @@ using UnityEngine;
 public class UIPanelExplorationGrid : UIPanelBase
 {
     [SerializeField] private GridCell3D m_cellPrefab;
-    [SerializeField] private DataTableShipPreset m_shipPresetTable;
 
     // 3D 그리드 루트 — 프리팹 에셋은 특정 씬의 오브젝트를 참조할 수 없어 런타임에 생성. 셀 좌표가 이미 절대 월드 좌표라 루트 자체의 위치/회전은 항상 원점 고정
     private Transform m_cellRoot;
@@ -498,7 +497,7 @@ public class UIPanelExplorationGrid : UIPanelBase
                 if (cellData.isBlocked || cellData.isStart || cellData.isEvent) continue;
 
                 List<FleetInfo> waves = ExplorationEnemyFleetGenerator.GenerateWaves(
-                    zoneConfig, m_currentSeed, row, col, m_shipPresetTable, DataManager.Instance.m_dataTableModule);
+                    zoneConfig, m_currentSeed, row, col, DataManager.Instance.m_dataTableModule);
                 m_cellEnemyWaves[(row, col)] = waves;
             }
         }
@@ -597,10 +596,8 @@ public class UIPanelExplorationGrid : UIPanelBase
 
             UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig
             {
-                message = "진행 중인 다른 탐험이 있습니다.\n"
-                    + $"존 {otherZoneNumber} / 구역 {otherCellDisplay} / 적립된 탐험 포인트 {CommonUtility.FormatNumber(otherBanked)}\n"
-                    + "포기하고 선택한 존에 새로 도전하시겠습니까?\n"
-                    + "* 포기 시 적립된 포인트의 50%만 회수 가능합니다",
+                message = LocalizationManager.Instance.Get("UIPanelExplorationGrid_OtherRunInProgress",
+                    otherZoneNumber, otherCellDisplay, CommonUtility.FormatNumber(otherBanked)),
                 onConfirm = () => ConfirmAbandonThenEnterCell(newRow, newCol),
                 onCancel = () => { }
             });
@@ -635,6 +632,7 @@ public class UIPanelExplorationGrid : UIPanelBase
 
             ApplyOwnedPointRemain(response.data.explorationPointRemain);
             ApplyExpAndLevel(response.data.totalExp, response.data.commanderLevel);
+            ApplyTacticPowerRecovered(response.data.tacticPower);
             ClearActiveRunZoneCache();
 
             ConfirmEnterCell(row, col);
@@ -800,7 +798,7 @@ public class UIPanelExplorationGrid : UIPanelBase
     {
         UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig
         {
-            message = "다른 존에 진행 중인 탐험이 있습니다. 지금 포기하면 쌓인 탐험 포인트의 50%만 획득합니다. 포기하고 새로 도전하시겠습니까?",
+            message = LocalizationManager.Instance.Get("UIPanelExplorationGrid_AbandonAnotherRunConfirm"),
             onConfirm = OnConfirmAbandonAnotherRunAndRetry,
             onCancel = () => { }
         });
@@ -817,6 +815,7 @@ public class UIPanelExplorationGrid : UIPanelBase
             }
             ApplyOwnedPointRemain(response.data.explorationPointRemain);
             ApplyExpAndLevel(response.data.totalExp, response.data.commanderLevel);
+            ApplyTacticPowerRecovered(response.data.tacticPower);
             RequestEnemyFleetForCurrentCell(); // 기존 런 정리 완료 — 원래 셀 도전 요청을 재시도
         });
     }
@@ -921,6 +920,7 @@ public class UIPanelExplorationGrid : UIPanelBase
         else if (card.effectType == ECardEffectType.Instant_HealthHeal)
         {
             SpaceFleet myFleet = ObjectManager.Instance.GetMyFleet();
+            Debug.Log($"[디버그-체력회복] card.effectType={card.effectType} card.value1={card.value1} myFleet={(myFleet != null ? myFleet.name : "null")}");
             if (myFleet != null)
                 myFleet.HealAllShipsByRatio(card.value1);
         }
@@ -984,6 +984,7 @@ public class UIPanelExplorationGrid : UIPanelBase
             RefreshAbandonRunButtonState();
             ApplyOwnedPointRemain(response.data.explorationPointRemain);
             ApplyExpAndLevel(response.data.totalExp, response.data.commanderLevel);
+            ApplyTacticPowerRecovered(response.data.tacticPower);
             ClearActiveRunZoneCache();
             ApplyHighestClearedZoneNumber(response.data.highestClearedZoneNumber);
             m_pendingFleetRepositionForZoneAdvance = true;
@@ -1048,6 +1049,16 @@ public class UIPanelExplorationGrid : UIPanelBase
         RefreshOwnedPointText();
     }
 
+    // 탈출/포기 응답의 tacticPower(런 종료로 회복된 전술력 현재치)를 커맨더 정보에 반영 — 게이지 등 다른 열린 UI도 즉시 갱신
+    private void ApplyTacticPowerRecovered(int tacticPower)
+    {
+        CommanderInfo commanderInfo = DataManager.Instance.m_currentCommander != null ? DataManager.Instance.m_currentCommander.m_commanderInfo : null;
+        if (commanderInfo == null) return;
+
+        commanderInfo.tacticPower = tacticPower;
+        EventManager.Trigger_TacticPowerChanged(commanderInfo.tacticPower, commanderInfo.tacticPowerMax);
+    }
+
     // 탈출/포기 정산 응답(totalExp/commanderLevel, 권위값)을 커맨더 정보에 반영 — 레벨업 시 알림 표시
     private void ApplyExpAndLevel(int totalExp, int commanderLevel)
     {
@@ -1102,7 +1113,7 @@ public class UIPanelExplorationGrid : UIPanelBase
         SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true);
         UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig
         {
-            message = "진행 중인 탐험을 포기하시겠습니까? 지금까지 쌓인 탐험 포인트의 50%만 획득합니다.",
+            message = LocalizationManager.Instance.Get("UIPanelExplorationGrid_AbandonRunConfirm"),
             onConfirm = ConfirmAbandonRun,
             onCancel = () => { }
         });
@@ -1124,6 +1135,7 @@ public class UIPanelExplorationGrid : UIPanelBase
             RefreshAbandonRunButtonState();
             ApplyOwnedPointRemain(response.data.explorationPointRemain);
             ApplyExpAndLevel(response.data.totalExp, response.data.commanderLevel);
+            ApplyTacticPowerRecovered(response.data.tacticPower);
             ClearActiveRunZoneCache();
 
             // 보상카드 지속버프도 이번 런 한정(세션 스코프)이므로 런 종료와 함께 초기화

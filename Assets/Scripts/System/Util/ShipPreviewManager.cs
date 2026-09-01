@@ -62,14 +62,14 @@ public class ShipPreviewManager : MonoSingleton<ShipPreviewManager>
             oldTexture.Release();
     }
 
-    public void ShowPreset(ShipPresetData preset)
+    public void ShowPreset(ModuleData hull)
     {
         EnsureStageReady();
         Clear();
 
-        if (preset == null || string.IsNullOrEmpty(preset.prefabName) == true) return;
+        if (hull == null) return;
 
-        GameObject bodyPrefab = ObjectManager.Instance.LoadShipModulePrefab(EModuleType.body.ToString(), preset.prefabName);
+        GameObject bodyPrefab = ObjectManager.Instance.LoadShipModulePrefab(EModuleType.body.ToString(), hull.moduleSubType.ToString());
         if (bodyPrefab == null) return;
 
         m_currentBodyInstance = Instantiate(bodyPrefab, m_spawnAnchor);

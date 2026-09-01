@@ -1,4 +1,4 @@
-// 함선 프리셋(ShipPresetData) → 실제 3D SpaceShip 스폰 브릿지
+// 함체(ModuleData, body) → 실제 3D SpaceShip 스폰 브릿지
 // ModuleBodyInfo/ModuleInfo는 서버 저장용 데이터가 아니라, 기존 슬롯 배치·런처 생성 배관(ModuleBody.CreateMissingModules 등)을
 // 재사용하기 위한 메모리상 임시 어댑터로만 사용한다 — 여기서 만든 값은 저장/전송되지 않음
 using System.Collections.Generic;
@@ -7,13 +7,14 @@ using UnityEngine;
 public static class ExplorationShipSpawnBridge
 {
     // positionIndex는 함대편성 UI 슬롯 인덱스와 반드시 일치해야 함 — 중간 슬롯이 비어도(null) 재번호 없이 그 인덱스 그대로 사용
-    public static SpaceShip SpawnShip(SpaceFleet fleet, ShipPresetData preset, ShipFinalStats finalStats, int positionIndex, bool isFront, float healthMultiplier = 1f, float attackMultiplier = 1f)
+    public static SpaceShip SpawnShip(SpaceFleet fleet, ModuleData hull, ShipFinalStats finalStats, int positionIndex, bool isFront, float healthMultiplier = 1f, float attackMultiplier = 1f)
     {
-        if (fleet == null || preset == null) return null;
+        if (fleet == null || hull == null) return null;
 
-        ShipInfo shipInfo = BuildShipInfo(preset, finalStats, positionIndex, isFront);
+        string hullSubType = hull.moduleSubType.ToString();
+        ShipInfo shipInfo = BuildShipInfo(hullSubType, finalStats, positionIndex, isFront);
 
-        GameObject shipGo = new GameObject(preset.presetId);
+        GameObject shipGo = new GameObject(hullSubType);
         SpaceShip spaceShip = shipGo.AddComponent<SpaceShip>();
         spaceShip.m_healthMultiplier = healthMultiplier;
         spaceShip.m_attackMultiplier = attackMultiplier;
@@ -23,12 +24,12 @@ public static class ExplorationShipSpawnBridge
         return spaceShip;
     }
 
-    private static ShipInfo BuildShipInfo(ShipPresetData preset, ShipFinalStats finalStats, int positionIndex, bool isFront)
+    private static ShipInfo BuildShipInfo(string hullSubType, ShipFinalStats finalStats, int positionIndex, bool isFront)
     {
         ModuleBodyInfo bodyInfo = new ModuleBodyInfo
         {
             moduleType    = EModuleType.body,
-            moduleSubType = ParseSubType(preset.prefabName),
+            moduleSubType = ParseSubType(hullSubType),
             moduleLevel   = 1,
             bodyIndex     = 0,
             beams         = new List<ModuleInfo>(),
@@ -51,10 +52,10 @@ public static class ExplorationShipSpawnBridge
 
         return new ShipInfo
         {
-            shipName      = preset.presetId,
+            shipName      = hullSubType,
             positionIndex = positionIndex,
             bodies        = new List<ModuleBodyInfo> { bodyInfo },
-            shipPresetId  = preset.presetId,
+            hullSubType   = hullSubType,
             isFront       = isFront,
         };
     }

@@ -1,4 +1,4 @@
-// ShipPresetData → 스탯 표시 항목 리스트 변환 — 배치가능 프리셋 클릭 시 뜨는 UIPopupConfirm(stat 섹션)과 함대편성 성능 컬럼(UIPanelFleet)이 공유
+// 함체(ModuleData, body) → 스탯 표시 항목 리스트 변환 — 배치가능 함체 클릭 시 뜨는 UIPopupConfirm(stat 섹션)과 함대편성 성능 컬럼(UIPanelFleet)이 공유
 // 게이지 없이 라벨 : 값 텍스트로만 표시(만렙 기준이 임의값이라 게이지로는 의미가 애매함)
 // 빔/미사일/격납고처럼 슬롯이 여러 개인 카테고리는 슬롯 수와 무관하게 항목 수를 고정하기 위해 종합 표시한다
 // - DPS로 흡수 가능한 스탯(공격력+쿨다운)은 슬롯 전체 합산 DPS 1줄로 압축
@@ -19,22 +19,18 @@ public struct ShipStatRowEntry
 
 public static class ShipStatGaugeBuilder
 {
-    // actualModules를 생략하면(null) preset.statAllocation(프리셋 기본 장착 구성)을 그대로 씀 — 프리셋 후보 목록/비교 미리보기용
+    // actualModules를 생략하면(null) 빈 로드아웃(전 슬롯 미장착)을 그대로 씀 — 함체 후보 목록/비교 미리보기용
     // actualModules를 넘기면 그 함선이 실제로 장착한 모듈 구성(로드아웃)을 반영 — 배치된 함선의 현재 성능 표시용
     // healthMultiplier/attackMultiplier는 Zone 적 함대 열람 시에만 1이 아님 — ModuleBeam/Body/Hangar.cs의 Zone 배율 적용 규칙과 반드시 동일하게 유지할 것
     // (체력/수리력=healthMultiplier, 공격력 계열=attackMultiplier, 선회력은 배율 미적용)
     // applyBuffs를 넘기면 보상카드 지속버프 배율을 표시값에만 반영(배열 mutate 없이 스칼라만 스케일) — 존 런 중 대치 화면 전용, 그 외 호출부는 null 유지
-    public static List<ShipStatRowEntry> Build(ShipPresetData preset, ModuleBodyInfo actualModules = null, float healthMultiplier = 1f, float attackMultiplier = 1f, RewardCardSessionState applyBuffs = null)
+    public static List<ShipStatRowEntry> Build(ModuleData hullData, ModuleBodyInfo actualModules = null, float healthMultiplier = 1f, float attackMultiplier = 1f, RewardCardSessionState applyBuffs = null)
     {
         DataTableModule moduleTable = DataManager.Instance.m_dataTableModule;
 
-        ModuleData bodyModuleData = null;
-        if (System.Enum.TryParse(preset.prefabName, out EModuleSubType bodySubType))
-            bodyModuleData = moduleTable.GetModuleDataFromTable(bodySubType);
-
         ShipStatFormulaSettings formula = DataManager.Instance.m_dataTableConfig.gameSettings.shipStatFormula;
-        ShipStatAllocation allocation = ShipStatAllocation.BuildFromModuleBodyInfo(preset.statAllocation, actualModules);
-        ShipFinalStats stats = ShipStatCalculator.Calculate(allocation, formula, bodyModuleData, moduleTable);
+        ShipStatAllocation allocation = ShipStatAllocation.BuildFromModuleBodyInfo(formula.maxModuleSlots, actualModules);
+        ShipFinalStats stats = ShipStatCalculator.Calculate(allocation, formula, hullData, moduleTable);
 
         List<ShipStatRowEntry> entries = new();
 

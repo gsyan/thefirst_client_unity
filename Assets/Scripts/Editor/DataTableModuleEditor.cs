@@ -128,6 +128,8 @@ public class DataTableModuleEditor : Editor
             EditorGUI.indentLevel--;
         }
 
+        module.unlockCommanderLevel = EditorGUILayout.IntField(new GUIContent("Unlock Commander Level", "이 값 이상의 커맨더 레벨부터 사용 가능 (예: 10 = 10레벨부터)"), module.unlockCommanderLevel);
+
         EditorGUILayout.LabelField("Stats", EditorStyles.boldLabel);
         module.health = EditorGUILayout.FloatField("Health", module.health);
         module.repair = EditorGUILayout.FloatField("Repair", module.repair);
@@ -392,7 +394,7 @@ public class DataTableModuleEditor : Editor
     {
         var ic = System.Globalization.CultureInfo.InvariantCulture;
         var sb = new System.Text.StringBuilder();
-        sb.AppendLine("sub_type,stat_point,health,repair,speed,turn_rate,attack,splash_radius,attack_cool,silence_time,air_count,air_maintenance_time,air_health,air_attack,air_attack_range,air_attack_cool,air_speed,air_ammo,air_detect_radius,air_avoid_radius,air_additional_delay,shield_gauge,shield_delay,shield_regen_rate,interceptor_count,interceptor_delay,interceptor_regen_rate,description");
+        sb.AppendLine("sub_type,unlock_commander_level,stat_point,health,repair,speed,turn_rate,attack,splash_radius,attack_cool,silence_time,air_count,air_maintenance_time,air_health,air_attack,air_attack_range,air_attack_cool,air_speed,air_ammo,air_detect_radius,air_avoid_radius,air_additional_delay,shield_gauge,shield_delay,shield_regen_rate,interceptor_count,interceptor_delay,interceptor_regen_rate,description");
 
         var allGroups = new List<ModuleSubTypeGroup>();
         allGroups.AddRange(dataTableModule.BodyGroups);
@@ -407,8 +409,9 @@ public class DataTableModuleEditor : Editor
             foreach (var d in group.modules)
             {
                 sb.AppendLine(string.Format(ic,
-                    "{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16},{17},{18},{19},{20},{21},{22},{23},{24},{25},{26},{27}",
+                    "{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16},{17},{18},{19},{20},{21},{22},{23},{24},{25},{26},{27},{28}",
                     (int)d.moduleSubType,
+                    d.unlockCommanderLevel,
                     d.statPoint,
                     d.health, d.repair, d.speed, d.turnRate,
                     d.attack, d.splashRadius, d.attackCool,

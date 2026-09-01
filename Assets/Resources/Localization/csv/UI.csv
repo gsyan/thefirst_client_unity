@@ -91,6 +91,9 @@ UIPanelExplorationGrid_OwnedPoint,,Exploration Point,탐험 포인트
 UIPopupRewardCardSelect_Title,,Choose a Reward Card,보상 카드를 선택하세요
 UIPopupRewardCardSelect_EscapeTitle,,Escape Point Found,탈출 지점 발견
 UIPanelExplorationGrid_EscapeConfirmMessage,,Escape Reward,탈출 보상
+UIPanelExplorationGrid_OtherRunInProgress,,There is another exploration in progress.\nZone {0} / Cell {1} / Banked Exploration Point {2}\nAbandon it and start a new challenge in the selected zone?\n* Only 50% of banked points will be recovered if abandoned,진행 중인 다른 탐험이 있습니다.\n존 {0} / 구역 {1} / 적립된 탐험 포인트 {2}\n포기하고 선택한 존에 새로 도전하시겠습니까?\n* 포기 시 적립된 포인트의 50%만 회수 가능합니다
+UIPanelExplorationGrid_AbandonAnotherRunConfirm,,There is an exploration in progress in another zone. Abandoning it now only grants 50% of the banked exploration points. Abandon it and start a new challenge?,다른 존에 진행 중인 탐험이 있습니다. 지금 포기하면 쌓인 탐험 포인트의 50%만 획득합니다. 포기하고 새로 도전하시겠습니까?
+UIPanelExplorationGrid_AbandonRunConfirm,,Abandon the exploration in progress? Only 50% of the banked exploration points will be granted.,진행 중인 탐험을 포기하시겠습니까? 지금까지 쌓인 탐험 포인트의 50%만 획득합니다.
 RewardCard_BeamAttack_Name,,Beam Power Up,빔 공격력 강화
 RewardCard_BeamAttack_Desc,,Beam attack +{0:P0},빔 공격력 {0:P0} 증가
 RewardCard_BeamFireRate_Name,,Beam Rate of Fire Up,빔 연사속도 강화
@@ -119,12 +122,11 @@ RewardCard_PointFlat_Name,,Exploration Point Bonus,탐험 포인트 획득
 RewardCard_PointFlat_Desc,,Exploration Point +{0:F0},탐험 포인트 +{0:F0}
 UIAvailablePresetRow_Name,,Name:,이름:
 UIAvailablePresetRow_Cost,,Cost:,비용:
-UITabFleet_FleetManagement,,FLEET MANAGEMENT,함대 관리
+
 UITabFleet_AddShipText,,+ ADD SHIP,+ 함선 추가
 UITabFleet_FleetSynergyMultiply,,( Fleet Synergy : x{0} ),( 함대 시너지 : x{0} )
 UIFleet_Front,,Front,전방
 UIFleet_Rear,,Rear,후방
-UIFleet_ConvertPoint,,Convert (Exploration Point <voffset=6>→</voffset> Command Power),포인트 전환(탐험 포인트 <voffset=6>→</voffset> 지휘력)
 UIFleet_PlacedShipCount,,Placed Ships,배치 함선 수
 UIFleet_PlaceShip,,Deploy Ship,함선 배치
 UIFleet_PlaceFailed_Locked,,This slot is locked. Raise your commander level to unlock it.,잠긴 슬롯입니다. 커맨더 레벨을 올려 슬롯을 해제하세요.
@@ -250,6 +252,7 @@ module_type_missile,,Missile,미사일
 module_type_hangar,,Hangar,격납고
 UIFleet_ModuleSlot_Installed,,Installed,장착
 UIFleet_ModuleSlot_NotInstalled,,Not Installed,해제
+UIFleet_ModuleReinforce_Title,,Module Reinforce,모듈 강화
 UIButton_Reset,,RESET,초기화
 UIButton_All,,ALL,전체
 Simple_WatchAD,,WATCH AD,광고 보기
@@ -303,9 +306,10 @@ UIPopupMessage_PvpSeasonRewardTitle,,PVP Season Reward,PVP 시즌 보상
 UIPopupMessage_PvpSeasonRewardMessage,,Season reward has been granted.,시즌 보상이 지급되었습니다.
 UIPopupMessage_PvpTechCommanderRequiredTitle,,PVP Locked,PVP 잠김
 UIPopupMessage_PvpCommanderLevelRequiredMessage,,Commander Level {0} or above is required to enter PVP.,PVP 참가는 지휘 레벨 {0} 이상이 필요합니다.
-UIPopupMessage_ConvertPointMessage,,Convert Exploration Point <voffset=6>→</voffset> Command Power,탐사포인트 <voffset=6>→</voffset> 지휘력 변환
+UIPopupMessage_ConvertPointMessage,,Convert,변환
 ExplorationPoint,,Exploration Point,탐사 포인트
 CommandPower,,Command Power,지휘력
+TacticPower,,Tactic Power,전술력
 ConvertPointReset,,Reset,초기화
 ConvertPointAll,,MAX,전체
 UICOMMON_AdmiralFeature,,Admiral Feature,제독 기능
@@ -327,3 +331,5 @@ ShipName_8,,India,인디아
 ShipPreset_BeamLight01,,Light Beam Ship,경량 빔함
 ShipPreset_MissileHeavy01,,Heavy Missile Ship,중장갑 미사일함
 ShipPreset_Carrier01,,Carrier,항모형
+FleetManagement,,FLEET MANAGEMENT,함대 관리
+Convert,,Convert,변환

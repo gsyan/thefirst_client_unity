@@ -12,7 +12,6 @@ public class DataManager : Singleton<DataManager>
         LoadDataTableCommander();
         LoadDataTableConfig();
         LoadDataTableZone();
-        LoadDataTableShipPreset();
         LoadDataTableRewardCard();
         LoadDataTablePvpSeason();
         LoadDataTableDailyBonus();
@@ -35,8 +34,8 @@ public class DataManager : Singleton<DataManager>
 
         m_currentCommander.UpdateCommanderInfo(commanderInfo);
 
-        // 탐험 함대 편성 — 지휘력 최대치는 서버 값, 프리셋 카탈로그/모듈 테이블은 로그인 이전(OnInitialize)에 이미 로드되어 있음
-        m_currentFleetComposition = new FleetComposition(commanderInfo.commandPowerMax, m_dataTableShipPreset.BuildLookupTable(), m_dataTableModule);
+        // 탐험 함대 편성 — 지휘력 최대치는 서버 값, 모듈 테이블은 로그인 이전(OnInitialize)에 이미 로드되어 있음
+        m_currentFleetComposition = new FleetComposition(commanderInfo.commandPowerMax, m_dataTableModule);
         SeedFleetCompositionFromFleetInfoIfNeeded();
     }
 
@@ -63,7 +62,7 @@ public class DataManager : Singleton<DataManager>
         {
             ShipInfo shipInfo = m_currentFleetInfo.ships[i];
             ModuleBodyInfo modules = shipInfo.bodies != null && shipInfo.bodies.Count > 0 ? shipInfo.bodies[0] : null;
-            m_currentFleetComposition.TryPlaceShip(shipInfo.shipPresetId, shipInfo.isFront, modules);
+            m_currentFleetComposition.TryPlaceShip(shipInfo.hullSubType, shipInfo.isFront, modules);
         }
     }
     #endregion
@@ -151,17 +150,6 @@ public class DataManager : Singleton<DataManager>
         m_dataTableZone = ResourceManager.Instance.Load<DataTableZone>("DataTable/DataTableZone");
         if (m_dataTableZone == null)
             Debug.LogError("DataTableZone is not exist");
-    }
-    #endregion
-
-    #region Data Table Ship Preset ###############################################################
-    public DataTableShipPreset m_dataTableShipPreset;
-
-    private void LoadDataTableShipPreset()
-    {
-        m_dataTableShipPreset = ResourceManager.Instance.Load<DataTableShipPreset>("DataTable/DataTableShipPreset");
-        if (m_dataTableShipPreset == null)
-            Debug.LogError("DataTableShipPreset is not exist");
     }
     #endregion
 

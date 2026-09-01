@@ -12,7 +12,7 @@ public static class ExplorationEnemyFleetGenerator
     // 함선 하나를 만드는 동안 계속 누적되는 임시 상태 — 라운드로빈/잔액흡수 단계에서 공유
     private class BuildingShip
     {
-        public ShipPresetData preset;
+        public ModuleData hull;
         public int bodyCost;
         public int defaultModuleCost; // 기본 로드아웃(빔1 등) 정가 합 — bodyCost와 별개로 예산에서 차감됨
         public List<ModuleInfo> beams = new List<ModuleInfo>();
@@ -28,15 +28,15 @@ public static class ExplorationEnemyFleetGenerator
 
     // 존별로 설정된 순차 웨이브(fleets) 전체 생성 — 웨이브 0번만 워프인 트리거가 연결되어 있고(전투 시스템 미구현),
     // 나머지는 캐싱만 해두고 후속 전투 시스템에서 이어서 사용
-    public static List<FleetInfo> GenerateWaves(ZoneConfig zoneConfig, int seed, int row, int col, DataTableShipPreset presetTable, DataTableModule moduleTable)
+    public static List<FleetInfo> GenerateWaves(ZoneConfig zoneConfig, int seed, int row, int col, DataTableModule moduleTable)
     {
         List<FleetInfo> waves = new List<FleetInfo>();
 
-        List<ShipPresetData> presets = presetTable != null ? presetTable.GetShipPresetDataList() : null;
-        if (presets == null || presets.Count == 0 || zoneConfig == null || moduleTable == null) return waves;
+        List<ModuleData> hulls = moduleTable != null ? moduleTable.BodyModules.modules : null;
+        if (hulls == null || hulls.Count == 0 || zoneConfig == null || moduleTable == null) return waves;
 
         for (int fleetIndex = 0; fleetIndex < zoneConfig.enemyFleetsPerCell; fleetIndex++)
-            waves.Add(GenerateOneWave(seed, row, col, fleetIndex, presets, zoneConfig, moduleTable));
+            waves.Add(GenerateOneWave(seed, row, col, fleetIndex, hulls, zoneConfig, moduleTable));
 
         return waves;
     }
@@ -50,37 +50,18 @@ public static class ExplorationEnemyFleetGenerator
         return System.Math.Max(1, maxCost - random.Next(0, deviation + 1));
     }
 
-    // 순수 바디 설치비(모듈 미포함) — prefabName(예: body_t1_m111)에 대응하는 DataTableModule 원본 statPoint
-    private static int ResolveBodyCost(ShipPresetData preset, DataTableModule moduleTable)
+    // 순수 바디 설치비(모듈 미포함) — hull(body ModuleData) 원본 statPoint
+    private static int ResolveBodyCost(ModuleData hull, DataTableModule moduleTable)
     {
-        if (string.IsNullOrEmpty(preset.prefabName)) return 0;
-        if (System.Enum.TryParse(preset.prefabName, out EModuleSubType bodySubType) == false) return 0;
-        ModuleData data = moduleTable.GetModuleDataFromTable(bodySubType);
-        return data != null ? data.statPoint : 0;
+        return hull != null ? hull.statPoint : 0;
     }
 
-    // presetData.statAllocation에서 비어있지 않은 슬롯(현재는 beam slot0=beam_t1)만 추출 — FleetComposition.BuildDefaultModules와 동일 규칙
-    private static List<ModuleInfo> BuildDefaultModules(ShipPresetData preset)
+    // 기본 로드아웃(beam slot0=beam1)을 상수 규칙으로 생성 — FleetComposition.BuildDefaultModules와 동일 규칙(전 함체 공통)
+    private static List<ModuleInfo> BuildDefaultModules()
     {
         List<ModuleInfo> result = new List<ModuleInfo>();
-        ShipStatAllocation alloc = preset.statAllocation;
-        if (alloc == null) return result;
-
-        AppendDefaultModules(result, EModuleType.beam, alloc.beamModuleSubType);
-        AppendDefaultModules(result, EModuleType.missile, alloc.missileModuleSubType);
-        AppendDefaultModules(result, EModuleType.hangar, alloc.hangarModuleSubType);
+        result.Add(new ModuleInfo { moduleType = EModuleType.beam, moduleSubType = EModuleSubType.beam1, slotIndex = 0 });
         return result;
-    }
-
-    private static void AppendDefaultModules(List<ModuleInfo> target, EModuleType moduleType, string[] subTypeArray)
-    {
-        if (subTypeArray == null) return;
-        for (int i = 0; i < subTypeArray.Length; i++)
-        {
-            if (string.IsNullOrEmpty(subTypeArray[i])) continue;
-            if (System.Enum.TryParse(subTypeArray[i], out EModuleSubType subType) == false) continue;
-            target.Add(new ModuleInfo { moduleType = moduleType, moduleSubType = subType, slotIndex = i });
-        }
     }
 
     private static int SumDefaultModuleCost(List<ModuleInfo> defaultModules, DataTableModule moduleTable)
@@ -94,24 +75,24 @@ public static class ExplorationEnemyFleetGenerator
         return sum;
     }
 
-    // 프리셋들 중 (bodyCost + 기본모듈 비용) 최솟값 — 함선 하나를 만드는 데 최소로 필요한 예산. 하드코딩하지 않고 데이터에서 매번 계산
-    private static int ResolveMinShipCost(List<ShipPresetData> presets, DataTableModule moduleTable)
+    // 함체들 중 (bodyCost + 기본모듈 비용) 최솟값 — 함선 하나를 만드는 데 최소로 필요한 예산. 하드코딩하지 않고 데이터에서 매번 계산
+    private static int ResolveMinShipCost(List<ModuleData> hulls, DataTableModule moduleTable)
     {
         int minCost = int.MaxValue;
-        for (int i = 0; i < presets.Count; i++)
+        for (int i = 0; i < hulls.Count; i++)
         {
-            int bodyCost = ResolveBodyCost(presets[i], moduleTable);
-            int cost = bodyCost + SumDefaultModuleCost(BuildDefaultModules(presets[i]), moduleTable);
+            int bodyCost = ResolveBodyCost(hulls[i], moduleTable);
+            int cost = bodyCost + SumDefaultModuleCost(BuildDefaultModules(), moduleTable);
             if (cost < minCost) minCost = cost;
         }
         return minCost == int.MaxValue ? 0 : minCost;
     }
 
     private static FleetInfo GenerateOneWave(int seed, int row, int col, int fleetIndex,
-        List<ShipPresetData> presets, ZoneConfig zoneConfig, DataTableModule moduleTable)
+        List<ModuleData> hulls, ZoneConfig zoneConfig, DataTableModule moduleTable)
     {
         CrossPlatformRandom random = new CrossPlatformRandom(seed ^ (row * 73856093) ^ (col * 19349663) ^ (fleetIndex * 83492791) ^ 0x5EED);
-        int minShipCost = ResolveMinShipCost(presets, moduleTable);
+        int minShipCost = ResolveMinShipCost(hulls, moduleTable);
 
         List<BuildingShip> ships = new List<BuildingShip>();
         int remaining = zoneConfig.enemyBudget;
@@ -121,7 +102,7 @@ public static class ExplorationEnemyFleetGenerator
         while (remaining >= minShipCost && minShipCost > 0 && ships.Count < zoneConfig.enemyMaxShipsPerFleet - 1)
         {
             int perShipCap = System.Math.Min(remaining, ResolveCostCap(seed, row, col, fleetIndex, shipIndex, zoneConfig.enemyMaxCostOfOneShip, zoneConfig.enemyDeviation));
-            BuildingShip ship = BuildOneShip(presets, perShipCap, zoneConfig, moduleTable, random);
+            BuildingShip ship = BuildOneShip(hulls, perShipCap, zoneConfig, moduleTable, random);
             if (ship == null) break;
 
             int spent = ship.bodyCost + ship.defaultModuleCost;
@@ -136,7 +117,7 @@ public static class ExplorationEnemyFleetGenerator
         // 2) 함선수 상한 때문에 루프가 끝났고 예산이 남았으면, 남은 예산에 가장 가깝게 맞는(낭비 최소) 함체로 마지막 한 척 확정
         if (remaining >= minShipCost && minShipCost > 0 && ships.Count < zoneConfig.enemyMaxShipsPerFleet)
         {
-            BuildingShip lastShip = BuildBestFitShip(presets, remaining, zoneConfig, moduleTable);
+            BuildingShip lastShip = BuildBestFitShip(hulls, remaining, zoneConfig, moduleTable);
             if (lastShip != null)
             {
                 int spent = lastShip.bodyCost + lastShip.defaultModuleCost;
@@ -147,8 +128,8 @@ public static class ExplorationEnemyFleetGenerator
             }
         }
 
-        if (ships.Count == 0 && presets.Count > 0)
-            ships.Add(NewBuildingShip(presets[0], zoneConfig, moduleTable)); // 폴백 — 구식 "grade=1" 폴백과 동일 의도
+        if (ships.Count == 0 && hulls.Count > 0)
+            ships.Add(NewBuildingShip(hulls[0], zoneConfig, moduleTable)); // 폴백 — 구식 "grade=1" 폴백과 동일 의도
 
         // 3) 잔액 흡수 — 1번 함선부터 순서대로 훑으며 남은 예산을 라운드로빈으로 마저 채움
         remaining = AbsorbLeftover(ships, remaining, moduleTable, random);
@@ -157,48 +138,48 @@ public static class ExplorationEnemyFleetGenerator
     }
 
     // 예산 상한(cap) 안에서 함체를 랜덤 선택 — 함체가 여러 등급이면 항상 제일 비싼 것만 고르지 않도록 랜덤 어포더블 방식 유지
-    private static BuildingShip BuildOneShip(List<ShipPresetData> presets, int cap, ZoneConfig zoneConfig, DataTableModule moduleTable, CrossPlatformRandom random)
+    private static BuildingShip BuildOneShip(List<ModuleData> hulls, int cap, ZoneConfig zoneConfig, DataTableModule moduleTable, CrossPlatformRandom random)
     {
-        List<ShipPresetData> affordable = new List<ShipPresetData>();
-        for (int i = 0; i < presets.Count; i++)
+        List<ModuleData> affordable = new List<ModuleData>();
+        for (int i = 0; i < hulls.Count; i++)
         {
-            int bodyCost = ResolveBodyCost(presets[i], moduleTable);
-            int minCostForPreset = bodyCost + SumDefaultModuleCost(BuildDefaultModules(presets[i]), moduleTable);
-            if (bodyCost > 0 && minCostForPreset <= cap)
-                affordable.Add(presets[i]);
+            int bodyCost = ResolveBodyCost(hulls[i], moduleTable);
+            int minCostForHull = bodyCost + SumDefaultModuleCost(BuildDefaultModules(), moduleTable);
+            if (bodyCost > 0 && minCostForHull <= cap)
+                affordable.Add(hulls[i]);
         }
         if (affordable.Count == 0) return null;
 
-        ShipPresetData chosen = affordable[random.Next(affordable.Count)];
+        ModuleData chosen = affordable[random.Next(affordable.Count)];
         return NewBuildingShip(chosen, zoneConfig, moduleTable);
     }
 
     // 남은 예산에 가장 가깝게 맞는(낭비 최소) 함체 — 마지막 한 척 확정용, 의도적으로 그리디
-    private static BuildingShip BuildBestFitShip(List<ShipPresetData> presets, int cap, ZoneConfig zoneConfig, DataTableModule moduleTable)
+    private static BuildingShip BuildBestFitShip(List<ModuleData> hulls, int cap, ZoneConfig zoneConfig, DataTableModule moduleTable)
     {
-        ShipPresetData bestFit = null;
+        ModuleData bestFit = null;
         int bestFitBodyCost = 0;
-        for (int i = 0; i < presets.Count; i++)
+        for (int i = 0; i < hulls.Count; i++)
         {
-            int bodyCost = ResolveBodyCost(presets[i], moduleTable);
-            int minCostForPreset = bodyCost + SumDefaultModuleCost(BuildDefaultModules(presets[i]), moduleTable);
-            if (bodyCost > 0 && minCostForPreset <= cap && (bestFit == null || bodyCost > bestFitBodyCost))
+            int bodyCost = ResolveBodyCost(hulls[i], moduleTable);
+            int minCostForHull = bodyCost + SumDefaultModuleCost(BuildDefaultModules(), moduleTable);
+            if (bodyCost > 0 && minCostForHull <= cap && (bestFit == null || bodyCost > bestFitBodyCost))
             {
-                bestFit = presets[i];
+                bestFit = hulls[i];
                 bestFitBodyCost = bodyCost;
             }
         }
         return bestFit == null ? null : NewBuildingShip(bestFit, zoneConfig, moduleTable);
     }
 
-    private static BuildingShip NewBuildingShip(ShipPresetData preset, ZoneConfig zoneConfig, DataTableModule moduleTable)
+    private static BuildingShip NewBuildingShip(ModuleData hull, ZoneConfig zoneConfig, DataTableModule moduleTable)
     {
         BuildingShip ship = new BuildingShip();
-        ship.preset = preset;
-        ship.bodyCost = ResolveBodyCost(preset, moduleTable);
-        ship.maxSlots = FleetComposition.ParseMaxSlotsFromPresetId(preset.presetId);
+        ship.hull = hull;
+        ship.bodyCost = ResolveBodyCost(hull, moduleTable);
+        ship.maxSlots = FleetComposition.ParseMaxSlotsFromHullSubType(hull.moduleSubType.ToString());
 
-        List<ModuleInfo> defaultModules = BuildDefaultModules(preset);
+        List<ModuleInfo> defaultModules = BuildDefaultModules();
         ship.defaultModuleCost = SumDefaultModuleCost(defaultModules, moduleTable);
         for (int i = 0; i < defaultModules.Count; i++)
             AddToCategory(ship, defaultModules[i].moduleType, defaultModules[i]);
@@ -208,8 +189,8 @@ public static class ExplorationEnemyFleetGenerator
         ship.hangarTarget  = System.Math.Min(zoneConfig.enemyHangarEquipSlots, ship.maxSlots[2]);
 
         // 실드/인터셉터 — 슬롯 1개뿐이라 "장착 여부"만 존재. 클라이언트가 실제로 소비(스탯 반영/스폰)하는 로직은 아직 없음 — 후속 작업
-        ship.shieldSubType = ship.maxSlots[3] > 0 && zoneConfig.enemyShieldEquipSlots > 0 ? EModuleSubType.shield_t1.ToString() : "";
-        ship.interceptorSubType = ship.maxSlots[4] > 0 && zoneConfig.enemyInterceptorEquipSlots > 0 ? EModuleSubType.interceptor_t1.ToString() : "";
+        ship.shieldSubType = ship.maxSlots[3] > 0 && zoneConfig.enemyShieldEquipSlots > 0 ? EModuleSubType.shield1.ToString() : "";
+        ship.interceptorSubType = ship.maxSlots[4] > 0 && zoneConfig.enemyInterceptorEquipSlots > 0 ? EModuleSubType.interceptor1.ToString() : "";
         return ship;
     }
 
@@ -373,7 +354,7 @@ public static class ExplorationEnemyFleetGenerator
 
             fleetInfo.ships.Add(new ShipInfo
             {
-                shipPresetId = ship.preset.presetId,
+                hullSubType = ship.hull.moduleSubType.ToString(),
                 isFront = isFront,
                 bodies = new List<ModuleBodyInfo> { modules },
             });

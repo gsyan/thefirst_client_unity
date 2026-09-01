@@ -370,8 +370,8 @@ MonoBehaviour:
     m_Localized: '{0} Next Level Ship Slots'
     m_Metadata:
       m_Items: []
-  - m_Id: 29120731337850880
-    m_Localized: FLEET MANAGEMENT
+  - m_Id: 74144327743176704
+    m_Localized: Tactic Power
     m_Metadata:
       m_Items: []
   - m_Id: 29120731379793920
@@ -1153,11 +1153,6 @@ MonoBehaviour:
     m_Localized: Aircraft
     m_Metadata:
       m_Items: []
-  - m_Id: 65329291885150208
-    m_Localized: "Convert (Exploration Point <voffset=6>\u2192</voffset> Command
-      Power)"
-    m_Metadata:
-      m_Items: []
   - m_Id: 65433715576012800
     m_Localized: Ship Loadout
     m_Metadata:
@@ -1303,7 +1298,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 72095040133791745
-    m_Localized: "Convert Exploration Point <voffset=6>\u2192</voffset> Command Power"
+    m_Localized: Convert
     m_Metadata:
       m_Items: []
   - m_Id: 72096273103978496
@@ -1332,6 +1327,35 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 73189850148110336
     m_Localized: Commander Level
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74139633343922176
+    m_Localized: There is another exploration in progress.\nZone {0} / Cell {1} /
+      Banked Exploration Point {2}\nAbandon it and start a new challenge in the selected
+      zone?\n* Only 50% of banked points will be recovered if abandoned
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74139633398448128
+    m_Localized: There is an exploration in progress in another zone. Abandoning
+      it now only grants 50% of the banked exploration points. Abandon it and start
+      a new challenge?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74139633398448129
+    m_Localized: Abandon the exploration in progress? Only 50% of the banked exploration
+      points will be granted.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74139633411031040
+    m_Localized: FLEET MANAGEMENT
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74149109719498752
+    m_Localized: Convert
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74331910964117504
+    m_Localized: Module Reinforce
     m_Metadata:
       m_Items: []
   references:

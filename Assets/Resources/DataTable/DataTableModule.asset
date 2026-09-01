@@ -13,11 +13,12 @@ MonoBehaviour:
   m_Name: DataTableModule
   m_EditorClassIdentifier: 
   bodyGroups:
-  - subType: 101111
+  - subType: 10111100
     modules:
-    - moduleName: body_t1_m111
-      moduleSubType: 101111
+    - moduleName: h1_11100
+      moduleSubType: 10111100
       statPoint: 100
+      unlockCommanderLevel: 1
       description: 
       moduleSlots:
       - moduleType: 2
@@ -51,11 +52,12 @@ MonoBehaviour:
       interceptorCount: 0
       interceptorDelay: 0
       interceptorRegenRate: 0
-  - subType: 101211
+  - subType: 10121100
     modules:
-    - moduleName: body_t1_m211
-      moduleSubType: 101211
+    - moduleName: h1_21100
+      moduleSubType: 10121100
       statPoint: 200
+      unlockCommanderLevel: 1
       description: 
       moduleSlots:
       - moduleType: 2
@@ -91,11 +93,12 @@ MonoBehaviour:
       interceptorCount: 0
       interceptorDelay: 0
       interceptorRegenRate: 0
-  - subType: 101221
+  - subType: 10122100
     modules:
-    - moduleName: body_t1_m221
-      moduleSubType: 101221
+    - moduleName: h1_22100
+      moduleSubType: 10122100
       statPoint: 300
+      unlockCommanderLevel: 1
       description: 
       moduleSlots:
       - moduleType: 2
@@ -133,11 +136,12 @@ MonoBehaviour:
       interceptorCount: 0
       interceptorDelay: 0
       interceptorRegenRate: 0
-  - subType: 101222
+  - subType: 10122200
     modules:
-    - moduleName: body_t1_m222
-      moduleSubType: 101222
+    - moduleName: h1_22200
+      moduleSubType: 10122200
       statPoint: 400
+      unlockCommanderLevel: 1
       description: 
       moduleSlots:
       - moduleType: 2
@@ -177,11 +181,12 @@ MonoBehaviour:
       interceptorCount: 0
       interceptorDelay: 0
       interceptorRegenRate: 0
-  - subType: 101322
+  - subType: 10132200
     modules:
-    - moduleName: body_t1_m322
-      moduleSubType: 101322
+    - moduleName: h1_32200
+      moduleSubType: 10132200
       statPoint: 500
+      unlockCommanderLevel: 1
       description: 
       moduleSlots:
       - moduleType: 2
@@ -223,11 +228,12 @@ MonoBehaviour:
       interceptorCount: 0
       interceptorDelay: 0
       interceptorRegenRate: 0
-  - subType: 101332
+  - subType: 10133200
     modules:
-    - moduleName: body_t1_m332
-      moduleSubType: 101332
+    - moduleName: h1_33200
+      moduleSubType: 10133200
       statPoint: 600
+      unlockCommanderLevel: 1
       description: 
       moduleSlots:
       - moduleType: 2
@@ -271,11 +277,12 @@ MonoBehaviour:
       interceptorCount: 0
       interceptorDelay: 0
       interceptorRegenRate: 0
-  - subType: 101333
+  - subType: 10133300
     modules:
-    - moduleName: body_t1_m333
-      moduleSubType: 101333
+    - moduleName: h1_33300
+      moduleSubType: 10133300
       statPoint: 700
+      unlockCommanderLevel: 1
       description: 
       moduleSlots:
       - moduleType: 2
@@ -321,11 +328,12 @@ MonoBehaviour:
       interceptorCount: 0
       interceptorDelay: 0
       interceptorRegenRate: 0
-  - subType: 101433
+  - subType: 10143300
     modules:
-    - moduleName: body_t1_m433
-      moduleSubType: 101433
+    - moduleName: h1_43300
+      moduleSubType: 10143300
       statPoint: 800
+      unlockCommanderLevel: 1
       description: 
       moduleSlots:
       - moduleType: 2
@@ -373,11 +381,12 @@ MonoBehaviour:
       interceptorCount: 0
       interceptorDelay: 0
       interceptorRegenRate: 0
-  - subType: 101443
+  - subType: 10144300
     modules:
-    - moduleName: body_t1_m443
-      moduleSubType: 101443
+    - moduleName: h1_44300
+      moduleSubType: 10144300
       statPoint: 900
+      unlockCommanderLevel: 1
       description: 
       moduleSlots:
       - moduleType: 2
@@ -427,11 +436,12 @@ MonoBehaviour:
       interceptorCount: 0
       interceptorDelay: 0
       interceptorRegenRate: 0
-  - subType: 101444
+  - subType: 10144400
     modules:
-    - moduleName: body_t1_m444
-      moduleSubType: 101444
+    - moduleName: h1_44400
+      moduleSubType: 10144400
       statPoint: 1000
+      unlockCommanderLevel: 1
       description: 
       moduleSlots:
       - moduleType: 2
@@ -483,11 +493,12 @@ MonoBehaviour:
       interceptorCount: 0
       interceptorDelay: 0
       interceptorRegenRate: 0
-  - subType: 101544
+  - subType: 10154400
     modules:
-    - moduleName: body_t1_m544
-      moduleSubType: 101544
+    - moduleName: h1_54400
+      moduleSubType: 10154400
       statPoint: 1100
+      unlockCommanderLevel: 1
       description: 
       moduleSlots:
       - moduleType: 2
@@ -541,11 +552,12 @@ MonoBehaviour:
       interceptorCount: 0
       interceptorDelay: 0
       interceptorRegenRate: 0
-  - subType: 101554
+  - subType: 10155400
     modules:
-    - moduleName: body_t1_m554
-      moduleSubType: 101554
+    - moduleName: h1_55400
+      moduleSubType: 10155400
       statPoint: 1200
+      unlockCommanderLevel: 1
       description: 
       moduleSlots:
       - moduleType: 2
@@ -602,11 +614,12 @@ MonoBehaviour:
       interceptorDelay: 0
       interceptorRegenRate: 0
   beamGroups:
-  - subType: 201000
+  - subType: 20100000
     modules:
-    - moduleName: beam_t1
-      moduleSubType: 201000
+    - moduleName: beam1
+      moduleSubType: 20100000
       statPoint: 20
+      unlockCommanderLevel: 0
       description: 
       moduleSlots: []
       health: 0
@@ -635,11 +648,12 @@ MonoBehaviour:
       interceptorDelay: 0
       interceptorRegenRate: 0
   missileGroups:
-  - subType: 301000
+  - subType: 30100000
     modules:
-    - moduleName: missile_t1
-      moduleSubType: 301000
+    - moduleName: missile1
+      moduleSubType: 30100000
       statPoint: 20
+      unlockCommanderLevel: 0
       description: 
       moduleSlots: []
       health: 0
@@ -668,11 +682,12 @@ MonoBehaviour:
       interceptorDelay: 0
       interceptorRegenRate: 0
   hangarGroups:
-  - subType: 401000
+  - subType: 40100000
     modules:
-    - moduleName: hangar_t1
-      moduleSubType: 401000
+    - moduleName: hangar1
+      moduleSubType: 40100000
       statPoint: 20
+      unlockCommanderLevel: 0
       description: 
       moduleSlots: []
       health: 0
@@ -701,11 +716,12 @@ MonoBehaviour:
       interceptorDelay: 0
       interceptorRegenRate: 0
   shieldGroups:
-  - subType: 501000
+  - subType: 50100000
     modules:
-    - moduleName: shield_t1
-      moduleSubType: 501000
+    - moduleName: shield1
+      moduleSubType: 50100000
       statPoint: 20
+      unlockCommanderLevel: 0
       description: 
       moduleSlots: []
       health: 0
@@ -734,11 +750,12 @@ MonoBehaviour:
       interceptorDelay: 0
       interceptorRegenRate: 0
   interceptorGroups:
-  - subType: 601000
+  - subType: 60100000
     modules:
-    - moduleName: interceptor_t1
-      moduleSubType: 601000
+    - moduleName: interceptor1
+      moduleSubType: 60100000
       statPoint: 20
+      unlockCommanderLevel: 0
       description: 
       moduleSlots: []
       health: 0

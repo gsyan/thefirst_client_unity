@@ -46,8 +46,8 @@ public class ShipInfo
     // Zone 적 전용 배율 — PvP는 기본값(1.0) 유지, 서버 저장 불필요
     public float healthMultiplier = 1.0f;
     public float attackMultiplier = 1.0f;
-    // 프리셋 기반 함선 배치(탐사 그리드) — shipPresetId로 ShipPresetData 참조, isFront로 전/후위 배치
-    public string shipPresetId;
+    // 함체 기반 함선 배치(탐사 그리드) — hullSubType(EModuleSubType body 이름)으로 DataTableModule body 그룹 참조, isFront로 전/후위 배치
+    public string hullSubType;
     public bool isFront;
 }
 
@@ -76,6 +76,8 @@ public class ModuleInfo
     public int moduleLevel;
     public int bodyIndex;
     public int slotIndex;
+    public int attackPoints; // 빔/미사일 공격력, 격납고는 대함 공격력 강화 투자 포인트 — 1포인트 = 지휘력 1
+    public int attackToFighterPoints; // 격납고 전용 — 대전투기 공격력 강화 투자 포인트. 빔/미사일은 항상 0
 }
 
 [System.Serializable]
@@ -386,6 +388,7 @@ public class EscapeExplorationZoneResponse
     public int totalExp;                 // 반영 후 누적 경험치(권위값)
     public int commanderLevel;           // 반영 후 커맨더 레벨(레벨업 없으면 기존과 동일)
     public int highestClearedZoneNumber; // 탈출 성공 시 갱신된 값(권위값) — 클라 GetInitialZoneIndex()가 이 값 기준으로 다음 존을 계산
+    public int tacticPower;              // 런 종료로 회복된 전술력 현재치(=tacticPowerMax, 권위값)
 }
 
 [System.Serializable]
@@ -399,6 +402,7 @@ public class AbandonZoneRunResponse
     public int expGained;              // 포기로 확정 지급된 지휘관 경험치(50%)
     public int totalExp;               // 반영 후 누적 경험치(권위값)
     public int commanderLevel;         // 반영 후 커맨더 레벨(레벨업 없으면 기존과 동일)
+    public int tacticPower;            // 런 종료로 회복된 전술력 현재치(=tacticPowerMax, 권위값)
 }
 
 [System.Serializable]
@@ -424,19 +428,7 @@ public class IncreaseTacticPowerMaxRequest
 public class IncreaseTacticPowerMaxResponse
 {
     public int tacticPowerMax;         // 갱신된 전술력 최대치
-    public int explorationPointRemain; // 소모 후 은행 잔액
-}
-
-[System.Serializable]
-public class UnlockShipPresetRequest
-{
-    public string shipPresetId;
-}
-
-[System.Serializable]
-public class UnlockShipPresetResponse
-{
-    public string shipPresetId;
+    public int tacticPower;            // 갱신된 전술력 현재치 — 진행 중인 런이 있으면 그 런의 현재치도 증가분만큼 함께 올라간 값, 없으면 tacticPowerMax와 동일
     public int explorationPointRemain; // 소모 후 은행 잔액
 }
 
@@ -582,16 +574,16 @@ public class ZoneRankingResponse
 }
 
 [System.Serializable]
-public class FleetPresetPlaceShipRequest
+public class FleetPlaceShipRequest
 {
     // 함대편성(FleetComposition) 슬롯에 함선 배치/교체 시 저장 — isFront는 그 슬롯의 현재 전/후방 값을 그대로 실어보냄
     public int slotIndex;
-    public string shipPresetId;
+    public string hullSubType;
     public bool isFront;
 }
 
 [System.Serializable]
-public class FleetPresetSetFrontRequest
+public class FleetSetFrontRequest
 {
     // 함대편성 슬롯의 전/후방 토글 저장
     public int slotIndex;
@@ -599,17 +591,17 @@ public class FleetPresetSetFrontRequest
 }
 
 [System.Serializable]
-public class SetFleetPresetSlotModulesRequest
+public class SetModuleRequest
 {
     // 함대편성 슬롯(함선) 하나의 최종 장착 모듈 "전체"를 한 번에 교체 — on/off만 지원(서브타입 선택 없음)
     // 낱개 토글을 순서대로 여러 번 보내면 중간 상태에서 "공격모듈 0개"/"예산 초과" 검증에 걸릴 수 있어(예: 빔→미사일 교체 시 순서에 따라 항상 실패),
     // 반드시 최종 상태 하나로 모아 보내고 서버는 그 결과 상태만 검증한다
-    public int slotIndex; // CommanderFleetPresetSlot의 slotIndex(함대편성 슬롯)
+    public int slotIndex; // CommanderFleetSlot의 slotIndex(함대편성 슬롯)
     public ModuleBodyInfo modules; // 이 슬롯에 최종적으로 장착되어 있어야 할 모듈 전체(beams/missiles/hangars, 각 slotIndex만 유효)
 }
 
 [System.Serializable]
-public class SetFleetPresetSlotModulesResponse
+public class SetModuleResponse
 {
     public ModuleBodyInfo body;       // 갱신된 함선의 현재 로드아웃 전체(beams/missiles/hangars)
     public int commandCost;           // 갱신된 함선의 지휘력 코스트

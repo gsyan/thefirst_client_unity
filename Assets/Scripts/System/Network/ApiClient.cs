@@ -433,19 +433,19 @@ public class ApiClient
         return await PostAsync<ChangeTacticOptionsResponse>("/fleet/change-tactic-options", request);
     }
 
-    public async Task<ApiResponse<string>> PlaceFleetPresetShipAsync(FleetPresetPlaceShipRequest request)
+    public async Task<ApiResponse<string>> PlaceFleetShipAsync(FleetPlaceShipRequest request)
     {
-        return await PostAsync<string>("/fleet/preset/place-ship", request);
+        return await PostAsync<string>("/fleet/place-ship", request);
     }
 
-    public async Task<ApiResponse<string>> SetFleetPresetShipFrontAsync(FleetPresetSetFrontRequest request)
+    public async Task<ApiResponse<string>> SetFleetShipFrontAsync(FleetSetFrontRequest request)
     {
-        return await PostAsync<string>("/fleet/preset/set-front", request);
+        return await PostAsync<string>("/fleet/set-front", request);
     }
 
-    public async Task<ApiResponse<SetFleetPresetSlotModulesResponse>> SetFleetPresetSlotModulesAsync(SetFleetPresetSlotModulesRequest request)
+    public async Task<ApiResponse<SetModuleResponse>> SetModuleAsync(SetModuleRequest request)
     {
-        return await PostAsync<SetFleetPresetSlotModulesResponse>("/fleet/preset/set-modules", request);
+        return await PostAsync<SetModuleResponse>("/fleet/set-modules", request);
     }
 
     #endregion
@@ -497,11 +497,6 @@ public class ApiClient
     public async Task<ApiResponse<IncreaseTacticPowerMaxResponse>> IncreaseTacticPowerMaxAsync(IncreaseTacticPowerMaxRequest request)
     {
         return await PostAsync<IncreaseTacticPowerMaxResponse>("/exploration/increase-tactic-power", request);
-    }
-
-    public async Task<ApiResponse<UnlockShipPresetResponse>> UnlockShipPresetAsync(UnlockShipPresetRequest request)
-    {
-        return await PostAsync<UnlockShipPresetResponse>("/exploration/unlock-ship-preset", request);
     }
 
     #endregion

@@ -635,22 +635,22 @@ public class NetworkManager : MonoSingleton<NetworkManager>
 
 
 
-    public void PlaceFleetPresetShip(FleetPresetPlaceShipRequest request, System.Action<ApiResponse<string>> onComplete = null)
+    public void PlaceFleetShip(FleetPlaceShipRequest request, System.Action<ApiResponse<string>> onComplete = null)
     {
         if (m_bConnected == false) return;
-        StartCoroutine(RunAsync(() => m_apiClient.PlaceFleetPresetShipAsync(request), onComplete));
+        StartCoroutine(RunAsync(() => m_apiClient.PlaceFleetShipAsync(request), onComplete));
     }
 
-    public void SetFleetPresetShipFront(FleetPresetSetFrontRequest request)
+    public void SetFleetShipFront(FleetSetFrontRequest request)
     {
         if (m_bConnected == false) return;
-        StartCoroutine(RunAsync(() => m_apiClient.SetFleetPresetShipFrontAsync(request), null));
+        StartCoroutine(RunAsync(() => m_apiClient.SetFleetShipFrontAsync(request), null));
     }
 
-    public void SetFleetPresetSlotModules(SetFleetPresetSlotModulesRequest request, System.Action<ApiResponse<SetFleetPresetSlotModulesResponse>> onComplete)
+    public void SetModule(SetModuleRequest request, System.Action<ApiResponse<SetModuleResponse>> onComplete)
     {
         if (m_bConnected == false) return;
-        StartCoroutine(RunAsync(() => m_apiClient.SetFleetPresetSlotModulesAsync(request), onComplete));
+        StartCoroutine(RunAsync(() => m_apiClient.SetModuleAsync(request), onComplete));
     }
 
     // public void GetFleetStats(FleetStatsRequest request, System.Action<ApiResponse<FleetStatsResponse>> onComplete)
@@ -764,12 +764,6 @@ public class NetworkManager : MonoSingleton<NetworkManager>
     {
         if (m_bConnected == false) return;
         StartCoroutine(RunAsync(() => m_apiClient.IncreaseTacticPowerMaxAsync(request), onComplete));
-    }
-
-    public void UnlockShipPreset(UnlockShipPresetRequest request, System.Action<ApiResponse<UnlockShipPresetResponse>> onComplete)
-    {
-        if (m_bConnected == false) return;
-        StartCoroutine(RunAsync(() => m_apiClient.UnlockShipPresetAsync(request), onComplete));
     }
 
     public void PurchaseVip(VipPurchaseRequest request, System.Action<ApiResponse<VipStatusResponse>> onComplete)

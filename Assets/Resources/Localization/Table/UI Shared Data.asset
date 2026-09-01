@@ -383,6 +383,18 @@ MonoBehaviour:
     m_Key: UIPanelExplorationGrid_EscapeConfirmMessage
     m_Metadata:
       m_Items: []
+  - m_Id: 74139633343922176
+    m_Key: UIPanelExplorationGrid_OtherRunInProgress
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74139633398448128
+    m_Key: UIPanelExplorationGrid_AbandonAnotherRunConfirm
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74139633398448129
+    m_Key: UIPanelExplorationGrid_AbandonRunConfirm
+    m_Metadata:
+      m_Items: []
   - m_Id: 66832217589809152
     m_Key: RewardCard_BeamAttack_Name
     m_Metadata:
@@ -495,10 +507,6 @@ MonoBehaviour:
     m_Key: UIAvailablePresetRow_Cost
     m_Metadata:
       m_Items: []
-  - m_Id: 29120731337850880
-    m_Key: UITabFleet_FleetManagement
-    m_Metadata:
-      m_Items: []
   - m_Id: 29120731379793920
     m_Key: UITabFleet_AddShipText
     m_Metadata:
@@ -513,10 +521,6 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 61639704184750080
     m_Key: UIFleet_Rear
-    m_Metadata:
-      m_Items: []
-  - m_Id: 65329291885150208
-    m_Key: UIFleet_ConvertPoint
     m_Metadata:
       m_Items: []
   - m_Id: 61639704184750081
@@ -1019,6 +1023,10 @@ MonoBehaviour:
     m_Key: UIFleet_ModuleSlot_NotInstalled
     m_Metadata:
       m_Items: []
+  - m_Id: 74331910964117504
+    m_Key: UIFleet_ModuleReinforce_Title
+    m_Metadata:
+      m_Items: []
   - m_Id: 34285289056632833
     m_Key: UIButton_Reset
     m_Metadata:
@@ -1243,6 +1251,10 @@ MonoBehaviour:
     m_Key: CommandPower
     m_Metadata:
       m_Items: []
+  - m_Id: 74144327743176704
+    m_Key: TacticPower
+    m_Metadata:
+      m_Items: []
   - m_Id: 72099489506000896
     m_Key: ConvertPointReset
     m_Metadata:
@@ -1325,6 +1337,14 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 59175371223728129
     m_Key: ShipPreset_Carrier01
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74139633411031040
+    m_Key: FleetManagement
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74149109719498752
+    m_Key: Convert
     m_Metadata:
       m_Items: []
   m_Metadata:

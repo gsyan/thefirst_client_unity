@@ -2110,6 +2110,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::UIPopupConvertExplorationPoint
   m_ownedExplorationPointText: {fileID: 133921577543344781}
   m_currentCommandPowerText: {fileID: 7942734507751088758}
+  m_targetLabelText: {fileID: 5516178567416548032}
   m_plus10Button: {fileID: 4451260982195954925}
   m_minus10Button: {fileID: 1889683435965220415}
   m_plus100Button: {fileID: 6371411311601762314}
@@ -2885,7 +2886,6 @@ GameObject:
   - component: {fileID: 3953840033480230378}
   - component: {fileID: 6566212198525823131}
   - component: {fileID: 5516178567416548032}
-  - component: {fileID: 6956062775863829605}
   - component: {fileID: 7886462307379678314}
   m_Layer: 0
   m_Name: CommandPowerLabel
@@ -3013,46 +3013,6 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
---- !u!114 &6956062775863829605
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7348470506340842447}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 56eb0353ae6e5124bb35b17aff880f16, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Components.LocalizeStringEvent
-  m_StringReference:
-    m_TableReference:
-      m_TableCollectionName: GUID:d85d8ecc73ff1304c8410066ceb06829
-    m_TableEntryReference:
-      m_KeyId: 72096273103978497
-      m_Key: 
-    m_FallbackState: 0
-    m_WaitForCompletion: 0
-    m_LocalVariables: []
-  m_FormatArguments: []
-  m_UpdateString:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 5516178567416548032}
-        m_TargetAssemblyTypeName: TMPro.TextMeshProUGUI, Unity.TextMeshPro
-        m_MethodName: SetText
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  references:
-    version: 2
-    RefIds: []
 --- !u!114 &7886462307379678314
 MonoBehaviour:
   m_ObjectHideFlags: 0

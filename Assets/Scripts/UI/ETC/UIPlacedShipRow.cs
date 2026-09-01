@@ -26,7 +26,7 @@ public class UIPlacedShipRow : MonoBehaviour
     private bool m_isLocked;
 
     private int m_index;
-    private string m_shipPresetId;
+    private string m_hullSubType;
     private System.Action<int, bool> m_onFrontToggled;
     private System.Action<int, string> m_onRowClicked;
     private System.Action<int> m_onTypeSelectClicked;
@@ -51,7 +51,7 @@ public class UIPlacedShipRow : MonoBehaviour
     {
         gameObject.SetActive(true);
         m_index = index;
-        m_shipPresetId = null;
+        m_hullSubType = null;
         m_hasShip = false;
         m_isLocked = false;
         m_onTypeSelectClicked = onTypeSelectClicked;
@@ -78,7 +78,7 @@ public class UIPlacedShipRow : MonoBehaviour
     {
         gameObject.SetActive(true);
         m_index = index;
-        m_shipPresetId = null;
+        m_hullSubType = null;
         m_hasShip = false;
         m_isLocked = true;
         m_onTypeSelectClicked = null;
@@ -102,11 +102,11 @@ public class UIPlacedShipRow : MonoBehaviour
     }
 
     // showFrontToggle=false면 전방/후방을 편집 불가능한 라벨 텍스트로만 표시하고 타입선택 버튼도 숨김(적 함대 정보 열람 등 읽기전용 목적)
-    public void Setup(int index, string shipPresetId, bool isFront, System.Action<int, bool> onFrontToggled, System.Action<int, string> onRowClicked, System.Action<int> onTypeSelectClicked, bool showFrontToggle = true)
+    public void Setup(int index, string hullSubType, bool isFront, System.Action<int, bool> onFrontToggled, System.Action<int, string> onRowClicked, System.Action<int> onTypeSelectClicked, bool showFrontToggle = true)
     {
         gameObject.SetActive(true);
         m_index = index;
-        m_shipPresetId = shipPresetId;
+        m_hullSubType = hullSubType;
         m_hasShip = true;
         m_isLocked = false;
         m_onFrontToggled = onFrontToggled;
@@ -117,11 +117,11 @@ public class UIPlacedShipRow : MonoBehaviour
 
         if (showFrontToggle == true)
         {
-            // 이름 칸엔 슬롯 인덱스 기반 "Ship1"(1-based) — 함선 이름 로컬라이즈는 아직 미정. 타입선택 버튼엔 현재 프리셋 코드(presetId)를 그대로 표시
+            // 이름 칸엔 슬롯 인덱스 기반 "Ship1"(1-based) — 함선 이름 로컬라이즈는 아직 미정. 타입선택 버튼엔 현재 함체 코드(hullSubType)를 그대로 표시
             if (m_shipNameText != null)
                 m_shipNameText.text = $"Ship{index + 1}";
             if (m_shipTypeButtonText != null)
-                m_shipTypeButtonText.text = shipPresetId;
+                m_shipTypeButtonText.text = hullSubType;
             if (m_shipTypeSelectButton != null)
             {
                 m_shipTypeSelectButton.gameObject.SetActive(true);
@@ -140,9 +140,9 @@ public class UIPlacedShipRow : MonoBehaviour
         }
         else
         {
-            // 읽기전용 — 이름 칸에 프리셋 코드, 전/후방은 그대로 텍스트로만 표기, 타입선택 버튼은 숨김
+            // 읽기전용 — 이름 칸에 함체 코드, 전/후방은 그대로 텍스트로만 표기, 타입선택 버튼은 숨김
             if (m_shipNameText != null)
-                m_shipNameText.text = shipPresetId;
+                m_shipNameText.text = hullSubType;
             if (m_shipTypeSelectButton != null)
                 m_shipTypeSelectButton.gameObject.SetActive(false);
 
@@ -198,7 +198,7 @@ public class UIPlacedShipRow : MonoBehaviour
         if (m_hasShip == false) return;
 
         SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true);
-        if (m_onRowClicked != null) m_onRowClicked(m_index, m_shipPresetId);
+        if (m_onRowClicked != null) m_onRowClicked(m_index, m_hullSubType);
     }
 
     private void OnTypeSelectButtonClicked()
