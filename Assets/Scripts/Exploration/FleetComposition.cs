@@ -7,7 +7,7 @@ public enum EFleetPlaceResult
 {
     Success,
     NotEnoughCommandPower,
-    PresetNotFound,
+    HullNotFound,
 }
 
 public class FleetComposition
@@ -24,21 +24,21 @@ public class FleetComposition
 
     // 리스트 끝에 추가 — 순서가 상관없을 때 사용. modules를 생략하면(null) 함체의 기본 로드아웃(빔1)으로 시딩됨 —
     // 서버에서 이미 커스터마이징된 로드아웃을 복원할 때는 modules를 그대로 넘겨줌
-    public EFleetPlaceResult TryPlaceShip(string hullSubType, bool isFront, ModuleBodyInfo modules = null)
+    public EFleetPlaceResult TryPlaceShip(string hullSubType, bool isFront, ModuleHullInfo modules = null)
     {
         return TryPlaceShipAt(m_placedShips.Count, hullSubType, isFront, modules);
     }
 
     // 드래그로 특정 행 위치에 놓았을 때처럼, 삽입 위치를 지정해야 하는 경우 사용
-    public EFleetPlaceResult TryPlaceShipAt(int index, string hullSubType, bool isFront, ModuleBodyInfo modules = null)
+    public EFleetPlaceResult TryPlaceShipAt(int index, string hullSubType, bool isFront, ModuleHullInfo modules = null)
     {
         ModuleData bodyData = m_moduleTable != null ? m_moduleTable.GetModuleDataFromTable(hullSubType) : null;
         if (bodyData == null)
         {
-            return EFleetPlaceResult.PresetNotFound;
+            return EFleetPlaceResult.HullNotFound;
         }
 
-        ModuleBodyInfo resolvedModules = modules != null ? modules : BuildDefaultModules();
+        ModuleHullInfo resolvedModules = modules != null ? modules : BuildDefaultModules();
 
         int clampedIndex = index < 0 ? 0 : index > m_placedShips.Count ? m_placedShips.Count : index;
         bool isReplacingExisting = clampedIndex < m_placedShips.Count;
@@ -64,10 +64,10 @@ public class FleetComposition
         return EFleetPlaceResult.Success;
     }
 
-    // 기본 로드아웃(beam slot0=beam1)을 상수 규칙으로 시딩 — 함체마다 달랐던 modules_in_preset.csv는 폐기됨(전 함체 공통)
-    private ModuleBodyInfo BuildDefaultModules()
+    // 기본 로드아웃(beam slot0=beam1)을 상수 규칙으로 시딩 — 전 함체 공통
+    private ModuleHullInfo BuildDefaultModules()
     {
-        var body = new ModuleBodyInfo { beams = new List<ModuleInfo>(), missiles = new List<ModuleInfo>(), hangars = new List<ModuleInfo>() };
+        var body = new ModuleHullInfo { beams = new List<ModuleInfo>(), missiles = new List<ModuleInfo>(), hangars = new List<ModuleInfo>() };
         body.beams.Add(new ModuleInfo { moduleType = EModuleType.beam, moduleSubType = EModuleSubType.beam1, slotIndex = 0 });
         return body;
     }
@@ -104,7 +104,7 @@ public class FleetComposition
     }
 
     // 토글 API 응답 반영 — 해당 슬롯의 장착 모듈 상태만 갱신(hullSubType/isFront는 그대로)
-    public void ApplyModuleToggleResult(int index, ModuleBodyInfo modules)
+    public void ApplyModuleToggleResult(int index, ModuleHullInfo modules)
     {
         if (index < 0 || index >= m_placedShips.Count) return;
         FleetSlotEntry entry = m_placedShips[index];
@@ -112,13 +112,13 @@ public class FleetComposition
         m_placedShips[index] = entry;
     }
 
-    public ModuleBodyInfo GetSlotModules(int index)
+    public ModuleHullInfo GetSlotModules(int index)
     {
         if (index < 0 || index >= m_placedShips.Count) return null;
         return m_placedShips[index].modules;
     }
 
-    // 슬롯의 실제 현재 지휘력 코스트(바디 + 장착 모듈 합) — 정적 presetData.commandCost와 달리 토글로 추가/해제된 모듈까지 반영됨
+    // 슬롯의 실제 현재 지휘력 코스트(바디 + 장착 모듈 합) — 정적 statPoint와 달리 토글로 추가/해제된 모듈까지 반영됨
     public int GetSlotCommandCost(int index)
     {
         if (index < 0 || index >= m_placedShips.Count) return 0;
@@ -126,14 +126,14 @@ public class FleetComposition
     }
 
     // 기존 장착 모듈(existingModules) 중 새 함체(newHullSubType)에도 같은 카테고리+슬롯 인덱스가 존재하는 것만 남김 — 서브타입/강화 포인트는 그대로 복사
-    // (서버 FleetService.filterModulesForNewPreset과 동일 규칙, 함체 변경 시 미리보기/실제 배치 양쪽에서 공용으로 사용)
+    // (서버 FleetService.filterModulesForNewHull과 동일 규칙, 함체 변경 시 미리보기/실제 배치 양쪽에서 공용으로 사용)
     // existingModules가 null이면(원래 비어있던 슬롯의 신규 배치) null을 그대로 반환 — TryPlaceShipAt의 기본 로드아웃 시딩(BuildDefaultModules) 분기를 그대로 타게 함
-    public static ModuleBodyInfo FilterModulesForNewPreset(ModuleBodyInfo existingModules, string newHullSubType)
+    public static ModuleHullInfo FilterModulesForNewHull(ModuleHullInfo existingModules, string newHullSubType)
     {
         if (existingModules == null) return null;
 
         int[] newMaxSlots = ParseMaxSlotsFromHullSubType(newHullSubType);
-        ModuleBodyInfo result = new ModuleBodyInfo { beams = new List<ModuleInfo>(), missiles = new List<ModuleInfo>(), hangars = new List<ModuleInfo>() };
+        ModuleHullInfo result = new ModuleHullInfo { beams = new List<ModuleInfo>(), missiles = new List<ModuleInfo>(), hangars = new List<ModuleInfo>() };
         AppendKeptModules(result.beams, existingModules.beams, newMaxSlots[0]);
         AppendKeptModules(result.missiles, existingModules.missiles, newMaxSlots[1]);
         AppendKeptModules(result.hangars, existingModules.hangars, newMaxSlots[2]);
@@ -151,7 +151,7 @@ public class FleetComposition
     }
 
     // 새 함체(newHullSubType) + 유지되는 모듈(keptModules) 기준 실제 지휘력 비용 미리보기 — ComputeSlotCommandCost와 동일 계산식 재사용
-    public int ComputeProjectedSlotCommandCost(string newHullSubType, ModuleBodyInfo keptModules)
+    public int ComputeProjectedSlotCommandCost(string newHullSubType, ModuleHullInfo keptModules)
     {
         return ComputeSlotCommandCost(new FleetSlotEntry(newHullSubType, false, keptModules));
     }
@@ -229,7 +229,7 @@ public class FleetComposition
             {
                 hullSubType = entry.hullSubType,
                 isFront = entry.isFront,
-                bodies = entry.modules != null ? new List<ModuleBodyInfo> { entry.modules } : null,
+                hulls = entry.modules != null ? new List<ModuleHullInfo> { entry.modules } : null,
             });
         }
         return fleetInfo;

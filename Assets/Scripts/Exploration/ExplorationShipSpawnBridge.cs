@@ -1,5 +1,5 @@
 // 함체(ModuleData, body) → 실제 3D SpaceShip 스폰 브릿지
-// ModuleBodyInfo/ModuleInfo는 서버 저장용 데이터가 아니라, 기존 슬롯 배치·런처 생성 배관(ModuleBody.CreateMissingModules 등)을
+// ModuleHullInfo/ModuleInfo는 서버 저장용 데이터가 아니라, 기존 슬롯 배치·런처 생성 배관(ModuleHull.CreateMissingModules 등)을
 // 재사용하기 위한 메모리상 임시 어댑터로만 사용한다 — 여기서 만든 값은 저장/전송되지 않음
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,7 +12,7 @@ public static class ExplorationShipSpawnBridge
         if (fleet == null || hull == null) return null;
 
         string hullSubType = hull.moduleSubType.ToString();
-        ShipInfo shipInfo = BuildShipInfo(hullSubType, finalStats, positionIndex, isFront);
+        ShipInfo shipInfo = BuildShipInfo(hullSubType, finalStats, positionIndex, isFront, healthMultiplier);
 
         GameObject shipGo = new GameObject(hullSubType);
         SpaceShip spaceShip = shipGo.AddComponent<SpaceShip>();
@@ -24,14 +24,14 @@ public static class ExplorationShipSpawnBridge
         return spaceShip;
     }
 
-    private static ShipInfo BuildShipInfo(string hullSubType, ShipFinalStats finalStats, int positionIndex, bool isFront)
+    private static ShipInfo BuildShipInfo(string hullSubType, ShipFinalStats finalStats, int positionIndex, bool isFront, float healthMultiplier)
     {
-        ModuleBodyInfo bodyInfo = new ModuleBodyInfo
+        ModuleHullInfo hullInfo = new ModuleHullInfo
         {
-            moduleType    = EModuleType.body,
+            moduleType    = EModuleType.hull,
             moduleSubType = ParseSubType(hullSubType),
             moduleLevel   = 1,
-            bodyIndex     = 0,
+            hullIndex     = 0,
             beams         = new List<ModuleInfo>(),
             missiles      = new List<ModuleInfo>(),
             hangars       = new List<ModuleInfo>(),
@@ -39,24 +39,28 @@ public static class ExplorationShipSpawnBridge
 
         int beamCount = finalStats.beamModuleSubType != null ? finalStats.beamModuleSubType.Length : 0;
         for (int i = 0; i < beamCount; i++)
-            bodyInfo.beams.Add(BuildModuleInfo(EModuleType.beam, finalStats.beamModuleSubType[i], i));
+            hullInfo.beams.Add(BuildModuleInfo(EModuleType.beam, finalStats.beamModuleSubType[i], i));
 
         int missileCount = finalStats.missileModuleSubType != null ? finalStats.missileModuleSubType.Length : 0;
         for (int i = 0; i < missileCount; i++)
-            bodyInfo.missiles.Add(BuildModuleInfo(EModuleType.missile, finalStats.missileModuleSubType[i], i));
+            hullInfo.missiles.Add(BuildModuleInfo(EModuleType.missile, finalStats.missileModuleSubType[i], i));
 
-        // 함재기 세부 스탯(함선/함재기 대상 공격력 분리, 실드, 요격체) 반영은 후속 작업 — 지금은 구조만 채워 슬롯이 비어보이지 않게 함
+        // 함재기 세부 스탯(함선/함재기 대상 공격력 분리) 및 요격체 반영은 후속 작업 — 지금은 구조만 채워 슬롯이 비어보이지 않게 함
         int hangarCount = finalStats.hangarModuleSubType != null ? finalStats.hangarModuleSubType.Length : 0;
         for (int i = 0; i < hangarCount; i++)
-            bodyInfo.hangars.Add(BuildModuleInfo(EModuleType.hangar, finalStats.hangarModuleSubType[i], i));
+            hullInfo.hangars.Add(BuildModuleInfo(EModuleType.hangar, finalStats.hangarModuleSubType[i], i));
+
+        // on/off만 지원하므로 서브타입은 항상 shield1 고정 — 서버 FleetService.getDefaultSubTypeForCategory와 동일 규칙
+        hullInfo.shieldModuleSubType = finalStats.shieldInstalled ? EModuleSubType.shield1.ToString() : "";
 
         return new ShipInfo
         {
-            shipName      = hullSubType,
-            positionIndex = positionIndex,
-            bodies        = new List<ModuleBodyInfo> { bodyInfo },
-            hullSubType   = hullSubType,
-            isFront       = isFront,
+            shipName         = hullSubType,
+            positionIndex    = positionIndex,
+            hulls            = new List<ModuleHullInfo> { hullInfo },
+            hullSubType      = hullSubType,
+            isFront          = isFront,
+            healthMultiplier = healthMultiplier,
         };
     }
 
@@ -68,7 +72,7 @@ public static class ExplorationShipSpawnBridge
             moduleSubType = ParseSubType(subTypeName),
             moduleLevel   = 1,
             slotIndex     = slotIndex,
-            bodyIndex     = 0,
+            hullIndex     = 0,
         };
     }
 

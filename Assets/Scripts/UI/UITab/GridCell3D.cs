@@ -23,7 +23,7 @@ public class GridCell3D : MonoBehaviour
     [SerializeField] private string m_orbitEnabledPropertyName = "_OrbitEnabled"; // 오빗 강조 on/off — HoloGridCell 셰이더 전용
     [SerializeField] private string m_glowEnabledPropertyName = "_GlowEnabled"; // 모서리 밝기 부스트 on/off(Reachable 전용) — HoloGridCell 셰이더 전용
     private Vector3 m_labelLocalOffset = new Vector3(0f, 60f, 0f); // 쿼드 중심 기준 라벨 오프셋(월드 단위) — 쿼드 평면보다 살짝 위
-    private float m_labelLocalScale = 30f; // k_cellWorldSize(800)에 맞춘 값 — 실제 화면 비율 보고 인스펙터에서 추가 조정
+    //private float m_labelLocalScale = 30f; // k_cellWorldSize(800)에 맞춘 값 — 실제 화면 비율 보고 인스펙터에서 추가 조정
     [SerializeField] private float m_cellFillRatio = 0.85f; // 셀 간격(ExplorationGridGenerator.k_cellWorldSize) 대비 쿼드가 채우는 비율 — 나머지는 셀 사이 틈
     [SerializeField] private float m_unclearedFaceAlpha = 0.18f; // 시작점이 아니고 클리어 전인 셀의 면 채움 불투명도 — 완전 투명(클리어)과 뚜렷이 구분되는 값
     [SerializeField] private float m_reachableOrbitDuration = 3f; // Reachable 셀 테두리 오빗 강조가 한 바퀴 도는 데 걸리는 시간(초)

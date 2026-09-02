@@ -17,11 +17,11 @@ public static class EventManager
         }
     }
 
-    #region ModuleBody -----------------------------------------------------------------------
-    public static event Action<ModuleBody> OnModuleBodyDestroyed;
-    public static void Trigger_ModuleBodyDestroyed(ModuleBody body) { OnModuleBodyDestroyed?.Invoke(body); }
-    public static void Subscribe_ModuleBodyDestroyed(Action<ModuleBody> cb)   { OnModuleBodyDestroyed += cb; }
-    public static void Unsubscribe_ModuleBodyDestroyed(Action<ModuleBody> cb) { OnModuleBodyDestroyed -= cb; }
+    #region ModuleHull -----------------------------------------------------------------------
+    public static event Action<ModuleHull> OnModuleHullDestroyed;
+    public static void Trigger_ModuleHullDestroyed(ModuleHull body) { OnModuleHullDestroyed?.Invoke(body); }
+    public static void Subscribe_ModuleHullDestroyed(Action<ModuleHull> cb)   { OnModuleHullDestroyed += cb; }
+    public static void Unsubscribe_ModuleHullDestroyed(Action<ModuleHull> cb) { OnModuleHullDestroyed -= cb; }
     #endregion
 
     # region Commander Level, Mineral ----------------------------------------------------------------------
@@ -371,7 +371,7 @@ public static class EventManager
         OnGameSpeedChanged -= callback;
     }
 
-    // 전술 옵션 변경 (tacticOptions 비트마스크: 0=수리, 1=미사일, 2=함재기)
+    // 전술 옵션 변경 (tacticOptions 비트마스크: 0=수리, 1=미사일, 2=함재기, 3=실드)
     public static event Action<int> OnTacticOptionsChanged;
     public static void Trigger_TacticOptionsChanged(int tacticOptions) { OnTacticOptionsChanged?.Invoke(tacticOptions); }
     public static void Subscribe_TacticOptionsChanged(Action<int> callback)   { OnTacticOptionsChanged += callback; }

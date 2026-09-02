@@ -32,7 +32,7 @@ public static class ExplorationEnemyFleetGenerator
     {
         List<FleetInfo> waves = new List<FleetInfo>();
 
-        List<ModuleData> hulls = moduleTable != null ? moduleTable.BodyModules.modules : null;
+        List<ModuleData> hulls = moduleTable != null ? moduleTable.HullModules.modules : null;
         if (hulls == null || hulls.Count == 0 || zoneConfig == null || moduleTable == null) return waves;
 
         for (int fleetIndex = 0; fleetIndex < zoneConfig.enemyFleetsPerCell; fleetIndex++)
@@ -343,7 +343,7 @@ public static class ExplorationEnemyFleetGenerator
             BuildingShip ship = order[i];
             bool isFront = i < (order.Count + 1) / 2;
 
-            ModuleBodyInfo modules = new ModuleBodyInfo
+            ModuleHullInfo modules = new ModuleHullInfo
             {
                 beams = ship.beams,
                 missiles = ship.missiles,
@@ -356,7 +356,7 @@ public static class ExplorationEnemyFleetGenerator
             {
                 hullSubType = ship.hull.moduleSubType.ToString(),
                 isFront = isFront,
-                bodies = new List<ModuleBodyInfo> { modules },
+                hulls = new List<ModuleHullInfo> { modules },
             });
         }
 

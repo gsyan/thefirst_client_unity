@@ -14,7 +14,7 @@ public class ConfirmPopupConfig
     public List<(string label, string value, Color? color)> resultRows;
     public bool resultRowsVertical; // 라벨+값 행은 항상 한 줄에 한 항목이라 현재는 무의미(시그니처 호환용으로만 유지)
     public string resultSectionTitle = "RESULT"; // resultRows 섹션 헤더 텍스트
-    public List<ShipStatRowEntry> statGaugeRows; // 함선 스탯 게이지 목록(함대편성 배치가능 프리셋 클릭 등) — UISection과 별개로 m_sectionsRoot에 먼저 쌓임
+    public List<ShipStatRowEntry> statGaugeRows; // 함선 스탯 게이지 목록(함대편성 배치가능 함체 클릭 등) — UISection과 별개로 m_sectionsRoot에 먼저 쌓임
     public List<(string label, string value)> pvpOpponentRows; // STATUS 섹션 (General.Bright1 색)
     public RequireStruct require;
     public CostStruct cost;

@@ -61,7 +61,7 @@ public class DataManager : Singleton<DataManager>
         for (int i = 0; i < m_currentFleetInfo.ships.Count; i++)
         {
             ShipInfo shipInfo = m_currentFleetInfo.ships[i];
-            ModuleBodyInfo modules = shipInfo.bodies != null && shipInfo.bodies.Count > 0 ? shipInfo.bodies[0] : null;
+            ModuleHullInfo modules = shipInfo.hulls != null && shipInfo.hulls.Count > 0 ? shipInfo.hulls[0] : null;
             m_currentFleetComposition.TryPlaceShip(shipInfo.hullSubType, shipInfo.isFront, modules);
         }
     }

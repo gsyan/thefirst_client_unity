@@ -152,13 +152,13 @@ public static class CommonUtility
         return stats;
     }
 
-    // ModuleBodyInfo로부터 Body 고유의 능력치만 계산
-    public static CapabilityProfile GetBodyCapabilityProfile(ModuleBodyInfo bodyInfo)
+    // ModuleHullInfo로부터 Body 고유의 능력치만 계산
+    public static CapabilityProfile GetBodyCapabilityProfile(ModuleHullInfo hullInfo)
     {
         CapabilityProfile stats = new CapabilityProfile();
-        if (bodyInfo == null) return stats;
+        if (hullInfo == null) return stats;
 
-        ModuleData bodyData = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(bodyInfo.moduleSubType);
+        ModuleData bodyData = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(hullInfo.moduleSubType);
         if (bodyData != null)
         {
             stats.health = bodyData.health;
@@ -199,9 +199,9 @@ public static class CommonUtility
     {
         CapabilityProfile stats = new CapabilityProfile();
 
-        if (shipInfo == null || shipInfo.bodies == null) return stats;
+        if (shipInfo == null || shipInfo.hulls == null) return stats;
 
-        foreach (ModuleBodyInfo bodyInfo in shipInfo.bodies)
+        foreach (ModuleHullInfo bodyInfo in shipInfo.hulls)
         {
             // Body 고유 능력치 (Zone 적 배율 반영)
             CapabilityProfile bodyStats = GetBodyCapabilityProfile(bodyInfo);

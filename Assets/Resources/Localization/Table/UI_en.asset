@@ -38,10 +38,6 @@ MonoBehaviour:
     m_Localized: Missile(Locked)
     m_Metadata:
       m_Items: []
-  - m_Id: 767916349718530
-    m_Localized: Body
-    m_Metadata:
-      m_Items: []
   - m_Id: 767916349718531
     m_Localized: Engine
     m_Metadata:
@@ -973,18 +969,6 @@ MonoBehaviour:
     m_Localized: EXPLORATION
     m_Metadata:
       m_Items: []
-  - m_Id: 59175371185979392
-    m_Localized: Light Beam Ship
-    m_Metadata:
-      m_Items: []
-  - m_Id: 59175371223728128
-    m_Localized: Heavy Missile Ship
-    m_Metadata:
-      m_Items: []
-  - m_Id: 59175371223728129
-    m_Localized: Carrier
-    m_Metadata:
-      m_Items: []
   - m_Id: 59435713895989248
     m_Localized: Are you sure you want to move to this cell?
     m_Metadata:
@@ -1025,20 +1009,12 @@ MonoBehaviour:
     m_Localized: Not enough command power.
     m_Metadata:
       m_Items: []
-  - m_Id: 61639704184750084
-    m_Localized: This ship preset is unavailable.
-    m_Metadata:
-      m_Items: []
   - m_Id: 61639704184750085
     m_Localized: Fleet
     m_Metadata:
       m_Items: []
   - m_Id: 61639704184750086
     m_Localized: Stats
-    m_Metadata:
-      m_Items: []
-  - m_Id: 61639704184750087
-    m_Localized: Available Ships
     m_Metadata:
       m_Items: []
   - m_Id: 61639704193138688
@@ -1093,10 +1069,6 @@ MonoBehaviour:
     m_Localized: Shield Gauge
     m_Metadata:
       m_Items: []
-  - m_Id: 61660888284659723
-    m_Localized: Shield Restart Delay
-    m_Metadata:
-      m_Items: []
   - m_Id: 61660888284659724
     m_Localized: Shield Regen Rate
     m_Metadata:
@@ -1119,18 +1091,6 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 61771964439461888
     m_Localized: Exploration Point
-    m_Metadata:
-      m_Items: []
-  - m_Id: 61771964498182144
-    m_Localized: 'Name:'
-    m_Metadata:
-      m_Items: []
-  - m_Id: 61771964498182146
-    m_Localized: 'Cost:'
-    m_Metadata:
-      m_Items: []
-  - m_Id: 64564272184557568
-    m_Localized: Ship Preset
     m_Metadata:
       m_Items: []
   - m_Id: 64661855909314560
@@ -1356,6 +1316,26 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 74331910964117504
     m_Localized: Module Reinforce
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74419203678797824
+    m_Localized: 'Name:'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74419203729129472
+    m_Localized: 'Cost:'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74419203729129473
+    m_Localized: This hull is unavailable.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74453435637694464
+    m_Localized: Hull
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74453435688026112
+    m_Localized: Shield
     m_Metadata:
       m_Items: []
   references:

@@ -125,12 +125,12 @@ public class TestScene : MonoBehaviour
             id = positionIndex,
             shipName = $"TestShip_{positionIndex}",
             positionIndex = positionIndex,
-            bodies = new List<ModuleBodyInfo>
+            hulls = new List<ModuleHullInfo>
             {
-                new ModuleBodyInfo
+                new ModuleHullInfo
                 {
-                    bodyIndex = 0,
-                    moduleType = EModuleType.body,
+                    hullIndex = 0,
+                    moduleType = EModuleType.hull,
                     moduleSubType = subType,
                     moduleLevel = 1,
                 }

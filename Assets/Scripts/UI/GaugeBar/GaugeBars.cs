@@ -17,7 +17,7 @@ public class GaugeBars : MonoBehaviour
 
     private SpaceShip m_spaceShip;
     private Dictionary<ModuleBase, GaugeBar> m_moduleGaugeBars = new Dictionary<ModuleBase, GaugeBar>();
-    
+
     [SerializeField] private Vector3 m_offsetFromTarget = new Vector3(0, 0f, 0);
     [SerializeField] private float m_smoothSpeed = 5f;
     private bool m_hideForGalaxy = false;
@@ -62,8 +62,8 @@ public class GaugeBars : MonoBehaviour
             m_moduleGaugeBars.Remove(oldModule);
         }
 
-        // 새 모듈 게이지바 생성 (이 함선 소속 Body 타입만)
-        if (newModule != null && newModule is ModuleBody && m_spaceShip != null && m_spaceShip.m_moduleBodys.Contains(newModule as ModuleBody))
+        // 새 모듈 게이지바 생성 (이 함선 소속 Body 타입만) — 실드는 같은 게이지바 안의 별도 줄이라 여기서 함께 붙는 것으로 처리됨(UpdateAllGaugeBars)
+        if (newModule != null && newModule is ModuleHull && m_spaceShip != null && m_spaceShip.m_moduleHulls.Contains(newModule as ModuleHull))
         {
             CreateGaugeBarForModule(newModule);
         }
@@ -76,7 +76,7 @@ public class GaugeBars : MonoBehaviour
         switch (m_displayMode)
         {
             case EGaugeBarMode.Body:
-                foreach (ModuleBody body in m_spaceShip.m_moduleBodys)
+                foreach (ModuleHull body in m_spaceShip.m_moduleHulls)
                 {
                     if (body != null)
                         CreateGaugeBarForModule(body);
@@ -100,7 +100,7 @@ public class GaugeBars : MonoBehaviour
             //     break;
 
             case EGaugeBarMode.All:
-                foreach (ModuleBody body in m_spaceShip.m_moduleBodys)
+                foreach (ModuleHull body in m_spaceShip.m_moduleHulls)
                 {
                     if (body != null)
                         CreateGaugeBarForModule(body);
@@ -119,7 +119,7 @@ public class GaugeBars : MonoBehaviour
         }
     }
 
-    
+
 
     public void SetGaugeVisible(bool visible)
     {
@@ -149,7 +149,7 @@ public class GaugeBars : MonoBehaviour
 
     private Color GetModuleColor(ModuleBase module)
     {
-        if (module is ModuleBody)
+        if (module is ModuleHull)
             return new Color(0.2f, 0.8f, 0.2f);
         else if (module is ModuleBeam)
             return new Color(0.8f, 0.2f, 0.2f);
@@ -178,10 +178,14 @@ public class GaugeBars : MonoBehaviour
             float currentHealth = 0f;
             float maxHealth = 100f;
 
-            if (module is ModuleBody body)
+            if (module is ModuleHull body)
             {
                 currentHealth = body.m_health;
                 maxHealth = body.m_healthMax;
+
+                // 실드는 같은 게이지바 안의 별도 줄로 표시 — 미장착이면 호출하지 않아 GaugeBar가 그 줄을 계속 숨김
+                if (body.m_shield != null && body.m_shield.IsEquipped() == true)
+                    gaugeBar.UpdateShieldValue(body.m_shield.GetGauge(), body.m_shield.GetGaugeMax());
             }
             else if (module is ModuleBeam beam)
             {
@@ -230,10 +234,15 @@ public class GaugeBars : MonoBehaviour
         }
     }
 
+    // 체력/실드 둘 다 만땅이어야 숨김 — 실드가 조금이라도 닳으면 함체 체력이 만땅이어도 게이지바를 계속 보여줘야 함
     private bool IsModuleAtFullHealth(ModuleBase module)
     {
-        if (module is ModuleBody body)
-            return body.m_health >= body.m_healthMax;
+        if (module is ModuleHull body)
+        {
+            bool healthFull = body.m_health >= body.m_healthMax;
+            bool shieldFull = body.m_shield == null || body.m_shield.IsEquipped() == false || body.m_shield.GetGauge() >= body.m_shield.GetGaugeMax();
+            return healthFull == true && shieldFull == true;
+        }
         else if (module is ModuleBeam beam)
             return beam.m_health >= beam.m_healthMax;
         else if (module is ModuleMissile missile)

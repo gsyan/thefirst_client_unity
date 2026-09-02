@@ -35,7 +35,7 @@ public enum ETargetingRule
 public class SpaceShip : MonoBehaviour
 {
     [SerializeField] public ShipInfo m_shipInfo;
-    [SerializeField] public List<ModuleBody> m_moduleBodys = new List<ModuleBody>();
+    [SerializeField] public List<ModuleHull> m_moduleHulls = new List<ModuleHull>();
     [SerializeField] public SpaceShip m_targetShip;
     [SerializeField] public CapabilityProfile m_spaceShipStatsOrg;
     [SerializeField] public CapabilityProfile m_spaceShipStatsCur;
@@ -73,14 +73,14 @@ public class SpaceShip : MonoBehaviour
     virtual protected void Start()
     {
         InitializeGaugeDisplay();
-        EventManager.Subscribe_ModuleBodyDestroyed(OnModuleBodyDestroyed);
+        EventManager.Subscribe_ModuleHullDestroyed(OnModuleHullDestroyed);
         EventManager.Subscribe_SpaceShipSelected(OnGlobalShipSelected);
         EventManager.Subscribe_EmptySpaceTapped(OnGlobalEmptySpaceTapped);
     }
 
     private void OnDestroy()
     {
-        EventManager.Unsubscribe_ModuleBodyDestroyed(OnModuleBodyDestroyed);
+        EventManager.Unsubscribe_ModuleHullDestroyed(OnModuleHullDestroyed);
         EventManager.Unsubscribe_SpaceShipSelected(OnGlobalShipSelected);
         EventManager.Unsubscribe_EmptySpaceTapped(OnGlobalEmptySpaceTapped);
     }
@@ -102,7 +102,7 @@ public class SpaceShip : MonoBehaviour
         SetShipSelected(false);
     }
 
-    private void OnModuleBodyDestroyed(ModuleBody destroyedBody)
+    private void OnModuleHullDestroyed(ModuleHull destroyedBody)
     {
         if (m_currentTargetBody != destroyedBody) return;
         StartFindingTargets();
@@ -120,8 +120,8 @@ public class SpaceShip : MonoBehaviour
     {
         m_ownerFleet = fleet;
         m_shipInfo = shipInfo;
-        if (shipInfo.bodies == null || shipInfo.bodies.Count == 0) return;
-        foreach (ModuleBodyInfo bodyInfo in shipInfo.bodies)
+        if (shipInfo.hulls == null || shipInfo.hulls.Count == 0) return;
+        foreach (ModuleHullInfo bodyInfo in shipInfo.hulls)
             InitSpaceShipBody(bodyInfo, null, statOverride);
 
         m_spaceShipStatsOrg = GetShipCapabilityProfile(true);
@@ -130,7 +130,7 @@ public class SpaceShip : MonoBehaviour
         SetupSelectedModuleVisualing();
         
         // ShieldGrid, 지금은 바디가 오직 하나...
-        m_shieldGrid = m_moduleBodys[0].GetComponent<ShieldGrid>();
+        m_shieldGrid = m_moduleHulls[0].GetComponent<ShieldGrid>();
         if (m_shieldGrid != null)
             m_shieldGrid.InitFormationRelay(this);
         
@@ -144,7 +144,7 @@ public class SpaceShip : MonoBehaviour
     }
 
    // Body 초기화 (기존 모듈 재사용 가능)
-    private ModuleBody InitSpaceShipBody(ModuleBodyInfo bodyInfo, List<ModuleBase> savedModules, ShipFinalStats? statOverride = null)
+    private ModuleHull InitSpaceShipBody(ModuleHullInfo bodyInfo, List<ModuleBase> savedModules, ShipFinalStats? statOverride = null)
     {
         GameObject modulePrefab = ObjectManager.Instance.LoadShipModulePrefab(bodyInfo.moduleType.ToString(), bodyInfo.moduleSubType.ToString());
         if (modulePrefab == null)
@@ -156,21 +156,21 @@ public class SpaceShip : MonoBehaviour
         GameObject bodyObj = Instantiate(modulePrefab, transform.position, transform.rotation);
         bodyObj.transform.SetParent(transform);
 
-        ModuleBody moduleBody = bodyObj.GetComponent<ModuleBody>();
-        if (moduleBody == null)
-            moduleBody = bodyObj.AddComponent<ModuleBody>();
+        ModuleHull moduleHull = bodyObj.GetComponent<ModuleHull>();
+        if (moduleHull == null)
+            moduleHull = bodyObj.AddComponent<ModuleHull>();
 
-        moduleBody.InitializeModuleBody(bodyInfo, savedModules, statOverride);
-        m_moduleBodys.Add(moduleBody);
-        moduleBody.ApplyShipStateToModule(); // 모듈 변경시를 위해 필요
-        return moduleBody;
+        moduleHull.InitializeModuleHull(bodyInfo, savedModules, statOverride);
+        m_moduleHulls.Add(moduleHull);
+        moduleHull.ApplyShipStateToModule(); // 모듈 변경시를 위해 필요
+        return moduleHull;
     }
 
-    private ModuleBody m_currentTargetBody;
+    private ModuleHull m_currentTargetBody;
     private Coroutine m_rotationCoroutine;
     private Coroutine m_returnRotationCoroutine;
     private const float k_angularSpeedMult = 2f;
-    private List<ModuleBody> m_candidateBodies = new List<ModuleBody>();
+    private List<ModuleHull> m_candidateBodies = new List<ModuleHull>();
 
     public void ApplyFleetStateToShip()
     {
@@ -197,7 +197,7 @@ public class SpaceShip : MonoBehaviour
                     StopCoroutine(m_returnRotationCoroutine);
                     m_returnRotationCoroutine = null;
                 }
-                // FindTargetModuleBody는 SpaceFleet.StartCombat()에서 양쪽 모두 배틀 상태 후 시작
+                // FindTargetModuleHull는 SpaceFleet.StartCombat()에서 양쪽 모두 배틀 상태 후 시작
                 if (m_rotationCoroutine == null)
                     m_rotationCoroutine = StartCoroutine(RotateTowardTarget());
                 break;
@@ -207,20 +207,20 @@ public class SpaceShip : MonoBehaviour
                 break;
         }
         
-        foreach (ModuleBody body in m_moduleBodys)
+        foreach (ModuleHull body in m_moduleHulls)
             body.ApplyShipStateToModule();
     }
 
     // 보상카드 지속버프가 바뀔 때(카드 선택/런 종료 초기화) 호출 — 이미 스폰된 이 함선의 모든 바디/무기 모듈에 최신 배율을 다시 반영
     public void RefreshRewardCardBuffs()
     {
-        foreach (ModuleBody body in m_moduleBodys)
+        foreach (ModuleHull body in m_moduleHulls)
             if (body != null) body.RefreshRewardCardBuff();
     }
 
     public void StartFindingTargets()
     {
-        FindTargetModuleBody();
+        FindTargetModuleHull();
     }
 
     public void StopAutoCombat()
@@ -237,20 +237,20 @@ public class SpaceShip : MonoBehaviour
     }
 
     // 1단계: 최소회전으로 교전 상대 함대(팀) 탐색 → 2단계: 그 함대 안에서 최소회전 바디 탐색
-    private void FindTargetModuleBody()
+    private void FindTargetModuleHull()
     {
         SpaceFleet targetFleet = FindMinAngleFleet(GetOpposingFleets());
         if (targetFleet == null) return;
 
         m_candidateBodies.Clear();
         ApplyTargetingRules(targetFleet, m_candidateBodies);
-        ModuleBody best = FindMinAngleBody(m_candidateBodies);
+        ModuleHull best = FindMinAngleBody(m_candidateBodies);
         if (best == null) return;
 
         m_currentTargetBody = best;
         m_targetShip = m_currentTargetBody.GetShip();
 
-        foreach (ModuleBody body in m_moduleBodys)
+        foreach (ModuleHull body in m_moduleHulls)
         {
             if (body != null && body.m_health > 0)
                 body.SetTarget(m_currentTargetBody);
@@ -258,7 +258,7 @@ public class SpaceShip : MonoBehaviour
     }
 
     // targetFleet에서 후보 바디를 수집한 뒤, m_targetingRule에 설정된 룰들을 순서대로 적용해 걸러냄. 신규 룰 추가 시 여기에 분기만 추가
-    private void ApplyTargetingRules(SpaceFleet targetFleet, List<ModuleBody> result)
+    private void ApplyTargetingRules(SpaceFleet targetFleet, List<ModuleHull> result)
     {
         CollectBodiesFromFleet(targetFleet, result);
 
@@ -268,7 +268,7 @@ public class SpaceShip : MonoBehaviour
 
     // 기함 아닌 함선이 후보에 하나라도 있으면 기함 바디를 후보에서 제외 (기함만 남았을 때만 타격 허용)
     // targetFleet.GetFlagship()은 원래 기함이 죽으면 살아있는 다음 함선으로 자동 승계되므로 그 결과를 그대로 사용
-    private void ApplyFlagshipLastRule(SpaceFleet targetFleet, List<ModuleBody> candidates)
+    private void ApplyFlagshipLastRule(SpaceFleet targetFleet, List<ModuleHull> candidates)
     {
         SpaceShip currentFlagship = targetFleet != null ? targetFleet.GetFlagship() : null;
         if (currentFlagship == null) return;
@@ -322,13 +322,13 @@ public class SpaceShip : MonoBehaviour
         return best;
     }
 
-    private void CollectBodiesFromFleet(SpaceFleet opposingFleet, List<ModuleBody> result)
+    private void CollectBodiesFromFleet(SpaceFleet opposingFleet, List<ModuleHull> result)
     {
         if (opposingFleet == null || opposingFleet.IsValidCombatTarget() == false) return;
         foreach (SpaceShip ship in opposingFleet.m_ships)
         {
             if (ship == null || ship.IsAlive() == false || ship.IsWarping == true) continue;
-            foreach (ModuleBody body in ship.m_moduleBodys)
+            foreach (ModuleHull body in ship.m_moduleHulls)
             {
                 if (body != null && body.m_health > 0)
                     result.Add(body);
@@ -336,14 +336,14 @@ public class SpaceShip : MonoBehaviour
         }
     }
 
-    private ModuleBody FindMinAngleBody(List<ModuleBody> candidates)
+    private ModuleHull FindMinAngleBody(List<ModuleHull> candidates)
     {
-        ModuleBody best = null;
+        ModuleHull best = null;
         float bestAngle = float.MaxValue;
         Vector3 forward = transform.forward;
         Vector3 myPos = transform.position;
 
-        foreach (ModuleBody body in candidates)
+        foreach (ModuleHull body in candidates)
         {
             Vector3 toBody = (body.transform.position - myPos).normalized;
             float angle = Vector3.Angle(forward, toBody);
@@ -442,7 +442,7 @@ public class SpaceShip : MonoBehaviour
         var free    = new System.Collections.Generic.List<ModuleBase>();
         var silenced = new System.Collections.Generic.List<ModuleBase>();
 
-        foreach (ModuleBody body in m_moduleBodys)
+        foreach (ModuleHull body in m_moduleHulls)
         {
             if (body == null || body.m_health <= 0) continue;
             foreach (ModuleBeam    m in body.m_beams)
@@ -491,6 +491,14 @@ public class SpaceShip : MonoBehaviour
 
     virtual public void TakeDamage(DamageInfo damageInfo, Vector3 hitPosition)
     {
+        TakeDamage(damageInfo, hitPosition, out _);
+    }
+
+    // wasFullyShielded: 실드가 원본 데미지를 전량 흡수해 체력에 전혀 닿지 않았는지 — 호출부(ProjectileBeam 등)가 EFFECT_BEAM_HIT 스폰 여부를 판단하는 데 사용
+    virtual public void TakeDamage(DamageInfo damageInfo, Vector3 hitPosition, out bool wasFullyShielded)
+    {
+        wasFullyShielded = false;
+
         // 전투 종료 처리 중 데미지 차단
         if (ObjectManager.Instance.m_isBattleEnding == true) return;
         // 이미 죽었다면 리턴
@@ -510,7 +518,7 @@ public class SpaceShip : MonoBehaviour
         {
             float totalHealth = 0f;
             float totalHealthMax = 0f;
-            foreach (ModuleBody body in m_moduleBodys)
+            foreach (ModuleHull body in m_moduleHulls)
             {
                 if (body == null) continue;
                 totalHealth += body.m_health;
@@ -523,9 +531,16 @@ public class SpaceShip : MonoBehaviour
         }
 
         // 살아있는 바디 중 하나에 랜덤으로 데미지 분산 (또는 첫 번째 바디에)
-        ModuleBody targetBody = GetRandomAliveBody();
+        ModuleHull targetBody = GetRandomAliveBody();
         if (targetBody != null)
         {
+            if (damageInfo.damageType == EDamageType.Beam)
+            {
+                float damageBeforeShield = incomingDamage;
+                incomingDamage = ApplyShieldAbsorption(targetBody, incomingDamage, hitPosition);
+                wasFullyShielded = damageBeforeShield > 0f && incomingDamage <= 0f;
+            }
+
             targetBody.TakeDamage(incomingDamage);
         }
 
@@ -539,7 +554,8 @@ public class SpaceShip : MonoBehaviour
         if (IsAlive() == true)
         {
             UpdateFireEffects(hitPosition);
-            if (damageInfo.damageType == EDamageType.Beam)
+            // 실드가 완전히 막았으면 함체 표면에 실제로 닿지 않았으므로 피탄 자국(데칼)도 남기지 않음
+            if (damageInfo.damageType == EDamageType.Beam && wasFullyShielded == false)
                 SpawnScorchMark(hitPosition);
             return;
         }
@@ -694,7 +710,7 @@ public class SpaceShip : MonoBehaviour
     public float GetHealthRatio()
     {
         float total = 0f, max = 0f;
-        foreach (ModuleBody body in m_moduleBodys)
+        foreach (ModuleHull body in m_moduleHulls)
         {
             if (body == null) continue;
             total += body.m_health;
@@ -703,14 +719,18 @@ public class SpaceShip : MonoBehaviour
         return max > 0f ? total / max : 1f;
     }
 
-    // 존 런 중 함선 종류 교체 시 이전 함선의 체력 비율을 새 함선에 그대로 적용 — ObjectManager.ReplaceMyFleetShipAt 전용
+    // 존 런 중 함선 종류 교체(ObjectManager.ReplaceMyFleetShipAt) 시 이전 함선의 체력 비율을 새 함선에 적용하거나,
+    // 퇴각/포기 시(UIPanelExplorationGrid.RestorePreviousCellAfterRetreat) 진입 직전 상태로 롤백하는 데 사용
+    // 두 경우 모두 실드는 갓 생성된 새 함체 또는 진입 직전 기준이라 항상 풀게이지로 리셋
     public void ApplyHealthRatio(float ratio)
     {
         ratio = Mathf.Clamp01(ratio);
-        foreach (ModuleBody body in m_moduleBodys)
+        foreach (ModuleHull body in m_moduleHulls)
         {
             if (body == null) continue;
             body.m_health = body.m_healthMax * ratio;
+            if (body.m_shield != null)
+                body.m_shield.ResetGaugeToFull();
         }
         UpdateShipStatCur();
         CheckFireEffects();
@@ -719,7 +739,7 @@ public class SpaceShip : MonoBehaviour
     // 살아있는 바디가 있는지 확인
     private bool HasAliveBodies()
     {
-        foreach (ModuleBody body in m_moduleBodys)
+        foreach (ModuleHull body in m_moduleHulls)
         {
             if (body != null && body.m_health > 0)
             {
@@ -729,11 +749,82 @@ public class SpaceShip : MonoBehaviour
         return false;
     }
 
-    // 살아있는 바디 중 랜덤 선택
-    private ModuleBody GetRandomAliveBody()
+    // 실드 토글 비트 인덱스 — EventManager.OnTacticOptionsChanged/UIPanelBattle 주석과 동일 규칙(0=수리, 1=미사일, 2=함재기, 3=실드)
+    private const int k_shieldTacticBit = 1 << 3;
+
+    // 지금 이 함선의 실드가 incomingDamage를 전량 막아낼 수 있는 상태인지(장착 + 게이지 충분 + 전술 토글 ON) — ProjectileBeam이
+    // raycast 단계에서 빔 궤적을 실드 표면에서 끊을지(완전 방어) 함체 표면까지 보낼지(관통) 미리 판단하는 데 사용.
+    // 게이지가 있어도 이번 데미지를 다 못 막으면(관통 발생) false를 반환해 빔이 함체 표면까지 도달하게 함
+    // 내가 직접 조작하는 함대(fleet_source_player)만 토글 상태를 따르고, 그 외(적/PvP 상대/시네마틱)는 상시 ON으로 취급
+    public bool IsShieldActive(float incomingDamage)
     {
-        List<ModuleBody> aliveBodies = new List<ModuleBody>();
-        foreach (ModuleBody body in m_moduleBodys)
+        ModuleHull targetBody = GetRandomAliveBody();
+        if (targetBody == null) return false;
+
+        ModuleShield shield = targetBody.m_shield;
+        if (shield == null || shield.CanFullyAbsorb(incomingDamage) == false) return false;
+
+        if (m_ownerFleet != null && m_ownerFleet.m_fleetSource == EFleetSource.fleet_source_player)
+            return (m_ownerFleet.m_fleetInfo.tacticOptions & k_shieldTacticBit) != 0;
+
+        return true;
+    }
+
+    // 빔 피격 시 실드가 흡수하는 만큼 차감한 나머지 데미지를 반환 — 실드 미장착/게이지 0/토글 OFF면 원본 그대로 반환
+    private float ApplyShieldAbsorption(ModuleHull targetBody, float incomingDamage, Vector3 hitPosition)
+    {
+        ModuleShield shield = targetBody.m_shield;
+        if (shield == null || shield.IsEquipped() == false) return incomingDamage;
+
+        bool isShieldOn = true;
+        if (m_ownerFleet != null && m_ownerFleet.m_fleetSource == EFleetSource.fleet_source_player)
+            isShieldOn = (m_ownerFleet.m_fleetInfo.tacticOptions & k_shieldTacticBit) != 0;
+
+        if (isShieldOn == false) return incomingDamage;
+
+        float absorbed = shield.AbsorbBeamDamage(incomingDamage);
+        if (absorbed > 0f)
+            SpawnShieldHitEffect(targetBody, hitPosition);
+
+        return incomingDamage - absorbed;
+    }
+
+    // hitPosition(함체 명중 지점)을 실드 중심 기준 방향으로 ShieldCollider 표면까지 레이캐스트해 실제 표면 지점을 구해 파동 이펙트 배치
+    // (히트스캔 빔은 함체 트랜스폼 위치를 그대로 넘겨줘 실드 타원체 표면과 정확히 일치하지 않음 — 레이캐스트로 보정)
+    private void SpawnShieldHitEffect(ModuleHull targetBody, Vector3 hitPosition)
+    {
+        if (m_shieldGrid == null) return;
+
+        Vector3 shieldCenter = m_shieldGrid.transform.position;
+        Vector3 direction = (hitPosition - shieldCenter).normalized;
+        if (direction == Vector3.zero) direction = Vector3.up;
+
+        Vector3 surfacePoint = hitPosition;
+        Vector3 surfaceNormal = direction;
+
+        int layer = LayerMask.NameToLayer(m_shieldGrid.shieldLayerName);
+        if (layer >= 0)
+        {
+            int layerMask = 1 << layer;
+            Vector3 rayOrigin = shieldCenter - direction * 0.01f;
+            if (Physics.Raycast(rayOrigin, direction, out RaycastHit hit, 10000f, layerMask, QueryTriggerInteraction.Collide) == true)
+            {
+                surfacePoint = hit.point;
+                surfaceNormal = hit.normal;
+            }
+        }
+
+        EffectShieldHit effect = ObjectManager.Instance.m_poolManager.Get<EffectShieldHit>(EPoolName.EFFECT_SHIELD_HIT);
+        if (effect == null) return;
+
+        effect.PlayAt(surfacePoint, surfaceNormal);
+    }
+
+    // 살아있는 바디 중 랜덤 선택
+    private ModuleHull GetRandomAliveBody()
+    {
+        List<ModuleHull> aliveBodies = new List<ModuleHull>();
+        foreach (ModuleHull body in m_moduleHulls)
         {
             if (body != null && body.m_health > 0)
             {
@@ -762,11 +853,11 @@ public class SpaceShip : MonoBehaviour
     }
 
     // 인덱스로 바디 찾기
-    public ModuleBody FindModuleBodyByIndex(int bodyIndex)
+    public ModuleHull FindModuleHullByIndex(int hullIndex)
     {
-        foreach (ModuleBody body in m_moduleBodys)
+        foreach (ModuleHull body in m_moduleHulls)
         {
-            if (body != null && body.m_moduleBodyInfo.bodyIndex == bodyIndex)
+            if (body != null && body.m_moduleHullInfo.hullIndex == hullIndex)
             {
                 return body;
             }
@@ -774,13 +865,13 @@ public class SpaceShip : MonoBehaviour
         return null;
     }
 
-    // bodyIndex, moduleTypePacked, slotIndex로 특정 모듈 찾기
-    public ModuleBase FindModule(int bodyIndex, EModuleType moduleType, int slotIndex)
+    // hullIndex, moduleTypePacked, slotIndex로 특정 모듈 찾기
+    public ModuleBase FindModule(int hullIndex, EModuleType moduleType, int slotIndex)
     {
-        ModuleBody body = FindModuleBodyByIndex(bodyIndex);
+        ModuleHull body = FindModuleHullByIndex(hullIndex);
         if (body == null) return null;
 
-        if (moduleType == EModuleType.body)
+        if (moduleType == EModuleType.hull)
             return body;
 
         return body.FindModule(moduleType, slotIndex);
@@ -794,7 +885,7 @@ public class SpaceShip : MonoBehaviour
         if (bByInfo == true) return CommonUtility.GetShipCapabilityProfile(m_shipInfo);
 
         CapabilityProfile stats = new CapabilityProfile();
-        foreach (ModuleBody body in m_moduleBodys)
+        foreach (ModuleHull body in m_moduleHulls)
         {
             if (body != null && body.m_health > 0)
             {
@@ -821,7 +912,7 @@ public class SpaceShip : MonoBehaviour
     private void SetupSelectedModuleVisualing()
     {
         // Setup SelectedModuleVisual for parts bodies
-        foreach (ModuleBody body in m_moduleBodys)
+        foreach (ModuleHull body in m_moduleHulls)
         {
             if (body != null)
             {
@@ -1053,7 +1144,7 @@ public class SpaceShip : MonoBehaviour
         m_selectedModuleVisuals.RemoveAll(h => h == null || h.ModuleBase == null);
 
         // 2. Body 모듈 확인 및 추가
-        foreach (ModuleBody body in m_moduleBodys)
+        foreach (ModuleHull body in m_moduleHulls)
         {
             if (body == null) continue;
 

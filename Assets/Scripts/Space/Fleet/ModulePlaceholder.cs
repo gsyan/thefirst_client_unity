@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ModulePlaceholder : ModuleBase
 {
-    [SerializeField] private ModuleBody m_parentBody;
+    [SerializeField] private ModuleHull m_parentBody;
     public ModuleInfo m_moduleInfo;
     
     
@@ -32,21 +32,21 @@ public class ModulePlaceholder : ModuleBase
     {
         return m_moduleSlot.m_moduleSlotInfo.slotIndex;
     }
-    public override int GetModuleBodyIndex()
+    public override int GetModuleHullIndex()
     {
-        return m_moduleInfo.bodyIndex;
+        return m_moduleInfo.hullIndex;
     }
 
 
 
-    public void InitializeModulePlaceholder(ModuleBody parentBody, ModuleSlot moduleSlot)
+    public void InitializeModulePlaceholder(ModuleHull parentBody, ModuleSlot moduleSlot)
     {
         m_moduleInfo = new ModuleInfo
         {
             moduleType = moduleSlot.m_moduleSlotInfo.moduleType,
             moduleSubType = EModuleSubType.none,
             moduleLevel = 0,
-            bodyIndex = parentBody.GetModuleBodyIndex(),
+            hullIndex = parentBody.GetModuleHullIndex(),
             slotIndex = moduleSlot.m_moduleSlotInfo.slotIndex
         };
         m_moduleSlot = moduleSlot;

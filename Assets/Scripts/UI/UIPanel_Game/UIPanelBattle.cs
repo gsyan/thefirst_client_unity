@@ -109,16 +109,18 @@ public class UIPanelBattle : UIPanelBase
             int tacticOptions = myFleet.m_fleetInfo.tacticOptions;
             GameSettings gameSettings = DataManager.Instance.m_dataTableConfig.gameSettings;
 
-            // 토글이 켜져 있어도 실질 효과가 없는 상태(체력 만땅/미사일·함재기 모듈 없음)면 전술력을 소모하지 않음 — 토글 자체는 유지(파괴 등으로 조건이 다시 성립하면 재소모)
+            // 토글이 켜져 있어도 실질 효과가 없는 상태(체력 만땅/미사일·함재기 모듈 없음/실드 게이지 없음)면 전술력을 소모하지 않음 — 토글 자체는 유지(조건이 다시 성립하면 재소모)
             bool repairHasEffect = myFleet.GetFleetHealthRatio() < 1f;
             CapabilityProfile fleetProfile = myFleet.GetFleetCapabilityProfile();
             bool missileHasEffect = fleetProfile.missileAttack > 0f;
             bool aircraftHasEffect = fleetProfile.airCount > 0;
+            bool shieldHasEffect = myFleet.HasAnyShieldDefending();
 
             int drainPerSec = 0;
             if ((tacticOptions & (1 << 0)) != 0 && repairHasEffect == true) drainPerSec += gameSettings.repairBoostExplorationPointPerSec;
             if ((tacticOptions & (1 << 1)) != 0 && missileHasEffect == true) drainPerSec += gameSettings.missileTacticExplorationPointPerSec;
             if ((tacticOptions & (1 << 2)) != 0 && aircraftHasEffect == true) drainPerSec += gameSettings.aircraftTacticExplorationPointPerSec;
+            if ((tacticOptions & (1 << 3)) != 0 && shieldHasEffect == true) drainPerSec += gameSettings.shieldTacticExplorationPointPerSec;
             if (drainPerSec <= 0) continue;
 
             commanderInfo.tacticPower = Mathf.Max(0, commanderInfo.tacticPower - drainPerSec);
@@ -129,7 +131,7 @@ public class UIPanelBattle : UIPanelBase
         }
     }
 
-    // 전투 중 함선 터치가 막혀 토글 버튼은 UIBattleView 클릭으로만 켜짐 — idx: 0=수리, 1=미사일, 2=함재기(EventManager.OnTacticOptionsChanged 주석과 동일)
+    // 전투 중 함선 터치가 막혀 토글 버튼은 UIBattleView 클릭으로만 켜짐 — idx: 0=수리, 1=미사일, 2=함재기, 3=실드(EventManager.OnTacticOptionsChanged 주석과 동일)
     private void OnTacticToggleRequested(int idx)
     {
         SpaceFleet myFleet = ObjectManager.Instance.GetMyFleet();

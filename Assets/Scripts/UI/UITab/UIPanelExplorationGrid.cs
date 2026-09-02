@@ -1138,6 +1138,11 @@ public class UIPanelExplorationGrid : UIPanelBase
             ApplyTacticPowerRecovered(response.data.tacticPower);
             ClearActiveRunZoneCache();
 
+            // 런 자체가 완전히 종료되므로 함대 손상(체력/실드)도 다음 런을 위해 전부 복구
+            SpaceFleet myFleet = ObjectManager.Instance.GetMyFleet();
+            if (myFleet != null)
+                myFleet.FullRepair();
+
             // 보상카드 지속버프도 이번 런 한정(세션 스코프)이므로 런 종료와 함께 초기화
             ObjectManager.Instance.m_rewardCardSessionState.Reset();
             ObjectManager.Instance.RefreshRewardCardBuffsOnMyFleet();

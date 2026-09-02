@@ -1,7 +1,7 @@
-// 함선 프리셋 3D 미리보기 스테이지 관리 — 1차 프로토타입
-// 메인 씬 좌표계 밖(y=-5000)에 코드로 카메라/조명/스폰 앵커를 만들고, 프리셋이 바뀔 때마다 바디 모델만 교체한다.
+// 함체 3D 미리보기 스테이지 관리 — 1차 프로토타입
+// 메인 씬 좌표계 밖(y=-5000)에 코드로 카메라/조명/스폰 앵커를 만들고, 함체가 바뀔 때마다 바디 모델만 교체한다.
 // 추후 전용 Additive 씬으로 옮겨서 조명을 에디터에서 손으로 튜닝할 예정(지금은 MCP 연결이 끊겨 씬 배치를 대신 못 해줌) —
-// EnsureStageReady()를 EnsureSceneLoaded()로 바꾸는 정도로 교체 가능하도록 인터페이스(ShowPreset/Clear/GetPreviewTexture/GetPreviewRoot)는 유지
+// EnsureStageReady()를 EnsureSceneLoaded()로 바꾸는 정도로 교체 가능하도록 인터페이스(ShowHull/Clear/GetPreviewTexture/GetPreviewRoot)는 유지
 using UnityEngine;
 
 public class ShipPreviewManager : MonoSingleton<ShipPreviewManager>
@@ -62,14 +62,14 @@ public class ShipPreviewManager : MonoSingleton<ShipPreviewManager>
             oldTexture.Release();
     }
 
-    public void ShowPreset(ModuleData hull)
+    public void ShowHull(ModuleData hull)
     {
         EnsureStageReady();
         Clear();
 
         if (hull == null) return;
 
-        GameObject bodyPrefab = ObjectManager.Instance.LoadShipModulePrefab(EModuleType.body.ToString(), hull.moduleSubType.ToString());
+        GameObject bodyPrefab = ObjectManager.Instance.LoadShipModulePrefab(EModuleType.hull.ToString(), hull.moduleSubType.ToString());
         if (bodyPrefab == null) return;
 
         m_currentBodyInstance = Instantiate(bodyPrefab, m_spawnAnchor);
@@ -145,7 +145,7 @@ public class ShipPreviewManager : MonoSingleton<ShipPreviewManager>
         }
     }
 
-    // aspectRatio: RawImage의 width/height — 프리셋 선택 화면을 열 때마다 최신 레이아웃 비율을 넘겨받아 텍스처를 맞춤
+    // aspectRatio: RawImage의 width/height — 함체 선택 화면을 열 때마다 최신 레이아웃 비율을 넘겨받아 텍스처를 맞춤
     public RenderTexture GetPreviewTexture(float aspectRatio = 1f)
     {
         EnsureStageReady();

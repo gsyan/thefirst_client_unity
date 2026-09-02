@@ -499,12 +499,12 @@ MonoBehaviour:
     m_Key: RewardCard_PointFlat_Desc
     m_Metadata:
       m_Items: []
-  - m_Id: 61771964498182144
-    m_Key: UIAvailablePresetRow_Name
+  - m_Id: 74419203678797824
+    m_Key: UIAvailableHullRow_Name
     m_Metadata:
       m_Items: []
-  - m_Id: 61771964498182146
-    m_Key: UIAvailablePresetRow_Cost
+  - m_Id: 74419203729129472
+    m_Key: UIAvailableHullRow_Cost
     m_Metadata:
       m_Items: []
   - m_Id: 29120731379793920
@@ -539,8 +539,8 @@ MonoBehaviour:
     m_Key: UIFleet_PlaceFailed_NotEnoughCommandPower
     m_Metadata:
       m_Items: []
-  - m_Id: 61639704184750084
-    m_Key: UIFleet_PlaceFailed_PresetNotFound
+  - m_Id: 74419203729129473
+    m_Key: UIFleet_PlaceFailed_HullNotFound
     m_Metadata:
       m_Items: []
   - m_Id: 61639704184750085
@@ -549,10 +549,6 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 61639704184750086
     m_Key: UIFleet_StatsTitle
-    m_Metadata:
-      m_Items: []
-  - m_Id: 61639704184750087
-    m_Key: UIFleet_AvailablePresetsTitle
     m_Metadata:
       m_Items: []
   - m_Id: 61660888225939456
@@ -603,10 +599,6 @@ MonoBehaviour:
     m_Key: UIFleet_Stats_ShieldGauge
     m_Metadata:
       m_Items: []
-  - m_Id: 61660888284659723
-    m_Key: UIFleet_Stats_ShieldRestartDelay
-    m_Metadata:
-      m_Items: []
   - m_Id: 61660888284659724
     m_Key: UIFleet_Stats_ShieldRegenRate
     m_Metadata:
@@ -617,10 +609,6 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 61660888284659726
     m_Key: UIFleet_Stats_InterceptorRegenRate
-    m_Metadata:
-      m_Items: []
-  - m_Id: 64564272184557568
-    m_Key: UIFleet_ShipPreset_Title
     m_Metadata:
       m_Items: []
   - m_Id: 65433715576012800
@@ -995,8 +983,8 @@ MonoBehaviour:
     m_Key: module_type_missile_placeholder
     m_Metadata:
       m_Items: []
-  - m_Id: 767916349718530
-    m_Key: module_type_body
+  - m_Id: 74453435637694464
+    m_Key: module_type_hull
     m_Metadata:
       m_Items: []
   - m_Id: 767916349718531
@@ -1013,6 +1001,10 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 767916349718534
     m_Key: module_type_hangar
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74453435688026112
+    m_Key: module_type_shield
     m_Metadata:
       m_Items: []
   - m_Id: 65472345728221184
@@ -1325,18 +1317,6 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 43683692517654535
     m_Key: ShipName_8
-    m_Metadata:
-      m_Items: []
-  - m_Id: 59175371185979392
-    m_Key: ShipPreset_BeamLight01
-    m_Metadata:
-      m_Items: []
-  - m_Id: 59175371223728128
-    m_Key: ShipPreset_MissileHeavy01
-    m_Metadata:
-      m_Items: []
-  - m_Id: 59175371223728129
-    m_Key: ShipPreset_Carrier01
     m_Metadata:
       m_Items: []
   - m_Id: 74139633411031040

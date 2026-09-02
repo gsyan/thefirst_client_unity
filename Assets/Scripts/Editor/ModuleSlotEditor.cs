@@ -96,15 +96,15 @@ public class ModuleSlotEditor : Editor
 
     private void ResetCameraValues(ModuleSlot slot)
     {
-        // 부모 계층에서 ModuleBody 탐색
-        ModuleBody body = slot.GetComponentInParent<ModuleBody>();
-        if (body == null)
+        // 부모 계층에서 ModuleHull 탐색
+        ModuleHull hull = slot.GetComponentInParent<ModuleHull>();
+        if (hull == null)
         {
-            Debug.LogWarning("[ModuleSlotEditor] 부모에서 ModuleBody를 찾을 수 없음");
+            Debug.LogWarning("[ModuleSlotEditor] 부모에서 ModuleHull를 찾을 수 없음");
             return;
         }
 
-        Vector3 dir = slot.transform.position - body.transform.position;
+        Vector3 dir = slot.transform.position - hull.transform.position;
         if (dir.sqrMagnitude < 0.001f)
         {
             Debug.LogWarning("[ModuleSlotEditor] 슬롯과 바디 위치가 동일함");

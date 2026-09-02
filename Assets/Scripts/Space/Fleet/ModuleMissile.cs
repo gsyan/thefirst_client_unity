@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 public class ModuleMissile : ModuleBase
 {
-    [SerializeField] private ModuleBody m_parentBody;
+    [SerializeField] private ModuleHull m_parentBody;
     public ModuleInfo m_moduleInfo;
 
     // 무기 전용 스탯
@@ -28,11 +28,11 @@ public class ModuleMissile : ModuleBase
     //private Animator m_coverAnimator;
     private static readonly int HASH_IS_IN_COMBAT = Animator.StringToHash("IsInCombat");
 
-    private ModuleBody m_currentTarget;
+    private ModuleHull m_currentTarget;
     private Coroutine m_autoAttackCoroutine;
 
     // Body 교체 시 기존 모듈 승계용 — 새 부모 body로 갱신
-    public void SetParentBody(ModuleBody parentBody)
+    public void SetParentBody(ModuleHull parentBody)
     {
         m_parentBody = parentBody;
     }
@@ -71,7 +71,7 @@ public class ModuleMissile : ModuleBase
 
 
     // attackOverride: 성능포인트 프리셋 기반 스폰 시 테이블 공격력 대신 사용할 계산값 (null이면 기존처럼 테이블값 그대로 사용)
-    public void InitializeModuleMissile(ModuleInfo moduleInfo, ModuleBody parentBody, ModuleSlot moduleSlot, float? attackOverride = null)
+    public void InitializeModuleMissile(ModuleInfo moduleInfo, ModuleHull parentBody, ModuleSlot moduleSlot, float? attackOverride = null)
     {
         m_moduleInfo = moduleInfo;
         m_parentBody = parentBody;
@@ -202,7 +202,7 @@ public class ModuleMissile : ModuleBase
         }
     }
 
-    private void ExecuteAttackOnTarget(ModuleBody target)
+    private void ExecuteAttackOnTarget(ModuleHull target)
     {
         float shipCountMultiplier = m_ownerFleet != null ? m_ownerFleet.GetShipCountAttackMultiplier() : 1f;
         float formationMultiplier = m_ownerFleet != null ? m_ownerFleet.GetFormationAttackMultiplier() : 1f;
@@ -232,16 +232,16 @@ public class ModuleMissile : ModuleBase
 
     
 
-    public override int GetModuleBodyIndex()
+    public override int GetModuleHullIndex()
     {
-        return m_moduleInfo.bodyIndex;
+        return m_moduleInfo.hullIndex;
     }
-    public override void SetModuleBodyIndex(int bodyIndex)
+    public override void SetModuleHullIndex(int hullIndex)
     {
-        m_moduleInfo.bodyIndex = bodyIndex;
+        m_moduleInfo.hullIndex = hullIndex;
     }
 
-    public void SetTarget(ModuleBody target)
+    public void SetTarget(ModuleHull target)
     {
         m_currentTarget = target;
     }

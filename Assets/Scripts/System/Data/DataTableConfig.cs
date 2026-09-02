@@ -52,6 +52,10 @@ public class GameSettings
     [Tooltip("함재기 전술 강화 ON 시 미사일 장착 개수 배율")]
     public float aircraftTacticAmmoMultiplier = 2f;
 
+    [Header("Tactic - Shield")]
+    [Tooltip("실드 ON 시 1초당 소모하는 탐험 포인트 — 게이지가 남아 방어가 실제로 발동 중일 때만 소모(풀게이지 대기 상태는 미소모)")]
+    public int shieldTacticExplorationPointPerSec = 1;
+
     [Header("Exploration - Ship Stat Formula")]
     public ShipStatFormulaSettings shipStatFormula = new ShipStatFormulaSettings();
 }
@@ -62,7 +66,7 @@ public class GameSettings
 [System.Serializable]
 public class ShipStatFormulaSettings
 {
-    [Tooltip("카테고리(빔/미사일/함재기/요격체)별 슬롯 상한 — 프리셋 데이터의 슬롯 배열 크기 기준값")]
+    [Tooltip("카테고리(빔/미사일/함재기/요격체)별 슬롯 상한 — 함체 데이터의 슬롯 배열 크기 기준값")]
     public int maxModuleSlots = 6;
 
     [Tooltip("공격모듈(빔/미사일/격납고) 슬롯 1개당 투자 가능한 강화 포인트 상한")]
@@ -117,9 +121,7 @@ public class HangarFormula
 public class ShieldFormula
 {
     public float gaugePerPoint = 0.5f;
-    public float delayReductionPerPoint = 0.02f;
     public float regenRatePerPoint = 0.1f;
-    public float delayFloor = 1f;
 }
 
 [System.Serializable]

@@ -46,31 +46,31 @@ public class ShieldGridEditor : Editor
         EditorGUILayout.Space(5);
         EditorGUILayout.LabelField("Hit Points", EditorStyles.boldLabel);
 
-        ModuleBody moduleBody = grid.GetComponent<ModuleBody>();
-        if (moduleBody != null)
+        ModuleHull moduleHull = grid.GetComponent<ModuleHull>();
+        if (moduleHull != null)
         {
-            bool newShow = EditorGUILayout.Toggle("Show Hit Point Gizmos", moduleBody.bShowHitPointGizmos);
-            if (newShow != moduleBody.bShowHitPointGizmos)
+            bool newShow = EditorGUILayout.Toggle("Show Hit Point Gizmos", moduleHull.bShowHitPointGizmos);
+            if (newShow != moduleHull.bShowHitPointGizmos)
             {
-                moduleBody.bShowHitPointGizmos = newShow;
-                EditorUtility.SetDirty(moduleBody);
+                moduleHull.bShowHitPointGizmos = newShow;
+                EditorUtility.SetDirty(moduleHull);
                 SceneView.RepaintAll();
             }
 
             if (GUILayout.Button("Bake Hit Points", GUILayout.Height(30)))
             {
-                var method = typeof(ModuleBody).GetMethod("BakeHitPoints",
+                var method = typeof(ModuleHull).GetMethod("BakeHitPoints",
                     System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
                 if (method != null)
                 {
-                    method.Invoke(moduleBody, null);
-                    EditorUtility.SetDirty(moduleBody);
+                    method.Invoke(moduleHull, null);
+                    EditorUtility.SetDirty(moduleHull);
                 }
             }
         }
         else
         {
-            EditorGUILayout.HelpBox("ModuleBody 컴포넌트가 없습니다.", MessageType.Warning);
+            EditorGUILayout.HelpBox("ModuleHull 컴포넌트가 없습니다.", MessageType.Warning);
         }
 
         EditorGUILayout.Space(5);

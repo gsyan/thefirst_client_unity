@@ -26,7 +26,6 @@ public struct ShipFinalStats
 
     public bool shieldInstalled;
     public float shieldGauge;
-    public float shieldDelay;
     public float shieldRegenRate;
 
     public float[] interceptorDelays;     // 장착된 요격체 슬롯 개수만큼

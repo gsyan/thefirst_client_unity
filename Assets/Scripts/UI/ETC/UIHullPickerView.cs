@@ -1,30 +1,30 @@
-// 함선 프리셋 교체 팝업 — UIPanelFleet 프리팹에 내장된 오버레이(별도 UIManager 팝업 스택 대상 아님). 리스트에서 프리셋을
+// 함체 선택 팝업 — UIPanelFleet 프리팹에 내장된 오버레이(별도 UIManager 팝업 스택 대상 아님). 리스트에서 함체를
 // 고르고 확인/취소로 결정만 알려줄 뿐, 실제로 어느 슬롯에 어떻게 적용할지는 모른다(호출부가 콜백에서 처리) — 재사용성을
-// 위해 이 컴포넌트는 "선택기" 역할만 담당한다. 선택된 프리셋의 스탯을 현재 장착 프리셋과 비교해서 함께 보여준다
+// 위해 이 컴포넌트는 "선택기" 역할만 담당한다. 선택된 함체의 스탯을 현재 장착 함체와 비교해서 함께 보여준다
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UIShipPresetPickerView : MonoBehaviour
+public class UIHullPickerView : MonoBehaviour
 {
     [SerializeField] private InfiniteScrollView m_scrollView;
-    [SerializeField] private UIAvailablePresetRow m_rowPrefab;
+    [SerializeField] private UIAvailableHullRow m_rowPrefab;
     [SerializeField] private Button m_confirmButton;
     [SerializeField] private Button m_cancelButton;
 
-    [SerializeField] private UIStatRow m_statsRowPrefab; // 선택된 프리셋의 스탯 — Column_Stats와 동일한 구조/프리팹 재사용
+    [SerializeField] private UIStatRow m_statsRowPrefab; // 선택된 함체의 스탯 — Column_Stats와 동일한 구조/프리팹 재사용
     [SerializeField] private InfiniteScrollView m_statsScrollView;
 
     [SerializeField] private RowLabelValue m_commandPowerRow; // 선택 후보를 적용했을 때의 지휘력 미리보기 — UIPanelFleet 성능 컬럼의 지휘력 행과 동일한 구성
 
-    [SerializeField] private RawImage m_previewImage; // 선택된 프리셋의 3D 바디 미리보기 — ShipPreviewManager가 렌더링한 텍스처
+    [SerializeField] private RawImage m_previewImage; // 선택된 함체의 3D 바디 미리보기 — ShipPreviewManager가 렌더링한 텍스처
 
-    private readonly List<ModuleData> m_presetsCache = new();
+    private readonly List<ModuleData> m_hullsCache = new();
     private List<ShipStatRowEntry> m_statEntries = new();
     private Dictionary<string, ShipStatRowEntry> m_currentEntriesByLabel; // 비교 기준(현재 장착 함체) — 라벨로 조회
 
     private string m_selectedHullSubType;
-    private ModuleBodyInfo m_currentModules; // 이 슬롯에 실제로 장착돼 있던 모듈 — 함체 변경 시 슬롯 유지 계산의 기준
+    private ModuleHullInfo m_currentModules; // 이 슬롯에 실제로 장착돼 있던 모듈 — 함체 변경 시 슬롯 유지 계산의 기준
     private int m_currentSlotCommandCost; // 이 슬롯이 지금 실제로 쓰고 있는 지휘력 — 각 후보 함체 행의 증감(+/-) 표시 기준
     private int m_baseUsedCommandPower; // 이 슬롯이 점유 중이던 지휘력을 미리 뺀 값 — 후보 함체 비용만 더하면 미리보기 완성
     private int m_maxCommandPower;
@@ -45,14 +45,14 @@ public class UIShipPresetPickerView : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    // availablePresets: 고를 수 있는 함체 목록, currentHull: 비교 기준이 되는 현재 장착 함체(빈 슬롯이면 null → 비교 없이 수치만 표시)
+    // availableHulls: 고를 수 있는 함체 목록, currentHull: 비교 기준이 되는 현재 장착 함체(빈 슬롯이면 null → 비교 없이 수치만 표시)
     // currentModules: 그 슬롯에 실제로 장착된 모듈 구성(로드아웃) — null이면 currentHull의 기본 장착 구성으로 비교
     // currentSlotCommandCost: 이 슬롯이 지금 실제로 쓰고 있는 지휘력 — 리스트 각 행의 증감(+/-) 표시 기준
     // baseUsedCommandPower: 이 슬롯이 점유 중이던 몫을 이미 뺀 사용 지휘력(호출부가 계산해서 넘김)
-    public void Open(List<ModuleData> availablePresets, ModuleData currentHull, ModuleBodyInfo currentModules, int currentSlotCommandCost, int baseUsedCommandPower, int maxCommandPower, System.Action<string> onConfirm, System.Action onCancel = null)
+    public void Open(List<ModuleData> availableHulls, ModuleData currentHull, ModuleHullInfo currentModules, int currentSlotCommandCost, int baseUsedCommandPower, int maxCommandPower, System.Action<string> onConfirm, System.Action onCancel = null)
     {
-        m_presetsCache.Clear();
-        m_presetsCache.AddRange(availablePresets);
+        m_hullsCache.Clear();
+        m_hullsCache.AddRange(availableHulls);
         m_selectedHullSubType = currentHull != null ? currentHull.moduleSubType.ToString() : null;
         m_currentModules = currentModules;
         m_currentSlotCommandCost = currentSlotCommandCost;
@@ -72,7 +72,7 @@ public class UIShipPresetPickerView : MonoBehaviour
 
         // Initialize는 viewport 크기를 읽으므로 반드시 활성화 다음에 호출 — 비활성 상태로 호출하면 NRE 위험
         gameObject.SetActive(true);
-        m_scrollView.Initialize(m_presetsCache.Count, m_rowPrefab.gameObject);
+        m_scrollView.Initialize(m_hullsCache.Count, m_rowPrefab.gameObject);
         RefreshStatsDisplay();
         RefreshCommandPowerPreview();
         RefreshPreview();
@@ -94,31 +94,31 @@ public class UIShipPresetPickerView : MonoBehaviour
         float aspect = previewRect.height > 0f ? previewRect.width / previewRect.height : 1f;
 
         m_previewImage.texture = ShipPreviewManager.Instance.GetPreviewTexture(aspect);
-        ModuleData selectedHull = m_presetsCache.Find(p => p.moduleSubType.ToString() == m_selectedHullSubType);
-        ShipPreviewManager.Instance.ShowPreset(selectedHull);
+        ModuleData selectedHull = m_hullsCache.Find(p => p.moduleSubType.ToString() == m_selectedHullSubType);
+        ShipPreviewManager.Instance.ShowHull(selectedHull);
     }
 
     private void OnItemBind(int dataIndex, GameObject rowObject)
     {
-        if (dataIndex < 0 || dataIndex >= m_presetsCache.Count) return;
+        if (dataIndex < 0 || dataIndex >= m_hullsCache.Count) return;
 
-        UIAvailablePresetRow row = rowObject.GetComponent<UIAvailablePresetRow>();
+        UIAvailableHullRow row = rowObject.GetComponent<UIAvailableHullRow>();
         if (row == null) return;
 
-        ModuleData hull = m_presetsCache[dataIndex];
+        ModuleData hull = m_hullsCache[dataIndex];
         string hullSubType = hull.moduleSubType.ToString();
         FleetComposition composition = DataManager.Instance.m_currentFleetComposition;
-        ModuleBodyInfo keptModulesForRow = GetKeptModules(hullSubType);
+        ModuleHullInfo keptModulesForRow = GetKeptModules(hullSubType);
         int projectedCost = composition != null ? composition.ComputeProjectedSlotCommandCost(hullSubType, keptModulesForRow) : hull.statPoint;
         int deltaCost = projectedCost - m_currentSlotCommandCost;
 
-        row.Setup(hull, deltaCost, OnPresetClicked);
-        row.SetSelectedAvailablePresetRow(hullSubType == m_selectedHullSubType);
+        row.Setup(hull, deltaCost, OnHullClicked);
+        row.SetSelectedAvailableHullRow(hullSubType == m_selectedHullSubType);
 
         LayoutRebuilder.ForceRebuildLayoutImmediate(rowObject.transform as RectTransform);
     }
 
-    private void OnPresetClicked(ModuleData hull)
+    private void OnHullClicked(ModuleData hull)
     {
         m_selectedHullSubType = hull.moduleSubType.ToString();
         m_scrollView.RefreshVisible(); // 재바인드되며 OnItemBind가 다시 불려 하이라이트가 새 선택으로 갱신됨
@@ -135,7 +135,7 @@ public class UIShipPresetPickerView : MonoBehaviour
         if (m_commandPowerRow == null) return;
 
         FleetComposition composition = DataManager.Instance.m_currentFleetComposition;
-        ModuleBodyInfo keptModules = GetKeptModules(m_selectedHullSubType);
+        ModuleHullInfo keptModules = GetKeptModules(m_selectedHullSubType);
         int selectedCost = composition != null ? composition.ComputeProjectedSlotCommandCost(m_selectedHullSubType, keptModules) : 0;
         int projectedUsedCommandPower = m_baseUsedCommandPower + selectedCost;
         bool isOverCommandPower = projectedUsedCommandPower > m_maxCommandPower;
@@ -151,13 +151,13 @@ public class UIShipPresetPickerView : MonoBehaviour
 
     // m_currentModules를 targetHullSubType의 슬롯 범위로 필터링한 결과 — 리스트 각 행의 비용 미리보기와 선택된 함체의 미리보기/Confirm에 공용으로 사용
     // m_currentModules가 null이면(원래 비어있던 슬롯) null을 그대로 반환해 기본 로드아웃 시딩 분기를 그대로 타게 함
-    private ModuleBodyInfo GetKeptModules(string targetHullSubType)
+    private ModuleHullInfo GetKeptModules(string targetHullSubType)
     {
-        return FleetComposition.FilterModulesForNewPreset(m_currentModules, targetHullSubType);
+        return FleetComposition.FilterModulesForNewHull(m_currentModules, targetHullSubType);
     }
 
     // 유지된 모듈이 하나도 없던 원래 빈 슬롯(null)이면 기본 로드아웃(빔slot0)이 시딩되므로 항상 공격모듈이 있는 것으로 취급
-    private bool HasAnyAttackModule(ModuleBodyInfo modules)
+    private bool HasAnyAttackModule(ModuleHullInfo modules)
     {
         if (modules == null) return true;
         bool hasBeam = modules.beams != null && modules.beams.Count > 0;
@@ -170,7 +170,7 @@ public class UIShipPresetPickerView : MonoBehaviour
     // 여기서는 m_statEntries만 갱신하고 Initialize로 스크롤뷰에 개수만 알려줌
     private void RefreshStatsDisplay()
     {
-        ModuleData selectedHull = m_presetsCache.Find(p => p.moduleSubType.ToString() == m_selectedHullSubType);
+        ModuleData selectedHull = m_hullsCache.Find(p => p.moduleSubType.ToString() == m_selectedHullSubType);
         if (selectedHull == null)
         {
             m_statEntries.Clear();
@@ -179,7 +179,7 @@ public class UIShipPresetPickerView : MonoBehaviour
             return;
         }
 
-        ModuleBodyInfo keptModules = GetKeptModules(m_selectedHullSubType);
+        ModuleHullInfo keptModules = GetKeptModules(m_selectedHullSubType);
         List<ShipStatRowEntry> entries = ShipStatGaugeBuilder.Build(selectedHull, keptModules);
         AppendRemovedStatEntries(entries);
         m_statEntries = entries;
@@ -205,7 +205,7 @@ public class UIShipPresetPickerView : MonoBehaviour
             row.SetValueOnly(entry.label, entry.rawValueText, diffText);
     }
 
-    // 현재 장착 프리셋엔 있었지만 선택한 프리셋에는 없어진 스탯(예: 미사일 미장착으로 변경)도 0값 항목으로 추가해
+    // 현재 장착 함체엔 있었지만 선택한 함체에는 없어진 스탯(예: 미사일 미장착으로 변경)도 0값 항목으로 추가해
     // 감소(-) diff를 보여준다 — Normal 모드(게이지형 DPS 등)만 대상. None/Reverse는 0으로 대체할 의미있는 표시값이 없어 제외
     private void AppendRemovedStatEntries(List<ShipStatRowEntry> entries)
     {
@@ -228,8 +228,8 @@ public class UIShipPresetPickerView : MonoBehaviour
         }
     }
 
-    // 라벨로 현재 장착 프리셋의 동일 스탯을 찾아 증감을 리치텍스트로 포맷.
-    // 현재 프리셋에 아예 없던 스탯(예: 미사일 미장착 → 장착)은 기준값 0으로 취급해 신규 획득으로 표시
+    // 라벨로 현재 장착 함체의 동일 스탯을 찾아 증감을 리치텍스트로 포맷.
+    // 현재 함체에 아예 없던 스탯(예: 미사일 미장착 → 장착)은 기준값 0으로 취급해 신규 획득으로 표시
     private string BuildDiffText(ShipStatRowEntry entry)
     {
         return ShipStatGaugeBuilder.BuildDiffText(entry, m_currentEntriesByLabel);

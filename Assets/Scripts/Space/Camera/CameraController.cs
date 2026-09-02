@@ -148,16 +148,16 @@ public class CameraController : MonoSingleton<CameraController>
         ApplyZoomRangeFromShip(ship);
     }
 
-    // 함선의 첫 번째 ModuleBody에서 줌 범위를 읽어 적용
+    // 함선의 첫 번째 ModuleHull에서 줌 범위를 읽어 적용
     public void ApplyZoomRangeFromShip(SpaceShip ship)
     {
-        if (ship == null || ship.m_moduleBodys == null || ship.m_moduleBodys.Count == 0) return;
-        ModuleBody body = ship.m_moduleBodys[0];
-        if (body == null) return;
+        if (ship == null || ship.m_moduleHulls == null || ship.m_moduleHulls.Count == 0) return;
+        ModuleHull hull = ship.m_moduleHulls[0];
+        if (hull == null) return;
 
         m_zoomRangeSourceShip = ship;
-        m_minZoom = body.m_cameraMinZoom;
-        m_maxZoom = body.m_cameraMaxZoom;
+        m_minZoom = hull.m_cameraMinZoom;
+        m_maxZoom = hull.m_cameraMaxZoom;
 
         // 현재 줌이 새 범위를 벗어나면 clamp
         float clampedZoom = Mathf.Clamp(m_currentZoom, m_minZoom, m_maxZoom);

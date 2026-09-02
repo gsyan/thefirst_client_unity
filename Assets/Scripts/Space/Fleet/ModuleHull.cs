@@ -5,14 +5,15 @@ using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class ModuleBody : ModuleBase
+public class ModuleHull : ModuleBase
 {
-    [HideInInspector] public ModuleBodyInfo m_moduleBodyInfo;
+    [HideInInspector] public ModuleHullInfo m_moduleHullInfo;
 
     [HideInInspector] public List<ModuleSlot> m_moduleSlots = new List<ModuleSlot>();
     [HideInInspector] public List<ModuleBeam> m_beams = new List<ModuleBeam>();
     [HideInInspector] public List<ModuleMissile> m_missiles = new List<ModuleMissile>();
     [HideInInspector] public List<ModuleHangar> m_hangars = new List<ModuleHangar>();
+    [HideInInspector] public ModuleShield m_shield; // 슬롯/3D 배치 없음 — InitializeModuleHull에서 자식으로 동적 생성
 
     private const float k_hitPenetrationRatio = 0.1f; // 충돌 지점에서 중심부로 파고드는 비율
     [SerializeField] private List<Vector3> m_hitPoints = new List<Vector3>(); // 에디터에서 베이킹, 로컬 좌표
@@ -46,53 +47,53 @@ public class ModuleBody : ModuleBase
     
     public override EModuleType GetModuleType()
     {
-        return m_moduleBodyInfo.moduleType;
+        return m_moduleHullInfo.moduleType;
     }
     public override EModuleSubType GetModuleSubType()
     {
-        return m_moduleBodyInfo.moduleSubType;
+        return m_moduleHullInfo.moduleSubType;
     }
     public override int GetModuleSlotIndex()
     {
-        return m_moduleBodyInfo.bodyIndex;
+        return m_moduleHullInfo.hullIndex;
     }
     public override int GetModuleLevel()
     {
-        return m_moduleBodyInfo.moduleLevel;
+        return m_moduleHullInfo.moduleLevel;
     }
     public override void SetModuleLevel(int level)
     {
-        m_moduleBodyInfo.moduleLevel = level;
+        m_moduleHullInfo.moduleLevel = level;
     }
 
-    public override int GetModuleBodyIndex()
+    public override int GetModuleHullIndex()
     {
-        return m_moduleBodyInfo.bodyIndex;
+        return m_moduleHullInfo.hullIndex;
     }
-    public override void SetModuleBodyIndex(int bodyIndex)
+    public override void SetModuleHullIndex(int hullIndex)
     {
-        m_moduleBodyInfo.bodyIndex = bodyIndex;
+        m_moduleHullInfo.hullIndex = hullIndex;
     }
 
-    // Body 초기화 (기존 모듈 재사용 가능)
+    // Hull 초기화 (기존 모듈 재사용 가능)
     // statOverride: 성능포인트 프리셋 기반 스폰 시 테이블 값 대신 사용할 계산값(체력/수리력/슬롯별 공격력). null이면 기존처럼 테이블값 그대로 사용
-    public void InitializeModuleBody(ModuleBodyInfo moduleBodyInfo, List<ModuleBase> savedModules, ShipFinalStats? statOverride = null)
+    public void InitializeModuleHull(ModuleHullInfo moduleHullInfo, List<ModuleBase> savedModules, ShipFinalStats? statOverride = null)
     {
-        m_moduleBodyInfo = moduleBodyInfo;
+        m_moduleHullInfo = moduleHullInfo;
         m_moduleSlot = null;
 
         // 서버 데이터로부터 완전한 모듈 데이터 복원
-        ModuleData moduleData = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(moduleBodyInfo.moduleSubType);
+        ModuleData moduleData = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(moduleHullInfo.moduleSubType);
         if (moduleData == null) return;
 
         // 복원된 데이터로 초기화 — 체력/수리력은 프리셋 계산값 있으면 그걸로 대체, 없으면 기존처럼 테이블값
         m_baseHealthMax = statOverride?.health ?? moduleData.health;
         m_healthMax = m_baseHealthMax;
-        m_health = moduleBodyInfo.currentHealth > 0f ? Mathf.Min(moduleBodyInfo.currentHealth, m_healthMax) : m_healthMax;
+        m_health = moduleHullInfo.currentHealth > 0f ? Mathf.Min(moduleHullInfo.currentHealth, m_healthMax) : m_healthMax;
 
-        m_attack = 0.0f; // Body는 직접 공격하지 않음
+        m_attack = 0.0f; // Hull은 직접 공격하지 않음
 
-        // Body 전용 능력치
+        // Hull 전용 능력치
         m_repair = statOverride?.repair ?? moduleData.repair;
         m_speed  = moduleData.speed; // 선회력(turnRate) 반영은 후속 작업
 
@@ -117,7 +118,7 @@ public class ModuleBody : ModuleBase
             RestoreSavedModules(savedModules);
 
         // 빈 슬롯에 서버 정보대로 모듈 생성 (savedModules 유무와 관계없이)
-        CreateMissingModules(moduleBodyInfo, statOverride);
+        CreateMissingModules(moduleHullInfo, statOverride);
 
     }
 
@@ -278,7 +279,7 @@ public class ModuleBody : ModuleBase
     
     // 서버 정보에 있지만 재배치되지 못한 모듈들을 생성
     // statOverride: 성능포인트 프리셋 기반 스폰 시 슬롯별(beamInfo.slotIndex 기준) 공격력 계산값 — null이면 기존처럼 테이블값 사용
-    private void CreateMissingModules(ModuleBodyInfo bodyInfo, ShipFinalStats? statOverride = null)
+    private void CreateMissingModules(ModuleHullInfo bodyInfo, ShipFinalStats? statOverride = null)
     {
         // Beam 생성
         if (bodyInfo.beams != null)
@@ -326,6 +327,24 @@ public class ModuleBody : ModuleBase
 
         // 실제 모듈이 없는 슬롯의 Placeholder 초기화
         FillEmptySlotsWithPlaceholders();
+
+        // 실드 — 슬롯/3D 배치 없이 논리적으로만 존재하는 자식 컴포넌트
+        InitializeShield(bodyInfo.shieldModuleSubType);
+    }
+
+    private void InitializeShield(string shieldSubTypeName)
+    {
+        EModuleSubType shieldSubType = System.Enum.TryParse(shieldSubTypeName, out EModuleSubType parsed) ? parsed : EModuleSubType.none;
+
+        if (m_shield == null)
+        {
+            GameObject shieldObj = new GameObject("ModuleShield");
+            shieldObj.transform.SetParent(transform, false);
+            m_shield = shieldObj.AddComponent<ModuleShield>();
+        }
+
+        m_shield.SetFleetInfo(m_ownerFleet, m_ownerShip);
+        m_shield.InitializeModuleShield(shieldSubType);
     }
 
     // 프리셋 계산값 배열에서 slotIndex에 해당하는 값을 안전하게 조회 (범위 밖/null이면 override 없음)
@@ -448,8 +467,8 @@ public class ModuleBody : ModuleBase
     // Beam 추가
     public void AddBeam(ModuleBeam beam)
     {
-        if (m_moduleBodyInfo.beams.Contains(beam.m_moduleInfo) == false)
-            m_moduleBodyInfo.beams.Add(beam.m_moduleInfo);
+        if (m_moduleHullInfo.beams.Contains(beam.m_moduleInfo) == false)
+            m_moduleHullInfo.beams.Add(beam.m_moduleInfo);
 
         if (m_beams.Contains(beam) == false)
             m_beams.Add(beam);
@@ -458,8 +477,8 @@ public class ModuleBody : ModuleBase
     // Missile 추가
     public void AddMissile(ModuleMissile missile)
     {
-        if (m_moduleBodyInfo.missiles.Contains(missile.m_moduleInfo) == false)
-            m_moduleBodyInfo.missiles.Add(missile.m_moduleInfo);
+        if (m_moduleHullInfo.missiles.Contains(missile.m_moduleInfo) == false)
+            m_moduleHullInfo.missiles.Add(missile.m_moduleInfo);
 
         if (m_missiles.Contains(missile) == false)
             m_missiles.Add(missile);
@@ -468,8 +487,8 @@ public class ModuleBody : ModuleBase
     // 행거 추가
     public void AddHangar(ModuleHangar hangar)
     {
-        if (m_moduleBodyInfo.hangars.Contains(hangar.m_moduleInfo) == false)
-            m_moduleBodyInfo.hangars.Add(hangar.m_moduleInfo);
+        if (m_moduleHullInfo.hangars.Contains(hangar.m_moduleInfo) == false)
+            m_moduleHullInfo.hangars.Add(hangar.m_moduleInfo);
 
         if (!m_hangars.Contains(hangar))
             m_hangars.Add(hangar);
@@ -479,14 +498,14 @@ public class ModuleBody : ModuleBase
     public void RemoveBeam(ModuleBeam beam, bool bRemoveFromInfo = false)
     {
         if( bRemoveFromInfo == true)
-            m_moduleBodyInfo.beams.Remove(beam.m_moduleInfo);
+            m_moduleHullInfo.beams.Remove(beam.m_moduleInfo);
         m_beams.Remove(beam);
     }
 
     public void RemoveMissile(ModuleMissile missile, bool bRemoveFromInfo = false)
     {
         if( bRemoveFromInfo == true)
-            m_moduleBodyInfo.missiles.Remove(missile.m_moduleInfo);
+            m_moduleHullInfo.missiles.Remove(missile.m_moduleInfo);
         m_missiles.Remove(missile);
     }
 
@@ -494,7 +513,7 @@ public class ModuleBody : ModuleBase
     public void RemoveHangar(ModuleHangar hangar, bool bRemoveFromInfo = false)
     {
         if( bRemoveFromInfo == true)
-            m_moduleBodyInfo.hangars.Remove(hangar.m_moduleInfo);
+            m_moduleHullInfo.hangars.Remove(hangar.m_moduleInfo);
         m_hangars.Remove(hangar);
     }
 
@@ -510,7 +529,7 @@ public class ModuleBody : ModuleBase
                 moduleType    = s.moduleType,
                 moduleSubType = s.moduleSubType,
                 moduleLevel   = s.moduleLevel,
-                bodyIndex     = s.bodyIndex,
+                hullIndex     = s.hullIndex,
                 slotIndex     = s.slotIndex,
             });
         }
@@ -538,7 +557,7 @@ public class ModuleBody : ModuleBase
         return null;
     }
 
-    public void SetTarget(ModuleBody target)
+    public void SetTarget(ModuleHull target)
     {
         foreach (ModuleSlot slot in m_moduleSlots)
         {
@@ -576,7 +595,7 @@ public class ModuleBody : ModuleBase
         // 살아있다가 죽는 시점에만 발동 — 이미 0인 상태에서 중복 발동 방지
         if (wasAlive == true && m_health <= 0)
         {
-            EventManager.Trigger_ModuleBodyDestroyed(this);
+            EventManager.Trigger_ModuleHullDestroyed(this);
 
             // 모든 슬롯의 모듈 비활성화
             foreach (ModuleSlot slot in m_moduleSlots)
@@ -594,7 +613,7 @@ public class ModuleBody : ModuleBase
     // Body의 능력치 프로파일 계산
     public override CapabilityProfile GetModuleCapabilityProfile(bool bByInfo)
     {
-        if (bByInfo == true) return CommonUtility.GetBodyCapabilityProfile(m_moduleBodyInfo);
+        if (bByInfo == true) return CommonUtility.GetBodyCapabilityProfile(m_moduleHullInfo);
 
         CapabilityProfile stats = new CapabilityProfile();
         if (m_health <= 0) return stats;

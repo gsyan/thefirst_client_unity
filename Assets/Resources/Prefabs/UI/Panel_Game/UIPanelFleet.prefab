@@ -5873,7 +5873,7 @@ MonoBehaviour:
   m_statsRowPrefab: {fileID: 9111590323404070704, guid: 813e52443a9ab4f4487ed4676781e65c, type: 3}
   m_placedShipRowPrefab: {fileID: 4677943711482774840, guid: 8b24e6f1979deea4b8d9baf2c5f58345, type: 3}
   m_placedShipsScrollView: {fileID: 98391494410644926}
-  m_shipPresetPicker: {fileID: 4330114161544118328}
+  m_hullPicker: {fileID: 4330114161544118328}
   m_shipLoadoutEditor: {fileID: 5132102911062384626}
   m_editLoadoutButton: {fileID: 833364820828775562}
   m_columnContainer: {fileID: 3819210033315330330}
@@ -9381,7 +9381,7 @@ GameObject:
   - component: {fileID: 95805188284282200}
   - component: {fileID: 4330114161544118328}
   m_Layer: 5
-  m_Name: UIShipPresetPickerView
+  m_Name: UIHullPickerView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -1,6 +1,6 @@
 // 함대편성 UI — 배치된 함선 슬롯 1개. 빈 슬롯 상태(SetEmpty)와 채워진 상태(Setup)를 모두 표현 —
 // 항상 일정 개수의 슬롯이 보여야 드래그로 놓을 자리가 눈에 보이고, 컨테이너 크기가 0으로 줄어드는 것도 방지됨
-// 함선 이름 텍스트 + 함선 타입 선택 버튼(누르면 UIShipPresetPickerView가 뜸) + 전방/후방 슬라이드 토글(UIToggleSlide) + 행 클릭(성능 컬럼에 이 함선 스탯 표시)
+// 함선 이름 텍스트 + 함선 타입 선택 버튼(누르면 UIHullPickerView가 뜸) + 전방/후방 슬라이드 토글(UIToggleSlide) + 행 클릭(성능 컬럼에 이 함선 스탯 표시)
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Serialization;

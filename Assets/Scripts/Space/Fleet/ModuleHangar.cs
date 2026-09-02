@@ -56,7 +56,7 @@ public class AircraftInfo
 
 public class ModuleHangar : ModuleBase
 {
-    [SerializeField] private ModuleBody m_parentBody;
+    [SerializeField] private ModuleHull m_parentBody;
     public ModuleInfo m_moduleInfo; 
     
     [SerializeField] private float m_launchCool;
@@ -69,17 +69,17 @@ public class ModuleHangar : ModuleBase
     // 발사대 관련
     [SerializeField] private List<LauncherBase> m_launchers = new List<LauncherBase>();
 
-    private ModuleBody m_currentTarget;
+    private ModuleHull m_currentTarget;
     private Coroutine m_autoAttackCoroutine;
     private Coroutine m_maintenanceCoroutine;
 
     // Body 교체 시 기존 모듈 승계용 — 새 부모 body로 갱신
-    public void SetParentBody(ModuleBody parentBody)
+    public void SetParentBody(ModuleHull parentBody)
     {
         m_parentBody = parentBody;
     }
 
-    public void InitializeModuleHangar(ModuleInfo moduleInfo, ModuleBody parentBody, ModuleSlot moduleSlot)
+    public void InitializeModuleHangar(ModuleInfo moduleInfo, ModuleHull parentBody, ModuleSlot moduleSlot)
     {
         m_moduleInfo = moduleInfo;
         m_parentBody = parentBody;
@@ -180,7 +180,7 @@ public class ModuleHangar : ModuleBase
         }
     }
     
-    private void ExecuteLaunchOnTarget(ModuleBody target)
+    private void ExecuteLaunchOnTarget(ModuleHull target)
     {
         // LauncherAircraft는 DamageInfo를 사용하지 않음 — 배율은 출격 시 FireCoroutine에서 AircraftInfo에 저장
         DamageInfo unused = default;
@@ -267,14 +267,14 @@ public class ModuleHangar : ModuleBase
         m_moduleInfo.moduleLevel = level;
     }
 
-    public override int GetModuleBodyIndex()
+    public override int GetModuleHullIndex()
     {
-        return m_moduleInfo.bodyIndex;
+        return m_moduleInfo.hullIndex;
     }
 
-    public override void SetModuleBodyIndex(int bodyIndex)
+    public override void SetModuleHullIndex(int hullIndex)
     {
-        m_moduleInfo.bodyIndex = bodyIndex;
+        m_moduleInfo.hullIndex = hullIndex;
     }
 
     // 비전투→전투 전환 시 호출 — 미귀환 상태인 풀 내 함재기도 준비 상태로 초기화, 정원 대비 부족분은 신규 보충
@@ -297,13 +297,13 @@ public class ModuleHangar : ModuleBase
     public float GetLaunchCool() => m_launchCool;
     public float GetMaintenanceTime() => m_airMaintenanceTime;
 
-    public void SetTarget(ModuleBody target)
+    public void SetTarget(ModuleHull target)
     {
         m_currentTarget = target;
     }
 
     // 현재 모함의 타겟 반환 (함재기 목표 재할당용)
-    public ModuleBody GetCurrentTarget()
+    public ModuleHull GetCurrentTarget()
     {
         if (m_currentTarget != null && m_currentTarget.gameObject.activeSelf && m_currentTarget.m_health > 0)
             return m_currentTarget;
@@ -320,7 +320,7 @@ public class ModuleHangar : ModuleBase
         // 함재기 데이터로부터 계산
         ModuleData moduleData = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(m_moduleInfo.moduleSubType);
         // airAttack은 함재기 1기당 공격력이라, 이 격납고의 총 화력(1기당 공격력 × 함재기 수)으로 환산
-        // — 함선에 격납고가 여러 개면 상위(ModuleBody)에서 단순 합산되므로 여기서 미리 곱해둬야 총 화력 합산이 맞음
+        // — 함선에 격납고가 여러 개면 상위(ModuleHull)에서 단순 합산되므로 여기서 미리 곱해둬야 총 화력 합산이 맞음
         stats.airAttack = moduleData.airAttack * moduleData.airCount;
         stats.airCount = moduleData.airCount;
 

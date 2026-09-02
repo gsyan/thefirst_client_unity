@@ -38,7 +38,8 @@ public class UIModuleSlotToggleRow : MonoBehaviour
             SetInstalledLabel(installed);
         }
 
-        bool showReinforceControls = installed == true;
+        // 실드는 강화 포인트 개념이 없음(on/off만 지원) — Invested CP/ManageButton 노출 대상에서 제외
+        bool showReinforceControls = installed == true && moduleType != EModuleType.shield;
         if (m_investedPointsText != null)
         {
             m_investedPointsText.gameObject.SetActive(showReinforceControls);
@@ -75,6 +76,7 @@ public class UIModuleSlotToggleRow : MonoBehaviour
         if (moduleType == EModuleType.beam) return "module_type_beam";
         if (moduleType == EModuleType.missile) return "module_type_missile";
         if (moduleType == EModuleType.hangar) return "module_type_hangar";
+        if (moduleType == EModuleType.shield) return "module_type_shield";
         return "";
     }
 }

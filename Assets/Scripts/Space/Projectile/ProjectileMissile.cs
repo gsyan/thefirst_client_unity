@@ -157,26 +157,26 @@ public class ProjectileMissile : ProjectileBase
         {
             SpaceFleet fleet = opposingFleets[i];
             if (fleet == null || fleet.IsValidCombatTarget() == false) continue;
-            SearchFleetForNearestBody(fleet, myPos, ref nearest, ref nearestSqrDist);
+            SearchFleetForNearestHull(fleet, myPos, ref nearest, ref nearestSqrDist);
         }
         return nearest;
     }
 
-    private void SearchFleetForNearestBody(SpaceFleet fleet, Vector3 myPos, ref Transform nearest, ref float nearestSqrDist)
+    private void SearchFleetForNearestHull(SpaceFleet fleet, Vector3 myPos, ref Transform nearest, ref float nearestSqrDist)
     {
         for (int i = 0; i < fleet.m_ships.Count; i++)
         {
             SpaceShip ship = fleet.m_ships[i];
             if (ship == null || ship.IsAlive() == false) continue;
-            for (int j = 0; j < ship.m_moduleBodys.Count; j++)
+            for (int j = 0; j < ship.m_moduleHulls.Count; j++)
             {
-                ModuleBody body = ship.m_moduleBodys[j];
-                if (body == null || body.m_health <= 0) continue;
-                float sqrDist = (body.transform.position - myPos).sqrMagnitude;
+                ModuleHull hull = ship.m_moduleHulls[j];
+                if (hull == null || hull.m_health <= 0) continue;
+                float sqrDist = (hull.transform.position - myPos).sqrMagnitude;
                 if (sqrDist < nearestSqrDist)
                 {
                     nearestSqrDist = sqrDist;
-                    nearest = body.transform;
+                    nearest = hull.transform;
                 }
             }
         }
@@ -277,6 +277,7 @@ public class ProjectileMissile : ProjectileBase
             {
                 baseDamage       = m_damageInfo.baseDamage * splashRatio,
                 attackMultiplier = m_damageInfo.attackMultiplier,
+                damageType       = m_damageInfo.damageType,
             };
             ship.TakeDamage(splashDamageInfo, splashHitPoint);
         }

@@ -1,11 +1,11 @@
-// 성능포인트 배분(슬롯 배열, 총량은 프리셋마다 가변) → 최종 전투 수치 변환기
+// 성능포인트 배분(슬롯 배열, 총량은 함체마다 가변) → 최종 전투 수치 변환기
 // 계수/기본값은 DataTableConfig.gameSettings.shipStatFormula(ShipStatFormulaSettings)에서 주입받음 — 하드코딩 없음
 // 이 클래스는 DataTableConfig를 직접 조회하지 않음 — 호출부가 formula를 꺼내 넘겨줌 (순수 함수 유지)
 using System.Collections.Generic;
 
 public static class ShipStatCalculator
 {
-    // bodyModuleData: 프리셋의 prefabName(body subType)에 대응하는 DataTableModule 원본 데이터 — 체력/수리력/선회력의 기본 수치 출처
+    // bodyModuleData: 함체(hullSubType, body subType)에 대응하는 DataTableModule 원본 데이터 — 체력/수리력/선회력의 기본 수치 출처
     // null이면(조회 실패 등) 기본 수치 0으로 처리 — 강화 포인트만 반영
     // moduleTable: 슬롯에 장착된 무기/실드/요격체 서브타입별 기본 수치(공격력/쿨다운/발사체속도 등) 조회용 — formula는 포인트당 증감 계수만 제공
     public static ShipFinalStats Calculate(ShipStatAllocation allocation, ShipStatFormulaSettings formula, ModuleData bodyModuleData = null, DataTableModule moduleTable = null)
@@ -41,12 +41,9 @@ public static class ShipStatCalculator
         {
             ModuleData shieldModuleData = GetModuleData(moduleTable, allocation.shieldModuleSubType);
             float baseShieldGauge = shieldModuleData != null ? shieldModuleData.shieldGauge : 0f;
-            float baseShieldDelay = shieldModuleData != null ? shieldModuleData.shieldDelay : 0f;
             float baseShieldRegenRate = shieldModuleData != null ? shieldModuleData.shieldRegenRate : 0f;
 
             stats.shieldGauge = baseShieldGauge + allocation.shieldGaugePoints * formula.shield.gaugePerPoint;
-            float shieldDelayRaw = baseShieldDelay - allocation.shieldDelayPoints * formula.shield.delayReductionPerPoint;
-            stats.shieldDelay = System.Math.Max(formula.shield.delayFloor, shieldDelayRaw);
             stats.shieldRegenRate = baseShieldRegenRate + allocation.shieldRegenRatePoints * formula.shield.regenRatePerPoint;
         }
 
@@ -113,7 +110,7 @@ public static class ShipStatCalculator
         return result.ToArray();
     }
 
-    // 신규 추가 필드는 기존 프리셋 데이터에서 배열 크기가 subType 배열과 다를 수 있어 범위를 벗어나면 0으로 취급
+    // 신규 추가 필드는 기존 로드아웃 데이터에서 배열 크기가 subType 배열과 다를 수 있어 범위를 벗어나면 0으로 취급
     private static int GetAt(int[] array, int index)
     {
         return index < array.Length ? array[index] : 0;

@@ -120,9 +120,8 @@ RewardCard_InterceptorHeal_Name,,Interceptor Resupply,요격체 회복
 RewardCard_InterceptorHeal_Desc,,Restore {0:P0} of interceptors,요격체 {0:P0} 회복
 RewardCard_PointFlat_Name,,Exploration Point Bonus,탐험 포인트 획득
 RewardCard_PointFlat_Desc,,Exploration Point +{0:F0},탐험 포인트 +{0:F0}
-UIAvailablePresetRow_Name,,Name:,이름:
-UIAvailablePresetRow_Cost,,Cost:,비용:
-
+UIAvailableHullRow_Name,,Name:,이름:
+UIAvailableHullRow_Cost,,Cost:,비용:
 UITabFleet_AddShipText,,+ ADD SHIP,+ 함선 추가
 UITabFleet_FleetSynergyMultiply,,( Fleet Synergy : x{0} ),( 함대 시너지 : x{0} )
 UIFleet_Front,,Front,전방
@@ -131,10 +130,9 @@ UIFleet_PlacedShipCount,,Placed Ships,배치 함선 수
 UIFleet_PlaceShip,,Deploy Ship,함선 배치
 UIFleet_PlaceFailed_Locked,,This slot is locked. Raise your commander level to unlock it.,잠긴 슬롯입니다. 커맨더 레벨을 올려 슬롯을 해제하세요.
 UIFleet_PlaceFailed_NotEnoughCommandPower,,Not enough command power.,지휘력이 부족합니다.
-UIFleet_PlaceFailed_PresetNotFound,,This ship preset is unavailable.,사용할 수 없는 함선 프리셋입니다.
+UIFleet_PlaceFailed_HullNotFound,,This hull is unavailable.,사용할 수 없는 함체입니다.
 UIFleet_PlacedShipsTitle,,Fleet,함대구성
 UIFleet_StatsTitle,,Stats,성능
-UIFleet_AvailablePresetsTitle,,Available Ships,배치가능 함선
 UIFleet_Stats_Health,,Health,체력
 UIFleet_Stats_TurnRate,,Turn Rate,선회력
 UIFleet_Stats_Repair,,Repair,수리력
@@ -147,11 +145,9 @@ UIFleet_Stats_FighterAmmo,,Fighter Ammo,함재기 탄약
 UIFleet_Stats_FighterHealth,,Fighter Health,함재기 체력
 UIFleet_Stats_FighterDisrupt,,Fighter Disrupt,함재기 교란
 UIFleet_Stats_ShieldGauge,,Shield Gauge,실드 게이지
-UIFleet_Stats_ShieldRestartDelay,,Shield Restart Delay,실드 재가동 딜레이
 UIFleet_Stats_ShieldRegenRate,,Shield Regen Rate,실드 회복속도
 UIFleet_Stats_InterceptorReloadDelay,,Interceptor Reload Delay,요격체 보충 딜레이
 UIFleet_Stats_InterceptorRegenRate,,Interceptor Regen Rate,요격체 회복속도
-UIFleet_ShipPreset_Title,,Ship Preset,함선 프리셋
 UIFleet_ShipLoadOut_Title,,Ship Loadout,함선 모듈 관리
 UIFleet_EditLoadoutButton,,Edit,함선 수정
 UITabFleetTactics_Name,,FLEET TACTICS,함대 전술
@@ -245,11 +241,12 @@ Simple_AirAmmo,,Aircraft Ammo,함재기 탄약
 Simple_AirDisrupt,,Disrupt,교란
 module_type_beam_placeholder,,Beam(Locked),빔(잠김)
 module_type_missile_placeholder,,Missile(Locked),미사일(잠김)
-module_type_body,,Body,함체
+module_type_hull,,Hull,함체
 module_type_engine,,Engine,엔진
 module_type_beam,,Beam,빔
 module_type_missile,,Missile,미사일
 module_type_hangar,,Hangar,격납고
+module_type_shield,,Shield,실드
 UIFleet_ModuleSlot_Installed,,Installed,장착
 UIFleet_ModuleSlot_NotInstalled,,Not Installed,해제
 UIFleet_ModuleReinforce_Title,,Module Reinforce,모듈 강화
@@ -328,8 +325,5 @@ ShipName_5,,Foxtrot,폭스트롯
 ShipName_6,,Golf,골프
 ShipName_7,,Hotel,호텔
 ShipName_8,,India,인디아
-ShipPreset_BeamLight01,,Light Beam Ship,경량 빔함
-ShipPreset_MissileHeavy01,,Heavy Missile Ship,중장갑 미사일함
-ShipPreset_Carrier01,,Carrier,항모형
 FleetManagement,,FLEET MANAGEMENT,함대 관리
 Convert,,Convert,변환

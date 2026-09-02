@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a3c077bacc840a4fb101e0ac3fdd056, type: 3}
   m_Name: DataTableModule
   m_EditorClassIdentifier: 
-  bodyGroups:
+  hullGroups:
   - subType: 10111100
     modules:
     - moduleName: h1_11100
@@ -47,7 +47,44 @@ MonoBehaviour:
       airAvoidRadius: 0
       airDisrupt: 0
       shieldGauge: 0
-      shieldDelay: 0
+      shieldRegenRate: 0
+      interceptorCount: 0
+      interceptorDelay: 0
+      interceptorRegenRate: 0
+  - subType: 10111110
+    modules:
+    - moduleName: h1_11110
+      moduleSubType: 10111110
+      statPoint: 100
+      unlockCommanderLevel: 1
+      description: 
+      moduleSlots:
+      - moduleType: 2
+        slotIndex: 0
+      - moduleType: 3
+        slotIndex: 0
+      - moduleType: 4
+        slotIndex: 0
+      health: 100
+      repair: 0
+      speed: 1
+      turnRate: 1
+      attack: 0
+      splashRadius: 0
+      attackCool: 0
+      silenceTime: 0
+      airCount: 0
+      airMaintenanceTime: 0
+      airHealth: 0
+      airAttack: 0
+      airAttackRange: 0
+      airAttackCool: 0
+      airSpeed: 0
+      airAmmo: 0
+      airDetectRadius: 0
+      airAvoidRadius: 0
+      airDisrupt: 0
+      shieldGauge: 0
       shieldRegenRate: 0
       interceptorCount: 0
       interceptorDelay: 0
@@ -88,7 +125,6 @@ MonoBehaviour:
       airAvoidRadius: 0
       airDisrupt: 0
       shieldGauge: 0
-      shieldDelay: 0
       shieldRegenRate: 0
       interceptorCount: 0
       interceptorDelay: 0
@@ -131,7 +167,6 @@ MonoBehaviour:
       airAvoidRadius: 0
       airDisrupt: 0
       shieldGauge: 0
-      shieldDelay: 0
       shieldRegenRate: 0
       interceptorCount: 0
       interceptorDelay: 0
@@ -176,7 +211,6 @@ MonoBehaviour:
       airAvoidRadius: 0
       airDisrupt: 0
       shieldGauge: 0
-      shieldDelay: 0
       shieldRegenRate: 0
       interceptorCount: 0
       interceptorDelay: 0
@@ -223,7 +257,6 @@ MonoBehaviour:
       airAvoidRadius: 0
       airDisrupt: 0
       shieldGauge: 0
-      shieldDelay: 0
       shieldRegenRate: 0
       interceptorCount: 0
       interceptorDelay: 0
@@ -272,7 +305,6 @@ MonoBehaviour:
       airAvoidRadius: 0
       airDisrupt: 0
       shieldGauge: 0
-      shieldDelay: 0
       shieldRegenRate: 0
       interceptorCount: 0
       interceptorDelay: 0
@@ -323,7 +355,6 @@ MonoBehaviour:
       airAvoidRadius: 0
       airDisrupt: 0
       shieldGauge: 0
-      shieldDelay: 0
       shieldRegenRate: 0
       interceptorCount: 0
       interceptorDelay: 0
@@ -376,7 +407,6 @@ MonoBehaviour:
       airAvoidRadius: 0
       airDisrupt: 0
       shieldGauge: 0
-      shieldDelay: 0
       shieldRegenRate: 0
       interceptorCount: 0
       interceptorDelay: 0
@@ -431,7 +461,6 @@ MonoBehaviour:
       airAvoidRadius: 0
       airDisrupt: 0
       shieldGauge: 0
-      shieldDelay: 0
       shieldRegenRate: 0
       interceptorCount: 0
       interceptorDelay: 0
@@ -488,7 +517,6 @@ MonoBehaviour:
       airAvoidRadius: 0
       airDisrupt: 0
       shieldGauge: 0
-      shieldDelay: 0
       shieldRegenRate: 0
       interceptorCount: 0
       interceptorDelay: 0
@@ -547,7 +575,6 @@ MonoBehaviour:
       airAvoidRadius: 0
       airDisrupt: 0
       shieldGauge: 0
-      shieldDelay: 0
       shieldRegenRate: 0
       interceptorCount: 0
       interceptorDelay: 0
@@ -608,7 +635,6 @@ MonoBehaviour:
       airAvoidRadius: 0
       airDisrupt: 0
       shieldGauge: 0
-      shieldDelay: 0
       shieldRegenRate: 0
       interceptorCount: 0
       interceptorDelay: 0
@@ -642,7 +668,6 @@ MonoBehaviour:
       airAvoidRadius: 0
       airDisrupt: 0
       shieldGauge: 0
-      shieldDelay: 0
       shieldRegenRate: 0
       interceptorCount: 0
       interceptorDelay: 0
@@ -676,7 +701,6 @@ MonoBehaviour:
       airAvoidRadius: 0
       airDisrupt: 0
       shieldGauge: 0
-      shieldDelay: 0
       shieldRegenRate: 0
       interceptorCount: 0
       interceptorDelay: 0
@@ -710,7 +734,6 @@ MonoBehaviour:
       airAvoidRadius: 2
       airDisrupt: 0.1
       shieldGauge: 0
-      shieldDelay: 0
       shieldRegenRate: 0
       interceptorCount: 0
       interceptorDelay: 0
@@ -744,8 +767,7 @@ MonoBehaviour:
       airAvoidRadius: 0
       airDisrupt: 0
       shieldGauge: 100
-      shieldDelay: 5
-      shieldRegenRate: 5
+      shieldRegenRate: 1
       interceptorCount: 0
       interceptorDelay: 0
       interceptorRegenRate: 0
@@ -778,47 +800,62 @@ MonoBehaviour:
       airAvoidRadius: 0
       airDisrupt: 0
       shieldGauge: 0
-      shieldDelay: 0
       shieldRegenRate: 0
       interceptorCount: 1
       interceptorDelay: 5
       interceptorRegenRate: 5
   exportedJson: "{\r\n  \"modules\": {\r\n    \"1\": [\r\n      {\r\n        \"moduleName\":
-    \"body_t1_m111\",\r\n        \"moduleSubType\": \"body_t1_m111\",\r\n       
-    \"statPoint\": 100,\r\n        \"description\": \"\",\r\n        \"moduleSlots\":
-    [\r\n          {\r\n            \"moduleType\": \"beam\",\r\n            \"slotIndex\":
-    0\r\n          },\r\n          {\r\n            \"moduleType\": \"missile\",\r\n           
+    \"h1_11100\",\r\n        \"moduleSubType\": \"h1_11100\",\r\n        \"statPoint\":
+    100,\r\n        \"unlockCommanderLevel\": 1,\r\n        \"description\": \"\",\r\n       
+    \"moduleSlots\": [\r\n          {\r\n            \"moduleType\": \"beam\",\r\n           
     \"slotIndex\": 0\r\n          },\r\n          {\r\n            \"moduleType\":
-    \"hangar\",\r\n            \"slotIndex\": 0\r\n          }\r\n        ],\r\n       
-    \"health\": 100.0,\r\n        \"repair\": 0.0,\r\n        \"speed\": 1.0,\r\n       
-    \"turnRate\": 1.0,\r\n        \"attack\": 0.0,\r\n        \"splashRadius\": 0.0,\r\n       
-    \"attackCool\": 0.0,\r\n        \"silenceTime\": 0.0,\r\n        \"airCount\":
-    0,\r\n        \"airMaintenanceTime\": 0.0,\r\n        \"airHealth\": 0.0,\r\n       
-    \"airAttack\": 0.0,\r\n        \"airAttackRange\": 0.0,\r\n        \"airAttackCool\":
-    0.0,\r\n        \"airSpeed\": 0.0,\r\n        \"airAmmo\": 0,\r\n        \"airDetectRadius\":
-    0.0,\r\n        \"airAvoidRadius\": 0.0,\r\n        \"airDisrupt\": 0.0,\r\n       
-    \"shieldGauge\": 0.0,\r\n        \"shieldDelay\": 0.0,\r\n        \"shieldRegenRate\":
-    0.0,\r\n        \"interceptorCount\": 0,\r\n        \"interceptorDelay\": 0.0,\r\n       
-    \"interceptorRegenRate\": 0.0\r\n      },\r\n      {\r\n        \"moduleName\":
-    \"body_t1_m211\",\r\n        \"moduleSubType\": \"body_t1_m211\",\r\n       
-    \"statPoint\": 200,\r\n        \"description\": \"\",\r\n        \"moduleSlots\":
-    [\r\n          {\r\n            \"moduleType\": \"beam\",\r\n            \"slotIndex\":
-    0\r\n          },\r\n          {\r\n            \"moduleType\": \"beam\",\r\n           
-    \"slotIndex\": 1\r\n          },\r\n          {\r\n            \"moduleType\":
     \"missile\",\r\n            \"slotIndex\": 0\r\n          },\r\n          {\r\n           
     \"moduleType\": \"hangar\",\r\n            \"slotIndex\": 0\r\n          }\r\n       
-    ],\r\n        \"health\": 200.0,\r\n        \"repair\": 0.0,\r\n        \"speed\":
+    ],\r\n        \"health\": 100.0,\r\n        \"repair\": 0.0,\r\n        \"speed\":
     1.0,\r\n        \"turnRate\": 1.0,\r\n        \"attack\": 0.0,\r\n        \"splashRadius\":
     0.0,\r\n        \"attackCool\": 0.0,\r\n        \"silenceTime\": 0.0,\r\n       
     \"airCount\": 0,\r\n        \"airMaintenanceTime\": 0.0,\r\n        \"airHealth\":
     0.0,\r\n        \"airAttack\": 0.0,\r\n        \"airAttackRange\": 0.0,\r\n       
     \"airAttackCool\": 0.0,\r\n        \"airSpeed\": 0.0,\r\n        \"airAmmo\":
     0,\r\n        \"airDetectRadius\": 0.0,\r\n        \"airAvoidRadius\": 0.0,\r\n       
-    \"airDisrupt\": 0.0,\r\n        \"shieldGauge\": 0.0,\r\n        \"shieldDelay\":
-    0.0,\r\n        \"shieldRegenRate\": 0.0,\r\n        \"interceptorCount\": 0,\r\n       
-    \"interceptorDelay\": 0.0,\r\n        \"interceptorRegenRate\": 0.0\r\n     
-    },\r\n      {\r\n        \"moduleName\": \"body_t1_m221\",\r\n        \"moduleSubType\":
-    \"body_t1_m221\",\r\n        \"statPoint\": 300,\r\n        \"description\":
+    \"airDisrupt\": 0.0,\r\n        \"shieldGauge\": 0.0,\r\n        \"shieldRegenRate\":
+    0.0,\r\n        \"interceptorCount\": 0,\r\n        \"interceptorDelay\": 0.0,\r\n       
+    \"interceptorRegenRate\": 0.0\r\n      },\r\n      {\r\n        \"moduleName\":
+    \"h1_11110\",\r\n        \"moduleSubType\": \"h1_11110\",\r\n        \"statPoint\":
+    100,\r\n        \"unlockCommanderLevel\": 1,\r\n        \"description\": \"\",\r\n       
+    \"moduleSlots\": [\r\n          {\r\n            \"moduleType\": \"beam\",\r\n           
+    \"slotIndex\": 0\r\n          },\r\n          {\r\n            \"moduleType\":
+    \"missile\",\r\n            \"slotIndex\": 0\r\n          },\r\n          {\r\n           
+    \"moduleType\": \"hangar\",\r\n            \"slotIndex\": 0\r\n          }\r\n       
+    ],\r\n        \"health\": 100.0,\r\n        \"repair\": 0.0,\r\n        \"speed\":
+    1.0,\r\n        \"turnRate\": 1.0,\r\n        \"attack\": 0.0,\r\n        \"splashRadius\":
+    0.0,\r\n        \"attackCool\": 0.0,\r\n        \"silenceTime\": 0.0,\r\n       
+    \"airCount\": 0,\r\n        \"airMaintenanceTime\": 0.0,\r\n        \"airHealth\":
+    0.0,\r\n        \"airAttack\": 0.0,\r\n        \"airAttackRange\": 0.0,\r\n       
+    \"airAttackCool\": 0.0,\r\n        \"airSpeed\": 0.0,\r\n        \"airAmmo\":
+    0,\r\n        \"airDetectRadius\": 0.0,\r\n        \"airAvoidRadius\": 0.0,\r\n       
+    \"airDisrupt\": 0.0,\r\n        \"shieldGauge\": 0.0,\r\n        \"shieldRegenRate\":
+    0.0,\r\n        \"interceptorCount\": 0,\r\n        \"interceptorDelay\": 0.0,\r\n       
+    \"interceptorRegenRate\": 0.0\r\n      },\r\n      {\r\n        \"moduleName\":
+    \"h1_21100\",\r\n        \"moduleSubType\": \"h1_21100\",\r\n        \"statPoint\":
+    200,\r\n        \"unlockCommanderLevel\": 1,\r\n        \"description\": \"\",\r\n       
+    \"moduleSlots\": [\r\n          {\r\n            \"moduleType\": \"beam\",\r\n           
+    \"slotIndex\": 0\r\n          },\r\n          {\r\n            \"moduleType\":
+    \"beam\",\r\n            \"slotIndex\": 1\r\n          },\r\n          {\r\n           
+    \"moduleType\": \"missile\",\r\n            \"slotIndex\": 0\r\n          },\r\n         
+    {\r\n            \"moduleType\": \"hangar\",\r\n            \"slotIndex\": 0\r\n         
+    }\r\n        ],\r\n        \"health\": 200.0,\r\n        \"repair\": 0.0,\r\n       
+    \"speed\": 1.0,\r\n        \"turnRate\": 1.0,\r\n        \"attack\": 0.0,\r\n       
+    \"splashRadius\": 0.0,\r\n        \"attackCool\": 0.0,\r\n        \"silenceTime\":
+    0.0,\r\n        \"airCount\": 0,\r\n        \"airMaintenanceTime\": 0.0,\r\n       
+    \"airHealth\": 0.0,\r\n        \"airAttack\": 0.0,\r\n        \"airAttackRange\":
+    0.0,\r\n        \"airAttackCool\": 0.0,\r\n        \"airSpeed\": 0.0,\r\n       
+    \"airAmmo\": 0,\r\n        \"airDetectRadius\": 0.0,\r\n        \"airAvoidRadius\":
+    0.0,\r\n        \"airDisrupt\": 0.0,\r\n        \"shieldGauge\": 0.0,\r\n       
+    \"shieldRegenRate\": 0.0,\r\n        \"interceptorCount\": 0,\r\n        \"interceptorDelay\":
+    0.0,\r\n        \"interceptorRegenRate\": 0.0\r\n      },\r\n      {\r\n       
+    \"moduleName\": \"h1_22100\",\r\n        \"moduleSubType\": \"h1_22100\",\r\n       
+    \"statPoint\": 300,\r\n        \"unlockCommanderLevel\": 1,\r\n        \"description\":
     \"\",\r\n        \"moduleSlots\": [\r\n          {\r\n            \"moduleType\":
     \"beam\",\r\n            \"slotIndex\": 0\r\n          },\r\n          {\r\n           
     \"moduleType\": \"beam\",\r\n            \"slotIndex\": 1\r\n          },\r\n         
@@ -833,35 +870,35 @@ MonoBehaviour:
     \"airAttack\": 0.0,\r\n        \"airAttackRange\": 0.0,\r\n        \"airAttackCool\":
     0.0,\r\n        \"airSpeed\": 0.0,\r\n        \"airAmmo\": 0,\r\n        \"airDetectRadius\":
     0.0,\r\n        \"airAvoidRadius\": 0.0,\r\n        \"airDisrupt\": 0.0,\r\n       
-    \"shieldGauge\": 0.0,\r\n        \"shieldDelay\": 0.0,\r\n        \"shieldRegenRate\":
-    0.0,\r\n        \"interceptorCount\": 0,\r\n        \"interceptorDelay\": 0.0,\r\n       
-    \"interceptorRegenRate\": 0.0\r\n      },\r\n      {\r\n        \"moduleName\":
-    \"body_t1_m222\",\r\n        \"moduleSubType\": \"body_t1_m222\",\r\n       
-    \"statPoint\": 400,\r\n        \"description\": \"\",\r\n        \"moduleSlots\":
-    [\r\n          {\r\n            \"moduleType\": \"beam\",\r\n            \"slotIndex\":
-    0\r\n          },\r\n          {\r\n            \"moduleType\": \"beam\",\r\n           
-    \"slotIndex\": 1\r\n          },\r\n          {\r\n            \"moduleType\":
-    \"missile\",\r\n            \"slotIndex\": 0\r\n          },\r\n          {\r\n           
-    \"moduleType\": \"missile\",\r\n            \"slotIndex\": 1\r\n          },\r\n         
-    {\r\n            \"moduleType\": \"hangar\",\r\n            \"slotIndex\": 0\r\n         
-    },\r\n          {\r\n            \"moduleType\": \"hangar\",\r\n            \"slotIndex\":
-    1\r\n          }\r\n        ],\r\n        \"health\": 400.0,\r\n        \"repair\":
-    0.0,\r\n        \"speed\": 1.0,\r\n        \"turnRate\": 1.0,\r\n        \"attack\":
-    0.0,\r\n        \"splashRadius\": 0.0,\r\n        \"attackCool\": 0.0,\r\n       
-    \"silenceTime\": 0.0,\r\n        \"airCount\": 0,\r\n        \"airMaintenanceTime\":
-    0.0,\r\n        \"airHealth\": 0.0,\r\n        \"airAttack\": 0.0,\r\n       
-    \"airAttackRange\": 0.0,\r\n        \"airAttackCool\": 0.0,\r\n        \"airSpeed\":
-    0.0,\r\n        \"airAmmo\": 0,\r\n        \"airDetectRadius\": 0.0,\r\n       
-    \"airAvoidRadius\": 0.0,\r\n        \"airDisrupt\": 0.0,\r\n        \"shieldGauge\":
-    0.0,\r\n        \"shieldDelay\": 0.0,\r\n        \"shieldRegenRate\": 0.0,\r\n       
-    \"interceptorCount\": 0,\r\n        \"interceptorDelay\": 0.0,\r\n        \"interceptorRegenRate\":
-    0.0\r\n      },\r\n      {\r\n        \"moduleName\": \"body_t1_m322\",\r\n       
-    \"moduleSubType\": \"body_t1_m322\",\r\n        \"statPoint\": 500,\r\n       
-    \"description\": \"\",\r\n        \"moduleSlots\": [\r\n          {\r\n           
-    \"moduleType\": \"beam\",\r\n            \"slotIndex\": 0\r\n          },\r\n         
-    {\r\n            \"moduleType\": \"beam\",\r\n            \"slotIndex\": 1\r\n         
+    \"shieldGauge\": 0.0,\r\n        \"shieldRegenRate\": 0.0,\r\n        \"interceptorCount\":
+    0,\r\n        \"interceptorDelay\": 0.0,\r\n        \"interceptorRegenRate\":
+    0.0\r\n      },\r\n      {\r\n        \"moduleName\": \"h1_22200\",\r\n       
+    \"moduleSubType\": \"h1_22200\",\r\n        \"statPoint\": 400,\r\n        \"unlockCommanderLevel\":
+    1,\r\n        \"description\": \"\",\r\n        \"moduleSlots\": [\r\n         
+    {\r\n            \"moduleType\": \"beam\",\r\n            \"slotIndex\": 0\r\n         
     },\r\n          {\r\n            \"moduleType\": \"beam\",\r\n            \"slotIndex\":
-    2\r\n          },\r\n          {\r\n            \"moduleType\": \"missile\",\r\n           
+    1\r\n          },\r\n          {\r\n            \"moduleType\": \"missile\",\r\n           
+    \"slotIndex\": 0\r\n          },\r\n          {\r\n            \"moduleType\":
+    \"missile\",\r\n            \"slotIndex\": 1\r\n          },\r\n          {\r\n           
+    \"moduleType\": \"hangar\",\r\n            \"slotIndex\": 0\r\n          },\r\n         
+    {\r\n            \"moduleType\": \"hangar\",\r\n            \"slotIndex\": 1\r\n         
+    }\r\n        ],\r\n        \"health\": 400.0,\r\n        \"repair\": 0.0,\r\n       
+    \"speed\": 1.0,\r\n        \"turnRate\": 1.0,\r\n        \"attack\": 0.0,\r\n       
+    \"splashRadius\": 0.0,\r\n        \"attackCool\": 0.0,\r\n        \"silenceTime\":
+    0.0,\r\n        \"airCount\": 0,\r\n        \"airMaintenanceTime\": 0.0,\r\n       
+    \"airHealth\": 0.0,\r\n        \"airAttack\": 0.0,\r\n        \"airAttackRange\":
+    0.0,\r\n        \"airAttackCool\": 0.0,\r\n        \"airSpeed\": 0.0,\r\n       
+    \"airAmmo\": 0,\r\n        \"airDetectRadius\": 0.0,\r\n        \"airAvoidRadius\":
+    0.0,\r\n        \"airDisrupt\": 0.0,\r\n        \"shieldGauge\": 0.0,\r\n       
+    \"shieldRegenRate\": 0.0,\r\n        \"interceptorCount\": 0,\r\n        \"interceptorDelay\":
+    0.0,\r\n        \"interceptorRegenRate\": 0.0\r\n      },\r\n      {\r\n       
+    \"moduleName\": \"h1_32200\",\r\n        \"moduleSubType\": \"h1_32200\",\r\n       
+    \"statPoint\": 500,\r\n        \"unlockCommanderLevel\": 1,\r\n        \"description\":
+    \"\",\r\n        \"moduleSlots\": [\r\n          {\r\n            \"moduleType\":
+    \"beam\",\r\n            \"slotIndex\": 0\r\n          },\r\n          {\r\n           
+    \"moduleType\": \"beam\",\r\n            \"slotIndex\": 1\r\n          },\r\n         
+    {\r\n            \"moduleType\": \"beam\",\r\n            \"slotIndex\": 2\r\n         
+    },\r\n          {\r\n            \"moduleType\": \"missile\",\r\n           
     \"slotIndex\": 0\r\n          },\r\n          {\r\n            \"moduleType\":
     \"missile\",\r\n            \"slotIndex\": 1\r\n          },\r\n          {\r\n           
     \"moduleType\": \"hangar\",\r\n            \"slotIndex\": 0\r\n          },\r\n         
@@ -874,15 +911,15 @@ MonoBehaviour:
     0.0,\r\n        \"airAttackCool\": 0.0,\r\n        \"airSpeed\": 0.0,\r\n       
     \"airAmmo\": 0,\r\n        \"airDetectRadius\": 0.0,\r\n        \"airAvoidRadius\":
     0.0,\r\n        \"airDisrupt\": 0.0,\r\n        \"shieldGauge\": 0.0,\r\n       
-    \"shieldDelay\": 0.0,\r\n        \"shieldRegenRate\": 0.0,\r\n        \"interceptorCount\":
-    0,\r\n        \"interceptorDelay\": 0.0,\r\n        \"interceptorRegenRate\":
-    0.0\r\n      },\r\n      {\r\n        \"moduleName\": \"body_t1_m332\",\r\n       
-    \"moduleSubType\": \"body_t1_m332\",\r\n        \"statPoint\": 600,\r\n       
-    \"description\": \"\",\r\n        \"moduleSlots\": [\r\n          {\r\n           
-    \"moduleType\": \"beam\",\r\n            \"slotIndex\": 0\r\n          },\r\n         
-    {\r\n            \"moduleType\": \"beam\",\r\n            \"slotIndex\": 1\r\n         
-    },\r\n          {\r\n            \"moduleType\": \"beam\",\r\n            \"slotIndex\":
-    2\r\n          },\r\n          {\r\n            \"moduleType\": \"missile\",\r\n           
+    \"shieldRegenRate\": 0.0,\r\n        \"interceptorCount\": 0,\r\n        \"interceptorDelay\":
+    0.0,\r\n        \"interceptorRegenRate\": 0.0\r\n      },\r\n      {\r\n       
+    \"moduleName\": \"h1_33200\",\r\n        \"moduleSubType\": \"h1_33200\",\r\n       
+    \"statPoint\": 600,\r\n        \"unlockCommanderLevel\": 1,\r\n        \"description\":
+    \"\",\r\n        \"moduleSlots\": [\r\n          {\r\n            \"moduleType\":
+    \"beam\",\r\n            \"slotIndex\": 0\r\n          },\r\n          {\r\n           
+    \"moduleType\": \"beam\",\r\n            \"slotIndex\": 1\r\n          },\r\n         
+    {\r\n            \"moduleType\": \"beam\",\r\n            \"slotIndex\": 2\r\n         
+    },\r\n          {\r\n            \"moduleType\": \"missile\",\r\n           
     \"slotIndex\": 0\r\n          },\r\n          {\r\n            \"moduleType\":
     \"missile\",\r\n            \"slotIndex\": 1\r\n          },\r\n          {\r\n           
     \"moduleType\": \"missile\",\r\n            \"slotIndex\": 2\r\n          },\r\n         
@@ -896,73 +933,47 @@ MonoBehaviour:
     \"airAttackRange\": 0.0,\r\n        \"airAttackCool\": 0.0,\r\n        \"airSpeed\":
     0.0,\r\n        \"airAmmo\": 0,\r\n        \"airDetectRadius\": 0.0,\r\n       
     \"airAvoidRadius\": 0.0,\r\n        \"airDisrupt\": 0.0,\r\n        \"shieldGauge\":
-    0.0,\r\n        \"shieldDelay\": 0.0,\r\n        \"shieldRegenRate\": 0.0,\r\n       
-    \"interceptorCount\": 0,\r\n        \"interceptorDelay\": 0.0,\r\n        \"interceptorRegenRate\":
-    0.0\r\n      },\r\n      {\r\n        \"moduleName\": \"body_t1_m333\",\r\n       
-    \"moduleSubType\": \"body_t1_m333\",\r\n        \"statPoint\": 700,\r\n       
-    \"description\": \"\",\r\n        \"moduleSlots\": [\r\n          {\r\n           
-    \"moduleType\": \"beam\",\r\n            \"slotIndex\": 0\r\n          },\r\n         
-    {\r\n            \"moduleType\": \"beam\",\r\n            \"slotIndex\": 1\r\n         
+    0.0,\r\n        \"shieldRegenRate\": 0.0,\r\n        \"interceptorCount\": 0,\r\n       
+    \"interceptorDelay\": 0.0,\r\n        \"interceptorRegenRate\": 0.0\r\n     
+    },\r\n      {\r\n        \"moduleName\": \"h1_33300\",\r\n        \"moduleSubType\":
+    \"h1_33300\",\r\n        \"statPoint\": 700,\r\n        \"unlockCommanderLevel\":
+    1,\r\n        \"description\": \"\",\r\n        \"moduleSlots\": [\r\n         
+    {\r\n            \"moduleType\": \"beam\",\r\n            \"slotIndex\": 0\r\n         
     },\r\n          {\r\n            \"moduleType\": \"beam\",\r\n            \"slotIndex\":
-    2\r\n          },\r\n          {\r\n            \"moduleType\": \"missile\",\r\n           
-    \"slotIndex\": 0\r\n          },\r\n          {\r\n            \"moduleType\":
-    \"missile\",\r\n            \"slotIndex\": 1\r\n          },\r\n          {\r\n           
-    \"moduleType\": \"missile\",\r\n            \"slotIndex\": 2\r\n          },\r\n         
-    {\r\n            \"moduleType\": \"hangar\",\r\n            \"slotIndex\": 0\r\n         
-    },\r\n          {\r\n            \"moduleType\": \"hangar\",\r\n            \"slotIndex\":
-    1\r\n          },\r\n          {\r\n            \"moduleType\": \"hangar\",\r\n           
-    \"slotIndex\": 2\r\n          }\r\n        ],\r\n        \"health\": 700.0,\r\n       
-    \"repair\": 0.0,\r\n        \"speed\": 1.0,\r\n        \"turnRate\": 1.0,\r\n       
-    \"attack\": 0.0,\r\n        \"splashRadius\": 0.0,\r\n        \"attackCool\":
-    0.0,\r\n        \"silenceTime\": 0.0,\r\n        \"airCount\": 0,\r\n       
-    \"airMaintenanceTime\": 0.0,\r\n        \"airHealth\": 0.0,\r\n        \"airAttack\":
-    0.0,\r\n        \"airAttackRange\": 0.0,\r\n        \"airAttackCool\": 0.0,\r\n       
-    \"airSpeed\": 0.0,\r\n        \"airAmmo\": 0,\r\n        \"airDetectRadius\":
-    0.0,\r\n        \"airAvoidRadius\": 0.0,\r\n        \"airDisrupt\": 0.0,\r\n       
-    \"shieldGauge\": 0.0,\r\n        \"shieldDelay\": 0.0,\r\n        \"shieldRegenRate\":
-    0.0,\r\n        \"interceptorCount\": 0,\r\n        \"interceptorDelay\": 0.0,\r\n       
-    \"interceptorRegenRate\": 0.0\r\n      },\r\n      {\r\n        \"moduleName\":
-    \"body_t1_m433\",\r\n        \"moduleSubType\": \"body_t1_m433\",\r\n       
-    \"statPoint\": 800,\r\n        \"description\": \"\",\r\n        \"moduleSlots\":
-    [\r\n          {\r\n            \"moduleType\": \"beam\",\r\n            \"slotIndex\":
-    0\r\n          },\r\n          {\r\n            \"moduleType\": \"beam\",\r\n           
-    \"slotIndex\": 1\r\n          },\r\n          {\r\n            \"moduleType\":
-    \"beam\",\r\n            \"slotIndex\": 2\r\n          },\r\n          {\r\n           
-    \"moduleType\": \"beam\",\r\n            \"slotIndex\": 3\r\n          },\r\n         
-    {\r\n            \"moduleType\": \"missile\",\r\n            \"slotIndex\": 0\r\n         
-    },\r\n          {\r\n            \"moduleType\": \"missile\",\r\n           
-    \"slotIndex\": 1\r\n          },\r\n          {\r\n            \"moduleType\":
-    \"missile\",\r\n            \"slotIndex\": 2\r\n          },\r\n          {\r\n           
-    \"moduleType\": \"hangar\",\r\n            \"slotIndex\": 0\r\n          },\r\n         
-    {\r\n            \"moduleType\": \"hangar\",\r\n            \"slotIndex\": 1\r\n         
-    },\r\n          {\r\n            \"moduleType\": \"hangar\",\r\n            \"slotIndex\":
-    2\r\n          }\r\n        ],\r\n        \"health\": 800.0,\r\n        \"repair\":
-    0.0,\r\n        \"speed\": 1.0,\r\n        \"turnRate\": 1.0,\r\n        \"attack\":
-    0.0,\r\n        \"splashRadius\": 0.0,\r\n        \"attackCool\": 0.0,\r\n       
-    \"silenceTime\": 0.0,\r\n        \"airCount\": 0,\r\n        \"airMaintenanceTime\":
-    0.0,\r\n        \"airHealth\": 0.0,\r\n        \"airAttack\": 0.0,\r\n       
-    \"airAttackRange\": 0.0,\r\n        \"airAttackCool\": 0.0,\r\n        \"airSpeed\":
-    0.0,\r\n        \"airAmmo\": 0,\r\n        \"airDetectRadius\": 0.0,\r\n       
-    \"airAvoidRadius\": 0.0,\r\n        \"airDisrupt\": 0.0,\r\n        \"shieldGauge\":
-    0.0,\r\n        \"shieldDelay\": 0.0,\r\n        \"shieldRegenRate\": 0.0,\r\n       
-    \"interceptorCount\": 0,\r\n        \"interceptorDelay\": 0.0,\r\n        \"interceptorRegenRate\":
-    0.0\r\n      },\r\n      {\r\n        \"moduleName\": \"body_t1_m443\",\r\n       
-    \"moduleSubType\": \"body_t1_m443\",\r\n        \"statPoint\": 900,\r\n       
-    \"description\": \"\",\r\n        \"moduleSlots\": [\r\n          {\r\n           
-    \"moduleType\": \"beam\",\r\n            \"slotIndex\": 0\r\n          },\r\n         
-    {\r\n            \"moduleType\": \"beam\",\r\n            \"slotIndex\": 1\r\n         
-    },\r\n          {\r\n            \"moduleType\": \"beam\",\r\n            \"slotIndex\":
-    2\r\n          },\r\n          {\r\n            \"moduleType\": \"beam\",\r\n           
-    \"slotIndex\": 3\r\n          },\r\n          {\r\n            \"moduleType\":
+    1\r\n          },\r\n          {\r\n            \"moduleType\": \"beam\",\r\n           
+    \"slotIndex\": 2\r\n          },\r\n          {\r\n            \"moduleType\":
     \"missile\",\r\n            \"slotIndex\": 0\r\n          },\r\n          {\r\n           
     \"moduleType\": \"missile\",\r\n            \"slotIndex\": 1\r\n          },\r\n         
     {\r\n            \"moduleType\": \"missile\",\r\n            \"slotIndex\": 2\r\n         
+    },\r\n          {\r\n            \"moduleType\": \"hangar\",\r\n            \"slotIndex\":
+    0\r\n          },\r\n          {\r\n            \"moduleType\": \"hangar\",\r\n           
+    \"slotIndex\": 1\r\n          },\r\n          {\r\n            \"moduleType\":
+    \"hangar\",\r\n            \"slotIndex\": 2\r\n          }\r\n        ],\r\n       
+    \"health\": 700.0,\r\n        \"repair\": 0.0,\r\n        \"speed\": 1.0,\r\n       
+    \"turnRate\": 1.0,\r\n        \"attack\": 0.0,\r\n        \"splashRadius\": 0.0,\r\n       
+    \"attackCool\": 0.0,\r\n        \"silenceTime\": 0.0,\r\n        \"airCount\":
+    0,\r\n        \"airMaintenanceTime\": 0.0,\r\n        \"airHealth\": 0.0,\r\n       
+    \"airAttack\": 0.0,\r\n        \"airAttackRange\": 0.0,\r\n        \"airAttackCool\":
+    0.0,\r\n        \"airSpeed\": 0.0,\r\n        \"airAmmo\": 0,\r\n        \"airDetectRadius\":
+    0.0,\r\n        \"airAvoidRadius\": 0.0,\r\n        \"airDisrupt\": 0.0,\r\n       
+    \"shieldGauge\": 0.0,\r\n        \"shieldRegenRate\": 0.0,\r\n        \"interceptorCount\":
+    0,\r\n        \"interceptorDelay\": 0.0,\r\n        \"interceptorRegenRate\":
+    0.0\r\n      },\r\n      {\r\n        \"moduleName\": \"h1_43300\",\r\n       
+    \"moduleSubType\": \"h1_43300\",\r\n        \"statPoint\": 800,\r\n        \"unlockCommanderLevel\":
+    1,\r\n        \"description\": \"\",\r\n        \"moduleSlots\": [\r\n         
+    {\r\n            \"moduleType\": \"beam\",\r\n            \"slotIndex\": 0\r\n         
+    },\r\n          {\r\n            \"moduleType\": \"beam\",\r\n            \"slotIndex\":
+    1\r\n          },\r\n          {\r\n            \"moduleType\": \"beam\",\r\n           
+    \"slotIndex\": 2\r\n          },\r\n          {\r\n            \"moduleType\":
+    \"beam\",\r\n            \"slotIndex\": 3\r\n          },\r\n          {\r\n           
+    \"moduleType\": \"missile\",\r\n            \"slotIndex\": 0\r\n          },\r\n         
+    {\r\n            \"moduleType\": \"missile\",\r\n            \"slotIndex\": 1\r\n         
     },\r\n          {\r\n            \"moduleType\": \"missile\",\r\n           
-    \"slotIndex\": 3\r\n          },\r\n          {\r\n            \"moduleType\":
+    \"slotIndex\": 2\r\n          },\r\n          {\r\n            \"moduleType\":
     \"hangar\",\r\n            \"slotIndex\": 0\r\n          },\r\n          {\r\n           
     \"moduleType\": \"hangar\",\r\n            \"slotIndex\": 1\r\n          },\r\n         
     {\r\n            \"moduleType\": \"hangar\",\r\n            \"slotIndex\": 2\r\n         
-    }\r\n        ],\r\n        \"health\": 900.0,\r\n        \"repair\": 0.0,\r\n       
+    }\r\n        ],\r\n        \"health\": 800.0,\r\n        \"repair\": 0.0,\r\n       
     \"speed\": 1.0,\r\n        \"turnRate\": 1.0,\r\n        \"attack\": 0.0,\r\n       
     \"splashRadius\": 0.0,\r\n        \"attackCool\": 0.0,\r\n        \"silenceTime\":
     0.0,\r\n        \"airCount\": 0,\r\n        \"airMaintenanceTime\": 0.0,\r\n       
@@ -970,44 +981,41 @@ MonoBehaviour:
     0.0,\r\n        \"airAttackCool\": 0.0,\r\n        \"airSpeed\": 0.0,\r\n       
     \"airAmmo\": 0,\r\n        \"airDetectRadius\": 0.0,\r\n        \"airAvoidRadius\":
     0.0,\r\n        \"airDisrupt\": 0.0,\r\n        \"shieldGauge\": 0.0,\r\n       
-    \"shieldDelay\": 0.0,\r\n        \"shieldRegenRate\": 0.0,\r\n        \"interceptorCount\":
-    0,\r\n        \"interceptorDelay\": 0.0,\r\n        \"interceptorRegenRate\":
-    0.0\r\n      },\r\n      {\r\n        \"moduleName\": \"body_t1_m444\",\r\n       
-    \"moduleSubType\": \"body_t1_m444\",\r\n        \"statPoint\": 1000,\r\n       
-    \"description\": \"\",\r\n        \"moduleSlots\": [\r\n          {\r\n           
-    \"moduleType\": \"beam\",\r\n            \"slotIndex\": 0\r\n          },\r\n         
-    {\r\n            \"moduleType\": \"beam\",\r\n            \"slotIndex\": 1\r\n         
+    \"shieldRegenRate\": 0.0,\r\n        \"interceptorCount\": 0,\r\n        \"interceptorDelay\":
+    0.0,\r\n        \"interceptorRegenRate\": 0.0\r\n      },\r\n      {\r\n       
+    \"moduleName\": \"h1_44300\",\r\n        \"moduleSubType\": \"h1_44300\",\r\n       
+    \"statPoint\": 900,\r\n        \"unlockCommanderLevel\": 1,\r\n        \"description\":
+    \"\",\r\n        \"moduleSlots\": [\r\n          {\r\n            \"moduleType\":
+    \"beam\",\r\n            \"slotIndex\": 0\r\n          },\r\n          {\r\n           
+    \"moduleType\": \"beam\",\r\n            \"slotIndex\": 1\r\n          },\r\n         
+    {\r\n            \"moduleType\": \"beam\",\r\n            \"slotIndex\": 2\r\n         
     },\r\n          {\r\n            \"moduleType\": \"beam\",\r\n            \"slotIndex\":
-    2\r\n          },\r\n          {\r\n            \"moduleType\": \"beam\",\r\n           
-    \"slotIndex\": 3\r\n          },\r\n          {\r\n            \"moduleType\":
-    \"missile\",\r\n            \"slotIndex\": 0\r\n          },\r\n          {\r\n           
-    \"moduleType\": \"missile\",\r\n            \"slotIndex\": 1\r\n          },\r\n         
-    {\r\n            \"moduleType\": \"missile\",\r\n            \"slotIndex\": 2\r\n         
-    },\r\n          {\r\n            \"moduleType\": \"missile\",\r\n           
-    \"slotIndex\": 3\r\n          },\r\n          {\r\n            \"moduleType\":
-    \"hangar\",\r\n            \"slotIndex\": 0\r\n          },\r\n          {\r\n           
-    \"moduleType\": \"hangar\",\r\n            \"slotIndex\": 1\r\n          },\r\n         
-    {\r\n            \"moduleType\": \"hangar\",\r\n            \"slotIndex\": 2\r\n         
+    3\r\n          },\r\n          {\r\n            \"moduleType\": \"missile\",\r\n           
+    \"slotIndex\": 0\r\n          },\r\n          {\r\n            \"moduleType\":
+    \"missile\",\r\n            \"slotIndex\": 1\r\n          },\r\n          {\r\n           
+    \"moduleType\": \"missile\",\r\n            \"slotIndex\": 2\r\n          },\r\n         
+    {\r\n            \"moduleType\": \"missile\",\r\n            \"slotIndex\": 3\r\n         
     },\r\n          {\r\n            \"moduleType\": \"hangar\",\r\n            \"slotIndex\":
-    3\r\n          }\r\n        ],\r\n        \"health\": 1000.0,\r\n        \"repair\":
-    0.0,\r\n        \"speed\": 1.0,\r\n        \"turnRate\": 1.0,\r\n        \"attack\":
-    0.0,\r\n        \"splashRadius\": 0.0,\r\n        \"attackCool\": 0.0,\r\n       
-    \"silenceTime\": 0.0,\r\n        \"airCount\": 0,\r\n        \"airMaintenanceTime\":
-    0.0,\r\n        \"airHealth\": 0.0,\r\n        \"airAttack\": 0.0,\r\n       
-    \"airAttackRange\": 0.0,\r\n        \"airAttackCool\": 0.0,\r\n        \"airSpeed\":
-    0.0,\r\n        \"airAmmo\": 0,\r\n        \"airDetectRadius\": 0.0,\r\n       
-    \"airAvoidRadius\": 0.0,\r\n        \"airDisrupt\": 0.0,\r\n        \"shieldGauge\":
-    0.0,\r\n        \"shieldDelay\": 0.0,\r\n        \"shieldRegenRate\": 0.0,\r\n       
-    \"interceptorCount\": 0,\r\n        \"interceptorDelay\": 0.0,\r\n        \"interceptorRegenRate\":
-    0.0\r\n      },\r\n      {\r\n        \"moduleName\": \"body_t1_m544\",\r\n       
-    \"moduleSubType\": \"body_t1_m544\",\r\n        \"statPoint\": 1100,\r\n       
-    \"description\": \"\",\r\n        \"moduleSlots\": [\r\n          {\r\n           
-    \"moduleType\": \"beam\",\r\n            \"slotIndex\": 0\r\n          },\r\n         
-    {\r\n            \"moduleType\": \"beam\",\r\n            \"slotIndex\": 1\r\n         
+    0\r\n          },\r\n          {\r\n            \"moduleType\": \"hangar\",\r\n           
+    \"slotIndex\": 1\r\n          },\r\n          {\r\n            \"moduleType\":
+    \"hangar\",\r\n            \"slotIndex\": 2\r\n          }\r\n        ],\r\n       
+    \"health\": 900.0,\r\n        \"repair\": 0.0,\r\n        \"speed\": 1.0,\r\n       
+    \"turnRate\": 1.0,\r\n        \"attack\": 0.0,\r\n        \"splashRadius\": 0.0,\r\n       
+    \"attackCool\": 0.0,\r\n        \"silenceTime\": 0.0,\r\n        \"airCount\":
+    0,\r\n        \"airMaintenanceTime\": 0.0,\r\n        \"airHealth\": 0.0,\r\n       
+    \"airAttack\": 0.0,\r\n        \"airAttackRange\": 0.0,\r\n        \"airAttackCool\":
+    0.0,\r\n        \"airSpeed\": 0.0,\r\n        \"airAmmo\": 0,\r\n        \"airDetectRadius\":
+    0.0,\r\n        \"airAvoidRadius\": 0.0,\r\n        \"airDisrupt\": 0.0,\r\n       
+    \"shieldGauge\": 0.0,\r\n        \"shieldRegenRate\": 0.0,\r\n        \"interceptorCount\":
+    0,\r\n        \"interceptorDelay\": 0.0,\r\n        \"interceptorRegenRate\":
+    0.0\r\n      },\r\n      {\r\n        \"moduleName\": \"h1_44400\",\r\n       
+    \"moduleSubType\": \"h1_44400\",\r\n        \"statPoint\": 1000,\r\n        \"unlockCommanderLevel\":
+    1,\r\n        \"description\": \"\",\r\n        \"moduleSlots\": [\r\n         
+    {\r\n            \"moduleType\": \"beam\",\r\n            \"slotIndex\": 0\r\n         
     },\r\n          {\r\n            \"moduleType\": \"beam\",\r\n            \"slotIndex\":
-    2\r\n          },\r\n          {\r\n            \"moduleType\": \"beam\",\r\n           
-    \"slotIndex\": 3\r\n          },\r\n          {\r\n            \"moduleType\":
-    \"beam\",\r\n            \"slotIndex\": 4\r\n          },\r\n          {\r\n           
+    1\r\n          },\r\n          {\r\n            \"moduleType\": \"beam\",\r\n           
+    \"slotIndex\": 2\r\n          },\r\n          {\r\n            \"moduleType\":
+    \"beam\",\r\n            \"slotIndex\": 3\r\n          },\r\n          {\r\n           
     \"moduleType\": \"missile\",\r\n            \"slotIndex\": 0\r\n          },\r\n         
     {\r\n            \"moduleType\": \"missile\",\r\n            \"slotIndex\": 1\r\n         
     },\r\n          {\r\n            \"moduleType\": \"missile\",\r\n           
@@ -1017,7 +1025,7 @@ MonoBehaviour:
     {\r\n            \"moduleType\": \"hangar\",\r\n            \"slotIndex\": 1\r\n         
     },\r\n          {\r\n            \"moduleType\": \"hangar\",\r\n            \"slotIndex\":
     2\r\n          },\r\n          {\r\n            \"moduleType\": \"hangar\",\r\n           
-    \"slotIndex\": 3\r\n          }\r\n        ],\r\n        \"health\": 1100.0,\r\n       
+    \"slotIndex\": 3\r\n          }\r\n        ],\r\n        \"health\": 1000.0,\r\n       
     \"repair\": 0.0,\r\n        \"speed\": 1.0,\r\n        \"turnRate\": 1.0,\r\n       
     \"attack\": 0.0,\r\n        \"splashRadius\": 0.0,\r\n        \"attackCool\":
     0.0,\r\n        \"silenceTime\": 0.0,\r\n        \"airCount\": 0,\r\n       
@@ -1025,99 +1033,126 @@ MonoBehaviour:
     0.0,\r\n        \"airAttackRange\": 0.0,\r\n        \"airAttackCool\": 0.0,\r\n       
     \"airSpeed\": 0.0,\r\n        \"airAmmo\": 0,\r\n        \"airDetectRadius\":
     0.0,\r\n        \"airAvoidRadius\": 0.0,\r\n        \"airDisrupt\": 0.0,\r\n       
-    \"shieldGauge\": 0.0,\r\n        \"shieldDelay\": 0.0,\r\n        \"shieldRegenRate\":
-    0.0,\r\n        \"interceptorCount\": 0,\r\n        \"interceptorDelay\": 0.0,\r\n       
-    \"interceptorRegenRate\": 0.0\r\n      },\r\n      {\r\n        \"moduleName\":
-    \"body_t1_m554\",\r\n        \"moduleSubType\": \"body_t1_m554\",\r\n       
-    \"statPoint\": 1200,\r\n        \"description\": \"\",\r\n        \"moduleSlots\":
-    [\r\n          {\r\n            \"moduleType\": \"beam\",\r\n            \"slotIndex\":
-    0\r\n          },\r\n          {\r\n            \"moduleType\": \"beam\",\r\n           
+    \"shieldGauge\": 0.0,\r\n        \"shieldRegenRate\": 0.0,\r\n        \"interceptorCount\":
+    0,\r\n        \"interceptorDelay\": 0.0,\r\n        \"interceptorRegenRate\":
+    0.0\r\n      },\r\n      {\r\n        \"moduleName\": \"h1_54400\",\r\n       
+    \"moduleSubType\": \"h1_54400\",\r\n        \"statPoint\": 1100,\r\n        \"unlockCommanderLevel\":
+    1,\r\n        \"description\": \"\",\r\n        \"moduleSlots\": [\r\n         
+    {\r\n            \"moduleType\": \"beam\",\r\n            \"slotIndex\": 0\r\n         
+    },\r\n          {\r\n            \"moduleType\": \"beam\",\r\n            \"slotIndex\":
+    1\r\n          },\r\n          {\r\n            \"moduleType\": \"beam\",\r\n           
+    \"slotIndex\": 2\r\n          },\r\n          {\r\n            \"moduleType\":
+    \"beam\",\r\n            \"slotIndex\": 3\r\n          },\r\n          {\r\n           
+    \"moduleType\": \"beam\",\r\n            \"slotIndex\": 4\r\n          },\r\n         
+    {\r\n            \"moduleType\": \"missile\",\r\n            \"slotIndex\": 0\r\n         
+    },\r\n          {\r\n            \"moduleType\": \"missile\",\r\n           
     \"slotIndex\": 1\r\n          },\r\n          {\r\n            \"moduleType\":
-    \"beam\",\r\n            \"slotIndex\": 2\r\n          },\r\n          {\r\n           
-    \"moduleType\": \"beam\",\r\n            \"slotIndex\": 3\r\n          },\r\n         
-    {\r\n            \"moduleType\": \"beam\",\r\n            \"slotIndex\": 4\r\n         
-    },\r\n          {\r\n            \"moduleType\": \"missile\",\r\n           
-    \"slotIndex\": 0\r\n          },\r\n          {\r\n            \"moduleType\":
-    \"missile\",\r\n            \"slotIndex\": 1\r\n          },\r\n          {\r\n           
-    \"moduleType\": \"missile\",\r\n            \"slotIndex\": 2\r\n          },\r\n         
-    {\r\n            \"moduleType\": \"missile\",\r\n            \"slotIndex\": 3\r\n         
-    },\r\n          {\r\n            \"moduleType\": \"missile\",\r\n           
-    \"slotIndex\": 4\r\n          },\r\n          {\r\n            \"moduleType\":
-    \"hangar\",\r\n            \"slotIndex\": 0\r\n          },\r\n          {\r\n           
-    \"moduleType\": \"hangar\",\r\n            \"slotIndex\": 1\r\n          },\r\n         
-    {\r\n            \"moduleType\": \"hangar\",\r\n            \"slotIndex\": 2\r\n         
+    \"missile\",\r\n            \"slotIndex\": 2\r\n          },\r\n          {\r\n           
+    \"moduleType\": \"missile\",\r\n            \"slotIndex\": 3\r\n          },\r\n         
+    {\r\n            \"moduleType\": \"hangar\",\r\n            \"slotIndex\": 0\r\n         
     },\r\n          {\r\n            \"moduleType\": \"hangar\",\r\n            \"slotIndex\":
-    3\r\n          }\r\n        ],\r\n        \"health\": 1200.0,\r\n        \"repair\":
-    0.0,\r\n        \"speed\": 1.0,\r\n        \"turnRate\": 1.0,\r\n        \"attack\":
-    0.0,\r\n        \"splashRadius\": 0.0,\r\n        \"attackCool\": 0.0,\r\n       
-    \"silenceTime\": 0.0,\r\n        \"airCount\": 0,\r\n        \"airMaintenanceTime\":
-    0.0,\r\n        \"airHealth\": 0.0,\r\n        \"airAttack\": 0.0,\r\n       
-    \"airAttackRange\": 0.0,\r\n        \"airAttackCool\": 0.0,\r\n        \"airSpeed\":
-    0.0,\r\n        \"airAmmo\": 0,\r\n        \"airDetectRadius\": 0.0,\r\n       
-    \"airAvoidRadius\": 0.0,\r\n        \"airDisrupt\": 0.0,\r\n        \"shieldGauge\":
-    0.0,\r\n        \"shieldDelay\": 0.0,\r\n        \"shieldRegenRate\": 0.0,\r\n       
-    \"interceptorCount\": 0,\r\n        \"interceptorDelay\": 0.0,\r\n        \"interceptorRegenRate\":
-    0.0\r\n      }\r\n    ],\r\n    \"2\": [\r\n      {\r\n        \"moduleName\":
-    \"beam_t1\",\r\n        \"moduleSubType\": \"beam_t1\",\r\n        \"statPoint\":
-    20,\r\n        \"description\": \"\",\r\n        \"moduleSlots\": [],\r\n       
-    \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\": 200.0,\r\n       
-    \"turnRate\": 0.0,\r\n        \"attack\": 10.0,\r\n        \"splashRadius\":
-    0.0,\r\n        \"attackCool\": 3.0,\r\n        \"silenceTime\": 0.0,\r\n       
-    \"airCount\": 0,\r\n        \"airMaintenanceTime\": 0.0,\r\n        \"airHealth\":
-    0.0,\r\n        \"airAttack\": 0.0,\r\n        \"airAttackRange\": 0.0,\r\n       
-    \"airAttackCool\": 0.0,\r\n        \"airSpeed\": 0.0,\r\n        \"airAmmo\":
-    0,\r\n        \"airDetectRadius\": 0.0,\r\n        \"airAvoidRadius\": 0.0,\r\n       
-    \"airDisrupt\": 0.0,\r\n        \"shieldGauge\": 0.0,\r\n        \"shieldDelay\":
-    0.0,\r\n        \"shieldRegenRate\": 0.0,\r\n        \"interceptorCount\": 0,\r\n       
-    \"interceptorDelay\": 0.0,\r\n        \"interceptorRegenRate\": 0.0\r\n     
-    }\r\n    ],\r\n    \"3\": [\r\n      {\r\n        \"moduleName\": \"missile_t1\",\r\n       
-    \"moduleSubType\": \"missile_t1\",\r\n        \"statPoint\": 20,\r\n        \"description\":
-    \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\": 0.0,\r\n       
-    \"repair\": 0.0,\r\n        \"speed\": 10.0,\r\n        \"turnRate\": 0.0,\r\n       
-    \"attack\": 10.0,\r\n        \"splashRadius\": 0.0,\r\n        \"attackCool\":
-    3.0,\r\n        \"silenceTime\": 0.1,\r\n        \"airCount\": 0,\r\n       
-    \"airMaintenanceTime\": 0.0,\r\n        \"airHealth\": 0.0,\r\n        \"airAttack\":
-    0.0,\r\n        \"airAttackRange\": 0.0,\r\n        \"airAttackCool\": 0.0,\r\n       
-    \"airSpeed\": 0.0,\r\n        \"airAmmo\": 0,\r\n        \"airDetectRadius\":
+    1\r\n          },\r\n          {\r\n            \"moduleType\": \"hangar\",\r\n           
+    \"slotIndex\": 2\r\n          },\r\n          {\r\n            \"moduleType\":
+    \"hangar\",\r\n            \"slotIndex\": 3\r\n          }\r\n        ],\r\n       
+    \"health\": 1100.0,\r\n        \"repair\": 0.0,\r\n        \"speed\": 1.0,\r\n       
+    \"turnRate\": 1.0,\r\n        \"attack\": 0.0,\r\n        \"splashRadius\": 0.0,\r\n       
+    \"attackCool\": 0.0,\r\n        \"silenceTime\": 0.0,\r\n        \"airCount\":
+    0,\r\n        \"airMaintenanceTime\": 0.0,\r\n        \"airHealth\": 0.0,\r\n       
+    \"airAttack\": 0.0,\r\n        \"airAttackRange\": 0.0,\r\n        \"airAttackCool\":
+    0.0,\r\n        \"airSpeed\": 0.0,\r\n        \"airAmmo\": 0,\r\n        \"airDetectRadius\":
     0.0,\r\n        \"airAvoidRadius\": 0.0,\r\n        \"airDisrupt\": 0.0,\r\n       
-    \"shieldGauge\": 0.0,\r\n        \"shieldDelay\": 0.0,\r\n        \"shieldRegenRate\":
-    0.0,\r\n        \"interceptorCount\": 0,\r\n        \"interceptorDelay\": 0.0,\r\n       
-    \"interceptorRegenRate\": 0.0\r\n      }\r\n    ],\r\n    \"4\": [\r\n      {\r\n       
-    \"moduleName\": \"hangar_t1\",\r\n        \"moduleSubType\": \"hangar_t1\",\r\n       
-    \"statPoint\": 20,\r\n        \"description\": \"\",\r\n        \"moduleSlots\":
-    [],\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\":
-    0.0,\r\n        \"turnRate\": 0.0,\r\n        \"attack\": 0.0,\r\n        \"splashRadius\":
-    0.0,\r\n        \"attackCool\": 3.0,\r\n        \"silenceTime\": 0.0,\r\n       
-    \"airCount\": 3,\r\n        \"airMaintenanceTime\": 15.0,\r\n        \"airHealth\":
-    50.0,\r\n        \"airAttack\": 10.0,\r\n        \"airAttackRange\": 4.0,\r\n       
-    \"airAttackCool\": 4.0,\r\n        \"airSpeed\": 10.0,\r\n        \"airAmmo\":
-    10,\r\n        \"airDetectRadius\": 10.0,\r\n        \"airAvoidRadius\": 2.0,\r\n       
-    \"airDisrupt\": 0.1,\r\n        \"shieldGauge\": 0.0,\r\n        \"shieldDelay\":
-    0.0,\r\n        \"shieldRegenRate\": 0.0,\r\n        \"interceptorCount\": 0,\r\n       
-    \"interceptorDelay\": 0.0,\r\n        \"interceptorRegenRate\": 0.0\r\n     
-    }\r\n    ],\r\n    \"5\": [\r\n      {\r\n        \"moduleName\": \"shield_t1\",\r\n       
-    \"moduleSubType\": \"shield_t1\",\r\n        \"statPoint\": 20,\r\n        \"description\":
-    \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\": 0.0,\r\n       
-    \"repair\": 0.0,\r\n        \"speed\": 0.0,\r\n        \"turnRate\": 0.0,\r\n       
-    \"attack\": 0.0,\r\n        \"splashRadius\": 0.0,\r\n        \"attackCool\":
-    0.0,\r\n        \"silenceTime\": 0.0,\r\n        \"airCount\": 0,\r\n       
-    \"airMaintenanceTime\": 0.0,\r\n        \"airHealth\": 0.0,\r\n        \"airAttack\":
-    0.0,\r\n        \"airAttackRange\": 0.0,\r\n        \"airAttackCool\": 0.0,\r\n       
-    \"airSpeed\": 0.0,\r\n        \"airAmmo\": 0,\r\n        \"airDetectRadius\":
-    0.0,\r\n        \"airAvoidRadius\": 0.0,\r\n        \"airDisrupt\": 0.0,\r\n       
-    \"shieldGauge\": 100.0,\r\n        \"shieldDelay\": 5.0,\r\n        \"shieldRegenRate\":
-    5.0,\r\n        \"interceptorCount\": 0,\r\n        \"interceptorDelay\": 0.0,\r\n       
-    \"interceptorRegenRate\": 0.0\r\n      }\r\n    ],\r\n    \"6\": [\r\n      {\r\n       
-    \"moduleName\": \"interceptor_t1\",\r\n        \"moduleSubType\": \"interceptor_t1\",\r\n       
-    \"statPoint\": 20,\r\n        \"description\": \"\",\r\n        \"moduleSlots\":
-    [],\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\":
-    0.0,\r\n        \"turnRate\": 0.0,\r\n        \"attack\": 0.0,\r\n        \"splashRadius\":
+    \"shieldGauge\": 0.0,\r\n        \"shieldRegenRate\": 0.0,\r\n        \"interceptorCount\":
+    0,\r\n        \"interceptorDelay\": 0.0,\r\n        \"interceptorRegenRate\":
+    0.0\r\n      },\r\n      {\r\n        \"moduleName\": \"h1_55400\",\r\n       
+    \"moduleSubType\": \"h1_55400\",\r\n        \"statPoint\": 1200,\r\n        \"unlockCommanderLevel\":
+    1,\r\n        \"description\": \"\",\r\n        \"moduleSlots\": [\r\n         
+    {\r\n            \"moduleType\": \"beam\",\r\n            \"slotIndex\": 0\r\n         
+    },\r\n          {\r\n            \"moduleType\": \"beam\",\r\n            \"slotIndex\":
+    1\r\n          },\r\n          {\r\n            \"moduleType\": \"beam\",\r\n           
+    \"slotIndex\": 2\r\n          },\r\n          {\r\n            \"moduleType\":
+    \"beam\",\r\n            \"slotIndex\": 3\r\n          },\r\n          {\r\n           
+    \"moduleType\": \"beam\",\r\n            \"slotIndex\": 4\r\n          },\r\n         
+    {\r\n            \"moduleType\": \"missile\",\r\n            \"slotIndex\": 0\r\n         
+    },\r\n          {\r\n            \"moduleType\": \"missile\",\r\n           
+    \"slotIndex\": 1\r\n          },\r\n          {\r\n            \"moduleType\":
+    \"missile\",\r\n            \"slotIndex\": 2\r\n          },\r\n          {\r\n           
+    \"moduleType\": \"missile\",\r\n            \"slotIndex\": 3\r\n          },\r\n         
+    {\r\n            \"moduleType\": \"missile\",\r\n            \"slotIndex\": 4\r\n         
+    },\r\n          {\r\n            \"moduleType\": \"hangar\",\r\n            \"slotIndex\":
+    0\r\n          },\r\n          {\r\n            \"moduleType\": \"hangar\",\r\n           
+    \"slotIndex\": 1\r\n          },\r\n          {\r\n            \"moduleType\":
+    \"hangar\",\r\n            \"slotIndex\": 2\r\n          },\r\n          {\r\n           
+    \"moduleType\": \"hangar\",\r\n            \"slotIndex\": 3\r\n          }\r\n       
+    ],\r\n        \"health\": 1200.0,\r\n        \"repair\": 0.0,\r\n        \"speed\":
+    1.0,\r\n        \"turnRate\": 1.0,\r\n        \"attack\": 0.0,\r\n        \"splashRadius\":
     0.0,\r\n        \"attackCool\": 0.0,\r\n        \"silenceTime\": 0.0,\r\n       
     \"airCount\": 0,\r\n        \"airMaintenanceTime\": 0.0,\r\n        \"airHealth\":
     0.0,\r\n        \"airAttack\": 0.0,\r\n        \"airAttackRange\": 0.0,\r\n       
     \"airAttackCool\": 0.0,\r\n        \"airSpeed\": 0.0,\r\n        \"airAmmo\":
     0,\r\n        \"airDetectRadius\": 0.0,\r\n        \"airAvoidRadius\": 0.0,\r\n       
-    \"airDisrupt\": 0.0,\r\n        \"shieldGauge\": 0.0,\r\n        \"shieldDelay\":
-    0.0,\r\n        \"shieldRegenRate\": 0.0,\r\n        \"interceptorCount\": 1,\r\n       
-    \"interceptorDelay\": 5.0,\r\n        \"interceptorRegenRate\": 5.0\r\n     
-    }\r\n    ]\r\n  }\r\n}"
+    \"airDisrupt\": 0.0,\r\n        \"shieldGauge\": 0.0,\r\n        \"shieldRegenRate\":
+    0.0,\r\n        \"interceptorCount\": 0,\r\n        \"interceptorDelay\": 0.0,\r\n       
+    \"interceptorRegenRate\": 0.0\r\n      }\r\n    ],\r\n    \"2\": [\r\n      {\r\n       
+    \"moduleName\": \"beam1\",\r\n        \"moduleSubType\": \"beam1\",\r\n       
+    \"statPoint\": 20,\r\n        \"unlockCommanderLevel\": 0,\r\n        \"description\":
+    \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\": 0.0,\r\n       
+    \"repair\": 0.0,\r\n        \"speed\": 200.0,\r\n        \"turnRate\": 0.0,\r\n       
+    \"attack\": 10.0,\r\n        \"splashRadius\": 0.0,\r\n        \"attackCool\":
+    3.0,\r\n        \"silenceTime\": 0.0,\r\n        \"airCount\": 0,\r\n       
+    \"airMaintenanceTime\": 0.0,\r\n        \"airHealth\": 0.0,\r\n        \"airAttack\":
+    0.0,\r\n        \"airAttackRange\": 0.0,\r\n        \"airAttackCool\": 0.0,\r\n       
+    \"airSpeed\": 0.0,\r\n        \"airAmmo\": 0,\r\n        \"airDetectRadius\":
+    0.0,\r\n        \"airAvoidRadius\": 0.0,\r\n        \"airDisrupt\": 0.0,\r\n       
+    \"shieldGauge\": 0.0,\r\n        \"shieldRegenRate\": 0.0,\r\n        \"interceptorCount\":
+    0,\r\n        \"interceptorDelay\": 0.0,\r\n        \"interceptorRegenRate\":
+    0.0\r\n      }\r\n    ],\r\n    \"3\": [\r\n      {\r\n        \"moduleName\":
+    \"missile1\",\r\n        \"moduleSubType\": \"missile1\",\r\n        \"statPoint\":
+    20,\r\n        \"unlockCommanderLevel\": 0,\r\n        \"description\": \"\",\r\n       
+    \"moduleSlots\": null,\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n       
+    \"speed\": 10.0,\r\n        \"turnRate\": 0.0,\r\n        \"attack\": 10.0,\r\n       
+    \"splashRadius\": 0.0,\r\n        \"attackCool\": 3.0,\r\n        \"silenceTime\":
+    0.1,\r\n        \"airCount\": 0,\r\n        \"airMaintenanceTime\": 0.0,\r\n       
+    \"airHealth\": 0.0,\r\n        \"airAttack\": 0.0,\r\n        \"airAttackRange\":
+    0.0,\r\n        \"airAttackCool\": 0.0,\r\n        \"airSpeed\": 0.0,\r\n       
+    \"airAmmo\": 0,\r\n        \"airDetectRadius\": 0.0,\r\n        \"airAvoidRadius\":
+    0.0,\r\n        \"airDisrupt\": 0.0,\r\n        \"shieldGauge\": 0.0,\r\n       
+    \"shieldRegenRate\": 0.0,\r\n        \"interceptorCount\": 0,\r\n        \"interceptorDelay\":
+    0.0,\r\n        \"interceptorRegenRate\": 0.0\r\n      }\r\n    ],\r\n    \"4\":
+    [\r\n      {\r\n        \"moduleName\": \"hangar1\",\r\n        \"moduleSubType\":
+    \"hangar1\",\r\n        \"statPoint\": 20,\r\n        \"unlockCommanderLevel\":
+    0,\r\n        \"description\": \"\",\r\n        \"moduleSlots\": null,\r\n       
+    \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\": 0.0,\r\n       
+    \"turnRate\": 0.0,\r\n        \"attack\": 0.0,\r\n        \"splashRadius\": 0.0,\r\n       
+    \"attackCool\": 3.0,\r\n        \"silenceTime\": 0.0,\r\n        \"airCount\":
+    3,\r\n        \"airMaintenanceTime\": 15.0,\r\n        \"airHealth\": 50.0,\r\n       
+    \"airAttack\": 10.0,\r\n        \"airAttackRange\": 4.0,\r\n        \"airAttackCool\":
+    4.0,\r\n        \"airSpeed\": 10.0,\r\n        \"airAmmo\": 10,\r\n        \"airDetectRadius\":
+    10.0,\r\n        \"airAvoidRadius\": 2.0,\r\n        \"airDisrupt\": 0.1,\r\n       
+    \"shieldGauge\": 0.0,\r\n        \"shieldRegenRate\": 0.0,\r\n        \"interceptorCount\":
+    0,\r\n        \"interceptorDelay\": 0.0,\r\n        \"interceptorRegenRate\":
+    0.0\r\n      }\r\n    ],\r\n    \"5\": [\r\n      {\r\n        \"moduleName\":
+    \"shield1\",\r\n        \"moduleSubType\": \"shield1\",\r\n        \"statPoint\":
+    20,\r\n        \"unlockCommanderLevel\": 0,\r\n        \"description\": \"\",\r\n       
+    \"moduleSlots\": null,\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n       
+    \"speed\": 0.0,\r\n        \"turnRate\": 0.0,\r\n        \"attack\": 0.0,\r\n       
+    \"splashRadius\": 0.0,\r\n        \"attackCool\": 0.0,\r\n        \"silenceTime\":
+    0.0,\r\n        \"airCount\": 0,\r\n        \"airMaintenanceTime\": 0.0,\r\n       
+    \"airHealth\": 0.0,\r\n        \"airAttack\": 0.0,\r\n        \"airAttackRange\":
+    0.0,\r\n        \"airAttackCool\": 0.0,\r\n        \"airSpeed\": 0.0,\r\n       
+    \"airAmmo\": 0,\r\n        \"airDetectRadius\": 0.0,\r\n        \"airAvoidRadius\":
+    0.0,\r\n        \"airDisrupt\": 0.0,\r\n        \"shieldGauge\": 100.0,\r\n       
+    \"shieldRegenRate\": 5.0,\r\n        \"interceptorCount\": 0,\r\n        \"interceptorDelay\":
+    0.0,\r\n        \"interceptorRegenRate\": 0.0\r\n      }\r\n    ],\r\n    \"6\":
+    [\r\n      {\r\n        \"moduleName\": \"interceptor1\",\r\n        \"moduleSubType\":
+    \"interceptor1\",\r\n        \"statPoint\": 20,\r\n        \"unlockCommanderLevel\":
+    0,\r\n        \"description\": \"\",\r\n        \"moduleSlots\": null,\r\n       
+    \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\": 0.0,\r\n       
+    \"turnRate\": 0.0,\r\n        \"attack\": 0.0,\r\n        \"splashRadius\": 0.0,\r\n       
+    \"attackCool\": 0.0,\r\n        \"silenceTime\": 0.0,\r\n        \"airCount\":
+    0,\r\n        \"airMaintenanceTime\": 0.0,\r\n        \"airHealth\": 0.0,\r\n       
+    \"airAttack\": 0.0,\r\n        \"airAttackRange\": 0.0,\r\n        \"airAttackCool\":
+    0.0,\r\n        \"airSpeed\": 0.0,\r\n        \"airAmmo\": 0,\r\n        \"airDetectRadius\":
+    0.0,\r\n        \"airAvoidRadius\": 0.0,\r\n        \"airDisrupt\": 0.0,\r\n       
+    \"shieldGauge\": 0.0,\r\n        \"shieldRegenRate\": 0.0,\r\n        \"interceptorCount\":
+    1,\r\n        \"interceptorDelay\": 5.0,\r\n        \"interceptorRegenRate\":
+    5.0\r\n      }\r\n    ]\r\n  }\r\n}"

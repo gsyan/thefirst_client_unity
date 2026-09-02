@@ -75,7 +75,14 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         effectPrefab = ResourceManager.Instance.Load<EffectBase>("Prefabs/Effect/EffectBeamMuzzle");
         if (effectPrefab == null) Debug.LogError("Not found at Resources/Prefabs/Effect/EffectBeamMuzzle");
         m_poolManager.CreatePool(EPoolName.EFFECT_BEAM_MUZZLE, effectPrefab, 5, 20);
-        
+
+        EffectShieldHit effectShieldHitPrefab = ResourceManager.Instance.Load<EffectShieldHit>("Prefabs/Effect/EffectShieldHit");
+        if (effectShieldHitPrefab != null)
+            m_poolManager.CreatePool(EPoolName.EFFECT_SHIELD_HIT, effectShieldHitPrefab, 5, 20);
+        else
+            Debug.LogError("EffectShieldHit not found at Resources/Prefabs/Effect/EffectShieldHit");
+
+
         EffectBase effectExplosionShipPrefab = ResourceManager.Instance.Load<EffectBase>("Prefabs/Effect/EffectExplosionShip");
         if (effectExplosionShipPrefab != null)
             m_poolManager.CreatePool(EPoolName.EFFECT_EXPLOSION_SHIP, effectExplosionShipPrefab, 3, 10);
@@ -164,8 +171,6 @@ public class ObjectManager : MonoSingleton<ObjectManager>
 
         foreach (SpaceShip ship in myFleet.m_ships)
             if (ship != null) ship.RefreshRewardCardBuffs();
-
-        Debug.Log($"[RewardCard] RefreshRewardCardBuffsOnMyFleet ships={myFleet.m_ships.Count}");
     }
 
     // 내 팀 기준 적 팀 함대 목록(=기존 m_enemyFleets) — UI/카메라 등 "플레이어 관점" 참조용
@@ -763,10 +768,10 @@ public class ObjectManager : MonoSingleton<ObjectManager>
                     continue;
                 }
 
-                // shipSlot.bodies는 서버에 저장된 "이 함선에 실제로 장착된 모듈 구성"(로드아웃) — 있으면(내 함대) 그걸 우선 쓰고,
+                // shipSlot.hulls는 서버에 저장된 "이 함선에 실제로 장착된 모듈 구성"(로드아웃) — 있으면(내 함대) 그걸 우선 쓰고,
                 // 없으면(적 함대 등) 빈 로드아웃(기본 장착 구성)을 그대로 씀
-                ModuleBodyInfo actualModules = shipSlot.bodies != null && shipSlot.bodies.Count > 0 ? shipSlot.bodies[0] : null;
-                ShipStatAllocation allocation = ShipStatAllocation.BuildFromModuleBodyInfo(formula.maxModuleSlots, actualModules);
+                ModuleHullInfo actualModules = shipSlot.hulls != null && shipSlot.hulls.Count > 0 ? shipSlot.hulls[0] : null;
+                ShipStatAllocation allocation = ShipStatAllocation.BuildFromModuleHullInfo(formula.maxModuleSlots, actualModules);
 
                 // 보상카드 지속버프는 여기서 미리 곱해두지 않음 — 스폰되는 모듈들이 자기 자신의 RefreshRewardCardBuff()에서
                 // 그 시점의 최신 배율을 직접 읽어 반영함(내 함대가 아니면 배율은 항상 1). 이러면 스폰 이후 카드를 더 골라도
@@ -807,7 +812,7 @@ public class ObjectManager : MonoSingleton<ObjectManager>
 
     // 함대편성 UI(FleetComposition)에서 슬롯 하나에 배치/교체하거나 장착 모듈만 바뀌었을 때 호출 — 그 슬롯의 함선만 파괴/재생성, 나머지 함선은 그대로 유지
     // modules를 생략하면(null) 빈 로드아웃(함체 교체 시 리셋된 값)을 쓰고, 넘기면(모듈 편집 후) 그 실제 장착 구성으로 스탯을 계산함
-    public void ReplaceMyFleetShipAt(int positionIndex, string hullSubType, bool isFront, ModuleBodyInfo modules = null)
+    public void ReplaceMyFleetShipAt(int positionIndex, string hullSubType, bool isFront, ModuleHullInfo modules = null)
     {
         SpaceFleet myFleet = GetMyFleet();
         if (myFleet == null) return;
@@ -827,7 +832,7 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         }
 
         ShipStatFormulaSettings formula = DataManager.Instance.m_dataTableConfig.gameSettings.shipStatFormula;
-        ShipStatAllocation allocation = ShipStatAllocation.BuildFromModuleBodyInfo(formula.maxModuleSlots, modules);
+        ShipStatAllocation allocation = ShipStatAllocation.BuildFromModuleHullInfo(formula.maxModuleSlots, modules);
         ShipFinalStats finalStats = ShipStatCalculator.Calculate(allocation, formula, bodyModuleData, moduleTable);
 
         SpaceShip newShip = ExplorationShipSpawnBridge.SpawnShip(myFleet, bodyModuleData, finalStats, positionIndex, isFront);

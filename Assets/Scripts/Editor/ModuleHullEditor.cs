@@ -1,9 +1,9 @@
-// ModuleBody 커스텀 인스펙터 - 카메라 줌 범위 프리뷰/기록 버튼 제공
+// ModuleHull 커스텀 인스펙터 - 카메라 줌 범위 프리뷰/기록 버튼 제공
 using UnityEngine;
 using UnityEditor;
 
-[CustomEditor(typeof(ModuleBody))]
-public class ModuleBodyEditor : Editor
+[CustomEditor(typeof(ModuleHull))]
+public class ModuleHullEditor : Editor
 {
     SerializedProperty m_cameraMinZoom;
     SerializedProperty m_cameraMaxZoom;
@@ -27,14 +27,14 @@ public class ModuleBodyEditor : Editor
         if (GUILayout.Button("Preview Min Zoom"))
             ApplyZoomToSceneView(m_cameraMinZoom.floatValue);
         if (GUILayout.Button("Capture from Scene View"))
-            CaptureZoom((ModuleBody)target, isMin: true);
+            CaptureZoom((ModuleHull)target, isMin: true);
         EditorGUILayout.EndHorizontal();
 
         EditorGUILayout.BeginHorizontal();
         if (GUILayout.Button("Preview Max Zoom"))
             ApplyZoomToSceneView(m_cameraMaxZoom.floatValue);
         if (GUILayout.Button("Capture from Scene View"))
-            CaptureZoom((ModuleBody)target, isMin: false);
+            CaptureZoom((ModuleHull)target, isMin: false);
         EditorGUILayout.EndHorizontal();
 
         serializedObject.ApplyModifiedProperties();
@@ -50,7 +50,7 @@ public class ModuleBodyEditor : Editor
         SceneView sceneView = SceneView.lastActiveSceneView;
         if (sceneView == null)
         {
-            Debug.LogWarning("[ModuleBodyEditor] 활성화된 SceneView가 없음");
+            Debug.LogWarning("[ModuleHullEditor] 활성화된 SceneView가 없음");
             return;
         }
 
@@ -58,12 +58,12 @@ public class ModuleBodyEditor : Editor
         sceneView.Repaint();
     }
 
-    private void CaptureZoom(ModuleBody body, bool isMin)
+    private void CaptureZoom(ModuleHull body, bool isMin)
     {
         SceneView sceneView = SceneView.lastActiveSceneView;
         if (sceneView == null)
         {
-            Debug.LogWarning("[ModuleBodyEditor] 활성화된 SceneView가 없음");
+            Debug.LogWarning("[ModuleHullEditor] 활성화된 SceneView가 없음");
             return;
         }
 
@@ -77,6 +77,6 @@ public class ModuleBodyEditor : Editor
             body.m_cameraMaxZoom = zoom;
 
         EditorUtility.SetDirty(body);
-        Debug.Log($"[ModuleBodyEditor] {(isMin ? "Min" : "Max")} Zoom = {zoom}");
+        Debug.Log($"[ModuleHullEditor] {(isMin ? "Min" : "Max")} Zoom = {zoom}");
     }
 }

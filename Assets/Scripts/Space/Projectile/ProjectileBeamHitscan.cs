@@ -61,7 +61,7 @@ public class ProjectileBeamHitscan : ProjectileBase
 
         float totalDamage = m_damageInfo.GetFinalDamage();
         float tickDamage = m_holdTime > 0f ? totalDamage * (m_tickInterval / m_holdTime) : totalDamage;
-        DamageInfo tickDamageInfo = new DamageInfo { baseDamage = tickDamage, attackMultiplier = 1f };
+        DamageInfo tickDamageInfo = new DamageInfo { baseDamage = tickDamage, attackMultiplier = 1f, damageType = EDamageType.Beam };
         float elapsed = 0f;
         float tickAccum = 0f;
 

@@ -113,8 +113,6 @@ public class ProjectileBeam : ProjectileBase
         m_lifeCycleCoroutine = StartCoroutine(BeamLifeCycle());
     }
 
-    private const int m_layerShield = 13;
-    private LayerMask m_layerMaskShield = 1 << m_layerShield;
     private static readonly RaycastHit[] s_beamHits = new RaycastHit[16];
 
     //빠르게 목표까지 도달 → 데미지 → 흩어지며 소멸
@@ -125,13 +123,36 @@ public class ProjectileBeam : ProjectileBase
         m_direction = (targetPosition - m_beamTailPos).normalized;
         float maxDistance = Vector3.Distance(m_beamTailPos, targetPosition) + 10f; // 여유 거리
 
-        LayerMask pickMask = ~m_layerMaskShield;
+        // 빔은 Shield 레이어도 명중 대상에 포함 — 실드가 이번 데미지를 전량 막을 수 있으면 함체 표면보다 먼저 여기서 막힘(SpaceShip.TakeDamage에서 흡수 판정)
+        // 콜라이더/레이어는 그대로 두고(ShieldTriggerRelay의 진형 회피 판정이 같은 콜라이더를 쓰므로), 관통이 발생하는 경우만 이 raycast에서 걸러냄
+        LayerMask pickMask = ~0;
+        int shieldLayer = LayerMask.NameToLayer("Shield");
+        float finalDamage = m_damageInfo.GetFinalDamage();
         Vector3 finalHitPoint = targetPosition;
         SpaceShip hitTarget = null;
 
-        // 초기 Raycast — 함선 감지 및 finalHitPoint 확정 (Trigger 무시)
-        if (Physics.Raycast(m_beamTailPos, m_direction, out RaycastHit hit, maxDistance, pickMask, QueryTriggerInteraction.Ignore))
+        // 초기 Raycast — 함선 감지 및 finalHitPoint 확정 (Trigger 무시). Shield 히트인데 관통이 발생하면 무시하고 다음(가까운) 히트를 찾음
+        int initialHitCount = Physics.RaycastNonAlloc(m_beamTailPos, m_direction, s_beamHits, maxDistance, pickMask, QueryTriggerInteraction.Ignore);
+        int nearestValidIndex = -1;
+        float nearestValidDistance = float.MaxValue;
+        for (int i = 0; i < initialHitCount; i++)
         {
+            if (s_beamHits[i].distance >= nearestValidDistance) continue;
+
+            if (s_beamHits[i].collider.gameObject.layer == shieldLayer)
+            {
+                SpaceShip candidateShip = s_beamHits[i].collider.GetComponentInParent<SpaceShip>();
+                if (candidateShip == null || candidateShip.IsShieldActive(finalDamage) == false)
+                    continue;
+            }
+
+            nearestValidIndex = i;
+            nearestValidDistance = s_beamHits[i].distance;
+        }
+
+        if (nearestValidIndex >= 0)
+        {
+            RaycastHit hit = s_beamHits[nearestValidIndex];
             hitTarget = hit.collider.GetComponentInParent<SpaceShip>();
             if (hitTarget != null && m_sourceShip != null)
             {
@@ -190,6 +211,14 @@ public class ProjectileBeam : ProjectileBase
                         ? ObjectManager.Instance.m_friendlyMissiles.Contains(checkMissile)
                         : ObjectManager.Instance.m_enemyMissiles.Contains(checkMissile));
                 if (isFriendlyMissile == true) continue;
+
+                // 관통이 발생하는 함선의 Shield 콜라이더는 무시 — 그 뒤(함체 표면 등)의 히트가 유효 판정을 받도록 함
+                if (s_beamHits[h].collider.gameObject.layer == shieldLayer)
+                {
+                    SpaceShip checkShieldShip = s_beamHits[h].collider.GetComponentInParent<SpaceShip>();
+                    if (checkShieldShip == null || checkShieldShip.IsShieldActive(finalDamage) == false)
+                        continue;
+                }
 
                 if (hasLiveHit == false || s_beamHits[h].distance < liveHit.distance)
                 {
@@ -253,6 +282,7 @@ public class ProjectileBeam : ProjectileBase
         }
 
         // 2단계: 데미지/요격 처리
+        bool wasFullyShielded = false;
         if (interceptedMissile != null)
         {
             SoundManager.Instance.PlayFX(EFx.Explosion_Missile, finalHitPoint);
@@ -260,14 +290,15 @@ public class ProjectileBeam : ProjectileBase
         }
         else if (hitTarget != null)
         {
-            hitTarget.TakeDamage(m_damageInfo, finalHitPoint);
+            hitTarget.TakeDamage(m_damageInfo, finalHitPoint, out wasFullyShielded);
             SoundManager.Instance.PlayFX(EFx.Beam_Impact1, finalHitPoint);
         }
 
         // TakeDamage→전멸→CleanupAllProjectiles 동기 체인으로 이미 ReturnToPool 됐을 수 있음
         if (gameObject.activeInHierarchy == false) yield break;
 
-        if (m_hitEffect == null)
+        // 실드가 완전히 막았으면 함체 표면에 실제로 닿지 않았으므로 EFFECT_BEAM_HIT 생략(EFFECT_SHIELD_HIT만 표시)
+        if (m_hitEffect == null && wasFullyShielded == false)
         {
             m_hitEffect = ObjectManager.Instance.m_poolManager.Get<EffectBase>(EPoolName.EFFECT_BEAM_HIT);
             m_hitEffect.transform.position = finalHitPoint;

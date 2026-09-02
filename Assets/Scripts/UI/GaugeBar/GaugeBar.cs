@@ -3,15 +3,28 @@ using UnityEngine.UI;
 
 public class GaugeBar : MonoBehaviour
 {
+    [SerializeField] private Image m_shieldBackgroundImage;
+    [SerializeField] private Image m_shieldFillImage;
+
     [SerializeField] private Image m_backgroundImage;
-    [SerializeField] private Image m_fillImage;    
+    [SerializeField] private Image m_fillImage;
+    
     [SerializeField] private Text m_valueText;
+
+    // 실드 게이지 — 체력 바로 위에 얹는 별도 줄. 실드 미장착 함체는 m_shieldBackgroundImage 자체를 비활성화해 안 보이게 함
+    
 
     private Color m_color = Color.green;
     private float m_currentValue;
     private float m_maxValue;
     private float m_targetValue;
     private float m_smoothSpeed = 5f;
+
+    private Color m_shieldColor = Color.cyan;
+    private float m_shieldCurrentValue;
+    private float m_shieldMaxValue;
+    private float m_shieldTargetValue;
+    private bool m_hasShield;
 
     private Transform m_targetTransform;
     private Vector3 m_offsetFromTarget = new Vector3(0, 0f, 0);
@@ -42,6 +55,14 @@ public class GaugeBar : MonoBehaviour
         m_maxValue = maxValue;
     }
 
+    // 실드 미장착 함체는 이 함수를 호출하지 않음 — m_hasShield가 false로 남아 UpdateSmooth에서 실드 줄을 계속 숨김
+    public void UpdateShieldValue(float currentValue, float maxValue)
+    {
+        m_hasShield = true;
+        m_shieldTargetValue = Mathf.Clamp(currentValue, 0, maxValue);
+        m_shieldMaxValue = maxValue;
+    }
+
     public void InitializeGaugeBar(Transform target, Vector3 offsetFromTarget, Color color, float smoothSpeed)
     {
         if (m_backgroundImage == null)
@@ -50,10 +71,21 @@ public class GaugeBar : MonoBehaviour
             m_fillImage = transform.Find("Fill")?.GetComponent<Image>();
         if (m_valueText == null)
             m_valueText = transform.Find("ValueText")?.GetComponent<Text>();
+        if (m_shieldBackgroundImage == null)
+            m_shieldBackgroundImage = transform.Find("ShieldBackground")?.GetComponent<Image>();
+        if (m_shieldFillImage == null)
+            m_shieldFillImage = transform.Find("ShieldFill")?.GetComponent<Image>();
 
         m_currentValue = 100f;
         m_maxValue = 100f;
         m_targetValue = 100f;
+
+        m_hasShield = false;
+        m_shieldCurrentValue = 0f;
+        m_shieldMaxValue = 0f;
+        m_shieldTargetValue = 0f;
+        if (m_shieldBackgroundImage != null)
+            m_shieldBackgroundImage.gameObject.SetActive(false);
 
         if (m_mainCamera == null)
             m_mainCamera = Camera.main;
@@ -71,6 +103,13 @@ public class GaugeBar : MonoBehaviour
         if (m_fillImage != null)
             m_fillImage.color = color;
         m_smoothSpeed = smoothSpeed;
+    }
+
+    public void SetShieldColor(Color color)
+    {
+        m_shieldColor = color;
+        if (m_shieldFillImage != null)
+            m_shieldFillImage.color = color;
     }
 
     public void SetAutoBounds(bool useAutoBounds, float additionalOffset = 0.5f)
@@ -91,11 +130,36 @@ public class GaugeBar : MonoBehaviour
         m_currentValue = Mathf.Lerp(m_currentValue, m_targetValue, Time.deltaTime * m_smoothSpeed);
 
         float fillAmount = m_maxValue > 0 ? m_currentValue / m_maxValue : 0;
-        RectTransform fillRect = m_fillImage.rectTransform;
-        fillRect.anchorMax = new Vector2(Mathf.Clamp01(fillAmount), 1);
+        m_fillImage.fillAmount = Mathf.Clamp01(fillAmount);
 
         if (m_valueText != null)
             m_valueText.text = $"{m_currentValue:F0} / {m_maxValue:F0}";
+
+        UpdateShieldSmooth();
+    }
+
+    // 실드 미장착(m_hasShield == false)이면 줄 자체를 숨김 — 장착된 함체만 별도 줄로 표시
+    private void UpdateShieldSmooth()
+    {
+        if (m_shieldBackgroundImage == null) return;
+
+        if (m_hasShield == false)
+        {
+            if (m_shieldBackgroundImage.gameObject.activeSelf == true)
+                m_shieldBackgroundImage.gameObject.SetActive(false);
+            return;
+        }
+
+        if (m_shieldBackgroundImage.gameObject.activeSelf == false)
+            m_shieldBackgroundImage.gameObject.SetActive(true);
+
+        m_shieldCurrentValue = Mathf.Lerp(m_shieldCurrentValue, m_shieldTargetValue, Time.deltaTime * m_smoothSpeed);
+
+        if (m_shieldFillImage != null)
+        {
+            float shieldFillAmount = m_shieldMaxValue > 0 ? m_shieldCurrentValue / m_shieldMaxValue : 0;
+            m_shieldFillImage.fillAmount = Mathf.Clamp01(shieldFillAmount);
+        }
     }
 
     void LateUpdate()

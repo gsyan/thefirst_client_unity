@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 public class ModuleBeam : ModuleBase
 {
-    [SerializeField] private ModuleBody m_parentBody;
+    [SerializeField] private ModuleHull m_parentBody;
     public ModuleInfo m_moduleInfo;
 
     // 무기 전용 스탯
@@ -20,13 +20,13 @@ public class ModuleBeam : ModuleBase
     // 발사대 관련
     [SerializeField] private List<LauncherBase> m_launchers = new List<LauncherBase>();
 
-    private ModuleBody m_currentTarget;
+    private ModuleHull m_currentTarget;
     private Coroutine m_autoAttackCoroutine;
     private Animator m_animator;
     private const float k_beamFireAngle = 5f;
 
     // Body 교체 시 기존 모듈 승계용 — 새 부모 body로 갱신
-    public void SetParentBody(ModuleBody parentBody)
+    public void SetParentBody(ModuleHull parentBody)
     {
         m_parentBody = parentBody;
     }
@@ -66,7 +66,7 @@ public class ModuleBeam : ModuleBase
 
 
     // attackOverride: 성능포인트 프리셋 기반 스폰 시 테이블 공격력 대신 사용할 계산값 (null이면 기존처럼 테이블값 그대로 사용)
-    public void InitializeModuleBeam(ModuleInfo moduleInfo, ModuleBody parentBody, ModuleSlot moduleSlot, float? attackOverride = null)
+    public void InitializeModuleBeam(ModuleInfo moduleInfo, ModuleHull parentBody, ModuleSlot moduleSlot, float? attackOverride = null)
     {
         m_moduleInfo = moduleInfo;
         m_parentBody = parentBody;
@@ -165,7 +165,7 @@ public class ModuleBeam : ModuleBase
         }
     }
     
-    private void ExecuteAttackOnTarget(ModuleBody target)
+    private void ExecuteAttackOnTarget(ModuleHull target)
     {
         if (m_animator != null)
             m_animator.SetTrigger("Fire");
@@ -200,16 +200,16 @@ public class ModuleBeam : ModuleBase
 
     
 
-    public override int GetModuleBodyIndex()
+    public override int GetModuleHullIndex()
     {
-        return m_moduleInfo.bodyIndex;
+        return m_moduleInfo.hullIndex;
     }
-    public override void SetModuleBodyIndex(int bodyIndex)
+    public override void SetModuleHullIndex(int hullIndex)
     {
-        m_moduleInfo.bodyIndex = bodyIndex;
+        m_moduleInfo.hullIndex = hullIndex;
     }
 
-    public void SetTarget(ModuleBody target)
+    public void SetTarget(ModuleHull target)
     {
         m_currentTarget = target;
     }

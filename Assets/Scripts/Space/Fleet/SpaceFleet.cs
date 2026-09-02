@@ -43,7 +43,7 @@ public class SpaceFleet : MonoBehaviour
         foreach (SpaceShip ship in m_ships)
         {
             if (ship == null) continue;
-            foreach (ModuleBody body in ship.m_moduleBodys)
+            foreach (ModuleHull body in ship.m_moduleHulls)
             {
                 if (body == null) continue;
                 total += body.m_health;
@@ -51,6 +51,21 @@ public class SpaceFleet : MonoBehaviour
             }
         }
         return max > 0f ? total / max : 1f;
+    }
+
+    // 실드 전술 토글이 실질 효과를 가지는지 — 함대 내 실드 장착 함체 중 게이지가 있어 방어가 실제로 발동 중인 게 하나라도 있는지
+    public bool HasAnyShieldDefending()
+    {
+        foreach (SpaceShip ship in m_ships)
+        {
+            if (ship == null) continue;
+            foreach (ModuleHull body in ship.m_moduleHulls)
+            {
+                if (body == null || body.m_shield == null) continue;
+                if (body.m_shield.HasGaugeToDefend() == true) return true;
+            }
+        }
+        return false;
     }
 
     private void Start()
@@ -664,7 +679,7 @@ public class SpaceFleet : MonoBehaviour
             SpaceShip newShip = FindShip(shipInfo.id);
             if (newShip != null)
             {
-                foreach (ModuleBody body in newShip.m_moduleBodys)
+                foreach (ModuleHull body in newShip.m_moduleHulls)
                 {
                     if (body != null)
                         body.m_health = body.m_healthMax * healthRatio;
@@ -696,7 +711,7 @@ public class SpaceFleet : MonoBehaviour
         foreach (SpaceShip ship in m_ships)
         {
             if (ship == null) continue;
-            foreach (ModuleBody body in ship.m_moduleBodys)
+            foreach (ModuleHull body in ship.m_moduleHulls)
             {
                 if (body == null) continue;
                 float beforeHealth = body.m_health;
@@ -715,7 +730,7 @@ public class SpaceFleet : MonoBehaviour
         foreach (SpaceShip ship in m_ships)
         {
             if (ship == null) continue;
-            foreach (ModuleBody body in ship.m_moduleBodys)
+            foreach (ModuleHull body in ship.m_moduleHulls)
             {
                 if (body == null) continue;
                 missing += body.m_healthMax - body.m_health;
@@ -727,17 +742,10 @@ public class SpaceFleet : MonoBehaviour
     // 모든 함선의 체력을 지정 비율로 설정
     private void ApplyHealthRatio(float ratio)
     {
-        ratio = Mathf.Clamp01(ratio);
         foreach (SpaceShip ship in m_ships)
         {
             if (ship == null) continue;
-            foreach (ModuleBody body in ship.m_moduleBodys)
-            {
-                if (body == null) continue;
-                body.m_health = body.m_healthMax * ratio;
-            }
-            ship.UpdateShipStatCur();
-            ship.CheckFireEffects();
+            ship.ApplyHealthRatio(ratio);
         }
         EventManager.Trigger_FleetUpdateHP();
         EventManager.Trigger_ShipUpdateHP();
@@ -793,13 +801,13 @@ public class SpaceFleet : MonoBehaviour
         return null;
     }
 
-    public ModuleBody GetRandomAliveBodyPart()
+    public ModuleHull GetRandomAliveBodyPart()
     {
         SpaceShip aliveShip = GetRandomAliveShip();
         if (aliveShip == null) return null;
 
-        List<ModuleBody> aliveBodies = new List<ModuleBody>();
-        foreach (ModuleBody body in aliveShip.m_moduleBodys)
+        List<ModuleHull> aliveBodies = new List<ModuleHull>();
+        foreach (ModuleHull body in aliveShip.m_moduleHulls)
         {
             if (body != null && body.m_health > 0)
                 aliveBodies.Add(body);
@@ -861,9 +869,9 @@ public class SpaceFleet : MonoBehaviour
         {
             SpaceShip ship = m_ships[s];
             if (ship == null || ship.IsAlive() == false) continue;
-            for (int b = 0; b < ship.m_moduleBodys.Count; b++)
+            for (int b = 0; b < ship.m_moduleHulls.Count; b++)
             {
-                List<ModuleHangar> hangars = ship.m_moduleBodys[b].m_hangars;
+                List<ModuleHangar> hangars = ship.m_moduleHulls[b].m_hangars;
                 for (int h = 0; h < hangars.Count; h++)
                     hangars[h].ReadyAllAircraft();
             }

@@ -33,10 +33,9 @@ public class ShipStatAllocation
     public int[] interceptorDelayPoints = new int[0];
     public int[] interceptorRegenRatePoints = new int[0];
 
-    // Shield — 장착 서브타입(예: shield_t1_m1). 빈 문자열 = 미장착. 코스트는 DataTableModule의 해당 subType(level 1) cost_mp. 강화 서브스탯 3종은 1p=1선택
+    // Shield — 장착 서브타입(예: shield_t1_m1). 빈 문자열 = 미장착. 코스트는 DataTableModule의 해당 subType(level 1) cost_mp. 강화 서브스탯은 게이지/회복속도 중 1p=1선택
     public string shieldModuleSubType = "";
     public int shieldGaugePoints;
-    public int shieldDelayPoints;
     public int shieldRegenRatePoints; // 회복속도(초당 게이지 회복량)
 
     // 슬롯 설치 코스트는 티어(subType)마다 다름 — DataTableModule.GetModuleDataFromTable(subType).statPoint 조회
@@ -72,12 +71,12 @@ public class ShipStatAllocation
         }
 
         if (string.IsNullOrEmpty(shieldModuleSubType) == false)
-            total += GetInstallCost(moduleTable, shieldModuleSubType) + shieldGaugePoints + shieldDelayPoints + shieldRegenRatePoints;
+            total += GetInstallCost(moduleTable, shieldModuleSubType) + shieldGaugePoints + shieldRegenRatePoints;
 
         return total;
     }
 
-    // 신규 추가 필드는 기존 프리셋 데이터에서 배열 크기가 subType 배열과 다를 수 있어 범위를 벗어나면 0으로 취급
+    // 신규 추가 필드는 기존 로드아웃 데이터에서 배열 크기가 subType 배열과 다를 수 있어 범위를 벗어나면 0으로 취급
     private static int GetAt(int[] array, int index)
     {
         return index < array.Length ? array[index] : 0;
@@ -91,10 +90,10 @@ public class ShipStatAllocation
         return data != null ? data.statPoint : 0;
     }
 
-    // 실제 장착 로드아웃(ShipInfo.bodies, on/off + 공격력 강화 포인트 지원) → 전투 계산용 ShipStatAllocation 조립
-    // maxSlotCount: 카테고리별 슬롯 배열 크기(DataTableConfig.gameSettings.shipStatFormula.maxModuleSlots) — 실제 장착 여부/서브타입/공격력 강화 포인트는 bodies로 채움
-    // 공격력 이외(연사력/발사체속도/침묵시간 등)는 아직 실시간 강화 미지원이라 항상 0. 실드/요격체는 아직 장착 UI가 없어 항상 미장착
-    public static ShipStatAllocation BuildFromModuleBodyInfo(int maxSlotCount, ModuleBodyInfo bodies)
+    // 실제 장착 로드아웃(ShipInfo.hulls, on/off + 공격력 강화 포인트 지원) → 전투 계산용 ShipStatAllocation 조립
+    // maxSlotCount: 카테고리별 슬롯 배열 크기(DataTableConfig.gameSettings.shipStatFormula.maxModuleSlots) — 실제 장착 여부/서브타입/공격력 강화 포인트는 hulls로 채움
+    // 공격력 이외(연사력/발사체속도/침묵시간 등)는 아직 실시간 강화 미지원이라 항상 0. 요격체는 아직 장착 UI가 없어 항상 미장착
+    public static ShipStatAllocation BuildFromModuleHullInfo(int maxSlotCount, ModuleHullInfo hulls)
     {
         var result = new ShipStatAllocation();
 
@@ -102,21 +101,23 @@ public class ShipStatAllocation
         result.beamAttackPoints = new int[maxSlotCount];
         result.beamFireRatePoints = new int[maxSlotCount];
         result.beamProjectileSpeedPoints = new int[maxSlotCount];
-        ApplyModulesToSlots(result.beamModuleSubType, result.beamAttackPoints, bodies != null ? bodies.beams : null);
+        ApplyModulesToSlots(result.beamModuleSubType, result.beamAttackPoints, hulls != null ? hulls.beams : null);
 
         result.missileModuleSubType = new string[maxSlotCount];
         result.missileAttackPoints = new int[maxSlotCount];
         result.missileFireRatePoints = new int[maxSlotCount];
         result.missileProjectileSpeedPoints = new int[maxSlotCount];
         result.missileSilencePoints = new int[maxSlotCount];
-        ApplyModulesToSlots(result.missileModuleSubType, result.missileAttackPoints, bodies != null ? bodies.missiles : null);
+        ApplyModulesToSlots(result.missileModuleSubType, result.missileAttackPoints, hulls != null ? hulls.missiles : null);
 
         result.hangarModuleSubType = new string[maxSlotCount];
         result.hangarAttackToShip = new int[maxSlotCount];
         result.hangarAttackToFighter = new int[maxSlotCount];
         result.hangarAmmoPoints = new int[maxSlotCount];
         result.hangarHealthPoints = new int[maxSlotCount];
-        ApplyHangarModulesToSlots(result.hangarModuleSubType, result.hangarAttackToShip, result.hangarAttackToFighter, bodies != null ? bodies.hangars : null);
+        ApplyHangarModulesToSlots(result.hangarModuleSubType, result.hangarAttackToShip, result.hangarAttackToFighter, hulls != null ? hulls.hangars : null);
+
+        result.shieldModuleSubType = hulls != null && string.IsNullOrEmpty(hulls.shieldModuleSubType) == false ? hulls.shieldModuleSubType : "";
 
         result.interceptorModuleSubType = new string[maxSlotCount];
         result.interceptorDelayPoints = new int[maxSlotCount];

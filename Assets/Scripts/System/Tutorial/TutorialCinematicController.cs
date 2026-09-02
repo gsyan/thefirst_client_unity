@@ -40,7 +40,7 @@ public static class TutorialCinematicController
 
         ModuleBodyInfo body = new ModuleBodyInfo
         {
-            moduleType = EModuleType.body,
+            moduleType = EModuleType.hull,
             moduleSubType = ParseSubType($"body_t{gradeLevel}_m1"),
             moduleLevel = moduleLevel,
             bodyIndex = 0,

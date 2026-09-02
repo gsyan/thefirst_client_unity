@@ -1,5 +1,5 @@
 // 함대편성 UI — FleetComposition 기반, UIManager가 관리하는 독립 패널(다른 진입 화면과 배타적)
-// 배치된 함선 전방/후방 토글, 클릭 시 성능 컬럼에 상세 스탯 표시, 타입선택 버튼으로 함선 프리셋 교체(UIShipPresetPickerView)
+// 배치된 함선 전방/후방 토글, 클릭 시 성능 컬럼에 상세 스탯 표시, 타입선택 버튼으로 함체 교체(UIHullPickerView)
 // 상단 FleetStats(항상 보이는 지휘력/배치 수 요약)와 2열(함대구성/성능)은 역할이 분리됨 —
 // 성능 컬럼은 순수하게 "선택한 함선의 상세 스탯"만 담당(선택 없으면 비어있음)
 // 행은 프리팹에 미리 배치하지 않고, 필요한 개수만큼 풀에서 동적으로 늘려가며 사용(부족하면 Instantiate, 남으면 비활성화)
@@ -15,7 +15,7 @@ public class UIPanelFleet : UIPanelBase
     [SerializeField] private UIStatRow m_statsRowPrefab;     // 성능 컬럼 전용 — 선택한 함선의 상세 스탯
     [SerializeField] private UIPlacedShipRow m_placedShipRowPrefab;
     [SerializeField] private InfiniteScrollView m_placedShipsScrollView; // 배치된 함선 목록 — 세로 가상 스크롤(PlacedShipsContainer 아래 배치된 스크롤뷰)
-    [SerializeField] private UIShipPresetPickerView m_shipPresetPicker; // 함선 타입선택 버튼을 누르면 뜨는 프리셋 선택 팝업(UIPanelFleet 루트 아래 내장, PlacedShipsContainer와는 별개)
+    [SerializeField] private UIHullPickerView m_hullPicker; // 함선 타입선택 버튼을 누르면 뜨는 함체 선택 팝업(UIPanelFleet 루트 아래 내장, PlacedShipsContainer와는 별개)
     [SerializeField] private UIShipLoadoutEditorView m_shipLoadoutEditor; // 성능 컬럼 하단 "함선 수정" 버튼을 누르면 뜨는 슬롯별 모듈 on/off 편집 화면(읽기전용 모드에서는 버튼 비활성)
     [SerializeField] private Button m_editLoadoutButton; // 선택된 함선이 없으면(m_selectedSlotIndex == -1) 비활성화
 
@@ -45,7 +45,7 @@ public class UIPanelFleet : UIPanelBase
     private int m_placedTotalSlotCount; // 잠긴 칸 포함 전체 슬롯 수(=InfiniteScrollView totalCount)
     private int m_placedOpenSlotCount;  // 잠기지 않은(배치 가능한) 슬롯 수
 
-    private int m_selectedSlotIndex = -1; // 선택된 배치 슬롯 — -1이면 성능 컬럼은 비어있음. 프리셋 ID는 저장하지 않고 매번 슬롯에서 다시 조회(교체돼도 항상 최신 반영)
+    private int m_selectedSlotIndex = -1; // 선택된 배치 슬롯 — -1이면 성능 컬럼은 비어있음. 함체 정보는 저장하지 않고 매번 슬롯에서 다시 조회(교체돼도 항상 최신 반영)
 
     // 읽기전용 모드(적 함대 열람) — true면 편집 전용 UI(3열/지휘력 요약/전후방 토글)를 숨기고 데이터도 FleetComposition 대신 m_targetFleet에서 읽음
     private bool m_isReadOnlyMode = false;
@@ -124,7 +124,7 @@ public class UIPanelFleet : UIPanelBase
         RefreshOwnedExplorationPointRow();
     }
 
-    // 함대편성 UI가 열려있는 도중 전투가 시작/종료되면 프리셋 교체 버튼 활성 상태를 즉시 갱신
+    // 함대편성 UI가 열려있는 도중 전투가 시작/종료되면 함체 교체 버튼 활성 상태를 즉시 갱신
     private void OnMyFleetStateChanged(EUnitState state)
     {
         if (gameObject.activeInHierarchy == false) return;
@@ -173,8 +173,8 @@ public class UIPanelFleet : UIPanelBase
     {
         EventManager.Unsubscribe_SpaceShipSelected(OnShipSelectedWhileOpen);
         ClearSelectedShipOutline();
-        if (m_shipPresetPicker != null)
-            m_shipPresetPicker.Close();
+        if (m_hullPicker != null)
+            m_hullPicker.Close();
         if (m_shipLoadoutEditor != null)
             m_shipLoadoutEditor.Close();
         StartViewportAnimation(open: false);
@@ -412,10 +412,10 @@ public class UIPanelFleet : UIPanelBase
     {
         public readonly string hullSubType;
         public readonly bool isFront;
-        public readonly ModuleBodyInfo modules; // 이 함선이 실제로 장착한 모듈 구성(로드아웃) — null이면 기본 장착 구성으로 대체됨
+        public readonly ModuleHullInfo modules; // 이 함선이 실제로 장착한 모듈 구성(로드아웃) — null이면 기본 장착 구성으로 대체됨
         public readonly float healthMultiplier; // Zone 적 함대 열람 시에만 1이 아님 — 내 함대 편집(FleetComposition)은 항상 1
         public readonly float attackMultiplier;
-        public PlacedShipView(string hullSubType, bool isFront, ModuleBodyInfo modules, float healthMultiplier = 1f, float attackMultiplier = 1f)
+        public PlacedShipView(string hullSubType, bool isFront, ModuleHullInfo modules, float healthMultiplier = 1f, float attackMultiplier = 1f)
         {
             this.hullSubType = hullSubType;
             this.isFront = isFront;
@@ -436,7 +436,7 @@ public class UIPanelFleet : UIPanelBase
 
             for (int i = 0; i < ships.Count; i++)
             {
-                ModuleBodyInfo modules = ships[i].bodies != null && ships[i].bodies.Count > 0 ? ships[i].bodies[0] : null;
+                ModuleHullInfo modules = ships[i].hulls != null && ships[i].hulls.Count > 0 ? ships[i].hulls[0] : null;
                 result.Add(new PlacedShipView(ships[i].hullSubType, ships[i].isFront, modules, ships[i].healthMultiplier, ships[i].attackMultiplier));
             }
             return result;
@@ -547,7 +547,7 @@ public class UIPanelFleet : UIPanelBase
         UIPlacedShipRow row = rowObject.GetComponent<UIPlacedShipRow>();
         if (row == null) return;
 
-        // 전투 중엔 편성 자체를 못 바꾸게 함 — 프리셋 교체/빈 슬롯 배치 모두 막고, 전방/후방 토글만 허용
+        // 전투 중엔 편성 자체를 못 바꾸게 함 — 함체 교체/빈 슬롯 배치 모두 막고, 전방/후방 토글만 허용
         bool isInBattle = m_targetFleet != null && m_targetFleet.m_fleetState.IsBattleState();
         System.Action<int> onTypeSelectClicked = (m_isReadOnlyMode == true || isInBattle == true) ? null : OnShipTypeSelectClicked;
 
@@ -572,7 +572,7 @@ public class UIPanelFleet : UIPanelBase
     }
 
     // 성능 컬럼 — 선택된 함선이 없으면 비어있음, 있으면 그 함선의 상세 스탯(팝업과 동일한 항목 구성)
-    // 선택은 슬롯 인덱스로만 추적하고 프리셋은 매번 여기서 다시 조회 — 드래그로 그 슬롯의 함선이 교체돼도 최신 프리셋을 보여줌
+    // 선택은 슬롯 인덱스로만 추적하고 함체는 매번 여기서 다시 조회 — 드래그로 그 슬롯의 함선이 교체돼도 최신 함체를 보여줌
     // InfiniteScrollView가 화면에 보이는 행만 OnStatsItemBind로 바인딩하므로, 여기서는 m_statEntries만 갱신하고 Initialize로 스크롤뷰에 개수만 알려줌
     // (Initialize가 스크롤 위치도 맨 위로 리셋해줌 — 다른 함선 선택 시 별도 리셋 코드 불필요)
     private void RefreshStats()
@@ -599,8 +599,45 @@ public class UIPanelFleet : UIPanelBase
         // 읽기전용(적 함대 열람)이 아닐 때만 보상카드 지속버프 반영 — ObjectManager.SpawnFleetFromPreset()의 team/source 판정과 동일한 기준
         RewardCardSessionState applyBuffs = m_isReadOnlyMode == false ? ObjectManager.Instance.m_rewardCardSessionState : null;
         m_statEntries = ShipStatGaugeBuilder.Build(selectedHull, selectedShip.modules, selectedShip.healthMultiplier, selectedShip.attackMultiplier, applyBuffs);
+
+        // 존런 진행 중인 내 함대는 체력/실드 게이지를 정적 최대치가 아니라 3D 씬의 실제 현재값(현재/최대)으로 덮어씀
+        if (m_isReadOnlyMode == false && ObjectManager.Instance.IsExplorationRunActive() == true)
+            OverlayCurrentHealthAndShield(m_selectedSlotIndex);
+
         if (m_statsScrollView != null && m_statsRowPrefab != null)
             m_statsScrollView.Initialize(m_statEntries.Count, m_statsRowPrefab.gameObject);
+    }
+
+    // m_statEntries의 Health/Shield Gauge 항목을 "현재/최대" 텍스트로 교체 — 3D 씬에 해당 함선이 없으면(파괴/미스폰) 원본 유지
+    private void OverlayCurrentHealthAndShield(int positionIndex)
+    {
+        SpaceFleet myFleet = ObjectManager.Instance.GetMyFleet();
+        SpaceShip ship = myFleet != null ? myFleet.m_ships.Find(s => s != null && s.m_shipInfo.positionIndex == positionIndex) : null;
+        if (ship == null || ship.m_moduleHulls.Count == 0) return;
+
+        ModuleHull hull = ship.m_moduleHulls[0];
+        string healthLabel = LocalizationManager.Instance.Get("UIFleet_Stats_Health");
+        OverwriteStatEntryAsCurrentMax(healthLabel, hull.m_health, hull.m_healthMax);
+
+        if (hull.m_shield != null && hull.m_shield.IsEquipped() == true)
+        {
+            string shieldLabel = LocalizationManager.Instance.Get("UIFleet_Stats_ShieldGauge");
+            OverwriteStatEntryAsCurrentMax(shieldLabel, hull.m_shield.GetGauge(), hull.m_shield.GetGaugeMax());
+        }
+    }
+
+    private void OverwriteStatEntryAsCurrentMax(string label, float current, float max)
+    {
+        for (int i = 0; i < m_statEntries.Count; i++)
+        {
+            if (m_statEntries[i].label != label) continue;
+
+            ShipStatRowEntry entry = m_statEntries[i];
+            entry.isNumericValue = false;
+            entry.rawValueText = $"{current:F0} / {max:F0}";
+            m_statEntries[i] = entry;
+            break;
+        }
     }
 
     // InfiniteScrollView가 dataIndex번 스탯 행을 화면에 배치할 때마다 호출 — 캐시된 m_statEntries로 바인딩
@@ -649,12 +686,12 @@ public class UIPanelFleet : UIPanelBase
         ObjectManager.Instance.ReplaceMyFleetShipAt(m_selectedSlotIndex, entry.hullSubType, entry.isFront, entry.modules);
     }
 
-    // 커맨더 레벨 기준으로 배치 가능한 함체만 필터링 — 함체 선택 팝업(UIShipPresetPickerView)을 열 때마다 새로 계산
-    private List<ModuleData> ComputeUnlockedPresets()
+    // 커맨더 레벨 기준으로 배치 가능한 함체만 필터링 — 함체 선택 팝업(UIHullPickerView)을 열 때마다 새로 계산
+    private List<ModuleData> ComputeUnlockedHulls()
     {
         Commander commander = DataManager.Instance.m_currentCommander;
         int commanderLevel = commander != null ? commander.GetCommanderLevel() : 0;
-        return DataManager.Instance.m_dataTableModule.GetUnlockedBodyModules(commanderLevel);
+        return DataManager.Instance.m_dataTableModule.GetUnlockedHullModules(commanderLevel);
     }
 
     // ── 배치된 함선 — 전방/후방 토글 ──────────────────────────────────
@@ -682,7 +719,7 @@ public class UIPanelFleet : UIPanelBase
     {
         m_selectedSlotIndex = index;
 
-        // 바뀌는 건 선택 테두리뿐(프리셋/전후방 등 실제 데이터는 그대로) — RefreshVisible()로 onItemBind를 다시 태우면
+        // 바뀌는 건 선택 테두리뿐(함체/전후방 등 실제 데이터는 그대로) — RefreshVisible()로 onItemBind를 다시 태우면
         // row.Setup()이 텍스트를 재설정하면서 타입선택 버튼의 ContentSizeFitter가 재계산되어 움찔거림.
         // 그래서 재바인딩 없이 보이는 행들의 SetSelected()만 직접 갱신
         if (m_placedShipsScrollView != null)
@@ -731,30 +768,30 @@ public class UIPanelFleet : UIPanelBase
         OnPlacedShipRowClicked(positionIndex, placedShips[positionIndex].hullSubType);
     }
 
-    // ── 함선 타입선택 버튼 — 프리셋 선택 팝업 오픈/적용 ─────────────────
+    // ── 함선 타입선택 버튼 — 함체 선택 팝업 오픈/적용 ─────────────────
     private void OnShipTypeSelectClicked(int index)
     {
-        if (m_isReadOnlyMode == true || m_shipPresetPicker == null) return;
+        if (m_isReadOnlyMode == true || m_hullPicker == null) return;
 
         List<PlacedShipView> placedShips = GetCurrentPlacedShips();
         string currentHullSubType = index < placedShips.Count ? placedShips[index].hullSubType : null;
         ModuleData currentHull = string.IsNullOrEmpty(currentHullSubType) == false ? DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(currentHullSubType) : null;
-        ModuleBodyInfo currentModules = index < placedShips.Count ? placedShips[index].modules : null;
+        ModuleHullInfo currentModules = index < placedShips.Count ? placedShips[index].modules : null;
 
         FleetComposition composition = DataManager.Instance.m_currentFleetComposition;
         if (composition == null) return;
 
         // 이 슬롯이 현재 점유 중인 지휘력은 미리 빼둠 — 팝업에서 후보를 고를 때마다 그 비용만 더해 미리보기 산출
-        // 정적 프리셋 commandCost가 아니라 슬롯의 실제 코스트(토글로 추가/해제된 모듈 반영)를 빼야 함
+        // 정적 statPoint가 아니라 슬롯의 실제 코스트(토글로 추가/해제된 모듈 반영)를 빼야 함
         int currentSlotCommandCost = composition.GetSlotCommandCost(index);
         int usedCommandPowerExcludingThisSlot = composition.GetUsedCommandPower() - currentSlotCommandCost;
         int maxCommandPower = composition.GetMaxCommandPower();
 
-        m_shipPresetPicker.Open(ComputeUnlockedPresets(), currentHull, currentModules, currentSlotCommandCost, usedCommandPowerExcludingThisSlot, maxCommandPower, selectedHullSubType => ApplyPresetToSlot(index, selectedHullSubType));
+        m_hullPicker.Open(ComputeUnlockedHulls(), currentHull, currentModules, currentSlotCommandCost, usedCommandPowerExcludingThisSlot, maxCommandPower, selectedHullSubType => ApplyHullToSlot(index, selectedHullSubType));
     }
 
     // 확인 버튼으로 선택된 함체를 해당 슬롯에 배치 — 기존 드래그앤드롭 배치 핵심 로직과 동일, dropIndex 대신 slotIndex 사용
-    private void ApplyPresetToSlot(int slotIndex, string hullSubType)
+    private void ApplyHullToSlot(int slotIndex, string hullSubType)
     {
         if (string.IsNullOrEmpty(hullSubType) == true) return;
 
@@ -768,15 +805,15 @@ public class UIPanelFleet : UIPanelBase
 
         // 기존에 함선이 있던 슬롯이면, 새 함체의 슬롯 범위 안에 남는 기존 모듈(서브타입+강화 포인트)만 유지해서 넘김 —
         // 원래 비어있던 슬롯(existingModules == null)이면 keptModules도 null로 둬서 TryPlaceShipAt이 기본 로드아웃을 시딩하게 함
-        ModuleBodyInfo existingModules = slotIndex < placedShipsBeforePlace.Count ? placedShipsBeforePlace[slotIndex].modules : null;
-        ModuleBodyInfo keptModules = FleetComposition.FilterModulesForNewPreset(existingModules, hullSubType);
+        ModuleHullInfo existingModules = slotIndex < placedShipsBeforePlace.Count ? placedShipsBeforePlace[slotIndex].modules : null;
+        ModuleHullInfo keptModules = FleetComposition.FilterModulesForNewHull(existingModules, hullSubType);
 
         EFleetPlaceResult result = composition.TryPlaceShipAt(slotIndex, hullSubType, slotIsFront, keptModules);
         if (result != EFleetPlaceResult.Success)
         {
             string messageKey = result == EFleetPlaceResult.NotEnoughCommandPower
                 ? "UIFleet_PlaceFailed_NotEnoughCommandPower"
-                : "UIFleet_PlaceFailed_PresetNotFound";
+                : "UIFleet_PlaceFailed_HullNotFound";
             ShowPlaceFailedPopup(messageKey);
             return;
         }
@@ -800,12 +837,12 @@ public class UIPanelFleet : UIPanelBase
 
         ServerErrorCode errorCode = (ServerErrorCode)response.errorCode;
         string messageKey = null;
-        if (errorCode == ServerErrorCode.PLACE_FLEET_PRESET_SHIP_FAIL_INSUFFICIENT_COMMANDER_LEVEL || errorCode == ServerErrorCode.PLACE_FLEET_PRESET_SHIP_FAIL_SLOT_LOCKED)
+        if (errorCode == ServerErrorCode.PLACE_FLEET_SHIP_FAIL_INSUFFICIENT_COMMANDER_LEVEL || errorCode == ServerErrorCode.PLACE_FLEET_SHIP_FAIL_SLOT_LOCKED)
             messageKey = "UIFleet_PlaceFailed_Locked";
-        else if (errorCode == ServerErrorCode.PLACE_FLEET_PRESET_SHIP_FAIL_NOT_ENOUGH_COMMAND_POWER)
+        else if (errorCode == ServerErrorCode.PLACE_FLEET_SHIP_FAIL_NOT_ENOUGH_COMMAND_POWER)
             messageKey = "UIFleet_PlaceFailed_NotEnoughCommandPower";
-        else if (errorCode == ServerErrorCode.PLACE_FLEET_PRESET_SHIP_FAIL_PRESET_NOT_FOUND)
-            messageKey = "UIFleet_PlaceFailed_PresetNotFound";
+        else if (errorCode == ServerErrorCode.PLACE_FLEET_SHIP_FAIL_HULL_NOT_FOUND)
+            messageKey = "UIFleet_PlaceFailed_HullNotFound";
 
         string message = messageKey != null ? LocalizationManager.Instance.Get(messageKey) : ErrorCodeMapping.GetMessage(response.errorCode);
         ShowPlaceFailedPopup(message, isLocalizationKey: false);

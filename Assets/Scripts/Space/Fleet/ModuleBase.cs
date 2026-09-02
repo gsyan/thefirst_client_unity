@@ -71,11 +71,11 @@ public class ModuleBase : MonoBehaviour
     // 교체 시 구 모듈의 공격 타이머를 신 모듈에 승계 — 무기 모듈에서 override
     public virtual float GetLastAttackTime() { return 0f; }
     public virtual void SetLastAttackTime(float t) { }
-    public virtual int GetModuleBodyIndex()
+    public virtual int GetModuleHullIndex()
     {
         return 0;
     }
-    public virtual void SetModuleBodyIndex(int bodyIndex)
+    public virtual void SetModuleHullIndex(int bodyIndex)
     {
     }
 

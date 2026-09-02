@@ -12,7 +12,7 @@ public struct ShipStatRowEntry
     public float value;                 // isNumericValue == true 전용 — F1 포맷으로 표시
     public string rawValueText;         // isNumericValue == false 전용 — 이미 포맷된 텍스트 그대로 표시
     public bool isNumericValue;         // true: 값+버프증감(SetStatRow), false: 텍스트 그대로(SetValueOnly)
-    public float compareValue;          // 표시 방식과 무관하게 항상 채워지는 순수 수치 — 프리셋 비교(diff) 계산 전용
+    public float compareValue;          // 표시 방식과 무관하게 항상 채워지는 순수 수치 — 함체 비교(diff) 계산 전용
     public bool hasCompareValue;        // 슬롯 여러 개를 min~max 범위로 압축한 항목은 단일 수치가 아니라 비교 불가 — false
     public string buffDiffText;         // isNumericValue == true 전용, 보상카드 버프로 늘어난 만큼(리치텍스트 색상 포함, 예: "<color=#4CD97B>(+12.0)</color>") — 버프 없으면 null
 }
@@ -24,12 +24,12 @@ public static class ShipStatGaugeBuilder
     // healthMultiplier/attackMultiplier는 Zone 적 함대 열람 시에만 1이 아님 — ModuleBeam/Body/Hangar.cs의 Zone 배율 적용 규칙과 반드시 동일하게 유지할 것
     // (체력/수리력=healthMultiplier, 공격력 계열=attackMultiplier, 선회력은 배율 미적용)
     // applyBuffs를 넘기면 보상카드 지속버프 배율을 표시값에만 반영(배열 mutate 없이 스칼라만 스케일) — 존 런 중 대치 화면 전용, 그 외 호출부는 null 유지
-    public static List<ShipStatRowEntry> Build(ModuleData hullData, ModuleBodyInfo actualModules = null, float healthMultiplier = 1f, float attackMultiplier = 1f, RewardCardSessionState applyBuffs = null)
+    public static List<ShipStatRowEntry> Build(ModuleData hullData, ModuleHullInfo actualModules = null, float healthMultiplier = 1f, float attackMultiplier = 1f, RewardCardSessionState applyBuffs = null)
     {
         DataTableModule moduleTable = DataManager.Instance.m_dataTableModule;
 
         ShipStatFormulaSettings formula = DataManager.Instance.m_dataTableConfig.gameSettings.shipStatFormula;
-        ShipStatAllocation allocation = ShipStatAllocation.BuildFromModuleBodyInfo(formula.maxModuleSlots, actualModules);
+        ShipStatAllocation allocation = ShipStatAllocation.BuildFromModuleHullInfo(formula.maxModuleSlots, actualModules);
         ShipFinalStats stats = ShipStatCalculator.Calculate(allocation, formula, hullData, moduleTable);
 
         List<ShipStatRowEntry> entries = new();
@@ -74,7 +74,6 @@ public static class ShipStatGaugeBuilder
         if (stats.shieldInstalled == true)
         {
             entries.Add(MakeNumericStat(loc.Get("UIFleet_Stats_ShieldGauge"), stats.shieldGauge));
-            entries.Add(MakeCompareText(loc.Get("UIFleet_Stats_ShieldRestartDelay"), stats.shieldDelay, $"{stats.shieldDelay:F2}s"));
             entries.Add(MakeNumericStat(loc.Get("UIFleet_Stats_ShieldRegenRate"), stats.shieldRegenRate));
         }
 
@@ -161,7 +160,7 @@ public static class ShipStatGaugeBuilder
         return $"<color=#4CD97B>(+{diff:F1})</color>";
     }
 
-    // 감소형 스탯(쿨다운/딜레이 등) — 이미 포맷된 텍스트로 표시하되, 프리셋 비교(diff)를 위해 순수 수치는 compareValue로 남김
+    // 감소형 스탯(쿨다운/딜레이 등) — 이미 포맷된 텍스트로 표시하되, 함체 비교(diff)를 위해 순수 수치는 compareValue로 남김
     private static ShipStatRowEntry MakeCompareText(string label, float value, string valueText)
     {
         return new ShipStatRowEntry { label = label, rawValueText = valueText, isNumericValue = false, compareValue = value, hasCompareValue = true };

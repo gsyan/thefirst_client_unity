@@ -3,7 +3,7 @@
 public enum EModuleType
 {
     none            = 0,
-    body            = 1,
+    hull            = 1,
     beam            = 2,
     missile         = 3,
     hangar          = 4,
@@ -13,13 +13,14 @@ public enum EModuleType
 }
 // 8자리 인코딩: T_tt_mmmmm (type 1자리, tier 2자리, model 5자리)
 // 파싱: type=val/10000000, tier=(val/100000)%100, model=val%100000
-// body만 model이 의미를 가짐(예: 11100 = 빔1/미사일1/격납고1/실드0/요격체0 슬롯 수, 각 1자리씩) — 그 외 타입은 model=00000 고정
+// hull만 model이 의미를 가짐(예: 11100 = 빔1/미사일1/격납고1/실드0/요격체0 슬롯 수, 각 1자리씩) — 그 외 타입은 model=00000 고정
 [System.Serializable]
 public enum EModuleSubType
 {
     none                = 0,
-    // Body SubType
+    // Hull SubType
     h1_11100        = 10111100,
+    h1_11110        = 10111110,
     h1_21100        = 10121100,
     h1_22100        = 10122100,
     h1_22200        = 10122200,
@@ -85,7 +86,7 @@ public static class EModuleTypeExtensions
     {
         switch (moduleType)
         {
-            case EModuleType.body:
+            case EModuleType.hull:
                 return new UnityEngine.Color(0.7f, 0.9f, 0.7f);
             case EModuleType.beam:
                 return new UnityEngine.Color(0.9f, 0.7f, 0.7f);

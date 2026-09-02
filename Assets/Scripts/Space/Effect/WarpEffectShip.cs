@@ -84,11 +84,11 @@ public class WarpEffectShip : MonoBehaviour
         m_engineRenderers.Clear();
         if (m_spaceShip == null) return;
 
-        foreach (var body in m_spaceShip.m_moduleBodys)
+        foreach (var hull in m_spaceShip.m_moduleHulls)
         {
-            if (body == null) continue;
+            if (hull == null) continue;
 
-            Renderer[] renderers = body.GetComponentsInChildren<Renderer>();
+            Renderer[] renderers = hull.GetComponentsInChildren<Renderer>();
             foreach (var renderer in renderers)
             {
                 if (renderer.sharedMaterial != null &&

@@ -87,7 +87,7 @@ public class ZoneConfig
     public int enemyMaxShipsPerFleet = 5; // [server] 웨이브 1개의 함선 수 상한
     public float enemyHealthMultiplier = 1.0f; // [server] 이 존의 적함대 체력 배율 (0.1=10%, 1.0=원본)
     public float enemyAttackMultiplier = 1.0f; // [server] 이 존의 적함대 공격력 배율 (0.1=10%, 1.0=원본)
-    public int enemyBeamEquipSlots = 9;        // [server] 빔 슬롯 총 장착 목표 개수(기본 로드아웃 포함, 프리셋 최대 슬롯 수를 넘으면 전부 장착)
+    public int enemyBeamEquipSlots = 9;        // [server] 빔 슬롯 총 장착 목표 개수(기본 로드아웃 포함, 함체 최대 슬롯 수를 넘으면 전부 장착)
     public int enemyMissileEquipSlots = 9;     // [server] 미사일 슬롯 총 장착 목표 개수
     public int enemyHangarEquipSlots = 9;      // [server] 함재기 슬롯 총 장착 목표 개수
     public int enemyShieldEquipSlots = 9;      // [server] 실드 장착 여부 — 실드는 슬롯 1개뿐이라 사실상 0/1 스위치 (0=미장착, 1 이상=장착)

@@ -1,6 +1,6 @@
-// 함선 로드아웃 편집 화면 — UIShipPresetPickerView가 "바디(함체) 선택"을 담당한다면, 이 컴포넌트는 그 다음 단계인
+// 함선 로드아웃 편집 화면 — UIHullPickerView가 "바디(함체) 선택"을 담당한다면, 이 컴포넌트는 그 다음 단계인
 // "슬롯별 모듈 on/off 편집"을 담당한다. 토글은 전부 로컬에서만 미리보기 상태로 바뀌고, Confirm을 눌러야 서버에 실제로 반영됨
-// (UIShipPresetPickerView와 동일 패턴 — 예산 초과 상태에선 Confirm 버튼 비활성화)
+// (UIHullPickerView와 동일 패턴 — 예산 초과 상태에선 Confirm 버튼 비활성화)
 // 카테고리별 최대 슬롯 수는 FleetComposition.ParseMaxSlotsFromHullSubType으로 hullSubType에서 파싱(빔/미사일/격납고/실드/요격체 — 현재 실드/요격체는 항상 0)
 // 빔/미사일/격납고 슬롯을 하나의 InfiniteScrollView에 순서대로(빔 전부 → 미사일 전부 → 격납고 전부) 나열
 using System.Collections.Generic;
@@ -16,7 +16,7 @@ public class UIShipLoadoutEditorView : MonoBehaviour
     [SerializeField] private Button m_confirmButton; // 예산 초과 시 비활성화
     [SerializeField] private Button m_cancelButton;
 
-    [SerializeField] private UIStatRow m_statsRowPrefab; // 토글 미리보기 스탯 — UIShipPresetPickerView.Column_Stats와 동일 구조/프리팹 재사용
+    [SerializeField] private UIStatRow m_statsRowPrefab; // 토글 미리보기 스탯 — UIHullPickerView.Column_Stats와 동일 구조/프리팹 재사용
     [SerializeField] private InfiniteScrollView m_statsScrollView;
     // 강화 포인트 편집 팝업(UIPopupModuleReinforce)은 UIManager.ShowModuleReinforcePopup으로 열림 — UIPopupConvertExplorationPoint와 동일 패턴(필드로 직접 참조하지 않음)
 
@@ -38,7 +38,7 @@ public class UIShipLoadoutEditorView : MonoBehaviour
     private readonly List<bool> m_pendingInstalled = new(); // m_moduleSlotEntries와 1:1 대응 — 로컬 편집 상태(Confirm 전까지 서버 미반영)
     private readonly List<int> m_pendingAttackPoints = new(); // 빔/미사일 공격력, 격납고는 대함 공격력 강화 포인트 — m_moduleSlotEntries와 1:1 대응
     private readonly List<int> m_pendingAttackToFighterPoints = new(); // 격납고 전용 대전투기 공격력 강화 포인트 — 빔/미사일은 항상 0
-    private ModuleBodyInfo m_originalModules; // Confirm 시 이 값과 비교해 실제로 바뀐 슬롯만 서버로 전송
+    private ModuleHullInfo m_originalModules; // Confirm 시 이 값과 비교해 실제로 바뀐 슬롯만 서버로 전송
 
     private List<ShipStatRowEntry> m_statEntries = new();
     private Dictionary<string, ShipStatRowEntry> m_originalEntriesByLabel; // 비교 기준(팝업을 열 때의 장착 상태) — RefreshRows에서 1회만 계산, 토글해도 안 바뀜
@@ -97,6 +97,7 @@ public class UIShipLoadoutEditorView : MonoBehaviour
         AppendCategorySlots(EModuleType.beam, maxSlots[0]);
         AppendCategorySlots(EModuleType.missile, maxSlots[1]);
         AppendCategorySlots(EModuleType.hangar, maxSlots[2]);
+        AppendShieldSlot(maxSlots[3]);
 
         if (m_moduleScrollView != null && m_rowPrefab != null)
             m_moduleScrollView.Initialize(m_moduleSlotEntries.Count, m_rowPrefab.gameObject);
@@ -127,6 +128,18 @@ public class UIShipLoadoutEditorView : MonoBehaviour
             m_pendingAttackPoints.Add(installedModule != null ? installedModule.attackPoints : 0);
             m_pendingAttackToFighterPoints.Add(installedModule != null ? installedModule.attackToFighterPoints : 0);
         }
+    }
+
+    // 실드는 슬롯이 없어(문자열 장착 여부만 존재) 리스트 카테고리와 별도 처리 — 함체에 실드 슬롯이 있을 때만(maxSlotCount>0) 행 1개 추가
+    private void AppendShieldSlot(int maxSlotCount)
+    {
+        if (maxSlotCount <= 0) return;
+
+        bool isInstalled = m_originalModules != null && string.IsNullOrEmpty(m_originalModules.shieldModuleSubType) == false;
+        m_moduleSlotEntries.Add(new ModuleSlotEntry(EModuleType.shield, 0, isLocked: false));
+        m_pendingInstalled.Add(isInstalled);
+        m_pendingAttackPoints.Add(0);
+        m_pendingAttackToFighterPoints.Add(0);
     }
 
     private ModuleInfo FindInstalledModule(List<ModuleInfo> installedModules, int slotIndex)
@@ -228,7 +241,7 @@ public class UIShipLoadoutEditorView : MonoBehaviour
             return;
         }
 
-        ModuleBodyInfo pending = BuildPendingModuleBodyInfo();
+        ModuleHullInfo pending = BuildPendingModuleHullInfo();
         m_statEntries = ShipStatGaugeBuilder.Build(hullData, pending);
 
         if (m_statsScrollView != null && m_statsRowPrefab != null)
@@ -252,15 +265,22 @@ public class UIShipLoadoutEditorView : MonoBehaviour
             row.SetValueOnly(entry.label, entry.rawValueText, diffText);
     }
 
-    // 현재 로컬 토글 상태(m_pendingInstalled)를 ModuleBodyInfo로 구성 — OnConfirmClicked의 desired 구성과 동일 로직
-    private ModuleBodyInfo BuildPendingModuleBodyInfo()
+    // 현재 로컬 토글 상태(m_pendingInstalled)를 ModuleHullInfo로 구성 — OnConfirmClicked의 desired 구성과 동일 로직
+    private ModuleHullInfo BuildPendingModuleHullInfo()
     {
-        ModuleBodyInfo pending = new ModuleBodyInfo { beams = new List<ModuleInfo>(), missiles = new List<ModuleInfo>(), hangars = new List<ModuleInfo>() };
+        ModuleHullInfo pending = new ModuleHullInfo { beams = new List<ModuleInfo>(), missiles = new List<ModuleInfo>(), hangars = new List<ModuleInfo>(), shieldModuleSubType = "" };
         for (int i = 0; i < m_moduleSlotEntries.Count; i++)
         {
             if (m_pendingInstalled[i] == false) continue;
 
             ModuleSlotEntry entry = m_moduleSlotEntries[i];
+
+            if (entry.moduleType == EModuleType.shield)
+            {
+                pending.shieldModuleSubType = GetDefaultSubType(entry.moduleType).ToString();
+                continue;
+            }
+
             ModuleInfo moduleInfo = new ModuleInfo
             {
                 moduleType = entry.moduleType,
@@ -274,7 +294,7 @@ public class UIShipLoadoutEditorView : MonoBehaviour
         return pending;
     }
 
-    private List<ModuleInfo> GetModulesListForType(ModuleBodyInfo modules, EModuleType moduleType)
+    private List<ModuleInfo> GetModulesListForType(ModuleHullInfo modules, EModuleType moduleType)
     {
         if (modules == null) return null;
         if (moduleType == EModuleType.beam) return modules.beams;
@@ -293,7 +313,7 @@ public class UIShipLoadoutEditorView : MonoBehaviour
         return false;
     }
 
-    // 선택 후보를 실제로 적용했다고 가정했을 때의 지휘력 사용량을 미리 계산 — UIShipPresetPickerView.RefreshCommandPowerPreview와 동일한 표시 방식
+    // 선택 후보를 실제로 적용했다고 가정했을 때의 지휘력 사용량을 미리 계산 — UIHullPickerView.RefreshCommandPowerPreview와 동일한 표시 방식
     private void RefreshCommandPowerPreview(FleetComposition composition)
     {
         if (m_commandPowerRow == null) return;
@@ -350,6 +370,7 @@ public class UIShipLoadoutEditorView : MonoBehaviour
         if (moduleType == EModuleType.beam) return EModuleSubType.beam1;
         if (moduleType == EModuleType.missile) return EModuleSubType.missile1;
         if (moduleType == EModuleType.hangar) return EModuleSubType.hangar1;
+        if (moduleType == EModuleType.shield) return EModuleSubType.shield1;
         return EModuleSubType.none;
     }
 
@@ -366,7 +387,7 @@ public class UIShipLoadoutEditorView : MonoBehaviour
     // (해제 먼저든 장착 먼저든) 중간 상태에서 예산/공격모듈 0개 검증에 걸릴 수 있어, 서버가 결과 상태만 검증하도록 배치 전송
     private void OnConfirmClicked()
     {
-        ModuleBodyInfo desired = BuildPendingModuleBodyInfo();
+        ModuleHullInfo desired = BuildPendingModuleHullInfo();
 
         SetModuleRequest request = new SetModuleRequest
         {
@@ -384,7 +405,7 @@ public class UIShipLoadoutEditorView : MonoBehaviour
 
             FleetComposition composition = DataManager.Instance.m_currentFleetComposition;
             if (composition != null)
-                composition.ApplyModuleToggleResult(m_slotIndex, response.data.body);
+                composition.ApplyModuleToggleResult(m_slotIndex, response.data.hull);
 
             if (m_onChanged != null) m_onChanged();
             Close();

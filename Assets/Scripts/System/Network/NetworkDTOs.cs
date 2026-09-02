@@ -42,22 +42,22 @@ public class ShipInfo
     public string shipName;
     public int positionIndex;
     public string description;
-    public List<ModuleBodyInfo> bodies;
+    public List<ModuleHullInfo> hulls;
     // Zone 적 전용 배율 — PvP는 기본값(1.0) 유지, 서버 저장 불필요
     public float healthMultiplier = 1.0f;
     public float attackMultiplier = 1.0f;
-    // 함체 기반 함선 배치(탐사 그리드) — hullSubType(EModuleSubType body 이름)으로 DataTableModule body 그룹 참조, isFront로 전/후위 배치
+    // 함체 기반 함선 배치(탐사 그리드) — hullSubType(EModuleSubType hull 이름)으로 DataTableModule hull 그룹 참조, isFront로 전/후위 배치
     public string hullSubType;
     public bool isFront;
 }
 
 [System.Serializable]
-public class ModuleBodyInfo
+public class ModuleHullInfo
 {
     public EModuleType moduleType;
     public EModuleSubType moduleSubType;
     public int moduleLevel;
-    public int bodyIndex;
+    public int hullIndex;
     public List<ModuleInfo> beams;
     public List<ModuleInfo> missiles;
     public List<ModuleInfo> hangars;
@@ -74,7 +74,7 @@ public class ModuleInfo
     public EModuleType moduleType;
     public EModuleSubType moduleSubType;
     public int moduleLevel;
-    public int bodyIndex;
+    public int hullIndex;
     public int slotIndex;
     public int attackPoints; // 빔/미사일 공격력, 격납고는 대함 공격력 강화 투자 포인트 — 1포인트 = 지휘력 1
     public int attackToFighterPoints; // 격납고 전용 — 대전투기 공격력 강화 투자 포인트. 빔/미사일은 항상 0
@@ -92,7 +92,7 @@ public class ModuleSlotInfo
         this.moduleType = moduleType;
         this.slotIndex = slotIndex;
     }
-    // Body 프리팹의 ModuleSlot 정보를 저장하는 클래스
+    // Hull 프리팹의 ModuleSlot 정보를 저장하는 클래스
 }
 
 [System.Serializable]
@@ -597,13 +597,13 @@ public class SetModuleRequest
     // 낱개 토글을 순서대로 여러 번 보내면 중간 상태에서 "공격모듈 0개"/"예산 초과" 검증에 걸릴 수 있어(예: 빔→미사일 교체 시 순서에 따라 항상 실패),
     // 반드시 최종 상태 하나로 모아 보내고 서버는 그 결과 상태만 검증한다
     public int slotIndex; // CommanderFleetSlot의 slotIndex(함대편성 슬롯)
-    public ModuleBodyInfo modules; // 이 슬롯에 최종적으로 장착되어 있어야 할 모듈 전체(beams/missiles/hangars, 각 slotIndex만 유효)
+    public ModuleHullInfo modules; // 이 슬롯에 최종적으로 장착되어 있어야 할 모듈 전체(beams/missiles/hangars, 각 slotIndex만 유효)
 }
 
 [System.Serializable]
 public class SetModuleResponse
 {
-    public ModuleBodyInfo body;       // 갱신된 함선의 현재 로드아웃 전체(beams/missiles/hangars)
+    public ModuleHullInfo hull;       // 갱신된 함선의 현재 로드아웃 전체(beams/missiles/hangars)
     public int commandCost;           // 갱신된 함선의 지휘력 코스트
     public int remainingCommandPower; // 커맨더의 남은 지휘력
 }

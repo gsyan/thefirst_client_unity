@@ -999,21 +999,21 @@ public class DataTableZoneEditor : Editor
             for (int i = 0; i < wave.ships.Count; i++)
             {
                 ShipInfo ship = wave.ships[i];
-                ModuleBodyInfo modules = ship.bodies != null && ship.bodies.Count > 0 ? ship.bodies[0] : null;
+                ModuleHullInfo modules = ship.hulls != null && ship.hulls.Count > 0 ? ship.hulls[0] : null;
                 int beamCount = modules != null && modules.beams != null ? modules.beams.Count : 0;
                 int missileCount = modules != null && modules.missiles != null ? modules.missiles.Count : 0;
                 int hangarCount = modules != null && modules.hangars != null ? modules.hangars.Count : 0;
 
-                ModuleData bodyData = moduleTable.GetModuleDataFromTable(ship.hullSubType);
-                int bodyCost = bodyData != null ? bodyData.statPoint : 0;
+                ModuleData hullData = moduleTable.GetModuleDataFromTable(ship.hullSubType);
+                int hullCost = hullData != null ? hullData.statPoint : 0;
 
                 int modulesCost = SumModuleCost(moduleTable, modules != null ? modules.beams : null)
                     + SumModuleCost(moduleTable, modules != null ? modules.missiles : null)
                     + SumModuleCost(moduleTable, modules != null ? modules.hangars : null);
-                int shipCost = bodyCost + modulesCost;
+                int shipCost = hullCost + modulesCost;
                 totalSpent += shipCost;
 
-                EditorGUILayout.LabelField($"  {ship.hullSubType} (body={bodyCost}, {(ship.isFront ? "전방" : "후방")}, 빔={beamCount}, 미사일={missileCount}, 격납고={hangarCount}, 지출={shipCost})");
+                EditorGUILayout.LabelField($"  {ship.hullSubType} (hull={hullCost}, {(ship.isFront ? "전방" : "후방")}, 빔={beamCount}, 미사일={missileCount}, 격납고={hangarCount}, 지출={shipCost})");
             }
 
             EditorGUILayout.LabelField($"  웨이브 총 지출: {totalSpent} / enemyBudget: {zoneConfig.enemyBudget}", EditorStyles.miniLabel);

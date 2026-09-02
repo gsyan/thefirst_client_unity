@@ -594,7 +594,7 @@ public abstract class AircraftBase : MonoBehaviour
     {
         if (m_carrierShip == null) return false;
 
-        foreach (var body in m_carrierShip.m_moduleBodys)
+        foreach (var body in m_carrierShip.m_moduleHulls)
         {
             ModuleSlot newSlot = body.FindModuleSlot(m_hangarModuleType, m_hangarSlotIndex);
             if (newSlot == null || newSlot.transform.childCount == 0) continue;
@@ -697,7 +697,7 @@ public abstract class AircraftBase : MonoBehaviour
         // 1순위: 모함의 현재 타겟
         if (m_moduleHangar != null)
         {
-            ModuleBody carrierTarget = m_moduleHangar.GetCurrentTarget();
+            ModuleHull carrierTarget = m_moduleHangar.GetCurrentTarget();
             if (carrierTarget != null)
             {
                 m_targetModule = carrierTarget.transform;
@@ -722,7 +722,7 @@ public abstract class AircraftBase : MonoBehaviour
 
         if (enemyFleet == null) return false;
 
-        ModuleBody enemyBody = enemyFleet.GetRandomAliveBodyPart();
+        ModuleHull enemyBody = enemyFleet.GetRandomAliveBodyPart();
         if (enemyBody == null) return false;
 
         m_targetModule = enemyBody.transform;
