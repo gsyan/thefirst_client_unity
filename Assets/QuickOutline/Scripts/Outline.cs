@@ -82,9 +82,11 @@ public class Outline : MonoBehaviour {
 
   void Awake() {
 
-    // Cache renderers (파티클 렌더러 제외 — 이펙트에 아웃라인 적용 방지)
+    // Cache renderers (파티클 렌더러, ShieldGrid가 만드는 "ShieldSurface" 표면 파동 렌더러 제외 — 이펙트/오버레이에 아웃라인 적용 방지)
+    // ShieldGrid는 함체 루트에 붙는 컴포넌트라 GetComponentInParent<ShieldGrid>()로는 함체 메시까지 함께 걸러지므로 오브젝트 이름으로 특정
     renderers = GetComponentsInChildren<Renderer>()
       .Where(r => !(r is ParticleSystemRenderer))
+      .Where(r => r.gameObject.name != "ShieldSurface")
       .ToArray();
 
     // Instantiate outline materials

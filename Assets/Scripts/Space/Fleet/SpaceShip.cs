@@ -815,9 +815,11 @@ public class SpaceShip : MonoBehaviour
         }
 
         EffectShieldHit effect = ObjectManager.Instance.m_poolManager.Get<EffectShieldHit>(EPoolName.EFFECT_SHIELD_HIT);
-        if (effect == null) return;
+        if (effect != null)
+            effect.PlayAt(surfacePoint, surfaceNormal);
 
-        effect.PlayAt(surfacePoint, surfaceNormal);
+        // 실드 표면 전체를 타고 퍼지는 격자 파동 — 임팩트 섬광(EffectShieldHit)과 병행 표시
+        m_shieldGrid.PlayHitWave(surfacePoint);
     }
 
     // 살아있는 바디 중 랜덤 선택

@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEditor;
+using UnityEditor.SceneManagement;
 
 [CustomEditor(typeof(ShieldGrid))]
 public class ShieldGridEditor : Editor
@@ -33,6 +34,7 @@ public class ShieldGridEditor : Editor
         if (GUILayout.Button("Generate Shield", GUILayout.Height(30)))
         {
             grid.GenerateShield();
+            SaveSurfaceMeshAsSubAsset(grid);
             EditorUtility.SetDirty(grid);
         }
 
@@ -40,6 +42,7 @@ public class ShieldGridEditor : Editor
         {
             Undo.RecordObject(grid, "Clear Shield");
             grid.ClearAll();
+            RemoveSurfaceMeshSubAsset();
             EditorUtility.SetDirty(grid);
         }
 
@@ -98,17 +101,6 @@ public class ShieldGridEditor : Editor
             }
         }
 
-        // 메시 에셋 생성
-        EditorGUILayout.Space(5);
-        if (grid.unitSphereMesh == null)
-        {
-            EditorGUILayout.HelpBox("단위 구 메시 에셋이 필요합니다.", MessageType.Warning);
-            if (GUILayout.Button("Create Unit Sphere Mesh Asset", GUILayout.Height(25)))
-            {
-                CreateUnitSphereMeshAsset(grid);
-            }
-        }
-
         EditorGUILayout.Space(5);
         EditorGUILayout.LabelField("Info", EditorStyles.boldLabel);
         EditorGUILayout.LabelField($"Vertices: {grid.m_vertices.Count}");
@@ -138,63 +130,52 @@ public class ShieldGridEditor : Editor
         }
     }
 
-    void CreateUnitSphereMeshAsset(ShieldGrid grid)
+    // new Mesh()로 런타임 생성된 표면 메시는 프리팹 저장 시 자동으로 서브에셋화되지 않아 참조가 끊김(m_Mesh: {fileID: 0}) —
+    // 프리팹 편집 모드의 에셋 경로에 명시적으로 추가해 프리팹 저장 시 함께 직렬화되도록 함
+    void SaveSurfaceMeshAsSubAsset(ShieldGrid grid)
     {
-        int resolution = grid.colliderResolution;
-        Mesh mesh = new Mesh();
-        mesh.name = "UnitSphere";
+        Mesh surfaceMesh = grid.GetSurfaceMesh();
+        if (surfaceMesh == null) return;
 
-        var vertices = new System.Collections.Generic.List<Vector3>();
-        var triangles = new System.Collections.Generic.List<int>();
+        string assetPath = GetPrefabAssetPath();
+        if (string.IsNullOrEmpty(assetPath) == true) return;
 
-        for (int lat = 0; lat <= resolution; lat++)
-        {
-            float theta = lat * Mathf.PI / resolution;
-            float sinTheta = Mathf.Sin(theta);
-            float cosTheta = Mathf.Cos(theta);
+        RemoveSurfaceMeshSubAssetsAt(assetPath, surfaceMesh);
 
-            for (int lon = 0; lon <= resolution; lon++)
-            {
-                float phi = lon * 2f * Mathf.PI / resolution;
-                float x = Mathf.Cos(phi) * sinTheta * 0.5f;
-                float y = cosTheta * 0.5f;
-                float z = Mathf.Sin(phi) * sinTheta * 0.5f;
-                vertices.Add(new Vector3(x, y, z));
-            }
-        }
-
-        for (int lat = 0; lat < resolution; lat++)
-        {
-            for (int lon = 0; lon < resolution; lon++)
-            {
-                int curr = lat * (resolution + 1) + lon;
-                int next = curr + resolution + 1;
-                triangles.Add(curr);
-                triangles.Add(next);
-                triangles.Add(curr + 1);
-                triangles.Add(curr + 1);
-                triangles.Add(next);
-                triangles.Add(next + 1);
-            }
-        }
-
-        mesh.vertices = vertices.ToArray();
-        mesh.triangles = triangles.ToArray();
-        mesh.RecalculateNormals();
-        mesh.RecalculateBounds();
-
-        // 에셋 저장
-        string path = "Assets/Resources/UnitSphereMesh.asset";
-        if (!AssetDatabase.IsValidFolder("Assets/Resources"))
-            AssetDatabase.CreateFolder("Assets", "Resources");
-
-        AssetDatabase.CreateAsset(mesh, path);
+        AssetDatabase.AddObjectToAsset(surfaceMesh, assetPath);
         AssetDatabase.SaveAssets();
+        AssetDatabase.ImportAsset(assetPath);
+    }
 
-        // 자동 할당
-        grid.unitSphereMesh = AssetDatabase.LoadAssetAtPath<Mesh>(path);
-        EditorUtility.SetDirty(grid);
+    // Clear All로 표면 메시 자체가 사라졌을 때, 프리팹에 고아로 남는 이전 서브에셋 정리
+    void RemoveSurfaceMeshSubAsset()
+    {
+        string assetPath = GetPrefabAssetPath();
+        if (string.IsNullOrEmpty(assetPath) == true) return;
 
-        Debug.Log($"단위 구 메시 에셋 생성: {path}");
+        RemoveSurfaceMeshSubAssetsAt(assetPath, null);
+        AssetDatabase.SaveAssets();
+        AssetDatabase.ImportAsset(assetPath);
+    }
+
+    void RemoveSurfaceMeshSubAssetsAt(string assetPath, Mesh keepMesh)
+    {
+        Object[] subAssets = AssetDatabase.LoadAllAssetsAtPath(assetPath);
+        foreach (Object subAsset in subAssets)
+        {
+            if (subAsset is Mesh mesh && mesh.name == "ShieldSurfaceMesh" && subAsset != keepMesh)
+                AssetDatabase.RemoveObjectFromAsset(subAsset);
+        }
+    }
+
+    string GetPrefabAssetPath()
+    {
+        PrefabStage prefabStage = PrefabStageUtility.GetCurrentPrefabStage();
+        if (prefabStage == null)
+        {
+            Debug.LogWarning("[ShieldGridEditor] 프리팹 편집 모드가 아니어서 표면 메시 서브에셋을 정리할 수 없습니다.");
+            return null;
+        }
+        return prefabStage.assetPath;
     }
 }

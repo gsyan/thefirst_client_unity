@@ -51,18 +51,17 @@ public class ShieldGrid : MonoBehaviour
     public Vector3 axisScale = Vector3.one;
 
     [Header("Collider Settings")]
-    [Tooltip("충돌체 생성 여부")]
+    [Tooltip("표면 메시(렌더링+콜라이더) 생성 여부")]
     public bool generateCollider = true;
 
     [Tooltip("Shield 레이어 이름 (미리 생성 필요)")]
     public string shieldLayerName = "Shield";
 
-    [Tooltip("타원체 메시 해상도 (8권장, 높으면 convex 경고)")]
-    [Range(4, 14)]
-    public int colliderResolution = 8;
+    [Tooltip("실드 표면 파동 셰이더 머티리얼")]
+    public Material surfaceMaterial;
 
-    [Tooltip("공용 단위 구 메시 에셋")]
-    public Mesh unitSphereMesh;
+    [Tooltip("육각형 판 경계를 각지게 표시 (끄면 인접 셀과 매끄럽게 이어짐)")]
+    public bool flatShading = false;
 
     [Header("References")]
     public Transform m_PointParent;
@@ -77,11 +76,35 @@ public class ShieldGrid : MonoBehaviour
     private GameObject m_colliderObject;
     private MeshCollider m_meshCollider;
 
+    // 표면 렌더링 관련 — 콜라이더와 같은 메시(BuildSurfaceMesh 결과)를 공유
+    private GameObject m_surfaceObject;
+    private MeshRenderer m_surfaceMeshRenderer;
+    private MaterialPropertyBlock m_surfaceMpb;
+    private static readonly int k_hitDataId = Shader.PropertyToID("_HitData");
+
+    // 파동 웨이브 슬롯 — ShieldSurfaceWave.shader의 SHIELD_WAVE_SLOT_COUNT와 반드시 동일한 개수 유지
+    // 링버퍼: 새 피격이 들어오면 가장 오래된(가장 먼저 채워진) 슬롯을 덮어써 동시/연속 피격을 함께 표시(GC 없이 배열 재사용)
+    private const int k_hitWaveSlotCount = 4;
+    private readonly Vector4[] m_hitDataSlots = new Vector4[k_hitWaveSlotCount];
+    private int m_nextHitWaveSlot;
+
     private static readonly float PHI = (1f + Mathf.Sqrt(5f)) / 2f;
 
     // 내부 데이터 (듀얼 변환용)
     private List<Vector3> m_icoVertices = new List<Vector3>();
     private List<TriangleIndices> m_icoTriangles = new List<TriangleIndices>();
+
+    // 런타임 전용 — PlayHitWave가 매번 Find/GetComponent를 하지 않도록 표면 렌더러를 캐싱 (에디터 타임 필드는 런타임에 비어있을 수 있음, InitFormationRelay와 동일 관례)
+    void Awake()
+    {
+        Transform surfaceChild = transform.Find("ShieldSurface");
+        if (surfaceChild != null)
+            m_surfaceMeshRenderer = surfaceChild.GetComponent<MeshRenderer>();
+
+        // 슬롯의 hitTime(w)을 셰이더 기본값과 동일한 과거값으로 초기화 — 게임 시작 직후 원점에서 파동이 보이는 것을 방지
+        for (int i = 0; i < k_hitWaveSlotCount; i++)
+            m_hitDataSlots[i] = new Vector4(0f, 0f, 0f, -1000f);
+    }
 
     public void GenerateShield()
     {
@@ -107,9 +130,9 @@ public class ShieldGrid : MonoBehaviour
         else
             GenerateHexagonMode();
 
-        // 충돌체 생성
+        // 표면 렌더링 메시 + 콜라이더 생성 (같은 메시 공유)
         if (generateCollider)
-            GenerateCollider();
+            GenerateSurfaceAndCollider();
 
         Debug.Log($"ShieldGrid 생성 [{gridMode}]: {m_vertices.Count}개 꼭지점, {m_cells.Count}개 셀");
     }
@@ -159,44 +182,174 @@ public class ShieldGrid : MonoBehaviour
         return closest;
     }
 
-    void GenerateCollider()
+    // 실드 표면 파동 셰이더 트리거 — 게이지가 데미지를 흡수한 시점(SpaceShip.SpawnShieldHitEffect)마다 호출
+    // 링버퍼 슬롯 하나(가장 오래된 것)를 이번 피격으로 덮어써 동시/연속 피격이 각자의 파동으로 함께 표시되게 함
+    // ProjectileBeam.cs의 MaterialPropertyBlock 패턴과 동일: GetPropertyBlock → Set → SetPropertyBlock, GC Alloc 없음(배열은 필드로 재사용)
+    public void PlayHitWave(Vector3 hitPositionWS)
     {
-        // 기존 충돌체 제거
-        if (m_colliderObject != null)
-            DestroyImmediate(m_colliderObject);
+        if (m_surfaceMeshRenderer == null) return;
 
-        // 충돌체용 오브젝트 생성
-        m_colliderObject = new GameObject("ShieldCollider");
-        m_colliderObject.transform.SetParent(transform);
+        if (m_surfaceMpb == null)
+            m_surfaceMpb = new MaterialPropertyBlock();
 
-        // 위치: boundBox 중심 (로컬 좌표)
-        Vector3 localCenter = transform.InverseTransformPoint(m_boundBox.center);
-        m_colliderObject.transform.localPosition = localCenter;
-        m_colliderObject.transform.localRotation = Quaternion.Inverse(transform.rotation) * m_boundBox.rotation;
-        // 크기: extents로 타원체 형태 (단위 구 * 2 * extents)
-        m_colliderObject.transform.localScale = m_extents * 2f;
+        Vector3 hitLocal = transform.InverseTransformPoint(hitPositionWS);
+        m_hitDataSlots[m_nextHitWaveSlot] = new Vector4(hitLocal.x, hitLocal.y, hitLocal.z, Time.time);
+        m_nextHitWaveSlot = (m_nextHitWaveSlot + 1) % k_hitWaveSlotCount;
+
+        m_surfaceMeshRenderer.GetPropertyBlock(m_surfaceMpb);
+        m_surfaceMpb.SetVectorArray(k_hitDataId, m_hitDataSlots);
+        m_surfaceMeshRenderer.SetPropertyBlock(m_surfaceMpb);
+    }
+
+    // m_cells(육각형/오각형 셀, 이미 각도 정렬된 vertexIndices)를 셀마다 삼각형 팬으로 분해해 로컬 좌표 메시로 굽는다.
+    // 렌더링(ShieldSurface)과 콜라이더(ShieldCollider)가 이 메시를 그대로 공유 — 형상을 일치시켜 raycast/trigger가 실제 표면과 어긋나지 않게 함
+    // Mesh.RecalculateNormals()는 위치가 같은 정점을 자동으로 병합해 노멀을 평균 내므로(smooth), 정점을 공유하기만 해도 매끄러운 구면이 된다.
+    // flatShading이 true면 셀마다 정점을 새로 추가(공유 안 함)하고 각 삼각형 면 노멀을 직접 계산해 넣어 판 경계가 각지게 드러나도록 함
+    Mesh BuildSurfaceMesh()
+    {
+        if (m_cells.Count == 0)
+        {
+            Debug.LogWarning("[ShieldGrid] m_cells가 비어있어 표면 메시를 생성할 수 없습니다.");
+            return null;
+        }
+
+        List<Vector3> vertices = new List<Vector3>();
+        List<Vector3> flatNormals = new List<Vector3>();
+        List<int> triangles = new List<int>();
+
+        // smooth 모드에서만 사용 — m_vertices 인덱스별로 로컬 좌표를 한 번만 만들어 여러 셀이 같은 인덱스를 공유
+        Dictionary<int, int> sharedVertexCache = new Dictionary<int, int>();
+
+        foreach (ShieldCell cell in m_cells)
+        {
+            if (cell.vertexIndices == null || cell.vertexIndices.Count < 3) continue;
+
+            Vector3 centerLocal = transform.InverseTransformPoint(cell.center);
+            Vector3 outwardLocal = centerLocal.normalized;
+
+            int centerIdx = vertices.Count;
+            vertices.Add(centerLocal);
+            if (flatShading == true)
+                flatNormals.Add(outwardLocal);
+
+            int fanStart = vertices.Count;
+            int fanCount = cell.vertexIndices.Count;
+            for (int i = 0; i < fanCount; i++)
+            {
+                int sourceIdx = cell.vertexIndices[i];
+                Vector3 pointLocal = transform.InverseTransformPoint(m_vertices[sourceIdx].transform.position);
+
+                if (flatShading == true)
+                {
+                    vertices.Add(pointLocal);
+                    flatNormals.Add(outwardLocal);
+                    continue;
+                }
+
+                if (sharedVertexCache.TryGetValue(sourceIdx, out int cachedIdx) == false)
+                {
+                    cachedIdx = vertices.Count;
+                    vertices.Add(pointLocal);
+                    sharedVertexCache[sourceIdx] = cachedIdx;
+                }
+                else
+                {
+                    vertices.Add(vertices[cachedIdx]);
+                }
+            }
+
+            // winding이 바깥(중심에서 멀어지는 방향)을 향하도록, 첫 삼각형 노멀과 바깥 방향의 내적으로 팬 순서 확정
+            Vector3 edgeA = vertices[fanStart] - centerLocal;
+            Vector3 edgeB = vertices[fanStart + (1 % fanCount)] - centerLocal;
+            bool flipWinding = Vector3.Dot(Vector3.Cross(edgeA, edgeB), outwardLocal) < 0f;
+
+            for (int i = 0; i < fanCount; i++)
+            {
+                int a = fanStart + i;
+                int b = fanStart + (i + 1) % fanCount;
+                if (flipWinding == true)
+                {
+                    triangles.Add(centerIdx);
+                    triangles.Add(b);
+                    triangles.Add(a);
+                }
+                else
+                {
+                    triangles.Add(centerIdx);
+                    triangles.Add(a);
+                    triangles.Add(b);
+                }
+            }
+        }
+
+        Mesh mesh = new Mesh();
+        mesh.name = "ShieldSurfaceMesh";
+        if (vertices.Count > 65000)
+            mesh.indexFormat = UnityEngine.Rendering.IndexFormat.UInt32;
+        mesh.SetVertices(vertices);
+        mesh.SetTriangles(triangles, 0);
+        if (flatShading == true)
+            mesh.SetNormals(flatNormals);
+        else
+            mesh.RecalculateNormals();
+        mesh.RecalculateBounds();
+        return mesh;
+    }
+
+    // 표면 렌더링(ShieldSurface)과 콜라이더(ShieldCollider)를 같은 메시로 함께 생성 — 기존 GenerateCollider() 대체
+    void GenerateSurfaceAndCollider()
+    {
+        Mesh surfaceMesh = BuildSurfaceMesh();
+        if (surfaceMesh == null) return;
 
         // 레이어 설정
         int layer = LayerMask.NameToLayer(shieldLayerName);
-        if (layer >= 0)
-            m_colliderObject.layer = layer;
-        else
+        if (layer < 0)
             Debug.LogWarning($"Shield 레이어 '{shieldLayerName}'가 없습니다. Project Settings > Tags and Layers에서 생성하세요.");
 
-        // MeshCollider 추가
+        // 렌더링 오브젝트 — 로컬 좌표 정점이므로 부모(this.transform) 자체가 오프셋, local TRS는 identity
+        if (m_surfaceObject != null)
+            DestroyImmediate(m_surfaceObject);
+        m_surfaceObject = new GameObject("ShieldSurface");
+        m_surfaceObject.transform.SetParent(transform, false);
+
+        MeshFilter meshFilter = m_surfaceObject.AddComponent<MeshFilter>();
+        meshFilter.sharedMesh = surfaceMesh;
+        m_surfaceMeshRenderer = m_surfaceObject.AddComponent<MeshRenderer>();
+        m_surfaceMeshRenderer.sharedMaterial = surfaceMaterial;
+        m_surfaceMeshRenderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+        m_surfaceMeshRenderer.receiveShadows = false;
+
+        // 콜라이더 오브젝트 — 정점 자체가 이미 최종 타원체 형상으로 구워져 있어 별도 스케일/오프셋 불필요(identity)
+        if (m_colliderObject != null)
+            DestroyImmediate(m_colliderObject);
+        m_colliderObject = new GameObject("ShieldCollider");
+        m_colliderObject.transform.SetParent(transform, false);
+        if (layer >= 0)
+            m_colliderObject.layer = layer;
+
         m_meshCollider = m_colliderObject.AddComponent<MeshCollider>();
-        m_meshCollider.sharedMesh = unitSphereMesh;
+        m_meshCollider.sharedMesh = surfaceMesh;
         m_meshCollider.convex = true;
         m_meshCollider.isTrigger = true;
 
         // OnTriggerStay 발생 조건: Rigidbody 필요 → kinematic으로 물리 영향 차단 (프리팹에 저장됨)
-        var rb = m_colliderObject.AddComponent<Rigidbody>();
+        Rigidbody rb = m_colliderObject.AddComponent<Rigidbody>();
         rb.isKinematic = true;
         rb.useGravity = false;
     }
 
     // 진형 배치 계산용 — 실드 콜라이더의 실제 반크기 반환 (boundScale/axisScale 적용됨)
     public Vector3 GetFormationExtents() => m_extents;
+
+    // 에디터 전용 — GenerateShield() 직후 생성된 표면 메시를 프리팹 서브에셋으로 저장하기 위한 조회(ShieldGridEditor.cs)
+    public Mesh GetSurfaceMesh()
+    {
+        if (m_surfaceObject == null) return null;
+        MeshFilter meshFilter = m_surfaceObject.GetComponent<MeshFilter>();
+        if (meshFilter == null) return null;
+        return meshFilter.sharedMesh;
+    }
 
     // 런타임 전용 — SpaceShip 로딩 시점에 호출하여 진형 충돌 릴레이 owner 설정
     public void InitFormationRelay(SpaceShip owner)
@@ -503,6 +656,20 @@ public class ShieldGrid : MonoBehaviour
         }
         m_colliderObject = null;
         m_meshCollider = null;
+
+        // 표면 렌더링 오브젝트 제거 (참조가 끊어져도 이름으로 찾아서 삭제)
+        if (m_surfaceObject != null)
+        {
+            DestroyImmediate(m_surfaceObject);
+        }
+        else
+        {
+            var existingSurface = transform.Find("ShieldSurface");
+            if (existingSurface != null)
+                DestroyImmediate(existingSurface.gameObject);
+        }
+        m_surfaceObject = null;
+        m_surfaceMeshRenderer = null;
     }
 
     BoundingBox ComputeBoundingBox(Transform ship, float margin)
