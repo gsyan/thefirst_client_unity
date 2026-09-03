@@ -52,12 +52,11 @@ public static class ShipStatCalculator
         return stats;
     }
 
-    // subTypeName(예: beam_t1_m1)에 대응하는 DataTableModule 원본 데이터 조회 — moduleTable 또는 이름이 비어있으면 null
+    // subTypeName(예: beam_1_1)에 대응하는 DataTableModule 원본 데이터 조회 — moduleTable 또는 이름이 비어있으면 null
     private static ModuleData GetModuleData(DataTableModule moduleTable, string subTypeName)
     {
         if (moduleTable == null || string.IsNullOrEmpty(subTypeName)) return null;
-        if (System.Enum.TryParse(subTypeName, out EModuleSubType subType) == false) return null;
-        return moduleTable.GetModuleDataFromTable(subType);
+        return moduleTable.GetModuleDataFromTable(subTypeName);
     }
 
     // 빔/미사일 공용 계산 — 슬롯당 공격력/연사력(쿨다운)/발사체속도 3속성 강화. moduleSubType이 빈 문자열이면 미장착

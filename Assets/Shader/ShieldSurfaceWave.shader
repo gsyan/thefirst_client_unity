@@ -169,7 +169,9 @@ Shader "SpaceFleet/ShieldSurfaceWave"
                 float rim = pow(1.0 - NdotV, _RimPower);
                 float3 finalColor = _Color.rgb * rim * _RimIntensity * clampedMask * _UseRimLight;
 
-                return float4(finalColor, 1.0);
+                // 알파를 무조건 1로 고정하면(가산 블렌딩이라 화면 직접 렌더링에선 문제 없었지만) RenderTexture처럼
+                // 알파 채널로 합성하는 경로에서는 clampedMask=0(파동 없음)이어도 불투명한 색으로 남아버림 — clampedMask로 같이 내보냄
+                return float4(finalColor, clampedMask);
             }
             ENDHLSL
         }

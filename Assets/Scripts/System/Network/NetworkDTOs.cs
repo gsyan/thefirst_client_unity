@@ -46,7 +46,7 @@ public class ShipInfo
     // Zone 적 전용 배율 — PvP는 기본값(1.0) 유지, 서버 저장 불필요
     public float healthMultiplier = 1.0f;
     public float attackMultiplier = 1.0f;
-    // 함체 기반 함선 배치(탐사 그리드) — hullSubType(EModuleSubType hull 이름)으로 DataTableModule hull 그룹 참조, isFront로 전/후위 배치
+    // 함체 기반 함선 배치(탐사 그리드) — hullSubType(모듈 서브타입 이름 문자열)으로 DataTableModule hull 그룹 참조, isFront로 전/후위 배치
     public string hullSubType;
     public bool isFront;
 }
@@ -55,7 +55,7 @@ public class ShipInfo
 public class ModuleHullInfo
 {
     public EModuleType moduleType;
-    public EModuleSubType moduleSubType;
+    public string moduleSubType;
     public int moduleLevel;
     public int hullIndex;
     public List<ModuleInfo> beams;
@@ -72,7 +72,7 @@ public class ModuleHullInfo
 public class ModuleInfo
 {
     public EModuleType moduleType;
-    public EModuleSubType moduleSubType;
+    public string moduleSubType;
     public int moduleLevel;
     public int hullIndex;
     public int slotIndex;

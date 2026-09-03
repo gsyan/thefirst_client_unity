@@ -64,11 +64,11 @@ public class FleetComposition
         return EFleetPlaceResult.Success;
     }
 
-    // 기본 로드아웃(beam slot0=beam1)을 상수 규칙으로 시딩 — 전 함체 공통
+    // 기본 로드아웃(beam slot0=beam_1_1)을 상수 규칙으로 시딩 — 전 함체 공통. 무기 티어는 함체 티어와 독립적인 별도 축(강화로 별도 상승)
     private ModuleHullInfo BuildDefaultModules()
     {
         var body = new ModuleHullInfo { beams = new List<ModuleInfo>(), missiles = new List<ModuleInfo>(), hangars = new List<ModuleInfo>() };
-        body.beams.Add(new ModuleInfo { moduleType = EModuleType.beam, moduleSubType = EModuleSubType.beam1, slotIndex = 0 });
+        body.beams.Add(new ModuleInfo { moduleType = EModuleType.beam, moduleSubType = "beam_1_1", slotIndex = 0 });
         return body;
     }
 
@@ -127,6 +127,7 @@ public class FleetComposition
 
     // 기존 장착 모듈(existingModules) 중 새 함체(newHullSubType)에도 같은 카테고리+슬롯 인덱스가 존재하는 것만 남김 — 서브타입/강화 포인트는 그대로 복사
     // (서버 FleetService.filterModulesForNewHull과 동일 규칙, 함체 변경 시 미리보기/실제 배치 양쪽에서 공용으로 사용)
+    // 설계 확정: 함체 교체해도 무기 서브타입(티어)은 그대로 유지됨 — 무기 티어는 함체 티어와 독립적인 별도 축(강화로 별도 상승, 최대치만 함체 티어로 제한)
     // existingModules가 null이면(원래 비어있던 슬롯의 신규 배치) null을 그대로 반환 — TryPlaceShipAt의 기본 로드아웃 시딩(BuildDefaultModules) 분기를 그대로 타게 함
     public static ModuleHullInfo FilterModulesForNewHull(ModuleHullInfo existingModules, string newHullSubType)
     {
@@ -156,19 +157,11 @@ public class FleetComposition
         return ComputeSlotCommandCost(new FleetSlotEntry(newHullSubType, false, keptModules));
     }
 
-    // hullSubType(예: "h1_11100") → [beam, missile, hangar, shield, interceptor] 카테고리별 최대 슬롯 수 — 서버 FleetService.parseMaxSlotsFromHullSubType과 동일 규칙
-    // 이름 규칙: h{tier}_{beam}{missile}{hangar}{shield}{interceptor}(뒤 5자리) — 접두사 "h{tier}_"는 3자, 뒤 5자리만 슬롯 수로 사용
+    // hullSubType(예: "hull_3_1_11100") → [beam, missile, hangar, shield, interceptor] 카테고리별 최대 슬롯 수 — 서버 GameDataService.parseMaxSlotsFromHullSubType과 동일 규칙
+    // 이름 규칙: hull_{tier}_{gen}_{5자리구성} — 4번째 토큰(5자리)만 슬롯 수로 사용
     public static int[] ParseMaxSlotsFromHullSubType(string hullSubType)
     {
-        int[] result = new int[5];
-        if (string.IsNullOrEmpty(hullSubType) || hullSubType.Length != 8 || hullSubType[0] != 'h') return result;
-        for (int i = 0; i < 5; i++)
-        {
-            char c = hullSubType[3 + i];
-            if (char.IsDigit(c) == false) return new int[5];
-            result[i] = c - '0';
-        }
-        return result;
+        return CommonUtility.ParseHullSlotComposition(hullSubType);
     }
 
     // 배치 해제 시 지휘력은 즉시 반환됨 (점유 구조, 소모 아님)

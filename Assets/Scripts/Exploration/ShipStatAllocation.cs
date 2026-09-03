@@ -8,7 +8,7 @@ using System.Collections.Generic;
 [System.Serializable]
 public class ShipStatAllocation
 {
-    // Beam — 슬롯당 장착 서브타입(EModuleSubType 이름, 예: beam1) + 속성별 강화 포인트(공격력/연사력/발사체속도). 빈 문자열 = 미장착
+    // Beam — 슬롯당 장착 서브타입(모듈 서브타입 이름 문자열, 예: beam_1_1) + 속성별 강화 포인트(공격력/연사력/발사체속도). 빈 문자열 = 미장착
     public string[] beamModuleSubType = new string[0];
     public int[] beamAttackPoints = new int[0];
     public int[] beamFireRatePoints = new int[0];
@@ -84,9 +84,8 @@ public class ShipStatAllocation
 
     private static int GetInstallCost(DataTableModule moduleTable, string subTypeName)
     {
-        if (moduleTable == null) return 0;
-        if (System.Enum.TryParse(subTypeName, out EModuleSubType subType) == false) return 0;
-        ModuleData data = moduleTable.GetModuleDataFromTable(subType);
+        if (moduleTable == null || string.IsNullOrEmpty(subTypeName) == true) return 0;
+        ModuleData data = moduleTable.GetModuleDataFromTable(subTypeName);
         return data != null ? data.statPoint : 0;
     }
 
@@ -134,7 +133,7 @@ public class ShipStatAllocation
         {
             int slotIndex = modules[i].slotIndex;
             if (slotIndex < 0 || slotIndex >= subTypeArray.Length) continue;
-            subTypeArray[slotIndex] = modules[i].moduleSubType.ToString();
+            subTypeArray[slotIndex] = modules[i].moduleSubType;
             attackPointsArray[slotIndex] = modules[i].attackPoints;
         }
     }
@@ -147,7 +146,7 @@ public class ShipStatAllocation
         {
             int slotIndex = modules[i].slotIndex;
             if (slotIndex < 0 || slotIndex >= subTypeArray.Length) continue;
-            subTypeArray[slotIndex] = modules[i].moduleSubType.ToString();
+            subTypeArray[slotIndex] = modules[i].moduleSubType;
             attackToShipArray[slotIndex] = modules[i].attackPoints;
             attackToFighterArray[slotIndex] = modules[i].attackToFighterPoints;
         }

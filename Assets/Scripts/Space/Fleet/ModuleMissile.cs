@@ -48,7 +48,7 @@ public class ModuleMissile : ModuleBase
     {
         return m_moduleInfo.moduleType;
     }
-    public override EModuleSubType GetModuleSubType()
+    public override string GetModuleSubType()
     {
         return m_moduleInfo.moduleSubType;
     }
@@ -128,7 +128,7 @@ public class ModuleMissile : ModuleBase
     }
 
     // 서브타입별 미사일 프리팹 풀 결정 — 현재는 외형 타입이 t1 하나뿐이라 고정값
-    private static EPoolName GetMissilePoolName(EModuleSubType subType)
+    private static EPoolName GetMissilePoolName(string subType)
     {
         return EPoolName.PROJECTILE_MISSILE_MEDIUM;
     }

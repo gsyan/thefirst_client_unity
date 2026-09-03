@@ -647,7 +647,7 @@ public class UIManager : MonoSingleton<UIManager>
         // 함선 이름 로컬라이즈는 아직 미정 — 함체 코드(hullSubType)를 그대로 표시
         ShowConfirmPopup(new ConfirmPopupConfig
         {
-            message = hull.moduleSubType.ToString(),
+            message = hull.moduleSubType,
             statGaugeRows = ShipStatGaugeBuilder.Build(hull),
             onConfirm = null,
         });

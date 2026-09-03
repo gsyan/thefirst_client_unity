@@ -277,7 +277,7 @@ public class UIShipLoadoutEditorView : MonoBehaviour
 
             if (entry.moduleType == EModuleType.shield)
             {
-                pending.shieldModuleSubType = GetDefaultSubType(entry.moduleType).ToString();
+                pending.shieldModuleSubType = GetDefaultSubType(entry.moduleType);
                 continue;
             }
 
@@ -364,20 +364,20 @@ public class UIShipLoadoutEditorView : MonoBehaviour
         return bodyCost + modulesCost;
     }
 
-    // on/off만 지원하므로 카테고리당 서브타입은 항상 이 값 하나 — 서버 FleetService.getDefaultSubTypeForCategory와 동일 규칙
-    private EModuleSubType GetDefaultSubType(EModuleType moduleType)
+    // on/off만 지원하므로 카테고리당 서브타입은 항상 이 값 하나 — 무기 티어는 함체와 독립적인 별도 축이라 기본값은 항상 1티어. 서버 FleetService.getDefaultSubTypeForCategory와 동일 규칙
+    private string GetDefaultSubType(EModuleType moduleType)
     {
-        if (moduleType == EModuleType.beam) return EModuleSubType.beam1;
-        if (moduleType == EModuleType.missile) return EModuleSubType.missile1;
-        if (moduleType == EModuleType.hangar) return EModuleSubType.hangar1;
-        if (moduleType == EModuleType.shield) return EModuleSubType.shield1;
-        return EModuleSubType.none;
+        if (moduleType == EModuleType.beam) return "beam_1_1";
+        if (moduleType == EModuleType.missile) return "missile_1_1";
+        if (moduleType == EModuleType.hangar) return "hangar_1_1";
+        if (moduleType == EModuleType.shield) return "shield_1_1";
+        return "";
     }
 
     private int GetModuleInstallCost(DataTableModule moduleTable, EModuleType moduleType)
     {
-        EModuleSubType subType = GetDefaultSubType(moduleType);
-        if (subType == EModuleSubType.none) return 0;
+        string subType = GetDefaultSubType(moduleType);
+        if (string.IsNullOrEmpty(subType) == true) return 0;
 
         ModuleData data = moduleTable.GetModuleDataFromTable(subType);
         return data != null ? data.statPoint : 0;

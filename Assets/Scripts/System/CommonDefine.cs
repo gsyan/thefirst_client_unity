@@ -1,4 +1,8 @@
-// 게임 공통 열거형 정의 — EModuleType, EModuleSubType(7자리 인코딩), EFormationType 등
+// 게임 공통 열거형 정의 — EModuleType, EFormationType 등
+// 모듈 서브타입(구 EModuleSubType)은 enum이 아니라 문자열로 관리한다.
+// 이름 규칙: hull은 "hull_{tier}_{gen}_{5자리구성(빔,미사일,격납고,실드,요격체)}", 그 외는 "{type}_{tier}_{gen}"
+// tier = 5자리 구성 중 빔+미사일+격납고 3자리 합만 사용(실드/요격체 제외), gen = 세대(외형) 구분자
+// 파싱 유틸은 CommonUtility.cs의 "Module Type" 영역 참고
 [System.Serializable]
 public enum EModuleType
 {
@@ -10,74 +14,6 @@ public enum EModuleType
     shield          = 5,
     interceptor     = 6,
     max             = 7
-}
-// 8자리 인코딩: T_tt_mmmmm (type 1자리, tier 2자리, model 5자리)
-// 파싱: type=val/10000000, tier=(val/100000)%100, model=val%100000
-// hull만 model이 의미를 가짐(예: 11100 = 빔1/미사일1/격납고1/실드0/요격체0 슬롯 수, 각 1자리씩) — 그 외 타입은 model=00000 고정
-[System.Serializable]
-public enum EModuleSubType
-{
-    none                = 0,
-    // Hull SubType
-    h1_11100        = 10111100,
-    h1_11110        = 10111110,
-    h1_21100        = 10121100,
-    h1_22100        = 10122100,
-    h1_22200        = 10122200,
-    h1_32200        = 10132200,
-    h1_33200        = 10133200,   
-    h1_33300        = 10133300,
-    h1_43300        = 10143300,
-    h1_44300        = 10144300,
-    h1_44400        = 10144400,
-    h1_54400        = 10154400,
-    h1_55400        = 10155400,
-    // Beam SubType
-    beam1           = 20100000,
-    // Missile SubType
-    missile1        = 30100000,
-    // Hangar SubType
-    hangar1         = 40100000,
-    // Shield SubType
-    shield1         = 50100000,
-    // Interceptor SubType
-    interceptor1    = 60100000,
-}
-
-// EModuleSubType 8자리 인코딩 파싱 유틸
-public static class EModuleSubTypeExtensions
-{
-    public static int GetModuleType(this EModuleSubType subType)    => (int)subType / 10000000;
-    public static int GetTechTier(this EModuleSubType subType) => ((int)subType / 100000) % 100;
-    public static int GetModuleModel(this EModuleSubType subType)    => (int)subType % 100000;
-
-    // 인코딩에서 EModuleType 추출
-    public static EModuleType GetModuleTypeEnum(this EModuleSubType subType)
-        => (EModuleType)((int)subType / 10000000);
-
-    // 타입(외형)+1 서브타입 반환 (없으면 EModuleSubType.none) — prerequisites 체인 없이 인코딩 산술로 계산
-    public static EModuleSubType GetNextSubType(this EModuleSubType subType)
-    {
-        int nextVal = (int)subType + 100000;
-        return System.Enum.IsDefined(typeof(EModuleSubType), nextVal) ? (EModuleSubType)nextVal : EModuleSubType.none;
-    }
-
-    // 타입(외형)-1 서브타입 반환 (없으면 EModuleSubType.none)
-    public static EModuleSubType GetPrevSubType(this EModuleSubType subType)
-    {
-        int prevVal = (int)subType - 100000;
-        return System.Enum.IsDefined(typeof(EModuleSubType), prevVal) ? (EModuleSubType)prevVal : EModuleSubType.none;
-    }
-
-    // 로컬라이즈된 서브타입 표시명 생성 (예: "함체.T1.M111")
-    // CSV에 개별 키 없이, module_type_{type} 키 + tier/model 조합으로 동적 생성
-    public static string GetLocalizedName(this EModuleSubType subType)
-    {
-        string typeName = LocalizationManager.Instance.Get($"module_type_{subType.GetModuleTypeEnum()}");
-        int tier = subType.GetTechTier();
-        int model = subType.GetModuleModel();
-        return $"{typeName}.T{tier}.M{model}";
-    }
 }
 
 public static class EModuleTypeExtensions

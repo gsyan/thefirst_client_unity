@@ -53,7 +53,7 @@ public class UIHullPickerView : MonoBehaviour
     {
         m_hullsCache.Clear();
         m_hullsCache.AddRange(availableHulls);
-        m_selectedHullSubType = currentHull != null ? currentHull.moduleSubType.ToString() : null;
+        m_selectedHullSubType = currentHull != null ? currentHull.moduleSubType : null;
         m_currentModules = currentModules;
         m_currentSlotCommandCost = currentSlotCommandCost;
         m_baseUsedCommandPower = baseUsedCommandPower;
@@ -94,7 +94,7 @@ public class UIHullPickerView : MonoBehaviour
         float aspect = previewRect.height > 0f ? previewRect.width / previewRect.height : 1f;
 
         m_previewImage.texture = ShipPreviewManager.Instance.GetPreviewTexture(aspect);
-        ModuleData selectedHull = m_hullsCache.Find(p => p.moduleSubType.ToString() == m_selectedHullSubType);
+        ModuleData selectedHull = m_hullsCache.Find(p => p.moduleSubType == m_selectedHullSubType);
         ShipPreviewManager.Instance.ShowHull(selectedHull);
     }
 
@@ -106,7 +106,7 @@ public class UIHullPickerView : MonoBehaviour
         if (row == null) return;
 
         ModuleData hull = m_hullsCache[dataIndex];
-        string hullSubType = hull.moduleSubType.ToString();
+        string hullSubType = hull.moduleSubType;
         FleetComposition composition = DataManager.Instance.m_currentFleetComposition;
         ModuleHullInfo keptModulesForRow = GetKeptModules(hullSubType);
         int projectedCost = composition != null ? composition.ComputeProjectedSlotCommandCost(hullSubType, keptModulesForRow) : hull.statPoint;
@@ -120,7 +120,7 @@ public class UIHullPickerView : MonoBehaviour
 
     private void OnHullClicked(ModuleData hull)
     {
-        m_selectedHullSubType = hull.moduleSubType.ToString();
+        m_selectedHullSubType = hull.moduleSubType;
         m_scrollView.RefreshVisible(); // 재바인드되며 OnItemBind가 다시 불려 하이라이트가 새 선택으로 갱신됨
         RefreshStatsDisplay();
         RefreshCommandPowerPreview();
@@ -170,7 +170,7 @@ public class UIHullPickerView : MonoBehaviour
     // 여기서는 m_statEntries만 갱신하고 Initialize로 스크롤뷰에 개수만 알려줌
     private void RefreshStatsDisplay()
     {
-        ModuleData selectedHull = m_hullsCache.Find(p => p.moduleSubType.ToString() == m_selectedHullSubType);
+        ModuleData selectedHull = m_hullsCache.Find(p => p.moduleSubType == m_selectedHullSubType);
         if (selectedHull == null)
         {
             m_statEntries.Clear();

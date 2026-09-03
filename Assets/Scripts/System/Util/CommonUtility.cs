@@ -262,11 +262,68 @@ public static class CommonUtility
     #endregion Fleet Utility end -----------------------------------------------------------------------------------
 
     #region Module Type begin -----------------------------------------------------------------------------------
-    // 기본 SubType: t1(01), m1(01)
-    public static EModuleSubType GetDefaultSubType(EModuleType moduleType)
+    // moduleSubType 문자열의 첫 토큰으로 EModuleType 파싱 (예: "hull_3_1_11100" -> hull, "beam_1_1" -> beam)
+    public static EModuleType ParseModuleType(string subType)
     {
-        EModuleSubType defaultSubType = (EModuleSubType)((int)moduleType * 10000 + 101);
-        return defaultSubType;
+        if (string.IsNullOrEmpty(subType) == true) return EModuleType.none;
+
+        string typeName = subType.Split('_')[0];
+        bool parsed = System.Enum.TryParse(typeName, out EModuleType moduleType);
+        if (parsed == false) return EModuleType.none;
+
+        return moduleType;
+    }
+
+    // moduleSubType 문자열의 tier 파싱 (예: "hull_3_1_11100" -> 3)
+    public static int ParseTier(string subType)
+    {
+        if (string.IsNullOrEmpty(subType) == true) return 0;
+
+        string[] parts = subType.Split('_');
+        if (parts.Length < 2) return 0;
+
+        int.TryParse(parts[1], out int tier);
+        return tier;
+    }
+
+    // moduleSubType 문자열의 gen 파싱 (예: "hull_3_1_11100" -> 1)
+    public static int ParseGen(string subType)
+    {
+        if (string.IsNullOrEmpty(subType) == true) return 0;
+
+        string[] parts = subType.Split('_');
+        if (parts.Length < 3) return 0;
+
+        int.TryParse(parts[2], out int gen);
+        return gen;
+    }
+
+    // hull 전용: 5자리 구성을 [빔,미사일,격납고,실드,요격체] 개수 배열로 파싱 (예: "hull_3_1_11100" -> [1,1,1,0,0])
+    public static int[] ParseHullSlotComposition(string hullSubType)
+    {
+        int[] result = new int[5];
+        if (string.IsNullOrEmpty(hullSubType) == true) return result;
+
+        string[] parts = hullSubType.Split('_');
+        if (parts.Length < 4 || parts[3].Length != 5) return result;
+
+        for (int i = 0; i < 5; i++)
+        {
+            bool isDigit = char.IsDigit(parts[3][i]);
+            if (isDigit == false) return new int[5];
+            result[i] = parts[3][i] - '0';
+        }
+
+        return result;
+    }
+
+    // hull tier 강제 규칙 검증: tier == 빔+미사일+격납고 합 (실드/요격체 제외)
+    public static bool ValidateHullTier(string hullSubType)
+    {
+        int tier = ParseTier(hullSubType);
+        int[] composition = ParseHullSlotComposition(hullSubType);
+        int compositionTier = composition[0] + composition[1] + composition[2];
+        return tier == compositionTier;
     }
 
     #endregion Module Type end -----------------------------------------------------------------------------------

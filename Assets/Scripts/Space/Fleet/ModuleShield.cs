@@ -19,12 +19,12 @@ public class ModuleShield : ModuleBase
         m_parentBody = parentBody;
     }
 
-    public void InitializeModuleShield(EModuleSubType shieldSubType)
+    public void InitializeModuleShield(string shieldSubType)
     {
         m_parentBody = GetComponentInParent<ModuleHull>();
         AutoDetectFleetInfo();
 
-        if (shieldSubType == EModuleSubType.none)
+        if (string.IsNullOrEmpty(shieldSubType) == true)
         {
             m_gaugeMax = 0f;
             m_gauge = 0f;

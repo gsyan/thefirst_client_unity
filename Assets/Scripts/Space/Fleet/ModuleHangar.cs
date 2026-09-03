@@ -249,7 +249,7 @@ public class ModuleHangar : ModuleBase
     {
         return m_moduleInfo.moduleType;
     }
-    public override EModuleSubType GetModuleSubType()
+    public override string GetModuleSubType()
     {
         return m_moduleInfo.moduleSubType;
     }

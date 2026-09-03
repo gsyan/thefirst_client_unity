@@ -12,12 +12,12 @@ public class DataTableModuleEditor : Editor
     private DataTableModule dataTableModule;
     private Vector2 scrollPosition;
 
-    private Dictionary<EModuleSubType, bool> bodySubTypeFoldouts = new Dictionary<EModuleSubType, bool>();
-    private Dictionary<EModuleSubType, bool> beamSubTypeFoldouts = new Dictionary<EModuleSubType, bool>();
-    private Dictionary<EModuleSubType, bool> missileSubTypeFoldouts = new Dictionary<EModuleSubType, bool>();
-    private Dictionary<EModuleSubType, bool> hangarSubTypeFoldouts = new Dictionary<EModuleSubType, bool>();
-    private Dictionary<EModuleSubType, bool> shieldSubTypeFoldouts = new Dictionary<EModuleSubType, bool>();
-    private Dictionary<EModuleSubType, bool> interceptorSubTypeFoldouts = new Dictionary<EModuleSubType, bool>();
+    private Dictionary<string, bool> bodySubTypeFoldouts = new Dictionary<string, bool>();
+    private Dictionary<string, bool> beamSubTypeFoldouts = new Dictionary<string, bool>();
+    private Dictionary<string, bool> missileSubTypeFoldouts = new Dictionary<string, bool>();
+    private Dictionary<string, bool> hangarSubTypeFoldouts = new Dictionary<string, bool>();
+    private Dictionary<string, bool> shieldSubTypeFoldouts = new Dictionary<string, bool>();
+    private Dictionary<string, bool> interceptorSubTypeFoldouts = new Dictionary<string, bool>();
     private Dictionary<ModuleData, bool> moduleSlotFoldouts = new Dictionary<ModuleData, bool>();
 
     private bool showBodyModules = false;
@@ -38,10 +38,6 @@ public class DataTableModuleEditor : Editor
     private void OnEnable()
     {
         dataTableModule = (DataTableModule)target;
-        // InitializeSubTypeGroups()를 여기서 호출하면 안됨!
-        // OnEnable은 Inspector에서 asset 선택할 때마다 호출되어
-        // 빈 그룹이 계속 추가됨
-        // Generate 버튼에서만 호출해야 함
     }
 
     public override void OnInspectorGUI()
@@ -318,7 +314,7 @@ public class DataTableModuleEditor : Editor
     #endregion
 
     // 서브타입(티어)당 1개뿐인 모듈 항목을 공통으로 그림 — 레벨 축 삭제로 Add/Remove 없음
-    private void DrawSubTypeGroup(ModuleSubTypeGroup group, Dictionary<EModuleSubType, bool> foldouts, System.Action<ModuleData> drawDetails)
+    private void DrawSubTypeGroup(ModuleSubTypeGroup group, Dictionary<string, bool> foldouts, System.Action<ModuleData> drawDetails)
     {
         if (!foldouts.ContainsKey(group.subType))
             foldouts[group.subType] = false;
@@ -409,7 +405,7 @@ public class DataTableModuleEditor : Editor
             {
                 sb.AppendLine(string.Format(ic,
                     "{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16},{17},{18},{19},{20},{21},{22},{23},{24},{25},{26},{27}",
-                    (int)d.moduleSubType,
+                    d.moduleSubType,
                     d.unlockCommanderLevel,
                     d.statPoint,
                     d.health, d.repair, d.speed, d.turnRate,

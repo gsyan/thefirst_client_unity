@@ -49,7 +49,7 @@ public class ModuleHull : ModuleBase
     {
         return m_moduleHullInfo.moduleType;
     }
-    public override EModuleSubType GetModuleSubType()
+    public override string GetModuleSubType()
     {
         return m_moduleHullInfo.moduleSubType;
     }
@@ -334,8 +334,6 @@ public class ModuleHull : ModuleBase
 
     private void InitializeShield(string shieldSubTypeName)
     {
-        EModuleSubType shieldSubType = System.Enum.TryParse(shieldSubTypeName, out EModuleSubType parsed) ? parsed : EModuleSubType.none;
-
         if (m_shield == null)
         {
             GameObject shieldObj = new GameObject("ModuleShield");
@@ -344,7 +342,7 @@ public class ModuleHull : ModuleBase
         }
 
         m_shield.SetFleetInfo(m_ownerFleet, m_ownerShip);
-        m_shield.InitializeModuleShield(shieldSubType);
+        m_shield.InitializeModuleShield(shieldSubTypeName);
     }
 
     // 프리셋 계산값 배열에서 slotIndex에 해당하는 값을 안전하게 조회 (범위 밖/null이면 override 없음)
@@ -356,7 +354,7 @@ public class ModuleHull : ModuleBase
 
     private void InitializeBeam(ModuleInfo moduleInfo, float? attackOverride = null)
     {
-        GameObject modulePrefab = ObjectManager.Instance.LoadShipModulePrefab(moduleInfo.moduleType.ToString(), moduleInfo.moduleSubType.ToString());
+        GameObject modulePrefab = ObjectManager.Instance.LoadShipModulePrefab(moduleInfo.moduleType.ToString(), moduleInfo.moduleSubType);
         if (modulePrefab == null) return;
         ModuleSlot targetSlot = FindModuleSlot(moduleInfo.moduleType, moduleInfo.slotIndex);
         if (targetSlot == null) return;
@@ -375,7 +373,7 @@ public class ModuleHull : ModuleBase
 
     private void InitializeMissile(ModuleInfo moduleInfo, float? attackOverride = null)
     {
-        GameObject modulePrefab = ObjectManager.Instance.LoadShipModulePrefab(moduleInfo.moduleType.ToString(), moduleInfo.moduleSubType.ToString());
+        GameObject modulePrefab = ObjectManager.Instance.LoadShipModulePrefab(moduleInfo.moduleType.ToString(), moduleInfo.moduleSubType);
         if (modulePrefab == null) return;
         ModuleSlot targetSlot = FindModuleSlot(moduleInfo.moduleType, moduleInfo.slotIndex);
         if (targetSlot == null) return;
@@ -394,7 +392,7 @@ public class ModuleHull : ModuleBase
 
     private void InitializeHangar(ModuleInfo moduleInfo)
     {
-        GameObject modulePrefab = ObjectManager.Instance.LoadShipModulePrefab(moduleInfo.moduleType.ToString(), moduleInfo.moduleSubType.ToString());
+        GameObject modulePrefab = ObjectManager.Instance.LoadShipModulePrefab(moduleInfo.moduleType.ToString(), moduleInfo.moduleSubType);
         if (modulePrefab == null)
         {
             Debug.LogWarning($"InitializeHangar: Cannot find module prefab - Level: {moduleInfo.moduleLevel}");

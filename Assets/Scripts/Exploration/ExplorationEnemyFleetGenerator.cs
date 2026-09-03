@@ -56,11 +56,11 @@ public static class ExplorationEnemyFleetGenerator
         return hull != null ? hull.statPoint : 0;
     }
 
-    // 기본 로드아웃(beam slot0=beam1)을 상수 규칙으로 생성 — FleetComposition.BuildDefaultModules와 동일 규칙(전 함체 공통)
+    // 기본 로드아웃(beam slot0=beam_1_1)을 상수 규칙으로 생성 — FleetComposition.BuildDefaultModules와 동일 규칙(전 함체 공통, 무기 티어는 함체와 독립적인 별도 축)
     private static List<ModuleInfo> BuildDefaultModules()
     {
         List<ModuleInfo> result = new List<ModuleInfo>();
-        result.Add(new ModuleInfo { moduleType = EModuleType.beam, moduleSubType = EModuleSubType.beam1, slotIndex = 0 });
+        result.Add(new ModuleInfo { moduleType = EModuleType.beam, moduleSubType = "beam_1_1", slotIndex = 0 });
         return result;
     }
 
@@ -177,7 +177,7 @@ public static class ExplorationEnemyFleetGenerator
         BuildingShip ship = new BuildingShip();
         ship.hull = hull;
         ship.bodyCost = ResolveBodyCost(hull, moduleTable);
-        ship.maxSlots = FleetComposition.ParseMaxSlotsFromHullSubType(hull.moduleSubType.ToString());
+        ship.maxSlots = FleetComposition.ParseMaxSlotsFromHullSubType(hull.moduleSubType);
 
         List<ModuleInfo> defaultModules = BuildDefaultModules();
         ship.defaultModuleCost = SumDefaultModuleCost(defaultModules, moduleTable);
@@ -189,8 +189,8 @@ public static class ExplorationEnemyFleetGenerator
         ship.hangarTarget  = System.Math.Min(zoneConfig.enemyHangarEquipSlots, ship.maxSlots[2]);
 
         // 실드/인터셉터 — 슬롯 1개뿐이라 "장착 여부"만 존재. 클라이언트가 실제로 소비(스탯 반영/스폰)하는 로직은 아직 없음 — 후속 작업
-        ship.shieldSubType = ship.maxSlots[3] > 0 && zoneConfig.enemyShieldEquipSlots > 0 ? EModuleSubType.shield1.ToString() : "";
-        ship.interceptorSubType = ship.maxSlots[4] > 0 && zoneConfig.enemyInterceptorEquipSlots > 0 ? EModuleSubType.interceptor1.ToString() : "";
+        ship.shieldSubType = ship.maxSlots[3] > 0 && zoneConfig.enemyShieldEquipSlots > 0 ? "shield_1_1" : "";
+        ship.interceptorSubType = ship.maxSlots[4] > 0 && zoneConfig.enemyInterceptorEquipSlots > 0 ? "interceptor_1_1" : "";
         return ship;
     }
 
@@ -290,7 +290,7 @@ public static class ExplorationEnemyFleetGenerator
         return list.Count;
     }
 
-    private static bool IsAlreadyEquipped(BuildingShip ship, EModuleType category, EModuleSubType subType)
+    private static bool IsAlreadyEquipped(BuildingShip ship, EModuleType category, string subType)
     {
         List<ModuleInfo> list = CategoryList(ship, category);
         for (int i = 0; i < list.Count; i++)
@@ -354,7 +354,7 @@ public static class ExplorationEnemyFleetGenerator
 
             fleetInfo.ships.Add(new ShipInfo
             {
-                hullSubType = ship.hull.moduleSubType.ToString(),
+                hullSubType = ship.hull.moduleSubType,
                 isFront = isFront,
                 hulls = new List<ModuleHullInfo> { modules },
             });

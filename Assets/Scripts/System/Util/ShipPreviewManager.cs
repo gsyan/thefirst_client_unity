@@ -69,7 +69,7 @@ public class ShipPreviewManager : MonoSingleton<ShipPreviewManager>
 
         if (hull == null) return;
 
-        GameObject bodyPrefab = ObjectManager.Instance.LoadShipModulePrefab(EModuleType.hull.ToString(), hull.moduleSubType.ToString());
+        GameObject bodyPrefab = ObjectManager.Instance.LoadShipModulePrefab(EModuleType.hull.ToString(), hull.moduleSubType);
         if (bodyPrefab == null) return;
 
         m_currentBodyInstance = Instantiate(bodyPrefab, m_spawnAnchor);

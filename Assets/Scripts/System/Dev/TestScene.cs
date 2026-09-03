@@ -1,4 +1,4 @@
-// [DEV] 테스트 씬 — bodyPrefab 이름에서 EModuleSubType 파싱 후 InitializeSpaceShip으로 함대 구성
+// [DEV] 테스트 씬 — bodyPrefab 이름(moduleSubType 문자열)으로 InitializeSpaceShip으로 함대 구성
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -109,16 +109,12 @@ public class TestScene : MonoBehaviour
         Debug.Log($"[TestScene] 함대 재스폰 완료 — {fleet.m_ships.Count}척, 진형: {m_spawnFormation}");
     }
 
-    // bodyPrefab 이름 → EModuleSubType 파싱 후 ShipInfo 구성 → InitializeSpaceShip 호출
+    // bodyPrefab 이름이 그대로 moduleSubType 문자열 → ShipInfo 구성 → InitializeSpaceShip 호출
     private void SpawnTestShip(SpaceFleet fleet, TestSceneShipInfo info, int positionIndex)
     {
         if (info.bodyPrefab == null) return;
 
-        if (System.Enum.TryParse(info.bodyPrefab.name, out EModuleSubType subType) == false)
-        {
-            Debug.LogError($"[TestScene] bodyPrefab 이름 파싱 실패: {info.bodyPrefab.name}");
-            return;
-        }
+        string subType = info.bodyPrefab.name;
 
         ShipInfo shipInfo = new ShipInfo
         {

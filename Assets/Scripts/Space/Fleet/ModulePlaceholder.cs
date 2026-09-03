@@ -24,7 +24,7 @@ public class ModulePlaceholder : ModuleBase
     {
         return m_moduleSlot.m_moduleSlotInfo.moduleType;
     }
-    public override EModuleSubType GetModuleSubType()
+    public override string GetModuleSubType()
     {
         return m_moduleInfo.moduleSubType;
     }
@@ -44,7 +44,7 @@ public class ModulePlaceholder : ModuleBase
         m_moduleInfo = new ModuleInfo
         {
             moduleType = moduleSlot.m_moduleSlotInfo.moduleType,
-            moduleSubType = EModuleSubType.none,
+            moduleSubType = "",
             moduleLevel = 0,
             hullIndex = parentBody.GetModuleHullIndex(),
             slotIndex = moduleSlot.m_moduleSlotInfo.slotIndex

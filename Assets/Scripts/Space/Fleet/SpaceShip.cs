@@ -146,7 +146,7 @@ public class SpaceShip : MonoBehaviour
    // Body 초기화 (기존 모듈 재사용 가능)
     private ModuleHull InitSpaceShipBody(ModuleHullInfo bodyInfo, List<ModuleBase> savedModules, ShipFinalStats? statOverride = null)
     {
-        GameObject modulePrefab = ObjectManager.Instance.LoadShipModulePrefab(bodyInfo.moduleType.ToString(), bodyInfo.moduleSubType.ToString());
+        GameObject modulePrefab = ObjectManager.Instance.LoadShipModulePrefab(bodyInfo.moduleType.ToString(), bodyInfo.moduleSubType);
         if (modulePrefab == null)
         {
             Debug.LogError("No prefab");

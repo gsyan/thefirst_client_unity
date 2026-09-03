@@ -52,9 +52,9 @@ public class ModuleBase : MonoBehaviour
     {
         return EModuleType.none;
     }
-    public virtual EModuleSubType GetModuleSubType()
+    public virtual string GetModuleSubType()
     {
-        return EModuleSubType.none;
+        return "";
     }
     public virtual int GetModuleSlotIndex()
     {

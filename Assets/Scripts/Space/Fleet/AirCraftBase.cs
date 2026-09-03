@@ -25,7 +25,7 @@ public abstract class AircraftBase : MonoBehaviour
     // Body 교체 시 새 hangar를 찾기 위한 정보
     [SerializeField] protected SpaceShip m_carrierShip;
     [SerializeField] protected EModuleType m_hangarModuleType;
-    [SerializeField] protected EModuleSubType m_hangarModuleSubType;
+    [SerializeField] protected string m_hangarModuleSubType;
     [SerializeField] protected int m_hangarSlotIndex;
     public ETeam m_team = ETeam.TeamA; // 초기화 시 캐싱, 모함 소멸 후 null이 돼도 판별 가능
     public DogfightSphere m_dogfightSphere = null;

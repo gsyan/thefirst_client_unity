@@ -16,8 +16,8 @@ public class ModuleData
 {
     [Header("Basic Info")]
     public string moduleName = "Module";
-    public EModuleSubType moduleSubType = EModuleSubType.none;
-    // moduleType은 moduleSubType에서 유추: (EModuleType)moduleSubType.GetModuleType()
+    public string moduleSubType = "";
+    // moduleType은 moduleSubType에서 유추: CommonUtility.ParseModuleType(moduleSubType)
 
     // common ---------------------------------------------------------------------------
     public int statPoint; // 이 서브타입(티어)을 슬롯에 설치할 때 드는 성능포인트 비용 — 티어가 오를수록 가파르게 증가
@@ -95,7 +95,7 @@ public class ModuleDataList
 [System.Serializable]
 public class ModuleSubTypeGroup
 {
-    public EModuleSubType subType;
+    public string subType;
     public List<ModuleData> modules = new List<ModuleData>();
 }
 
@@ -207,7 +207,7 @@ public class DataTableModule : ScriptableObject
 
     public void AddModuleDataToTable(ModuleData data)
     {
-        EModuleType moduleType = (EModuleType)data.moduleSubType.GetModuleType();
+        EModuleType moduleType = CommonUtility.ParseModuleType(data.moduleSubType);
         ModuleSubTypeGroup group = null;
         if (moduleType == EModuleType.hull)               group = hullGroups.Find(g => g.subType == data.moduleSubType);
         else if (moduleType == EModuleType.beam)          group = beamGroups.Find(g => g.subType == data.moduleSubType);
@@ -233,18 +233,11 @@ public class DataTableModule : ScriptableObject
     }
 
     // 서브타입(티어)당 데이터 1개 — 레벨 축은 삭제됨(강화는 추후 별도 정률 공식으로 처리 예정)
-    public ModuleData GetModuleDataFromTable(EModuleSubType subType)
+    public ModuleData GetModuleDataFromTable(string subType)
     {
         ModuleSubTypeGroup group = FindGroup(subType);
         if (group == null || group.modules.Count == 0) return null;
         return group.modules[0];
-    }
-
-    // subTypeName(예: "h1_11100")을 EModuleSubType으로 파싱해 조회 — 파싱 실패 시 null
-    public ModuleData GetModuleDataFromTable(string subTypeName)
-    {
-        if (System.Enum.TryParse(subTypeName, out EModuleSubType subType) == false) return null;
-        return GetModuleDataFromTable(subType);
     }
 
     // 해금 커맨더 레벨 이하인 hull(함체) 목록만 — 함대 편성 화면의 "선택 가능한 함체 목록"용
@@ -253,9 +246,9 @@ public class DataTableModule : ScriptableObject
         return HullModules.FindAll(data => data.unlockCommanderLevel <= commanderLevel);
     }
 
-    private ModuleSubTypeGroup FindGroup(EModuleSubType subType)
+    private ModuleSubTypeGroup FindGroup(string subType)
     {
-        EModuleType moduleType = (EModuleType)subType.GetModuleType();
+        EModuleType moduleType = CommonUtility.ParseModuleType(subType);
         if (moduleType == EModuleType.hull) return hullGroups.Find(g => g.subType == subType);
         if (moduleType == EModuleType.beam) return beamGroups.Find(g => g.subType == subType);
         if (moduleType == EModuleType.missile) return missileGroups.Find(g => g.subType == subType);
@@ -263,31 +256,6 @@ public class DataTableModule : ScriptableObject
         if (moduleType == EModuleType.shield) return shieldGroups.Find(g => g.subType == subType);
         if (moduleType == EModuleType.interceptor) return interceptorGroups.Find(g => g.subType == subType);
         return null;
-    }
-
-    public void InitializeSubTypeGroups()
-    {
-        foreach (EModuleSubType subType in System.Enum.GetValues(typeof(EModuleSubType)))
-        {
-            if (subType == EModuleSubType.none) continue;
-            EModuleType moduleType = (EModuleType)subType.GetModuleType();
-            if (moduleType == EModuleType.hull)
-                hullGroups.Add(new ModuleSubTypeGroup { subType = subType });
-            else if (moduleType == EModuleType.beam)
-                beamGroups.Add(new ModuleSubTypeGroup { subType = subType });
-            else if (moduleType == EModuleType.missile)
-                missileGroups.Add(new ModuleSubTypeGroup { subType = subType });
-            else if (moduleType == EModuleType.hangar)
-                hangarGroups.Add(new ModuleSubTypeGroup { subType = subType });
-            else if (moduleType == EModuleType.shield)
-                shieldGroups.Add(new ModuleSubTypeGroup { subType = subType });
-            else if (moduleType == EModuleType.interceptor)
-                interceptorGroups.Add(new ModuleSubTypeGroup { subType = subType });
-        }
-
-#if UNITY_EDITOR
-        EditorUtility.SetDirty(this);
-#endif
     }
 
     #endregion
@@ -339,7 +307,6 @@ public class DataTableModule : ScriptableObject
                 hangarGroups.Clear();
                 shieldGroups.Clear();
                 interceptorGroups.Clear();
-                InitializeSubTypeGroups();
 
                 int hullKey = (int)EModuleType.hull;
                 if (modulesObj[hullKey.ToString()] != null)
@@ -406,7 +373,7 @@ public class DataTableModule : ScriptableObject
     #region Validation & Utility
 
 #if UNITY_EDITOR
-    private ModuleSlotInfo[] ExtractModuleSlotsFromPrefab(EModuleSubType subType)
+    private ModuleSlotInfo[] ExtractModuleSlotsFromPrefab(string subType)
     {
         string prefabPath = $"Prefabs/ShipModule/Hull/{subType}";
         GameObject prefab = Resources.Load<GameObject>(prefabPath);
@@ -441,7 +408,6 @@ public class DataTableModule : ScriptableObject
         hangarGroups.Clear();
         shieldGroups.Clear();
         interceptorGroups.Clear();
-        InitializeSubTypeGroups();
 
         // 컬럼 순서 (datatable_module.csv 헤더 기준 고정 인덱스) — 서브타입(티어)당 1행
         // 0:sub_type, 1:unlock_commander_level(hull 전용), 2:stat_point, 3:health, 4:repair, 5:speed, 6:turn_rate,
@@ -463,9 +429,15 @@ public class DataTableModule : ScriptableObject
             string[] cols = ParseCsvLine(line);
             if (cols.Length < 2) continue;
 
-            if (!int.TryParse(cols[0].Trim(), out int subTypeInt)) continue;
+            string moduleSubType = cols[0].Trim();
+            if (string.IsNullOrEmpty(moduleSubType) == true) continue;
 
-            EModuleSubType moduleSubType = (EModuleSubType)subTypeInt;
+            bool isHull = CommonUtility.ParseModuleType(moduleSubType) == EModuleType.hull;
+            if (isHull == true && CommonUtility.ValidateHullTier(moduleSubType) == false)
+            {
+                Debug.LogError($"[DataTableModule] hull tier 불일치로 임포트 중단: {moduleSubType} (tier는 빔+미사일+격납고 합과 일치해야 함)");
+                continue;
+            }
 
             var module = new ModuleData
             {
@@ -501,7 +473,7 @@ public class DataTableModule : ScriptableObject
             };
 
             // hull 모듈만 prefab에서 슬롯 정보 추출
-            if (moduleSubType.GetModuleType() == (int)EModuleType.hull)
+            if (isHull == true)
                 module.moduleSlots = ExtractModuleSlotsFromPrefab(moduleSubType);
 
             AddModuleDataToTable(module);

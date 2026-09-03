@@ -104,6 +104,18 @@ public class ShieldGrid : MonoBehaviour
         // 슬롯의 hitTime(w)을 셰이더 기본값과 동일한 과거값으로 초기화 — 게임 시작 직후 원점에서 파동이 보이는 것을 방지
         for (int i = 0; i < k_hitWaveSlotCount; i++)
             m_hitDataSlots[i] = new Vector4(0f, 0f, 0f, -1000f);
+
+        // 초기화한 값을 실제 렌더러에 반영 — _HitData는 Properties 블록에 없는 CBUFFER 배열이라 머티리얼 기본값이 없어서,
+        // SetPropertyBlock으로 직접 밀어넣지 않으면 GPU에서 미정의 상태로 그려짐(PlayHitWave와 동일 패턴)
+        if (m_surfaceMeshRenderer != null)
+        {
+            if (m_surfaceMpb == null)
+                m_surfaceMpb = new MaterialPropertyBlock();
+
+            m_surfaceMeshRenderer.GetPropertyBlock(m_surfaceMpb);
+            m_surfaceMpb.SetVectorArray(k_hitDataId, m_hitDataSlots);
+            m_surfaceMeshRenderer.SetPropertyBlock(m_surfaceMpb);
+        }
     }
 
     public void GenerateShield()

@@ -128,39 +128,4 @@ public class ModuleSlotEditor : Editor
 
         EditorUtility.SetDirty(slot);
     }
-
-    private EModuleSubType DrawFilteredSubTypePopup(EModuleType moduleType, EModuleSubType currentSubType)
-    {
-        // 타입에 맞는 SubType만 필터링
-        var filteredSubTypes = new System.Collections.Generic.List<EModuleSubType>();
-        filteredSubTypes.Add(EModuleSubType.none);
-
-        int typeValue = (int)moduleType;
-        foreach (EModuleSubType subType in System.Enum.GetValues(typeof(EModuleSubType)))
-        {
-            if (subType == EModuleSubType.none) continue;
-
-            int subTypeValue = (int)subType;
-            if (subTypeValue / 1000 == typeValue)
-            {
-                filteredSubTypes.Add(subType);
-            }
-        }
-
-        // 현재 선택된 SubType이 필터링된 목록에 없으면 None으로 변경
-        if (filteredSubTypes.Contains(currentSubType) == false)
-        {
-            currentSubType = EModuleSubType.none;
-        }
-
-        int currentIndex = filteredSubTypes.IndexOf(currentSubType);
-        string[] displayNames = new string[filteredSubTypes.Count];
-        for (int i = 0; i < filteredSubTypes.Count; i++)
-        {
-            displayNames[i] = filteredSubTypes[i].ToString();
-        }
-
-        int newIndex = EditorGUILayout.Popup("Module Sub Type", currentIndex, displayNames);
-        return filteredSubTypes[newIndex];
-    }
 }

@@ -15,7 +15,7 @@ MonoBehaviour:
   gameSettings:
     version: 0.0.1
     addShipCost: 10
-    commandPowerMaxInit: 120
+    commandPowerMaxInit: 310
     pvpMinCommanderLevel: 2
     pvpListCount: 3
     pvpListRefreshCount: 5

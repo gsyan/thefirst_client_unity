@@ -41,7 +41,7 @@ public class UIAvailableHullRow : MonoBehaviour
 
         // 함선 이름은 moduleSubType 이름을 UI.csv 로컬라이즈 키로 그대로 사용(별도 displayNameKey 없음)
         if (m_nameRow != null)
-            m_nameRow.SetRow("UIAvailableHullRow_Name", hull.moduleSubType.ToString(), rawValue: false);
+            m_nameRow.SetRow("UIAvailableHullRow_Name", hull.moduleSubType, rawValue: false);
         if (m_costRow != null)
             m_costRow.SetRow("UIAvailableHullRow_Cost", $"{BuildDeltaText(deltaCost)} CP", rawValue: true);
     }

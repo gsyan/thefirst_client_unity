@@ -11,7 +11,7 @@ public static class ExplorationShipSpawnBridge
     {
         if (fleet == null || hull == null) return null;
 
-        string hullSubType = hull.moduleSubType.ToString();
+        string hullSubType = hull.moduleSubType;
         ShipInfo shipInfo = BuildShipInfo(hullSubType, finalStats, positionIndex, isFront, healthMultiplier);
 
         GameObject shipGo = new GameObject(hullSubType);
@@ -29,7 +29,7 @@ public static class ExplorationShipSpawnBridge
         ModuleHullInfo hullInfo = new ModuleHullInfo
         {
             moduleType    = EModuleType.hull,
-            moduleSubType = ParseSubType(hullSubType),
+            moduleSubType = hullSubType,
             moduleLevel   = 1,
             hullIndex     = 0,
             beams         = new List<ModuleInfo>(),
@@ -50,8 +50,8 @@ public static class ExplorationShipSpawnBridge
         for (int i = 0; i < hangarCount; i++)
             hullInfo.hangars.Add(BuildModuleInfo(EModuleType.hangar, finalStats.hangarModuleSubType[i], i));
 
-        // on/off만 지원하므로 서브타입은 항상 shield1 고정 — 서버 FleetService.getDefaultSubTypeForCategory와 동일 규칙
-        hullInfo.shieldModuleSubType = finalStats.shieldInstalled ? EModuleSubType.shield1.ToString() : "";
+        // on/off만 지원하므로 서브타입은 항상 shield_1_1 고정 — 무기 티어는 함체와 독립적인 별도 축. 서버 FleetService.getDefaultSubTypeForCategory와 동일 규칙
+        hullInfo.shieldModuleSubType = finalStats.shieldInstalled ? "shield_1_1" : "";
 
         return new ShipInfo
         {
@@ -69,15 +69,10 @@ public static class ExplorationShipSpawnBridge
         return new ModuleInfo
         {
             moduleType    = moduleType,
-            moduleSubType = ParseSubType(subTypeName),
+            moduleSubType = subTypeName,
             moduleLevel   = 1,
             slotIndex     = slotIndex,
             hullIndex     = 0,
         };
-    }
-
-    private static EModuleSubType ParseSubType(string name)
-    {
-        return System.Enum.TryParse(name, out EModuleSubType result) ? result : EModuleSubType.none;
     }
 }
