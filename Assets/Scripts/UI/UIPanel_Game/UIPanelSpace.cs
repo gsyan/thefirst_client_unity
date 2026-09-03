@@ -1,6 +1,6 @@
-// 우주 공간 UI 패널 — 3D 모듈 선택 자동 전환 등을 담당.
-// 진입 버튼(COMMANDER/FLEET/SETTINGS/RANK/EXPLORATION)은 UIManager의 오버레이 패널 카운트가 0일 때(기본 상태)만
-// 노출됨(OnOverlayPanelActiveChanged). COMMANDER/SETTINGS/EXPLORATION/FLEET 등은 이제 전부 독립 UIPanelBase 프리팹이라
+// 우주 공간 UI 패널 — 3D 모듈 선택 자동 전환 등을 담당. UIManager 패널 스택의 base(메인 패널)로, 절대 pop되지 않고
+// OnShowUIPanel은 게임 시작 시 딱 한 번만 호출됨(그 뒤로는 항상 상주) — 진입 버튼(COMMANDER/FLEET/SETTINGS/RANK/EXPLORATION)은
+// 스택 깊이가 1(base만 남음)일 때만 노출. COMMANDER/SETTINGS/EXPLORATION/FLEET 등은 이제 전부 독립 UIPanelBase 프리팹이라
 // 이 스크립트가 그 참조를 들고 있지 않음 — 각자가 UIManager에 스스로 등록되고, 서로 UIManager를 통해서만 상호작용함
 // (구 TabSystem 컴포넌트는 실사용 항목이 전부 죽은 참조이거나 다른 전용 스크립트로 이미 대체돼 있어 제거함)
 using UnityEngine;
@@ -8,25 +8,40 @@ using UnityEngine;
 public class UIPanelSpace : UIPanelBase
 {
     [Header("진입 버튼 그룹 (기본 상태에서만 노출)")]
-    [SerializeField] private GameObject m_tapButtons; // COMMANDER/FLEET/SETTINGS/RANK/EXPLORATION 진입 버튼 컨테이너 — 오버레이 패널이 하나라도 열리면 숨김. 캘린더/VIP(Top)도 이 컨테이너의 자식으로 옮겨져 함께 숨겨짐
+    [SerializeField] private GameObject m_tapButtons; // COMMANDER/FLEET/SETTINGS/RANK/EXPLORATION 진입 버튼 컨테이너 — 스택 위에 뭐라도 쌓이면 숨김. 캘린더/VIP(Top)도 이 컨테이너의 자식으로 옮겨져 함께 숨겨짐
 
     public override void OnShowUIPanel()
     {
         EventManager.Subscribe_SpaceShipSelected(OnShipSelectedAutoTabSwitch);
         EventManager.Subscribe_VipStatusChanged(OnVipStatusChangedForDailyReward);
         EventManager.Subscribe_TutorialGeneralUIBlockedChanged(OnTutorialGeneralUIBlockedChanged);
-        EventManager.Subscribe_OverlayPanelActiveChanged(OnOverlayPanelActiveChanged);
+        EventManager.Subscribe_CurrentPanelChanged(OnPanelStackChanged);
         // CheckAndClaimPvpSeasonReward(); // PvP 주석처리로 임시 비활성화
+
+        RefreshTapButtonsVisibility();
     }
 
-    public override void OnHideUIPanel()
+    // base는 절대 pop되지 않아 OnHideUIPanel이 다시 호출될 일이 없음 — 구독 해제는 실제 오브젝트 소멸(씬 전환) 시점에 처리
+    private void OnDestroy()
     {
         EventManager.Unsubscribe_SpaceShipSelected(OnShipSelectedAutoTabSwitch);
         EventManager.Unsubscribe_VipStatusChanged(OnVipStatusChangedForDailyReward);
         EventManager.Unsubscribe_TutorialGeneralUIBlockedChanged(OnTutorialGeneralUIBlockedChanged);
-        EventManager.Unsubscribe_OverlayPanelActiveChanged(OnOverlayPanelActiveChanged);
+        EventManager.Unsubscribe_CurrentPanelChanged(OnPanelStackChanged);
+    }
 
-        CameraController.Instance.SetTargetOfCameraController(ObjectManager.Instance.GetMyFleet().transform);
+    // 스택 top이 바뀔 때마다 호출 — 진입 버튼 노출 여부만 갱신. 카메라 타겟 리셋은 그게 필요한 패널이 자기 책임으로
+    // 처리(예: UIPanelFleet.OnShowUIPanel) — 이 메인 패널이 스택 깊이만 보고 일괄 처리하지 않음(탐사그리드 등 자체
+    // 카메라 시스템을 가진 패널까지 무차별로 카메라를 되돌려버리는 문제가 있었음)
+    private void OnPanelStackChanged(string topPanelName)
+    {
+        RefreshTapButtonsVisibility();
+    }
+
+    private void RefreshTapButtonsVisibility()
+    {
+        if (m_tapButtons != null)
+            m_tapButtons.SetActive(UIManager.Instance.GetPanelStackDepth() == 1);
     }
 
     // ── 미수령 존 보상 복구 ───────────────────────────────────────────────────
@@ -59,14 +74,6 @@ public class UIPanelSpace : UIPanelBase
     {
         if (DailyBonusManager.Instance == null) return;
         DailyBonusManager.Instance.CheckAndShowDailyRewardPopup();
-    }
-
-    // 오버레이 패널(메인 패널이 아닌 UIPanelBase, VIP 팝오버 제외)이 하나라도 열리면 진입 버튼들을 숨기고, 전부 닫히면 다시 보임 —
-    // "탭 버튼은 기본 상태(아무 화면도 안 열린 상태)에서만 보인다"는 규칙을 UIManager의 오버레이 카운트 하나로 통합 처리
-    private void OnOverlayPanelActiveChanged(bool isActive)
-    {
-        if (m_tapButtons != null)
-            m_tapButtons.SetActive(isActive == false);
     }
 
     // 내 함선 클릭(모듈 명중 여부 무관) 시 함대편성 패널로 자동 전환하며 그 함선을 선택 상태로 표시

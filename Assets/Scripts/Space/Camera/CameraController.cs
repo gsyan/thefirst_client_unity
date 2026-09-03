@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.EnhancedTouch;
@@ -59,7 +60,8 @@ public class CameraController : MonoSingleton<CameraController>
     private float m_galaxyViewAnimTimer   = 0f;
     [Header("Galaxy View Animation")]
     private float m_galaxyPreRotDuration  = 0.2f;  // 진입 시 회전 전용 구간 (위치 고정, m_galaxyViewAnimDuration 외)
-    private float m_galaxyPreRotZoomMultiplyer  = 8f;  // 진입 시 회전 전용 구간 줌 곱하기
+    private float m_galaxyPreRotZoomMultiplyer  = 0.08f;  // 진입 시 회전 전용 구간 줌 배율 — 존의 목표 줌(m_targetZoom) 대비 비율. 함선별 m_maxZoom(로컬뷰 줌 범위)에 더 이상 의존하지 않음(전투 중 선택된 함선에 따라 값이 오염되는 문제가 있었음)
+    private float m_galaxyExitZoomMultiplyer    = 8f;     // 복귀(TickExitingGalaxy) 중간 목표 줌 배율 — m_maxZoom(함선 기준 로컬뷰 줌 범위) 대비 비율. 진입용 배율과 기준값이 달라 공유하면 안 됨(m_targetZoom 기준 배율을 여기 썼다가 중간 목표 줌이 거의 0이 되는 문제가 있었음)
     private float m_galaxyViewAnimDuration  = 0.5f;
     private float m_galaxySlowPhaseRatio    = 0.8f;  // 느린 구간 비율: 이 t까지 천천히 이동 (예: 0.8 = 전체의 80%)
     private float m_galaxySlowPhaseProgress = 0.01f; // 느린 구간 끝에서 달성할 이동 진행도 (예: 0.01 = 전체 거리의 1%만 이동)
@@ -68,6 +70,9 @@ public class CameraController : MonoSingleton<CameraController>
     private float   m_animStartRotX, m_animStartRotY, m_animStartZoom;
     private Vector3 m_animStartPos;
     private Vector3 m_galaxyTargetPos; // 갤럭시 뷰 목표 위치 (애니메이션 중 덮어써지지 않도록 별도 보관)
+    private float m_galaxyTargetRotX; // 갤럭시 뷰 목표 회전X — 함대뷰의 m_targetRotationX와 공유하지 않음
+    private float m_galaxyTargetRotY;
+    private float m_galaxyTargetZoom;
     // 갤럭시→함대 복귀 시 회전/줌 복귀 시작점 (갤럭시 현재 상태)
     private float   m_animExitRotX, m_animExitRotY, m_animExitZoom;
 
@@ -168,8 +173,26 @@ public class CameraController : MonoSingleton<CameraController>
     public void UpdateCameraTransform()
     {
         if (m_targetCamera == null) return;
-	
-        // m_currentTarget 이 계속 움직이기 때문, 이벤트로는 안됨
+
+        UpdateTrackedTargetPosition();
+
+        bool galaxyViewJustSettled = false;
+        if (m_isGalaxyViewAnimating == true)
+            galaxyViewJustSettled = TickGalaxyViewAnimation();
+        else if (m_isGalaxyView == false)
+            TickNormalView();
+
+        ApplyCameraTransformToScene();
+
+        if (galaxyViewJustSettled == true)
+            EventManager.TriggerGalaxyViewSettled();
+    }
+
+    // m_currentTarget 이 계속 움직이기 때문, 이벤트로는 안됨
+    private void UpdateTrackedTargetPosition()
+    {
+        if (m_isGalaxyView == true) return;
+
         if (m_currentTarget != null && m_focusTarget == ECameraFocusTarget.camera_focus_my_fleet)
             m_targetPosition = m_currentTarget.position;
 
@@ -181,141 +204,164 @@ public class CameraController : MonoSingleton<CameraController>
             if (myFleet != null)
                 m_targetPosition = (myFleet.transform.position + GetCenterModeEnemyPosition(objMgr, myFleet)) * 0.5f;
         }
+    }
 
-        bool galaxyViewJustSettled = false;
-        if (m_isGalaxyViewAnimating == true)
+    // 갤럭시뷰 애니메이션(진입/복귀/존 재포커스) 진행 — 진입 완료 시 true 반환
+    private bool TickGalaxyViewAnimation()
+    {
+        m_galaxyViewAnimTimer += Time.unscaledDeltaTime;
+
+        if (m_isZoneRefocus == true)
         {
-            m_galaxyViewAnimTimer += Time.unscaledDeltaTime;
+            TickZoneRefocus();
+            return false;
+        }
 
-            if (m_isZoneRefocus == true)
-            {
-                // 갤럭시뷰 안에서 존만 전환 — 목표값을 향한 지수 보간(연속 추적). 존 탭 스크롤 드래그 중 목표가 계속 바뀌어도
-                // 리셋 없이 항상 현재 값에서부터 이어서 따라가므로 줌/회전이 멈춰 보이지 않음
-                m_currentRotationX = Mathf.LerpAngle(m_currentRotationX, m_targetRotationX, k_rotateLerpSpeed * Time.unscaledDeltaTime);
-                m_currentRotationY = Mathf.LerpAngle(m_currentRotationY, m_targetRotationY, k_rotateLerpSpeed * Time.unscaledDeltaTime);
-                m_currentZoom      = Mathf.Lerp(m_currentZoom, m_targetZoom, k_zoomLerpSpeed * Time.unscaledDeltaTime);
-                m_interpolatedTargetPosition = Vector3.Lerp(m_interpolatedTargetPosition, m_galaxyTargetPos, k_positionLerpSpeed * Time.unscaledDeltaTime);
+        if (m_isEnteringGalaxy == true)
+            return TickEnteringGalaxy();
 
-                bool rotXArrived = Mathf.Abs(Mathf.DeltaAngle(m_currentRotationX, m_targetRotationX)) < k_rotateArriveThreshold;
-                bool rotYArrived = Mathf.Abs(Mathf.DeltaAngle(m_currentRotationY, m_targetRotationY)) < k_rotateArriveThreshold;
-                bool zoomArrived = Mathf.Abs(m_currentZoom - m_targetZoom) < k_zoomArriveThreshold;
-                if (rotXArrived == true && rotYArrived == true && zoomArrived == true)
-                {
-                    m_isGalaxyViewAnimating = false;
-                    m_isZoneRefocus = false;
-                }
-            }
-            else if (m_isEnteringGalaxy == true)
-            {
-                if (m_galaxyViewAnimTimer < m_galaxyPreRotDuration)
-                {
-                    // Pre-Phase: 위치 고정 + 각도 전환 + 줌을 함대뷰 최대치로 확장 (시야 확보)
-                    float rotT = Mathf.Clamp01(m_galaxyViewAnimTimer / m_galaxyPreRotDuration);
-                    m_currentRotationX = Mathf.LerpAngle(m_animStartRotX, m_targetRotationX, rotT);
-                    m_currentRotationY = Mathf.LerpAngle(m_animStartRotY, m_targetRotationY, rotT);
-                    m_currentZoom      = Mathf.Lerp(m_animStartZoom, m_maxZoom * m_galaxyPreRotZoomMultiplyer, rotT);
-                    // m_interpolatedTargetPosition 변경 없음 (함대 위치 고정)
-                }
-                else
-                {
-                    // Main Phase: 각도 유지 + 줌 전환 + 위치 이동
-                    m_currentRotationX = m_targetRotationX;
-                    m_currentRotationY = m_targetRotationY;
+        TickExitingGalaxy();
+        return false;
+    }
 
-                    float mainT = Mathf.Clamp01((m_galaxyViewAnimTimer - m_galaxyPreRotDuration) / m_galaxyViewAnimDuration);
-                    float ct    = GalaxyEasedT(mainT);
-                    m_currentZoom = Mathf.Lerp(m_maxZoom * m_galaxyPreRotZoomMultiplyer, m_targetZoom, ct);
-                    float newX  = Mathf.Lerp(m_animStartPos.x, m_galaxyTargetPos.x, ct);
-                    float newY  = Mathf.Lerp(m_animStartPos.y, m_galaxyTargetPos.y, ct);
-                    float newZ  = Mathf.Lerp(m_animStartPos.z, m_galaxyTargetPos.z, ct);
-                    m_interpolatedTargetPosition = new Vector3(newX, newY, newZ);
-                }
+    // 갤럭시뷰 안에서 존만 전환 — 목표값을 향한 지수 보간(연속 추적). 존 탭 스크롤 드래그 중 목표가 계속 바뀌어도
+    // 리셋 없이 항상 현재 값에서부터 이어서 따라가므로 줌/회전이 멈춰 보이지 않음
+    private void TickZoneRefocus()
+    {
+        m_currentRotationX = Mathf.LerpAngle(m_currentRotationX, m_galaxyTargetRotX, k_rotateLerpSpeed * Time.unscaledDeltaTime);
+        m_currentRotationY = Mathf.LerpAngle(m_currentRotationY, m_galaxyTargetRotY, k_rotateLerpSpeed * Time.unscaledDeltaTime);
+        m_currentZoom      = Mathf.Lerp(m_currentZoom, m_galaxyTargetZoom, k_zoomLerpSpeed * Time.unscaledDeltaTime);
+        m_interpolatedTargetPosition = Vector3.Lerp(m_interpolatedTargetPosition, m_galaxyTargetPos, k_positionLerpSpeed * Time.unscaledDeltaTime);
 
-                // 진입 전용: preRotDuration + mainDuration
-                if (m_galaxyViewAnimTimer >= m_galaxyPreRotDuration + m_galaxyViewAnimDuration)
-                {
-                    m_isGalaxyViewAnimating = false;
-                    galaxyViewJustSettled = true;
-                }
-            }
-            else
-            {
-                Vector3 fleetPos = m_savedTarget != null ? m_savedTarget.position : m_targetPosition;
+        bool rotXArrived = Mathf.Abs(Mathf.DeltaAngle(m_currentRotationX, m_galaxyTargetRotX)) < k_rotateArriveThreshold;
+        bool rotYArrived = Mathf.Abs(Mathf.DeltaAngle(m_currentRotationY, m_galaxyTargetRotY)) < k_rotateArriveThreshold;
+        bool zoomArrived = Mathf.Abs(m_currentZoom - m_galaxyTargetZoom) < k_zoomArriveThreshold;
 
-                if (m_galaxyViewAnimTimer < m_galaxyViewAnimDuration)
-                {
-                    // Main Phase: 갤럭시 각도 유지 + 줌 m_maxZoom으로 축소 + 위치 이동
-                    float mainT = Mathf.Clamp01(m_galaxyViewAnimTimer / m_galaxyViewAnimDuration);
-                    float ct    = 1f - GalaxyEasedT(1f - mainT); // 초반 빠르고 마지막 느림
+        if (rotXArrived == true && rotYArrived == true && zoomArrived == true)
+        {
+            m_isGalaxyViewAnimating = false;
+            m_isZoneRefocus = false;
+        }
+    }
 
-                    m_currentRotationX = m_animExitRotX;
-                    m_currentRotationY = m_animExitRotY;
-                    m_currentZoom      = Mathf.Lerp(m_animExitZoom, m_maxZoom * m_galaxyPreRotZoomMultiplyer, ct);
-
-                    float newX = Mathf.Lerp(m_animStartPos.x, fleetPos.x, ct);
-                    float newY = Mathf.Lerp(m_animStartPos.y, fleetPos.y, ct);
-                    float newZ = Mathf.Lerp(m_animStartPos.z, fleetPos.z, ct);
-                    m_interpolatedTargetPosition = new Vector3(newX, newY, newZ);
-                }
-                else
-                {
-                    // Post-Phase: 함대 위치 고정 + 각도/줌 원래 함대뷰로 복귀
-                    float postT = Mathf.Clamp01((m_galaxyViewAnimTimer - m_galaxyViewAnimDuration) / m_galaxyPreRotDuration);
-                    m_currentRotationX = Mathf.LerpAngle(m_animExitRotX, m_targetRotationX, postT);
-                    m_currentRotationY = Mathf.LerpAngle(m_animExitRotY, m_targetRotationY, postT);
-                    m_currentZoom      = Mathf.Lerp(m_maxZoom * m_galaxyPreRotZoomMultiplyer, m_targetZoom, postT);
-                    // m_interpolatedTargetPosition 변경 없음 (함대 위치 고정)
-                }
-
-                // 복귀 전용: preRotDuration + mainDuration
-                if (m_galaxyViewAnimTimer >= m_galaxyPreRotDuration + m_galaxyViewAnimDuration)
-                {
-                    m_isGalaxyViewAnimating = false;
-                    m_inputEnabled = true;
-                }
-            }
+    // 함대뷰 → 갤럭시뷰 진입 애니메이션 — 진입 완료(preRotDuration + mainDuration 경과) 시 true 반환
+    private bool TickEnteringGalaxy()
+    {
+        if (m_galaxyViewAnimTimer < m_galaxyPreRotDuration)
+        {
+            // Pre-Phase: 위치 고정 + 각도 전환 + 줌을 존 목표 줌 기준으로 확장 (시야 확보)
+            float rotT = Mathf.Clamp01(m_galaxyViewAnimTimer / m_galaxyPreRotDuration);
+            m_currentRotationX = Mathf.LerpAngle(m_animStartRotX, m_galaxyTargetRotX, rotT);
+            m_currentRotationY = Mathf.LerpAngle(m_animStartRotY, m_galaxyTargetRotY, rotT);
+            m_currentZoom      = Mathf.Lerp(m_animStartZoom, m_galaxyTargetZoom * m_galaxyPreRotZoomMultiplyer, rotT);
+            // m_interpolatedTargetPosition 변경 없음 (함대 위치 고정)
         }
         else
         {
-            // 일반 뷰 — 기존 지수 보간 (모듈 포커싱 등)
-            if (m_hasTargetRotationY == true)
-            {
-                m_currentRotationY = Mathf.LerpAngle(m_currentRotationY, m_targetRotationY, k_rotateLerpSpeed * Time.unscaledDeltaTime);
-                if (Mathf.Abs(Mathf.DeltaAngle(m_currentRotationY, m_targetRotationY)) < k_rotateArriveThreshold)
-                {
-                    m_currentRotationY = m_targetRotationY;
-                    m_hasTargetRotationY = false;
-                }
-            }
-            if (m_hasTargetRotationX == true)
-            {
-                m_currentRotationX = Mathf.LerpAngle(m_currentRotationX, m_targetRotationX, k_rotateLerpSpeed * Time.unscaledDeltaTime);
-                if (Mathf.Abs(Mathf.DeltaAngle(m_currentRotationX, m_targetRotationX)) < k_rotateArriveThreshold)
-                {
-                    m_currentRotationX = m_targetRotationX;
-                    m_hasTargetRotationX = false;
-                }
-            }
-            if (m_hasTargetZoom == true)
-            {
-                m_currentZoom = Mathf.Lerp(m_currentZoom, m_targetZoom, k_zoomLerpSpeed * Time.unscaledDeltaTime);
-                if (Mathf.Abs(m_currentZoom - m_targetZoom) < k_zoomArriveThreshold)
-                {
-                    m_currentZoom = m_targetZoom;
-                    m_hasTargetZoom = false;
-                }
-            }
-            if (m_instantFollow == true)
-                m_interpolatedTargetPosition = m_targetPosition;
-            else
-                m_interpolatedTargetPosition = Vector3.Lerp(m_interpolatedTargetPosition, m_targetPosition, k_positionLerpSpeed * Time.unscaledDeltaTime);
+            // Main Phase: 각도 유지 + 줌 전환 + 위치 이동
+            m_currentRotationX = m_galaxyTargetRotX;
+            m_currentRotationY = m_galaxyTargetRotY;
 
-            // 카메라 이동 완료 시 입력 자동 활성화 (갤럭시 뷰 중에는 입력 유지 차단)
-            if (m_inputEnabled == false && m_isGalaxyView == false
-                && m_hasTargetRotationX == false && m_hasTargetRotationY == false && m_hasTargetZoom == false)
-                m_inputEnabled = true;
+            float mainT = Mathf.Clamp01((m_galaxyViewAnimTimer - m_galaxyPreRotDuration) / m_galaxyViewAnimDuration);
+            float ct    = GalaxyEasedT(mainT);
+            m_currentZoom = Mathf.Lerp(m_galaxyTargetZoom * m_galaxyPreRotZoomMultiplyer, m_galaxyTargetZoom, ct);
+            float newX  = Mathf.Lerp(m_animStartPos.x, m_galaxyTargetPos.x, ct);
+            float newY  = Mathf.Lerp(m_animStartPos.y, m_galaxyTargetPos.y, ct);
+            float newZ  = Mathf.Lerp(m_animStartPos.z, m_galaxyTargetPos.z, ct);
+            m_interpolatedTargetPosition = new Vector3(newX, newY, newZ);
         }
 
+        // 진입 전용: preRotDuration + mainDuration
+        if (m_galaxyViewAnimTimer >= m_galaxyPreRotDuration + m_galaxyViewAnimDuration)
+        {
+            m_isGalaxyViewAnimating = false;
+            return true;
+        }
+        return false;
+    }
+
+    // 갤럭시뷰 → 함대뷰 복귀 애니메이션
+    private void TickExitingGalaxy()
+    {
+        Vector3 fleetPos = m_savedTarget != null ? m_savedTarget.position : m_targetPosition;
+
+        if (m_galaxyViewAnimTimer < m_galaxyViewAnimDuration)
+        {
+            // Main Phase: 갤럭시 각도 유지 + 줌 m_maxZoom으로 축소 + 위치 이동
+            float mainT = Mathf.Clamp01(m_galaxyViewAnimTimer / m_galaxyViewAnimDuration);
+            float ct    = 1f - GalaxyEasedT(1f - mainT); // 초반 빠르고 마지막 느림
+
+            m_currentRotationX = m_animExitRotX;
+            m_currentRotationY = m_animExitRotY;
+            m_currentZoom      = Mathf.Lerp(m_animExitZoom, m_maxZoom * m_galaxyExitZoomMultiplyer, ct);
+
+            float newX = Mathf.Lerp(m_animStartPos.x, fleetPos.x, ct);
+            float newY = Mathf.Lerp(m_animStartPos.y, fleetPos.y, ct);
+            float newZ = Mathf.Lerp(m_animStartPos.z, fleetPos.z, ct);
+            m_interpolatedTargetPosition = new Vector3(newX, newY, newZ);
+        }
+        else
+        {
+            // Post-Phase: 함대 위치 고정 + 각도/줌 원래 함대뷰로 복귀
+            float postT = Mathf.Clamp01((m_galaxyViewAnimTimer - m_galaxyViewAnimDuration) / m_galaxyPreRotDuration);
+            m_currentRotationX = Mathf.LerpAngle(m_animExitRotX, m_targetRotationX, postT);
+            m_currentRotationY = Mathf.LerpAngle(m_animExitRotY, m_targetRotationY, postT);
+            m_currentZoom      = Mathf.Lerp(m_maxZoom * m_galaxyExitZoomMultiplyer, m_targetZoom, postT);
+            // m_interpolatedTargetPosition 변경 없음 (함대 위치 고정)
+        }
+
+        // 복귀 전용: preRotDuration + mainDuration
+        if (m_galaxyViewAnimTimer >= m_galaxyPreRotDuration + m_galaxyViewAnimDuration)
+        {
+            m_isGalaxyViewAnimating = false;
+            m_inputEnabled = true;
+        }
+    }
+
+    // 일반 뷰 — 기존 지수 보간 (모듈 포커싱 등)
+    private void TickNormalView()
+    {
+        if (m_hasTargetRotationY == true)
+        {
+            m_currentRotationY = Mathf.LerpAngle(m_currentRotationY, m_targetRotationY, k_rotateLerpSpeed * Time.unscaledDeltaTime);
+            if (Mathf.Abs(Mathf.DeltaAngle(m_currentRotationY, m_targetRotationY)) < k_rotateArriveThreshold)
+            {
+                m_currentRotationY = m_targetRotationY;
+                m_hasTargetRotationY = false;
+            }
+        }
+        if (m_hasTargetRotationX == true)
+        {
+            m_currentRotationX = Mathf.LerpAngle(m_currentRotationX, m_targetRotationX, k_rotateLerpSpeed * Time.unscaledDeltaTime);
+            if (Mathf.Abs(Mathf.DeltaAngle(m_currentRotationX, m_targetRotationX)) < k_rotateArriveThreshold)
+            {
+                m_currentRotationX = m_targetRotationX;
+                m_hasTargetRotationX = false;
+            }
+        }
+        if (m_hasTargetZoom == true)
+        {
+            m_currentZoom = Mathf.Lerp(m_currentZoom, m_targetZoom, k_zoomLerpSpeed * Time.unscaledDeltaTime);
+            if (Mathf.Abs(m_currentZoom - m_targetZoom) < k_zoomArriveThreshold)
+            {
+                m_currentZoom = m_targetZoom;
+                m_hasTargetZoom = false;
+            }
+        }
+        if (m_instantFollow == true)
+            m_interpolatedTargetPosition = m_targetPosition;
+        else
+            m_interpolatedTargetPosition = Vector3.Lerp(m_interpolatedTargetPosition, m_targetPosition, k_positionLerpSpeed * Time.unscaledDeltaTime);
+
+        // 카메라 이동 완료 시 입력 자동 활성화 (갤럭시 뷰 중에는 입력 유지 차단)
+        if (m_inputEnabled == false && m_isGalaxyView == false
+            && m_hasTargetRotationX == false && m_hasTargetRotationY == false && m_hasTargetZoom == false)
+            m_inputEnabled = true;
+    }
+
+    // 최종 카메라 position/LookAt 적용
+    private void ApplyCameraTransformToScene()
+    {
         // 1. 회전 각도를 라디안으로 변환 (RotY=0 → +Z 방향 기준, +180° 오프셋)
         float radiansY = (m_currentRotationY + 180f) * Mathf.Deg2Rad;
         float radiansX = m_currentRotationX * Mathf.Deg2Rad;
@@ -331,8 +377,8 @@ public class CameraController : MonoSingleton<CameraController>
         m_targetCamera.transform.position = m_interpolatedTargetPosition + rotatedOffset;
         m_targetCamera.transform.LookAt(m_interpolatedTargetPosition);
 
-        if (galaxyViewJustSettled == true)
-            EventManager.TriggerGalaxyViewSettled();
+        if (m_isGalaxyViewAnimating == true && m_isZoneRefocus == false && m_isEnteringGalaxy == false)
+            Debug.Log($"[DEBUG-EXIT] position={m_targetCamera.transform.position} interpolated={m_interpolatedTargetPosition} zoom={m_currentZoom} rotX={m_currentRotationX} rotY={m_currentRotationY}");
     }
 
     private bool m_inputEnabled = true;
@@ -351,6 +397,13 @@ public class CameraController : MonoSingleton<CameraController>
     {
         float normalizedX = screenPos.x / Screen.width;
         return normalizedX >= m_inputScreenXMin && normalizedX <= m_inputScreenXMax;
+    }
+
+    // 대치 화면(UIPanelPrepareBattle)이 현재 top일 때만 빈 공간 터치를 차단 — 그 위에 함대 UI 등 다른 패널이
+    // 열려있으면(top이 바뀌었으면) 그 패널은 평소대로 빈 공간 터치로 닫을 수 있어야 함
+    private bool IsEmptySpaceTapBlocked()
+    {
+        return UIManager.Instance != null && UIManager.Instance.GetCurrentActivePanelName() == "UIPanelPrepareBattle";
     }
 
     // Input handling
@@ -423,14 +476,16 @@ public class CameraController : MonoSingleton<CameraController>
         LayerMask pickMask = ~m_layerMaskShield;
         if (!GetCameraRaycast(out RaycastHit hit, pickMask, 3000f, screenPosition))
         {
-            EventManager.Trigger_EmptySpaceTapped();
+            if (IsEmptySpaceTapBlocked() == false)
+                EventManager.Trigger_EmptySpaceTapped();
             return;
         }
 
         SpaceShip ship = hit.collider.GetComponentInParent<SpaceShip>();
         if (ship == null || ship.m_ownerFleet == null || ObjectManager.Instance.IsEnemyOfMyTeam(ship.m_ownerFleet))
         {
-            EventManager.Trigger_EmptySpaceTapped();
+            if (IsEmptySpaceTapBlocked() == false)
+                EventManager.Trigger_EmptySpaceTapped();
             return;
         }
 
@@ -784,12 +839,19 @@ public class CameraController : MonoSingleton<CameraController>
         m_savedRotationY = m_currentRotationY;
         m_savedZoom = m_currentZoom;
 
-        m_currentTarget  = null;
-        m_targetPosition = targetPos;
-        m_galaxyTargetPos = targetPos;
-        m_targetRotationX   = Mathf.Clamp(rotX, -80f, 80f);
-        m_targetRotationY   = rotY;
-        m_targetZoom        = zoom;
+        m_currentTarget = null;
+        // 갤럭시뷰엔 포커스 모드 개념이 없음 — 적 함대 포커스 등이 남아있는 채로 진입하는 문제 방지를 위해 항상 리셋
+        m_focusTarget = ECameraFocusTarget.camera_focus_my_fleet;
+
+        m_galaxyTargetPos  = targetPos;
+        m_galaxyTargetRotX = Mathf.Clamp(rotX, -80f, 80f);
+        m_galaxyTargetRotY = rotY;
+        m_galaxyTargetZoom = zoom;
+
+        // 복귀(TickExitingGalaxy) 시 줌아웃 기준(m_maxZoom)이 직전 선택 함선(적함 등) 범위로 오염되지 않도록 항상 내 함대 기준으로 리셋
+        SpaceFleet myFleet = ObjectManager.Instance != null ? ObjectManager.Instance.GetMyFleet() : null;
+        if (myFleet != null)
+            ApplyZoomRangeFromShip(myFleet.GetFlagship());
 
         StartGalaxyViewAnimation();
     }
@@ -803,11 +865,10 @@ public class CameraController : MonoSingleton<CameraController>
 
         m_isZoneRefocus     = true;
         m_isGalaxyViewAnimating = true;
-        m_targetPosition    = zoneWorldPos;
         m_galaxyTargetPos   = zoneWorldPos;
-        m_targetZoom        = zoom;
-        m_targetRotationX   = Mathf.Clamp(rotX, -80f, 80f);
-        m_targetRotationY   = rotY;
+        m_galaxyTargetZoom  = zoom;
+        m_galaxyTargetRotX  = Mathf.Clamp(rotX, -80f, 80f);
+        m_galaxyTargetRotY  = rotY;
     }
 
     private void StartGalaxyViewAnimation()

@@ -268,13 +268,7 @@ public static class EventManager
     public static void Subscribe_ExplorationTabClosed(Action callback)   { OnExplorationTabClosed += callback; }
     public static void Unsubscribe_ExplorationTabClosed(Action callback) { OnExplorationTabClosed -= callback; }
 
-    // 오버레이 패널(메인 패널이 아닌 UIPanelBase) 오픈 개수가 0↔1로 전이될 때 발행 — 탭 진입 버튼 가시성 판단에 사용
-    public static event Action<bool> OnOverlayPanelActiveChanged;
-    public static void TriggerOverlayPanelActiveChanged(bool isActive) { OnOverlayPanelActiveChanged?.Invoke(isActive); }
-    public static void Subscribe_OverlayPanelActiveChanged(Action<bool> callback)   { OnOverlayPanelActiveChanged += callback; }
-    public static void Unsubscribe_OverlayPanelActiveChanged(Action<bool> callback) { OnOverlayPanelActiveChanged -= callback; }
-
-    // UIManager.currentActivePanel(bHideCurWhenActive 패널들의 배타적 전환 슬롯)이 바뀔 때 발행 — 진입 버튼 하이라이트 갱신용, 없으면 빈 문자열
+    // UIManager 패널 스택의 top이 바뀔 때 발행 — 진입 버튼 하이라이트 갱신 및 메인 UI 진입 버튼 노출 판단(스택 깊이==1)에 사용
     public static event Action<string> OnCurrentPanelChanged;
     public static void TriggerCurrentPanelChanged(string panelName) { OnCurrentPanelChanged?.Invoke(panelName); }
     public static void Subscribe_CurrentPanelChanged(Action<string> callback)   { OnCurrentPanelChanged += callback; }

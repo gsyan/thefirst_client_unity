@@ -27,13 +27,12 @@ public class UIManager : MonoSingleton<UIManager>
     protected float animationDuration = 0.3f;
 
     // Private fields
-    private UIPanelBase currentActivePanel;
     private UIPanelBase mainPanel;
     private Dictionary<string, UIPanelBase> panelDictionary = new Dictionary<string, UIPanelBase>();
-    private Stack<UIPanelBase> panelStack = new Stack<UIPanelBase>();
 
-    // 메인 패널이 아닌 UIPanelBase가 열려있는 개수 — 0↔1 전이 시 EventManager로 알려 진입 버튼 등의 "기본 상태" 판단에 사용
-    private int m_activeOverlayPanelCount = 0;
+    // 패널 스택 — index 0은 항상 메인 패널(base, 절대 pop되지 않음), Count-1이 현재 top(화면에 보이는 패널)
+    // push(ShowPanel)=화면 전환(위에 쌓기), pop(HideCurrentPanel/HidePanel)=top만 닫기(그 아래가 자동으로 다시 top이 되어 노출) — 그 이상의 연산 없음
+    private readonly List<UIPanelBase> m_panelStack = new List<UIPanelBase>();
 
     // Popup Layer System
     private const string POPUP_PREFAB_PATH = "Prefabs/UI/Popup";
@@ -69,8 +68,7 @@ public class UIManager : MonoSingleton<UIManager>
 
     private void OnEmptySpaceTapped()
     {
-        if (string.IsNullOrEmpty(GetCurrentActivePanelName()) == false)
-            HideCurrentPanel();
+        HideCurrentPanel(); // top이 base(메인 패널)뿐이면 내부에서 안전하게 no-op
     }
 
     public virtual void InitializeUIManager()
@@ -144,79 +142,129 @@ public class UIManager : MonoSingleton<UIManager>
         }
     }
 
+    private UIPanelBase GetTop()
+    {
+        return m_panelStack.Count > 0 ? m_panelStack[m_panelStack.Count - 1] : null;
+    }
+
+    // 패널 하나를 top으로 push — 이미 top이면 무시, 스택 어딘가(base 제외)에 이미 있으면 그 자리에서 제거 후 top으로 재삽입(중복 push 금지)
     public void ShowPanel(string panelName)
     {
-        if (!panelDictionary.ContainsKey(panelName)) return;
-        var targetPanel = panelDictionary[panelName];
-        if (currentActivePanel == targetPanel && targetPanel.gameObject.activeInHierarchy) return;
+        if (panelDictionary.TryGetValue(panelName, out UIPanelBase targetPanel) == false) return;
 
-        if (targetPanel.bHideCurWhenActive == true)
+        // 메인 패널(base)은 일반 push/pop 대상이 아니라 "홈으로 복귀"라는 별개 의미 — ShowMainPanel로 위임
+        if (targetPanel == mainPanel)
         {
-            if (currentActivePanel != null)
-            {
-                HidePanel(currentActivePanel);
-                panelStack.Push(currentActivePanel);
-            }
-
-            currentActivePanel = targetPanel;
-            EventManager.TriggerCurrentPanelChanged(currentActivePanel.panelName);
+            ShowMainPanel();
+            return;
         }
 
-        ShowPanel(targetPanel);
+        UIPanelBase top = GetTop();
+        if (top == targetPanel) return;
+
+        int existingIndex = m_panelStack.IndexOf(targetPanel);
+        if (existingIndex >= 0)
+            m_panelStack.RemoveAt(existingIndex); // 이미 스택에 있었다면(항상 top이 아닌 채로는 발생하면 안 됨) 자리만 제거 — 이미 비활성 상태라 별도 Hide 불필요
+
+        if (top != null)
+            HidePanelInternal(top);
+
+        m_panelStack.Add(targetPanel);
+        ShowPanelInternal(targetPanel);
+        EventManager.TriggerCurrentPanelChanged(targetPanel.panelName);
     }
 
+    // top을 가리지 않은 채(계속 보이는 상태로 둔 채) 그 위에 패널을 겹쳐서 push — 대치 화면에서 적 함선 클릭 시
+    // UIPanelFleet을 읽기전용으로 여는 경우처럼, 아래 패널의 3D 카메라 뷰가 가려지면 안 되는 특수 케이스 전용.
+    // 일반적인 화면 전환(탭 전환 등)에는 반드시 ShowPanel(이전 top을 가림)을 사용할 것
+    public void ShowPanelOverlappingCurrent(string panelName)
+    {
+        if (panelDictionary.TryGetValue(panelName, out UIPanelBase targetPanel) == false) return;
+        if (targetPanel == mainPanel) return; // base는 이 방식으로 다루지 않음
+
+        UIPanelBase top = GetTop();
+        if (top == targetPanel) return;
+
+        int existingIndex = m_panelStack.IndexOf(targetPanel);
+        if (existingIndex >= 0)
+            m_panelStack.RemoveAt(existingIndex);
+
+        // 의도적으로 top을 HidePanelInternal하지 않음 — 계속 보이는 채로 둠
+        m_panelStack.Add(targetPanel);
+        ShowPanelInternal(targetPanel);
+        EventManager.TriggerCurrentPanelChanged(targetPanel.panelName);
+    }
+
+    // 최초 부팅 시: 메인 패널을 스택 base(index 0)로 등록. 이후 호출되면: 위에 쌓인 모든 패널을 닫고 base만 남김("홈으로 복귀")
     public void ShowMainPanel()
     {
-        if (mainPanel != null)
-            ShowPanel(mainPanel.panelName);
-    }
+        if (mainPanel == null) return;
 
-    // showMainPanelIfEmpty=false로 호출하면, 스택이 비어있어도 메인 패널로 안 돌아가고 화면을 빈 상태로 둠 —
-    // 다음에 보여줄 패널이 아직 준비 안 됐지만(비동기 대기 등) 곧 ShowPanel로 이어붙일 걸 아는 경우,
-    // 그 사이에 메인 패널이 잠깐 비쳤다 사라지는 깜빡임을 막기 위해 사용
-    public void HideCurrentPanel(bool showMainPanelIfEmpty = true)
-    {
-        if (currentActivePanel != null && !currentActivePanel.bMainPanel)
+        if (m_panelStack.Count == 0)
         {
-            HidePanel(currentActivePanel);
-
-            if (panelStack.Count > 0)
-            {
-                UIPanelBase previousPanel = panelStack.Pop();
-                currentActivePanel = previousPanel;
-                EventManager.TriggerCurrentPanelChanged(currentActivePanel.panelName);
-                ShowPanel(previousPanel);
-            }
-            else
-            {
-                currentActivePanel = null;
-                EventManager.TriggerCurrentPanelChanged(string.Empty);
-                if (showMainPanelIfEmpty == true)
-                    ShowMainPanel();
-            }
+            m_panelStack.Add(mainPanel);
+            ShowPanelInternal(mainPanel);
+            EventManager.TriggerCurrentPanelChanged(mainPanel.panelName);
+            return;
         }
+
+        while (m_panelStack.Count > 1)
+            PopTop();
     }
 
+    // top을 하나 pop — base(메인 패널)는 절대 제거하지 않음(스택에 base만 남아있으면 안전하게 아무 일도 안 함)
+    public void HideCurrentPanel()
+    {
+        PopTop();
+    }
+
+    private void PopTop()
+    {
+        if (m_panelStack.Count <= 1) return;
+
+        UIPanelBase removed = m_panelStack[m_panelStack.Count - 1];
+        m_panelStack.RemoveAt(m_panelStack.Count - 1);
+        HidePanelInternal(removed);
+
+        UIPanelBase newTop = m_panelStack[m_panelStack.Count - 1];
+        ShowPanelInternal(newTop);
+        EventManager.TriggerCurrentPanelChanged(newTop.panelName);
+    }
+
+    // 이름으로 지정한 패널을 닫음 — 닫기는 항상 top만 가능하므로, 그 패널이 지금 top일 때만 동작(top이 아니면 무시)
     public void HidePanel(string panelName)
     {
-        if (!panelDictionary.ContainsKey(panelName)) return;
-        var targetPanel = panelDictionary[panelName];
-        if (!targetPanel.gameObject.activeInHierarchy) return;
-        HidePanel(targetPanel);
+        if (panelDictionary.TryGetValue(panelName, out UIPanelBase targetPanel) == false) return;
+        if (GetTop() != targetPanel) return;
+        PopTop();
     }
 
     public void TogglePanel(string panelName)
     {
-        if (!panelDictionary.ContainsKey(panelName)) return;
-        var targetPanel = panelDictionary[panelName];
+        if (panelDictionary.TryGetValue(panelName, out UIPanelBase targetPanel) == false) return;
 
-        if (currentActivePanel == targetPanel && targetPanel.gameObject.activeInHierarchy)
-            ShowMainPanel();
+        if (GetTop() == targetPanel)
+            HideCurrentPanel();
         else
             ShowPanel(panelName);
     }
 
-    private void ShowPanel(UIPanelBase panel)
+    // top이 아닌(이미 다른 패널에 덮여 숨겨진) 패널을 스택에서 조용히 제거 — Show/Hide 훅이나 애니메이션을 전혀 트리거하지 않고
+    // 리스트에서만 빠짐(위/아래 패널 어느 쪽도 건드리지 않음). "이 패널 위로 곧바로 다른 패널이 대신 덮일 것"을 호출부가 이미 알고
+    // 처리한 뒤(예: 대치화면 → 전투화면 전환처럼 push로 자연스럽게 가려진 뒤) 남은 자리를 정리할 때만 사용.
+    // top인 패널에는 사용하면 안 됨(그 경우 HidePanel/HideCurrentPanel로 정상적으로 pop해야 아래 패널이 제대로 다시 노출됨)
+    public void RemoveHiddenPanelFromStack(string panelName)
+    {
+        if (panelDictionary.TryGetValue(panelName, out UIPanelBase targetPanel) == false) return;
+
+        int index = m_panelStack.IndexOf(targetPanel);
+        if (index <= 0) return; // base는 대상 아님, 없으면 무시
+        if (index == m_panelStack.Count - 1) return; // top이면 여기서 다루지 않음
+
+        m_panelStack.RemoveAt(index);
+    }
+
+    private void ShowPanelInternal(UIPanelBase panel)
     {
         if (panel.gameObject == null) return;
 
@@ -228,16 +276,9 @@ public class UIManager : MonoSingleton<UIManager>
             panel.gameObject.SetActive(true);
 
         panel.OnShowUIPanel();
-
-        if (panel.bMainPanel == false && panel.bAffectsOverlayCount == true)
-        {
-            m_activeOverlayPanelCount++;
-            if (m_activeOverlayPanelCount == 1)
-                EventManager.TriggerOverlayPanelActiveChanged(true);
-        }
     }
 
-    private void HidePanel(UIPanelBase panel)
+    private void HidePanelInternal(UIPanelBase panel)
     {
         if (panel == null || panel.gameObject == null) return;
 
@@ -247,13 +288,6 @@ public class UIManager : MonoSingleton<UIManager>
             panel.gameObject.SetActive(false);
 
         panel.OnHideUIPanel();
-
-        if (panel.bMainPanel == false && panel.bAffectsOverlayCount == true)
-        {
-            m_activeOverlayPanelCount--;
-            if (m_activeOverlayPanelCount == 0)
-                EventManager.TriggerOverlayPanelActiveChanged(false);
-        }
     }
 
     // 패널(GameObject)별로 현재 실행 중인 전환 코루틴 추적 — 더블클릭 등으로 같은 패널에 Show/Hide가 연속 호출되면
@@ -327,29 +361,27 @@ public class UIManager : MonoSingleton<UIManager>
 
     public void RemovePanel(string panelName)
     {
-        if (panelDictionary.ContainsKey(panelName))
-        {
-            var panel = panelDictionary[panelName];
+        if (panelDictionary.TryGetValue(panelName, out UIPanelBase panel) == false) return;
 
-            if (currentActivePanel == panel)
-                ShowMainPanel();
+        int index = m_panelStack.IndexOf(panel);
+        if (index > 0) // base(0)는 제거 대상이 되면 안 됨
+            m_panelStack.RemoveAt(index);
 
-            panelDictionary.Remove(panelName);
+        panelDictionary.Remove(panelName);
 
-            Debug.Log($"Removed panel: {panelName}");
-        }
+        Debug.Log($"Removed panel: {panelName}");
     }
 
     public bool IsPanelActive(string panelName)
     {
-        if (panelDictionary.ContainsKey(panelName))
-            return panelDictionary[panelName].gameObject.activeInHierarchy;
-        return false;
+        if (panelDictionary.TryGetValue(panelName, out UIPanelBase panel) == false) return false;
+        return panel.gameObject.activeInHierarchy;
     }
 
     public string GetCurrentActivePanelName()
     {
-        return currentActivePanel?.panelName ?? "";
+        UIPanelBase top = GetTop();
+        return top != null ? top.panelName : "";
     }
 
     public bool IsMainPanelActive()
@@ -359,8 +391,14 @@ public class UIManager : MonoSingleton<UIManager>
 
     public bool CanCameraMove()
     {
-        if (currentActivePanel == null) return false;
-        return currentActivePanel.bCameraMove;
+        UIPanelBase top = GetTop();
+        return top != null && top.bCameraMove;
+    }
+
+    // 메인 UI 진입 버튼 등이 "지금 화면에 base(메인 패널) 외에 아무것도 없는가"를 판단하는 데 사용 — 1이면 base만 남은 기본 상태
+    public int GetPanelStackDepth()
+    {
+        return m_panelStack.Count;
     }
 
     // ---------------------------------------------------------------------------------

@@ -71,6 +71,7 @@ public class RowLabelValue : MonoBehaviour
     // GameObject가 비활성 상태면 코루틴을 시작할 수 없으므로(Unity가 에러 로그를 남김) 아예 시도하지 않음 —
     // 값 자체는 호출부가 이미 갱신했을 것이고, 화면 반영은 패널이 다시 활성화될 때 호출부가 재호출해서 따라잡음
     private Coroutine m_valueAnimCoroutine;
+    private System.Action m_pendingAnimComplete; // 진행 중인 애니메이션이 물고 있는 콜백 — 새 호출로 대체(StopCoroutine)될 때 유실되지 않도록 보관
     public void SetValueAnimated(long from, long to, System.Action onComplete = null)
     {
         if (m_value1 == null || gameObject.activeInHierarchy == false)
@@ -80,7 +81,21 @@ public class RowLabelValue : MonoBehaviour
             return;
         }
 
-        if (m_valueAnimCoroutine != null) StopCoroutine(m_valueAnimCoroutine);
-        m_valueAnimCoroutine = StartCoroutine(CommonUtility.AnimateCounterText(m_value1, from, to, onComplete));
+        if (m_valueAnimCoroutine != null)
+        {
+            StopCoroutine(m_valueAnimCoroutine);
+            // StopCoroutine은 코루틴 내부의 onComplete 호출까지 통째로 건너뛰어버림 — 대체되는 이전 요청의 콜백을 여기서 대신 실행해 유실 방지
+            m_pendingAnimComplete?.Invoke();
+        }
+
+        m_pendingAnimComplete = onComplete;
+        m_valueAnimCoroutine = StartCoroutine(CommonUtility.AnimateCounterText(m_value1, from, to, OnValueAnimComplete));
+    }
+
+    private void OnValueAnimComplete()
+    {
+        System.Action callback = m_pendingAnimComplete;
+        m_pendingAnimComplete = null;
+        callback?.Invoke();
     }
 }

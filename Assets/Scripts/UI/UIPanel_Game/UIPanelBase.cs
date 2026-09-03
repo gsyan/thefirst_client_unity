@@ -3,11 +3,8 @@ using UnityEngine;
 public class UIPanelBase : MonoBehaviour
 {
     public string panelName;
-    public bool bMainPanel = false;
-    public bool bHideCurWhenActive = false; // 이 패널이 활성화될 때 현재 패널을 숨길지 여부
+    public bool bMainPanel = false; // 패널 스택의 base(항상 상주, 절대 pop되지 않는 배경 패널)인지 여부 — UIManager 전체에 딱 하나만 존재해야 함
     public bool bCameraMove = false;
-    // false면 UIManager의 오버레이 패널 카운트(탭 진입 버튼 숨김 판단 기준)에서 제외 — VIP 팝오버처럼 화면 전체를 가리지 않는 보조 패널용
-    public bool bAffectsOverlayCount = true;
 
     virtual public void InitializeUIPanel()
     {

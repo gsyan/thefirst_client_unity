@@ -65,7 +65,6 @@ public class UIPanelExplorationGrid : UIPanelBase
 
     private BankedRunReward m_bankedReward = new(); // 진행 중인 런의 적립(미확정) 보상(탐험 포인트/경험치 등) — 클리어마다 누적, 탈출/포기 확정 시 리셋
     private BankedRunReward m_pendingBankedRewardGain = new(); // 전투 중(패널 비활성 상태)에 획득해서 아직 화면에 반영 안 한 적립량 — 패널이 열릴 때 한 번에 반영+애니메이션
-    private bool m_pendingShowEscapeConfirmOnSettle; // 탈출 셀 클리어 직후 세팅 — SettleZoneEntry가 현재 존 그리드에 최종 적립 포인트를 반영한 뒤에만 탈출 확정 팝업을 띄우기 위함
     private long m_displayedBankedPoint = -1; // 롤링 애니메이션의 시작값 추적 — 최초 1회는 -1이라 즉시 표시됨(UIResourceBar와 동일 패턴)
     private long m_displayedOwnedPoint = -1;
 
@@ -209,23 +208,12 @@ public class UIPanelExplorationGrid : UIPanelBase
         SettleZoneEntry(m_pendingZoneNumber);
     }
 
-    // "실제로 이 존에 정착한다"는 단일 지점 — 존 탭/보유 포인트/그리드(좌표·적립포인트·버튼)를 전부 이 시점에 한 번에 확정
+    // "실제로 이 존에 정착한다"는 단일 지점 — 존 탭/보유 포인트/그리드(좌표·적립포인트·버튼) 표시를 이 시점에 한 번에 갱신.
+    // 셀 클리어 결과 확정(적립 보상 반영, 탈출 팝업)은 여기서 하지 않음 — ContinueAfterCellClear가 그 결과를 아는 시점에 직접 처리함
+    // (예전엔 여기서 처리했는데, 이 함수가 언제 호출되는지와 셀 클리어 서버 응답이 언제 오는지가 서로 무관해서 순서가 꼬이는 문제가 있었음)
     private void SettleZoneEntry(int zoneNumber)
     {
-        // 전투 중(패널 비활성 상태)에 획득한 적립 보상은 m_pendingBankedRewardGain에 쌓여있음 —
-        // GameObject가 active인 지금 한 번에 반영해야 롤링 애니메이션 코루틴이 실제로 재생됨
-        m_bankedReward.Add(EBankedRewardType.ExplorationPoint, m_pendingBankedRewardGain.Get(EBankedRewardType.ExplorationPoint));
-        m_bankedReward.Add(EBankedRewardType.Exp, m_pendingBankedRewardGain.Get(EBankedRewardType.Exp));
-        m_pendingBankedRewardGain.Clear();
-
-        // 탈출 셀 클리어로 여기까지 왔으면, 롤링 애니메이션이 실제로 끝나는 콜백 시점에 탈출 확정 팝업을 띄움(별도 타이머 추정 없이 정확한 동기화)
-        System.Action onBankedPointAnimComplete = null;
-        if (m_pendingShowEscapeConfirmOnSettle == true)
-        {
-            m_pendingShowEscapeConfirmOnSettle = false;
-            onBankedPointAnimComplete = ShowEscapeConfirmPopup;
-        }
-        RefreshBankedPointText(onBankedPointAnimComplete);
+        RefreshBankedPointText();
         RefreshOwnedPointText();
 
         // SelectZoneTab이 m_currentZoneNumber를 확정한 뒤에 탭 스크롤을 초기화해야 OnZoneTabNodeBind의 하이라이트 판정이 정확함
@@ -533,8 +521,6 @@ public class UIPanelExplorationGrid : UIPanelBase
 
     private void OnCellClicked(int row, int col)
     {
-        Debug.Log($"[DEBUG-CELL] OnCellClicked row={row} col={col} (currentRow={m_currentRow} currentCol={m_currentCol})");
-
         // 브라우징(스크롤/탭 이동)은 잠긴 존도 허용하되, 실제 입장(전투 진입)만 여기서 차단
         if (m_currentZoneNumber > GetHighestClearedZoneNumber() + 1)
         {
@@ -684,12 +670,13 @@ public class UIPanelExplorationGrid : UIPanelBase
     }
 
     // 대치 상태로 전환, 전투시작/퇴각/함대설정 3버튼 노출 — 워프인 연출 완료를 기다리지 않고 스폰 즉시 표시
+    // 패널 자체는 OnEnterExplorationCellResponse에서 이미 OpenEmpty로 push되어 있음 — 여기선 내용만 채움
     private void ShowPrepareBattlePanel(SpaceFleet myFleet, SpaceFleet enemyFleet)
     {
         UIPanelPrepareBattle panel = UIManager.Instance.GetPanel<UIPanelPrepareBattle>("UIPanelPrepareBattle");
         if (panel == null) return;
 
-        panel.Open(myFleet, enemyFleet, OnConfirmStartBattle, OnConfirmRetreat);
+        panel.SetupContent(myFleet, enemyFleet, OnConfirmStartBattle, OnConfirmRetreat);
     }
 
     // 전투시작 확정 — 적 함대는 서버 응답으로 이미 스폰돼 있으므로 별도 통신 없이 바로 교전 전환
@@ -748,10 +735,16 @@ public class UIPanelExplorationGrid : UIPanelBase
 
         m_pendingEnemyFleetInfo = enemyFleetInfo;
 
-        // 전투가 확정된 뒤에야 함대뷰로 전환 — OnHideUIPanel(ExitGalaxyView) → FleetViewRestored 이후 OnFleetViewRestoredForCellEntry에서
+        // 전투가 확정된 뒤에야 함대뷰로 전환 — m_pendingCellEntry를 먼저 세팅해야 바로 아래 OpenEmpty()가 유발하는
+        // OnHideUIPanel(ExitGalaxyView 트리거) 시점에 올바른 분기를 탐. FleetViewRestored 이후 OnFleetViewRestoredForCellEntry에서
         // 실제 함대 이동/워프인 + 적 함대 스폰(SpawnConfirmedEnemyFleet) 처리
         m_pendingCellEntry = true;
-        UIManager.Instance.HideCurrentPanel(showMainPanelIfEmpty: false);
+
+        // UIPanelPrepareBattle을 콘텐츠 없이 이 패널 위에 곧바로 push — 이 패널은 스택에서 제거되지 않고 그대로 남아있는 채
+        // (push의 자연스러운 부작용으로) OnHideUIPanel만 트리거됨. 실제 내용은 워프인 완료 후 SetupContent가 채움
+        UIPanelPrepareBattle preOpenPanel = UIManager.Instance.GetPanel<UIPanelPrepareBattle>("UIPanelPrepareBattle");
+        if (preOpenPanel != null)
+            preOpenPanel.OpenEmpty();
     }
 
     // 전투 없이 확정된 셀(재방문/빈 셀)로 이동 — 카메라는 갤럭시뷰에 그대로 둔 채 함대 오브젝트만 워프인.
@@ -929,21 +922,45 @@ public class UIPanelExplorationGrid : UIPanelBase
         m_pendingBankedRewardGain.Add(EBankedRewardType.ExplorationPoint, explorationPointGainedFromCard);
     }
 
-    // 셀 클리어 후 그리드 흐름 계속 — 탈출 셀이든 아니든 먼저 그리드로 복귀시켜 최종 적립 포인트를 화면에 반영하고,
-    // 탈출 셀이면 그 반영이 끝난 시점(SettleZoneEntry)에 탈출 확정 팝업을 띄움
+    // 이 패널 위에 쌓여있던 패널들(대치화면/전투화면 등)을 전부 걷어내고 다시 top으로 노출 — 이 패널은 스택에서
+    // 제거된 적이 없으므로(계속 덮여만 있었음) 별도 재오픈 없이 위에 남은 것만 pop하면 됨. 무엇이 몇 겹 쌓여있었는지는 몰라도 됨
+    private void ReturnToGridPanel()
+    {
+        while (UIManager.Instance.GetCurrentActivePanelName() != panelName && UIManager.Instance.GetPanelStackDepth() > 1)
+            UIManager.Instance.HideCurrentPanel();
+    }
+
+    // 셀 클리어 결과를 실제로 확정하는 단일 지점 — 이 시점에만 적립 보상을 반영하고, 탈출 셀이면 여기서 바로 팝업을 예약함
+    // (그리드 패널이 이 시점에 이미 top인지 아닌지와 무관하게 항상 동작해야 함 — Battle 패널이 fleet state 변화로
+    // 먼저 스스로 닫혀 그리드가 미리 top이 돼 있는 경우가 있어서, "그리드로 복귀하는 시점에 반영"하는 방식은 그 복귀가
+    // 안 일어나면(이미 top이면) 반영 자체가 누락되는 문제가 있었음)
     private void ContinueAfterCellClear()
     {
         bool reachedEscape = m_gridData != null && m_gridData.GetCell(m_currentRow, m_currentCol).isEscape;
-        m_pendingShowEscapeConfirmOnSettle = reachedEscape;
 
-        // 탈출 확정 팝업이 실제로 뜨기 전까지(카메라 정착+롤링 애니메이션 대기 구간) 그리드/빈 공간 조작이 끼어들지 못하게 미리 차단
-        if (reachedEscape == true && m_inputBlockOverlay != null)
-            m_inputBlockOverlay.SetActive(true);
+        // 전투 중(패널 비활성 상태)에 획득한 적립 보상은 m_pendingBankedRewardGain에 쌓여있음 — 여기서 확정 반영
+        m_bankedReward.Add(EBankedRewardType.ExplorationPoint, m_pendingBankedRewardGain.Get(EBankedRewardType.ExplorationPoint));
+        m_bankedReward.Add(EBankedRewardType.Exp, m_pendingBankedRewardGain.Get(EBankedRewardType.Exp));
+        m_pendingBankedRewardGain.Clear();
 
-        UIManager.Instance.ShowPanel(panelName);
+        ReturnToGridPanel();
+
+        if (reachedEscape == true)
+        {
+            // 탈출 확정 팝업이 실제로 뜨기 전까지 그리드/빈 공간 조작이 끼어들지 못하게 미리 차단
+            if (m_inputBlockOverlay != null)
+                m_inputBlockOverlay.SetActive(true);
+
+            // 롤링 애니메이션이 실제로 끝나는 콜백 시점에 탈출 확정 팝업을 띄움(별도 타이머 추정 없이 정확한 동기화)
+            RefreshBankedPointText(ShowEscapeConfirmPopup);
+        }
+        else
+        {
+            RefreshBankedPointText();
+        }
     }
 
-    // 탈출 셀 클리어 직후(SettleZoneEntry 콜백)에만 호출됨 — 확정 전 실제로 받게 될 보상(경험치/탐험 포인트)을 미리 보여줌
+    // 탈출 셀 클리어 직후(ContinueAfterCellClear의 롤링 애니메이션 콜백)에만 호출됨 — 확정 전 실제로 받게 될 보상(경험치/탐험 포인트)을 미리 보여줌
     // 탐험 포인트는 ExplorationService.settleZoneRun()과 동일한 계산식(적립값 * 배율, 올림)으로 미리 계산 —
     // 서버 왕복 없이 로컬에서 정확한 예상 지급액을 보여주기 위함(서버 확정 전 미리보기로 설계됨)
     private void ShowEscapeConfirmPopup()
@@ -974,7 +991,7 @@ public class UIPanelExplorationGrid : UIPanelBase
             if (response.errorCode != 0)
             {
                 Debug.LogError($"[UIPanelExplorationGrid] EscapeExplorationZone 실패: {response.errorCode}");
-                UIManager.Instance.ShowPanel(panelName); // 그리드 패널이 이미 열려 있으면 no-op, 어떤 이유로 닫혀 있었다면 복구
+                ReturnToGridPanel(); // 이미 top이면 no-op, 위에 뭔가 덮여 있었다면 걷어내고 복구
                 return;
             }
 
@@ -1168,7 +1185,7 @@ public class UIPanelExplorationGrid : UIPanelBase
         ObjectManager.Instance.SetMyFleetPosition(m_previousFleetWorldPos, 0f);
         CameraController.Instance.SnapToTarget(); // 함대가 순간이동했으므로 카메라도 즉시 스냅 — 워프인 때는 ExitGalaxyView가 미리 그 위치로 이동해둬서 필요 없었지만, 퇴각은 카메라 이동 없이 함대만 텔레포트되므로 별도 스냅 필요
 
-        UIManager.Instance.ShowPanel(panelName); // 승리/전투 중 퇴각과 동일하게 그리드(갤럭시뷰)로 복귀
+        ReturnToGridPanel(); // 승리/전투 중 퇴각과 동일하게 그리드(갤럭시뷰)로 복귀
     }
 
     // 전투 중 퇴각(패배 포함) — OnConfirmRetreat(대치 화면 퇴각)와 동일한 위치 복원. 적 함대 제거는 ForceEndBattle이 이미 처리했으므로 생략.
@@ -1190,7 +1207,7 @@ public class UIPanelExplorationGrid : UIPanelBase
             EventManager.Trigger_TacticPowerChanged(commanderInfo.tacticPower, commanderInfo.tacticPowerMax);
         }
 
-        UIManager.Instance.ShowPanel(panelName);
+        ReturnToGridPanel();
     }
 
     private void RefreshCellStates()

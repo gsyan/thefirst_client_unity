@@ -165,6 +165,9 @@ public class UIPanelFleet : UIPanelBase
         m_canvasGroup.alpha = 0f;
         m_canvasGroup.blocksRaycasts = false;
 
+        // 편집 모드(내 함대)로 열릴 때만 카메라가 내 함대를 보도록 리셋 — 읽기전용(적 함대 열람)은 위에서 이미 return되어 여기 오지 않음
+        CameraController.Instance.SetTargetOfCameraController(m_targetFleet.transform);
+
         RefreshFleetComposition();
         StartViewportAnimation(open: true);
     }
@@ -216,7 +219,13 @@ public class UIPanelFleet : UIPanelBase
 
         // 이미 열려있으면 ShowPanel이 OnShowUIPanel을 다시 호출하지 않아 위 pending 요청이 소비되지 않으므로 직접 전환
         bool wasAlreadyOpen = UIManager.Instance.GetCurrentActivePanelName() == panelName;
-        UIManager.Instance.ShowPanel(panelName);
+
+        // 읽기전용(적 함대 열람)은 대치 화면(UIPanelPrepareBattle) 위에 겹쳐 열림 — 그 아래 3D 좌우 분할뷰(적 카메라)가
+        // 계속 보여야 하므로 일반 ShowPanel(이전 top을 가림) 대신 겹쳐 push하는 전용 API 사용
+        if (isReadOnly == true)
+            UIManager.Instance.ShowPanelOverlappingCurrent(panelName);
+        else
+            UIManager.Instance.ShowPanel(panelName);
 
         if (wasAlreadyOpen == true)
         {
