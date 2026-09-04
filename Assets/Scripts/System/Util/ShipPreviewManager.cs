@@ -2,6 +2,7 @@
 // 메인 씬 좌표계 밖(y=-5000)에 코드로 카메라/조명/스폰 앵커를 만들고, 함체가 바뀔 때마다 바디 모델만 교체한다.
 // 추후 전용 Additive 씬으로 옮겨서 조명을 에디터에서 손으로 튜닝할 예정(지금은 MCP 연결이 끊겨 씬 배치를 대신 못 해줌) —
 // EnsureStageReady()를 EnsureSceneLoaded()로 바꾸는 정도로 교체 가능하도록 인터페이스(ShowHull/Clear/GetPreviewTexture/GetPreviewRoot)는 유지
+using System.Collections.Generic;
 using UnityEngine;
 
 public class ShipPreviewManager : MonoSingleton<ShipPreviewManager>
@@ -86,42 +87,43 @@ public class ShipPreviewManager : MonoSingleton<ShipPreviewManager>
     // 대신 카메라가 실제로 보는 방향의 위/오른쪽 축에 바운즈를 투영해서 진짜 필요한 세로/가로 크기를 구해 맞춘다
     private void FrameCameraOnInstance(GameObject instance)
     {
-        Renderer[] renderers = instance.GetComponentsInChildren<Renderer>();
-        if (renderers.Length == 0) return;
+        // ShieldGrid가 모든 함체에 미리 만들어두는 "ShieldSurface" 표면 메쉬는 실제 선체보다 boundScale/margin만큼
+        // 일부러 더 크게 잡혀있어(ShieldGrid.ComputeBoundingBox), 카메라 거리 산정에 포함되면 함체가 실제보다 작게 보인다 —
+        // QuickOutline/Outline.cs가 아웃라인 대상에서 이 렌더러를 제외하는 것과 동일한 방식으로 여기서도 제외한다
+        Renderer[] allRenderers = instance.GetComponentsInChildren<Renderer>();
+        List<Renderer> hullRenderers = new List<Renderer>();
+        for (int i = 0; i < allRenderers.Length; i++)
+        {
+            if (allRenderers[i].gameObject.name == "ShieldSurface") continue;
+            hullRenderers.Add(allRenderers[i]);
+        }
+        if (hullRenderers.Count == 0) return;
 
-        Bounds bounds = renderers[0].bounds;
-        for (int i = 1; i < renderers.Length; i++)
-            bounds.Encapsulate(renderers[i].bounds);
+        Bounds bounds = hullRenderers[0].bounds;
+        for (int i = 1; i < hullRenderers.Count; i++)
+            bounds.Encapsulate(hullRenderers[i].bounds);
 
         // 함선의 전장은 보통 로컬 Z축 방향이라, 시선이 Z축에 가까우면 길이가 그대로 앞뒤로 찌부러져 보인다 —
         // X축 비중을 높여 옆에서 비스듬히 보는 각도로 고정
         Vector3 viewDirection = new Vector3(0.85f, -0.3f, 0.45f).normalized;
         Quaternion viewRotation = Quaternion.LookRotation(viewDirection, Vector3.up);
-        Vector3 viewRight = viewRotation * Vector3.right;
-        Vector3 viewUp = viewRotation * Vector3.up;
 
-        float halfWidth = 0f;
-        float halfHeight = 0f;
-        Vector3 extents = bounds.extents;
-        for (int i = 0; i < 8; i++)
-        {
-            Vector3 corner = new Vector3(
-                (i & 1) == 0 ? extents.x : -extents.x,
-                (i & 2) == 0 ? extents.y : -extents.y,
-                (i & 4) == 0 ? extents.z : -extents.z);
+        // 카메라 거리는 시선 각도에 투영한 폭/높이가 아니라, 바운즈의 가장 긴 축 하나로만 정한다 —
+        // 투영 방식은 함체마다 긴 축이 어느 방향을 향하냐에 따라 같은 함체라도 거리가 들쭉날쭉해지는 문제가 있었음.
+        // 가장 긴 축의 절반을 반지름으로 삼아 구를 씌운다고 가정하면 시선 각도가 바뀌어도 절대 잘리지 않으면서 거리는 일정하다
+        Vector3 size = bounds.size;
+        float longestAxis = Mathf.Max(size.x, Mathf.Max(size.y, size.z));
+        if (longestAxis <= 0f) longestAxis = 1f;
+        float radius = longestAxis * 0.5f;
 
-            halfWidth = Mathf.Max(halfWidth, Mathf.Abs(Vector3.Dot(corner, viewRight)));
-            halfHeight = Mathf.Max(halfHeight, Mathf.Abs(Vector3.Dot(corner, viewUp)));
-        }
-        if (halfWidth <= 0f) halfWidth = 1f;
-        if (halfHeight <= 0f) halfHeight = 1f;
-
-        const float k_paddingFactor = 1.1f; // 여유 마진
+        // 구 전체(반지름=긴축/2)가 세로/가로 FOV 양쪽에 다 들어가게 맞추는 방식이라 "어느 각도에서도 안 잘림"을 보장하는 대신
+        // 필요 이상으로 멀어짐 — 시선 각도는 고정값이라 그 정도 여유까진 필요 없어서 마진을 줄여 화면을 더 채움
+        const float k_paddingFactor = 0.7f; // 여유 마진
         float halfVFovRad = m_previewCamera.fieldOfView * 0.5f * Mathf.Deg2Rad;
         float halfHFovRad = Mathf.Atan(Mathf.Tan(halfVFovRad) * m_previewCamera.aspect);
 
-        float distanceForHeight = halfHeight / Mathf.Tan(halfVFovRad);
-        float distanceForWidth = halfWidth / Mathf.Tan(halfHFovRad);
+        float distanceForHeight = radius / Mathf.Tan(halfVFovRad);
+        float distanceForWidth = radius / Mathf.Tan(halfHFovRad);
         float fitDistance = Mathf.Max(distanceForHeight, distanceForWidth) * k_paddingFactor;
 
         m_previewCamera.transform.position = bounds.center - viewDirection * fitDistance;

@@ -711,8 +711,9 @@ public class UIPanelExplorationGrid : UIPanelBase
         if (commanderInfo != null)
             commanderInfo.explorationZoneNumber = m_currentZoneNumber;
 
-        List<StageEnemyFleetSpawnConfig> enemyFleets = response.data.enemyFleets;
-        FleetInfo enemyFleetInfo = enemyFleets != null && enemyFleets.Count > 0 ? enemyFleets[0].fleetInfo : null;
+        // 적함대 데이터는 서버가 내려주지 않음 — 같은 seed로 이미 로컬에 캐싱해둔 것을 그대로 사용(BuildCellEnemyFleets)
+        List<FleetInfo> waves = GetCellEnemyWaves(m_pendingCellRow, m_pendingCellCol);
+        FleetInfo enemyFleetInfo = waves != null && waves.Count > 0 ? waves[0] : null;
         bool hasEnemies = enemyFleetInfo != null && enemyFleetInfo.ships != null && enemyFleetInfo.ships.Count > 0;
 
         if (hasEnemies == false)

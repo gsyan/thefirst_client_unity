@@ -341,6 +341,8 @@ public class UIPanelSettings : UIPanelBase
                     PlayerPrefs.SetString("GuestId", response.data.guestId);
                     PlayerPrefs.Save();
                 }
+                if (response.data != null && string.IsNullOrEmpty(response.data.guestSecret) == false)
+                    NetworkManager.Instance.SetGuestSecret(response.data.guestSecret);
                 RefreshGoogleLinkUI();
             }
             else

@@ -15,6 +15,7 @@ public class NetworkManager : MonoSingleton<NetworkManager>
         //PlayerPrefs.DeleteAll();
         m_apiClient = new ApiClient();
         m_apiClient.LoadRefreshToken();
+        m_apiClient.LoadGuestSecret();
     }
     #endregion
 
@@ -370,8 +371,15 @@ public class NetworkManager : MonoSingleton<NetworkManager>
             PlayerPrefs.SetString("GuestId", guestId);
             PlayerPrefs.Save();
         }
-        
-        StartCoroutine(RunAsync(() => m_apiClient.GuestLoginAsync(guestId), onComplete));
+
+        string guestSecret = m_apiClient.GetGuestSecret();
+        StartCoroutine(RunAsync(() => m_apiClient.GuestLoginAsync(guestId, guestSecret), onComplete));
+    }
+
+    // UIPanelSettings 등에서 unlink-google 응답으로 받은 secret을 저장할 때 사용
+    public void SetGuestSecret(string secret)
+    {
+        m_apiClient.SetGuestSecret(secret);
     }
 
     // 현재 로그인된 계정에 구글 계정 연동
@@ -678,6 +686,7 @@ public class NetworkManager : MonoSingleton<NetworkManager>
     public void Logout()
     {
         m_apiClient.ClearTokens();
+        m_apiClient.ClearGuestSecret();
         m_autoLoginAttempted = false;
 
         // 게스트 ID 삭제 - 재로그인 시 새 계정으로 시작되도록

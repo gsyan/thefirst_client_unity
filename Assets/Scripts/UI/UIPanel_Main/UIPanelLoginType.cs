@@ -61,6 +61,8 @@ public class UIPanelLoginType : UIPanelBase
          {
                Debug.LogError($"Guest Login failed - ErrorCode: {errorCode}");
                gameObject.SetActive(true);
+               if (m_resultText != null)
+                  m_resultText.text = ErrorCodeMapping.GetMessage(response.errorCode);
          }
       });
    }

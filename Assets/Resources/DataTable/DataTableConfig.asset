@@ -62,7 +62,7 @@ MonoBehaviour:
       flatStats:
         perPoint: 0.1
   exportedJson: "{\r\n  \"version\": \"0.0.1\",\r\n  \"addShipCost\": 10,\r\n  \"commandPowerMaxInit\":
-    120,\r\n  \"pvpMinCommanderLevel\": 2,\r\n  \"pvpListCount\": 3,\r\n  \"pvpListRefreshCount\":
+    310,\r\n  \"pvpMinCommanderLevel\": 2,\r\n  \"pvpListCount\": 3,\r\n  \"pvpListRefreshCount\":
     5,\r\n  \"pvpRankScoreInit\": 1000,\r\n  \"pvpRankScorePenalty\": 1,\r\n  \"moduleUnlockPrice\":
     1,\r\n  \"repairBoostExplorationPointPerSec\": 1,\r\n  \"repairBoostMultiplier\":
     2.0,\r\n  \"instantRepairBaseSecs\": 60,\r\n  \"missileTacticExplorationPointPerSec\":

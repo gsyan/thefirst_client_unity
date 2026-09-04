@@ -153,6 +153,7 @@ public class GoogleLoginRequest
 public class GuestLoginRequest
 {
     public string guestId;
+    public string guestSecret;  // 서버 발급 게스트 자격증명 — 최초 로그인 시엔 빈 값
 }
 
 [System.Serializable]
@@ -165,6 +166,7 @@ public class AuthResponse
     public bool bGoogleLinked;             // 구글 계정 연동 여부 (Java boolean is 접두사 제거 방지)
     public VipStatusResponse vipStatus;   // 로그인/캐릭터 선택 시 VIP 상태 포함
     public List<ProgressInfo> progressList; // 튜토리얼 등 진행도 목록 (SpaceScene 진입 전 미리 확보용)
+    public string guestSecret;  // 게스트 신규/마이그레이션 발급 시에만 채워짐. 빈 값이면 클라 저장값 유지
 }
 
 [System.Serializable]
@@ -177,6 +179,7 @@ public class LinkGoogleRequest
 public class UnlinkGoogleResponse
 {
     public string guestId;  // 해제 후 게스트 복귀용 ID
+    public string guestSecret;  // 게스트 복귀용 신규 발급 secret
 }
 
 [System.Serializable]
@@ -275,14 +278,6 @@ public class ProgressListResponse
 
 #region Zone Battle Data Classes ##############################################################################
 [System.Serializable]
-public class StageEnemyFleetSpawnConfig
-{
-    public int fleetIndex;
-    public int positionIndex; // DataTableZone.fleetPositionPresets 참조 — 등장 시각은 zoneStage.spawnTerm * fleetIndex
-    public FleetInfo fleetInfo;
-}
-
-[System.Serializable]
 public class PvpClaimSeasonRewardRequest { }
 
 [System.Serializable]
@@ -309,7 +304,6 @@ public class EnterExplorationCellResponse
     public int zoneNumber;
     public int cellRow;
     public int cellCol;
-    public List<StageEnemyFleetSpawnConfig> enemyFleets;
     public string challengeToken; // 이 셀에 대해 발급된 1회용 클리어 챌린지 토큰 — ClearExplorationCellRequest에 그대로 실어 보내야 함
 }
 

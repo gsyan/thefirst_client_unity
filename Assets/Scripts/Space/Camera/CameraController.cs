@@ -376,9 +376,6 @@ public class CameraController : MonoSingleton<CameraController>
         // 3. 보간된 타겟 위치 기준으로 카메라 배치
         m_targetCamera.transform.position = m_interpolatedTargetPosition + rotatedOffset;
         m_targetCamera.transform.LookAt(m_interpolatedTargetPosition);
-
-        if (m_isGalaxyViewAnimating == true && m_isZoneRefocus == false && m_isEnteringGalaxy == false)
-            Debug.Log($"[DEBUG-EXIT] position={m_targetCamera.transform.position} interpolated={m_interpolatedTargetPosition} zoom={m_currentZoom} rotX={m_currentRotationX} rotY={m_currentRotationY}");
     }
 
     private bool m_inputEnabled = true;

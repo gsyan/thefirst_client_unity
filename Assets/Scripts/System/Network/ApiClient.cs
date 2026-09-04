@@ -53,6 +53,7 @@ public class ApiClient
 
     private string accessToken;
     private string refreshToken;
+    private string guestSecret;
 
     #region Core Methods ------------------------------------------------------------------------------------------
     public void SetAccessToken(string token)
@@ -94,6 +95,39 @@ public class ApiClient
         accessToken = "";
         refreshToken = "";
         PlayerPrefs.DeleteKey("RefreshToken");
+        PlayerPrefs.Save();
+    }
+
+    // 게스트 로그인 자격증명 — refreshToken과 동일한 기기 바인딩 암호화(EncryptToken/DecryptToken)를 재사용
+    public void SetGuestSecret(string secret)
+    {
+        guestSecret = secret;
+        PlayerPrefs.SetString("GuestSecret", EncryptToken(guestSecret));
+        PlayerPrefs.Save();
+    }
+
+    public string GetGuestSecret()
+    {
+        return guestSecret;
+    }
+
+    public void LoadGuestSecret()
+    {
+        string storedValue = PlayerPrefs.GetString("GuestSecret", "");
+        guestSecret = DecryptToken(storedValue);
+
+        bool bDecryptFailed = string.IsNullOrEmpty(storedValue) == false && string.IsNullOrEmpty(guestSecret) == true;
+        if (bDecryptFailed == true)
+        {
+            PlayerPrefs.DeleteKey("GuestSecret");
+            PlayerPrefs.Save();
+        }
+    }
+
+    public void ClearGuestSecret()
+    {
+        guestSecret = "";
+        PlayerPrefs.DeleteKey("GuestSecret");
         PlayerPrefs.Save();
     }
 
@@ -337,13 +371,17 @@ public class ApiClient
         return response;
     }
 
-    public async Task<ApiResponse<AuthResponse>> GuestLoginAsync(string guestId)
+    public async Task<ApiResponse<AuthResponse>> GuestLoginAsync(string guestId, string guestSecret)
     {
-        var requestDto = new GuestLoginRequest { guestId = guestId };
+        var requestDto = new GuestLoginRequest { guestId = guestId, guestSecret = guestSecret };
         var response = await PostAsync<AuthResponse>("/account/guest-login", requestDto, requireAuth: false);
 
         if (response.errorCode == 0)
+        {
             SetTokens(response.data.accessToken, response.data.refreshToken);
+            if (string.IsNullOrEmpty(response.data.guestSecret) == false)
+                SetGuestSecret(response.data.guestSecret);
+        }
 
         return response;
     }
