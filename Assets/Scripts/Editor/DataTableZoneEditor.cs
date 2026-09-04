@@ -129,17 +129,13 @@ public class DataTableZoneEditor : Editor
                 gridWidth             = oldZone != null ? oldZone.gridWidth             : 3,
                 gridHeight            = oldZone != null ? oldZone.gridHeight            : 3,
                 cellOverrides         = oldZone != null ? oldZone.cellOverrides         : new List<GridCellOverride>(),
-                enemyFleetsPerCell    = oldZone != null ? oldZone.enemyFleetsPerCell    : 1,
-                enemyBudget           = oldZone != null ? oldZone.enemyBudget           : 100,
-                enemyMaxCostOfOneShip = oldZone != null ? oldZone.enemyMaxCostOfOneShip : 100,
-                enemyDeviation        = oldZone != null ? oldZone.enemyDeviation        : 0,
-                enemyMaxShipsPerFleet = oldZone != null ? oldZone.enemyMaxShipsPerFleet : 5,
+                enemyHullTierSum                 = oldZone != null ? oldZone.enemyHullTierSum                 : 6,
+                enemyBaseHullTier                = oldZone != null ? oldZone.enemyBaseHullTier                : 3,
+                enemyModulePlacementProbability   = oldZone != null ? oldZone.enemyModulePlacementProbability   : 1f,
+                enemyModulePerformanceProbability = oldZone != null ? oldZone.enemyModulePerformanceProbability : 1f,
+                enemyShieldProbability = oldZone != null ? oldZone.enemyShieldProbability : 0f,
                 enemyHealthMultiplier = oldZone != null ? oldZone.enemyHealthMultiplier : 1f,
                 enemyAttackMultiplier = oldZone != null ? oldZone.enemyAttackMultiplier : 1f,
-                enemyBeamEquipSlots        = oldZone != null ? oldZone.enemyBeamEquipSlots        : 9,
-                enemyMissileEquipSlots     = oldZone != null ? oldZone.enemyMissileEquipSlots     : 9,
-                enemyHangarEquipSlots      = oldZone != null ? oldZone.enemyHangarEquipSlots      : 9,
-                enemyShieldEquipSlots      = oldZone != null ? oldZone.enemyShieldEquipSlots      : 9,
                 enemyInterceptorEquipSlots = oldZone != null ? oldZone.enemyInterceptorEquipSlots : 9,
                 explorationPointReward = oldZone != null ? oldZone.explorationPointReward : 0,
                 commanderExpReward     = oldZone != null ? oldZone.commanderExpReward     : 0,
@@ -212,20 +208,16 @@ public class DataTableZoneEditor : Editor
 
             int.TryParse(col[1], out zc.gridWidth);
             int.TryParse(col[2], out zc.gridHeight);
-            int.TryParse(col[3], out zc.enemyFleetsPerCell);
-            int.TryParse(col[4], out zc.enemyBudget);
-            int.TryParse(col[5], out zc.enemyMaxCostOfOneShip);
-            int.TryParse(col[6], out zc.enemyDeviation);
-            int.TryParse(col[7], out zc.enemyMaxShipsPerFleet);
+            int.TryParse(col[3], out zc.enemyHullTierSum);
+            int.TryParse(col[4], out zc.enemyBaseHullTier);
+            float.TryParse(col[5], out zc.enemyModulePlacementProbability);
+            float.TryParse(col[6], out zc.enemyModulePerformanceProbability);
+            float.TryParse(col[7], out zc.enemyShieldProbability);
             float.TryParse(col[8], out zc.enemyHealthMultiplier);
             float.TryParse(col[9], out zc.enemyAttackMultiplier);
-            int.TryParse(col[10], out zc.enemyBeamEquipSlots);
-            int.TryParse(col[11], out zc.enemyMissileEquipSlots);
-            int.TryParse(col[12], out zc.enemyHangarEquipSlots);
-            int.TryParse(col[13], out zc.enemyShieldEquipSlots);
-            int.TryParse(col[14], out zc.enemyInterceptorEquipSlots);
-            int.TryParse(col[15], out zc.explorationPointReward);
-            int.TryParse(col[16], out zc.commanderExpReward);
+            int.TryParse(col[10], out zc.enemyInterceptorEquipSlots);
+            int.TryParse(col[11], out zc.explorationPointReward);
+            int.TryParse(col[12], out zc.commanderExpReward);
         }
         EditorUtility.SetDirty(m_dataTableZone);
         AssetDatabase.Refresh();
@@ -809,18 +801,14 @@ public class DataTableZoneEditor : Editor
         DrawConnectivityCheck(zoneConfig);
 
         EditorGUILayout.Space(4);
-        EditorGUILayout.LabelField("셀 적함대 절차적 생성", EditorStyles.miniBoldLabel);
-        zoneConfig.enemyFleetsPerCell    = EditorGUILayout.IntField(new GUIContent("Fleets Per Cell",     "셀당 순차 웨이브 개수"),               zoneConfig.enemyFleetsPerCell);
-        zoneConfig.enemyBudget           = EditorGUILayout.IntField(new GUIContent("Enemy Budget",        "웨이브 1개의 지휘력 예산"),             zoneConfig.enemyBudget);
-        zoneConfig.enemyMaxCostOfOneShip = EditorGUILayout.IntField(new GUIContent("Enemy Max Cost Of One Ship", "웨이브에 편성 가능한 함선 1척의 fullEquipCost 상한"), zoneConfig.enemyMaxCostOfOneShip);
-        zoneConfig.enemyDeviation        = EditorGUILayout.IntField(new GUIContent("Enemy Deviation",     "Enemy Max Cost 랜덤 편차"),           zoneConfig.enemyDeviation);
-        zoneConfig.enemyMaxShipsPerFleet = EditorGUILayout.IntField(new GUIContent("Max Ships Per Fleet",  "웨이브 1개의 함선 수 상한"),            zoneConfig.enemyMaxShipsPerFleet);
+        EditorGUILayout.LabelField("셀 적함대 절차적 생성 (티어합 분배)", EditorStyles.miniBoldLabel);
+        zoneConfig.enemyHullTierSum = EditorGUILayout.IntField(new GUIContent("Hull Tier Sum", "이 셀 전체 함선들의 함체티어 총합 — 다 쓸 때까지 함선이 계속 생성되고, 9척마다 자동으로 새 함대(웨이브)로 나뉨"), zoneConfig.enemyHullTierSum);
+        zoneConfig.enemyBaseHullTier = EditorGUILayout.IntField(new GUIContent("Base Hull Tier", "각 함대 1번 함선(기함)의 함체 티어 — 남은 예산이 이보다 적으면 남은 만큼만 씀"), zoneConfig.enemyBaseHullTier);
+        zoneConfig.enemyModulePlacementProbability = EditorGUILayout.Slider(new GUIContent("Module Placement Probability", "함체가 가진 모듈 슬롯 하나하나마다 이 확률로 장착/미장착 결정(0~1)"), zoneConfig.enemyModulePlacementProbability, 0f, 1f);
+        zoneConfig.enemyModulePerformanceProbability = EditorGUILayout.Slider(new GUIContent("Module Performance Probability", "장착된 슬롯의 모듈 티어 범위 — max(1,함체티어*이값)~함체티어 사이 랜덤(1이면 항상 함체티어 그대로)"), zoneConfig.enemyModulePerformanceProbability, 0f, 1f);
+        zoneConfig.enemyShieldProbability = EditorGUILayout.Slider(new GUIContent("Shield Probability", "뽑힌 함체티어에 실드형(gen2) 버전이 있을 때 그걸 고를 확률(0~1)"), zoneConfig.enemyShieldProbability, 0f, 1f);
         zoneConfig.enemyHealthMultiplier = EditorGUILayout.FloatField(new GUIContent("Enemy Health Multiplier", "이 존 적함대 체력 배율 (0.1=10%, 1.0=원본)"), zoneConfig.enemyHealthMultiplier);
         zoneConfig.enemyAttackMultiplier = EditorGUILayout.FloatField(new GUIContent("Enemy Attack Multiplier", "이 존 적함대 공격력 배율 (0.1=10%, 1.0=원본)"), zoneConfig.enemyAttackMultiplier);
-        zoneConfig.enemyBeamEquipSlots        = EditorGUILayout.IntField(new GUIContent("Enemy Beam Equip Slots", "빔 슬롯 총 장착 목표 개수(기본 로드아웃 포함)"), zoneConfig.enemyBeamEquipSlots);
-        zoneConfig.enemyMissileEquipSlots     = EditorGUILayout.IntField(new GUIContent("Enemy Missile Equip Slots", "미사일 슬롯 총 장착 목표 개수"), zoneConfig.enemyMissileEquipSlots);
-        zoneConfig.enemyHangarEquipSlots      = EditorGUILayout.IntField(new GUIContent("Enemy Hangar Equip Slots", "함재기 슬롯 총 장착 목표 개수"), zoneConfig.enemyHangarEquipSlots);
-        zoneConfig.enemyShieldEquipSlots      = EditorGUILayout.IntField(new GUIContent("Enemy Shield Equip Slots", "실드 장착 여부 (0=미장착, 1 이상=장착)"), zoneConfig.enemyShieldEquipSlots);
         zoneConfig.enemyInterceptorEquipSlots = EditorGUILayout.IntField(new GUIContent("Enemy Interceptor Equip Slots", "요격체 장착 여부 (0=미장착, 1 이상=장착)"), zoneConfig.enemyInterceptorEquipSlots);
 
         EditorGUILayout.Space(4);
@@ -986,7 +974,7 @@ public class DataTableZoneEditor : Editor
 
         if (waves.Count == 0)
         {
-            EditorGUILayout.HelpBox("웨이브가 없습니다 (enemyFleetsPerCell=0이거나 함체 데이터가 비어있음).", MessageType.Info);
+            EditorGUILayout.HelpBox("웨이브가 없습니다 (enemyHullTierSum=0이거나 함체 데이터가 비어있음).", MessageType.Info);
             return;
         }
 
@@ -995,7 +983,6 @@ public class DataTableZoneEditor : Editor
             FleetInfo wave = waves[w];
             EditorGUILayout.LabelField($"웨이브 {w} — 함선 {wave.ships.Count}척", EditorStyles.miniBoldLabel);
 
-            int totalSpent = 0;
             for (int i = 0; i < wave.ships.Count; i++)
             {
                 ShipInfo ship = wave.ships[i];
@@ -1003,33 +990,18 @@ public class DataTableZoneEditor : Editor
                 int beamCount = modules != null && modules.beams != null ? modules.beams.Count : 0;
                 int missileCount = modules != null && modules.missiles != null ? modules.missiles.Count : 0;
                 int hangarCount = modules != null && modules.hangars != null ? modules.hangars.Count : 0;
+                bool hasShield = modules != null && string.IsNullOrEmpty(modules.shieldModuleSubType) == false;
 
-                ModuleData hullData = moduleTable.GetModuleDataFromTable(ship.hullSubType);
-                int hullCost = hullData != null ? hullData.statPoint : 0;
+                int hullTier = CommonUtility.ParseTier(ship.hullSubType);
+                int hullGen = CommonUtility.ParseGen(ship.hullSubType);
+                int moduleTier = beamCount > 0 && modules.beams[0] != null ? CommonUtility.ParseTier(modules.beams[0].moduleSubType)
+                    : missileCount > 0 && modules.missiles[0] != null ? CommonUtility.ParseTier(modules.missiles[0].moduleSubType)
+                    : hangarCount > 0 && modules.hangars[0] != null ? CommonUtility.ParseTier(modules.hangars[0].moduleSubType)
+                    : 0;
 
-                int modulesCost = SumModuleCost(moduleTable, modules != null ? modules.beams : null)
-                    + SumModuleCost(moduleTable, modules != null ? modules.missiles : null)
-                    + SumModuleCost(moduleTable, modules != null ? modules.hangars : null);
-                int shipCost = hullCost + modulesCost;
-                totalSpent += shipCost;
-
-                EditorGUILayout.LabelField($"  {ship.hullSubType} (hull={hullCost}, {(ship.isFront ? "전방" : "후방")}, 빔={beamCount}, 미사일={missileCount}, 격납고={hangarCount}, 지출={shipCost})");
+                EditorGUILayout.LabelField($"  {ship.hullSubType} (함티={hullTier}, gen={hullGen}, {(ship.isFront ? "전방" : "후방")}, 모티={moduleTier}, 빔={beamCount}, 미={missileCount}, 격={hangarCount}, 실={hasShield})");
             }
-
-            EditorGUILayout.LabelField($"  웨이브 총 지출: {totalSpent} / enemyBudget: {zoneConfig.enemyBudget}", EditorStyles.miniLabel);
         }
-    }
-
-    private static int SumModuleCost(DataTableModule moduleTable, List<ModuleInfo> modules)
-    {
-        if (modules == null) return 0;
-        int sum = 0;
-        for (int i = 0; i < modules.Count; i++)
-        {
-            ModuleData data = moduleTable.GetModuleDataFromTable(modules[i].moduleSubType);
-            sum += data != null ? data.statPoint : 0;
-        }
-        return sum;
     }
 
     // 버튼 자체를 해당 타입의 팔레트 색으로 칠함 — 별도 범례 없이 버튼 색이 곧 범례 역할. 활성 상태는 밝기 대신 외곽선으로 표시

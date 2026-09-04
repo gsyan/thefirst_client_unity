@@ -1,33 +1,37 @@
-// 셀별 적함대 절차적 생성 — (seed, row, col, fleetIndex) 조합이면 항상 같은 결과(결정론적, 공략 공유 가능)
+// 셀별 적함대 절차적 생성 — (seed, row, col) 조합이면 항상 같은 결과(결정론적, 공략 공유 가능)
 // 저장하지 않음: 그리드 진입 시 셀마다 즉석 계산 후 메모리 캐싱만 (Exploration_Grid_Implementation.md §7)
-// 서버 대응 구현: com.bk.sbs.util.ZoneEnemyFleetGenerator.java — 두 파일은 항상 함께 수정할 것
+// 클라 전용 — 서버는 이 데이터를 쓰지 않음(셀 타입 기반 hasCombatCell 판정만 서버에 별도로 있음, ExplorationService.java)
 //
-// 예산 소진 순서: (1) 함체(bodyCost, 함선마다 편차 새로 굴림) → (2) 남은 함대 예산으로 빔/미사일/격납고 라운드로빈 구매
-// → (3) 함선수 상한/예산 부족으로 루프가 끝나고도 남은 애매한 잔액을 1번 함선부터 다시 훑으며 흡수
+// 티어합 분배: 이 셀 전체가 함체티어합(enemyHullTierSum) 하나의 예산을 공유하며, 이 예산을 다 쓸 때까지 함선이 계속 생성됨
+// (종료 조건은 오직 "예산 소진"뿐 — 특정 함선의 티어가 낮다고 멈추지 않음). 함대는 포메이션 슬롯 수(k_maxShipsPerFleet)마다 자동으로 나뉘고,
+// 새 함대가 시작될 때마다 그 함대의 1번 함선(기함)은 다시 enemyBaseHullTier를 목표로 삼음(남은 예산이 그보다 적으면 남은 예산 전부를 씀 —
+// 이 경우 그 함대는 그 한 척으로 끝남). 그 함대의 2번 함선부터는 남은 예산에서 랜덤(1~min(남은예산,데이터 최대치,그 함대 자신의 기함 티어))
+// 만큼 나눠 가짐 — "그 함대 자신의 기함 티어"로 캡을 거는 이유는, 예산 부족으로 기함이 enemyBaseHullTier보다 낮게 확정된 함대에서도
+// 뒤 함선이 그 함대의 기함보다 세지지 않게 하기 위함.
+// 모듈(빔/미사일/격납고)은 독립 예산 없이 그 함선 자신의 함체티어에 종속 — 슬롯 하나하나마다 enemyModulePlacementProbability로 장착 여부를,
+// enemyModulePerformanceProbability로 [max(1,함체티어*이값) ~ 함체티어] 범위에서 모듈 티어를 굴림(1이면 항상 함체티어 그대로).
+// (예산 기반으로 하면 슬롯 수가 다른 함체끼리 "모듈티어 롤 1회=슬롯 전부 무료 적용"이 되어 슬롯 많은 함체가 상대적으로 이득 보는 문제가 있었음 — 슬롯 단위로 바꿔서 해결)
 using System.Collections.Generic;
 using System.Linq;
 
 public static class ExplorationEnemyFleetGenerator
 {
-    // 함선 하나를 만드는 동안 계속 누적되는 임시 상태 — 라운드로빈/잔액흡수 단계에서 공유
+    // 함대(웨이브) 1개의 최대 함선 수 — 포메이션 프리셋이 positionIndex 0~8(9개)만 정의함(FormationPresetGenerator.cs),
+    // 플레이어 커맨더 최대 함선수(DataTableCommander, datatable_commander.csv)도 9로 고정되어 있어 이 값과 맞춤
+    private const int k_maxShipsPerFleet = 9;
+
     private class BuildingShip
     {
         public ModuleData hull;
-        public int bodyCost;
-        public int defaultModuleCost; // 기본 로드아웃(빔1 등) 정가 합 — bodyCost와 별개로 예산에서 차감됨
         public List<ModuleInfo> beams = new List<ModuleInfo>();
         public List<ModuleInfo> missiles = new List<ModuleInfo>();
         public List<ModuleInfo> hangars = new List<ModuleInfo>();
-        public int[] maxSlots; // [beam, missile, hangar, shield, interceptor]
-        public int beamTarget;
-        public int missileTarget;
-        public int hangarTarget;
         public string shieldSubType = "";
         public string interceptorSubType = "";
     }
 
-    // 존별로 설정된 순차 웨이브(fleets) 전체 생성 — 웨이브 0번만 워프인 트리거가 연결되어 있고(전투 시스템 미구현),
-    // 나머지는 캐싱만 해두고 후속 전투 시스템에서 이어서 사용
+    // 셀 전체 함선을 한 번에 생성한 뒤 9척 단위로 잘라 여러 웨이브(함대)로 나눔 — 웨이브 0번만 워프인 트리거가 연결되어 있고
+    // (전투 시스템 미구현), 나머지는 캐싱만 해두고 후속 전투 시스템에서 이어서 사용
     public static List<FleetInfo> GenerateWaves(ZoneConfig zoneConfig, int seed, int row, int col, DataTableModule moduleTable)
     {
         List<FleetInfo> waves = new List<FleetInfo>();
@@ -35,299 +39,135 @@ public static class ExplorationEnemyFleetGenerator
         List<ModuleData> hulls = moduleTable != null ? moduleTable.HullModules.modules : null;
         if (hulls == null || hulls.Count == 0 || zoneConfig == null || moduleTable == null) return waves;
 
-        for (int fleetIndex = 0; fleetIndex < zoneConfig.enemyFleetsPerCell; fleetIndex++)
-            waves.Add(GenerateOneWave(seed, row, col, fleetIndex, hulls, zoneConfig, moduleTable));
+        List<BuildingShip> allShips = GenerateAllShips(seed, row, col, hulls, zoneConfig, moduleTable);
+
+        for (int i = 0; i < allShips.Count; i += k_maxShipsPerFleet)
+        {
+            int count = System.Math.Min(k_maxShipsPerFleet, allShips.Count - i);
+            waves.Add(FinalizeWave(allShips.GetRange(i, count)));
+        }
 
         return waves;
     }
 
-    // 구식 DataTableZoneEditor.GetBlockMaxTier와 동일 공식 — (row,col,fleetIndex,shipIndex) 결정론적, deviation만큼 costCap을 무작위로 낮춤
-    // shipIndex를 시드에 포함시켜 함선마다 편차가 다시 굴려지게 함 — 같은 함대예산이라도 판마다 척수/구성이 달라짐
-    private static int ResolveCostCap(int seed, int row, int col, int fleetIndex, int shipIndex, int maxCost, int deviation)
-    {
-        if (deviation <= 0) return maxCost;
-        CrossPlatformRandom random = new CrossPlatformRandom(seed ^ (row * 73856093) ^ (col * 19349663) ^ (fleetIndex * 83492791) ^ (shipIndex * 668265261));
-        return System.Math.Max(1, maxCost - random.Next(0, deviation + 1));
-    }
-
-    // 순수 바디 설치비(모듈 미포함) — hull(body ModuleData) 원본 statPoint
-    private static int ResolveBodyCost(ModuleData hull, DataTableModule moduleTable)
-    {
-        return hull != null ? hull.statPoint : 0;
-    }
-
-    // 기본 로드아웃(beam slot0=beam_1_1)을 상수 규칙으로 생성 — FleetComposition.BuildDefaultModules와 동일 규칙(전 함체 공통, 무기 티어는 함체와 독립적인 별도 축)
-    private static List<ModuleInfo> BuildDefaultModules()
-    {
-        List<ModuleInfo> result = new List<ModuleInfo>();
-        result.Add(new ModuleInfo { moduleType = EModuleType.beam, moduleSubType = "beam_1_1", slotIndex = 0 });
-        return result;
-    }
-
-    private static int SumDefaultModuleCost(List<ModuleInfo> defaultModules, DataTableModule moduleTable)
-    {
-        int sum = 0;
-        for (int i = 0; i < defaultModules.Count; i++)
-        {
-            ModuleData data = moduleTable.GetModuleDataFromTable(defaultModules[i].moduleSubType);
-            sum += data != null ? data.statPoint : 0;
-        }
-        return sum;
-    }
-
-    // 함체들 중 (bodyCost + 기본모듈 비용) 최솟값 — 함선 하나를 만드는 데 최소로 필요한 예산. 하드코딩하지 않고 데이터에서 매번 계산
-    private static int ResolveMinShipCost(List<ModuleData> hulls, DataTableModule moduleTable)
-    {
-        int minCost = int.MaxValue;
-        for (int i = 0; i < hulls.Count; i++)
-        {
-            int bodyCost = ResolveBodyCost(hulls[i], moduleTable);
-            int cost = bodyCost + SumDefaultModuleCost(BuildDefaultModules(), moduleTable);
-            if (cost < minCost) minCost = cost;
-        }
-        return minCost == int.MaxValue ? 0 : minCost;
-    }
-
-    private static FleetInfo GenerateOneWave(int seed, int row, int col, int fleetIndex,
+    private static List<BuildingShip> GenerateAllShips(int seed, int row, int col,
         List<ModuleData> hulls, ZoneConfig zoneConfig, DataTableModule moduleTable)
     {
-        CrossPlatformRandom random = new CrossPlatformRandom(seed ^ (row * 73856093) ^ (col * 19349663) ^ (fleetIndex * 83492791) ^ 0x5EED);
-        int minShipCost = ResolveMinShipCost(hulls, moduleTable);
+        CrossPlatformRandom random = new CrossPlatformRandom(seed ^ (row * 73856093) ^ (col * 19349663) ^ 0x5EED);
+
+        int maxHullTier = ResolveMaxAvailableTier(hulls);
 
         List<BuildingShip> ships = new List<BuildingShip>();
-        int remaining = zoneConfig.enemyBudget;
+        int remainingHullSum = zoneConfig.enemyHullTierSum;
+        int shipsInCurrentFleet = 0;
+        int currentFleetFlagshipTier = 0;
 
-        // 1) 메인 루프: 함선 단위로 순차 생성, 편차는 함선마다 새로 굴림
-        int shipIndex = 0;
-        while (remaining >= minShipCost && minShipCost > 0 && ships.Count < zoneConfig.enemyMaxShipsPerFleet - 1)
+        while (remainingHullSum > 0)
         {
-            int perShipCap = System.Math.Min(remaining, ResolveCostCap(seed, row, col, fleetIndex, shipIndex, zoneConfig.enemyMaxCostOfOneShip, zoneConfig.enemyDeviation));
-            BuildingShip ship = BuildOneShip(hulls, perShipCap, zoneConfig, moduleTable, random);
-            if (ship == null) break;
+            int hullTier;
+            if (shipsInCurrentFleet == 0)
+            {
+                // 새 함대 시작 — 그 함대의 기함 티어(남은 예산을 넘을 수 없음)
+                hullTier = System.Math.Min(System.Math.Min(zoneConfig.enemyBaseHullTier, maxHullTier), remainingHullSum);
+                currentFleetFlagshipTier = hullTier;
+            }
+            else
+            {
+                // 뒤 함선이 그 함대의 기함보다 세지지 않도록 currentFleetFlagshipTier로 상한을 씌움
+                int hullRollMax = System.Math.Min(System.Math.Min(remainingHullSum, maxHullTier), currentFleetFlagshipTier);
+                hullTier = random.Next(1, hullRollMax + 1);
+            }
 
-            int spent = ship.bodyCost + ship.defaultModuleCost;
-            int shipBudget = perShipCap - spent;
-            spent += FillRoundRobin(ship, shipBudget, moduleTable, random);
+            BuildingShip ship = BuildShipAtTier(hullTier, hulls, zoneConfig, moduleTable, random);
+            if (ship == null) break; // 해당 티어 함체 데이터 없음(설정 오류) — 생성 중단, 지금까지 만든 함선만 반환
 
-            remaining -= spent;
             ships.Add(ship);
-            shipIndex++;
+            remainingHullSum -= hullTier;
+            shipsInCurrentFleet++;
+            if (shipsInCurrentFleet >= k_maxShipsPerFleet) shipsInCurrentFleet = 0; // 다음 함선은 새 함대 시작
         }
 
-        // 2) 함선수 상한 때문에 루프가 끝났고 예산이 남았으면, 남은 예산에 가장 가깝게 맞는(낭비 최소) 함체로 마지막 한 척 확정
-        if (remaining >= minShipCost && minShipCost > 0 && ships.Count < zoneConfig.enemyMaxShipsPerFleet)
-        {
-            BuildingShip lastShip = BuildBestFitShip(hulls, remaining, zoneConfig, moduleTable);
-            if (lastShip != null)
-            {
-                int spent = lastShip.bodyCost + lastShip.defaultModuleCost;
-                int shipBudget = remaining - spent;
-                spent += FillRoundRobin(lastShip, shipBudget, moduleTable, random);
-                remaining -= spent;
-                ships.Add(lastShip);
-            }
-        }
-
-        if (ships.Count == 0 && hulls.Count > 0)
-            ships.Add(NewBuildingShip(hulls[0], zoneConfig, moduleTable)); // 폴백 — 구식 "grade=1" 폴백과 동일 의도
-
-        // 3) 잔액 흡수 — 1번 함선부터 순서대로 훑으며 남은 예산을 라운드로빈으로 마저 채움
-        remaining = AbsorbLeftover(ships, remaining, moduleTable, random);
-
-        return FinalizeWave(ships);
+        return ships;
     }
 
-    // 예산 상한(cap) 안에서 함체를 랜덤 선택 — 함체가 여러 등급이면 항상 제일 비싼 것만 고르지 않도록 랜덤 어포더블 방식 유지
-    private static BuildingShip BuildOneShip(List<ModuleData> hulls, int cap, ZoneConfig zoneConfig, DataTableModule moduleTable, CrossPlatformRandom random)
+    // 랜덤 롤 상한을 실제 데이터에 있는 최대 티어로 clamp — 티어합 설정이 데이터 범위(현재 1~14)를 넘어도
+    // 존재하지 않는 티어를 요청해 웨이브가 중간에 끊기는 일이 없도록 방지
+    private static int ResolveMaxAvailableTier(List<ModuleData> list)
     {
-        List<ModuleData> affordable = new List<ModuleData>();
-        for (int i = 0; i < hulls.Count; i++)
+        int max = 1;
+        for (int i = 0; i < list.Count; i++)
         {
-            int bodyCost = ResolveBodyCost(hulls[i], moduleTable);
-            int minCostForHull = bodyCost + SumDefaultModuleCost(BuildDefaultModules(), moduleTable);
-            if (bodyCost > 0 && minCostForHull <= cap)
-                affordable.Add(hulls[i]);
+            int tier = CommonUtility.ParseTier(list[i].moduleSubType);
+            if (tier > max) max = tier;
         }
-        if (affordable.Count == 0) return null;
-
-        ModuleData chosen = affordable[random.Next(affordable.Count)];
-        return NewBuildingShip(chosen, zoneConfig, moduleTable);
+        return max;
     }
 
-    // 남은 예산에 가장 가깝게 맞는(낭비 최소) 함체 — 마지막 한 척 확정용, 의도적으로 그리디
-    private static BuildingShip BuildBestFitShip(List<ModuleData> hulls, int cap, ZoneConfig zoneConfig, DataTableModule moduleTable)
+    private static BuildingShip BuildShipAtTier(int hullTier, List<ModuleData> hulls, ZoneConfig zoneConfig, DataTableModule moduleTable, CrossPlatformRandom random)
     {
-        ModuleData bestFit = null;
-        int bestFitBodyCost = 0;
-        for (int i = 0; i < hulls.Count; i++)
-        {
-            int bodyCost = ResolveBodyCost(hulls[i], moduleTable);
-            int minCostForHull = bodyCost + SumDefaultModuleCost(BuildDefaultModules(), moduleTable);
-            if (bodyCost > 0 && minCostForHull <= cap && (bestFit == null || bodyCost > bestFitBodyCost))
-            {
-                bestFit = hulls[i];
-                bestFitBodyCost = bodyCost;
-            }
-        }
-        return bestFit == null ? null : NewBuildingShip(bestFit, zoneConfig, moduleTable);
+        List<ModuleData> candidates = hulls.FindAll(h => CommonUtility.ParseTier(h.moduleSubType) == hullTier);
+        if (candidates.Count == 0) return null;
+
+        ModuleData chosenHull = ResolveHullByShieldProbability(candidates, zoneConfig.enemyShieldProbability, random);
+        return NewBuildingShip(chosenHull, hullTier, moduleTable, zoneConfig, random);
     }
 
-    private static BuildingShip NewBuildingShip(ModuleData hull, ZoneConfig zoneConfig, DataTableModule moduleTable)
+    // 후보 중 gen2(실드형)가 있으면 enemyShieldProbability 확률로 선택, 없으면(현재 CSV 기준 tier 1~5) gen1로 폴백.
+    // CrossPlatformRandom이 정수 전용 API라 확률을 10000분율 정수로 스케일링해서 비교
+    private static ModuleData ResolveHullByShieldProbability(List<ModuleData> candidates, float shieldProbability, CrossPlatformRandom random)
+    {
+        ModuleData gen1 = candidates.Find(h => CommonUtility.ParseGen(h.moduleSubType) == 1);
+        ModuleData gen2 = candidates.Find(h => CommonUtility.ParseGen(h.moduleSubType) == 2);
+        if (gen2 == null) return gen1 != null ? gen1 : candidates[0];
+        if (gen1 == null) return gen2;
+
+        int threshold = UnityEngine.Mathf.RoundToInt(shieldProbability * 10000f);
+        return random.Next(10000) < threshold ? gen2 : gen1;
+    }
+
+    private static BuildingShip NewBuildingShip(ModuleData hull, int hullTier, DataTableModule moduleTable, ZoneConfig zoneConfig, CrossPlatformRandom random)
     {
         BuildingShip ship = new BuildingShip();
         ship.hull = hull;
-        ship.bodyCost = ResolveBodyCost(hull, moduleTable);
-        ship.maxSlots = FleetComposition.ParseMaxSlotsFromHullSubType(hull.moduleSubType);
+        int[] maxSlots = FleetComposition.ParseMaxSlotsFromHullSubType(hull.moduleSubType); // [beam, missile, hangar, shield, interceptor]
 
-        List<ModuleInfo> defaultModules = BuildDefaultModules();
-        ship.defaultModuleCost = SumDefaultModuleCost(defaultModules, moduleTable);
-        for (int i = 0; i < defaultModules.Count; i++)
-            AddToCategory(ship, defaultModules[i].moduleType, defaultModules[i]);
+        FillSlotsBySlotChance(ship.beams, EModuleType.beam, moduleTable.BeamModules, hullTier, maxSlots[0], zoneConfig, random);
+        FillSlotsBySlotChance(ship.missiles, EModuleType.missile, moduleTable.MissileModules, hullTier, maxSlots[1], zoneConfig, random);
+        FillSlotsBySlotChance(ship.hangars, EModuleType.hangar, moduleTable.HangarModules, hullTier, maxSlots[2], zoneConfig, random);
 
-        ship.beamTarget    = System.Math.Min(zoneConfig.enemyBeamEquipSlots, ship.maxSlots[0]);
-        ship.missileTarget = System.Math.Min(zoneConfig.enemyMissileEquipSlots, ship.maxSlots[1]);
-        ship.hangarTarget  = System.Math.Min(zoneConfig.enemyHangarEquipSlots, ship.maxSlots[2]);
+        // 배치확률이 낮으면 슬롯 전부가 미장착으로 굴러 공격수단이 하나도 없는 함선이 나올 수 있음 —
+        // 최소한의 전투력 보장을 위해 그럴 땐 빔 슬롯 0번만은 배치확률 체크 없이 강제 장착(티어는 enemyModulePerformanceProbability를 그대로 적용)
+        if (ship.beams.Count == 0 && ship.missiles.Count == 0 && ship.hangars.Count == 0 && maxSlots[0] > 0)
+            TryEquipModuleAtSlot(ship.beams, EModuleType.beam, moduleTable.BeamModules, hullTier, 0, zoneConfig, random);
 
-        // 실드/인터셉터 — 슬롯 1개뿐이라 "장착 여부"만 존재. 클라이언트가 실제로 소비(스탯 반영/스폰)하는 로직은 아직 없음 — 후속 작업
-        ship.shieldSubType = ship.maxSlots[3] > 0 && zoneConfig.enemyShieldEquipSlots > 0 ? "shield_1_1" : "";
-        ship.interceptorSubType = ship.maxSlots[4] > 0 && zoneConfig.enemyInterceptorEquipSlots > 0 ? "interceptor_1_1" : "";
+        // 실드는 함체 gen 선택으로 이미 유무가 결정됨(슬롯 있으면 항상 장착) — 인터셉터는 이번 개편 범위 밖, 기존 0/1 스위치 그대로 유지
+        ship.shieldSubType = maxSlots[3] > 0 ? "shield_1_1" : "";
+        ship.interceptorSubType = maxSlots[4] > 0 && zoneConfig.enemyInterceptorEquipSlots > 0 ? "interceptor_1_1" : "";
         return ship;
     }
 
-    // shipBudget(이 함선에 배정된 여유분) 한도로, 빔→미사일→격납고 순서로 한 슬롯씩 라운드로빈 구매. 실제 소비한 총액을 반환.
-    private static int FillRoundRobin(BuildingShip ship, int shipBudget, DataTableModule moduleTable, CrossPlatformRandom random)
+    // 슬롯 하나하나마다: enemyModulePlacementProbability로 장착 여부를, 장착이 확정되면 enemyModulePerformanceProbability로
+    // [max(1, 함체티어*이값) ~ 함체티어] 범위에서 모듈 티어를 굴려 그 카테고리 데이터를 찾아 채움(모듈은 그 함선 자신의 함체티어에 종속, 별도 예산 없음)
+    private static void FillSlotsBySlotChance(List<ModuleInfo> list, EModuleType type, ModuleDataList categoryModules, int hullTier, int slotCount, ZoneConfig zoneConfig, CrossPlatformRandom random)
     {
-        int spent = 0;
-        bool progressed = true;
-        while (progressed && spent < shipBudget)
-        {
-            progressed = false;
-            for (int c = 0; c < 3; c++)
-            {
-                EModuleType category = c == 0 ? EModuleType.beam : c == 1 ? EModuleType.missile : EModuleType.hangar;
-                if (HasSlotRoom(ship, category) == false) continue;
-                int cost = TryEquipOneModule(ship, category, shipBudget - spent, moduleTable, random);
-                if (cost > 0)
-                {
-                    spent += cost;
-                    progressed = true;
-                }
-            }
-        }
-        return spent;
-    }
+        int placementThreshold = UnityEngine.Mathf.RoundToInt(zoneConfig.enemyModulePlacementProbability * 10000f);
 
-    // 메인 루프/마지막 척으로도 다 못 쓴 함대 예산을 1번 함선부터 순서대로 훑으며 흡수 — 한 척에만 몰아주지 않음
-    private static int AbsorbLeftover(List<BuildingShip> ships, int remaining, DataTableModule moduleTable, CrossPlatformRandom random)
-    {
-        bool progressed = true;
-        while (remaining > 0 && progressed)
+        for (int i = 0; i < slotCount; i++)
         {
-            progressed = false;
-            for (int s = 0; s < ships.Count; s++)
-            {
-                BuildingShip ship = ships[s];
-                for (int c = 0; c < 3; c++)
-                {
-                    EModuleType category = c == 0 ? EModuleType.beam : c == 1 ? EModuleType.missile : EModuleType.hangar;
-                    if (HasSlotRoom(ship, category) == false) continue;
-                    int cost = TryEquipOneModule(ship, category, remaining, moduleTable, random);
-                    if (cost > 0)
-                    {
-                        remaining -= cost;
-                        progressed = true;
-                    }
-                }
-            }
-        }
-        return remaining;
-    }
-
-    private static bool HasSlotRoom(BuildingShip ship, EModuleType category)
-    {
-        switch (category)
-        {
-            case EModuleType.beam: return ship.beams.Count < ship.beamTarget;
-            case EModuleType.missile: return ship.missiles.Count < ship.missileTarget;
-            case EModuleType.hangar: return ship.hangars.Count < ship.hangarTarget;
-            default: return false;
+            if (random.Next(10000) >= placementThreshold) continue; // 이 슬롯은 미장착으로 확정
+            TryEquipModuleAtSlot(list, type, categoryModules, hullTier, i, zoneConfig, random);
         }
     }
 
-    // 해당 카테고리에서 budget 이하로 살 수 있는 서브타입 중 랜덤 선택해 장착 — 지금은 t1 하나뿐이라 결과는 동일하지만,
-    // 나중에 모듈 등급이 늘어도 함체 선택과 동일한 "랜덤 어포더블" 패턴이라 코드 변경 없이 등급이 섞임. 반환값 0 = 못 삼
-    private static int TryEquipOneModule(BuildingShip ship, EModuleType category, int budget, DataTableModule moduleTable, CrossPlatformRandom random)
+    // enemyModulePerformanceProbability로 [max(1, 함체티어*이값) ~ 함체티어] 범위에서 모듈 티어를 굴려 슬롯 하나를 채움(배치확률 체크 없이 바로 장착 시도)
+    private static void TryEquipModuleAtSlot(List<ModuleInfo> list, EModuleType type, ModuleDataList categoryModules, int hullTier, int slotIndex, ZoneConfig zoneConfig, CrossPlatformRandom random)
     {
-        ModuleDataList categoryModules = category == EModuleType.beam ? moduleTable.BeamModules
-            : category == EModuleType.missile ? moduleTable.MissileModules
-            : moduleTable.HangarModules;
+        int lowerTier = System.Math.Max(1, UnityEngine.Mathf.RoundToInt(hullTier * zoneConfig.enemyModulePerformanceProbability));
+        int tier = random.Next(lowerTier, hullTier + 1);
+        ModuleData data = categoryModules.Find(d => CommonUtility.ParseTier(d.moduleSubType) == tier);
+        if (data == null) return; // 해당 티어 모듈 데이터 없음 — 이 슬롯만 자연스럽게 빈 채로 스킵
 
-        List<ModuleData> candidates = new List<ModuleData>();
-        for (int i = 0; i < categoryModules.Count; i++)
-        {
-            ModuleData data = categoryModules[i];
-            if (data.statPoint > 0 && data.statPoint <= budget && IsAlreadyEquipped(ship, category, data.moduleSubType) == false)
-                candidates.Add(data);
-        }
-        if (candidates.Count == 0) return 0;
-
-        ModuleData chosen = candidates[random.Next(candidates.Count)];
-        int slotIndex = NextFreeSlotIndex(ship, category);
-        AddToCategory(ship, category, new ModuleInfo { moduleType = category, moduleSubType = chosen.moduleSubType, slotIndex = slotIndex });
-        return chosen.statPoint;
-    }
-
-    // 같은 슬롯 인덱스 중복 방지용 — 물리 슬롯 수(maxSlots)를 넘지 않는 범위에서 비어있는 가장 낮은 인덱스
-    private static int NextFreeSlotIndex(BuildingShip ship, EModuleType category)
-    {
-        List<ModuleInfo> list = CategoryList(ship, category);
-        int maxSlotCount = ship.maxSlots[CategoryOrdinal(category)];
-        bool[] used = new bool[maxSlotCount];
-        for (int i = 0; i < list.Count; i++)
-            if (list[i].slotIndex >= 0 && list[i].slotIndex < used.Length) used[list[i].slotIndex] = true;
-        for (int i = 0; i < used.Length; i++)
-            if (used[i] == false) return i;
-        return list.Count;
-    }
-
-    private static bool IsAlreadyEquipped(BuildingShip ship, EModuleType category, string subType)
-    {
-        List<ModuleInfo> list = CategoryList(ship, category);
-        for (int i = 0; i < list.Count; i++)
-            if (list[i].moduleSubType == subType) return true;
-        return false;
-    }
-
-    private static int CategoryOrdinal(EModuleType category)
-    {
-        switch (category)
-        {
-            case EModuleType.beam: return 0;
-            case EModuleType.missile: return 1;
-            case EModuleType.hangar: return 2;
-            default: return 0;
-        }
-    }
-
-    private static List<ModuleInfo> CategoryList(BuildingShip ship, EModuleType category)
-    {
-        switch (category)
-        {
-            case EModuleType.beam: return ship.beams;
-            case EModuleType.missile: return ship.missiles;
-            case EModuleType.hangar: return ship.hangars;
-            default: return new List<ModuleInfo>();
-        }
-    }
-
-    private static void AddToCategory(BuildingShip ship, EModuleType moduleType, ModuleInfo info)
-    {
-        switch (moduleType)
-        {
-            case EModuleType.beam: ship.beams.Add(info); break;
-            case EModuleType.missile: ship.missiles.Add(info); break;
-            case EModuleType.hangar: ship.hangars.Add(info); break;
-        }
+        list.Add(new ModuleInfo { moduleType = type, moduleSubType = data.moduleSubType, slotIndex = slotIndex });
     }
 
     // 장착 모듈 개수 내림차순으로 정렬해 절반은 전방/절반은 후방 — 반드시 안정 정렬(OrderByDescending)만 사용할 것(List.Sort는 불안정 정렬이라 서버와 어긋날 수 있음)

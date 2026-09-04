@@ -65,17 +65,13 @@ MonoBehaviour:
       col: 2
       type: 2
       eventType: 0
-    enemyFleetsPerCell: 1
-    enemyBudget: 120
-    enemyMaxCostOfOneShip: 120
-    enemyDeviation: 0
-    enemyMaxShipsPerFleet: 5
+    enemyHullTierSum: 1
+    enemyBaseHullTier: 1
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
+    enemyShieldProbability: 0.1
     enemyHealthMultiplier: 0.3
     enemyAttackMultiplier: 0.1
-    enemyBeamEquipSlots: 9
-    enemyMissileEquipSlots: 9
-    enemyHangarEquipSlots: 9
-    enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
@@ -131,17 +127,13 @@ MonoBehaviour:
       col: 0
       type: 2
       eventType: 0
-    enemyFleetsPerCell: 1
-    enemyBudget: 120
-    enemyMaxCostOfOneShip: 120
-    enemyDeviation: 0
-    enemyMaxShipsPerFleet: 5
+    enemyHullTierSum: 1
+    enemyBaseHullTier: 1
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
+    enemyShieldProbability: 0.1
     enemyHealthMultiplier: 0.4
     enemyAttackMultiplier: 0.2
-    enemyBeamEquipSlots: 9
-    enemyMissileEquipSlots: 9
-    enemyHangarEquipSlots: 9
-    enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
@@ -197,17 +189,13 @@ MonoBehaviour:
       col: 0
       type: 2
       eventType: 0
-    enemyFleetsPerCell: 1
-    enemyBudget: 120
-    enemyMaxCostOfOneShip: 120
-    enemyDeviation: 0
-    enemyMaxShipsPerFleet: 5
+    enemyHullTierSum: 2
+    enemyBaseHullTier: 2
+    enemyModulePlacementProbability: 0.5
+    enemyModulePerformanceProbability: 0.5
+    enemyShieldProbability: 0.1
     enemyHealthMultiplier: 0.5
     enemyAttackMultiplier: 0.3
-    enemyBeamEquipSlots: 9
-    enemyMissileEquipSlots: 9
-    enemyHangarEquipSlots: 9
-    enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
@@ -263,17 +251,13 @@ MonoBehaviour:
       col: 1
       type: 2
       eventType: 0
-    enemyFleetsPerCell: 1
-    enemyBudget: 120
-    enemyMaxCostOfOneShip: 120
-    enemyDeviation: 0
-    enemyMaxShipsPerFleet: 5
+    enemyHullTierSum: 2
+    enemyBaseHullTier: 2
+    enemyModulePlacementProbability: 0.8
+    enemyModulePerformanceProbability: 0.8
+    enemyShieldProbability: 0.1
     enemyHealthMultiplier: 0.6
     enemyAttackMultiplier: 0.4
-    enemyBeamEquipSlots: 9
-    enemyMissileEquipSlots: 9
-    enemyHangarEquipSlots: 9
-    enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
@@ -337,17 +321,13 @@ MonoBehaviour:
       col: 4
       type: 3
       eventType: 0
-    enemyFleetsPerCell: 1
-    enemyBudget: 120
-    enemyMaxCostOfOneShip: 120
-    enemyDeviation: 100
-    enemyMaxShipsPerFleet: 5
+    enemyHullTierSum: 3
+    enemyBaseHullTier: 2
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
+    enemyShieldProbability: 0.1
     enemyHealthMultiplier: 0.7
     enemyAttackMultiplier: 0.5
-    enemyBeamEquipSlots: 9
-    enemyMissileEquipSlots: 9
-    enemyHangarEquipSlots: 9
-    enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
@@ -411,17 +391,13 @@ MonoBehaviour:
       col: 3
       type: 3
       eventType: 0
-    enemyFleetsPerCell: 1
-    enemyBudget: 120
-    enemyMaxCostOfOneShip: 120
-    enemyDeviation: 100
-    enemyMaxShipsPerFleet: 5
+    enemyHullTierSum: 4
+    enemyBaseHullTier: 3
+    enemyModulePlacementProbability: 0.5
+    enemyModulePerformanceProbability: 0.5
+    enemyShieldProbability: 0.1
     enemyHealthMultiplier: 0.8
     enemyAttackMultiplier: 0.6
-    enemyBeamEquipSlots: 9
-    enemyMissileEquipSlots: 9
-    enemyHangarEquipSlots: 9
-    enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
@@ -485,17 +461,13 @@ MonoBehaviour:
       col: 4
       type: 3
       eventType: 0
-    enemyFleetsPerCell: 1
-    enemyBudget: 120
-    enemyMaxCostOfOneShip: 120
-    enemyDeviation: 100
-    enemyMaxShipsPerFleet: 5
+    enemyHullTierSum: 5
+    enemyBaseHullTier: 3
+    enemyModulePlacementProbability: 0.7
+    enemyModulePerformanceProbability: 0.7
+    enemyShieldProbability: 0.1
     enemyHealthMultiplier: 0.9
     enemyAttackMultiplier: 0.7
-    enemyBeamEquipSlots: 9
-    enemyMissileEquipSlots: 9
-    enemyHangarEquipSlots: 9
-    enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
@@ -559,17 +531,13 @@ MonoBehaviour:
       col: 3
       type: 3
       eventType: 0
-    enemyFleetsPerCell: 1
-    enemyBudget: 120
-    enemyMaxCostOfOneShip: 120
-    enemyDeviation: 100
-    enemyMaxShipsPerFleet: 5
+    enemyHullTierSum: 6
+    enemyBaseHullTier: 3
+    enemyModulePlacementProbability: 0.9
+    enemyModulePerformanceProbability: 0.9
+    enemyShieldProbability: 0.1
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 0.8
-    enemyBeamEquipSlots: 9
-    enemyMissileEquipSlots: 9
-    enemyHangarEquipSlots: 9
-    enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
@@ -633,17 +601,13 @@ MonoBehaviour:
       col: 0
       type: 3
       eventType: 0
-    enemyFleetsPerCell: 1
-    enemyBudget: 120
-    enemyMaxCostOfOneShip: 120
-    enemyDeviation: 100
-    enemyMaxShipsPerFleet: 5
+    enemyHullTierSum: 7
+    enemyBaseHullTier: 3
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
+    enemyShieldProbability: 0.1
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 0.9
-    enemyBeamEquipSlots: 9
-    enemyMissileEquipSlots: 9
-    enemyHangarEquipSlots: 9
-    enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
@@ -707,17 +671,13 @@ MonoBehaviour:
       col: 1
       type: 3
       eventType: 0
-    enemyFleetsPerCell: 1
-    enemyBudget: 120
-    enemyMaxCostOfOneShip: 120
-    enemyDeviation: 100
-    enemyMaxShipsPerFleet: 5
+    enemyHullTierSum: 8
+    enemyBaseHullTier: 4
+    enemyModulePlacementProbability: 0.5
+    enemyModulePerformanceProbability: 0.5
+    enemyShieldProbability: 0.1
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyBeamEquipSlots: 9
-    enemyMissileEquipSlots: 9
-    enemyHangarEquipSlots: 9
-    enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
@@ -781,17 +741,13 @@ MonoBehaviour:
       col: 4
       type: 3
       eventType: 0
-    enemyFleetsPerCell: 1
-    enemyBudget: 240
-    enemyMaxCostOfOneShip: 240
-    enemyDeviation: 100
-    enemyMaxShipsPerFleet: 5
+    enemyHullTierSum: 9
+    enemyBaseHullTier: 4
+    enemyModulePlacementProbability: 0.7
+    enemyModulePerformanceProbability: 0.7
+    enemyShieldProbability: 0.1
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyBeamEquipSlots: 9
-    enemyMissileEquipSlots: 9
-    enemyHangarEquipSlots: 9
-    enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
@@ -855,17 +811,13 @@ MonoBehaviour:
       col: 0
       type: 3
       eventType: 0
-    enemyFleetsPerCell: 1
-    enemyBudget: 240
-    enemyMaxCostOfOneShip: 240
-    enemyDeviation: 100
-    enemyMaxShipsPerFleet: 5
+    enemyHullTierSum: 10
+    enemyBaseHullTier: 4
+    enemyModulePlacementProbability: 0.9
+    enemyModulePerformanceProbability: 0.9
+    enemyShieldProbability: 0.1
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyBeamEquipSlots: 9
-    enemyMissileEquipSlots: 9
-    enemyHangarEquipSlots: 9
-    enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
@@ -929,17 +881,13 @@ MonoBehaviour:
       col: 2
       type: 3
       eventType: 0
-    enemyFleetsPerCell: 1
-    enemyBudget: 240
-    enemyMaxCostOfOneShip: 240
-    enemyDeviation: 100
-    enemyMaxShipsPerFleet: 5
+    enemyHullTierSum: 11
+    enemyBaseHullTier: 4
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
+    enemyShieldProbability: 0.1
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyBeamEquipSlots: 9
-    enemyMissileEquipSlots: 9
-    enemyHangarEquipSlots: 9
-    enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
@@ -1003,17 +951,13 @@ MonoBehaviour:
       col: 0
       type: 3
       eventType: 0
-    enemyFleetsPerCell: 1
-    enemyBudget: 240
-    enemyMaxCostOfOneShip: 240
-    enemyDeviation: 100
-    enemyMaxShipsPerFleet: 5
+    enemyHullTierSum: 12
+    enemyBaseHullTier: 5
+    enemyModulePlacementProbability: 0.5
+    enemyModulePerformanceProbability: 0.5
+    enemyShieldProbability: 0.1
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyBeamEquipSlots: 9
-    enemyMissileEquipSlots: 9
-    enemyHangarEquipSlots: 9
-    enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
@@ -1077,17 +1021,13 @@ MonoBehaviour:
       col: 0
       type: 3
       eventType: 0
-    enemyFleetsPerCell: 1
-    enemyBudget: 240
-    enemyMaxCostOfOneShip: 240
-    enemyDeviation: 100
-    enemyMaxShipsPerFleet: 5
+    enemyHullTierSum: 13
+    enemyBaseHullTier: 5
+    enemyModulePlacementProbability: 0.7
+    enemyModulePerformanceProbability: 0.7
+    enemyShieldProbability: 0.1
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyBeamEquipSlots: 9
-    enemyMissileEquipSlots: 9
-    enemyHangarEquipSlots: 9
-    enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
@@ -1151,17 +1091,13 @@ MonoBehaviour:
       col: 3
       type: 3
       eventType: 0
-    enemyFleetsPerCell: 1
-    enemyBudget: 240
-    enemyMaxCostOfOneShip: 240
-    enemyDeviation: 100
-    enemyMaxShipsPerFleet: 5
+    enemyHullTierSum: 14
+    enemyBaseHullTier: 5
+    enemyModulePlacementProbability: 0.9
+    enemyModulePerformanceProbability: 0.9
+    enemyShieldProbability: 0.1
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyBeamEquipSlots: 9
-    enemyMissileEquipSlots: 9
-    enemyHangarEquipSlots: 9
-    enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
@@ -1225,17 +1161,13 @@ MonoBehaviour:
       col: 3
       type: 3
       eventType: 0
-    enemyFleetsPerCell: 1
-    enemyBudget: 240
-    enemyMaxCostOfOneShip: 240
-    enemyDeviation: 100
-    enemyMaxShipsPerFleet: 5
+    enemyHullTierSum: 15
+    enemyBaseHullTier: 5
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
+    enemyShieldProbability: 0.1
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyBeamEquipSlots: 9
-    enemyMissileEquipSlots: 9
-    enemyHangarEquipSlots: 9
-    enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
@@ -1299,17 +1231,13 @@ MonoBehaviour:
       col: 3
       type: 3
       eventType: 0
-    enemyFleetsPerCell: 1
-    enemyBudget: 240
-    enemyMaxCostOfOneShip: 240
-    enemyDeviation: 100
-    enemyMaxShipsPerFleet: 5
+    enemyHullTierSum: 16
+    enemyBaseHullTier: 6
+    enemyModulePlacementProbability: 0.5
+    enemyModulePerformanceProbability: 0.5
+    enemyShieldProbability: 0.1
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyBeamEquipSlots: 9
-    enemyMissileEquipSlots: 9
-    enemyHangarEquipSlots: 9
-    enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
@@ -1373,17 +1301,13 @@ MonoBehaviour:
       col: 4
       type: 3
       eventType: 0
-    enemyFleetsPerCell: 1
-    enemyBudget: 240
-    enemyMaxCostOfOneShip: 240
-    enemyDeviation: 100
-    enemyMaxShipsPerFleet: 5
+    enemyHullTierSum: 17
+    enemyBaseHullTier: 6
+    enemyModulePlacementProbability: 0.7
+    enemyModulePerformanceProbability: 0.7
+    enemyShieldProbability: 0.1
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyBeamEquipSlots: 9
-    enemyMissileEquipSlots: 9
-    enemyHangarEquipSlots: 9
-    enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
@@ -1447,17 +1371,13 @@ MonoBehaviour:
       col: 3
       type: 3
       eventType: 0
-    enemyFleetsPerCell: 1
-    enemyBudget: 240
-    enemyMaxCostOfOneShip: 240
-    enemyDeviation: 100
-    enemyMaxShipsPerFleet: 5
+    enemyHullTierSum: 18
+    enemyBaseHullTier: 6
+    enemyModulePlacementProbability: 0.9
+    enemyModulePerformanceProbability: 0.9
+    enemyShieldProbability: 0.1
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyBeamEquipSlots: 9
-    enemyMissileEquipSlots: 9
-    enemyHangarEquipSlots: 9
-    enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
@@ -1521,17 +1441,13 @@ MonoBehaviour:
       col: 1
       type: 3
       eventType: 0
-    enemyFleetsPerCell: 1
-    enemyBudget: 360
-    enemyMaxCostOfOneShip: 240
-    enemyDeviation: 100
-    enemyMaxShipsPerFleet: 5
+    enemyHullTierSum: 19
+    enemyBaseHullTier: 6
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
+    enemyShieldProbability: 0.1
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyBeamEquipSlots: 9
-    enemyMissileEquipSlots: 9
-    enemyHangarEquipSlots: 9
-    enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
@@ -1595,17 +1511,13 @@ MonoBehaviour:
       col: 1
       type: 3
       eventType: 0
-    enemyFleetsPerCell: 1
-    enemyBudget: 360
-    enemyMaxCostOfOneShip: 240
-    enemyDeviation: 100
-    enemyMaxShipsPerFleet: 5
+    enemyHullTierSum: 20
+    enemyBaseHullTier: 7
+    enemyModulePlacementProbability: 0.5
+    enemyModulePerformanceProbability: 0.5
+    enemyShieldProbability: 0.1
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyBeamEquipSlots: 9
-    enemyMissileEquipSlots: 9
-    enemyHangarEquipSlots: 9
-    enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
@@ -1669,17 +1581,13 @@ MonoBehaviour:
       col: 3
       type: 3
       eventType: 0
-    enemyFleetsPerCell: 1
-    enemyBudget: 360
-    enemyMaxCostOfOneShip: 240
-    enemyDeviation: 100
-    enemyMaxShipsPerFleet: 5
+    enemyHullTierSum: 21
+    enemyBaseHullTier: 7
+    enemyModulePlacementProbability: 0.7
+    enemyModulePerformanceProbability: 0.7
+    enemyShieldProbability: 0.1
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyBeamEquipSlots: 9
-    enemyMissileEquipSlots: 9
-    enemyHangarEquipSlots: 9
-    enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
@@ -1743,17 +1651,13 @@ MonoBehaviour:
       col: 1
       type: 3
       eventType: 0
-    enemyFleetsPerCell: 1
-    enemyBudget: 360
-    enemyMaxCostOfOneShip: 240
-    enemyDeviation: 100
-    enemyMaxShipsPerFleet: 5
+    enemyHullTierSum: 22
+    enemyBaseHullTier: 7
+    enemyModulePlacementProbability: 0.9
+    enemyModulePerformanceProbability: 0.9
+    enemyShieldProbability: 0.1
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyBeamEquipSlots: 9
-    enemyMissileEquipSlots: 9
-    enemyHangarEquipSlots: 9
-    enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
@@ -1817,17 +1721,13 @@ MonoBehaviour:
       col: 4
       type: 3
       eventType: 0
-    enemyFleetsPerCell: 1
-    enemyBudget: 360
-    enemyMaxCostOfOneShip: 240
-    enemyDeviation: 100
-    enemyMaxShipsPerFleet: 5
+    enemyHullTierSum: 23
+    enemyBaseHullTier: 7
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
+    enemyShieldProbability: 0.1
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyBeamEquipSlots: 9
-    enemyMissileEquipSlots: 9
-    enemyHangarEquipSlots: 9
-    enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
@@ -1891,17 +1791,13 @@ MonoBehaviour:
       col: 4
       type: 3
       eventType: 0
-    enemyFleetsPerCell: 1
-    enemyBudget: 360
-    enemyMaxCostOfOneShip: 240
-    enemyDeviation: 100
-    enemyMaxShipsPerFleet: 5
+    enemyHullTierSum: 24
+    enemyBaseHullTier: 8
+    enemyModulePlacementProbability: 0.5
+    enemyModulePerformanceProbability: 0.5
+    enemyShieldProbability: 0.1
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyBeamEquipSlots: 9
-    enemyMissileEquipSlots: 9
-    enemyHangarEquipSlots: 9
-    enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
@@ -1965,17 +1861,13 @@ MonoBehaviour:
       col: 1
       type: 3
       eventType: 0
-    enemyFleetsPerCell: 1
-    enemyBudget: 360
-    enemyMaxCostOfOneShip: 240
-    enemyDeviation: 100
-    enemyMaxShipsPerFleet: 5
+    enemyHullTierSum: 25
+    enemyBaseHullTier: 8
+    enemyModulePlacementProbability: 0.7
+    enemyModulePerformanceProbability: 0.7
+    enemyShieldProbability: 0.1
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyBeamEquipSlots: 9
-    enemyMissileEquipSlots: 9
-    enemyHangarEquipSlots: 9
-    enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
@@ -2039,17 +1931,13 @@ MonoBehaviour:
       col: 4
       type: 3
       eventType: 0
-    enemyFleetsPerCell: 1
-    enemyBudget: 360
-    enemyMaxCostOfOneShip: 240
-    enemyDeviation: 100
-    enemyMaxShipsPerFleet: 5
+    enemyHullTierSum: 26
+    enemyBaseHullTier: 8
+    enemyModulePlacementProbability: 0.9
+    enemyModulePerformanceProbability: 0.9
+    enemyShieldProbability: 0.1
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyBeamEquipSlots: 9
-    enemyMissileEquipSlots: 9
-    enemyHangarEquipSlots: 9
-    enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
@@ -2113,17 +2001,13 @@ MonoBehaviour:
       col: 1
       type: 3
       eventType: 0
-    enemyFleetsPerCell: 1
-    enemyBudget: 360
-    enemyMaxCostOfOneShip: 240
-    enemyDeviation: 100
-    enemyMaxShipsPerFleet: 5
+    enemyHullTierSum: 27
+    enemyBaseHullTier: 8
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
+    enemyShieldProbability: 0.1
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyBeamEquipSlots: 9
-    enemyMissileEquipSlots: 9
-    enemyHangarEquipSlots: 9
-    enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
@@ -2187,17 +2071,13 @@ MonoBehaviour:
       col: 2
       type: 3
       eventType: 0
-    enemyFleetsPerCell: 1
-    enemyBudget: 360
-    enemyMaxCostOfOneShip: 240
-    enemyDeviation: 100
-    enemyMaxShipsPerFleet: 5
+    enemyHullTierSum: 28
+    enemyBaseHullTier: 9
+    enemyModulePlacementProbability: 0.5
+    enemyModulePerformanceProbability: 0.5
+    enemyShieldProbability: 0.1
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyBeamEquipSlots: 9
-    enemyMissileEquipSlots: 9
-    enemyHangarEquipSlots: 9
-    enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
@@ -2277,17 +2157,13 @@ MonoBehaviour:
       col: 3
       type: 3
       eventType: 0
-    enemyFleetsPerCell: 1
-    enemyBudget: 480
-    enemyMaxCostOfOneShip: 240
-    enemyDeviation: 200
-    enemyMaxShipsPerFleet: 5
+    enemyHullTierSum: 29
+    enemyBaseHullTier: 9
+    enemyModulePlacementProbability: 0.7
+    enemyModulePerformanceProbability: 0.7
+    enemyShieldProbability: 0.1
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyBeamEquipSlots: 9
-    enemyMissileEquipSlots: 9
-    enemyHangarEquipSlots: 9
-    enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
@@ -2367,17 +2243,13 @@ MonoBehaviour:
       col: 6
       type: 3
       eventType: 0
-    enemyFleetsPerCell: 1
-    enemyBudget: 480
-    enemyMaxCostOfOneShip: 240
-    enemyDeviation: 200
-    enemyMaxShipsPerFleet: 5
+    enemyHullTierSum: 30
+    enemyBaseHullTier: 9
+    enemyModulePlacementProbability: 0.9
+    enemyModulePerformanceProbability: 0.9
+    enemyShieldProbability: 0.1
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyBeamEquipSlots: 9
-    enemyMissileEquipSlots: 9
-    enemyHangarEquipSlots: 9
-    enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
@@ -2457,17 +2329,13 @@ MonoBehaviour:
       col: 1
       type: 3
       eventType: 0
-    enemyFleetsPerCell: 1
-    enemyBudget: 480
-    enemyMaxCostOfOneShip: 240
-    enemyDeviation: 200
-    enemyMaxShipsPerFleet: 5
+    enemyHullTierSum: 31
+    enemyBaseHullTier: 9
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
+    enemyShieldProbability: 0.1
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyBeamEquipSlots: 9
-    enemyMissileEquipSlots: 9
-    enemyHangarEquipSlots: 9
-    enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
@@ -2547,17 +2415,13 @@ MonoBehaviour:
       col: 3
       type: 3
       eventType: 0
-    enemyFleetsPerCell: 1
-    enemyBudget: 480
-    enemyMaxCostOfOneShip: 240
-    enemyDeviation: 200
-    enemyMaxShipsPerFleet: 5
+    enemyHullTierSum: 32
+    enemyBaseHullTier: 10
+    enemyModulePlacementProbability: 0.5
+    enemyModulePerformanceProbability: 0.5
+    enemyShieldProbability: 0.1
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyBeamEquipSlots: 9
-    enemyMissileEquipSlots: 9
-    enemyHangarEquipSlots: 9
-    enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
@@ -2637,17 +2501,13 @@ MonoBehaviour:
       col: 3
       type: 3
       eventType: 0
-    enemyFleetsPerCell: 1
-    enemyBudget: 480
-    enemyMaxCostOfOneShip: 240
-    enemyDeviation: 200
-    enemyMaxShipsPerFleet: 5
+    enemyHullTierSum: 33
+    enemyBaseHullTier: 10
+    enemyModulePlacementProbability: 0.7
+    enemyModulePerformanceProbability: 0.7
+    enemyShieldProbability: 0.1
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyBeamEquipSlots: 9
-    enemyMissileEquipSlots: 9
-    enemyHangarEquipSlots: 9
-    enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
@@ -2727,17 +2587,13 @@ MonoBehaviour:
       col: 5
       type: 3
       eventType: 0
-    enemyFleetsPerCell: 1
-    enemyBudget: 480
-    enemyMaxCostOfOneShip: 240
-    enemyDeviation: 200
-    enemyMaxShipsPerFleet: 5
+    enemyHullTierSum: 34
+    enemyBaseHullTier: 10
+    enemyModulePlacementProbability: 0.9
+    enemyModulePerformanceProbability: 0.9
+    enemyShieldProbability: 0.1
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyBeamEquipSlots: 9
-    enemyMissileEquipSlots: 9
-    enemyHangarEquipSlots: 9
-    enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
@@ -2817,17 +2673,13 @@ MonoBehaviour:
       col: 2
       type: 3
       eventType: 0
-    enemyFleetsPerCell: 1
-    enemyBudget: 480
-    enemyMaxCostOfOneShip: 240
-    enemyDeviation: 200
-    enemyMaxShipsPerFleet: 5
+    enemyHullTierSum: 35
+    enemyBaseHullTier: 10
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
+    enemyShieldProbability: 0.1
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyBeamEquipSlots: 9
-    enemyMissileEquipSlots: 9
-    enemyHangarEquipSlots: 9
-    enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
@@ -2907,17 +2759,13 @@ MonoBehaviour:
       col: 6
       type: 3
       eventType: 0
-    enemyFleetsPerCell: 1
-    enemyBudget: 480
-    enemyMaxCostOfOneShip: 240
-    enemyDeviation: 200
-    enemyMaxShipsPerFleet: 5
+    enemyHullTierSum: 36
+    enemyBaseHullTier: 11
+    enemyModulePlacementProbability: 0.5
+    enemyModulePerformanceProbability: 0.5
+    enemyShieldProbability: 0.1
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyBeamEquipSlots: 9
-    enemyMissileEquipSlots: 9
-    enemyHangarEquipSlots: 9
-    enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
@@ -2997,17 +2845,13 @@ MonoBehaviour:
       col: 6
       type: 3
       eventType: 0
-    enemyFleetsPerCell: 1
-    enemyBudget: 480
-    enemyMaxCostOfOneShip: 240
-    enemyDeviation: 200
-    enemyMaxShipsPerFleet: 5
+    enemyHullTierSum: 37
+    enemyBaseHullTier: 11
+    enemyModulePlacementProbability: 0.7
+    enemyModulePerformanceProbability: 0.7
+    enemyShieldProbability: 0.1
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyBeamEquipSlots: 9
-    enemyMissileEquipSlots: 9
-    enemyHangarEquipSlots: 9
-    enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
@@ -3087,17 +2931,13 @@ MonoBehaviour:
       col: 2
       type: 3
       eventType: 0
-    enemyFleetsPerCell: 1
-    enemyBudget: 600
-    enemyMaxCostOfOneShip: 360
-    enemyDeviation: 200
-    enemyMaxShipsPerFleet: 5
+    enemyHullTierSum: 38
+    enemyBaseHullTier: 11
+    enemyModulePlacementProbability: 0.9
+    enemyModulePerformanceProbability: 0.9
+    enemyShieldProbability: 0.1
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyBeamEquipSlots: 9
-    enemyMissileEquipSlots: 9
-    enemyHangarEquipSlots: 9
-    enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
@@ -3177,17 +3017,13 @@ MonoBehaviour:
       col: 1
       type: 3
       eventType: 0
-    enemyFleetsPerCell: 1
-    enemyBudget: 600
-    enemyMaxCostOfOneShip: 360
-    enemyDeviation: 200
-    enemyMaxShipsPerFleet: 5
+    enemyHullTierSum: 39
+    enemyBaseHullTier: 11
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
+    enemyShieldProbability: 0.1
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyBeamEquipSlots: 9
-    enemyMissileEquipSlots: 9
-    enemyHangarEquipSlots: 9
-    enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
@@ -3267,17 +3103,13 @@ MonoBehaviour:
       col: 1
       type: 3
       eventType: 0
-    enemyFleetsPerCell: 1
-    enemyBudget: 600
-    enemyMaxCostOfOneShip: 360
-    enemyDeviation: 200
-    enemyMaxShipsPerFleet: 5
+    enemyHullTierSum: 40
+    enemyBaseHullTier: 12
+    enemyModulePlacementProbability: 0.5
+    enemyModulePerformanceProbability: 0.5
+    enemyShieldProbability: 0.1
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyBeamEquipSlots: 9
-    enemyMissileEquipSlots: 9
-    enemyHangarEquipSlots: 9
-    enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
@@ -3357,17 +3189,13 @@ MonoBehaviour:
       col: 2
       type: 3
       eventType: 0
-    enemyFleetsPerCell: 1
-    enemyBudget: 600
-    enemyMaxCostOfOneShip: 360
-    enemyDeviation: 200
-    enemyMaxShipsPerFleet: 5
+    enemyHullTierSum: 41
+    enemyBaseHullTier: 12
+    enemyModulePlacementProbability: 0.7
+    enemyModulePerformanceProbability: 0.7
+    enemyShieldProbability: 0.1
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyBeamEquipSlots: 9
-    enemyMissileEquipSlots: 9
-    enemyHangarEquipSlots: 9
-    enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
@@ -3447,17 +3275,13 @@ MonoBehaviour:
       col: 3
       type: 3
       eventType: 0
-    enemyFleetsPerCell: 1
-    enemyBudget: 600
-    enemyMaxCostOfOneShip: 360
-    enemyDeviation: 200
-    enemyMaxShipsPerFleet: 5
+    enemyHullTierSum: 42
+    enemyBaseHullTier: 12
+    enemyModulePlacementProbability: 0.9
+    enemyModulePerformanceProbability: 0.9
+    enemyShieldProbability: 0.1
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyBeamEquipSlots: 9
-    enemyMissileEquipSlots: 9
-    enemyHangarEquipSlots: 9
-    enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
@@ -3537,17 +3361,13 @@ MonoBehaviour:
       col: 5
       type: 3
       eventType: 0
-    enemyFleetsPerCell: 1
-    enemyBudget: 600
-    enemyMaxCostOfOneShip: 360
-    enemyDeviation: 200
-    enemyMaxShipsPerFleet: 5
+    enemyHullTierSum: 43
+    enemyBaseHullTier: 12
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
+    enemyShieldProbability: 0.1
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyBeamEquipSlots: 9
-    enemyMissileEquipSlots: 9
-    enemyHangarEquipSlots: 9
-    enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
@@ -3627,17 +3447,13 @@ MonoBehaviour:
       col: 2
       type: 3
       eventType: 0
-    enemyFleetsPerCell: 1
-    enemyBudget: 600
-    enemyMaxCostOfOneShip: 360
-    enemyDeviation: 200
-    enemyMaxShipsPerFleet: 5
+    enemyHullTierSum: 44
+    enemyBaseHullTier: 13
+    enemyModulePlacementProbability: 0.5
+    enemyModulePerformanceProbability: 0.5
+    enemyShieldProbability: 0.1
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyBeamEquipSlots: 9
-    enemyMissileEquipSlots: 9
-    enemyHangarEquipSlots: 9
-    enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
@@ -3717,17 +3533,13 @@ MonoBehaviour:
       col: 1
       type: 3
       eventType: 0
-    enemyFleetsPerCell: 1
-    enemyBudget: 600
-    enemyMaxCostOfOneShip: 360
-    enemyDeviation: 200
-    enemyMaxShipsPerFleet: 5
+    enemyHullTierSum: 45
+    enemyBaseHullTier: 13
+    enemyModulePlacementProbability: 0.7
+    enemyModulePerformanceProbability: 0.7
+    enemyShieldProbability: 0.1
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyBeamEquipSlots: 9
-    enemyMissileEquipSlots: 9
-    enemyHangarEquipSlots: 9
-    enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
@@ -3807,17 +3619,13 @@ MonoBehaviour:
       col: 4
       type: 3
       eventType: 0
-    enemyFleetsPerCell: 1
-    enemyBudget: 600
-    enemyMaxCostOfOneShip: 360
-    enemyDeviation: 200
-    enemyMaxShipsPerFleet: 5
+    enemyHullTierSum: 46
+    enemyBaseHullTier: 13
+    enemyModulePlacementProbability: 0.9
+    enemyModulePerformanceProbability: 0.9
+    enemyShieldProbability: 0.1
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyBeamEquipSlots: 9
-    enemyMissileEquipSlots: 9
-    enemyHangarEquipSlots: 9
-    enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
@@ -3897,17 +3705,13 @@ MonoBehaviour:
       col: 6
       type: 3
       eventType: 0
-    enemyFleetsPerCell: 1
-    enemyBudget: 600
-    enemyMaxCostOfOneShip: 360
-    enemyDeviation: 200
-    enemyMaxShipsPerFleet: 5
+    enemyHullTierSum: 47
+    enemyBaseHullTier: 13
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
+    enemyShieldProbability: 0.1
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyBeamEquipSlots: 9
-    enemyMissileEquipSlots: 9
-    enemyHangarEquipSlots: 9
-    enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
@@ -3987,17 +3791,13 @@ MonoBehaviour:
       col: 2
       type: 3
       eventType: 0
-    enemyFleetsPerCell: 1
-    enemyBudget: 600
-    enemyMaxCostOfOneShip: 360
-    enemyDeviation: 200
-    enemyMaxShipsPerFleet: 5
+    enemyHullTierSum: 48
+    enemyBaseHullTier: 14
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
+    enemyShieldProbability: 0.2
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyBeamEquipSlots: 9
-    enemyMissileEquipSlots: 9
-    enemyHangarEquipSlots: 9
-    enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
@@ -4077,17 +3877,13 @@ MonoBehaviour:
       col: 4
       type: 3
       eventType: 0
-    enemyFleetsPerCell: 1
-    enemyBudget: 720
-    enemyMaxCostOfOneShip: 480
-    enemyDeviation: 200
-    enemyMaxShipsPerFleet: 5
+    enemyHullTierSum: 49
+    enemyBaseHullTier: 14
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
+    enemyShieldProbability: 0.2
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyBeamEquipSlots: 9
-    enemyMissileEquipSlots: 9
-    enemyHangarEquipSlots: 9
-    enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
@@ -4167,17 +3963,13 @@ MonoBehaviour:
       col: 2
       type: 3
       eventType: 0
-    enemyFleetsPerCell: 1
-    enemyBudget: 720
-    enemyMaxCostOfOneShip: 480
-    enemyDeviation: 200
-    enemyMaxShipsPerFleet: 5
+    enemyHullTierSum: 50
+    enemyBaseHullTier: 14
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
+    enemyShieldProbability: 0.2
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyBeamEquipSlots: 9
-    enemyMissileEquipSlots: 9
-    enemyHangarEquipSlots: 9
-    enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
@@ -4257,17 +4049,13 @@ MonoBehaviour:
       col: 5
       type: 3
       eventType: 0
-    enemyFleetsPerCell: 1
-    enemyBudget: 720
-    enemyMaxCostOfOneShip: 480
-    enemyDeviation: 200
-    enemyMaxShipsPerFleet: 5
+    enemyHullTierSum: 51
+    enemyBaseHullTier: 14
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
+    enemyShieldProbability: 0.2
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyBeamEquipSlots: 9
-    enemyMissileEquipSlots: 9
-    enemyHangarEquipSlots: 9
-    enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
@@ -4347,17 +4135,13 @@ MonoBehaviour:
       col: 5
       type: 3
       eventType: 0
-    enemyFleetsPerCell: 1
-    enemyBudget: 720
-    enemyMaxCostOfOneShip: 480
-    enemyDeviation: 200
-    enemyMaxShipsPerFleet: 5
+    enemyHullTierSum: 52
+    enemyBaseHullTier: 14
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
+    enemyShieldProbability: 0.2
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyBeamEquipSlots: 9
-    enemyMissileEquipSlots: 9
-    enemyHangarEquipSlots: 9
-    enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
@@ -4437,17 +4221,13 @@ MonoBehaviour:
       col: 0
       type: 3
       eventType: 0
-    enemyFleetsPerCell: 1
-    enemyBudget: 720
-    enemyMaxCostOfOneShip: 480
-    enemyDeviation: 200
-    enemyMaxShipsPerFleet: 5
+    enemyHullTierSum: 53
+    enemyBaseHullTier: 14
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
+    enemyShieldProbability: 0.2
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyBeamEquipSlots: 9
-    enemyMissileEquipSlots: 9
-    enemyHangarEquipSlots: 9
-    enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
@@ -4527,17 +4307,13 @@ MonoBehaviour:
       col: 4
       type: 3
       eventType: 0
-    enemyFleetsPerCell: 1
-    enemyBudget: 720
-    enemyMaxCostOfOneShip: 480
-    enemyDeviation: 200
-    enemyMaxShipsPerFleet: 5
+    enemyHullTierSum: 54
+    enemyBaseHullTier: 14
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
+    enemyShieldProbability: 0.2
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyBeamEquipSlots: 9
-    enemyMissileEquipSlots: 9
-    enemyHangarEquipSlots: 9
-    enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
@@ -4617,17 +4393,13 @@ MonoBehaviour:
       col: 3
       type: 3
       eventType: 0
-    enemyFleetsPerCell: 1
-    enemyBudget: 720
-    enemyMaxCostOfOneShip: 480
-    enemyDeviation: 200
-    enemyMaxShipsPerFleet: 5
+    enemyHullTierSum: 55
+    enemyBaseHullTier: 14
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
+    enemyShieldProbability: 0.2
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyBeamEquipSlots: 9
-    enemyMissileEquipSlots: 9
-    enemyHangarEquipSlots: 9
-    enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
@@ -4707,17 +4479,13 @@ MonoBehaviour:
       col: 5
       type: 3
       eventType: 0
-    enemyFleetsPerCell: 1
-    enemyBudget: 720
-    enemyMaxCostOfOneShip: 480
-    enemyDeviation: 200
-    enemyMaxShipsPerFleet: 5
+    enemyHullTierSum: 56
+    enemyBaseHullTier: 14
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
+    enemyShieldProbability: 0.2
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyBeamEquipSlots: 9
-    enemyMissileEquipSlots: 9
-    enemyHangarEquipSlots: 9
-    enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
@@ -4797,17 +4565,13 @@ MonoBehaviour:
       col: 4
       type: 3
       eventType: 0
-    enemyFleetsPerCell: 1
-    enemyBudget: 720
-    enemyMaxCostOfOneShip: 480
-    enemyDeviation: 200
-    enemyMaxShipsPerFleet: 5
+    enemyHullTierSum: 57
+    enemyBaseHullTier: 14
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
+    enemyShieldProbability: 0.2
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyBeamEquipSlots: 9
-    enemyMissileEquipSlots: 9
-    enemyHangarEquipSlots: 9
-    enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
@@ -4887,17 +4651,13 @@ MonoBehaviour:
       col: 3
       type: 3
       eventType: 0
-    enemyFleetsPerCell: 1
-    enemyBudget: 720
-    enemyMaxCostOfOneShip: 480
-    enemyDeviation: 200
-    enemyMaxShipsPerFleet: 5
+    enemyHullTierSum: 58
+    enemyBaseHullTier: 14
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
+    enemyShieldProbability: 0.3
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyBeamEquipSlots: 9
-    enemyMissileEquipSlots: 9
-    enemyHangarEquipSlots: 9
-    enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
@@ -4977,17 +4737,13 @@ MonoBehaviour:
       col: 1
       type: 3
       eventType: 0
-    enemyFleetsPerCell: 1
-    enemyBudget: 840
-    enemyMaxCostOfOneShip: 600
-    enemyDeviation: 200
-    enemyMaxShipsPerFleet: 5
+    enemyHullTierSum: 59
+    enemyBaseHullTier: 14
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
+    enemyShieldProbability: 0.3
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyBeamEquipSlots: 9
-    enemyMissileEquipSlots: 9
-    enemyHangarEquipSlots: 9
-    enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
@@ -5067,17 +4823,13 @@ MonoBehaviour:
       col: 0
       type: 3
       eventType: 0
-    enemyFleetsPerCell: 1
-    enemyBudget: 840
-    enemyMaxCostOfOneShip: 600
-    enemyDeviation: 200
-    enemyMaxShipsPerFleet: 5
+    enemyHullTierSum: 60
+    enemyBaseHullTier: 14
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
+    enemyShieldProbability: 0.3
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyBeamEquipSlots: 9
-    enemyMissileEquipSlots: 9
-    enemyHangarEquipSlots: 9
-    enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
@@ -5157,17 +4909,13 @@ MonoBehaviour:
       col: 5
       type: 3
       eventType: 0
-    enemyFleetsPerCell: 1
-    enemyBudget: 840
-    enemyMaxCostOfOneShip: 600
-    enemyDeviation: 200
-    enemyMaxShipsPerFleet: 5
+    enemyHullTierSum: 61
+    enemyBaseHullTier: 14
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
+    enemyShieldProbability: 0.3
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyBeamEquipSlots: 9
-    enemyMissileEquipSlots: 9
-    enemyHangarEquipSlots: 9
-    enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
@@ -5247,17 +4995,13 @@ MonoBehaviour:
       col: 6
       type: 3
       eventType: 0
-    enemyFleetsPerCell: 1
-    enemyBudget: 840
-    enemyMaxCostOfOneShip: 600
-    enemyDeviation: 200
-    enemyMaxShipsPerFleet: 5
+    enemyHullTierSum: 62
+    enemyBaseHullTier: 14
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
+    enemyShieldProbability: 0.3
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyBeamEquipSlots: 9
-    enemyMissileEquipSlots: 9
-    enemyHangarEquipSlots: 9
-    enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
@@ -5337,17 +5081,13 @@ MonoBehaviour:
       col: 4
       type: 3
       eventType: 0
-    enemyFleetsPerCell: 1
-    enemyBudget: 840
-    enemyMaxCostOfOneShip: 600
-    enemyDeviation: 200
-    enemyMaxShipsPerFleet: 5
+    enemyHullTierSum: 63
+    enemyBaseHullTier: 14
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
+    enemyShieldProbability: 0.3
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyBeamEquipSlots: 9
-    enemyMissileEquipSlots: 9
-    enemyHangarEquipSlots: 9
-    enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
@@ -5427,17 +5167,13 @@ MonoBehaviour:
       col: 6
       type: 3
       eventType: 0
-    enemyFleetsPerCell: 1
-    enemyBudget: 840
-    enemyMaxCostOfOneShip: 600
-    enemyDeviation: 200
-    enemyMaxShipsPerFleet: 5
+    enemyHullTierSum: 64
+    enemyBaseHullTier: 14
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
+    enemyShieldProbability: 0.3
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyBeamEquipSlots: 9
-    enemyMissileEquipSlots: 9
-    enemyHangarEquipSlots: 9
-    enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
@@ -5517,17 +5253,13 @@ MonoBehaviour:
       col: 2
       type: 3
       eventType: 0
-    enemyFleetsPerCell: 1
-    enemyBudget: 840
-    enemyMaxCostOfOneShip: 600
-    enemyDeviation: 200
-    enemyMaxShipsPerFleet: 5
+    enemyHullTierSum: 65
+    enemyBaseHullTier: 14
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
+    enemyShieldProbability: 0.3
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyBeamEquipSlots: 9
-    enemyMissileEquipSlots: 9
-    enemyHangarEquipSlots: 9
-    enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
@@ -5607,17 +5339,13 @@ MonoBehaviour:
       col: 0
       type: 3
       eventType: 0
-    enemyFleetsPerCell: 1
-    enemyBudget: 840
-    enemyMaxCostOfOneShip: 600
-    enemyDeviation: 200
-    enemyMaxShipsPerFleet: 5
+    enemyHullTierSum: 66
+    enemyBaseHullTier: 14
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
+    enemyShieldProbability: 0.3
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyBeamEquipSlots: 9
-    enemyMissileEquipSlots: 9
-    enemyHangarEquipSlots: 9
-    enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
@@ -5697,17 +5425,13 @@ MonoBehaviour:
       col: 0
       type: 3
       eventType: 0
-    enemyFleetsPerCell: 1
-    enemyBudget: 840
-    enemyMaxCostOfOneShip: 600
-    enemyDeviation: 200
-    enemyMaxShipsPerFleet: 5
+    enemyHullTierSum: 67
+    enemyBaseHullTier: 14
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
+    enemyShieldProbability: 0.3
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyBeamEquipSlots: 9
-    enemyMissileEquipSlots: 9
-    enemyHangarEquipSlots: 9
-    enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
@@ -5787,17 +5511,13 @@ MonoBehaviour:
       col: 2
       type: 3
       eventType: 0
-    enemyFleetsPerCell: 1
-    enemyBudget: 840
-    enemyMaxCostOfOneShip: 600
-    enemyDeviation: 200
-    enemyMaxShipsPerFleet: 5
+    enemyHullTierSum: 68
+    enemyBaseHullTier: 14
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
+    enemyShieldProbability: 0.4
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyBeamEquipSlots: 9
-    enemyMissileEquipSlots: 9
-    enemyHangarEquipSlots: 9
-    enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
@@ -5877,17 +5597,13 @@ MonoBehaviour:
       col: 0
       type: 3
       eventType: 0
-    enemyFleetsPerCell: 1
-    enemyBudget: 960
-    enemyMaxCostOfOneShip: 600
-    enemyDeviation: 200
-    enemyMaxShipsPerFleet: 5
+    enemyHullTierSum: 69
+    enemyBaseHullTier: 14
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
+    enemyShieldProbability: 0.4
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyBeamEquipSlots: 9
-    enemyMissileEquipSlots: 9
-    enemyHangarEquipSlots: 9
-    enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
@@ -5967,17 +5683,13 @@ MonoBehaviour:
       col: 6
       type: 3
       eventType: 0
-    enemyFleetsPerCell: 1
-    enemyBudget: 960
-    enemyMaxCostOfOneShip: 600
-    enemyDeviation: 200
-    enemyMaxShipsPerFleet: 5
+    enemyHullTierSum: 70
+    enemyBaseHullTier: 14
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
+    enemyShieldProbability: 0.4
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyBeamEquipSlots: 9
-    enemyMissileEquipSlots: 9
-    enemyHangarEquipSlots: 9
-    enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
@@ -6057,17 +5769,13 @@ MonoBehaviour:
       col: 2
       type: 3
       eventType: 0
-    enemyFleetsPerCell: 1
-    enemyBudget: 960
-    enemyMaxCostOfOneShip: 600
-    enemyDeviation: 200
-    enemyMaxShipsPerFleet: 5
+    enemyHullTierSum: 71
+    enemyBaseHullTier: 14
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
+    enemyShieldProbability: 0.4
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyBeamEquipSlots: 9
-    enemyMissileEquipSlots: 9
-    enemyHangarEquipSlots: 9
-    enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
@@ -6147,17 +5855,13 @@ MonoBehaviour:
       col: 5
       type: 3
       eventType: 0
-    enemyFleetsPerCell: 1
-    enemyBudget: 960
-    enemyMaxCostOfOneShip: 600
-    enemyDeviation: 200
-    enemyMaxShipsPerFleet: 5
+    enemyHullTierSum: 72
+    enemyBaseHullTier: 14
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
+    enemyShieldProbability: 0.4
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyBeamEquipSlots: 9
-    enemyMissileEquipSlots: 9
-    enemyHangarEquipSlots: 9
-    enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
@@ -6237,17 +5941,13 @@ MonoBehaviour:
       col: 3
       type: 3
       eventType: 0
-    enemyFleetsPerCell: 1
-    enemyBudget: 960
-    enemyMaxCostOfOneShip: 600
-    enemyDeviation: 200
-    enemyMaxShipsPerFleet: 5
+    enemyHullTierSum: 73
+    enemyBaseHullTier: 14
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
+    enemyShieldProbability: 0.4
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyBeamEquipSlots: 9
-    enemyMissileEquipSlots: 9
-    enemyHangarEquipSlots: 9
-    enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
@@ -6327,17 +6027,13 @@ MonoBehaviour:
       col: 5
       type: 3
       eventType: 0
-    enemyFleetsPerCell: 1
-    enemyBudget: 960
-    enemyMaxCostOfOneShip: 600
-    enemyDeviation: 200
-    enemyMaxShipsPerFleet: 5
+    enemyHullTierSum: 74
+    enemyBaseHullTier: 14
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
+    enemyShieldProbability: 0.4
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyBeamEquipSlots: 9
-    enemyMissileEquipSlots: 9
-    enemyHangarEquipSlots: 9
-    enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
@@ -6417,17 +6113,13 @@ MonoBehaviour:
       col: 3
       type: 3
       eventType: 0
-    enemyFleetsPerCell: 1
-    enemyBudget: 960
-    enemyMaxCostOfOneShip: 600
-    enemyDeviation: 200
-    enemyMaxShipsPerFleet: 5
+    enemyHullTierSum: 75
+    enemyBaseHullTier: 14
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
+    enemyShieldProbability: 0.4
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyBeamEquipSlots: 9
-    enemyMissileEquipSlots: 9
-    enemyHangarEquipSlots: 9
-    enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
@@ -6507,17 +6199,13 @@ MonoBehaviour:
       col: 6
       type: 3
       eventType: 0
-    enemyFleetsPerCell: 1
-    enemyBudget: 960
-    enemyMaxCostOfOneShip: 600
-    enemyDeviation: 200
-    enemyMaxShipsPerFleet: 5
+    enemyHullTierSum: 76
+    enemyBaseHullTier: 14
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
+    enemyShieldProbability: 0.4
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyBeamEquipSlots: 9
-    enemyMissileEquipSlots: 9
-    enemyHangarEquipSlots: 9
-    enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
@@ -6597,17 +6285,13 @@ MonoBehaviour:
       col: 2
       type: 3
       eventType: 0
-    enemyFleetsPerCell: 1
-    enemyBudget: 960
-    enemyMaxCostOfOneShip: 600
-    enemyDeviation: 200
-    enemyMaxShipsPerFleet: 5
+    enemyHullTierSum: 77
+    enemyBaseHullTier: 14
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
+    enemyShieldProbability: 0.4
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyBeamEquipSlots: 9
-    enemyMissileEquipSlots: 9
-    enemyHangarEquipSlots: 9
-    enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
@@ -6687,17 +6371,13 @@ MonoBehaviour:
       col: 1
       type: 3
       eventType: 0
-    enemyFleetsPerCell: 1
-    enemyBudget: 960
-    enemyMaxCostOfOneShip: 600
-    enemyDeviation: 200
-    enemyMaxShipsPerFleet: 5
+    enemyHullTierSum: 78
+    enemyBaseHullTier: 14
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
+    enemyShieldProbability: 0.5
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyBeamEquipSlots: 9
-    enemyMissileEquipSlots: 9
-    enemyHangarEquipSlots: 9
-    enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
@@ -6777,17 +6457,13 @@ MonoBehaviour:
       col: 1
       type: 3
       eventType: 0
-    enemyFleetsPerCell: 1
-    enemyBudget: 1080
-    enemyMaxCostOfOneShip: 720
-    enemyDeviation: 200
-    enemyMaxShipsPerFleet: 5
+    enemyHullTierSum: 79
+    enemyBaseHullTier: 14
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
+    enemyShieldProbability: 0.5
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyBeamEquipSlots: 9
-    enemyMissileEquipSlots: 9
-    enemyHangarEquipSlots: 9
-    enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
@@ -6867,17 +6543,13 @@ MonoBehaviour:
       col: 0
       type: 3
       eventType: 0
-    enemyFleetsPerCell: 1
-    enemyBudget: 1080
-    enemyMaxCostOfOneShip: 720
-    enemyDeviation: 200
-    enemyMaxShipsPerFleet: 5
+    enemyHullTierSum: 80
+    enemyBaseHullTier: 14
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
+    enemyShieldProbability: 0.5
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyBeamEquipSlots: 9
-    enemyMissileEquipSlots: 9
-    enemyHangarEquipSlots: 9
-    enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
@@ -6957,17 +6629,13 @@ MonoBehaviour:
       col: 4
       type: 3
       eventType: 0
-    enemyFleetsPerCell: 1
-    enemyBudget: 1080
-    enemyMaxCostOfOneShip: 720
-    enemyDeviation: 200
-    enemyMaxShipsPerFleet: 5
+    enemyHullTierSum: 81
+    enemyBaseHullTier: 14
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
+    enemyShieldProbability: 0.5
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyBeamEquipSlots: 9
-    enemyMissileEquipSlots: 9
-    enemyHangarEquipSlots: 9
-    enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
@@ -7047,17 +6715,13 @@ MonoBehaviour:
       col: 1
       type: 3
       eventType: 0
-    enemyFleetsPerCell: 1
-    enemyBudget: 1080
-    enemyMaxCostOfOneShip: 720
-    enemyDeviation: 200
-    enemyMaxShipsPerFleet: 5
+    enemyHullTierSum: 82
+    enemyBaseHullTier: 14
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
+    enemyShieldProbability: 0.5
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyBeamEquipSlots: 9
-    enemyMissileEquipSlots: 9
-    enemyHangarEquipSlots: 9
-    enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
@@ -7137,17 +6801,13 @@ MonoBehaviour:
       col: 2
       type: 3
       eventType: 0
-    enemyFleetsPerCell: 1
-    enemyBudget: 1080
-    enemyMaxCostOfOneShip: 720
-    enemyDeviation: 200
-    enemyMaxShipsPerFleet: 5
+    enemyHullTierSum: 83
+    enemyBaseHullTier: 14
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
+    enemyShieldProbability: 0.5
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyBeamEquipSlots: 9
-    enemyMissileEquipSlots: 9
-    enemyHangarEquipSlots: 9
-    enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
@@ -7227,17 +6887,13 @@ MonoBehaviour:
       col: 5
       type: 3
       eventType: 0
-    enemyFleetsPerCell: 1
-    enemyBudget: 1080
-    enemyMaxCostOfOneShip: 720
-    enemyDeviation: 200
-    enemyMaxShipsPerFleet: 5
+    enemyHullTierSum: 84
+    enemyBaseHullTier: 14
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
+    enemyShieldProbability: 0.5
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyBeamEquipSlots: 9
-    enemyMissileEquipSlots: 9
-    enemyHangarEquipSlots: 9
-    enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
@@ -7317,17 +6973,13 @@ MonoBehaviour:
       col: 1
       type: 3
       eventType: 0
-    enemyFleetsPerCell: 1
-    enemyBudget: 1080
-    enemyMaxCostOfOneShip: 720
-    enemyDeviation: 200
-    enemyMaxShipsPerFleet: 5
+    enemyHullTierSum: 85
+    enemyBaseHullTier: 14
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
+    enemyShieldProbability: 0.5
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyBeamEquipSlots: 9
-    enemyMissileEquipSlots: 9
-    enemyHangarEquipSlots: 9
-    enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
@@ -7407,17 +7059,13 @@ MonoBehaviour:
       col: 4
       type: 3
       eventType: 0
-    enemyFleetsPerCell: 1
-    enemyBudget: 1080
-    enemyMaxCostOfOneShip: 720
-    enemyDeviation: 200
-    enemyMaxShipsPerFleet: 5
+    enemyHullTierSum: 86
+    enemyBaseHullTier: 14
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
+    enemyShieldProbability: 0.5
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyBeamEquipSlots: 9
-    enemyMissileEquipSlots: 9
-    enemyHangarEquipSlots: 9
-    enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
@@ -7497,17 +7145,13 @@ MonoBehaviour:
       col: 0
       type: 3
       eventType: 0
-    enemyFleetsPerCell: 1
-    enemyBudget: 1080
-    enemyMaxCostOfOneShip: 720
-    enemyDeviation: 200
-    enemyMaxShipsPerFleet: 5
+    enemyHullTierSum: 87
+    enemyBaseHullTier: 14
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
+    enemyShieldProbability: 0.5
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyBeamEquipSlots: 9
-    enemyMissileEquipSlots: 9
-    enemyHangarEquipSlots: 9
-    enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
@@ -7587,17 +7231,13 @@ MonoBehaviour:
       col: 6
       type: 3
       eventType: 0
-    enemyFleetsPerCell: 1
-    enemyBudget: 1080
-    enemyMaxCostOfOneShip: 720
-    enemyDeviation: 200
-    enemyMaxShipsPerFleet: 5
+    enemyHullTierSum: 88
+    enemyBaseHullTier: 14
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
+    enemyShieldProbability: 0.6
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyBeamEquipSlots: 9
-    enemyMissileEquipSlots: 9
-    enemyHangarEquipSlots: 9
-    enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
@@ -7677,17 +7317,13 @@ MonoBehaviour:
       col: 0
       type: 3
       eventType: 0
-    enemyFleetsPerCell: 1
-    enemyBudget: 1200
-    enemyMaxCostOfOneShip: 840
-    enemyDeviation: 200
-    enemyMaxShipsPerFleet: 5
+    enemyHullTierSum: 89
+    enemyBaseHullTier: 14
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
+    enemyShieldProbability: 0.6
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyBeamEquipSlots: 9
-    enemyMissileEquipSlots: 9
-    enemyHangarEquipSlots: 9
-    enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
@@ -7767,17 +7403,13 @@ MonoBehaviour:
       col: 0
       type: 3
       eventType: 0
-    enemyFleetsPerCell: 1
-    enemyBudget: 1200
-    enemyMaxCostOfOneShip: 840
-    enemyDeviation: 200
-    enemyMaxShipsPerFleet: 5
+    enemyHullTierSum: 90
+    enemyBaseHullTier: 14
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
+    enemyShieldProbability: 0.6
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyBeamEquipSlots: 9
-    enemyMissileEquipSlots: 9
-    enemyHangarEquipSlots: 9
-    enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
@@ -7857,17 +7489,13 @@ MonoBehaviour:
       col: 6
       type: 3
       eventType: 0
-    enemyFleetsPerCell: 1
-    enemyBudget: 1200
-    enemyMaxCostOfOneShip: 840
-    enemyDeviation: 200
-    enemyMaxShipsPerFleet: 5
+    enemyHullTierSum: 91
+    enemyBaseHullTier: 14
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
+    enemyShieldProbability: 0.6
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyBeamEquipSlots: 9
-    enemyMissileEquipSlots: 9
-    enemyHangarEquipSlots: 9
-    enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
@@ -7947,17 +7575,13 @@ MonoBehaviour:
       col: 1
       type: 3
       eventType: 0
-    enemyFleetsPerCell: 1
-    enemyBudget: 1200
-    enemyMaxCostOfOneShip: 840
-    enemyDeviation: 200
-    enemyMaxShipsPerFleet: 5
+    enemyHullTierSum: 92
+    enemyBaseHullTier: 14
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
+    enemyShieldProbability: 0.6
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyBeamEquipSlots: 9
-    enemyMissileEquipSlots: 9
-    enemyHangarEquipSlots: 9
-    enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
@@ -8037,17 +7661,13 @@ MonoBehaviour:
       col: 0
       type: 3
       eventType: 0
-    enemyFleetsPerCell: 1
-    enemyBudget: 1200
-    enemyMaxCostOfOneShip: 840
-    enemyDeviation: 200
-    enemyMaxShipsPerFleet: 5
+    enemyHullTierSum: 93
+    enemyBaseHullTier: 14
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
+    enemyShieldProbability: 0.6
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyBeamEquipSlots: 9
-    enemyMissileEquipSlots: 9
-    enemyHangarEquipSlots: 9
-    enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
@@ -8127,17 +7747,13 @@ MonoBehaviour:
       col: 2
       type: 3
       eventType: 0
-    enemyFleetsPerCell: 1
-    enemyBudget: 1200
-    enemyMaxCostOfOneShip: 840
-    enemyDeviation: 200
-    enemyMaxShipsPerFleet: 5
+    enemyHullTierSum: 94
+    enemyBaseHullTier: 14
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
+    enemyShieldProbability: 0.6
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyBeamEquipSlots: 9
-    enemyMissileEquipSlots: 9
-    enemyHangarEquipSlots: 9
-    enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
@@ -8217,17 +7833,13 @@ MonoBehaviour:
       col: 1
       type: 3
       eventType: 0
-    enemyFleetsPerCell: 1
-    enemyBudget: 1200
-    enemyMaxCostOfOneShip: 840
-    enemyDeviation: 200
-    enemyMaxShipsPerFleet: 5
+    enemyHullTierSum: 95
+    enemyBaseHullTier: 14
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
+    enemyShieldProbability: 0.6
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyBeamEquipSlots: 9
-    enemyMissileEquipSlots: 9
-    enemyHangarEquipSlots: 9
-    enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
@@ -8307,17 +7919,13 @@ MonoBehaviour:
       col: 1
       type: 3
       eventType: 0
-    enemyFleetsPerCell: 1
-    enemyBudget: 1200
-    enemyMaxCostOfOneShip: 840
-    enemyDeviation: 200
-    enemyMaxShipsPerFleet: 5
+    enemyHullTierSum: 96
+    enemyBaseHullTier: 14
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
+    enemyShieldProbability: 0.6
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyBeamEquipSlots: 9
-    enemyMissileEquipSlots: 9
-    enemyHangarEquipSlots: 9
-    enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
@@ -8397,17 +8005,13 @@ MonoBehaviour:
       col: 0
       type: 3
       eventType: 0
-    enemyFleetsPerCell: 1
-    enemyBudget: 1200
-    enemyMaxCostOfOneShip: 840
-    enemyDeviation: 200
-    enemyMaxShipsPerFleet: 5
+    enemyHullTierSum: 97
+    enemyBaseHullTier: 14
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
+    enemyShieldProbability: 0.6
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyBeamEquipSlots: 9
-    enemyMissileEquipSlots: 9
-    enemyHangarEquipSlots: 9
-    enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10
@@ -8487,17 +8091,13 @@ MonoBehaviour:
       col: 4
       type: 3
       eventType: 0
-    enemyFleetsPerCell: 1
-    enemyBudget: 1200
-    enemyMaxCostOfOneShip: 840
-    enemyDeviation: 200
-    enemyMaxShipsPerFleet: 5
+    enemyHullTierSum: 98
+    enemyBaseHullTier: 14
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
+    enemyShieldProbability: 0.7
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyBeamEquipSlots: 9
-    enemyMissileEquipSlots: 9
-    enemyHangarEquipSlots: 9
-    enemyShieldEquipSlots: 9
     enemyInterceptorEquipSlots: 9
     explorationPointReward: 10
     commanderExpReward: 10

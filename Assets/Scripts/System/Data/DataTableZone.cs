@@ -79,19 +79,16 @@ public class ZoneConfig
     public int gridHeight = 3; // [server]
     public List<GridCellOverride> cellOverrides = new List<GridCellOverride>(); // [server] Normal이 아닌 셀만 저장(희소 리스트) — DataTableZoneEditor 그리드 버튼으로 편집
 
-    [Header("셀 적함대 절차적 생성")]
-    public int enemyFleetsPerCell = 1;    // [server] 셀당 순차 웨이브 개수
-    public int enemyBudget = 100;         // [server] 웨이브 1개의 지휘력 예산
-    public int enemyMaxCostOfOneShip = 100; // [server] 웨이브에 편성 가능한 함선 1척의 fullEquipCost 상한
-    public int enemyDeviation = 0;        // [server] enemyMaxCostOfOneShip 랜덤 편차
-    public int enemyMaxShipsPerFleet = 5; // [server] 웨이브 1개의 함선 수 상한
-    public float enemyHealthMultiplier = 1.0f; // [server] 이 존의 적함대 체력 배율 (0.1=10%, 1.0=원본)
-    public float enemyAttackMultiplier = 1.0f; // [server] 이 존의 적함대 공격력 배율 (0.1=10%, 1.0=원본)
-    public int enemyBeamEquipSlots = 9;        // [server] 빔 슬롯 총 장착 목표 개수(기본 로드아웃 포함, 함체 최대 슬롯 수를 넘으면 전부 장착)
-    public int enemyMissileEquipSlots = 9;     // [server] 미사일 슬롯 총 장착 목표 개수
-    public int enemyHangarEquipSlots = 9;      // [server] 함재기 슬롯 총 장착 목표 개수
-    public int enemyShieldEquipSlots = 9;      // [server] 실드 장착 여부 — 실드는 슬롯 1개뿐이라 사실상 0/1 스위치 (0=미장착, 1 이상=장착)
-    public int enemyInterceptorEquipSlots = 9; // [server] 요격체 장착 여부 — 요격체도 슬롯 1개뿐이라 사실상 0/1 스위치
+    // 적함대 절차적 생성은 클라 전용(ExplorationEnemyFleetGenerator.cs)이라 서버가 이 데이터를 쓰지 않음 — [server] 마커 없음
+    [Header("셀 적함대 절차적 생성 (티어합 분배)")]
+    public int enemyHullTierSum = 6;      // 이 셀 전체 함선들의 함체티어 총합 — 다 소진될 때까지 함선이 계속 생성됨(웨이브 개수는 9척마다 자동으로 나뉨)
+    public int enemyBaseHullTier = 3;     // 1번 함선의 함체 티어(고정) — 이후 함선들은 enemyHullTierSum에서 이 값을 뺀 나머지를 나눠 가짐
+    public float enemyModulePlacementProbability = 1f;  // 함체가 가진 모듈 슬롯 하나하나마다 이 확률로 장착/미장착을 결정(0~1)
+    public float enemyModulePerformanceProbability = 1f; // 장착이 확정된 슬롯의 모듈 티어 범위 — max(1, 그 함선 함체티어 × 이 값) ~ 함체티어 사이 랜덤(1이면 항상 함체티어 그대로)
+    public float enemyShieldProbability = 0f; // 뽑힌 함체티어에 실드형(gen2) 버전이 있을 때 그걸 고를 확률(0~1). 그 티어에 gen2가 없으면 무조건 gen1
+    public float enemyHealthMultiplier = 1.0f; // 이 존의 적함대 체력 배율 (0.1=10%, 1.0=원본)
+    public float enemyAttackMultiplier = 1.0f; // 이 존의 적함대 공격력 배율 (0.1=10%, 1.0=원본)
+    public int enemyInterceptorEquipSlots = 9; // 요격체 장착 여부 — 요격체도 슬롯 1개뿐이라 사실상 0/1 스위치
 
     [Header("셀 클리어 보상 (웨이브가 있던 셀만 적립, 존 단위 고정값)")]
     public int explorationPointReward = 0; // [server] 적 함대 성능(commandCost)과 무관한 고정 탐험 포인트 적립량
@@ -132,7 +129,7 @@ public class DataTableZone : ScriptableObject
     }
 
     // 서버용 export — ZoneConfig의 [server] 마커 필드만 골라 서버 ZoneConfigData(generate_zone_config.py로 생성)와 동일한 shape로 내보냄
-    // 서버가 ZoneEnemyFleetGenerator.java(ExplorationEnemyFleetGenerator.cs 포팅)로 클라와 동일한 셀 적함대를 재계산하는 데 사용
+    // 적함대 절차적 생성은 클라 전용이라 서버는 셀 타입(Blocked/Start/Escape/Event) 판정과 클리어 보상 계산에만 이 데이터를 씀
     public string ExportToJson()
     {
         var zoneConfigs = new List<object>();
@@ -143,18 +140,6 @@ public class DataTableZone : ScriptableObject
                 zoneIndex             = z.zoneIndex,
                 gridWidth             = z.gridWidth,
                 gridHeight            = z.gridHeight,
-                enemyFleetsPerCell    = z.enemyFleetsPerCell,
-                enemyBudget           = z.enemyBudget,
-                enemyMaxCostOfOneShip = z.enemyMaxCostOfOneShip,
-                enemyDeviation        = z.enemyDeviation,
-                enemyMaxShipsPerFleet = z.enemyMaxShipsPerFleet,
-                enemyHealthMultiplier = z.enemyHealthMultiplier,
-                enemyAttackMultiplier = z.enemyAttackMultiplier,
-                enemyBeamEquipSlots        = z.enemyBeamEquipSlots,
-                enemyMissileEquipSlots     = z.enemyMissileEquipSlots,
-                enemyHangarEquipSlots      = z.enemyHangarEquipSlots,
-                enemyShieldEquipSlots      = z.enemyShieldEquipSlots,
-                enemyInterceptorEquipSlots = z.enemyInterceptorEquipSlots,
                 explorationPointReward = z.explorationPointReward,
                 commanderExpReward     = z.commanderExpReward,
                 cellOverrides         = z.cellOverrides.ConvertAll(o => (object)new { row = o.row, col = o.col, type = o.type.ToString(), eventType = o.eventType.ToString() }),
