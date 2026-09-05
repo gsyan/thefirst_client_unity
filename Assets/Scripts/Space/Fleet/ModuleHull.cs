@@ -15,8 +15,9 @@ public class ModuleHull : ModuleBase
     [HideInInspector] public List<ModuleHangar> m_hangars = new List<ModuleHangar>();
     [HideInInspector] public ModuleShield m_shield; // 슬롯/3D 배치 없음 — InitializeModuleHull에서 자식으로 동적 생성
 
-    // 로드아웃 편집(UIShipLoadoutEditorView) 세션 중 슬롯별로 숨겨둔 "편집 시작 시점 원본" 모듈 — CANCEL 시 파괴/재생성 없이 그대로 복원
-    private Dictionary<ModuleSlot, ModuleBase> m_hiddenOriginalBySlot;
+    // 로드아웃 편집(UIShipLoadoutEditorView) 대상 슬롯의 편집 시작 시점 원본 모듈 스냅샷 — CANCEL 복원에 사용
+    // 키 없음 = 편집 대상 아님 / 값 null = 원본이 빈 슬롯 / 값 있음 = 원본 모듈(현재는 비활성화 상태로 보관 중일 수 있음)
+    private Dictionary<ModuleSlot, ModuleBase> m_originalModuleBySlot;
 
     private const float k_hitPenetrationRatio = 0.1f; // 충돌 지점에서 중심부로 파고드는 비율
     [SerializeField] private List<Vector3> m_hitPoints = new List<Vector3>(); // 에디터에서 베이킹, 로컬 좌표
@@ -457,7 +458,7 @@ public class ModuleHull : ModuleBase
         }
     }
 
-    // 슬롯 1개의 Placeholder를 찾아 활성화 — UninstallSingleModule(런타임 프리뷰 해제)에서도 재사용
+    // 슬롯 1개의 Placeholder를 찾아 활성화 — SetModuleSlotState(런타임 프리뷰 해제)에서도 재사용
     private void ShowPlaceholderForSlot(ModuleSlot slot)
     {
         ModulePlaceholder modulePlaceholder = slot.GetComponentInChildren<ModulePlaceholder>(true);
@@ -471,74 +472,94 @@ public class ModuleHull : ModuleBase
         modulePlaceholder.InitializeModulePlaceholder(this, slot);
     }
 
-    // 슬롯에 설치된 모듈을 즉시 제거하고 Placeholder를 되살림 — UIShipLoadoutEditorView의 실시간 프리뷰(토글/티어변경/취소 롤백) 전용
-    // 빈 슬롯(Placeholder만 있음)이면 아무 것도 하지 않음 — HasRealModule로 미리 확인하지 않으면 Placeholder 자신을 "설치된 모듈"로 착각해 파괴해버림
-    public void UninstallSingleModule(EModuleType moduleType, int slotIndex)
+    // 슬롯의 편집 시작 시점 원본(지금 활성 상태인 모듈, 없으면 null)을 기록 — 이미 기록돼 있으면 무시하고 최초 상태를 유지
+    private void CaptureOriginalIfFirstTouch(ModuleSlot slot)
+    {
+        if (m_originalModuleBySlot == null)
+            m_originalModuleBySlot = new Dictionary<ModuleSlot, ModuleBase>();
+        if (m_originalModuleBySlot.ContainsKey(slot) == true) return;
+
+        ModuleBase current = HasRealModule(slot) == true ? slot.GetComponentInChildren<ModuleBase>() : null;
+        m_originalModuleBySlot[slot] = current; // 원래 비어있었으면 null 그대로 기록 — "건드렸다"는 사실 자체가 중요
+    }
+
+    // 슬롯 하나의 최종 상태(설치 여부/서브타입/강화 포인트)를 확정하는 유일한 진입점 — 지금 활성 상태가 뭐든 스스로 조사해서 목표 상태로 전이함.
+    // 설치/해제/티어변경을 이 함수 하나로 처리하므로, 몇 번을 어떻게 호출해도 슬롯엔 항상 Placeholder 또는 모듈이 정확히 하나만 활성 상태로 남음
+    public void SetModuleSlotState(EModuleType moduleType, int slotIndex, bool installed, string subType, int attackPoints, int attackToFighterPoints)
     {
         ModuleSlot slot = FindModuleSlot(moduleType, slotIndex);
         if (slot == null) return;
-        if (HasRealModule(slot) == false) return;
 
-        ModuleBase module = slot.GetComponentInChildren<ModuleBase>();
-        if (module == null) return;
+        CaptureOriginalIfFirstTouch(slot);
 
-        // 같은 프레임에 바로 재설치될 수 있어(티어 변경), Destroy가 실제 적용되기 전에도 HasRealModule이 즉시 false를 보도록 슬롯에서 먼저 떼어냄
-        module.transform.SetParent(null);
-        Destroy(module.gameObject);
+        ModuleBase original;
+        m_originalModuleBySlot.TryGetValue(slot, out original); // null일 수 있음(원래 비어있었음)
+        ModuleBase current = HasRealModule(slot) == true ? slot.GetComponentInChildren<ModuleBase>() : null;
 
-        ShowPlaceholderForSlot(slot);
-    }
-
-    // 이번 세션에서 이 슬롯을 처음 편집하기 직전에 호출 — 지금 실제로 설치돼 있는 모듈을(있다면) 파괴하지 않고 비활성화만 해서 보관.
-    // 이후 이 슬롯에서 몇 번을 더 파괴/재설치하든 원본은 안전하며, CANCEL 시 TryRestoreOriginal로 그대로 되살릴 수 있음(Outline이 캐싱한 렌더러도 그대로 유지됨)
-    public void PrepareSlotForEditing(EModuleType moduleType, int slotIndex)
-    {
-        ModuleSlot slot = FindModuleSlot(moduleType, slotIndex);
-        if (slot == null) return;
-        if (HasRealModule(slot) == false) return;
-
-        if (m_hiddenOriginalBySlot == null)
-            m_hiddenOriginalBySlot = new Dictionary<ModuleSlot, ModuleBase>();
-        if (m_hiddenOriginalBySlot.ContainsKey(slot) == true) return; // 이미 이번 세션에 숨겨둔 원본이 있음
-
-        ModuleBase original = slot.GetComponentInChildren<ModuleBase>();
-        if (original == null) return;
-
-        original.gameObject.SetActive(false);
-        m_hiddenOriginalBySlot[slot] = original;
-    }
-
-    // 설치/해제/티어변경(다른 subType으로 재설치)을 한 번에 처리하는 프리뷰 전용 진입점 — 기존 모듈을 항상 먼저 제거한 뒤 installed면 새로 설치
-    public void ApplyModulePreview(ModuleInfo moduleInfo, bool installed)
-    {
-        UninstallSingleModule(moduleInfo.moduleType, moduleInfo.slotIndex);
-        if (installed == false) return;
-
-        ModuleSlot slot = FindModuleSlot(moduleInfo.moduleType, moduleInfo.slotIndex);
-        if (slot == null) return;
-
-        // 숨겨둔 원본이 이 슬롯에 있고 서브타입이 요청과 같으면, 새로 만들지 않고 그 원본을 재사용(강화 포인트만 다시 반영) — 왔다갔다해도 낭비 없음
-        ModuleBase hiddenOriginal;
-        if (m_hiddenOriginalBySlot != null && m_hiddenOriginalBySlot.TryGetValue(slot, out hiddenOriginal) == true
-            && hiddenOriginal != null && hiddenOriginal.GetModuleSubType() == moduleInfo.moduleSubType)
+        if (installed == false)
         {
+            RemoveCurrentModule(current, original);
+            ShowPlaceholderForSlot(slot);
+            return;
+        }
+
+        if (current != null && current.GetModuleSubType() == subType)
+        {
+            // 이미 원하는 서브타입이 활성 상태 — 파괴/생성 없이 강화 포인트만 갱신
+            ModuleInfo moduleInfo = BuildModuleInfoForSlot(moduleType, slotIndex, subType, attackPoints, attackToFighterPoints);
+            ReinitializeExistingModule(current, moduleInfo, slot);
+            return;
+        }
+
+        RemoveCurrentModule(current, original); // 서브타입이 다름 — 지금 있는 걸 정리(원본이면 숨김만, 아니면 파괴)
+
+        if (original != null && original.GetModuleSubType() == subType)
+        {
+            // 되돌아온 티어가 원본과 같으면 새로 만들지 않고 원본을 재사용
             DisablePlaceholderIfExists(slot);
-            ReinitializeExistingModule(hiddenOriginal, moduleInfo, slot);
-            hiddenOriginal.gameObject.SetActive(true);
-            m_hiddenOriginalBySlot.Remove(slot);
+            ModuleInfo moduleInfo = BuildModuleInfoForSlot(moduleType, slotIndex, subType, attackPoints, attackToFighterPoints);
+            ReinitializeExistingModule(original, moduleInfo, slot);
+            original.gameObject.SetActive(true);
             return;
         }
 
         // InitializeBeam 등은 Placeholder를 알아서 꺼주지 않으므로(HasRealModule 가드가 Placeholder를 무시해 설치 자체는 막지 않음),
         // CreateMissingModules와 동일하게 설치 직전에 직접 꺼줘야 실제 모듈과 Placeholder가 같은 슬롯에 동시에 남지 않음
         DisablePlaceholderIfExists(slot);
+        ModuleInfo newModuleInfo = BuildModuleInfoForSlot(moduleType, slotIndex, subType, attackPoints, attackToFighterPoints);
+        if (moduleType == EModuleType.beam)
+            InitializeBeam(newModuleInfo);
+        else if (moduleType == EModuleType.missile)
+            InitializeMissile(newModuleInfo);
+        else if (moduleType == EModuleType.hangar)
+            InitializeHangar(newModuleInfo);
+    }
 
-        if (moduleInfo.moduleType == EModuleType.beam)
-            InitializeBeam(moduleInfo);
-        else if (moduleInfo.moduleType == EModuleType.missile)
-            InitializeMissile(moduleInfo);
-        else if (moduleInfo.moduleType == EModuleType.hangar)
-            InitializeHangar(moduleInfo);
+    // 지금 활성 상태인 모듈을 정리 — 원본이면 보존(비활성화만), 원본이 아니면(편집 중 새로 생성된 모듈) 파괴
+    private void RemoveCurrentModule(ModuleBase current, ModuleBase original)
+    {
+        if (current == null) return;
+
+        if (current == original)
+        {
+            current.gameObject.SetActive(false);
+            return;
+        }
+
+        current.transform.SetParent(null); // Destroy가 실제 적용되기 전에도 HasRealModule이 즉시 false를 보도록 슬롯에서 먼저 떼어냄(같은 프레임 재설치 대비)
+        Destroy(current.gameObject);
+    }
+
+    private ModuleInfo BuildModuleInfoForSlot(EModuleType moduleType, int slotIndex, string subType, int attackPoints, int attackToFighterPoints)
+    {
+        return new ModuleInfo
+        {
+            moduleType = moduleType,
+            slotIndex = slotIndex,
+            moduleSubType = subType,
+            attackPoints = attackPoints,
+            attackToFighterPoints = attackToFighterPoints,
+        };
     }
 
     // 기존 컴포넌트를 파괴하지 않고 그대로 재사용하며 최신 ModuleInfo(강화 포인트 등)로 다시 초기화
@@ -552,25 +573,35 @@ public class ModuleHull : ModuleBase
             hangar.InitializeModuleHangar(moduleInfo, this, slot);
     }
 
-    // CANCEL 전용 — 이번 세션에 이 슬롯을 편집한 적 있으면(PrepareSlotForEditing으로 원본을 숨겨뒀으면) 편집 중 새로 생긴 모듈을 제거하고
-    // 숨겨둔 원본을 그대로 되살림(파괴/재생성 없음). 편집한 적 없는 슬롯이면 false를 반환 — 호출부가 아무 것도 안 하면 됨
-    public bool TryRestoreOriginal(EModuleType moduleType, int slotIndex)
+    // CANCEL 전용 — 편집 대상이었던 슬롯 전부를 원본 상태로 되돌림(파괴/재생성 없이 보관해둔 원본을 그대로 재사용)
+    public void RevertAllSlotsToOriginal()
     {
-        ModuleSlot slot = FindModuleSlot(moduleType, slotIndex);
-        if (slot == null) return false;
-        if (m_hiddenOriginalBySlot == null) return false;
+        if (m_originalModuleBySlot == null) return;
 
-        ModuleBase hiddenOriginal;
-        if (m_hiddenOriginalBySlot.TryGetValue(slot, out hiddenOriginal) == false) return false;
-
-        UninstallSingleModule(moduleType, slotIndex); // 편집 중 새로 생긴(현재 활성) 모듈 제거 — 없으면 아무 일도 안 함
-        if (hiddenOriginal != null)
+        foreach (KeyValuePair<ModuleSlot, ModuleBase> pair in m_originalModuleBySlot)
         {
-            DisablePlaceholderIfExists(slot);
-            hiddenOriginal.gameObject.SetActive(true);
+            ModuleSlot slot = pair.Key;
+            ModuleBase original = pair.Value;
+
+            ModuleBase current = HasRealModule(slot) == true ? slot.GetComponentInChildren<ModuleBase>() : null;
+            if (current != null && current != original)
+            {
+                current.transform.SetParent(null);
+                Destroy(current.gameObject);
+            }
+
+            if (original != null)
+            {
+                DisablePlaceholderIfExists(slot);
+                original.gameObject.SetActive(true);
+            }
+            else
+            {
+                ShowPlaceholderForSlot(slot);
+            }
         }
-        m_hiddenOriginalBySlot.Remove(slot);
-        return true;
+
+        m_originalModuleBySlot.Clear();
     }
 
     // Beam 추가

@@ -42,7 +42,6 @@ public class UIShipLoadoutEditorView : MonoBehaviour
     private readonly List<int> m_pendingAttackToFighterPoints = new(); // 격납고 전용 대전투기 공격력 강화 포인트 — 빔/미사일은 항상 0
     private readonly List<string> m_pendingModuleSubType = new(); // 무기 모듈의 현재 티어 서브타입(예: beam_1_1) — m_moduleSlotEntries와 1:1 대응, 실드는 항상 기본값 고정
     private ModuleHullInfo m_originalModules; // Confirm 시 이 값과 비교해 실제로 바뀐 슬롯만 서버로 전송
-    private readonly HashSet<int> m_editedDataIndexes = new(); // 이번 편집 세션에서 한 번이라도 손댄 슬롯 — CANCEL 시 이 슬롯들만 원본 복원 시도(ModuleHull.TryRestoreOriginal)
 
     private List<ShipStatRowEntry> m_statEntries = new();
     private Dictionary<string, ShipStatRowEntry> m_selectedOriginalEntriesByLabel = new(); // 비교 기준 — 선택된 슬롯의 원래(팝업을 열 때) 장착 상태, 선택이 바뀔 때마다 재계산
@@ -107,7 +106,6 @@ public class UIShipLoadoutEditorView : MonoBehaviour
         m_pendingAttackPoints.Clear();
         m_pendingAttackToFighterPoints.Clear();
         m_pendingModuleSubType.Clear();
-        m_editedDataIndexes.Clear();
         // 슬롯 잠금 없음 — 모든 슬롯이 자유롭게 토글 가능. 공격 모듈 0개 방지는 Confirm 버튼 비활성화(RefreshCommandPowerPreview)로 처리
         AppendCategorySlots(EModuleType.beam, maxSlots[0]);
         AppendCategorySlots(EModuleType.missile, maxSlots[1]);
@@ -285,36 +283,16 @@ public class UIShipLoadoutEditorView : MonoBehaviour
             return;
         }
 
-        // 이번 세션에서 이 슬롯을 처음 편집하는 순간에만 원본을 안전하게 대피시켜둠(두 번째 이후 편집은 ModuleHull이 내부적으로 무시)
-        if (m_editedDataIndexes.Add(dataIndex) == true)
-            body.PrepareSlotForEditing(entry.moduleType, entry.slotIndex);
-
-        ModuleInfo moduleInfo = new ModuleInfo
-        {
-            moduleType = entry.moduleType,
-            slotIndex = entry.slotIndex,
-            moduleSubType = subType,
-            attackPoints = attackPoints,
-            attackToFighterPoints = attackToFighterPoints,
-        };
-        body.ApplyModulePreview(moduleInfo, installed);
+        body.SetModuleSlotState(entry.moduleType, entry.slotIndex, installed, subType, attackPoints, attackToFighterPoints);
     }
 
-    // CANCEL 시 이번 세션에서 실제로 편집한 슬롯만 원본으로 복원 — 파괴/재생성 없이 PrepareSlotForEditing이 숨겨둔 원본을 그대로 되살림(ModuleHull.TryRestoreOriginal)
+    // CANCEL 시 편집한 슬롯 전부를 원본 상태로 복원 — 파괴/재생성 없이 ModuleHull이 보관해둔 원본을 그대로 재사용
     private void RevertAllModulePreviewsToOriginal()
     {
-        if (m_editedDataIndexes.Count == 0) return;
-
         SpaceShip ship = FindEditingShip();
         if (ship == null || ship.m_moduleHulls.Count == 0) return;
-        ModuleHull body = ship.m_moduleHulls[0];
 
-        foreach (int dataIndex in m_editedDataIndexes)
-        {
-            if (dataIndex < 0 || dataIndex >= m_moduleSlotEntries.Count) continue;
-            ModuleSlotEntry entry = m_moduleSlotEntries[dataIndex];
-            body.TryRestoreOriginal(entry.moduleType, entry.slotIndex);
-        }
+        ship.m_moduleHulls[0].RevertAllSlotsToOriginal();
     }
 
     // ManageButton 클릭 — 강화 포인트 편집 팝업 오픈. 현재 pending 값을 팝업의 초기 로컬 버퍼로 전달
