@@ -158,7 +158,17 @@ public class InfiniteScrollView : MonoBehaviour
 
     private void RefreshView()
     {
-        if (m_initialized == false || m_totalCount == 0) return;
+        if (m_initialized == false) return;
+
+        // totalCount 0(예: 선택된 슬롯이 미설치라 스탯 없음)이어도 이전에 켜져 있던 풀 아이템은 반드시 꺼야 함 —
+        // 그냥 return하면 직전 선택 항목이 화면에 그대로 남아있게 됨
+        if (m_totalCount == 0)
+        {
+            for (int i = 0; i < m_itemPool.Count; i++)
+                m_itemPool[i].gameObject.SetActive(false);
+            m_topDataIndex = int.MinValue;
+            return;
+        }
 
         float itemStep = m_itemHeight + m_spacing;
         float scrollY = m_scrollRect.content.anchoredPosition.y;

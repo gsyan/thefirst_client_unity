@@ -49,6 +49,8 @@ public class UIPanelSettings : UIPanelBase
     [SerializeField] private Toggle   m_toggleRemoveAd;
     [SerializeField] private Button   m_devConsoleButton;
 
+    [SerializeField] private Toggle   m_toggleCheckZoneCleared; // 켜짐(기본값) = 정상적으로 존 클리어 진행도 검사, 꺼짐 = 검사 건너뜀(테스트용)
+
     private List<Locale> m_locales;
 
     public override void InitializeUIPanel()
@@ -96,6 +98,19 @@ public class UIPanelSettings : UIPanelBase
             {
                 AdManager.s_devSkipAd = on;
                 PlayerPrefs.SetInt("DevSkipAd", on ? 1 : 0);
+                PlayerPrefs.Save();
+            });
+        }
+
+        if (m_toggleCheckZoneCleared != null)
+        {
+            bool checkZoneCleared = PlayerPrefs.GetInt("DevCheckZoneCleared", 1) == 1;
+            UIPanelExplorationGrid.s_devSkipZoneLockCheck = (checkZoneCleared == false);
+            m_toggleCheckZoneCleared.SetIsOnWithoutNotify(checkZoneCleared);
+            m_toggleCheckZoneCleared.onValueChanged.AddListener(on =>
+            {
+                UIPanelExplorationGrid.s_devSkipZoneLockCheck = (on == false);
+                PlayerPrefs.SetInt("DevCheckZoneCleared", on ? 1 : 0);
                 PlayerPrefs.Save();
             });
         }
@@ -224,7 +239,7 @@ public class UIPanelSettings : UIPanelBase
 
         // 서버 adddevresources 1번째 파라미터는 raw exp가 아닌 "1레벨 증가" 트리거 플래그
         string levelUp     = (m_toggleCommander  != null && m_toggleCommander.isOn  == true) ? "1"   : "0";
-        string exploPoint  = (m_toggleExploPoint != null && m_toggleExploPoint.isOn == true) ? "100" : "0";
+        string exploPoint  = (m_toggleExploPoint != null && m_toggleExploPoint.isOn == true) ? "100000" : "0";
         string pvpPoint    = (m_togglePvpPoint   != null && m_togglePvpPoint.isOn   == true) ? "100" : "0";
 
 #if UNITY_EDITOR || DEVELOPMENT_BUILD

@@ -24,7 +24,8 @@ public static class ShipStatGaugeBuilder
     // healthMultiplier/attackMultiplier는 Zone 적 함대 열람 시에만 1이 아님 — ModuleBeam/Body/Hangar.cs의 Zone 배율 적용 규칙과 반드시 동일하게 유지할 것
     // (체력/수리력=healthMultiplier, 공격력 계열=attackMultiplier, 선회력은 배율 미적용)
     // applyBuffs를 넘기면 보상카드 지속버프 배율을 표시값에만 반영(배열 mutate 없이 스칼라만 스케일) — 존 런 중 대치 화면 전용, 그 외 호출부는 null 유지
-    public static List<ShipStatRowEntry> Build(ModuleData hullData, ModuleHullInfo actualModules = null, float healthMultiplier = 1f, float attackMultiplier = 1f, RewardCardSessionState applyBuffs = null)
+    // includeBodyStats=false면 Health/TurnRate/Repair(함체 전용 스탯)를 뺌 — 슬롯 1개짜리 단일 모듈 뷰(UIShipLoadoutEditorView)에서 사용
+    public static List<ShipStatRowEntry> Build(ModuleData hullData, ModuleHullInfo actualModules = null, float healthMultiplier = 1f, float attackMultiplier = 1f, RewardCardSessionState applyBuffs = null, bool includeBodyStats = true)
     {
         DataTableModule moduleTable = DataManager.Instance.m_dataTableModule;
 
@@ -43,9 +44,12 @@ public static class ShipStatGaugeBuilder
         float hangarShipDpsBuffMult = applyBuffs != null ? applyBuffs.GetMultiplier(ECardEffectType.Buff_HangarAttackToShip) : 1f;
         float hangarFighterDpsBuffMult = applyBuffs != null ? applyBuffs.GetMultiplier(ECardEffectType.Buff_HangarAttackToFighter) : 1f;
 
-        entries.Add(MakeNumericStat(loc.Get("UIFleet_Stats_Health"), stats.health * healthMultiplier, healthBuffMult));
-        entries.Add(MakeNumericStat(loc.Get("UIFleet_Stats_TurnRate"), stats.turnRate));
-        entries.Add(MakeNumericStat(loc.Get("UIFleet_Stats_Repair"), stats.repair * healthMultiplier));
+        if (includeBodyStats == true)
+        {
+            entries.Add(MakeNumericStat(loc.Get("UIFleet_Stats_Health"), stats.health * healthMultiplier, healthBuffMult));
+            entries.Add(MakeNumericStat(loc.Get("UIFleet_Stats_TurnRate"), stats.turnRate));
+            entries.Add(MakeNumericStat(loc.Get("UIFleet_Stats_Repair"), stats.repair * healthMultiplier));
+        }
 
         if (stats.beamModuleSubType.Length > 0)
         {

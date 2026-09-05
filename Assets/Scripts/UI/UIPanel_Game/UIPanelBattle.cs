@@ -109,18 +109,27 @@ public class UIPanelBattle : UIPanelBase
             int tacticOptions = myFleet.m_fleetInfo.tacticOptions;
             GameSettings gameSettings = DataManager.Instance.m_dataTableConfig.gameSettings;
 
-            // 토글이 켜져 있어도 실질 효과가 없는 상태(체력 만땅/미사일·함재기 모듈 없음/실드 게이지 없음)면 전술력을 소모하지 않음 — 토글 자체는 유지(조건이 다시 성립하면 재소모)
+            // 토글이 켜져 있어도 실질 효과가 없는 상태(체력 만땅/미사일·함재기 모듈 없음/실드 충전 여지 없음)면 전술력을 소모하지 않음 — 토글 자체는 유지(조건이 다시 성립하면 재소모)
             bool repairHasEffect = myFleet.GetFleetHealthRatio() < 1f;
             CapabilityProfile fleetProfile = myFleet.GetFleetCapabilityProfile();
             bool missileHasEffect = fleetProfile.missileAttack > 0f;
             bool aircraftHasEffect = fleetProfile.airCount > 0;
-            bool shieldHasEffect = myFleet.HasAnyShieldDefending();
+            // 방어 발동 중(게이지 소모 중)이 아니어도 아직 충전할 여지가 있으면 토글이 실질 효과를 가짐 — 게이지 0에서 충전을 시작할 수 있어야 함
+            bool shieldHasEffect = myFleet.HasAnyShieldDefending() || myFleet.HasAnyShieldBelowMax();
 
             int drainPerSec = 0;
-            if ((tacticOptions & (1 << 0)) != 0 && repairHasEffect == true) drainPerSec += gameSettings.repairBoostExplorationPointPerSec;
+            if ((tacticOptions & (1 << 0)) != 0 && repairHasEffect == true)
+            {
+                drainPerSec += gameSettings.repairBoostExplorationPointPerSec;
+                myFleet.ApplyRepairTickToAllShips();
+            }
             if ((tacticOptions & (1 << 1)) != 0 && missileHasEffect == true) drainPerSec += gameSettings.missileTacticExplorationPointPerSec;
             if ((tacticOptions & (1 << 2)) != 0 && aircraftHasEffect == true) drainPerSec += gameSettings.aircraftTacticExplorationPointPerSec;
-            if ((tacticOptions & (1 << 3)) != 0 && shieldHasEffect == true) drainPerSec += gameSettings.shieldTacticExplorationPointPerSec;
+            if ((tacticOptions & (1 << 3)) != 0 && shieldHasEffect == true)
+            {
+                drainPerSec += gameSettings.shieldTacticExplorationPointPerSec;
+                myFleet.ApplyShieldRegenTickToAllShips();
+            }
             if (drainPerSec <= 0) continue;
 
             commanderInfo.tacticPower = Mathf.Max(0, commanderInfo.tacticPower - drainPerSec);

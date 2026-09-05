@@ -89,6 +89,7 @@ public class ZoneConfig
     public float enemyHealthMultiplier = 1.0f; // 이 존의 적함대 체력 배율 (0.1=10%, 1.0=원본)
     public float enemyAttackMultiplier = 1.0f; // 이 존의 적함대 공격력 배율 (0.1=10%, 1.0=원본)
     public int enemyInterceptorEquipSlots = 9; // 요격체 장착 여부 — 요격체도 슬롯 1개뿐이라 사실상 0/1 스위치
+    public float enemyWaveSpawnTermSec = 5f; // 셀에 웨이브가 여러 개일 때 다음 웨이브 스폰 간격(초) — 현재 웨이브를 그 전에 전멸시키면 대기 없이 즉시 다음 웨이브 스폰
 
     [Header("셀 클리어 보상 (웨이브가 있던 셀만 적립, 존 단위 고정값)")]
     public int explorationPointReward = 0; // [server] 적 함대 성능(commandCost)과 무관한 고정 탐험 포인트 적립량

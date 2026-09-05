@@ -18,6 +18,14 @@ public class ObjectManager : MonoSingleton<ObjectManager>
     // 전투 종료 처리 중 데미지 차단 플래그
     public bool m_isBattleEnding = false;
 
+    // 셀 웨이브 순차 스폰(첫 웨이브 제외 나머지) — StartZoneEnemyWaves로 등록, term 간격으로 스폰하되 현재 웨이브를 먼저 전멸시키면 즉시 다음 웨이브 스폰
+    private List<FleetInfo> m_pendingZoneWaves;
+    private bool[] m_zoneWaveSpawned;
+    private Coroutine[] m_zoneWaveTimerCoroutines;
+    private float m_zoneWavesBattleStartTime;
+    private float m_zoneWaveSpawnTermSec;
+    private Vector3 m_zoneWaveBasePos;
+
     protected override void OnInitialize()
     {
         DataManager.Instance.ApplyGameSettings();
@@ -208,7 +216,8 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         return ETeam.TeamC;
     }
 
-    // 활성 미사일 추적 — 아군/적군 분리, 요격 타겟 탐색용
+    // 활성 미사일 추적 — 아군/적군 분리. 빔의 미사일 관통 파괴 판정(ProjectileBeam.cs)과 미사일끼리 우연히 충돌했을 때의
+    // 파괴 판정(ProjectileMissile.CheckCollision)이 사용
     public List<ProjectileMissile> m_friendlyMissiles = new List<ProjectileMissile>();
     public List<ProjectileMissile> m_enemyMissiles    = new List<ProjectileMissile>();
 
@@ -223,31 +232,6 @@ public class ObjectManager : MonoSingleton<ObjectManager>
     {
         m_friendlyMissiles.Remove(missile);
         m_enemyMissiles.Remove(missile);
-    }
-
-    // 기준 위치에서 가장 가까운 적 미사일 반환 (없으면 null)
-    public ProjectileMissile GetNearestEnemyMissile(Vector3 from, bool isMysideFriendly)
-    {
-        List<ProjectileMissile> targets = isMysideFriendly ? m_enemyMissiles : m_friendlyMissiles;
-        ProjectileMissile nearest = null;
-        float nearestSqrDist = float.MaxValue;
-
-        for (int i = targets.Count - 1; i >= 0; i--)
-        {
-            ProjectileMissile m = targets[i];
-            if (m == null || m.gameObject.activeSelf == false)
-            {
-                targets.RemoveAt(i);
-                continue;
-            }
-            float sqrDist = (m.transform.position - from).sqrMagnitude;
-            if (sqrDist < nearestSqrDist)
-            {
-                nearestSqrDist = sqrDist;
-                nearest = m;
-            }
-        }
-        return nearest;
     }
 
     // 초기화 순서가 이슈인 경우 이곳에서 순차적으로 진행
@@ -422,9 +406,9 @@ public class ObjectManager : MonoSingleton<ObjectManager>
             TutorialManager.Instance.StartTutorial("Tutorial_Exploration");
     }
 
-    // 재접속 시 진행 중인 탐험 런이 있으면 그 런에서 이미 확정 선택한 보상카드(지속버프)를 로그인 시점에 미리 복원 —
-    // 탐사UI(UIPanelExplorationGrid)를 열어야만 반영되던 문제 방지. 탐사UI의 RequestActiveZoneRunProgress는
-    // 적립포인트/클리어셀 등 그리드 상태 복원용으로 별도 유지하되, 카드 재적용은 하지 않음(중복 적용 방지)
+    // 재접속 시 진행 중인 탐험 런이 있으면 그 런에서 이미 확정 선택한 보상카드(지속버프)와 마지막 클리어 시점 함선 체력/실드를
+    // 로그인 시점에 미리 복원 — 탐사UI(UIPanelExplorationGrid)를 열어야만 반영되던 문제 방지. 탐사UI의 RequestActiveZoneRunProgress는
+    // 적립포인트/클리어셀 등 그리드 상태 복원용으로 별도 유지하되, 카드/체력 재적용은 하지 않음(중복 적용 방지)
     private void RestoreActiveRunRewardCardBuffs()
     {
         Commander commander = DataManager.Instance.m_currentCommander;
@@ -436,7 +420,25 @@ public class ObjectManager : MonoSingleton<ObjectManager>
             if (response == null || response.errorCode != 0 || response.data == null) return;
             m_rewardCardSessionState.ApplyPersistentCardIds(response.data.selectedRewardCards);
             RefreshRewardCardBuffsOnMyFleet(); // 이미 스폰된 내 함선 모듈/체력에 즉시 반영
+            ApplyFleetHealthSnapshotOnMyFleet(response.data.shipHealthRatios);
         });
+    }
+
+    // 슬롯 포지션 인덱스 기준으로 이미 스폰된 내 함대에 마지막 클리어 시점 체력/실드 스냅샷을 적용 —
+    // UIPanelExplorationGrid.ApplyFleetHealthSnapshot과 동일한 방식, 로그인 직후(탐사UI 진입 전) 복원용
+    private void ApplyFleetHealthSnapshotOnMyFleet(System.Collections.Generic.List<ShipHealthRatioInfo> shipHealthRatios)
+    {
+        if (shipHealthRatios == null || shipHealthRatios.Count == 0) return;
+
+        SpaceFleet myFleet = GetMyFleet();
+        if (myFleet == null) return;
+
+        foreach (ShipHealthRatioInfo entry in shipHealthRatios)
+        {
+            SpaceShip ship = myFleet.m_ships.Find(s => s != null && s.m_shipInfo.positionIndex == entry.positionIndex);
+            if (ship != null)
+                ship.ApplyHealthAndShieldRatio(entry.healthRatio, entry.shieldRatio);
+        }
     }
 
     public int GetInitialZoneIndex()
@@ -641,9 +643,105 @@ public class ObjectManager : MonoSingleton<ObjectManager>
             ForceEndBattle(true);
     }
 
-    // 함선 시스템 대격변으로 구존-스테이지 웨이브 필드(m_pendingWaves 등)가 주석 처리되어 현재는 no-op — 복원 시 함께 되살릴 것
     public void StopEnemySpawning()
     {
+        ClearPendingZoneWaves();
+    }
+
+    // 셀에 웨이브가 2개 이상일 때, 첫 웨이브(이미 스폰됨) 제외 나머지를 순차 스폰 등록 — UIPanelExplorationGrid.OnConfirmStartBattle에서 호출
+    // wave0Pos: 이미 스폰된 웨이브0의 위치 — 나머지 웨이브는 내 함대를 중심으로 이 위치와 같은 반지름의 원주 위, 다른 각도에 배치됨
+    public void StartZoneEnemyWaves(List<FleetInfo> remainingWaves, Vector3 wave0Pos, float spawnTermSec)
+    {
+        ClearPendingZoneWaves();
+        if (remainingWaves == null || remainingWaves.Count == 0) return;
+
+        m_pendingZoneWaves = remainingWaves;
+        m_zoneWaveSpawned = new bool[remainingWaves.Count];
+        m_zoneWaveTimerCoroutines = new Coroutine[remainingWaves.Count];
+        m_zoneWavesBattleStartTime = Time.time;
+        m_zoneWaveSpawnTermSec = spawnTermSec;
+        m_zoneWaveBasePos = wave0Pos;
+
+        for (int i = 0; i < remainingWaves.Count; i++)
+        {
+            int waveIndex = i;
+            m_zoneWaveTimerCoroutines[waveIndex] = StartCoroutine(ZoneWaveTimerCoroutine(waveIndex));
+        }
+    }
+
+    private IEnumerator ZoneWaveTimerCoroutine(int waveIndex)
+    {
+        // 나머지 웨이브 리스트의 0번이 두 번째 웨이브이므로 (waveIndex+1) * term 시점에 스폰
+        float elapsed = Time.time - m_zoneWavesBattleStartTime;
+        float spawnTime = (waveIndex + 1) * m_zoneWaveSpawnTermSec;
+        float remaining = spawnTime - elapsed;
+        if (remaining > 0f)
+            yield return new WaitForSeconds(remaining);
+
+        if (m_zoneWaveSpawned[waveIndex] == false)
+            SpawnZoneWave(waveIndex);
+    }
+
+    private void SpawnZoneWave(int waveIndex)
+    {
+        if (m_zoneWaveSpawned[waveIndex] == true) return;
+        m_zoneWaveSpawned[waveIndex] = true;
+
+        FleetInfo wave = m_pendingZoneWaves[waveIndex];
+        if (wave == null || wave.ships == null || wave.ships.Count == 0) return;
+
+        // 내 함대를 중심으로, 웨이브0과 같은 반지름의 원주 위에서 좌우로 각도를 번갈아 벌려 배치 — 겹치지 않을 정도만 떨어뜨림
+        SpaceFleet myFleet = GetMyFleet();
+        Vector3 center = myFleet != null ? myFleet.transform.position : m_zoneWaveBasePos;
+
+        Vector3 toWave0 = m_zoneWaveBasePos - center;
+        float radius = toWave0.magnitude;
+        Vector3 baseDir = radius > 0.01f ? toWave0 / radius : Vector3.forward;
+
+        const float k_waveAngleStepDeg = 30f;
+        int angleStepCount = waveIndex / 2 + 1;
+        float angleSign = waveIndex % 2 == 0 ? 1f : -1f;
+        float angleOffsetDeg = angleSign * angleStepCount * k_waveAngleStepDeg;
+
+        Vector3 spawnDir = Quaternion.AngleAxis(angleOffsetDeg, Vector3.up) * baseDir;
+        Vector3 spawnPos = center + spawnDir * radius;
+        Quaternion spawnRot = Quaternion.LookRotation(center - spawnPos);
+
+        // 웨이브0(SpawnFleetFromPreset)과 완전히 동일한 스폰 방식 재사용 — ExplorationShipSpawnBridge로 함선 생성, Idle 상태로 대기
+        ETeam enemyTeam = GetOpposingTeam(m_myTeam);
+        SpaceFleet newFleet = SpawnFleetFromPreset(wave, enemyTeam, EFleetSource.fleet_source_zone_data, spawnPos, spawnRot, $"EnemyFleet_Wave{waveIndex + 1}");
+        newFleet.StartFleetWarpIn(() =>
+        {
+            TryStartCombat(newFleet, EUnitState.BattleExploration, 0f, 0f);
+        });
+    }
+
+    // 아직 스폰되지 않은 웨이브가 남아있는지 — 남아있으면 "적 팀 전멸"이 곧 클리어를 의미하지 않음
+    private bool HasPendingZoneWaves()
+    {
+        if (m_zoneWaveSpawned == null) return false;
+        for (int i = 0; i < m_zoneWaveSpawned.Length; i++)
+        {
+            if (m_zoneWaveSpawned[i] == false)
+                return true;
+        }
+        return false;
+    }
+
+    private void ClearPendingZoneWaves()
+    {
+        if (m_zoneWaveTimerCoroutines != null)
+        {
+            for (int i = 0; i < m_zoneWaveTimerCoroutines.Length; i++)
+            {
+                if (m_zoneWaveTimerCoroutines[i] != null)
+                    StopCoroutine(m_zoneWaveTimerCoroutines[i]);
+            }
+        }
+
+        m_pendingZoneWaves = null;
+        m_zoneWaveSpawned = null;
+        m_zoneWaveTimerCoroutines = null;
     }
 
     // 모든 적 함대 제거
@@ -777,7 +875,7 @@ public class ObjectManager : MonoSingleton<ObjectManager>
                 // 그 시점의 최신 배율을 직접 읽어 반영함(내 함대가 아니면 배율은 항상 1). 이러면 스폰 이후 카드를 더 골라도
                 // ObjectManager.RefreshRewardCardBuffsOnMyFleet()가 같은 모듈들을 다시 갱신해주기만 하면 됨
                 ShipFinalStats finalStats = ShipStatCalculator.Calculate(allocation, formula, bodyModuleData, moduleTable);
-                ExplorationShipSpawnBridge.SpawnShip(fleet, bodyModuleData, finalStats, shipIndex, shipSlot.isFront, shipSlot.healthMultiplier, shipSlot.attackMultiplier);
+                ExplorationShipSpawnBridge.SpawnShip(fleet, bodyModuleData, finalStats, actualModules, shipIndex, shipSlot.isFront, shipSlot.healthMultiplier, shipSlot.attackMultiplier, shipSlot.id);
             }
         }
         // bWarp: false로 스폰된 함선들은 최종 대형 위치보다 뒤(-Z)에 멈춰있으므로, 연출 없이 즉시 최종 위치로 확정
@@ -835,13 +933,34 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         ShipStatAllocation allocation = ShipStatAllocation.BuildFromModuleHullInfo(formula.maxModuleSlots, modules);
         ShipFinalStats finalStats = ShipStatCalculator.Calculate(allocation, formula, bodyModuleData, moduleTable);
 
-        SpaceShip newShip = ExplorationShipSpawnBridge.SpawnShip(myFleet, bodyModuleData, finalStats, positionIndex, isFront);
+        // 슬롯 정체성(id)은 함체가 바뀌어도 유지 — 비어있던 슬롯이었으면(oldShip null) 아직 서버에 확정된 id가 없으므로 0
+        long preservedId = oldShip != null ? oldShip.m_shipInfo.id : 0;
+        SpaceShip newShip = ExplorationShipSpawnBridge.SpawnShip(myFleet, bodyModuleData, finalStats, modules, positionIndex, isFront, id: preservedId);
         // 존 런 진행 중이면 이전 함선의 손상 비율을 새 함선에 그대로 이전(회복 금지) — 평시 편성(런 없음)은 만피 유지
         if (newShip != null && IsExplorationRunActive() == true)
             newShip.ApplyHealthRatio(previousHealthRatio);
 
+        // m_fleetInfo.ships도 함께 갱신 — 전멸 복구(SpaceFleet.RebuildFleet)가 화면에 보이는 m_ships가 아니라
+        // 이 데이터로 함선을 재생성하므로, 편성 화면에서 바꾼 내용이 여기 반영 안 되면 전멸 후 예전 편성으로 되살아남
+        if (newShip != null)
+            UpdateFleetInfoShipAt(myFleet, positionIndex, newShip.m_shipInfo);
+
         // 스무스 이동(RefreshFormation) 대신 bSmooth: false로 즉시 최종 위치에 배치 — 연출 없이 바로 나옴
         myFleet.UpdateShipFormation(myFleet.m_currentFormationType, bSmooth: false);
+    }
+
+    // myFleet.m_fleetInfo.ships에서 positionIndex가 일치하는 항목을 새 ShipInfo로 교체(없으면 추가) — ReplaceMyFleetShipAt 전용
+    private void UpdateFleetInfoShipAt(SpaceFleet myFleet, int positionIndex, ShipInfo newShipInfo)
+    {
+        if (myFleet.m_fleetInfo == null) return;
+        if (myFleet.m_fleetInfo.ships == null)
+            myFleet.m_fleetInfo.ships = new List<ShipInfo>();
+
+        int existingIndex = myFleet.m_fleetInfo.ships.FindIndex(s => s.positionIndex == positionIndex);
+        if (existingIndex >= 0)
+            myFleet.m_fleetInfo.ships[existingIndex] = newShipInfo;
+        else
+            myFleet.m_fleetInfo.ships.Add(newShipInfo);
     }
 
     // 현재 진행 중인 존 런이 있는지 — 존 런 중에는 함선 교체 시 체력 유지/자동회복 금지 등의 판정에 사용
@@ -885,33 +1004,30 @@ public class ObjectManager : MonoSingleton<ObjectManager>
     {
         RemoveEnemyFleet(fleet);
 
-        // 미스폰 웨이브 중 가장 앞의 것을 즉시 스폰 (term 타이머 취소)
-        // 구존-스테이지 로직 주석처리(StartZoneEnemyWaves 비활성화)로 m_pendingWaves는 항상 null이라 이 블록은 도달 불가 — SpawnWave 재활성화 시 함께 복원
-        /*
-        if (m_pendingWaves == null) return;
-        for (int i = 0; i < m_waveSpawned.Length; i++)
+        if (GetOpposingTeamFleets(m_myTeam).Count != 0) return;
+
+        // 미스폰 웨이브가 남아있으면 그 중 가장 앞의 것을 term 타이머 기다리지 않고 즉시 스폰(전멸 시 즉시 다음 웨이브)
+        if (HasPendingZoneWaves() == true)
         {
-            if (m_waveSpawned[i] == false)
+            for (int i = 0; i < m_zoneWaveSpawned.Length; i++)
             {
-                if (m_waveTimerCoroutines[i] != null)
+                if (m_zoneWaveSpawned[i] == true) continue;
+
+                if (m_zoneWaveTimerCoroutines[i] != null)
                 {
-                    StopCoroutine(m_waveTimerCoroutines[i]);
-                    m_waveTimerCoroutines[i] = null;
+                    StopCoroutine(m_zoneWaveTimerCoroutines[i]);
+                    m_zoneWaveTimerCoroutines[i] = null;
                 }
-                SpawnWave(i);
+                SpawnZoneWave(i);
                 return;
             }
         }
-        */
 
         // 모든 웨이브 스폰 완료 + 적 전멸 → 클리어
         // ForceEndBattle(true)가 m_isBattleEnding 가드(내 함대도 거의 동시에 전멸해 ForceEndBattle(false)가
         // 먼저 확정된 경우 승리로 뒤집지 않음) 및 함대 상태 리셋/배속 복원/정리를 전부 처리
-        if (GetOpposingTeamFleets(m_myTeam).Count == 0)
-        {
-            EventManager.Trigger_AllEnemyFleetKilled();
-            ForceEndBattle(true);
-        }
+        EventManager.Trigger_AllEnemyFleetKilled();
+        ForceEndBattle(true);
     }
 
     #region Prefabs ---------------------------------------------------------------

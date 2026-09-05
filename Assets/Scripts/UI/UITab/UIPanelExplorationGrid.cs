@@ -30,6 +30,9 @@ public class UIPanelExplorationGrid : UIPanelBase
 
     private const float k_enemyEncounterDistance = 50f; // 셀 안 전투 조우 거리 — datatable_zone_enemy_fleet_position.csv grade1과 동일 스케일(국소 전술 거리, 갤럭시뷰 좌표와는 별개)
 
+    // 켜져있으면(true) 존 잠금(클리어 진행도) 검사를 건너뜀 — Settings 패널 "CheckCleard" 토글이 꺼졌을 때 설정됨(AdManager.s_devSkipAd와 동일 패턴)
+    public static bool s_devSkipZoneLockCheck;
+
     private int m_zoneGroupCount;
     private int m_pendingZoneNumber;
     private bool m_pendingFleetRepositionForZoneAdvance; // 탈출 성공으로 다음 존이 확정된 뒤, 로컬 함대뷰로 나갈 때 함대를 새 존 시작 셀로 재배치해야 함을 표시
@@ -52,6 +55,7 @@ public class UIPanelExplorationGrid : UIPanelBase
     private int m_pendingCellCol;
     private Vector3 m_pendingCellWorldPos;
     private FleetInfo m_pendingEnemyFleetInfo; // EnterExplorationCellResponse가 전투 있음으로 확정한 적 함대 구성 — 함대뷰 전환 완료(FleetViewRestored) 후 SpawnConfirmedEnemyFleet에서 스폰
+    private List<FleetInfo> m_pendingRemainingWaves; // 이 셀에 웨이브가 2개 이상일 때 첫 웨이브 제외 나머지 — OnConfirmStartBattle에서 ObjectManager.StartZoneEnemyWaves로 넘김
     private string m_activeChallengeToken; // EnterExplorationCellResponse가 발급한 1회용 토큰 — ClearExplorationCellRequest에 그대로 실어 보냄(enter-cell 생략한 clear 반복 호출 차단용)
 
     // 대치 상태(UIPanelPrepareBattle) 중 퇴각 시 되돌아갈 이전 위치 — 로컬뷰 카메라 전환 이후엔 그리드 좌표→월드좌표 역산이 불가능(카메라 자세가 이미 바뀜)하므로 이동 직전 좌표를 스냅샷
@@ -453,7 +457,8 @@ public class UIPanelExplorationGrid : UIPanelBase
         }
     }
 
-    // 슬롯 포지션 인덱스 기준으로 함대 체력 비율 스냅샷을 적용 — (1) 재접속 시 서버 저장값 복구, (2) 전투 퇴각/패배 시 진입 직전 상태로 롤백, 두 용도에 재사용
+    // 슬롯 포지션 인덱스 기준으로 함대 체력/실드 비율 스냅샷을 적용 — (1) 재접속 시 서버 저장값 복구, (2) 전투 퇴각/패배 시 진입 직전 상태로 롤백, 두 용도에 재사용.
+    // ApplyHealthRatio(실드 풀게이지 리셋)가 아닌 ApplyHealthAndShieldRatio를 써서 스냅샷 시점의 실드 비율을 그대로 복구
     private void ApplyFleetHealthSnapshot(List<ShipHealthRatioInfo> shipHealthRatios)
     {
         if (shipHealthRatios == null || shipHealthRatios.Count == 0) return;
@@ -465,7 +470,7 @@ public class UIPanelExplorationGrid : UIPanelBase
         {
             SpaceShip ship = myFleet.m_ships.Find(s => s != null && s.m_shipInfo.positionIndex == entry.positionIndex);
             if (ship != null)
-                ship.ApplyHealthRatio(entry.healthRatio);
+                ship.ApplyHealthAndShieldRatio(entry.healthRatio, entry.shieldRatio);
         }
     }
 
@@ -522,7 +527,7 @@ public class UIPanelExplorationGrid : UIPanelBase
     private void OnCellClicked(int row, int col)
     {
         // 브라우징(스크롤/탭 이동)은 잠긴 존도 허용하되, 실제 입장(전투 진입)만 여기서 차단
-        if (m_currentZoneNumber > GetHighestClearedZoneNumber() + 1)
+        if (s_devSkipZoneLockCheck == false && m_currentZoneNumber > GetHighestClearedZoneNumber() + 1)
         {
             UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig
             {
@@ -577,7 +582,17 @@ public class UIPanelExplorationGrid : UIPanelBase
             int otherZoneNumber = response.data.zoneNumber;
             int otherBanked = response.data.explorationPointBanked;
             string[] clearedCells = response.data.clearedCells;
-            string lastCell = (clearedCells != null && clearedCells.Length > 0) ? clearedCells[^1] : null;
+
+            // 클리어한 셀이 하나도 없는 런(대치화면만 보고 물러났거나 첫 전투 클리어 전 퇴각)은 서버(enterExplorationCell)도
+            // 진행 없는 런으로 간주해 확인 없이 조용히 종료하므로, 클라도 굳이 포기 확인 팝업을 띄우지 않고 바로 진행
+            bool hasNoProgress = clearedCells == null || clearedCells.Length == 0;
+            if (hasNoProgress == true)
+            {
+                ConfirmAbandonThenEnterCell(newRow, newCol);
+                return;
+            }
+
+            string lastCell = clearedCells[^1];
             string otherCellDisplay = FormatCellForDisplay(lastCell);
 
             UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig
@@ -688,6 +703,17 @@ public class UIPanelExplorationGrid : UIPanelBase
         const float BATTLE_START_DELAY_SEC = 0.5f;
         ObjectManager.Instance.TryStartCombat(m_standoffEnemyFleet, EUnitState.BattleExploration, BATTLE_START_DELAY_SEC, BATTLE_START_DELAY_SEC);
         m_standoffEnemyFleet = null;
+
+        // 이 셀에 웨이브가 2개 이상이면 나머지를 term 간격 순차 스폰으로 등록 — 위치는 내 함대를 중심으로 웨이브0과 같은 반지름의 원주 위에 배치(ObjectManager.SpawnZoneWave)
+        if (m_pendingRemainingWaves != null)
+        {
+            ZoneConfig zoneConfig = DataManager.Instance.m_dataTableZone.GetZoneByZoneIndex(m_currentZoneNumber);
+            float spawnTermSec = zoneConfig != null ? zoneConfig.enemyWaveSpawnTermSec : 5f;
+
+            Vector3 wave0Pos = m_pendingCellWorldPos + Vector3.forward * k_enemyEncounterDistance;
+            ObjectManager.Instance.StartZoneEnemyWaves(m_pendingRemainingWaves, wave0Pos, spawnTermSec);
+            m_pendingRemainingWaves = null;
+        }
     }
 
     private void OnEnterExplorationCellResponse(ApiResponse<EnterExplorationCellResponse> response)
@@ -714,9 +740,14 @@ public class UIPanelExplorationGrid : UIPanelBase
         // 적함대 데이터는 서버가 내려주지 않음 — 같은 seed로 이미 로컬에 캐싱해둔 것을 그대로 사용(BuildCellEnemyFleets)
         List<FleetInfo> waves = GetCellEnemyWaves(m_pendingCellRow, m_pendingCellCol);
         FleetInfo enemyFleetInfo = waves != null && waves.Count > 0 ? waves[0] : null;
+        m_pendingRemainingWaves = waves != null && waves.Count > 1 ? waves.GetRange(1, waves.Count - 1) : null;
         bool hasEnemies = enemyFleetInfo != null && enemyFleetInfo.ships != null && enemyFleetInfo.ships.Count > 0;
 
-        if (hasEnemies == false)
+        // challengeToken이 null이면 서버가 재방문으로 판단해 위치를 이미 확정한 상태 — 로컬에 적함대가 남아있어도 전투를 다시 열지 않음.
+        // 안 그러면 대치화면에서 후퇴 시 클라만 위치를 직전 셀로 되돌려 서버(이미 확정된 위치)와 어긋나고, 재입장 시 인접성 검사가 깨짐(EXPLORATION_CELL_NOT_ADJACENT)
+        bool isRevisit = response.data.challengeToken == null;
+
+        if (hasEnemies == false || isRevisit == true)
         {
             // 전투 없음(재방문/빈 셀) — 서버가 이미 위치를 확정해뒀으므로 카메라 전환(갤럭시뷰→함대뷰) 없이 그 자리에서 위치만 갱신
             MoveToConfirmedCellWithoutBattle();
@@ -779,7 +810,8 @@ public class UIPanelExplorationGrid : UIPanelBase
         Quaternion enemyRot = Quaternion.LookRotation(m_pendingCellWorldPos - enemyPos);
 
         ETeam enemyTeam = ObjectManager.Instance.GetOpposingTeam(ObjectManager.Instance.m_myTeam);
-        // 체력/공격력 배율은 서버가 enemyFleetInfo.ships[i].healthMultiplier/attackMultiplier로 실어 보낸 값을 그대로 씀(SpawnFleetFromPreset 내부에서 처리)
+        // 체력/공격력 배율은 ExplorationEnemyFleetGenerator가 zoneConfig.enemyHealthMultiplier/enemyAttackMultiplier를 실어둔
+        // enemyFleetInfo.ships[i].healthMultiplier/attackMultiplier 값을 그대로 씀(SpawnFleetFromPreset 내부에서 처리)
         SpaceFleet enemyFleet = ObjectManager.Instance.SpawnFleetFromPreset(enemyFleetInfo, enemyTeam, EFleetSource.fleet_source_zone_data, enemyPos, enemyRot, "EnemyFleet");
         m_standoffEnemyFleet = enemyFleet;
         enemyFleet.StartFleetWarpIn();
@@ -825,7 +857,6 @@ public class UIPanelExplorationGrid : UIPanelBase
             return;
         }
 
-        Debug.Log($"[DEBUG-CELL] ClearExplorationCellRequest zone={m_currentZoneNumber} row={m_currentRow} col={m_currentCol}");
         SpaceFleet myFleet = ObjectManager.Instance.GetMyFleet();
         CommanderInfo commanderInfo = DataManager.Instance.m_currentCommander != null ? DataManager.Instance.m_currentCommander.m_commanderInfo : null;
         ClearExplorationCellRequest request = new ClearExplorationCellRequest
@@ -959,6 +990,8 @@ public class UIPanelExplorationGrid : UIPanelBase
         {
             RefreshBankedPointText();
         }
+
+        RefreshAbandonRunButtonState();
     }
 
     // 탈출 셀 클리어 직후(ContinueAfterCellClear의 롤링 애니메이션 콜백)에만 호출됨 — 확정 전 실제로 받게 될 보상(경험치/탐험 포인트)을 미리 보여줌
@@ -1011,10 +1044,14 @@ public class UIPanelExplorationGrid : UIPanelBase
             // 새는 걸 막기 위해 강제로 비움 — ConfirmAbandonRun(포기)과 동일한 이유/처리
             m_gridData = null;
 
-            // 존 클리어(탈출 확정) 시 함대 전액 회복 — 셀 단위로는 손상이 유지되지만(로그라이트성), 존을 넘어갈 때는 초기화
+            // 존 클리어(탈출 확정) 시 함대 전액 회복 — 셀 단위로는 손상이 유지되지만(로그라이트성), 존을 넘어갈 때는 초기화.
+            // 전투 중 파괴된 함선은 m_ships에서 null로만 표시돼 있어 FullRepair(생존 함선만 순회)로는 되살아나지 않으므로 먼저 복구
             SpaceFleet myFleet = ObjectManager.Instance.GetMyFleet();
             if (myFleet != null)
+            {
+                myFleet.RestoreAllDestroyedShips(0.1f);
                 myFleet.FullRepair();
+            }
 
             // 보상카드 지속버프도 이번 런 한정(세션 스코프)이므로 런 종료와 함께 초기화
             ObjectManager.Instance.m_rewardCardSessionState.Reset();
@@ -1156,10 +1193,14 @@ public class UIPanelExplorationGrid : UIPanelBase
             ApplyTacticPowerRecovered(response.data.tacticPower);
             ClearActiveRunZoneCache();
 
-            // 런 자체가 완전히 종료되므로 함대 손상(체력/실드)도 다음 런을 위해 전부 복구
+            // 런 자체가 완전히 종료되므로 함대 손상(체력/실드)도 다음 런을 위해 전부 복구.
+            // 전투 중 파괴된 함선은 m_ships에서 null로만 표시돼 있어 FullRepair(생존 함선만 순회)로는 되살아나지 않으므로 먼저 복구
             SpaceFleet myFleet = ObjectManager.Instance.GetMyFleet();
             if (myFleet != null)
+            {
+                myFleet.RestoreAllDestroyedShips(0.1f);
                 myFleet.FullRepair();
+            }
 
             // 보상카드 지속버프도 이번 런 한정(세션 스코프)이므로 런 종료와 함께 초기화
             ObjectManager.Instance.m_rewardCardSessionState.Reset();
@@ -1198,6 +1239,12 @@ public class UIPanelExplorationGrid : UIPanelBase
         m_currentCol = m_previousCol;
         ObjectManager.Instance.SetMyFleetPosition(m_previousFleetWorldPos, 0f);
         CameraController.Instance.SnapToTarget();
+
+        // 전멸(함선 전체 파괴)까지 갔던 경우 ApplyFleetHealthSnapshot만으로는 되살릴 수 없음(파괴된 함선은 m_ships에서 null로만 표시됨) —
+        // 먼저 함선을 복구한 뒤, 전투 진입 직전 정확한 체력 비율을 덮어씌움
+        SpaceFleet myFleet = ObjectManager.Instance.GetMyFleet();
+        if (myFleet != null)
+            myFleet.RestoreAllDestroyedShips(0.1f);
 
         ApplyFleetHealthSnapshot(m_previousShipHealthRatios);
 

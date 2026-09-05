@@ -836,6 +836,17 @@ public class UIPanelFleet : UIPanelBase
 
         ObjectManager.Instance.ReplaceMyFleetShipAt(slotIndex, hullSubType, slotIsFront, keptModules);
         RefreshFleetComposition();
+
+        // 함체 교체로 함선이 완전히 재스폰되면 새 인스턴스의 3D 아웃라인은 기본 꺼짐 상태 — 이 슬롯이 선택 중이었다면 재동기화.
+        // Sync3DShipOutlineSelection(이벤트 브로드캐스트)는 쓰지 않음 — SpaceShip의 SpaceShipSelected 구독이 Start()에서 등록되는데,
+        // 방금 스폰된 새 인스턴스는 같은 프레임엔 아직 Start()가 안 돌아 이벤트를 못 받음. 직접 호출로 그 타이밍 문제를 우회
+        if (slotIndex == m_selectedSlotIndex)
+        {
+            SpaceFleet myFleet = ObjectManager.Instance.GetMyFleet();
+            SpaceShip newShip = myFleet != null ? myFleet.m_ships.Find(s => s != null && s.m_shipInfo.positionIndex == slotIndex) : null;
+            if (newShip != null)
+                newShip.SetShipSelected(true);
+        }
     }
 
     // 클라 사전검증(TryPlaceShipAt)과 서버 검증(FleetService.placeFleetShip) 조건은 동일해 정상 플레이에선 실패하지 않음 —

@@ -310,10 +310,11 @@ public class EnterExplorationCellResponse
 [System.Serializable]
 public class ShipHealthRatioInfo
 {
-    // 슬롯 포지션 인덱스별 함선 체력 비율(0~1) — 존 런 진행 상황(ZoneRun) 스냅샷으로 서버에 저장, 앱 재시작 후 복구용
+    // 슬롯 포지션 인덱스별 함선 체력/실드 비율(0~1) — 존 런 진행 상황(ZoneRun) 스냅샷으로 서버에 저장, 앱 재시작 후 복구용
     public long shipId; // 서버가 실제 함대 편성과 대조(함선 구성 일치 검증)하는 데 사용
     public int positionIndex;
     public float healthRatio;
+    public float shieldRatio;
 }
 
 [System.Serializable]

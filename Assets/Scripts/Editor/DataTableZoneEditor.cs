@@ -137,6 +137,7 @@ public class DataTableZoneEditor : Editor
                 enemyHealthMultiplier = oldZone != null ? oldZone.enemyHealthMultiplier : 1f,
                 enemyAttackMultiplier = oldZone != null ? oldZone.enemyAttackMultiplier : 1f,
                 enemyInterceptorEquipSlots = oldZone != null ? oldZone.enemyInterceptorEquipSlots : 9,
+                enemyWaveSpawnTermSec = oldZone != null ? oldZone.enemyWaveSpawnTermSec : 5f,
                 explorationPointReward = oldZone != null ? oldZone.explorationPointReward : 0,
                 commanderExpReward     = oldZone != null ? oldZone.commanderExpReward     : 0,
             });
@@ -216,8 +217,9 @@ public class DataTableZoneEditor : Editor
             float.TryParse(col[8], out zc.enemyHealthMultiplier);
             float.TryParse(col[9], out zc.enemyAttackMultiplier);
             int.TryParse(col[10], out zc.enemyInterceptorEquipSlots);
-            int.TryParse(col[11], out zc.explorationPointReward);
-            int.TryParse(col[12], out zc.commanderExpReward);
+            float.TryParse(col[11], out zc.enemyWaveSpawnTermSec);
+            int.TryParse(col[12], out zc.explorationPointReward);
+            int.TryParse(col[13], out zc.commanderExpReward);
         }
         EditorUtility.SetDirty(m_dataTableZone);
         AssetDatabase.Refresh();
@@ -810,6 +812,7 @@ public class DataTableZoneEditor : Editor
         zoneConfig.enemyHealthMultiplier = EditorGUILayout.FloatField(new GUIContent("Enemy Health Multiplier", "이 존 적함대 체력 배율 (0.1=10%, 1.0=원본)"), zoneConfig.enemyHealthMultiplier);
         zoneConfig.enemyAttackMultiplier = EditorGUILayout.FloatField(new GUIContent("Enemy Attack Multiplier", "이 존 적함대 공격력 배율 (0.1=10%, 1.0=원본)"), zoneConfig.enemyAttackMultiplier);
         zoneConfig.enemyInterceptorEquipSlots = EditorGUILayout.IntField(new GUIContent("Enemy Interceptor Equip Slots", "요격체 장착 여부 (0=미장착, 1 이상=장착)"), zoneConfig.enemyInterceptorEquipSlots);
+        zoneConfig.enemyWaveSpawnTermSec = EditorGUILayout.FloatField(new GUIContent("Enemy Wave Spawn Term Sec", "웨이브가 여러 개일 때 다음 웨이브 스폰 간격(초) — 현재 웨이브를 먼저 전멸시키면 대기 없이 즉시 다음 웨이브 스폰"), zoneConfig.enemyWaveSpawnTermSec);
 
         EditorGUILayout.Space(4);
         EditorGUILayout.LabelField("셀 클리어 보상 (웨이브 있던 셀만 적립)", EditorStyles.miniBoldLabel);

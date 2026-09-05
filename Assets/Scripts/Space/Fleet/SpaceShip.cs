@@ -719,6 +719,19 @@ public class SpaceShip : MonoBehaviour
         return max > 0f ? total / max : 1f;
     }
 
+    // 함선 실드 게이지 비율 (모든 바디 합산) — GetHealthRatio와 동일한 집계 방식
+    public float GetShieldRatio()
+    {
+        float total = 0f, max = 0f;
+        foreach (ModuleHull body in m_moduleHulls)
+        {
+            if (body == null || body.m_shield == null) continue;
+            total += body.m_shield.GetGauge();
+            max   += body.m_shield.GetGaugeMax();
+        }
+        return max > 0f ? total / max : 1f;
+    }
+
     // 존 런 중 함선 종류 교체(ObjectManager.ReplaceMyFleetShipAt) 시 이전 함선의 체력 비율을 새 함선에 적용하거나,
     // 퇴각/포기 시(UIPanelExplorationGrid.RestorePreviousCellAfterRetreat) 진입 직전 상태로 롤백하는 데 사용
     // 두 경우 모두 실드는 갓 생성된 새 함체 또는 진입 직전 기준이라 항상 풀게이지로 리셋
@@ -731,6 +744,22 @@ public class SpaceShip : MonoBehaviour
             body.m_health = body.m_healthMax * ratio;
             if (body.m_shield != null)
                 body.m_shield.ResetGaugeToFull();
+        }
+        UpdateShipStatCur();
+        CheckFireEffects();
+    }
+
+    // 앱 재시작 시 서버에 저장된 체력/실드 스냅샷을 그대로 복구하는 용도 — ApplyHealthRatio와 달리 실드를 풀게이지로 리셋하지 않고 저장된 비율을 그대로 적용
+    public void ApplyHealthAndShieldRatio(float healthRatio, float shieldRatio)
+    {
+        healthRatio = Mathf.Clamp01(healthRatio);
+        shieldRatio = Mathf.Clamp01(shieldRatio);
+        foreach (ModuleHull body in m_moduleHulls)
+        {
+            if (body == null) continue;
+            body.m_health = body.m_healthMax * healthRatio;
+            if (body.m_shield != null)
+                body.m_shield.SetGaugeRatio(shieldRatio);
         }
         UpdateShipStatCur();
         CheckFireEffects();
@@ -920,15 +949,12 @@ public class SpaceShip : MonoBehaviour
             {
                 SetupSelectedModuleVisual(body);
 
-                // Setup SelectedModuleVisual for all modules in slots
+                // Setup SelectedModuleVisual for all modules in slots — Placeholder(빈 슬롯)도 선택 시 그 위치에 하이라이트를 보여줘야 하므로 포함
                 foreach (ModuleSlot slot in body.m_moduleSlots)
                 {
-                    if (slot != null && slot.transform.childCount > 0)
-                    {
-                        ModuleBase module = slot.GetComponentInChildren<ModuleBase>();
-                        if (module != null)
-                            SetupSelectedModuleVisual(module);
-                    }
+                    ModuleBase module = body.FindModuleOrPlaceholder(slot.m_moduleSlotInfo.moduleType, slot.m_moduleSlotInfo.slotIndex);
+                    if (module != null)
+                        SetupSelectedModuleVisual(module);
                 }
             }
         }

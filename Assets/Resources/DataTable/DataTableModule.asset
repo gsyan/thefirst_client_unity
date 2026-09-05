@@ -3912,7 +3912,7 @@ MonoBehaviour:
     0.0\r\n      }\r\n    ],\r\n    \"2\": [\r\n      {\r\n        \"moduleName\":
     \"beam_1_1\",\r\n        \"moduleSubType\": \"beam_1_1\",\r\n        \"statPoint\":
     10,\r\n        \"unlockCommanderLevel\": 0,\r\n        \"description\": \"\",\r\n       
-    \"moduleSlots\": null,\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n       
+    \"moduleSlots\": [],\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n       
     \"speed\": 200.0,\r\n        \"turnRate\": 0.0,\r\n        \"attack\": 10.0,\r\n       
     \"splashRadius\": 0.0,\r\n        \"attackCool\": 3.0,\r\n        \"silenceTime\":
     0.0,\r\n        \"airCount\": 0,\r\n        \"airMaintenanceTime\": 0.0,\r\n       
@@ -3924,7 +3924,7 @@ MonoBehaviour:
     0.0,\r\n        \"interceptorRegenRate\": 0.0\r\n      },\r\n      {\r\n       
     \"moduleName\": \"beam_2_1\",\r\n        \"moduleSubType\": \"beam_2_1\",\r\n       
     \"statPoint\": 20,\r\n        \"unlockCommanderLevel\": 0,\r\n        \"description\":
-    \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\": 0.0,\r\n       
+    \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\": 0.0,\r\n       
     \"repair\": 0.0,\r\n        \"speed\": 200.0,\r\n        \"turnRate\": 0.0,\r\n       
     \"attack\": 20.0,\r\n        \"splashRadius\": 0.0,\r\n        \"attackCool\":
     3.0,\r\n        \"silenceTime\": 0.0,\r\n        \"airCount\": 0,\r\n       
@@ -3936,7 +3936,7 @@ MonoBehaviour:
     0,\r\n        \"interceptorDelay\": 0.0,\r\n        \"interceptorRegenRate\":
     0.0\r\n      },\r\n      {\r\n        \"moduleName\": \"beam_3_1\",\r\n       
     \"moduleSubType\": \"beam_3_1\",\r\n        \"statPoint\": 30,\r\n        \"unlockCommanderLevel\":
-    0,\r\n        \"description\": \"\",\r\n        \"moduleSlots\": null,\r\n       
+    0,\r\n        \"description\": \"\",\r\n        \"moduleSlots\": [],\r\n       
     \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\": 200.0,\r\n       
     \"turnRate\": 0.0,\r\n        \"attack\": 30.0,\r\n        \"splashRadius\":
     0.0,\r\n        \"attackCool\": 3.0,\r\n        \"silenceTime\": 0.0,\r\n       
@@ -3949,7 +3949,7 @@ MonoBehaviour:
     \"interceptorRegenRate\": 0.0\r\n      },\r\n      {\r\n        \"moduleName\":
     \"beam_4_1\",\r\n        \"moduleSubType\": \"beam_4_1\",\r\n        \"statPoint\":
     40,\r\n        \"unlockCommanderLevel\": 0,\r\n        \"description\": \"\",\r\n       
-    \"moduleSlots\": null,\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n       
+    \"moduleSlots\": [],\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n       
     \"speed\": 200.0,\r\n        \"turnRate\": 0.0,\r\n        \"attack\": 40.0,\r\n       
     \"splashRadius\": 0.0,\r\n        \"attackCool\": 3.0,\r\n        \"silenceTime\":
     0.0,\r\n        \"airCount\": 0,\r\n        \"airMaintenanceTime\": 0.0,\r\n       
@@ -3961,7 +3961,7 @@ MonoBehaviour:
     0.0,\r\n        \"interceptorRegenRate\": 0.0\r\n      },\r\n      {\r\n       
     \"moduleName\": \"beam_5_1\",\r\n        \"moduleSubType\": \"beam_5_1\",\r\n       
     \"statPoint\": 50,\r\n        \"unlockCommanderLevel\": 0,\r\n        \"description\":
-    \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\": 0.0,\r\n       
+    \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\": 0.0,\r\n       
     \"repair\": 0.0,\r\n        \"speed\": 200.0,\r\n        \"turnRate\": 0.0,\r\n       
     \"attack\": 50.0,\r\n        \"splashRadius\": 0.0,\r\n        \"attackCool\":
     3.0,\r\n        \"silenceTime\": 0.0,\r\n        \"airCount\": 0,\r\n       
@@ -3973,7 +3973,7 @@ MonoBehaviour:
     0,\r\n        \"interceptorDelay\": 0.0,\r\n        \"interceptorRegenRate\":
     0.0\r\n      },\r\n      {\r\n        \"moduleName\": \"beam_6_1\",\r\n       
     \"moduleSubType\": \"beam_6_1\",\r\n        \"statPoint\": 60,\r\n        \"unlockCommanderLevel\":
-    0,\r\n        \"description\": \"\",\r\n        \"moduleSlots\": null,\r\n       
+    0,\r\n        \"description\": \"\",\r\n        \"moduleSlots\": [],\r\n       
     \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\": 200.0,\r\n       
     \"turnRate\": 0.0,\r\n        \"attack\": 60.0,\r\n        \"splashRadius\":
     0.0,\r\n        \"attackCool\": 3.0,\r\n        \"silenceTime\": 0.0,\r\n       
@@ -3986,7 +3986,7 @@ MonoBehaviour:
     \"interceptorRegenRate\": 0.0\r\n      },\r\n      {\r\n        \"moduleName\":
     \"beam_7_1\",\r\n        \"moduleSubType\": \"beam_7_1\",\r\n        \"statPoint\":
     70,\r\n        \"unlockCommanderLevel\": 0,\r\n        \"description\": \"\",\r\n       
-    \"moduleSlots\": null,\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n       
+    \"moduleSlots\": [],\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n       
     \"speed\": 200.0,\r\n        \"turnRate\": 0.0,\r\n        \"attack\": 70.0,\r\n       
     \"splashRadius\": 0.0,\r\n        \"attackCool\": 3.0,\r\n        \"silenceTime\":
     0.0,\r\n        \"airCount\": 0,\r\n        \"airMaintenanceTime\": 0.0,\r\n       
@@ -3998,7 +3998,7 @@ MonoBehaviour:
     0.0,\r\n        \"interceptorRegenRate\": 0.0\r\n      },\r\n      {\r\n       
     \"moduleName\": \"beam_8_1\",\r\n        \"moduleSubType\": \"beam_8_1\",\r\n       
     \"statPoint\": 80,\r\n        \"unlockCommanderLevel\": 0,\r\n        \"description\":
-    \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\": 0.0,\r\n       
+    \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\": 0.0,\r\n       
     \"repair\": 0.0,\r\n        \"speed\": 200.0,\r\n        \"turnRate\": 0.0,\r\n       
     \"attack\": 80.0,\r\n        \"splashRadius\": 0.0,\r\n        \"attackCool\":
     3.0,\r\n        \"silenceTime\": 0.0,\r\n        \"airCount\": 0,\r\n       
@@ -4010,7 +4010,7 @@ MonoBehaviour:
     0,\r\n        \"interceptorDelay\": 0.0,\r\n        \"interceptorRegenRate\":
     0.0\r\n      },\r\n      {\r\n        \"moduleName\": \"beam_9_1\",\r\n       
     \"moduleSubType\": \"beam_9_1\",\r\n        \"statPoint\": 90,\r\n        \"unlockCommanderLevel\":
-    0,\r\n        \"description\": \"\",\r\n        \"moduleSlots\": null,\r\n       
+    0,\r\n        \"description\": \"\",\r\n        \"moduleSlots\": [],\r\n       
     \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\": 200.0,\r\n       
     \"turnRate\": 0.0,\r\n        \"attack\": 90.0,\r\n        \"splashRadius\":
     0.0,\r\n        \"attackCool\": 3.0,\r\n        \"silenceTime\": 0.0,\r\n       
@@ -4023,7 +4023,7 @@ MonoBehaviour:
     \"interceptorRegenRate\": 0.0\r\n      },\r\n      {\r\n        \"moduleName\":
     \"beam_10_1\",\r\n        \"moduleSubType\": \"beam_10_1\",\r\n        \"statPoint\":
     100,\r\n        \"unlockCommanderLevel\": 0,\r\n        \"description\": \"\",\r\n       
-    \"moduleSlots\": null,\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n       
+    \"moduleSlots\": [],\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n       
     \"speed\": 200.0,\r\n        \"turnRate\": 0.0,\r\n        \"attack\": 100.0,\r\n       
     \"splashRadius\": 0.0,\r\n        \"attackCool\": 3.0,\r\n        \"silenceTime\":
     0.0,\r\n        \"airCount\": 0,\r\n        \"airMaintenanceTime\": 0.0,\r\n       
@@ -4035,7 +4035,7 @@ MonoBehaviour:
     0.0,\r\n        \"interceptorRegenRate\": 0.0\r\n      },\r\n      {\r\n       
     \"moduleName\": \"beam_11_1\",\r\n        \"moduleSubType\": \"beam_11_1\",\r\n       
     \"statPoint\": 110,\r\n        \"unlockCommanderLevel\": 0,\r\n        \"description\":
-    \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\": 0.0,\r\n       
+    \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\": 0.0,\r\n       
     \"repair\": 0.0,\r\n        \"speed\": 200.0,\r\n        \"turnRate\": 0.0,\r\n       
     \"attack\": 110.0,\r\n        \"splashRadius\": 0.0,\r\n        \"attackCool\":
     3.0,\r\n        \"silenceTime\": 0.0,\r\n        \"airCount\": 0,\r\n       
@@ -4047,7 +4047,7 @@ MonoBehaviour:
     0,\r\n        \"interceptorDelay\": 0.0,\r\n        \"interceptorRegenRate\":
     0.0\r\n      },\r\n      {\r\n        \"moduleName\": \"beam_12_1\",\r\n       
     \"moduleSubType\": \"beam_12_1\",\r\n        \"statPoint\": 120,\r\n        \"unlockCommanderLevel\":
-    0,\r\n        \"description\": \"\",\r\n        \"moduleSlots\": null,\r\n       
+    0,\r\n        \"description\": \"\",\r\n        \"moduleSlots\": [],\r\n       
     \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\": 200.0,\r\n       
     \"turnRate\": 0.0,\r\n        \"attack\": 120.0,\r\n        \"splashRadius\":
     0.0,\r\n        \"attackCool\": 3.0,\r\n        \"silenceTime\": 0.0,\r\n       
@@ -4060,7 +4060,7 @@ MonoBehaviour:
     \"interceptorRegenRate\": 0.0\r\n      },\r\n      {\r\n        \"moduleName\":
     \"beam_13_1\",\r\n        \"moduleSubType\": \"beam_13_1\",\r\n        \"statPoint\":
     130,\r\n        \"unlockCommanderLevel\": 0,\r\n        \"description\": \"\",\r\n       
-    \"moduleSlots\": null,\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n       
+    \"moduleSlots\": [],\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n       
     \"speed\": 200.0,\r\n        \"turnRate\": 0.0,\r\n        \"attack\": 130.0,\r\n       
     \"splashRadius\": 0.0,\r\n        \"attackCool\": 3.0,\r\n        \"silenceTime\":
     0.0,\r\n        \"airCount\": 0,\r\n        \"airMaintenanceTime\": 0.0,\r\n       
@@ -4072,7 +4072,7 @@ MonoBehaviour:
     0.0,\r\n        \"interceptorRegenRate\": 0.0\r\n      },\r\n      {\r\n       
     \"moduleName\": \"beam_14_1\",\r\n        \"moduleSubType\": \"beam_14_1\",\r\n       
     \"statPoint\": 140,\r\n        \"unlockCommanderLevel\": 0,\r\n        \"description\":
-    \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\": 0.0,\r\n       
+    \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\": 0.0,\r\n       
     \"repair\": 0.0,\r\n        \"speed\": 200.0,\r\n        \"turnRate\": 0.0,\r\n       
     \"attack\": 140.0,\r\n        \"splashRadius\": 0.0,\r\n        \"attackCool\":
     3.0,\r\n        \"silenceTime\": 0.0,\r\n        \"airCount\": 0,\r\n       
@@ -4085,7 +4085,7 @@ MonoBehaviour:
     0.0\r\n      }\r\n    ],\r\n    \"3\": [\r\n      {\r\n        \"moduleName\":
     \"missile_1_1\",\r\n        \"moduleSubType\": \"missile_1_1\",\r\n        \"statPoint\":
     10,\r\n        \"unlockCommanderLevel\": 0,\r\n        \"description\": \"\",\r\n       
-    \"moduleSlots\": null,\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n       
+    \"moduleSlots\": [],\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n       
     \"speed\": 10.0,\r\n        \"turnRate\": 0.0,\r\n        \"attack\": 10.0,\r\n       
     \"splashRadius\": 0.0,\r\n        \"attackCool\": 3.0,\r\n        \"silenceTime\":
     0.0,\r\n        \"airCount\": 0,\r\n        \"airMaintenanceTime\": 0.0,\r\n       
@@ -4097,7 +4097,7 @@ MonoBehaviour:
     0.0,\r\n        \"interceptorRegenRate\": 0.0\r\n      },\r\n      {\r\n       
     \"moduleName\": \"missile_2_1\",\r\n        \"moduleSubType\": \"missile_2_1\",\r\n       
     \"statPoint\": 20,\r\n        \"unlockCommanderLevel\": 0,\r\n        \"description\":
-    \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\": 0.0,\r\n       
+    \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\": 0.0,\r\n       
     \"repair\": 0.0,\r\n        \"speed\": 10.0,\r\n        \"turnRate\": 0.0,\r\n       
     \"attack\": 20.0,\r\n        \"splashRadius\": 0.0,\r\n        \"attackCool\":
     3.0,\r\n        \"silenceTime\": 0.0,\r\n        \"airCount\": 0,\r\n       
@@ -4110,7 +4110,7 @@ MonoBehaviour:
     0.0\r\n      },\r\n      {\r\n        \"moduleName\": \"missile_3_1\",\r\n       
     \"moduleSubType\": \"missile_3_1\",\r\n        \"statPoint\": 30,\r\n       
     \"unlockCommanderLevel\": 0,\r\n        \"description\": \"\",\r\n        \"moduleSlots\":
-    null,\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\":
+    [],\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\":
     10.0,\r\n        \"turnRate\": 0.0,\r\n        \"attack\": 30.0,\r\n        \"splashRadius\":
     0.0,\r\n        \"attackCool\": 3.0,\r\n        \"silenceTime\": 0.0,\r\n       
     \"airCount\": 0,\r\n        \"airMaintenanceTime\": 0.0,\r\n        \"airHealth\":
@@ -4122,7 +4122,7 @@ MonoBehaviour:
     \"interceptorRegenRate\": 0.0\r\n      },\r\n      {\r\n        \"moduleName\":
     \"missile_4_1\",\r\n        \"moduleSubType\": \"missile_4_1\",\r\n        \"statPoint\":
     40,\r\n        \"unlockCommanderLevel\": 0,\r\n        \"description\": \"\",\r\n       
-    \"moduleSlots\": null,\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n       
+    \"moduleSlots\": [],\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n       
     \"speed\": 10.0,\r\n        \"turnRate\": 0.0,\r\n        \"attack\": 40.0,\r\n       
     \"splashRadius\": 0.0,\r\n        \"attackCool\": 3.0,\r\n        \"silenceTime\":
     0.0,\r\n        \"airCount\": 0,\r\n        \"airMaintenanceTime\": 0.0,\r\n       
@@ -4134,7 +4134,7 @@ MonoBehaviour:
     0.0,\r\n        \"interceptorRegenRate\": 0.0\r\n      },\r\n      {\r\n       
     \"moduleName\": \"missile_5_1\",\r\n        \"moduleSubType\": \"missile_5_1\",\r\n       
     \"statPoint\": 50,\r\n        \"unlockCommanderLevel\": 0,\r\n        \"description\":
-    \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\": 0.0,\r\n       
+    \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\": 0.0,\r\n       
     \"repair\": 0.0,\r\n        \"speed\": 10.0,\r\n        \"turnRate\": 0.0,\r\n       
     \"attack\": 50.0,\r\n        \"splashRadius\": 0.0,\r\n        \"attackCool\":
     3.0,\r\n        \"silenceTime\": 0.0,\r\n        \"airCount\": 0,\r\n       
@@ -4147,7 +4147,7 @@ MonoBehaviour:
     0.0\r\n      },\r\n      {\r\n        \"moduleName\": \"missile_6_1\",\r\n       
     \"moduleSubType\": \"missile_6_1\",\r\n        \"statPoint\": 60,\r\n       
     \"unlockCommanderLevel\": 0,\r\n        \"description\": \"\",\r\n        \"moduleSlots\":
-    null,\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\":
+    [],\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\":
     10.0,\r\n        \"turnRate\": 0.0,\r\n        \"attack\": 60.0,\r\n        \"splashRadius\":
     0.0,\r\n        \"attackCool\": 3.0,\r\n        \"silenceTime\": 0.0,\r\n       
     \"airCount\": 0,\r\n        \"airMaintenanceTime\": 0.0,\r\n        \"airHealth\":
@@ -4159,7 +4159,7 @@ MonoBehaviour:
     \"interceptorRegenRate\": 0.0\r\n      },\r\n      {\r\n        \"moduleName\":
     \"missile_7_1\",\r\n        \"moduleSubType\": \"missile_7_1\",\r\n        \"statPoint\":
     70,\r\n        \"unlockCommanderLevel\": 0,\r\n        \"description\": \"\",\r\n       
-    \"moduleSlots\": null,\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n       
+    \"moduleSlots\": [],\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n       
     \"speed\": 10.0,\r\n        \"turnRate\": 0.0,\r\n        \"attack\": 70.0,\r\n       
     \"splashRadius\": 0.0,\r\n        \"attackCool\": 3.0,\r\n        \"silenceTime\":
     0.0,\r\n        \"airCount\": 0,\r\n        \"airMaintenanceTime\": 0.0,\r\n       
@@ -4171,7 +4171,7 @@ MonoBehaviour:
     0.0,\r\n        \"interceptorRegenRate\": 0.0\r\n      },\r\n      {\r\n       
     \"moduleName\": \"missile_8_1\",\r\n        \"moduleSubType\": \"missile_8_1\",\r\n       
     \"statPoint\": 80,\r\n        \"unlockCommanderLevel\": 0,\r\n        \"description\":
-    \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\": 0.0,\r\n       
+    \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\": 0.0,\r\n       
     \"repair\": 0.0,\r\n        \"speed\": 10.0,\r\n        \"turnRate\": 0.0,\r\n       
     \"attack\": 80.0,\r\n        \"splashRadius\": 0.0,\r\n        \"attackCool\":
     3.0,\r\n        \"silenceTime\": 0.0,\r\n        \"airCount\": 0,\r\n       
@@ -4184,7 +4184,7 @@ MonoBehaviour:
     0.0\r\n      },\r\n      {\r\n        \"moduleName\": \"missile_9_1\",\r\n       
     \"moduleSubType\": \"missile_9_1\",\r\n        \"statPoint\": 90,\r\n       
     \"unlockCommanderLevel\": 0,\r\n        \"description\": \"\",\r\n        \"moduleSlots\":
-    null,\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\":
+    [],\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\":
     10.0,\r\n        \"turnRate\": 0.0,\r\n        \"attack\": 90.0,\r\n        \"splashRadius\":
     0.0,\r\n        \"attackCool\": 3.0,\r\n        \"silenceTime\": 0.0,\r\n       
     \"airCount\": 0,\r\n        \"airMaintenanceTime\": 0.0,\r\n        \"airHealth\":
@@ -4196,7 +4196,7 @@ MonoBehaviour:
     \"interceptorRegenRate\": 0.0\r\n      },\r\n      {\r\n        \"moduleName\":
     \"missile_10_1\",\r\n        \"moduleSubType\": \"missile_10_1\",\r\n       
     \"statPoint\": 100,\r\n        \"unlockCommanderLevel\": 0,\r\n        \"description\":
-    \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\": 0.0,\r\n       
+    \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\": 0.0,\r\n       
     \"repair\": 0.0,\r\n        \"speed\": 10.0,\r\n        \"turnRate\": 0.0,\r\n       
     \"attack\": 100.0,\r\n        \"splashRadius\": 0.0,\r\n        \"attackCool\":
     3.0,\r\n        \"silenceTime\": 0.0,\r\n        \"airCount\": 0,\r\n       
@@ -4209,7 +4209,7 @@ MonoBehaviour:
     0.0\r\n      },\r\n      {\r\n        \"moduleName\": \"missile_11_1\",\r\n       
     \"moduleSubType\": \"missile_11_1\",\r\n        \"statPoint\": 110,\r\n       
     \"unlockCommanderLevel\": 0,\r\n        \"description\": \"\",\r\n        \"moduleSlots\":
-    null,\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\":
+    [],\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\":
     10.0,\r\n        \"turnRate\": 0.0,\r\n        \"attack\": 110.0,\r\n       
     \"splashRadius\": 0.0,\r\n        \"attackCool\": 3.0,\r\n        \"silenceTime\":
     0.0,\r\n        \"airCount\": 0,\r\n        \"airMaintenanceTime\": 0.0,\r\n       
@@ -4221,7 +4221,7 @@ MonoBehaviour:
     0.0,\r\n        \"interceptorRegenRate\": 0.0\r\n      },\r\n      {\r\n       
     \"moduleName\": \"missile_12_1\",\r\n        \"moduleSubType\": \"missile_12_1\",\r\n       
     \"statPoint\": 120,\r\n        \"unlockCommanderLevel\": 0,\r\n        \"description\":
-    \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\": 0.0,\r\n       
+    \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\": 0.0,\r\n       
     \"repair\": 0.0,\r\n        \"speed\": 10.0,\r\n        \"turnRate\": 0.0,\r\n       
     \"attack\": 120.0,\r\n        \"splashRadius\": 0.0,\r\n        \"attackCool\":
     3.0,\r\n        \"silenceTime\": 0.0,\r\n        \"airCount\": 0,\r\n       
@@ -4234,7 +4234,7 @@ MonoBehaviour:
     0.0\r\n      },\r\n      {\r\n        \"moduleName\": \"missile_13_1\",\r\n       
     \"moduleSubType\": \"missile_13_1\",\r\n        \"statPoint\": 130,\r\n       
     \"unlockCommanderLevel\": 0,\r\n        \"description\": \"\",\r\n        \"moduleSlots\":
-    null,\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\":
+    [],\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\":
     10.0,\r\n        \"turnRate\": 0.0,\r\n        \"attack\": 130.0,\r\n       
     \"splashRadius\": 0.0,\r\n        \"attackCool\": 3.0,\r\n        \"silenceTime\":
     0.0,\r\n        \"airCount\": 0,\r\n        \"airMaintenanceTime\": 0.0,\r\n       
@@ -4246,7 +4246,7 @@ MonoBehaviour:
     0.0,\r\n        \"interceptorRegenRate\": 0.0\r\n      },\r\n      {\r\n       
     \"moduleName\": \"missile_14_1\",\r\n        \"moduleSubType\": \"missile_14_1\",\r\n       
     \"statPoint\": 140,\r\n        \"unlockCommanderLevel\": 0,\r\n        \"description\":
-    \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\": 0.0,\r\n       
+    \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\": 0.0,\r\n       
     \"repair\": 0.0,\r\n        \"speed\": 10.0,\r\n        \"turnRate\": 0.0,\r\n       
     \"attack\": 140.0,\r\n        \"splashRadius\": 0.0,\r\n        \"attackCool\":
     3.0,\r\n        \"silenceTime\": 0.0,\r\n        \"airCount\": 0,\r\n       
@@ -4259,7 +4259,7 @@ MonoBehaviour:
     0.0\r\n      }\r\n    ],\r\n    \"4\": [\r\n      {\r\n        \"moduleName\":
     \"hangar_1_1\",\r\n        \"moduleSubType\": \"hangar_1_1\",\r\n        \"statPoint\":
     10,\r\n        \"unlockCommanderLevel\": 0,\r\n        \"description\": \"\",\r\n       
-    \"moduleSlots\": null,\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n       
+    \"moduleSlots\": [],\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n       
     \"speed\": 0.0,\r\n        \"turnRate\": 0.0,\r\n        \"attack\": 0.0,\r\n       
     \"splashRadius\": 0.0,\r\n        \"attackCool\": 3.0,\r\n        \"silenceTime\":
     0.0,\r\n        \"airCount\": 3,\r\n        \"airMaintenanceTime\": 15.0,\r\n       
@@ -4271,7 +4271,7 @@ MonoBehaviour:
     0.0,\r\n        \"interceptorRegenRate\": 0.0\r\n      },\r\n      {\r\n       
     \"moduleName\": \"hangar_2_1\",\r\n        \"moduleSubType\": \"hangar_2_1\",\r\n       
     \"statPoint\": 20,\r\n        \"unlockCommanderLevel\": 0,\r\n        \"description\":
-    \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\": 0.0,\r\n       
+    \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\": 0.0,\r\n       
     \"repair\": 0.0,\r\n        \"speed\": 0.0,\r\n        \"turnRate\": 0.0,\r\n       
     \"attack\": 0.0,\r\n        \"splashRadius\": 0.0,\r\n        \"attackCool\":
     3.0,\r\n        \"silenceTime\": 0.0,\r\n        \"airCount\": 3,\r\n       
@@ -4283,7 +4283,7 @@ MonoBehaviour:
     0,\r\n        \"interceptorDelay\": 0.0,\r\n        \"interceptorRegenRate\":
     0.0\r\n      },\r\n      {\r\n        \"moduleName\": \"hangar_3_1\",\r\n       
     \"moduleSubType\": \"hangar_3_1\",\r\n        \"statPoint\": 30,\r\n        \"unlockCommanderLevel\":
-    0,\r\n        \"description\": \"\",\r\n        \"moduleSlots\": null,\r\n       
+    0,\r\n        \"description\": \"\",\r\n        \"moduleSlots\": [],\r\n       
     \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\": 0.0,\r\n       
     \"turnRate\": 0.0,\r\n        \"attack\": 0.0,\r\n        \"splashRadius\": 0.0,\r\n       
     \"attackCool\": 3.0,\r\n        \"silenceTime\": 0.0,\r\n        \"airCount\":
@@ -4295,7 +4295,7 @@ MonoBehaviour:
     0,\r\n        \"interceptorDelay\": 0.0,\r\n        \"interceptorRegenRate\":
     0.0\r\n      },\r\n      {\r\n        \"moduleName\": \"hangar_4_1\",\r\n       
     \"moduleSubType\": \"hangar_4_1\",\r\n        \"statPoint\": 40,\r\n        \"unlockCommanderLevel\":
-    0,\r\n        \"description\": \"\",\r\n        \"moduleSlots\": null,\r\n       
+    0,\r\n        \"description\": \"\",\r\n        \"moduleSlots\": [],\r\n       
     \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\": 0.0,\r\n       
     \"turnRate\": 0.0,\r\n        \"attack\": 0.0,\r\n        \"splashRadius\": 0.0,\r\n       
     \"attackCool\": 3.0,\r\n        \"silenceTime\": 0.0,\r\n        \"airCount\":
@@ -4307,7 +4307,7 @@ MonoBehaviour:
     0,\r\n        \"interceptorDelay\": 0.0,\r\n        \"interceptorRegenRate\":
     0.0\r\n      },\r\n      {\r\n        \"moduleName\": \"hangar_5_1\",\r\n       
     \"moduleSubType\": \"hangar_5_1\",\r\n        \"statPoint\": 50,\r\n        \"unlockCommanderLevel\":
-    0,\r\n        \"description\": \"\",\r\n        \"moduleSlots\": null,\r\n       
+    0,\r\n        \"description\": \"\",\r\n        \"moduleSlots\": [],\r\n       
     \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\": 0.0,\r\n       
     \"turnRate\": 0.0,\r\n        \"attack\": 0.0,\r\n        \"splashRadius\": 0.0,\r\n       
     \"attackCool\": 3.0,\r\n        \"silenceTime\": 0.0,\r\n        \"airCount\":
@@ -4319,7 +4319,7 @@ MonoBehaviour:
     0,\r\n        \"interceptorDelay\": 0.0,\r\n        \"interceptorRegenRate\":
     0.0\r\n      },\r\n      {\r\n        \"moduleName\": \"hangar_6_1\",\r\n       
     \"moduleSubType\": \"hangar_6_1\",\r\n        \"statPoint\": 60,\r\n        \"unlockCommanderLevel\":
-    0,\r\n        \"description\": \"\",\r\n        \"moduleSlots\": null,\r\n       
+    0,\r\n        \"description\": \"\",\r\n        \"moduleSlots\": [],\r\n       
     \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\": 0.0,\r\n       
     \"turnRate\": 0.0,\r\n        \"attack\": 0.0,\r\n        \"splashRadius\": 0.0,\r\n       
     \"attackCool\": 3.0,\r\n        \"silenceTime\": 0.0,\r\n        \"airCount\":
@@ -4331,7 +4331,7 @@ MonoBehaviour:
     0,\r\n        \"interceptorDelay\": 0.0,\r\n        \"interceptorRegenRate\":
     0.0\r\n      },\r\n      {\r\n        \"moduleName\": \"hangar_7_1\",\r\n       
     \"moduleSubType\": \"hangar_7_1\",\r\n        \"statPoint\": 70,\r\n        \"unlockCommanderLevel\":
-    0,\r\n        \"description\": \"\",\r\n        \"moduleSlots\": null,\r\n       
+    0,\r\n        \"description\": \"\",\r\n        \"moduleSlots\": [],\r\n       
     \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\": 0.0,\r\n       
     \"turnRate\": 0.0,\r\n        \"attack\": 0.0,\r\n        \"splashRadius\": 0.0,\r\n       
     \"attackCool\": 3.0,\r\n        \"silenceTime\": 0.0,\r\n        \"airCount\":
@@ -4343,7 +4343,7 @@ MonoBehaviour:
     0,\r\n        \"interceptorDelay\": 0.0,\r\n        \"interceptorRegenRate\":
     0.0\r\n      },\r\n      {\r\n        \"moduleName\": \"hangar_8_1\",\r\n       
     \"moduleSubType\": \"hangar_8_1\",\r\n        \"statPoint\": 80,\r\n        \"unlockCommanderLevel\":
-    0,\r\n        \"description\": \"\",\r\n        \"moduleSlots\": null,\r\n       
+    0,\r\n        \"description\": \"\",\r\n        \"moduleSlots\": [],\r\n       
     \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\": 0.0,\r\n       
     \"turnRate\": 0.0,\r\n        \"attack\": 0.0,\r\n        \"splashRadius\": 0.0,\r\n       
     \"attackCool\": 3.0,\r\n        \"silenceTime\": 0.0,\r\n        \"airCount\":
@@ -4355,7 +4355,7 @@ MonoBehaviour:
     0,\r\n        \"interceptorDelay\": 0.0,\r\n        \"interceptorRegenRate\":
     0.0\r\n      },\r\n      {\r\n        \"moduleName\": \"hangar_9_1\",\r\n       
     \"moduleSubType\": \"hangar_9_1\",\r\n        \"statPoint\": 90,\r\n        \"unlockCommanderLevel\":
-    0,\r\n        \"description\": \"\",\r\n        \"moduleSlots\": null,\r\n       
+    0,\r\n        \"description\": \"\",\r\n        \"moduleSlots\": [],\r\n       
     \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\": 0.0,\r\n       
     \"turnRate\": 0.0,\r\n        \"attack\": 0.0,\r\n        \"splashRadius\": 0.0,\r\n       
     \"attackCool\": 3.0,\r\n        \"silenceTime\": 0.0,\r\n        \"airCount\":
@@ -4368,7 +4368,7 @@ MonoBehaviour:
     0.0\r\n      },\r\n      {\r\n        \"moduleName\": \"hangar_10_1\",\r\n       
     \"moduleSubType\": \"hangar_10_1\",\r\n        \"statPoint\": 100,\r\n       
     \"unlockCommanderLevel\": 0,\r\n        \"description\": \"\",\r\n        \"moduleSlots\":
-    null,\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\":
+    [],\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\":
     0.0,\r\n        \"turnRate\": 0.0,\r\n        \"attack\": 0.0,\r\n        \"splashRadius\":
     0.0,\r\n        \"attackCool\": 3.0,\r\n        \"silenceTime\": 0.0,\r\n       
     \"airCount\": 3,\r\n        \"airMaintenanceTime\": 15.0,\r\n        \"airHealth\":
@@ -4380,7 +4380,7 @@ MonoBehaviour:
     \"interceptorRegenRate\": 0.0\r\n      },\r\n      {\r\n        \"moduleName\":
     \"hangar_11_1\",\r\n        \"moduleSubType\": \"hangar_11_1\",\r\n        \"statPoint\":
     110,\r\n        \"unlockCommanderLevel\": 0,\r\n        \"description\": \"\",\r\n       
-    \"moduleSlots\": null,\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n       
+    \"moduleSlots\": [],\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n       
     \"speed\": 0.0,\r\n        \"turnRate\": 0.0,\r\n        \"attack\": 0.0,\r\n       
     \"splashRadius\": 0.0,\r\n        \"attackCool\": 3.0,\r\n        \"silenceTime\":
     0.0,\r\n        \"airCount\": 3,\r\n        \"airMaintenanceTime\": 15.0,\r\n       
@@ -4392,7 +4392,7 @@ MonoBehaviour:
     0.0,\r\n        \"interceptorRegenRate\": 0.0\r\n      },\r\n      {\r\n       
     \"moduleName\": \"hangar_12_1\",\r\n        \"moduleSubType\": \"hangar_12_1\",\r\n       
     \"statPoint\": 120,\r\n        \"unlockCommanderLevel\": 0,\r\n        \"description\":
-    \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\": 0.0,\r\n       
+    \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\": 0.0,\r\n       
     \"repair\": 0.0,\r\n        \"speed\": 0.0,\r\n        \"turnRate\": 0.0,\r\n       
     \"attack\": 0.0,\r\n        \"splashRadius\": 0.0,\r\n        \"attackCool\":
     3.0,\r\n        \"silenceTime\": 0.0,\r\n        \"airCount\": 3,\r\n       
@@ -4405,7 +4405,7 @@ MonoBehaviour:
     0.0\r\n      },\r\n      {\r\n        \"moduleName\": \"hangar_13_1\",\r\n       
     \"moduleSubType\": \"hangar_13_1\",\r\n        \"statPoint\": 130,\r\n       
     \"unlockCommanderLevel\": 0,\r\n        \"description\": \"\",\r\n        \"moduleSlots\":
-    null,\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\":
+    [],\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\":
     0.0,\r\n        \"turnRate\": 0.0,\r\n        \"attack\": 0.0,\r\n        \"splashRadius\":
     0.0,\r\n        \"attackCool\": 3.0,\r\n        \"silenceTime\": 0.0,\r\n       
     \"airCount\": 3,\r\n        \"airMaintenanceTime\": 15.0,\r\n        \"airHealth\":
@@ -4417,7 +4417,7 @@ MonoBehaviour:
     \"interceptorRegenRate\": 0.0\r\n      },\r\n      {\r\n        \"moduleName\":
     \"hangar_14_1\",\r\n        \"moduleSubType\": \"hangar_14_1\",\r\n        \"statPoint\":
     140,\r\n        \"unlockCommanderLevel\": 0,\r\n        \"description\": \"\",\r\n       
-    \"moduleSlots\": null,\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n       
+    \"moduleSlots\": [],\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n       
     \"speed\": 0.0,\r\n        \"turnRate\": 0.0,\r\n        \"attack\": 0.0,\r\n       
     \"splashRadius\": 0.0,\r\n        \"attackCool\": 3.0,\r\n        \"silenceTime\":
     0.0,\r\n        \"airCount\": 3,\r\n        \"airMaintenanceTime\": 15.0,\r\n       
@@ -4429,7 +4429,7 @@ MonoBehaviour:
     0.0,\r\n        \"interceptorRegenRate\": 0.0\r\n      }\r\n    ],\r\n    \"5\":
     [\r\n      {\r\n        \"moduleName\": \"shield_1_1\",\r\n        \"moduleSubType\":
     \"shield_1_1\",\r\n        \"statPoint\": 100,\r\n        \"unlockCommanderLevel\":
-    0,\r\n        \"description\": \"\",\r\n        \"moduleSlots\": null,\r\n       
+    0,\r\n        \"description\": \"\",\r\n        \"moduleSlots\": [],\r\n       
     \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\": 0.0,\r\n       
     \"turnRate\": 0.0,\r\n        \"attack\": 0.0,\r\n        \"splashRadius\": 0.0,\r\n       
     \"attackCool\": 0.0,\r\n        \"silenceTime\": 0.0,\r\n        \"airCount\":
@@ -4442,7 +4442,7 @@ MonoBehaviour:
     0.0\r\n      },\r\n      {\r\n        \"moduleName\": \"shield_2_1\",\r\n       
     \"moduleSubType\": \"shield_2_1\",\r\n        \"statPoint\": 200,\r\n       
     \"unlockCommanderLevel\": 0,\r\n        \"description\": \"\",\r\n        \"moduleSlots\":
-    null,\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\":
+    [],\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\":
     0.0,\r\n        \"turnRate\": 0.0,\r\n        \"attack\": 0.0,\r\n        \"splashRadius\":
     0.0,\r\n        \"attackCool\": 0.0,\r\n        \"silenceTime\": 0.0,\r\n       
     \"airCount\": 0,\r\n        \"airMaintenanceTime\": 0.0,\r\n        \"airHealth\":
@@ -4454,7 +4454,7 @@ MonoBehaviour:
     \"interceptorRegenRate\": 0.0\r\n      },\r\n      {\r\n        \"moduleName\":
     \"shield_3_1\",\r\n        \"moduleSubType\": \"shield_3_1\",\r\n        \"statPoint\":
     300,\r\n        \"unlockCommanderLevel\": 0,\r\n        \"description\": \"\",\r\n       
-    \"moduleSlots\": null,\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n       
+    \"moduleSlots\": [],\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n       
     \"speed\": 0.0,\r\n        \"turnRate\": 0.0,\r\n        \"attack\": 0.0,\r\n       
     \"splashRadius\": 0.0,\r\n        \"attackCool\": 0.0,\r\n        \"silenceTime\":
     0.0,\r\n        \"airCount\": 0,\r\n        \"airMaintenanceTime\": 0.0,\r\n       
@@ -4466,7 +4466,7 @@ MonoBehaviour:
     0.0,\r\n        \"interceptorRegenRate\": 0.0\r\n      },\r\n      {\r\n       
     \"moduleName\": \"shield_4_1\",\r\n        \"moduleSubType\": \"shield_4_1\",\r\n       
     \"statPoint\": 400,\r\n        \"unlockCommanderLevel\": 0,\r\n        \"description\":
-    \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\": 0.0,\r\n       
+    \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\": 0.0,\r\n       
     \"repair\": 0.0,\r\n        \"speed\": 0.0,\r\n        \"turnRate\": 0.0,\r\n       
     \"attack\": 0.0,\r\n        \"splashRadius\": 0.0,\r\n        \"attackCool\":
     0.0,\r\n        \"silenceTime\": 0.0,\r\n        \"airCount\": 0,\r\n       
@@ -4479,7 +4479,7 @@ MonoBehaviour:
     0.0\r\n      },\r\n      {\r\n        \"moduleName\": \"shield_5_1\",\r\n       
     \"moduleSubType\": \"shield_5_1\",\r\n        \"statPoint\": 500,\r\n       
     \"unlockCommanderLevel\": 0,\r\n        \"description\": \"\",\r\n        \"moduleSlots\":
-    null,\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\":
+    [],\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\":
     0.0,\r\n        \"turnRate\": 0.0,\r\n        \"attack\": 0.0,\r\n        \"splashRadius\":
     0.0,\r\n        \"attackCool\": 0.0,\r\n        \"silenceTime\": 0.0,\r\n       
     \"airCount\": 0,\r\n        \"airMaintenanceTime\": 0.0,\r\n        \"airHealth\":
@@ -4491,7 +4491,7 @@ MonoBehaviour:
     \"interceptorRegenRate\": 0.0\r\n      },\r\n      {\r\n        \"moduleName\":
     \"shield_6_1\",\r\n        \"moduleSubType\": \"shield_6_1\",\r\n        \"statPoint\":
     600,\r\n        \"unlockCommanderLevel\": 0,\r\n        \"description\": \"\",\r\n       
-    \"moduleSlots\": null,\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n       
+    \"moduleSlots\": [],\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n       
     \"speed\": 0.0,\r\n        \"turnRate\": 0.0,\r\n        \"attack\": 0.0,\r\n       
     \"splashRadius\": 0.0,\r\n        \"attackCool\": 0.0,\r\n        \"silenceTime\":
     0.0,\r\n        \"airCount\": 0,\r\n        \"airMaintenanceTime\": 0.0,\r\n       
@@ -4503,7 +4503,7 @@ MonoBehaviour:
     0.0,\r\n        \"interceptorRegenRate\": 0.0\r\n      },\r\n      {\r\n       
     \"moduleName\": \"shield_7_1\",\r\n        \"moduleSubType\": \"shield_7_1\",\r\n       
     \"statPoint\": 700,\r\n        \"unlockCommanderLevel\": 0,\r\n        \"description\":
-    \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\": 0.0,\r\n       
+    \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\": 0.0,\r\n       
     \"repair\": 0.0,\r\n        \"speed\": 0.0,\r\n        \"turnRate\": 0.0,\r\n       
     \"attack\": 0.0,\r\n        \"splashRadius\": 0.0,\r\n        \"attackCool\":
     0.0,\r\n        \"silenceTime\": 0.0,\r\n        \"airCount\": 0,\r\n       
@@ -4516,7 +4516,7 @@ MonoBehaviour:
     0.0\r\n      },\r\n      {\r\n        \"moduleName\": \"shield_8_1\",\r\n       
     \"moduleSubType\": \"shield_8_1\",\r\n        \"statPoint\": 800,\r\n       
     \"unlockCommanderLevel\": 0,\r\n        \"description\": \"\",\r\n        \"moduleSlots\":
-    null,\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\":
+    [],\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\":
     0.0,\r\n        \"turnRate\": 0.0,\r\n        \"attack\": 0.0,\r\n        \"splashRadius\":
     0.0,\r\n        \"attackCool\": 0.0,\r\n        \"silenceTime\": 0.0,\r\n       
     \"airCount\": 0,\r\n        \"airMaintenanceTime\": 0.0,\r\n        \"airHealth\":
@@ -4528,7 +4528,7 @@ MonoBehaviour:
     \"interceptorRegenRate\": 0.0\r\n      },\r\n      {\r\n        \"moduleName\":
     \"shield_9_1\",\r\n        \"moduleSubType\": \"shield_9_1\",\r\n        \"statPoint\":
     900,\r\n        \"unlockCommanderLevel\": 0,\r\n        \"description\": \"\",\r\n       
-    \"moduleSlots\": null,\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n       
+    \"moduleSlots\": [],\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n       
     \"speed\": 0.0,\r\n        \"turnRate\": 0.0,\r\n        \"attack\": 0.0,\r\n       
     \"splashRadius\": 0.0,\r\n        \"attackCool\": 0.0,\r\n        \"silenceTime\":
     0.0,\r\n        \"airCount\": 0,\r\n        \"airMaintenanceTime\": 0.0,\r\n       
@@ -4540,7 +4540,7 @@ MonoBehaviour:
     0.0,\r\n        \"interceptorRegenRate\": 0.0\r\n      },\r\n      {\r\n       
     \"moduleName\": \"shield_10_1\",\r\n        \"moduleSubType\": \"shield_10_1\",\r\n       
     \"statPoint\": 1000,\r\n        \"unlockCommanderLevel\": 0,\r\n        \"description\":
-    \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\": 0.0,\r\n       
+    \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\": 0.0,\r\n       
     \"repair\": 0.0,\r\n        \"speed\": 0.0,\r\n        \"turnRate\": 0.0,\r\n       
     \"attack\": 0.0,\r\n        \"splashRadius\": 0.0,\r\n        \"attackCool\":
     0.0,\r\n        \"silenceTime\": 0.0,\r\n        \"airCount\": 0,\r\n       
@@ -4553,7 +4553,7 @@ MonoBehaviour:
     0.0\r\n      },\r\n      {\r\n        \"moduleName\": \"shield_11_1\",\r\n       
     \"moduleSubType\": \"shield_11_1\",\r\n        \"statPoint\": 1100,\r\n       
     \"unlockCommanderLevel\": 0,\r\n        \"description\": \"\",\r\n        \"moduleSlots\":
-    null,\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\":
+    [],\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\":
     0.0,\r\n        \"turnRate\": 0.0,\r\n        \"attack\": 0.0,\r\n        \"splashRadius\":
     0.0,\r\n        \"attackCool\": 0.0,\r\n        \"silenceTime\": 0.0,\r\n       
     \"airCount\": 0,\r\n        \"airMaintenanceTime\": 0.0,\r\n        \"airHealth\":
@@ -4565,7 +4565,7 @@ MonoBehaviour:
     \"interceptorRegenRate\": 0.0\r\n      },\r\n      {\r\n        \"moduleName\":
     \"shield_12_1\",\r\n        \"moduleSubType\": \"shield_12_1\",\r\n        \"statPoint\":
     1200,\r\n        \"unlockCommanderLevel\": 0,\r\n        \"description\": \"\",\r\n       
-    \"moduleSlots\": null,\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n       
+    \"moduleSlots\": [],\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n       
     \"speed\": 0.0,\r\n        \"turnRate\": 0.0,\r\n        \"attack\": 0.0,\r\n       
     \"splashRadius\": 0.0,\r\n        \"attackCool\": 0.0,\r\n        \"silenceTime\":
     0.0,\r\n        \"airCount\": 0,\r\n        \"airMaintenanceTime\": 0.0,\r\n       
@@ -4577,7 +4577,7 @@ MonoBehaviour:
     0.0,\r\n        \"interceptorRegenRate\": 0.0\r\n      },\r\n      {\r\n       
     \"moduleName\": \"shield_13_1\",\r\n        \"moduleSubType\": \"shield_13_1\",\r\n       
     \"statPoint\": 1300,\r\n        \"unlockCommanderLevel\": 0,\r\n        \"description\":
-    \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\": 0.0,\r\n       
+    \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\": 0.0,\r\n       
     \"repair\": 0.0,\r\n        \"speed\": 0.0,\r\n        \"turnRate\": 0.0,\r\n       
     \"attack\": 0.0,\r\n        \"splashRadius\": 0.0,\r\n        \"attackCool\":
     0.0,\r\n        \"silenceTime\": 0.0,\r\n        \"airCount\": 0,\r\n       
@@ -4590,7 +4590,7 @@ MonoBehaviour:
     0.0\r\n      },\r\n      {\r\n        \"moduleName\": \"shield_14_1\",\r\n       
     \"moduleSubType\": \"shield_14_1\",\r\n        \"statPoint\": 1400,\r\n       
     \"unlockCommanderLevel\": 0,\r\n        \"description\": \"\",\r\n        \"moduleSlots\":
-    null,\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\":
+    [],\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\":
     0.0,\r\n        \"turnRate\": 0.0,\r\n        \"attack\": 0.0,\r\n        \"splashRadius\":
     0.0,\r\n        \"attackCool\": 0.0,\r\n        \"silenceTime\": 0.0,\r\n       
     \"airCount\": 0,\r\n        \"airMaintenanceTime\": 0.0,\r\n        \"airHealth\":
@@ -4602,7 +4602,7 @@ MonoBehaviour:
     \"interceptorRegenRate\": 0.0\r\n      }\r\n    ],\r\n    \"6\": [\r\n      {\r\n       
     \"moduleName\": \"interceptor_1_1\",\r\n        \"moduleSubType\": \"interceptor_1_1\",\r\n       
     \"statPoint\": 100,\r\n        \"unlockCommanderLevel\": 0,\r\n        \"description\":
-    \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\": 0.0,\r\n       
+    \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\": 0.0,\r\n       
     \"repair\": 0.0,\r\n        \"speed\": 0.0,\r\n        \"turnRate\": 0.0,\r\n       
     \"attack\": 0.0,\r\n        \"splashRadius\": 0.0,\r\n        \"attackCool\":
     0.0,\r\n        \"silenceTime\": 0.0,\r\n        \"airCount\": 0,\r\n       
@@ -4615,7 +4615,7 @@ MonoBehaviour:
     5.0\r\n      },\r\n      {\r\n        \"moduleName\": \"interceptor_2_1\",\r\n       
     \"moduleSubType\": \"interceptor_2_1\",\r\n        \"statPoint\": 200,\r\n       
     \"unlockCommanderLevel\": 0,\r\n        \"description\": \"\",\r\n        \"moduleSlots\":
-    null,\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\":
+    [],\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\":
     0.0,\r\n        \"turnRate\": 0.0,\r\n        \"attack\": 0.0,\r\n        \"splashRadius\":
     0.0,\r\n        \"attackCool\": 0.0,\r\n        \"silenceTime\": 0.0,\r\n       
     \"airCount\": 0,\r\n        \"airMaintenanceTime\": 0.0,\r\n        \"airHealth\":
@@ -4627,7 +4627,7 @@ MonoBehaviour:
     \"interceptorRegenRate\": 5.0\r\n      },\r\n      {\r\n        \"moduleName\":
     \"interceptor_3_1\",\r\n        \"moduleSubType\": \"interceptor_3_1\",\r\n       
     \"statPoint\": 300,\r\n        \"unlockCommanderLevel\": 0,\r\n        \"description\":
-    \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\": 0.0,\r\n       
+    \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\": 0.0,\r\n       
     \"repair\": 0.0,\r\n        \"speed\": 0.0,\r\n        \"turnRate\": 0.0,\r\n       
     \"attack\": 0.0,\r\n        \"splashRadius\": 0.0,\r\n        \"attackCool\":
     0.0,\r\n        \"silenceTime\": 0.0,\r\n        \"airCount\": 0,\r\n       
@@ -4640,7 +4640,7 @@ MonoBehaviour:
     5.0\r\n      },\r\n      {\r\n        \"moduleName\": \"interceptor_4_1\",\r\n       
     \"moduleSubType\": \"interceptor_4_1\",\r\n        \"statPoint\": 400,\r\n       
     \"unlockCommanderLevel\": 0,\r\n        \"description\": \"\",\r\n        \"moduleSlots\":
-    null,\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\":
+    [],\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\":
     0.0,\r\n        \"turnRate\": 0.0,\r\n        \"attack\": 0.0,\r\n        \"splashRadius\":
     0.0,\r\n        \"attackCool\": 0.0,\r\n        \"silenceTime\": 0.0,\r\n       
     \"airCount\": 0,\r\n        \"airMaintenanceTime\": 0.0,\r\n        \"airHealth\":
@@ -4652,7 +4652,7 @@ MonoBehaviour:
     \"interceptorRegenRate\": 5.0\r\n      },\r\n      {\r\n        \"moduleName\":
     \"interceptor_5_1\",\r\n        \"moduleSubType\": \"interceptor_5_1\",\r\n       
     \"statPoint\": 500,\r\n        \"unlockCommanderLevel\": 0,\r\n        \"description\":
-    \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\": 0.0,\r\n       
+    \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\": 0.0,\r\n       
     \"repair\": 0.0,\r\n        \"speed\": 0.0,\r\n        \"turnRate\": 0.0,\r\n       
     \"attack\": 0.0,\r\n        \"splashRadius\": 0.0,\r\n        \"attackCool\":
     0.0,\r\n        \"silenceTime\": 0.0,\r\n        \"airCount\": 0,\r\n       
@@ -4665,7 +4665,7 @@ MonoBehaviour:
     5.0\r\n      },\r\n      {\r\n        \"moduleName\": \"interceptor_6_1\",\r\n       
     \"moduleSubType\": \"interceptor_6_1\",\r\n        \"statPoint\": 600,\r\n       
     \"unlockCommanderLevel\": 0,\r\n        \"description\": \"\",\r\n        \"moduleSlots\":
-    null,\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\":
+    [],\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\":
     0.0,\r\n        \"turnRate\": 0.0,\r\n        \"attack\": 0.0,\r\n        \"splashRadius\":
     0.0,\r\n        \"attackCool\": 0.0,\r\n        \"silenceTime\": 0.0,\r\n       
     \"airCount\": 0,\r\n        \"airMaintenanceTime\": 0.0,\r\n        \"airHealth\":
@@ -4677,7 +4677,7 @@ MonoBehaviour:
     \"interceptorRegenRate\": 5.0\r\n      },\r\n      {\r\n        \"moduleName\":
     \"interceptor_7_1\",\r\n        \"moduleSubType\": \"interceptor_7_1\",\r\n       
     \"statPoint\": 700,\r\n        \"unlockCommanderLevel\": 0,\r\n        \"description\":
-    \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\": 0.0,\r\n       
+    \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\": 0.0,\r\n       
     \"repair\": 0.0,\r\n        \"speed\": 0.0,\r\n        \"turnRate\": 0.0,\r\n       
     \"attack\": 0.0,\r\n        \"splashRadius\": 0.0,\r\n        \"attackCool\":
     0.0,\r\n        \"silenceTime\": 0.0,\r\n        \"airCount\": 0,\r\n       
@@ -4690,7 +4690,7 @@ MonoBehaviour:
     5.0\r\n      },\r\n      {\r\n        \"moduleName\": \"interceptor_8_1\",\r\n       
     \"moduleSubType\": \"interceptor_8_1\",\r\n        \"statPoint\": 800,\r\n       
     \"unlockCommanderLevel\": 0,\r\n        \"description\": \"\",\r\n        \"moduleSlots\":
-    null,\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\":
+    [],\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\":
     0.0,\r\n        \"turnRate\": 0.0,\r\n        \"attack\": 0.0,\r\n        \"splashRadius\":
     0.0,\r\n        \"attackCool\": 0.0,\r\n        \"silenceTime\": 0.0,\r\n       
     \"airCount\": 0,\r\n        \"airMaintenanceTime\": 0.0,\r\n        \"airHealth\":
@@ -4702,7 +4702,7 @@ MonoBehaviour:
     \"interceptorRegenRate\": 5.0\r\n      },\r\n      {\r\n        \"moduleName\":
     \"interceptor_9_1\",\r\n        \"moduleSubType\": \"interceptor_9_1\",\r\n       
     \"statPoint\": 900,\r\n        \"unlockCommanderLevel\": 0,\r\n        \"description\":
-    \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\": 0.0,\r\n       
+    \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\": 0.0,\r\n       
     \"repair\": 0.0,\r\n        \"speed\": 0.0,\r\n        \"turnRate\": 0.0,\r\n       
     \"attack\": 0.0,\r\n        \"splashRadius\": 0.0,\r\n        \"attackCool\":
     0.0,\r\n        \"silenceTime\": 0.0,\r\n        \"airCount\": 0,\r\n       
@@ -4715,7 +4715,7 @@ MonoBehaviour:
     5.0\r\n      },\r\n      {\r\n        \"moduleName\": \"interceptor_10_1\",\r\n       
     \"moduleSubType\": \"interceptor_10_1\",\r\n        \"statPoint\": 1000,\r\n       
     \"unlockCommanderLevel\": 0,\r\n        \"description\": \"\",\r\n        \"moduleSlots\":
-    null,\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\":
+    [],\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\":
     0.0,\r\n        \"turnRate\": 0.0,\r\n        \"attack\": 0.0,\r\n        \"splashRadius\":
     0.0,\r\n        \"attackCool\": 0.0,\r\n        \"silenceTime\": 0.0,\r\n       
     \"airCount\": 0,\r\n        \"airMaintenanceTime\": 0.0,\r\n        \"airHealth\":
@@ -4727,7 +4727,7 @@ MonoBehaviour:
     \"interceptorRegenRate\": 5.0\r\n      },\r\n      {\r\n        \"moduleName\":
     \"interceptor_11_1\",\r\n        \"moduleSubType\": \"interceptor_11_1\",\r\n       
     \"statPoint\": 1100,\r\n        \"unlockCommanderLevel\": 0,\r\n        \"description\":
-    \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\": 0.0,\r\n       
+    \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\": 0.0,\r\n       
     \"repair\": 0.0,\r\n        \"speed\": 0.0,\r\n        \"turnRate\": 0.0,\r\n       
     \"attack\": 0.0,\r\n        \"splashRadius\": 0.0,\r\n        \"attackCool\":
     0.0,\r\n        \"silenceTime\": 0.0,\r\n        \"airCount\": 0,\r\n       
@@ -4740,7 +4740,7 @@ MonoBehaviour:
     5.0\r\n      },\r\n      {\r\n        \"moduleName\": \"interceptor_12_1\",\r\n       
     \"moduleSubType\": \"interceptor_12_1\",\r\n        \"statPoint\": 1200,\r\n       
     \"unlockCommanderLevel\": 0,\r\n        \"description\": \"\",\r\n        \"moduleSlots\":
-    null,\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\":
+    [],\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\":
     0.0,\r\n        \"turnRate\": 0.0,\r\n        \"attack\": 0.0,\r\n        \"splashRadius\":
     0.0,\r\n        \"attackCool\": 0.0,\r\n        \"silenceTime\": 0.0,\r\n       
     \"airCount\": 0,\r\n        \"airMaintenanceTime\": 0.0,\r\n        \"airHealth\":
@@ -4752,7 +4752,7 @@ MonoBehaviour:
     \"interceptorRegenRate\": 5.0\r\n      },\r\n      {\r\n        \"moduleName\":
     \"interceptor_13_1\",\r\n        \"moduleSubType\": \"interceptor_13_1\",\r\n       
     \"statPoint\": 1300,\r\n        \"unlockCommanderLevel\": 0,\r\n        \"description\":
-    \"\",\r\n        \"moduleSlots\": null,\r\n        \"health\": 0.0,\r\n       
+    \"\",\r\n        \"moduleSlots\": [],\r\n        \"health\": 0.0,\r\n       
     \"repair\": 0.0,\r\n        \"speed\": 0.0,\r\n        \"turnRate\": 0.0,\r\n       
     \"attack\": 0.0,\r\n        \"splashRadius\": 0.0,\r\n        \"attackCool\":
     0.0,\r\n        \"silenceTime\": 0.0,\r\n        \"airCount\": 0,\r\n       
@@ -4765,7 +4765,7 @@ MonoBehaviour:
     5.0\r\n      },\r\n      {\r\n        \"moduleName\": \"interceptor_14_1\",\r\n       
     \"moduleSubType\": \"interceptor_14_1\",\r\n        \"statPoint\": 1400,\r\n       
     \"unlockCommanderLevel\": 0,\r\n        \"description\": \"\",\r\n        \"moduleSlots\":
-    null,\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\":
+    [],\r\n        \"health\": 0.0,\r\n        \"repair\": 0.0,\r\n        \"speed\":
     0.0,\r\n        \"turnRate\": 0.0,\r\n        \"attack\": 0.0,\r\n        \"splashRadius\":
     0.0,\r\n        \"attackCool\": 0.0,\r\n        \"silenceTime\": 0.0,\r\n       
     \"airCount\": 0,\r\n        \"airMaintenanceTime\": 0.0,\r\n        \"airHealth\":

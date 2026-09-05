@@ -30,6 +30,8 @@ public class NetworkManager : MonoSingleton<NetworkManager>
 
     private bool m_useFirebaseAuth = false;
     private bool m_autoLoginAttempted = false;
+    // 2106(리프레시 토큰 재사용 감지) 발생 시 게스트 자동복구 1회성 가드
+    private bool m_guestAutoRecoverAttempted = false;
 
     // 하트비트 간격 (초) — 서버에서 lastOnlineAt 갱신용
     private const float HeartbeatInterval = 30f;
@@ -251,6 +253,9 @@ public class NetworkManager : MonoSingleton<NetworkManager>
                                 // 서버 에러 - 토큰 유지, 로그만 기록
                                 Debug.LogWarning($"AutoLogin failed with server error: {response.errorCode}");
                                 break;
+                            case ServerErrorCode.REFRESH_TOKEN_FAIL_REUSE_DETECTED:
+                                TryGuestAutoRecover();
+                                break;
                             default:
                                 // 기타 에러
                                 Debug.LogError($"[임시로그] AutoLogin failed with error: {response.errorCode} storedRefreshTokenExistsAfter={PlayerPrefs.HasKey("RefreshToken")} (화면 전환 없이 여기서 멈추는지 확인용)");
@@ -382,12 +387,21 @@ public class NetworkManager : MonoSingleton<NetworkManager>
         m_apiClient.SetGuestSecret(secret);
     }
 
-    // 현재 로그인된 계정에 구글 계정 연동
+    // 현재 로그인된 계정에 구글 계정 연동 — 성공 시 서버가 계정의 게스트 자격증명을 지우는 것과 대칭으로 로컬 게스트 정보도 지운다
     public void LinkGoogle(System.Action<ApiResponse<AuthResponse>> onComplete = null)
     {
         if (m_bConnected == false) return;
         StartCoroutine(GoogleWithIdTokenCoroutine(
-            onComplete,
+            (response) => {
+                if (response.errorCode == 0)
+                {
+                    PlayerPrefs.DeleteKey("GuestId");
+                    PlayerPrefs.Save();
+                    m_apiClient.ClearGuestSecret();
+                }
+                if (onComplete != null)
+                    onComplete(response);
+            },
             m_apiClient.LinkGoogleAsync,
             ServerErrorCode.CLIENT_LOGIN_GOOGLE_FAIL_AUTHENTICATION_TIMEOUT,
             ServerErrorCode.CLIENT_LOGIN_GOOGLE_FAIL_EXTRACT_AUTHENTICATION));
@@ -688,11 +702,45 @@ public class NetworkManager : MonoSingleton<NetworkManager>
         m_apiClient.ClearTokens();
         m_apiClient.ClearGuestSecret();
         m_autoLoginAttempted = false;
+        m_guestAutoRecoverAttempted = false;
 
         // 게스트 ID 삭제 - 재로그인 시 새 계정으로 시작되도록
         PlayerPrefs.DeleteKey("GuestId");
         PlayerPrefs.DeleteKey("DevMineralClickCount");
         PlayerPrefs.Save();
+    }
+
+    // 리프레시 토큰 재사용 감지(2106) 시 앱 재시작과 동일한 결과를 자동으로 재현 — 로컬에 게스트 자격증명이 있을 때만 시도
+    private void TryGuestAutoRecover()
+    {
+        if (m_guestAutoRecoverAttempted == true) return;
+        m_guestAutoRecoverAttempted = true;
+
+        string guestId = PlayerPrefs.GetString("GuestId", "");
+        string guestSecret = m_apiClient.GetGuestSecret();
+        if (string.IsNullOrEmpty(guestId) == true || string.IsNullOrEmpty(guestSecret) == true)
+        {
+            PlayerPrefs.DeleteKey("RefreshToken");
+            PlayerPrefs.Save();
+            UIManager.Instance.ShowPanel("UIPanelLoginType");
+            return;
+        }
+
+        m_apiClient.ClearTokens();
+        StartCoroutine(RunAsync(() => m_apiClient.GuestLoginAsync(guestId, guestSecret), (response) => {
+            if (response.errorCode == 0 && m_uIManager != null)
+            {
+                UIMain uiMain = m_uIManager as UIMain;
+                if (uiMain != null)
+                    uiMain.GetCommanders();
+            }
+            else
+            {
+                PlayerPrefs.DeleteKey("RefreshToken");
+                PlayerPrefs.Save();
+                UIManager.Instance.ShowPanel("UIPanelLoginType");
+            }
+        }));
     }
 
     // 서버 측 리프레시 토큰 세션을 먼저 폐기한 뒤 로컬 토큰을 정리. 서버 호출 실패해도 로컬 로그아웃은 항상 진행

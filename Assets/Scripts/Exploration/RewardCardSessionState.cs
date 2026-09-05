@@ -43,7 +43,7 @@ public class RewardCardSessionState
         entry.valueSum += card.value1;
         m_buffs[card.effectType] = entry;
 
-        UnityEngine.Debug.Log($"[RewardCard] ApplyCard effectType={card.effectType} stackCount={entry.stackCount} valueSum={entry.valueSum}");
+        //UnityEngine.Debug.Log($"[RewardCard] ApplyCard effectType={card.effectType} stackCount={entry.stackCount} valueSum={entry.valueSum}");
     }
 
     public float GetMultiplier(ECardEffectType effectType)

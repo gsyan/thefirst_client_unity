@@ -44,7 +44,7 @@ public static class ExplorationEnemyFleetGenerator
         for (int i = 0; i < allShips.Count; i += k_maxShipsPerFleet)
         {
             int count = System.Math.Min(k_maxShipsPerFleet, allShips.Count - i);
-            waves.Add(FinalizeWave(allShips.GetRange(i, count)));
+            waves.Add(FinalizeWave(allShips.GetRange(i, count), zoneConfig));
         }
 
         return waves;
@@ -171,7 +171,7 @@ public static class ExplorationEnemyFleetGenerator
     }
 
     // 장착 모듈 개수 내림차순으로 정렬해 절반은 전방/절반은 후방 — 반드시 안정 정렬(OrderByDescending)만 사용할 것(List.Sort는 불안정 정렬이라 서버와 어긋날 수 있음)
-    private static FleetInfo FinalizeWave(List<BuildingShip> ships)
+    private static FleetInfo FinalizeWave(List<BuildingShip> ships, ZoneConfig zoneConfig)
     {
         FleetInfo fleetInfo = new FleetInfo { ships = new List<ShipInfo>() };
 
@@ -185,6 +185,8 @@ public static class ExplorationEnemyFleetGenerator
 
             ModuleHullInfo modules = new ModuleHullInfo
             {
+                moduleType = EModuleType.hull,
+                moduleSubType = ship.hull.moduleSubType,
                 beams = ship.beams,
                 missiles = ship.missiles,
                 hangars = ship.hangars,
@@ -197,6 +199,8 @@ public static class ExplorationEnemyFleetGenerator
                 hullSubType = ship.hull.moduleSubType,
                 isFront = isFront,
                 hulls = new List<ModuleHullInfo> { modules },
+                healthMultiplier = zoneConfig.enemyHealthMultiplier,
+                attackMultiplier = zoneConfig.enemyAttackMultiplier,
             });
         }
 

@@ -68,6 +68,21 @@ public class SpaceFleet : MonoBehaviour
         return false;
     }
 
+    // 실드 전술 토글이 충전할 여지를 가지는지 — 게이지가 아직 가득 차지 않은 실드 장착 함체가 하나라도 있는지(방어 중이 아니어도 충전은 가능해야 함)
+    public bool HasAnyShieldBelowMax()
+    {
+        foreach (SpaceShip ship in m_ships)
+        {
+            if (ship == null) continue;
+            foreach (ModuleHull body in ship.m_moduleHulls)
+            {
+                if (body == null || body.m_shield == null) continue;
+                if (body.m_shield.GetGaugeRatio() < 1f) return true;
+            }
+        }
+        return false;
+    }
+
     private void Start()
     {
         EventManager.Subscribe_ShipBodyChanged(OnShipBodyChanged);
@@ -295,7 +310,8 @@ public class SpaceFleet : MonoBehaviour
             {
                 shipId = ship.m_shipInfo.id,
                 positionIndex = ship.m_shipInfo.positionIndex,
-                healthRatio = ship.GetHealthRatio()
+                healthRatio = ship.GetHealthRatio(),
+                shieldRatio = ship.GetShieldRatio()
             });
         }
         return result;
@@ -635,6 +651,14 @@ public class SpaceFleet : MonoBehaviour
         }
     }
 
+    // 파괴된 함선을 슬롯 상태에 맞게 되살림(전멸=전체 재건, 부분파괴=빠진 자리만 채움) — 호출부는 이후 필요에 따라
+    // 체력을 원하는 값으로 덮어쓰면 됨(퇴각=스냅샷 비율, 탈출/포기=전액)
+    public void RestoreAllDestroyedShips(float healthRatio = 0.1f)
+    {
+        if (IsFleetAlive() == false) RebuildFleet(healthRatio);
+        else RestoreDestroyedShips(healthRatio);
+    }
+
     // 함대 전체 재건 (전멸 후 복구용, 모든 함선 재생성)
     public void RebuildFleet(float healthRatio = 0.1f)
     {
@@ -722,6 +746,31 @@ public class SpaceFleet : MonoBehaviour
         }
         EventManager.Trigger_FleetUpdateHP();
         EventManager.Trigger_ShipUpdateHP();
+    }
+
+    // 전술 토글(수리) ON 상태에서 UIPanelBattle.Co_DrainTacticPower가 1초 간격으로 호출 — 함체별 repair 스탯만큼 체력 회복
+    public void ApplyRepairTickToAllShips()
+    {
+        foreach (SpaceShip ship in m_ships)
+        {
+            if (ship == null) continue;
+            foreach (ModuleHull body in ship.m_moduleHulls)
+                if (body != null) body.ApplyRepairTick();
+            ship.UpdateShipStatCur();
+        }
+        EventManager.Trigger_FleetUpdateHP();
+        EventManager.Trigger_ShipUpdateHP();
+    }
+
+    // 전술 토글(실드) ON 상태에서 UIPanelBattle.Co_DrainTacticPower가 1초 간격으로 호출 — 함체별 shieldRegenRate만큼 게이지 충전
+    public void ApplyShieldRegenTickToAllShips()
+    {
+        foreach (SpaceShip ship in m_ships)
+        {
+            if (ship == null) continue;
+            foreach (ModuleHull body in ship.m_moduleHulls)
+                if (body != null && body.m_shield != null) body.m_shield.ApplyRegenTick();
+        }
     }
 
     public float GetMissingHealth()

@@ -6,13 +6,16 @@ using UnityEngine;
 
 public static class ExplorationShipSpawnBridge
 {
-    // positionIndex는 함대편성 UI 슬롯 인덱스와 반드시 일치해야 함 — 중간 슬롯이 비어도(null) 재번호 없이 그 인덱스 그대로 사용
-    public static SpaceShip SpawnShip(SpaceFleet fleet, ModuleData hull, ShipFinalStats finalStats, int positionIndex, bool isFront, float healthMultiplier = 1f, float attackMultiplier = 1f)
+    // positionIndex는 함대편성 UI 슬롯 인덱스와 반드시 일치해야 함 — 중간 슬롯이 비어도(null) 재번호 없이 그 인덱스 그대로 사용.
+    // id는 서버가 실제 함대 편성과 대조(SpaceFleet.RestoreDestroyedShips의 생존 판정, 체력 스냅샷 매칭 등)하는 데 쓰는 고유값 —
+    // 호출부가 서버 응답의 ShipInfo.id를 그대로 넘겨야 함(생략하면 0 — 새로 배치돼 아직 서버에 확정되지 않은 슬롯에만 해당)
+    // actualModules: 이 함선이 실제로 장착한 모듈 구성(슬롯 인덱스 포함) — null이면 무장 없는 빈 로드아웃
+    public static SpaceShip SpawnShip(SpaceFleet fleet, ModuleData hull, ShipFinalStats finalStats, ModuleHullInfo actualModules, int positionIndex, bool isFront, float healthMultiplier = 1f, float attackMultiplier = 1f, long id = 0)
     {
         if (fleet == null || hull == null) return null;
 
         string hullSubType = hull.moduleSubType;
-        ShipInfo shipInfo = BuildShipInfo(hullSubType, finalStats, positionIndex, isFront, healthMultiplier);
+        ShipInfo shipInfo = BuildShipInfo(hullSubType, actualModules, positionIndex, isFront, healthMultiplier, id);
 
         GameObject shipGo = new GameObject(hullSubType);
         SpaceShip spaceShip = shipGo.AddComponent<SpaceShip>();
@@ -24,7 +27,9 @@ public static class ExplorationShipSpawnBridge
         return spaceShip;
     }
 
-    private static ShipInfo BuildShipInfo(string hullSubType, ShipFinalStats finalStats, int positionIndex, bool isFront, float healthMultiplier)
+    // actualModules를 그대로 복사해 슬롯 인덱스/서브타입/강화 포인트를 원본 그대로 유지 — 이전엔 ShipFinalStats의 압축된(빈 슬롯 제거) 배열에서
+    // 재구성하다 보니 슬롯 인덱스 정보가 손실되어(예: 3번 슬롯만 장착해도 배열 위치 0으로 압축) 엉뚱한 슬롯에 스폰되는 버그가 있었음
+    private static ShipInfo BuildShipInfo(string hullSubType, ModuleHullInfo actualModules, int positionIndex, bool isFront, float healthMultiplier, long id)
     {
         ModuleHullInfo hullInfo = new ModuleHullInfo
         {
@@ -32,29 +37,18 @@ public static class ExplorationShipSpawnBridge
             moduleSubType = hullSubType,
             moduleLevel   = 1,
             hullIndex     = 0,
-            beams         = new List<ModuleInfo>(),
-            missiles      = new List<ModuleInfo>(),
-            hangars       = new List<ModuleInfo>(),
+            beams         = CopyModuleInfoList(actualModules != null ? actualModules.beams : null),
+            missiles      = CopyModuleInfoList(actualModules != null ? actualModules.missiles : null),
+            hangars       = CopyModuleInfoList(actualModules != null ? actualModules.hangars : null),
         };
 
-        int beamCount = finalStats.beamModuleSubType != null ? finalStats.beamModuleSubType.Length : 0;
-        for (int i = 0; i < beamCount; i++)
-            hullInfo.beams.Add(BuildModuleInfo(EModuleType.beam, finalStats.beamModuleSubType[i], i));
-
-        int missileCount = finalStats.missileModuleSubType != null ? finalStats.missileModuleSubType.Length : 0;
-        for (int i = 0; i < missileCount; i++)
-            hullInfo.missiles.Add(BuildModuleInfo(EModuleType.missile, finalStats.missileModuleSubType[i], i));
-
-        // 함재기 세부 스탯(함선/함재기 대상 공격력 분리) 및 요격체 반영은 후속 작업 — 지금은 구조만 채워 슬롯이 비어보이지 않게 함
-        int hangarCount = finalStats.hangarModuleSubType != null ? finalStats.hangarModuleSubType.Length : 0;
-        for (int i = 0; i < hangarCount; i++)
-            hullInfo.hangars.Add(BuildModuleInfo(EModuleType.hangar, finalStats.hangarModuleSubType[i], i));
-
-        // on/off만 지원하므로 서브타입은 항상 shield_1_1 고정 — 무기 티어는 함체와 독립적인 별도 축. 서버 FleetService.getDefaultSubTypeForCategory와 동일 규칙
-        hullInfo.shieldModuleSubType = finalStats.shieldInstalled ? "shield_1_1" : "";
+        hullInfo.shieldModuleSubType = actualModules != null && string.IsNullOrEmpty(actualModules.shieldModuleSubType) == false
+            ? actualModules.shieldModuleSubType
+            : "";
 
         return new ShipInfo
         {
+            id               = id,
             shipName         = hullSubType,
             positionIndex    = positionIndex,
             hulls            = new List<ModuleHullInfo> { hullInfo },
@@ -64,15 +58,25 @@ public static class ExplorationShipSpawnBridge
         };
     }
 
-    private static ModuleInfo BuildModuleInfo(EModuleType moduleType, string subTypeName, int slotIndex)
+    private static List<ModuleInfo> CopyModuleInfoList(List<ModuleInfo> source)
     {
-        return new ModuleInfo
+        List<ModuleInfo> result = new List<ModuleInfo>();
+        if (source == null) return result;
+
+        for (int i = 0; i < source.Count; i++)
         {
-            moduleType    = moduleType,
-            moduleSubType = subTypeName,
-            moduleLevel   = 1,
-            slotIndex     = slotIndex,
-            hullIndex     = 0,
-        };
+            ModuleInfo original = source[i];
+            result.Add(new ModuleInfo
+            {
+                moduleType             = original.moduleType,
+                moduleSubType          = original.moduleSubType,
+                moduleLevel            = original.moduleLevel,
+                hullIndex              = original.hullIndex,
+                slotIndex              = original.slotIndex,
+                attackPoints           = original.attackPoints,
+                attackToFighterPoints  = original.attackToFighterPoints,
+            });
+        }
+        return result;
     }
 }
