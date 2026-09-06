@@ -2,11 +2,16 @@
 // 고르고 확인/취소로 결정만 알려줄 뿐, 실제로 어느 슬롯에 어떻게 적용할지는 모른다(호출부가 콜백에서 처리) — 재사용성을
 // 위해 이 컴포넌트는 "선택기" 역할만 담당한다. 선택된 함체의 스탯을 현재 장착 함체와 비교해서 함께 보여준다
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class UIHullPickerView : MonoBehaviour
 {
+    [SerializeField] private TMP_Text m_titleText;
+    [SerializeField] private TMP_Text m_statsTitleText;
+    [SerializeField] private TMP_Text m_confirmButtonText;
+    [SerializeField] private TMP_Text m_cancelButtonText;
     [SerializeField] private InfiniteScrollView m_scrollView;
     [SerializeField] private UIAvailableHullRow m_rowPrefab;
     [SerializeField] private Button m_confirmButton;
@@ -42,6 +47,14 @@ public class UIHullPickerView : MonoBehaviour
         if (m_statsScrollView != null)
             m_statsScrollView.onItemBind = OnStatsItemBind;
 
+        // 한 번 세팅되면 바뀌지 않는 정적 라벨 — Open()마다 반복 세팅하지 않고 Awake에서 1회만 처리
+        if (m_statsTitleText != null)
+            CommonUtility.SetUILocText(m_statsTitleText, "UIFleet_StatsTitle");
+        if (m_confirmButtonText != null)
+            CommonUtility.SetUILocText(m_confirmButtonText, "Simple_Confirm");
+        if (m_cancelButtonText != null)
+            CommonUtility.SetUILocText(m_cancelButtonText, "Simple_Cancel");
+
         gameObject.SetActive(false);
     }
 
@@ -60,6 +73,9 @@ public class UIHullPickerView : MonoBehaviour
         m_maxCommandPower = maxCommandPower;
         m_onConfirm = onConfirm;
         m_onCancel = onCancel;
+
+        if (m_titleText != null)
+            CommonUtility.SetUILocText(m_titleText, "UIFleet_HullPicker_Title");
 
         m_currentEntriesByLabel = null;
         if (currentHull != null)

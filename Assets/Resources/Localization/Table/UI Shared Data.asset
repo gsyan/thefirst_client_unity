@@ -619,6 +619,14 @@ MonoBehaviour:
     m_Key: UIFleet_EditLoadoutButton
     m_Metadata:
       m_Items: []
+  - m_Id: 76121706787110912
+    m_Key: UIFleet_HullPicker_Title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76279911311867904
+    m_Key: UIFleet_EnemyFleetTitle
+    m_Metadata:
+      m_Items: []
   - m_Id: 35928926043635712
     m_Key: UITabFleetTactics_Name
     m_Metadata:
@@ -1005,6 +1013,10 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 74453435688026112
     m_Key: module_type_shield
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76121706862608384
+    m_Key: module_type_interceptor
     m_Metadata:
       m_Items: []
   - m_Id: 65472345728221184

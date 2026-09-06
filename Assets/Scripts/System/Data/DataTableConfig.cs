@@ -56,6 +56,10 @@ public class GameSettings
     [Tooltip("실드 ON 시 1초당 소모하는 탐험 포인트 — 게이지가 남아 방어가 실제로 발동 중일 때만 소모(풀게이지 대기 상태는 미소모)")]
     public int shieldTacticExplorationPointPerSec = 1;
 
+    [Header("Tactic - Interceptor")]
+    [Tooltip("요격체 ON 시 1초당 소모하는 탐험 포인트 — 빈 자리가 있어 보충이 실제로 진행 중일 때만 소모(전부 채워진 상태는 미소모)")]
+    public int interceptorTacticExplorationPointPerSec = 1;
+
     [Header("Exploration - Ship Stat Formula")]
     public ShipStatFormulaSettings shipStatFormula = new ShipStatFormulaSettings();
 }

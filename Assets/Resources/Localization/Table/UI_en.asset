@@ -1338,6 +1338,18 @@ MonoBehaviour:
     m_Localized: Shield
     m_Metadata:
       m_Items: []
+  - m_Id: 76121706787110912
+    m_Localized: Select Hull
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76121706862608384
+    m_Localized: Interceptor
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76279911311867904
+    m_Localized: Enemy Fleet
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

@@ -773,6 +773,43 @@ public class SpaceFleet : MonoBehaviour
         }
     }
 
+    // 요격체 전술 토글이 충전할 여지를 가지는지 — 빈 자리가 있는 요격체 장착 함체가 하나라도 있는지
+    public bool HasAnyInterceptorBelowMax()
+    {
+        foreach (SpaceShip ship in m_ships)
+        {
+            if (ship == null) continue;
+            foreach (ModuleHull body in ship.m_moduleHulls)
+            {
+                if (body == null || body.m_interceptor == null) continue;
+                if (body.m_interceptor.IsEquipped() == true && body.m_interceptor.HasEmptySlot() == true) return true;
+            }
+        }
+        return false;
+    }
+
+    // 전술 토글(요격체) ON 상태에서 UIPanelBattle.Co_DrainTacticPower가 1초 간격으로 호출 — 함체별 interceptorRegenRate만큼 재고 보충
+    public void ApplyInterceptorRegenTickToAllShips()
+    {
+        foreach (SpaceShip ship in m_ships)
+        {
+            if (ship == null) continue;
+            foreach (ModuleHull body in ship.m_moduleHulls)
+                if (body != null && body.m_interceptor != null) body.m_interceptor.ApplyRegenTick();
+        }
+    }
+
+    // 요격체 전술 토글 on/off를 함대 내 모든 함체에 전파 — UIPanelBattle.ApplyTacticOptions가 옵션이 실제로 바뀔 때 호출
+    public void SetInterceptorTacticOnForAllShips(bool on)
+    {
+        foreach (SpaceShip ship in m_ships)
+        {
+            if (ship == null) continue;
+            foreach (ModuleHull body in ship.m_moduleHulls)
+                if (body != null && body.m_interceptor != null) body.m_interceptor.SetTacticOn(on);
+        }
+    }
+
     public float GetMissingHealth()
     {
         float missing = 0f;

@@ -1,7 +1,8 @@
 // 함선 로드아웃 편집 화면 — UIHullPickerView가 "바디(함체) 선택"을 담당한다면, 이 컴포넌트는 그 다음 단계인
 // "슬롯별 모듈 on/off 편집"을 담당한다. 토글은 전부 로컬에서만 미리보기 상태로 바뀌고, Confirm을 눌러야 서버에 실제로 반영됨
 // (UIHullPickerView와 동일 패턴 — 예산 초과 상태에선 Confirm 버튼 비활성화)
-// 카테고리별 최대 슬롯 수는 FleetComposition.ParseMaxSlotsFromHullSubType으로 hullSubType에서 파싱(빔/미사일/격납고/실드/요격체 — 현재 실드/요격체는 항상 0)
+// 카테고리별 최대 슬롯 수는 FleetComposition.ParseMaxSlotsFromHullSubType으로 hullSubType에서 파싱(빔/미사일/격납고/실드/요격체 —
+// 실드는 2세대(gen=2) 함체부터 1개 지원, 요격체는 현재 어떤 함체 데이터에도 슬롯이 없어 항상 0)
 // 빔/미사일/격납고 슬롯을 하나의 InfiniteScrollView에 순서대로(빔 전부 → 미사일 전부 → 격납고 전부) 나열
 using System.Collections.Generic;
 using TMPro;
@@ -10,6 +11,10 @@ using UnityEngine.UI;
 
 public class UIShipLoadoutEditorView : MonoBehaviour
 {
+    [SerializeField] private TMP_Text m_titleText;
+    [SerializeField] private TMP_Text m_statsTitleText;
+    [SerializeField] private TMP_Text m_confirmButtonText;
+    [SerializeField] private TMP_Text m_cancelButtonText;
     [SerializeField] private InfiniteScrollView m_moduleScrollView;
     [SerializeField] private UIModuleSlotToggleRow m_rowPrefab; // 카테고리 공용 — 슬롯 1칸당 행 1개
 
@@ -62,6 +67,16 @@ public class UIShipLoadoutEditorView : MonoBehaviour
         if (m_statsScrollView != null)
             m_statsScrollView.onItemBind = OnStatsItemBind;
 
+        // 한 번 세팅되면 바뀌지 않는 정적 라벨 — Open()마다 반복 세팅하지 않고 Awake에서 1회만 처리
+        if (m_titleText != null)
+            CommonUtility.SetUILocText(m_titleText, "UIFleet_ShipLoadOut_Title");
+        if (m_statsTitleText != null)
+            CommonUtility.SetUILocText(m_statsTitleText, "UIFleet_StatsTitle");
+        if (m_confirmButtonText != null)
+            CommonUtility.SetUILocText(m_confirmButtonText, "Simple_Confirm");
+        if (m_cancelButtonText != null)
+            CommonUtility.SetUILocText(m_cancelButtonText, "Simple_Cancel");
+
         gameObject.SetActive(false);
     }
 
@@ -111,6 +126,7 @@ public class UIShipLoadoutEditorView : MonoBehaviour
         AppendCategorySlots(EModuleType.missile, maxSlots[1]);
         AppendCategorySlots(EModuleType.hangar, maxSlots[2]);
         AppendShieldSlot(maxSlots[3]);
+        AppendInterceptorSlot(maxSlots[4]);
 
         if (m_moduleScrollView != null && m_rowPrefab != null)
             m_moduleScrollView.Initialize(m_moduleSlotEntries.Count, m_rowPrefab.gameObject);
@@ -157,6 +173,19 @@ public class UIShipLoadoutEditorView : MonoBehaviour
         m_pendingAttackPoints.Add(0);
         m_pendingAttackToFighterPoints.Add(0);
         m_pendingModuleSubType.Add(GetDefaultSubType(EModuleType.shield));
+    }
+
+    // 요격체는 슬롯이 없어(문자열 장착 여부만 존재) 리스트 카테고리와 별도 처리 — 함체에 요격체 슬롯이 있을 때만(maxSlotCount>0) 행 1개 추가
+    private void AppendInterceptorSlot(int maxSlotCount)
+    {
+        if (maxSlotCount <= 0) return;
+
+        bool isInstalled = m_originalModules != null && string.IsNullOrEmpty(m_originalModules.interceptorModuleSubType) == false;
+        m_moduleSlotEntries.Add(new ModuleSlotEntry(EModuleType.interceptor, 0, isLocked: false));
+        m_pendingInstalled.Add(isInstalled);
+        m_pendingAttackPoints.Add(0);
+        m_pendingAttackToFighterPoints.Add(0);
+        m_pendingModuleSubType.Add(GetDefaultSubType(EModuleType.interceptor));
     }
 
     private ModuleInfo FindInstalledModule(List<ModuleInfo> installedModules, int slotIndex)
@@ -215,7 +244,8 @@ public class UIShipLoadoutEditorView : MonoBehaviour
         if (m_selectedDataIndex >= 0 && m_selectedDataIndex < m_moduleSlotEntries.Count && ship.m_moduleHulls.Count > 0)
         {
             ModuleSlotEntry entry = m_moduleSlotEntries[m_selectedDataIndex];
-            if (entry.moduleType != EModuleType.shield) // 실드는 SetupSelectedModuleVisualing 대상에서 빠져있어 하이라이트 대상 없음
+            // 실드/요격체는 SetupSelectedModuleVisualing 대상에서 빠져있어 하이라이트 대상 없음(둘 다 슬롯/3D 배치 없는 논리 컴포넌트)
+            if (entry.moduleType != EModuleType.shield && entry.moduleType != EModuleType.interceptor)
                 module = ship.m_moduleHulls[0].FindModuleOrPlaceholder(entry.moduleType, entry.slotIndex); // 미설치 슬롯도 Placeholder 위치에 하이라이트 표시
         }
 
@@ -280,6 +310,12 @@ public class UIShipLoadoutEditorView : MonoBehaviour
         if (entry.moduleType == EModuleType.shield)
         {
             body.InitializeShield(installed == true ? subType : "");
+            return;
+        }
+
+        if (entry.moduleType == EModuleType.interceptor)
+        {
+            body.InitializeInterceptor(installed == true ? subType : "");
             return;
         }
 
@@ -395,6 +431,11 @@ public class UIShipLoadoutEditorView : MonoBehaviour
             if (m_originalModules != null && string.IsNullOrEmpty(m_originalModules.shieldModuleSubType) == false)
                 subType = m_originalModules.shieldModuleSubType;
         }
+        else if (entry.moduleType == EModuleType.interceptor)
+        {
+            if (m_originalModules != null && string.IsNullOrEmpty(m_originalModules.interceptorModuleSubType) == false)
+                subType = m_originalModules.interceptorModuleSubType;
+        }
         else
         {
             ModuleInfo original = FindInstalledModule(GetModulesListForType(m_originalModules, entry.moduleType), entry.slotIndex);
@@ -435,6 +476,12 @@ public class UIShipLoadoutEditorView : MonoBehaviour
         if (moduleType == EModuleType.shield)
         {
             hull.shieldModuleSubType = moduleSubType;
+            return hull;
+        }
+
+        if (moduleType == EModuleType.interceptor)
+        {
+            hull.interceptorModuleSubType = moduleSubType;
             return hull;
         }
 
@@ -480,6 +527,12 @@ public class UIShipLoadoutEditorView : MonoBehaviour
             if (entry.moduleType == EModuleType.shield)
             {
                 pending.shieldModuleSubType = GetDefaultSubType(entry.moduleType);
+                continue;
+            }
+
+            if (entry.moduleType == EModuleType.interceptor)
+            {
+                pending.interceptorModuleSubType = GetDefaultSubType(entry.moduleType);
                 continue;
             }
 
@@ -574,6 +627,7 @@ public class UIShipLoadoutEditorView : MonoBehaviour
         if (moduleType == EModuleType.missile) return "missile_1_1";
         if (moduleType == EModuleType.hangar) return "hangar_1_1";
         if (moduleType == EModuleType.shield) return "shield_1_1";
+        if (moduleType == EModuleType.interceptor) return "interceptor_1_1";
         return "";
     }
 

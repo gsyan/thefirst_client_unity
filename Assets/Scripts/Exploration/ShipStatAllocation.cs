@@ -91,7 +91,7 @@ public class ShipStatAllocation
 
     // 실제 장착 로드아웃(ShipInfo.hulls, on/off + 공격력 강화 포인트 지원) → 전투 계산용 ShipStatAllocation 조립
     // maxSlotCount: 카테고리별 슬롯 배열 크기(DataTableConfig.gameSettings.shipStatFormula.maxModuleSlots) — 실제 장착 여부/서브타입/공격력 강화 포인트는 hulls로 채움
-    // 공격력 이외(연사력/발사체속도/침묵시간 등)는 아직 실시간 강화 미지원이라 항상 0. 요격체는 아직 장착 UI가 없어 항상 미장착
+    // 공격력 이외(연사력/발사체속도/침묵시간 등)는 아직 실시간 강화 미지원이라 항상 0. 요격체는 실드와 동일하게 슬롯 없이 서브타입 1개만 장착(인덱스 0), 딜레이/회복속도 강화 포인트는 아직 실시간 강화 미지원이라 항상 0
     public static ShipStatAllocation BuildFromModuleHullInfo(int maxSlotCount, ModuleHullInfo hulls)
     {
         var result = new ShipStatAllocation();
@@ -121,6 +121,8 @@ public class ShipStatAllocation
         result.interceptorModuleSubType = new string[maxSlotCount];
         result.interceptorDelayPoints = new int[maxSlotCount];
         result.interceptorRegenRatePoints = new int[maxSlotCount];
+        if (hulls != null && string.IsNullOrEmpty(hulls.interceptorModuleSubType) == false && maxSlotCount > 0)
+            result.interceptorModuleSubType[0] = hulls.interceptorModuleSubType;
 
         return result;
     }

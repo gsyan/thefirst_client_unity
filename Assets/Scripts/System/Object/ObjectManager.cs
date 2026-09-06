@@ -71,6 +71,12 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         else
             Debug.LogError("ProjectileMissileLarge not found at Resources/Prefabs/Projectile/ProjectileMissileLarge");
 
+        InterceptorUnit interceptorUnitPrefab = ResourceManager.Instance.Load<InterceptorUnit>("Prefabs/Projectile/ProjectileInterceptor");
+        if (interceptorUnitPrefab != null)
+            m_poolManager.CreatePool(EPoolName.PROJECTILE_INTERCEPTOR, interceptorUnitPrefab, 1, 30);
+        else
+            Debug.LogError("ProjectileInterceptor not found at Resources/Prefabs/Projectile/ProjectileInterceptor");
+
 
         EffectBase effectPrefab = ResourceManager.Instance.Load<EffectBase>("Prefabs/Effect/EffectBeamHead");
         if (effectPrefab == null) Debug.LogError("Not found at Resources/Prefabs/Effect/EffectBeamHead");

@@ -14,6 +14,7 @@ public class ModuleHull : ModuleBase
     [HideInInspector] public List<ModuleMissile> m_missiles = new List<ModuleMissile>();
     [HideInInspector] public List<ModuleHangar> m_hangars = new List<ModuleHangar>();
     [HideInInspector] public ModuleShield m_shield; // 슬롯/3D 배치 없음 — InitializeModuleHull에서 자식으로 동적 생성
+    [HideInInspector] public ModuleInterceptor m_interceptor; // 슬롯/3D 배치 없음(실제 요격체 유닛은 별도 스폰) — InitializeModuleHull에서 자식으로 동적 생성
 
     // 로드아웃 편집(UIShipLoadoutEditorView) 대상 슬롯의 편집 시작 시점 원본 모듈 스냅샷 — CANCEL 복원에 사용
     // 키 없음 = 편집 대상 아님 / 값 null = 원본이 빈 슬롯 / 값 있음 = 원본 모듈(현재는 비활성화 상태로 보관 중일 수 있음)
@@ -335,6 +336,9 @@ public class ModuleHull : ModuleBase
 
         // 실드 — 슬롯/3D 배치 없이 논리적으로만 존재하는 자식 컴포넌트
         InitializeShield(bodyInfo.shieldModuleSubType);
+
+        // 요격체 — 슬롯/3D 배치 없이 논리적으로만 존재하는 자식 컴포넌트(실제 요격체 유닛은 ModuleInterceptor가 별도 스폰)
+        InitializeInterceptor(bodyInfo.interceptorModuleSubType);
     }
 
     public void InitializeShield(string shieldSubTypeName)
@@ -348,6 +352,19 @@ public class ModuleHull : ModuleBase
 
         m_shield.SetFleetInfo(m_ownerFleet, m_ownerShip);
         m_shield.InitializeModuleShield(shieldSubTypeName);
+    }
+
+    public void InitializeInterceptor(string interceptorSubTypeName)
+    {
+        if (m_interceptor == null)
+        {
+            GameObject interceptorObj = new GameObject("ModuleInterceptor");
+            interceptorObj.transform.SetParent(transform, false);
+            m_interceptor = interceptorObj.AddComponent<ModuleInterceptor>();
+        }
+
+        m_interceptor.SetFleetInfo(m_ownerFleet, m_ownerShip);
+        m_interceptor.InitializeModuleInterceptor(interceptorSubTypeName);
     }
 
     // 프리셋 계산값 배열에서 slotIndex에 해당하는 값을 안전하게 조회 (범위 밖/null이면 override 없음)

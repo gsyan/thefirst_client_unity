@@ -116,6 +116,7 @@ public class UIPanelBattle : UIPanelBase
             bool aircraftHasEffect = fleetProfile.airCount > 0;
             // 방어 발동 중(게이지 소모 중)이 아니어도 아직 충전할 여지가 있으면 토글이 실질 효과를 가짐 — 게이지 0에서 충전을 시작할 수 있어야 함
             bool shieldHasEffect = myFleet.HasAnyShieldDefending() || myFleet.HasAnyShieldBelowMax();
+            bool interceptorHasEffect = myFleet.HasAnyInterceptorBelowMax();
 
             int drainPerSec = 0;
             if ((tacticOptions & (1 << 0)) != 0 && repairHasEffect == true)
@@ -130,6 +131,11 @@ public class UIPanelBattle : UIPanelBase
                 drainPerSec += gameSettings.shieldTacticExplorationPointPerSec;
                 myFleet.ApplyShieldRegenTickToAllShips();
             }
+            if ((tacticOptions & (1 << 4)) != 0 && interceptorHasEffect == true)
+            {
+                drainPerSec += gameSettings.interceptorTacticExplorationPointPerSec;
+                myFleet.ApplyInterceptorRegenTickToAllShips();
+            }
             if (drainPerSec <= 0) continue;
 
             commanderInfo.tacticPower = Mathf.Max(0, commanderInfo.tacticPower - drainPerSec);
@@ -140,7 +146,7 @@ public class UIPanelBattle : UIPanelBase
         }
     }
 
-    // 전투 중 함선 터치가 막혀 토글 버튼은 UIBattleView 클릭으로만 켜짐 — idx: 0=수리, 1=미사일, 2=함재기, 3=실드(EventManager.OnTacticOptionsChanged 주석과 동일)
+    // 전투 중 함선 터치가 막혀 토글 버튼은 UIBattleView 클릭으로만 켜짐 — idx: 0=수리, 1=미사일, 2=함재기, 3=실드, 4=요격체(EventManager.OnTacticOptionsChanged 주석과 동일)
     private void OnTacticToggleRequested(int idx)
     {
         SpaceFleet myFleet = ObjectManager.Instance.GetMyFleet();
@@ -161,10 +167,19 @@ public class UIPanelBattle : UIPanelBase
         ApplyTacticOptions(myFleet, 0);
     }
 
+    private const int k_interceptorTacticBit = 1 << 4;
+
     private void ApplyTacticOptions(SpaceFleet myFleet, int newOptions)
     {
+        int oldOptions = myFleet.m_fleetInfo.tacticOptions;
         myFleet.m_fleetInfo.tacticOptions = newOptions;
         EventManager.Trigger_TacticOptionsChanged(newOptions);
+
+        // 요격체는 실드와 달리 궤도에 실제 오브젝트가 떠 있어야 해서, 토글이 바뀌는 시점에 한 번 명시적으로 전파해야 함(즉시 전부 제거/보충 시작)
+        bool interceptorWasOn = (oldOptions & k_interceptorTacticBit) != 0;
+        bool interceptorNowOn = (newOptions & k_interceptorTacticBit) != 0;
+        if (interceptorWasOn != interceptorNowOn)
+            myFleet.SetInterceptorTacticOnForAllShips(interceptorNowOn);
 
         long fleetId = myFleet.m_fleetInfo.id;
 

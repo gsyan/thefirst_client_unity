@@ -44,8 +44,8 @@ public class UIModuleSlotToggleRow : MonoBehaviour
             SetInstalledLabel(installed);
         }
 
-        // 실드는 강화 포인트 개념이 없음(on/off만 지원) — Invested CP/ManageButton 노출 대상에서 제외
-        bool showReinforceControls = installed == true && moduleType != EModuleType.shield;
+        // 실드/요격체는 강화 포인트 개념이 없음(on/off만 지원) — Invested CP/ManageButton 노출 대상에서 제외
+        bool showReinforceControls = installed == true && moduleType != EModuleType.shield && moduleType != EModuleType.interceptor;
         if (m_investedPointsText != null)
         {
             m_investedPointsText.gameObject.SetActive(showReinforceControls);
@@ -59,8 +59,8 @@ public class UIModuleSlotToggleRow : MonoBehaviour
             m_manageButton.onClick.AddListener(OnManageButtonClicked);
         }
 
-        // 실드를 제외한 카테고리는 설치 여부와 무관하게 항상 표시 — 미설치 슬롯도 장착 시 어떤 티어가 될지 알 수 있어야 함
-        bool showTier = moduleType != EModuleType.shield;
+        // 실드/요격체를 제외한 카테고리는 설치 여부와 무관하게 항상 표시 — 미설치 슬롯도 장착 시 어떤 티어가 될지 알 수 있어야 함
+        bool showTier = moduleType != EModuleType.shield && moduleType != EModuleType.interceptor;
         if (m_tierText != null)
         {
             m_tierText.gameObject.SetActive(showTier);
@@ -111,6 +111,7 @@ public class UIModuleSlotToggleRow : MonoBehaviour
         if (moduleType == EModuleType.missile) return "module_type_missile";
         if (moduleType == EModuleType.hangar) return "module_type_hangar";
         if (moduleType == EModuleType.shield) return "module_type_shield";
+        if (moduleType == EModuleType.interceptor) return "module_type_interceptor";
         return "";
     }
 }

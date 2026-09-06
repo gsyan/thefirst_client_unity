@@ -150,6 +150,8 @@ UIFleet_Stats_InterceptorReloadDelay,,Interceptor Reload Delay,요격체 보충 
 UIFleet_Stats_InterceptorRegenRate,,Interceptor Regen Rate,요격체 회복속도
 UIFleet_ShipLoadOut_Title,,Ship Loadout,함선 모듈 관리
 UIFleet_EditLoadoutButton,,Edit,함선 수정
+UIFleet_HullPicker_Title,,Select Hull,함체 선택
+UIFleet_EnemyFleetTitle,,Enemy Fleet,적함대
 UITabFleetTactics_Name,,FLEET TACTICS,함대 전술
 UITabFleetTactics_NameShort,,TACTICS,전술
 UITabFleetTactics_FormationType_LinearHorizontal,,Balanced,균형
@@ -247,6 +249,7 @@ module_type_beam,,Beam,빔
 module_type_missile,,Missile,미사일
 module_type_hangar,,Hangar,격납고
 module_type_shield,,Shield,실드
+module_type_interceptor,,Interceptor,요격체
 UIFleet_ModuleSlot_Installed,,Installed,장착
 UIFleet_ModuleSlot_NotInstalled,,Not Installed,해제
 UIFleet_ModuleReinforce_Title,,Module Reinforce,모듈 강화

@@ -6,6 +6,7 @@
 // 이 패널이 열리면 화면 좌측 3D 카메라 viewport를 축소해 우측에 자리를 만듦(카메라 애니메이션은 CameraController가 담당,
 // 여기서는 열고 닫을 시점과 목표 폭만 결정) — 애니메이션이 끝나기 전엔 내용을 CanvasGroup으로 가려둠(구 TabSystem deferReveal 대체)
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -18,12 +19,22 @@ public class UIPanelFleet : UIPanelBase
     [SerializeField] private UIHullPickerView m_hullPicker; // 함선 타입선택 버튼을 누르면 뜨는 함체 선택 팝업(UIPanelFleet 루트 아래 내장, PlacedShipsContainer와는 별개)
     [SerializeField] private UIShipLoadoutEditorView m_shipLoadoutEditor; // 성능 컬럼 하단 "함선 수정" 버튼을 누르면 뜨는 슬롯별 모듈 on/off 편집 화면(읽기전용 모드에서는 버튼 비활성)
     [SerializeField] private Button m_editLoadoutButton; // 선택된 함선이 없으면(m_selectedSlotIndex == -1) 비활성화
+    [SerializeField] private TMP_Text m_editLoadoutButtonText;
 
     [SerializeField] private RectTransform m_columnContainer; // 2열(함대구성/성능)을 감싸는 최상위 컨테이너 — Horizontal Layout Group. 각 열 안에도 Title+행 컨테이너를 감싸는 Vertical Layout Group이 있어, 리빌드는 이 최상위에서 한 번만 해도 하위가 전부 재계산됨
-    [SerializeField] private RectTransform m_fleetStatsContainer; // 상단 요약 영역(FleetStats/Container)
+    [SerializeField] private RectTransform m_fleetStatsRoot; // FleetStats(최상위) — EnemyFleetStats와 배타적으로 켜고 끄는 대상. m_fleetStatsContainer는 그 자식으로, 행 풀링/레이아웃 리빌드 전용
+    [SerializeField] private RectTransform m_fleetStatsContainer; // FleetStats/FleetStatsContainer — 상단 요약 행(RowLabelValue) 풀링 부모 겸 레이아웃 리빌드 대상
+    [SerializeField] private TMP_Text m_fleetManagementText; // FleetStatsContainer 상단 타이틀
     [SerializeField] private InfiniteScrollView m_statsScrollView; // 성능 컬럼 — 하단 "함선 수정" 버튼 자리 확보 위해 고정 높이+가상 스크롤로 변경(PlacedShipsScrollView와 동일 패턴)
     [SerializeField] private Button m_convertCommandPowerButton; // 탐험 포인트 -> 지휘력 최대치 변환 팝업(UIPopupConvertExplorationPoint)을 염 — 교환비는 ExplorationService 서버값과 항상 함께 수정
+    [SerializeField] private TMP_Text m_convertCommandPowerButtonText;
     [SerializeField] private Button m_convertTacticPowerButton; // 탐험 포인트 -> 전술력 최대치 변환 팝업(UIPopupConvertExplorationPoint)을 염 — m_convertCommandPowerButton과 동일 팝업, target만 다름
+    [SerializeField] private TMP_Text m_convertTacticPowerButtonText;
+    [SerializeField] private TMP_Text m_placedShipsTitleText; // Column_PlacedShips 헤더
+    [SerializeField] private TMP_Text m_statsTitleText; // Column_Stats 헤더
+
+    [SerializeField] private RectTransform m_enemyFleetStatsContainer; // EnemyFleetStats(최상위) — 읽기전용 모드(적 함대 열람) 전용, m_fleetStatsRoot와 배타적으로 켜짐
+    [SerializeField] private TMP_Text m_enemyFleetManagementText; // EnemyFleetStatsContainer 상단 타이틀
 
     [Header("카메라 Viewport 애니메이션")]
     [SerializeField] private float m_animDuration = 0.3f;
@@ -105,6 +116,22 @@ public class UIPanelFleet : UIPanelBase
             m_editLoadoutButton.onClick.AddListener(OnEditLoadoutButtonClicked);
             m_editLoadoutButton.interactable = false;
         }
+
+        // 한 번 세팅되면 바뀌지 않는 정적 라벨 — 패널 초기화 시점에 1회만 처리
+        if (m_placedShipsTitleText != null)
+            CommonUtility.SetUILocText(m_placedShipsTitleText, "UIFleet_PlacedShipsTitle");
+        if (m_statsTitleText != null)
+            CommonUtility.SetUILocText(m_statsTitleText, "UIFleet_StatsTitle");
+        if (m_fleetManagementText != null)
+            CommonUtility.SetUILocText(m_fleetManagementText, "FleetManagement");
+        if (m_convertCommandPowerButtonText != null)
+            CommonUtility.SetUILocText(m_convertCommandPowerButtonText, "Convert");
+        if (m_convertTacticPowerButtonText != null)
+            CommonUtility.SetUILocText(m_convertTacticPowerButtonText, "Convert");
+        if (m_editLoadoutButtonText != null)
+            CommonUtility.SetUILocText(m_editLoadoutButtonText, "UIFleet_EditLoadoutButton");
+        if (m_enemyFleetManagementText != null)
+            CommonUtility.SetUILocText(m_enemyFleetManagementText, "UIFleet_EnemyFleetTitle");
 
         m_openCameraWidth = ComputeOpenCameraWidth();
         //CreateCameraViewportBackground();
@@ -405,11 +432,17 @@ public class UIPanelFleet : UIPanelBase
         RebuildAllLayouts();
     }
 
-    // 편집 전용 UI(지휘력 요약/증가 버튼) — 읽기전용 모드(적 함대 열람)에서는 숨김
+    // 편집 전용 UI(지휘력 요약/증가 버튼) — 읽기전용 모드(적 함대 열람)에서는 숨기고 EnemyFleetStats로 교체
     private void SetEditOnlyUIVisible(bool visible)
     {
+        // FleetStats/EnemyFleetStats는 최상위(Root)를 꺼야 실제로 화면에서 사라짐 — m_fleetStatsContainer만 껐을 때
+        // FleetStats 루트 자체는 계속 활성 상태로 남아있던 버그 수정
+        if (m_fleetStatsRoot != null)
+            m_fleetStatsRoot.gameObject.SetActive(visible);
         if (m_fleetStatsContainer != null)
             m_fleetStatsContainer.gameObject.SetActive(visible);
+        if (m_enemyFleetStatsContainer != null)
+            m_enemyFleetStatsContainer.gameObject.SetActive(visible == false);
         if (m_convertCommandPowerButton != null)
             m_convertCommandPowerButton.gameObject.SetActive(visible);
         if (m_convertTacticPowerButton != null)

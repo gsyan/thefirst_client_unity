@@ -37,6 +37,12 @@ public class ProjectileMissile : ProjectileBase
     private float m_splashRadius;
     private EMissileSource m_missileSource;
 
+    // 인터셉터(요격체) 1:1 배정 락 — 이미 요격을 시도 중인 미사일에 다른 인터셉터가 중복 배정되지 않도록 함(ModuleInterceptor 참고)
+    public InterceptorUnit m_claimedBy;
+    public void MarkClaimedByInterceptor(InterceptorUnit unit) { m_claimedBy = unit; }
+    public void ClearInterceptorClaim() { m_claimedBy = null; }
+    public Vector3 GetVelocity() { return m_rb != null ? m_rb.linearVelocity : Vector3.zero; }
+
     [Header("Trail Particles")]
     [SerializeField] private GameObject m_burstTail;
     [SerializeField] private BurstNozzle m_burstUp;
@@ -388,6 +394,7 @@ public class ProjectileMissile : ProjectileBase
             effect.PlayEffect();
         }
 
+        m_claimedBy = null;
         ObjectManager.Instance.UnregisterMissile(this);
         ObjectManager.Instance.m_poolManager.Return(m_poolName, this);
     }
