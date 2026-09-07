@@ -379,7 +379,7 @@ public class CameraController : MonoSingleton<CameraController>
 
     private bool m_inputEnabled = true;
 
-    // 화면이 좌/우로 분할되어 메인카메라가 일부만 차지할 때(함대편성 UI 등), 그 영역 밖 터치는 카메라 조작으로 받지 않기 위한 허용 구간(스크린 비율 0~1) — 분할 비율은 호출하는 쪽 레이아웃에 따라 유동적
+    // 화면이 좌/우로 분할되어 메인카메라가 일부만 차지할 때(함대편성 UI 등), 그 영역 밖 터치는 카메라 조작으로 받지 않기 위한 허용 구간(SafeArea 내부 기준 0~1) — 분할 비율은 호출하는 쪽 레이아웃에 따라 유동적
     private float m_inputScreenXMin = 0f;
     private float m_inputScreenXMax = 1f;
 
@@ -391,8 +391,58 @@ public class CameraController : MonoSingleton<CameraController>
 
     public bool IsScreenPositionInInputRange(Vector2 screenPos)
     {
-        float normalizedX = screenPos.x / Screen.width;
+        float normalizedX = ScreenXToSafeAreaNormalized(screenPos.x);
         return normalizedX >= m_inputScreenXMin && normalizedX <= m_inputScreenXMax;
+    }
+
+    // SafeAreaRoot(UIManager)의 anchorMin/Max.x — 노치/펀치홀 있는 기기에서 좌우 비대칭일 수 있음.
+    // 카메라 뷰포트 분할 좌표(SetViewportRect/GetViewportX 등)를 UI(DividerLine 등, SafeAreaRoot 하위)와
+    // 같은 좌표계로 맞추기 위해 사용 — 못 찾으면 마진 없음(0~1)으로 폴백해 기존 동작 유지
+    private RectTransform m_safeAreaRootRect;
+
+    private RectTransform GetSafeAreaRootRect()
+    {
+        if (m_safeAreaRootRect != null) return m_safeAreaRootRect;
+        if (UIManager.Instance != null)
+            m_safeAreaRootRect = UIManager.Instance.GetSafeAreaRootRect();
+        return m_safeAreaRootRect;
+    }
+
+    private float GetSafeAreaMarginMin()
+    {
+        RectTransform rect = GetSafeAreaRootRect();
+        return rect != null ? rect.anchorMin.x : 0f;
+    }
+
+    private float GetSafeAreaMarginMax()
+    {
+        RectTransform rect = GetSafeAreaRootRect();
+        return rect != null ? rect.anchorMax.x : 1f;
+    }
+
+    // 화면 전체 기준 비율(Screen.width 기준 0~1) → SafeArea 내부 기준 0~1
+    private float ScreenFractionToSafeAreaNormalized(float screenFraction)
+    {
+        float marginMin = GetSafeAreaMarginMin();
+        float marginMax = GetSafeAreaMarginMax();
+        float safeAreaWidth = marginMax - marginMin;
+        if (safeAreaWidth <= 0f) return screenFraction;
+        return (screenFraction - marginMin) / safeAreaWidth;
+    }
+
+    // SafeArea 내부 기준 0~1 → 화면 전체 기준 비율(Camera.rect에 그대로 대입 가능)
+    private float SafeAreaNormalizedToScreenFraction(float normalized)
+    {
+        float marginMin = GetSafeAreaMarginMin();
+        float marginMax = GetSafeAreaMarginMax();
+        return marginMin + normalized * (marginMax - marginMin);
+    }
+
+    // 화면 전체 기준 스크린 X좌표(픽셀) → SafeArea 내부 기준 0~1 — DividerLine 등 CameraController 밖에서
+    // 화면 분할 경계와 직접 비교해야 하는 UI/입력 로직이 카메라 뷰포트와 같은 좌표계를 쓰기 위해 사용
+    public float ScreenXToSafeAreaNormalized(float screenX)
+    {
+        return ScreenFractionToSafeAreaNormalized(screenX / Screen.width);
     }
 
     // 대치 화면(UIPanelPrepareBattle)이 현재 top일 때만 빈 공간 터치를 차단 — 그 위에 함대 UI 등 다른 패널이
@@ -552,23 +602,34 @@ public class CameraController : MonoSingleton<CameraController>
 
     public float GetViewportWidth()
     {
-        return m_targetCamera != null ? m_targetCamera.rect.width : 1f;
+        if (m_targetCamera == null) return 1f;
+        float rightEdge = ScreenFractionToSafeAreaNormalized(m_targetCamera.rect.x + m_targetCamera.rect.width);
+        return rightEdge - GetViewportX();
     }
 
     // 카메라 viewport의 x(시작 위치)와 width를 함께 설정 — 화면 좌/우 어느 쪽으로도 이동 가능(함대편성 UI의 우측↔좌측 전환 등)
+    // x/width는 SafeArea 내부 기준 0~1(DividerLine 등 UI의 anchor 좌표계와 동일) — 화면 전체 기준(Screen.width)으로
+    // 변환해서 실제 Camera.rect에 대입
     public void SetViewportRect(float x, float width)
     {
         if (m_targetCamera == null) return;
+        float safeAreaLeft = Mathf.Clamp01(x);
+        float safeAreaRight = Mathf.Clamp01(x + width);
+        float screenX = SafeAreaNormalizedToScreenFraction(safeAreaLeft);
+        float screenRight = SafeAreaNormalizedToScreenFraction(safeAreaRight);
+
         Rect r = m_targetCamera.rect;
-        r.x = Mathf.Clamp01(x);
-        r.width = Mathf.Clamp01(width);
+        r.x = screenX;
+        r.width = screenRight - screenX;
         m_targetCamera.rect = r;
         RefreshCenterModeZoom();
     }
 
+    // 반환값은 SafeArea 내부 기준 0~1 — DividerLine 등 UI의 anchor 좌표계와 동일
     public float GetViewportX()
     {
-        return m_targetCamera != null ? m_targetCamera.rect.x : 0f;
+        if (m_targetCamera == null) return 0f;
+        return ScreenFractionToSafeAreaNormalized(m_targetCamera.rect.x);
     }
 
     // 카메라 viewport rect(x, width) 애니메이션 — UIPanelFleet처럼 화면 일부만 카메라에 내주는 패널이 열고 닫힐 때 사용.

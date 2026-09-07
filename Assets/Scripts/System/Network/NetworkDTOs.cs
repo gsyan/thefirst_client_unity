@@ -334,6 +334,9 @@ public class ClearExplorationCellResponse
     public int explorationPointGained; // 존 고정값만큼 적립 (미확정 상태, 탈출 시 확정 정산) — 적 함대 성능과 무관
     public int expGained;              // 존 고정값만큼 적립된 지휘관 경험치 (미확정 상태, 탈출 시 확정 정산) — 빈 셀은 0
     public List<string> rewardCardCandidates; // 서버가 추첨한 보상카드 후보 3개(cardId) — 탈출 셀이거나 보상이 없는 셀(빈 셀)은 null
+    public ETreasureRewardType treasureRewardType; // None이면 Treasure 보상 아님(ExplorationPoint면 explorationPointGained에 이미 반영됨)
+    public float treasureRewardRatio;              // treasureRewardType이 ShipHealthHeal/TacticPowerRestore일 때만 유효한 회복 비율(0~1)
+    public int tacticPower;                        // 이 클리어 확정 후 서버가 확정한 전술력 현재치(권위값) — 항상 채워짐
 }
 
 [System.Serializable]

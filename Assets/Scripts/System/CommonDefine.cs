@@ -77,14 +77,23 @@ public enum EGridCellType
     Event,   // 이벤트 셀 — 세부 종류는 EGridEventType 참고
 }
 
-// Event 셀의 세부 종류 — 지금은 NoEnemy만 실제로 동작, 나머지는 향후 확장용으로 미리 늘려둠(파라미터화는 필요 시 추가)
+// Event 셀의 세부 종류 — 지금은 Treasure만 실제로 동작, 나머지는 향후 확장용으로 미리 늘려둠(파라미터화는 필요 시 추가)
 [System.Serializable]
 public enum EGridEventType
 {
-    NoEnemy,  // 적 없음, 소액 보상만 (구 Empty와 동일 의도)
-    Treasure, // TODO: 미구현 — 보물/자원 획득
+    Treasure, // 탐사포인트/함선체력회복/전술력회복 중 랜덤 1개 지급 — 세부 보상은 ETreasureRewardType 참고
     Trap,     // TODO: 미구현 — 함선 체력 등 페널티
     Merchant, // TODO: 미구현 — 상인 조우
+}
+
+// Treasure(Event) 셀 클리어 시 랜덤 지급되는 보상 종류 — 매번 진짜 랜덤(결정론적 시드 아님)으로 서버가 1개 선택
+[System.Serializable]
+public enum ETreasureRewardType
+{
+    None,               // 이 클리어가 Treasure 보상이 아님(일반 전투/재방문 등)
+    ExplorationPoint,   // 그 존의 일반 전투 셀 보상의 배율 지급
+    ShipHealthHeal,     // 함대 전체 체력 비율 회복
+    TacticPowerRestore, // 전술력 전액 회복
 }
 
 // 존 진행(ZoneRun) 상태 — 서버 엔티티 필드용. 클라는 직접 이 값을 받지 않고 EscapeExplorationZoneRequest.isSuccess(bool)로만 결과를 통지하지만,

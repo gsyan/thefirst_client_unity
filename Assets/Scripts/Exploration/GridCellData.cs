@@ -8,7 +8,7 @@ public struct GridCellData
     public int col;
     public bool isStart;
     public bool isEscape;
-    public bool isEvent;               // Empty(적 없음) 등 이벤트 셀 — 세부 종류는 eventType
+    public bool isEvent;               // Treasure 등 이벤트 셀 — 세부 종류는 eventType
     public EGridEventType eventType;   // isEvent == true 일 때만 유효
     public bool isCleared;
     public bool isBlocked; // 통행 불가 셀 — 이동/적함대 생성 대상에서 제외
@@ -21,7 +21,7 @@ public struct GridCellData
         isStart = false;
         isEscape = false;
         isEvent = false;
-        eventType = EGridEventType.NoEnemy;
+        eventType = EGridEventType.Treasure;
         isCleared = false;
         isBlocked = false;
         worldPos = Vector3.zero;

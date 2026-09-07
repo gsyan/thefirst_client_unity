@@ -9,6 +9,7 @@
 ## 서버 프로젝트(Java Spring)
 - 루트: D:\BK\thefirst\thefirst_server 또는 C:\bk\thefirst\thefirst_server
 - **[필수] 서버의 모든 DateTime은 반드시 UTC(`Instant.now()`)로 저장할 것** — `LocalDateTime.now()`, `LocalDate.now()` 사용 금지. 날짜 비교가 필요한 경우 `LocalDate.now(ZoneOffset.UTC)` 명시
+- **[금지] 당분간 Flyway V2 이상 마이그레이션 파일 생성 금지** — 개발 중 DB를 계속 초기화하며 작업하는 단계라, 스키마 변경은 새 버전 파일을 추가하지 말고 `V1__init_schema.sql`에 직접 반영할 것
 
 ## 코드 생성 도구
 - Python generator 경로: 서버경로\tools\generator

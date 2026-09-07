@@ -218,7 +218,8 @@ public class UIFleetStandoffView : MonoBehaviour
 
     private void ProcessEnemyAreaTap(Vector2 screenPos)
     {
-        if (screenPos.x >= Screen.width * k_myFleetViewportX) return; // 우측(내 함대) 영역은 CameraController가 자체 처리
+        if (CameraController.Instance == null) return;
+        if (CameraController.Instance.ScreenXToSafeAreaNormalized(screenPos.x) >= k_myFleetViewportX) return; // 우측(내 함대) 영역은 CameraController가 자체 처리
         if (m_enemyFleetCamera == null || m_enemyFleet == null) return;
 
         Ray ray = m_enemyFleetCamera.ScreenPointToRay(screenPos);
@@ -250,7 +251,6 @@ public class UIFleetStandoffView : MonoBehaviour
         if (CameraController.Instance == null) return;
 
         float viewportX = CameraController.Instance.GetViewportX();
-        Debug.Log($"[DividerLineDebug] safeArea={Screen.safeArea}, screenSize=({Screen.width},{Screen.height}), viewportX={viewportX}");
         Vector2 anchorMin = m_dividerLine.anchorMin;
         Vector2 anchorMax = m_dividerLine.anchorMax;
         anchorMin.x = viewportX;
@@ -276,7 +276,7 @@ public class UIFleetStandoffView : MonoBehaviour
             if (IsPointerOverUIObject(screenPos) == true)
                 return; // 뒤로가기 버튼 등 UI 위 터치는 회전 시작으로 취급하지 않음
 
-            m_isDraggingEnemy = screenPos.x < Screen.width * k_myFleetViewportX;
+            m_isDraggingEnemy = CameraController.Instance != null && CameraController.Instance.ScreenXToSafeAreaNormalized(screenPos.x) < k_myFleetViewportX;
             m_lastPointerScreenPos = screenPos;
             return;
         }
@@ -308,7 +308,7 @@ public class UIFleetStandoffView : MonoBehaviour
             if (IsPointerOverUIObject(screenPos) == true)
                 return; // 뒤로가기 버튼 등 UI 위 터치는 회전 시작으로 취급하지 않음
 
-            m_isDraggingEnemy = screenPos.x < Screen.width * k_myFleetViewportX;
+            m_isDraggingEnemy = CameraController.Instance != null && CameraController.Instance.ScreenXToSafeAreaNormalized(screenPos.x) < k_myFleetViewportX;
             m_lastPointerScreenPos = screenPos;
             return;
         }

@@ -383,6 +383,14 @@ MonoBehaviour:
     m_Key: UIPanelExplorationGrid_EscapeConfirmMessage
     m_Metadata:
       m_Items: []
+  - m_Id: 76543106660302848
+    m_Key: UIPanelExplorationGrid_TreasureHealthHeal
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76543106714828800
+    m_Key: UIPanelExplorationGrid_TreasureTacticPowerRestore
+    m_Metadata:
+      m_Items: []
   - m_Id: 74139633343922176
     m_Key: UIPanelExplorationGrid_OtherRunInProgress
     m_Metadata:

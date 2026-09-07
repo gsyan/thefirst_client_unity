@@ -28,16 +28,17 @@ public class UIPopupRewardCardSelect : UIPopupBase
         m_confirmButton.onClick.AddListener(OnConfirmClicked);
     }
 
-    public void ShowPopupRewardCardSelect(int explorationPointGained, int expGained, List<string> candidateCardIds, System.Action<string> onConfirmed)
+    public void ShowPopupRewardCardSelect(int explorationPointGained, int expGained, List<string> candidateCardIds, bool isEscapeCell, System.Action<string> onConfirmed)
     {
         base.ShowPopup();
         m_candidateCardIds = candidateCardIds;
         m_onConfirmed = onConfirmed;
         m_selectedIndex = -1;
 
-        // 카드 후보가 없는 경우(탈출 셀)는 일반 셀 클리어와 다른 타이틀로 구분 — "탈출 지점 발견"
+        // 탈출 셀은 일반 셀 클리어와 다른 타이틀로 구분 — "탈출 지점 발견". isEscapeCell은 호출부가 명시적으로 판정해서 넘김(카드 후보 유무만으로는
+        // 탈출 셀과 Treasure(카드 없이 포인트만 지급) 셀을 구분할 수 없음)
         bool hasCardCandidates = candidateCardIds != null && candidateCardIds.Count > 0;
-        string titleKey = hasCardCandidates == true ? "UIPopupRewardCardSelect_Title" : "UIPopupRewardCardSelect_EscapeTitle";
+        string titleKey = isEscapeCell == true ? "UIPopupRewardCardSelect_EscapeTitle" : "UIPopupRewardCardSelect_Title";
         CommonUtility.SetUILocText(m_titleText, titleKey);
 
         // 재접속 복구로 뜬 경우(포인트/경험치가 이미 반영되어 0으로 전달됨) 어색한 "+0" 문구 대신 요약 자체를 숨김

@@ -507,7 +507,7 @@ public class DataTableZoneEditor : Editor
         {
             EditorGUILayout.HelpBox("zoneStart~zoneEnd 구간의 zoneList[].cellOverrides를 재생성합니다.\n" +
                 "Start는 랜덤 위치, Blocked는 연결성을 깨지 않는 선에서 느슨하게 배치, Escape는 그리드 크기에 비례한 최소거리~도달 가능 최대거리 사이에서 랜덤 선정합니다.\n" +
-                "Event는 Start/Escape를 제외한 도달 가능 셀 중 비율만큼 NoEnemy로 배치합니다(Treasure/Trap/Merchant는 미구현이라 제외).", MessageType.Info);
+                "Event는 Start/Escape를 제외한 도달 가능 셀 중 비율만큼 Treasure로 배치합니다(Trap/Merchant는 미구현이라 제외).", MessageType.Info);
 
             EditorGUI.indentLevel++;
             m_genGridZoneStart      = EditorGUILayout.IntField("Zone Start", m_genGridZoneStart);
@@ -608,8 +608,8 @@ public class DataTableZoneEditor : Editor
         return lastValidReachability;
     }
 
-    // 도달 가능한 Normal 셀(Start/Escape 제외) 중 목표 비율만큼 랜덤으로 골라 Event(NoEnemy)로 지정
-    // Treasure/Trap/Merchant는 아직 미구현이라 절차적 생성 대상에서 제외, 위치 제약(인접 회피 등) 없음
+    // 도달 가능한 Normal 셀(Start/Escape 제외) 중 목표 비율만큼 랜덤으로 골라 Event(Treasure)로 지정
+    // Trap/Merchant는 아직 미구현이라 절차적 생성 대상에서 제외, 위치 제약(인접 회피 등) 없음
     private void PlaceEvents(ZoneConfig zoneConfig, ReachabilityResult reachability, int startRow, int startCol, int escapeRow, int escapeCol, System.Random rng)
     {
         var candidates = new List<(int row, int col)>();
@@ -631,7 +631,7 @@ public class DataTableZoneEditor : Editor
                 row = candidates[i].row,
                 col = candidates[i].col,
                 type = EGridCellType.Event,
-                eventType = EGridEventType.NoEnemy,
+                eventType = EGridEventType.Treasure,
             });
         }
     }
@@ -1030,7 +1030,7 @@ public class DataTableZoneEditor : Editor
         return null;
     }
 
-    private void SetCellType(ZoneConfig zoneConfig, int row, int col, EGridCellType? type, EGridEventType eventType = EGridEventType.NoEnemy)
+    private void SetCellType(ZoneConfig zoneConfig, int row, int col, EGridCellType? type, EGridEventType eventType = EGridEventType.Treasure)
     {
         GridCellOverride cellOverride = FindCellOverride(zoneConfig, row, col);
         if (type == null)

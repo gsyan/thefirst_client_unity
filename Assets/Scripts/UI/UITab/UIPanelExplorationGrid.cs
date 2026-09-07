@@ -449,7 +449,7 @@ public class UIPanelExplorationGrid : UIPanelBase
         // 마지막 클리어 셀에 아직 선택 확정 안 된 카드 후보가 있으면(팝업이 뜨기 전에 앱이 꺼진 경우) 재접속 시 다시 띄움
         if (response.data.pendingRewardCardCandidates != null && response.data.pendingRewardCardCandidates.Count > 0)
         {
-            UIManager.Instance.ShowRewardCardSelectPopup(0, 0, response.data.pendingRewardCardCandidates, selectedCardId =>
+            UIManager.Instance.ShowRewardCardSelectPopup(0, 0, response.data.pendingRewardCardCandidates, false, selectedCardId =>
             {
                 if (selectedCardId != null)
                     OnRewardCardSelected(selectedCardId);
@@ -747,10 +747,17 @@ public class UIPanelExplorationGrid : UIPanelBase
         // 안 그러면 대치화면에서 후퇴 시 클라만 위치를 직전 셀로 되돌려 서버(이미 확정된 위치)와 어긋나고, 재입장 시 인접성 검사가 깨짐(EXPLORATION_CELL_NOT_ADJACENT)
         bool isRevisit = response.data.challengeToken == null;
 
-        if (hasEnemies == false || isRevisit == true)
+        if (isRevisit == true)
         {
-            // 전투 없음(재방문/빈 셀) — 서버가 이미 위치를 확정해뒀으므로 카메라 전환(갤럭시뷰→함대뷰) 없이 그 자리에서 위치만 갱신
+            // 재방문 — 서버가 이미 위치를 확정해뒀으므로 카메라 전환(갤럭시뷰→함대뷰) 없이 그 자리에서 위치만 갱신
             MoveToConfirmedCellWithoutBattle();
+            return;
+        }
+
+        if (hasEnemies == false)
+        {
+            // 전투 없는 첫 클리어(Event 등) — 위치는 로컬로 먼저 옮기되, 클리어 확정(보상/그리드 투명화 포함)은 clear-cell 왕복으로 처리
+            EnterEventCellWithoutBattle();
             return;
         }
 
@@ -797,6 +804,32 @@ public class UIPanelExplorationGrid : UIPanelBase
         bool reachedEscape = m_gridData != null && m_gridData.GetCell(m_currentRow, m_currentCol).isEscape;
         if (reachedEscape == true)
             ShowEscapeConfirmPopup();
+    }
+
+    // 전투 없는 첫 클리어(Event 등)로 이동 — 위치는 로컬로 먼저 옮기되, 서버는 아직 위치를 확정하지 않았으므로(canConfirmPositionOnEnter가
+    // Event를 제외) ClearExplorationCell을 직접 호출해 위치 확정 + 보상(있다면)까지 한 번에 처리. 이후 처리는 전투 승리 경로(OnClearExplorationCellResponse)와 동일
+    private void EnterEventCellWithoutBattle()
+    {
+        SpaceFleet myFleet = ObjectManager.Instance.GetMyFleet();
+        if (myFleet == null) return;
+
+        m_currentRow = m_pendingCellRow;
+        m_currentCol = m_pendingCellCol;
+
+        ObjectManager.Instance.SetMyFleetPosition(m_pendingCellWorldPos, 0f);
+        myFleet.StartFleetWarpIn();
+
+        CommanderInfo commanderInfo = DataManager.Instance.m_currentCommander != null ? DataManager.Instance.m_currentCommander.m_commanderInfo : null;
+        ClearExplorationCellRequest request = new ClearExplorationCellRequest
+        {
+            zoneNumber = m_currentZoneNumber,
+            cellRow = m_currentRow,
+            cellCol = m_currentCol,
+            shipHealthRatios = myFleet.BuildHealthRatioSnapshot(),
+            tacticPower = commanderInfo != null ? commanderInfo.tacticPower : 0,
+            challengeToken = m_activeChallengeToken,
+        };
+        NetworkManager.Instance.ClearExplorationCell(request, OnClearExplorationCellResponse);
     }
 
     // 대치 상태로 전환, 전투시작/퇴각/함대설정 3버튼 노출 — 워프인 연출 완료를 기다리지 않고 스폰 즉시 표시
@@ -876,6 +909,8 @@ public class UIPanelExplorationGrid : UIPanelBase
         int pointGained = 0;
         int expGained = 0;
         List<string> rewardCardCandidates = null;
+        ETreasureRewardType treasureRewardType = ETreasureRewardType.None;
+        float treasureRewardRatio = 0f;
         if (response.errorCode != 0)
             Debug.LogError($"[UIPanelExplorationGrid] ClearExplorationCell 실패: {response.errorCode}");
         else if (response.data != null)
@@ -883,13 +918,23 @@ public class UIPanelExplorationGrid : UIPanelBase
             pointGained = response.data.explorationPointGained;
             expGained = response.data.expGained;
             rewardCardCandidates = response.data.rewardCardCandidates; // 탈출 셀/빈 셀은 null — 카드 선택 단계를 건너뜀
+            treasureRewardType = response.data.treasureRewardType;
+            treasureRewardRatio = response.data.treasureRewardRatio;
             // 이 시점엔 패널이 비활성 상태(전투 화면에 가려짐) — 값은 버퍼에만 쌓아두고, 화면 반영은 OnShowUIPanel에서 처리
             m_pendingBankedRewardGain.Add(EBankedRewardType.ExplorationPoint, pointGained);
             m_pendingBankedRewardGain.Add(EBankedRewardType.Exp, expGained);
+            ApplyTacticPowerRecovered(response.data.tacticPower);
         }
 
         if (m_gridData != null && m_gridData.IsInBounds(m_currentRow, m_currentCol) == true)
             m_gridData.SetCellCleared(m_currentRow, m_currentCol, true);
+        RefreshCellStates(); // Event 셀(전투 없이 도착)은 패널이 계속 보이는 상태라 여기서 직접 갱신해야 클리어 표시(투명화)가 즉시 반영됨
+
+        if (treasureRewardType == ETreasureRewardType.ShipHealthHeal || treasureRewardType == ETreasureRewardType.TacticPowerRestore)
+        {
+            ShowTreasureEffectPopup(treasureRewardType, treasureRewardRatio);
+            return;
+        }
 
         // 빈 셀(적 없음)은 획득 포인트도 카드도 없음 — 팝업 없이 바로 기존 흐름 진행
         if (pointGained <= 0 && rewardCardCandidates == null)
@@ -898,8 +943,10 @@ public class UIPanelExplorationGrid : UIPanelBase
             return;
         }
 
-        // 탐험 포인트/경험치 안내와 보상카드 3택1을 한 팝업에서 함께 처리 — 카드 후보가 없으면(탈출 셀) 팝업이 카드 섹션만 숨기고 포인트 안내만 보여줌
-        UIManager.Instance.ShowRewardCardSelectPopup(pointGained, expGained, rewardCardCandidates, selectedCardId =>
+        // 탐험 포인트/경험치 안내와 보상카드 3택1을 한 팝업에서 함께 처리 — 카드 후보가 없으면(탈출 셀, Treasure 등) 팝업이 카드 섹션만 숨기고 포인트 안내만 보여줌.
+        // 탈출 셀 여부는 카드 후보 유무로 추측하지 않고 그리드 데이터로 직접 판정(Treasure도 카드 후보가 없어서 구분이 안 되므로)
+        bool isEscapeCell = m_gridData != null && m_gridData.IsInBounds(m_currentRow, m_currentCol) == true && m_gridData.GetCell(m_currentRow, m_currentCol).isEscape;
+        UIManager.Instance.ShowRewardCardSelectPopup(pointGained, expGained, rewardCardCandidates, isEscapeCell, selectedCardId =>
         {
             if (selectedCardId == null)
             {
@@ -907,6 +954,30 @@ public class UIPanelExplorationGrid : UIPanelBase
                 return;
             }
             OnRewardCardSelected(selectedCardId);
+        });
+    }
+
+    // Treasure(Event) 셀의 체력회복/전술력회복 당첨 — 즉시 효과 적용 후 안내 팝업. 탐사포인트 당첨은 기존 보상카드 팝업 경로를 그대로 재사용하므로 여기서 다루지 않음
+    private void ShowTreasureEffectPopup(ETreasureRewardType rewardType, float rewardRatio)
+    {
+        string messageKey;
+        if (rewardType == ETreasureRewardType.ShipHealthHeal)
+        {
+            SpaceFleet myFleet = ObjectManager.Instance.GetMyFleet();
+            if (myFleet != null)
+                myFleet.HealAllShipsByRatio(rewardRatio);
+            messageKey = "UIPanelExplorationGrid_TreasureHealthHeal";
+        }
+        else
+        {
+            messageKey = "UIPanelExplorationGrid_TreasureTacticPowerRestore"; // 전술력 값 자체는 OnClearExplorationCellResponse의 ApplyTacticPowerRecovered가 이미 반영함
+        }
+
+        int rewardPercent = Mathf.RoundToInt(rewardRatio * 100f);
+        UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig
+        {
+            message = string.Format(LocalizationManager.Instance.Get(messageKey), rewardPercent),
+            onConfirm = ContinueAfterCellClear,
         });
     }
 
@@ -1071,11 +1142,12 @@ public class UIPanelExplorationGrid : UIPanelBase
         });
     }
 
-    // 적립 포인트가 있을 때만 포기 가능 — 없으면 포기해도 얻을 게 없어 버튼을 비활성화
+    // 이 존에 서버가 추적 중인 런이 있을 때만 포기 가능 — 적립 포인트 유무로 판정하면 Treasure(체력/전술력 회복 등 포인트 0인 보상)만
+    // 골라 클리어한 경우에도 실제로는 런이 진행 중인데 포기 버튼이 계속 숨겨지는 문제가 있어, 서버 상태(explorationZoneNumber) 기준으로 판정
     private void RefreshAbandonRunButtonState()
     {
         if (m_abandonRunButton != null)
-            m_abandonRunButton.gameObject.SetActive(m_bankedReward.Get(EBankedRewardType.ExplorationPoint) > 0);
+            m_abandonRunButton.gameObject.SetActive(IsActiveExplorationZone(m_currentZoneNumber) == true);
     }
 
     // onAnimComplete: 롤링 애니메이션이 실제로 끝난 프레임에 호출됨(코루틴을 아예 못 도는 경로에서도 즉시 호출됨) — 애니메이션과 정확히 동기화해야 하는 후속 로직(예: 탈출 확정 팝업)에 사용
