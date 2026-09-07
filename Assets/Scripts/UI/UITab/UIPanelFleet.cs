@@ -846,7 +846,7 @@ public class UIPanelFleet : UIPanelBase
         bool slotIsFront = slotIndex < placedShipsBeforePlace.Count ? placedShipsBeforePlace[slotIndex].isFront : true;
 
         // 기존에 함선이 있던 슬롯이면, 새 함체의 슬롯 범위 안에 남는 기존 모듈(서브타입+강화 포인트)만 유지해서 넘김 —
-        // 원래 비어있던 슬롯(existingModules == null)이면 keptModules도 null로 둬서 TryPlaceShipAt이 기본 로드아웃을 시딩하게 함
+        // 원래 비어있던 슬롯(existingModules == null)이면 keptModules도 null로 둬서 TryPlaceShipAt이 기본 로드아웃(무기 없음)으로 배치하게 함
         ModuleHullInfo existingModules = slotIndex < placedShipsBeforePlace.Count ? placedShipsBeforePlace[slotIndex].modules : null;
         ModuleHullInfo keptModules = FleetComposition.FilterModulesForNewHull(existingModules, hullSubType);
 

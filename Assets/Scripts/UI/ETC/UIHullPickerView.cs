@@ -160,26 +160,15 @@ public class UIHullPickerView : MonoBehaviour
         m_commandPowerRow.SetValueColor(CommonUtility.PaletteColor(isOverCommandPower == true ? "Text.Warning" : "Text.Dark1"));
         LayoutRebuilder.ForceRebuildLayoutImmediate(m_commandPowerRow.transform as RectTransform);
 
-        bool hasAnyAttackModule = HasAnyAttackModule(keptModules);
         if (m_confirmButton != null)
-            m_confirmButton.interactable = isOverCommandPower == false && hasAnyAttackModule == true;
+            m_confirmButton.interactable = isOverCommandPower == false;
     }
 
     // m_currentModules를 targetHullSubType의 슬롯 범위로 필터링한 결과 — 리스트 각 행의 비용 미리보기와 선택된 함체의 미리보기/Confirm에 공용으로 사용
-    // m_currentModules가 null이면(원래 비어있던 슬롯) null을 그대로 반환해 기본 로드아웃 시딩 분기를 그대로 타게 함
+    // m_currentModules가 null이면(원래 비어있던 슬롯) null을 그대로 반환해 기본 로드아웃(무기 없음) 분기를 그대로 타게 함
     private ModuleHullInfo GetKeptModules(string targetHullSubType)
     {
         return FleetComposition.FilterModulesForNewHull(m_currentModules, targetHullSubType);
-    }
-
-    // 유지된 모듈이 하나도 없던 원래 빈 슬롯(null)이면 기본 로드아웃(빔slot0)이 시딩되므로 항상 공격모듈이 있는 것으로 취급
-    private bool HasAnyAttackModule(ModuleHullInfo modules)
-    {
-        if (modules == null) return true;
-        bool hasBeam = modules.beams != null && modules.beams.Count > 0;
-        bool hasMissile = modules.missiles != null && modules.missiles.Count > 0;
-        bool hasHangar = modules.hangars != null && modules.hangars.Count > 0;
-        return hasBeam || hasMissile || hasHangar;
     }
 
     // 선택된 함체의 스탯을 현재 장착 함체와 비교해서 표시 — InfiniteScrollView가 화면에 보이는 행만 OnStatsItemBind로 바인딩하므로

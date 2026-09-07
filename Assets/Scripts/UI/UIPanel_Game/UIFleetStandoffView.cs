@@ -250,6 +250,7 @@ public class UIFleetStandoffView : MonoBehaviour
         if (CameraController.Instance == null) return;
 
         float viewportX = CameraController.Instance.GetViewportX();
+        Debug.Log($"[DividerLineDebug] safeArea={Screen.safeArea}, screenSize=({Screen.width},{Screen.height}), viewportX={viewportX}");
         Vector2 anchorMin = m_dividerLine.anchorMin;
         Vector2 anchorMax = m_dividerLine.anchorMax;
         anchorMin.x = viewportX;

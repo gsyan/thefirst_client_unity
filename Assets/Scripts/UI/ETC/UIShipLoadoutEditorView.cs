@@ -583,19 +583,8 @@ public class UIShipLoadoutEditorView : MonoBehaviour
         m_commandPowerRow.SetValueColor(CommonUtility.PaletteColor(isOverCommandPower == true ? "Text.Warning" : "Text.Dark1"));
         LayoutRebuilder.ForceRebuildLayoutImmediate(m_commandPowerRow.transform as RectTransform);
 
-        // 예산 초과거나 공격 모듈(빔/미사일/격납고)이 하나도 없으면 Confirm 불가 — 서버도 동일 조건을 별도로 검증함(방어선 이중화)
-        bool hasAnyAttackModule = HasAnyPendingModuleInstalled();
         if (m_confirmButton != null)
-            m_confirmButton.interactable = isOverCommandPower == false && hasAnyAttackModule == true;
-    }
-
-    private bool HasAnyPendingModuleInstalled()
-    {
-        for (int i = 0; i < m_pendingInstalled.Count; i++)
-        {
-            if (m_pendingInstalled[i] == true) return true;
-        }
-        return false;
+            m_confirmButton.interactable = isOverCommandPower == false;
     }
 
     // 바디 설치비 + 로컬로 켜둔(m_pendingInstalled) 모듈들의 설치비/강화 포인트 합 — 서버 FleetService.computeSlotCommandCost와 동일 계산식을 미리보기용으로 재현

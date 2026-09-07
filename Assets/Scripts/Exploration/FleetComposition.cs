@@ -22,7 +22,7 @@ public class FleetComposition
         m_moduleTable = moduleTable;
     }
 
-    // 리스트 끝에 추가 — 순서가 상관없을 때 사용. modules를 생략하면(null) 함체의 기본 로드아웃(빔1)으로 시딩됨 —
+    // 리스트 끝에 추가 — 순서가 상관없을 때 사용. modules를 생략하면(null) 무기 없는 빈 로드아웃으로 배치됨 —
     // 서버에서 이미 커스터마이징된 로드아웃을 복원할 때는 modules를 그대로 넘겨줌
     public EFleetPlaceResult TryPlaceShip(string hullSubType, bool isFront, ModuleHullInfo modules = null)
     {
@@ -64,12 +64,10 @@ public class FleetComposition
         return EFleetPlaceResult.Success;
     }
 
-    // 기본 로드아웃(beam slot0=beam_1_1)을 상수 규칙으로 시딩 — 전 함체 공통. 무기 티어는 함체 티어와 독립적인 별도 축(강화로 별도 상승)
+    // 빈 슬롯의 기본 로드아웃 — 무기 없이 배치
     private ModuleHullInfo BuildDefaultModules()
     {
-        var body = new ModuleHullInfo { beams = new List<ModuleInfo>(), missiles = new List<ModuleInfo>(), hangars = new List<ModuleInfo>() };
-        body.beams.Add(new ModuleInfo { moduleType = EModuleType.beam, moduleSubType = "beam_1_1", slotIndex = 0 });
-        return body;
+        return new ModuleHullInfo { beams = new List<ModuleInfo>(), missiles = new List<ModuleInfo>(), hangars = new List<ModuleInfo>() };
     }
 
     // 바디 설치비 + 현재 장착된 모든 모듈의 설치비 합 — 서버 FleetService.computeSlotCommandCost와 동일 계산
@@ -129,7 +127,7 @@ public class FleetComposition
     // (서버 FleetService.filterModulesForNewHull과 동일 규칙, 함체 변경 시 미리보기/실제 배치 양쪽에서 공용으로 사용)
     // 설계 확정: 무기 티어는 함체 티어와 독립적인 별도 축(강화로 별도 상승)이지만, 상한은 항상 함체 티어 — 함체를 더 낮은 티어로 바꾸면
     // 그 함체 티어를 넘는 기존 모듈은 함체 티어에 맞춰 자동 다운그레이드됨(지휘력 회수는 별도 처리 불필요 — 아래서 낮아진 statPoint로 재조립하므로 이후 비용 계산에 자동 반영)
-    // existingModules가 null이면(원래 비어있던 슬롯의 신규 배치) null을 그대로 반환 — TryPlaceShipAt의 기본 로드아웃 시딩(BuildDefaultModules) 분기를 그대로 타게 함
+    // existingModules가 null이면(원래 비어있던 슬롯의 신규 배치) null을 그대로 반환 — TryPlaceShipAt의 기본 로드아웃(BuildDefaultModules, 무기 없음) 분기를 그대로 타게 함
     public static ModuleHullInfo FilterModulesForNewHull(ModuleHullInfo existingModules, string newHullSubType)
     {
         if (existingModules == null) return null;
