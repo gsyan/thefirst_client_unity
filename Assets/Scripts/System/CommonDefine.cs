@@ -65,7 +65,7 @@ public enum FormationMoveState
 public enum EDailyBonusTier { Normal, VIP }
 
 [System.Serializable]
-public enum EDailyBonusRewardType { ExplorationPoint }
+public enum EDailyBonusRewardType { ExplorationPoint, AchievementPoint }
 
 // 탐사 그리드 셀 타입 — Normal은 목록에 없는 좌표의 기본값(희소 저장이라 별도 항목을 만들지 않음)
 [System.Serializable]

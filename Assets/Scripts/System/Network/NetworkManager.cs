@@ -856,6 +856,11 @@ public class NetworkManager : MonoSingleton<NetworkManager>
         StartCoroutine(RunAsync(() => m_apiClient.ClaimVipDailyRewardAsync(), onComplete));
     }
 
+    public void GetDailyBonusStatus(System.Action<ApiResponse<DailyBonusStatusResponse>> onComplete)
+    {
+        StartCoroutine(RunAsync(() => m_apiClient.GetDailyBonusStatusAsync(), onComplete));
+    }
+
 #if UNITY_EDITOR
     public void DebugForceVip(System.Action<ApiResponse<VipStatusResponse>> onComplete)
     {

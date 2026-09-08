@@ -404,12 +404,10 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         UIManager.Instance.ShowMainPanel();
 
         // 온보딩(ONBOARDING_TUTORIAL_SEQUENCE) 완료 후 실제 함대로 최초 진입한 시점 — 이미 완료된 경우 StartTutorial이 즉시 no-op
-        // 일일 보상 팝업(달력)이 화면을 가리고 있으면 튜토리얼이 탐사 버튼을 가리켜도 안 보이므로,
-        // 팝업이 닫힌 뒤(또는 애초에 안 떴으면 즉시)에 시작하도록 콜백으로 순서를 맞춤
+        // 출석 보상은 자동 지급되지 않고 레드닷만 갱신되므로(달력은 유저가 직접 열어야 함) 튜토리얼 시작을 지연시킬 필요 없음
         if (DailyBonusManager.Instance != null)
-            DailyBonusManager.Instance.CheckAndShowDailyRewardPopup(() => TutorialManager.Instance.StartTutorial("Tutorial_Exploration"));
-        else
-            TutorialManager.Instance.StartTutorial("Tutorial_Exploration");
+            DailyBonusManager.Instance.CheckDailyBonusStatus();
+        TutorialManager.Instance.StartTutorial("Tutorial_Exploration");
     }
 
     // 재접속 시 진행 중인 탐험 런이 있으면 그 런에서 이미 확정 선택한 보상카드(지속버프)와 마지막 클리어 시점 함선 체력/실드를

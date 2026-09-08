@@ -326,10 +326,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 136412283550532119}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1370bffcc08e3044794bf1a8df01f82e, type: 3}
+  m_Script: {fileID: 11500000, guid: d72fec555fae24e44b167af779648bff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UICalendarButton
-  m_calendarButton: {fileID: 849489784690429496}
+  targetPanelName: UIPanelDailyBonus
+  actionType: 0
+  findUISpaceAutomatically: 1
 --- !u!114 &6606728719147416759
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1647,7 +1649,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8b381a2964c819f41836a943e0889c14, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UIAchievementButtonBadge
   m_redDotImage: {fileID: 3922354498037546083}
 --- !u!1 &2150863598899525483

@@ -67,13 +67,13 @@ public class UIPanelSpace : UIPanelBase
     }
     */
 
-    // ── VIP 일일 미네랄 팝업 ──────────────────────────────────────────────────
-    // 최초 진입 시점 체크는 ObjectManager.StartNormalPlay()에서 담당 — 튜토리얼 진행 중에는 호출되지 않도록 보장
+    // ── 출석 보상 상태 갱신 ──────────────────────────────────────────────────
+    // 최초 진입 시점 체크는 ObjectManager.StartNormalPlay()에서 담당 — VIP 상태가 바뀌면(구매 등) 여기서 다시 확인해 레드닷 갱신
 
     private void OnVipStatusChangedForDailyReward()
     {
         if (DailyBonusManager.Instance == null) return;
-        DailyBonusManager.Instance.CheckAndShowDailyRewardPopup();
+        DailyBonusManager.Instance.CheckDailyBonusStatus();
     }
 
     // 내 함선 클릭(모듈 명중 여부 무관) 시 함대편성 패널로 자동 전환하며 그 함선을 선택 상태로 표시

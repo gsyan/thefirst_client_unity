@@ -617,6 +617,11 @@ public class ApiClient
         return await PostAsync<DailyClaimResponse>("/iap/vip/daily-reward", null);
     }
 
+    public async Task<ApiResponse<DailyBonusStatusResponse>> GetDailyBonusStatusAsync()
+    {
+        return await GetAsync<DailyBonusStatusResponse>("/iap/vip/daily-reward/status");
+    }
+
 #if UNITY_EDITOR
     public async Task<ApiResponse<VipStatusResponse>> DebugForceVipAsync()
     {

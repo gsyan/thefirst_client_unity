@@ -1171,6 +1171,10 @@ MonoBehaviour:
     m_Key: DailyBonus_Desc
     m_Metadata:
       m_Items: []
+  - m_Id: 76937344908656640
+    m_Key: DailyBonus_DescAchievement
+    m_Metadata:
+      m_Items: []
   - m_Id: 45034403373383680
     m_Key: DailyBonus_MonthLabel
     m_Metadata:
@@ -1185,6 +1189,18 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 45034403495018498
     m_Key: DailyBonus_Available
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76937344958988288
+    m_Key: DailyBonus_RewardLabel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76938861619314688
+    m_Key: DailyBonus_DayLabel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76937344958988289
+    m_Key: DailyBonus_VipPrefix
     m_Metadata:
       m_Items: []
   - m_Id: 39970930322964482

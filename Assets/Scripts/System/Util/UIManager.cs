@@ -560,37 +560,6 @@ public class UIManager : MonoSingleton<UIManager>
         });
     }
 
-    // 일일 출석 보너스 달력 팝업 (수령 직후 호출)
-    public void ShowDailyBonusPopup(int grantedExplorationPoint, System.Action onConfirm = null)
-    {
-        UIPopupDailyBonus popup = GetOrCreatePopup<UIPopupDailyBonus>("UIPopupDailyBonus", EPopupLayer.Overlay);
-        if (popup == null) return;
-
-        PushPopup(popup, EPopupLayer.Overlay);
-
-        System.Action userConfirm = onConfirm;
-        popup.ShowPopupDailyBonus(grantedExplorationPoint, () =>
-        {
-            userConfirm?.Invoke();
-            CloseTopPopup(EPopupLayer.Overlay);
-        });
-    }
-
-    // 일일 출석 보너스 달력 팝업 (수령 없이 열람용)
-    public void ShowDailyBonusCalendar(System.Action onConfirm = null)
-    {
-        UIPopupDailyBonus popup = GetOrCreatePopup<UIPopupDailyBonus>("UIPopupDailyBonus", EPopupLayer.Overlay);
-        if (popup == null) return;
-
-        PushPopup(popup, EPopupLayer.Overlay);
-
-        System.Action userConfirm = onConfirm;
-        popup.ShowCalendarOnly(() =>
-        {
-            userConfirm?.Invoke();
-            CloseTopPopup(EPopupLayer.Overlay);
-        });
-    }
 
     // 커맨더 이름 변경 팝업
     public void ShowRenameCommanderPopup(System.Action onRenameSuccess = null)

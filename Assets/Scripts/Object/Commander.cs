@@ -6,6 +6,9 @@ public class Commander
     // 완료했지만 아직 안 받은 업적 존재 여부 — 서버에서 안 내려오면(로그인 직후 등) false로 시작, 존런 정산/업적 패널 응답으로 갱신됨(레드닷 표시용)
     private bool m_hasUnclaimedAchievement;
 
+    // 오늘 수령 가능한 출석 보상이 남아있는지 — 로그인 시점 DailyBonusManager.CheckDailyBonusStatus() 응답으로 갱신됨(레드닷 표시용)
+    private bool m_hasUnclaimedDailyBonus;
+
     public Commander(CommanderInfo commanderInfo)
     {
         m_commanderInfo = commanderInfo;
@@ -100,6 +103,19 @@ public class Commander
         if (m_hasUnclaimedAchievement == hasUnclaimedAchievement) return;
         m_hasUnclaimedAchievement = hasUnclaimedAchievement;
         EventManager.TriggerUnclaimedAchievementChanged(hasUnclaimedAchievement);
+    }
+
+    public bool GetHasUnclaimedDailyBonus()
+    {
+        return m_hasUnclaimedDailyBonus;
+    }
+
+    // 값이 실제로 바뀔 때만 이벤트 발행(위 업적과 동일한 패턴)
+    public void UpdateHasUnclaimedDailyBonus(bool hasUnclaimedDailyBonus)
+    {
+        if (m_hasUnclaimedDailyBonus == hasUnclaimedDailyBonus) return;
+        m_hasUnclaimedDailyBonus = hasUnclaimedDailyBonus;
+        EventManager.TriggerUnclaimedDailyBonusChanged(hasUnclaimedDailyBonus);
     }
 
     public bool IsHullUnlocked(string hullSubType)

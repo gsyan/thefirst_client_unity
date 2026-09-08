@@ -675,16 +675,30 @@ public class VipStatusResponse
 }
 
 [System.Serializable]
+public class DailyBonusStatusResponse
+{
+    // 출석 달력 조회 전용 — 지급 없이 현재 상태만 확인(로그인 시 레드닷 갱신용)
+    public bool available;              // 오늘 수령 가능한 보상이 남아있는지
+    public int todayDay;                // 오늘 날짜 (1~6)
+    public int claimedDaysMask;         // 이번 주 수령 현황 비트마스크 (bit0=1일, bit5=6일)
+    public int vipClaimedDaysMask;      // VIP 보상 수령 현황 비트마스크 (bit0=1일, bit5=6일)
+    public string loginRewardWeekStart; // 비트마스크 기준 주(이번 주 월요일, ISO 8601 date, UTC)
+    public string nextAvailableAt;      // 다음 지급 가능 시각 (ISO 8601 UTC)
+}
+
+[System.Serializable]
 public class DailyClaimResponse
 {
-    public bool available;          // true=지급됨, false=24h 미경과 or 테이블 없음
+    public bool available;              // true=지급됨, false=이미 수령했거나 테이블 없음
     public int grantedExplorationPoint; // 이번에 지급된 탐험 포인트 양
+    public int grantedAchievementPoint; // 이번에 지급된 업적 포인트 양
     public int explorationPointRemain;  // 지급 후 현재 탐험 포인트
-    public string nextAvailableAt;  // 다음 지급 가능 시각 (ISO 8601 UTC)
-    public int todayDay;            // 오늘 날짜 (1~28)
-    public int claimedDaysMask;     // 이번 달 수령 현황 비트마스크 (bit0=1일, bit27=28일)
-    public int vipClaimedDaysMask;  // VIP 보상 수령 현황 비트마스크 (bit0=1일, bit27=28일)
-    public int loginRewardMonth;    // 비트마스크 기준 달 (yyyyMM, e.g. 202606)
+    public int achievementPointRemain;  // 지급 후 현재 업적 포인트
+    public string nextAvailableAt;      // 다음 지급 가능 시각 (ISO 8601 UTC)
+    public int todayDay;                // 오늘 날짜 (1~6)
+    public int claimedDaysMask;         // 이번 주 수령 현황 비트마스크 (bit0=1일, bit5=6일)
+    public int vipClaimedDaysMask;      // VIP 보상 수령 현황 비트마스크 (bit0=1일, bit5=6일)
+    public string loginRewardWeekStart; // 비트마스크 기준 주(이번 주 월요일, ISO 8601 date, UTC)
 }
 
 #region Version Data Classes ##################################################################################

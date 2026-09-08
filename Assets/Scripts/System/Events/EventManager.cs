@@ -70,6 +70,12 @@ public static class EventManager
     public static void Subscribe_UnclaimedAchievementChanged(Action<bool> callback)   { OnUnclaimedAchievementChanged += callback; }
     public static void Unsubscribe_UnclaimedAchievementChanged(Action<bool> callback) { OnUnclaimedAchievementChanged -= callback; }
 
+    // hasUnclaimedDailyBonus — 값을 직접 대입하지 말고 반드시 Commander.UpdateHasUnclaimedDailyBonus()를 거칠 것(이 이벤트가 자동 발행됨)
+    public static event Action<bool> OnUnclaimedDailyBonusChanged;
+    public static void TriggerUnclaimedDailyBonusChanged(bool hasUnclaimedDailyBonus) { OnUnclaimedDailyBonusChanged?.Invoke(hasUnclaimedDailyBonus); }
+    public static void Subscribe_UnclaimedDailyBonusChanged(Action<bool> callback)   { OnUnclaimedDailyBonusChanged += callback; }
+    public static void Unsubscribe_UnclaimedDailyBonusChanged(Action<bool> callback) { OnUnclaimedDailyBonusChanged -= callback; }
+
     #endregion Commander Tech, Mineral ----------------------------------------------------------------------
     
     # region Fleet ShipCount / HP----------------------------------------------------------------------

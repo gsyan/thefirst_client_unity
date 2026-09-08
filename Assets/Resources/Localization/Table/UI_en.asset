@@ -708,7 +708,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 45034403373383680
-    m_Localized: Month Reset In
+    m_Localized: Week Reset In
     m_Metadata:
       m_Items: []
   - m_Id: 45034403495018496
@@ -2887,6 +2887,22 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 76884304033873920
     m_Localized: ships
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76937344908656640
+    m_Localized: +{0} Achievement Points received!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76937344958988288
+    m_Localized: Reward
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76937344958988289
+    m_Localized: '[VIP]'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76938861619314688
+    m_Localized: Day {0}
     m_Metadata:
       m_Items: []
   references:
