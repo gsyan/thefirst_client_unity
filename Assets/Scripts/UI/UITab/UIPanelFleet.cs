@@ -495,7 +495,7 @@ public class UIPanelFleet : UIPanelBase
         int tacticPowerMax = commanderInfo != null ? commanderInfo.tacticPowerMax : 0;
 
         if (m_commandPowerRow != null)
-            m_commandPowerRow.SetRow("UITabCommander_CommandPower", $"{usedCommandPower} / {maxCommandPower}", rawValue: true);
+            m_commandPowerRow.SetRow("CommandPower", $"{usedCommandPower} / {maxCommandPower}", rawValue: true);
         if (m_tacticPowerRow != null)
             m_tacticPowerRow.SetRow("TacticPower", $"{tacticPower} / {tacticPowerMax}", rawValue: true);
     }

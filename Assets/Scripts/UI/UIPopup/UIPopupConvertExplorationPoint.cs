@@ -71,7 +71,7 @@ public class UIPopupConvertExplorationPoint : UIPopupBase
 
         if (m_targetLabelText != null)
         {
-            string labelKey = m_target == EExplorationPointConvertTarget.CommandPower ? "UITabCommander_CommandPower" : "TacticPower";
+            string labelKey = m_target == EExplorationPointConvertTarget.CommandPower ? "CommandPower" : "TacticPower";
             m_targetLabelText.text = LocalizationManager.Instance.Get(labelKey);
         }
 

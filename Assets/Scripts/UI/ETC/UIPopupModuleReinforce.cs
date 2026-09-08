@@ -210,7 +210,7 @@ public class UIPopupModuleReinforce : UIPopupBase
         int remaining = GetRemainingCommandPower();
         bool isOverCommandPower = remaining < 0;
 
-        m_commandPowerRow.SetRow("UITabCommander_CommandPower", $"{m_maxCommandPower - remaining} / {m_maxCommandPower}", rawValue: true);
+        m_commandPowerRow.SetRow("CommandPower", $"{m_maxCommandPower - remaining} / {m_maxCommandPower}", rawValue: true);
         m_commandPowerRow.SetValueColor(CommonUtility.PaletteColor(isOverCommandPower == true ? "Text.Warning" : "Text.Dark1"));
         LayoutRebuilder.ForceRebuildLayoutImmediate(m_commandPowerRow.transform as RectTransform);
     }

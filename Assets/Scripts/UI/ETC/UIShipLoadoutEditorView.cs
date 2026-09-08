@@ -579,7 +579,7 @@ public class UIShipLoadoutEditorView : MonoBehaviour
         int max = composition.GetMaxCommandPower();
         bool isOverCommandPower = projectedUsed > max;
 
-        m_commandPowerRow.SetRow("UITabCommander_CommandPower", $"{projectedUsed} / {max}", rawValue: true);
+        m_commandPowerRow.SetRow("CommandPower", $"{projectedUsed} / {max}", rawValue: true);
         m_commandPowerRow.SetValueColor(CommonUtility.PaletteColor(isOverCommandPower == true ? "Text.Warning" : "Text.Dark1"));
         LayoutRebuilder.ForceRebuildLayoutImmediate(m_commandPowerRow.transform as RectTransform);
 
