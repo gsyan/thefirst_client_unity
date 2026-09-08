@@ -323,24 +323,28 @@ MonoBehaviour:
     m_Key: UITabButton_Fleet
     m_Metadata:
       m_Items: []
-  - m_Id: 51579544800198656
-    m_Key: UITabCommander_Title
+  - m_Id: 76876329680502784
+    m_Key: Commander
     m_Metadata:
       m_Items: []
-  - m_Id: 73189850148110336
-    m_Key: UITabCommander_LevelTitle
+  - m_Id: 76876329768583168
+    m_Key: Commander_Level
     m_Metadata:
       m_Items: []
-  - m_Id: 51580479907692544
-    m_Key: UITabCommander_ShipCountMaxTitle
+  - m_Id: 76884303979347968
+    m_Key: MaxShipSlots
     m_Metadata:
       m_Items: []
-  - m_Id: 51580479907692545
-    m_Key: UITabCommander_ShipCountUnit
+  - m_Id: 76884304033873920
+    m_Key: ShipCountUnit
     m_Metadata:
       m_Items: []
-  - m_Id: 59873222333431808
-    m_Key: UITabCommander_CommandPower
+  - m_Id: 72096273103978497
+    m_Key: CommandPower
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74144327743176704
+    m_Key: TacticPower
     m_Metadata:
       m_Items: []
   - m_Id: 29007716294721538

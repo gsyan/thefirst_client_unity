@@ -5,13 +5,18 @@ using TMPro;
 
 public class UIPanelCommander : UIPanelBase
 {
+    [SerializeField] private TMP_Text m_commanderText;
+    [SerializeField] private TMP_Text m_commanderLevel;
     [SerializeField] private TMP_Text m_commanderLevelText;
+    [SerializeField] private TMP_Text m_shipCountTitleText;
+    [SerializeField] private TMP_Text m_shipCountUnitText;
     [SerializeField] private TMP_Text m_shipCountText;
     [SerializeField] private Transform m_shipImages;
+    [SerializeField] private TMP_Text m_commandPowerTitleText;
     [SerializeField] private TMP_Text m_commandPowerText;
+    [SerializeField] private TMP_Text m_tacticPowerTitleText;
     [SerializeField] private Image m_expGaugeImage;       // 기술 포인트 게이지 Fill Image
     [SerializeField] private TMP_Text m_expGaugeText;           // 경험치 게이지 위 텍스트
-    [SerializeField] private TMP_Text m_nextLevelShipCountText;
 
     private static readonly Vector2 k_sizeActive   = new Vector2(10f, 50f);
     private static readonly Vector2 k_sizeInactive = new Vector2(10f, 25f);
@@ -23,6 +28,21 @@ public class UIPanelCommander : UIPanelBase
 
     public override void InitializeUIPanel()
     {
+        if (m_commanderText != null)
+            CommonUtility.SetUILocText(m_commanderText, "Commander");
+        
+        if (m_commanderLevelText != null)
+            CommonUtility.SetUILocText(m_commanderLevelText, "Commander_Level");
+
+        if (m_shipCountTitleText != null)
+            CommonUtility.SetUILocText(m_shipCountTitleText, "MaxShipSlots");
+        if (m_shipCountUnitText != null)
+            CommonUtility.SetUILocText(m_shipCountUnitText, "ShipCountUnit");
+        if (m_commandPowerTitleText != null)
+            CommonUtility.SetUILocText(m_commandPowerTitleText, "CommandPower");
+        if (m_tacticPowerTitleText != null)
+            CommonUtility.SetUILocText(m_tacticPowerTitleText, "TacticPower");
+
         m_colorActive   = CommonUtility.PaletteColor("GeneralNeon");
         m_colorInactive = CommonUtility.PaletteColor("GeneralNeon.Dark1");
 
@@ -79,8 +99,8 @@ public class UIPanelCommander : UIPanelBase
         CommanderData nextNode = GetNextCommanderLevelNode(commander);
 
         // 기술레벨 요약: 레벨 / 자원 보관 캡 / 최대 함선 수
-        if (m_commanderLevelText != null)
-            m_commanderLevelText.text = $"{currentLevel}";
+        if (m_commanderLevel != null)
+            m_commanderLevel.text = $"{currentLevel}";
 
         if (m_shipCountText != null)
             m_shipCountText.text = $"{maxShips}";
@@ -101,15 +121,6 @@ public class UIPanelCommander : UIPanelBase
         }
 
         RefreshShipSlots(maxShips);
-
-        if (nextNode != null)
-        {
-            m_nextLevelShipCountText.text = string.Format(LocalizationManager.Instance.Get("UITabTech_NextUnlockShipCount"), nextNode.shipCount);
-        }
-        else
-        {
-            m_nextLevelShipCountText.gameObject.SetActive(false);
-        }
 
         int currentExp = commander.GetExp();
         int currentLevelRequired = DataManager.Instance.m_dataTableCommander.GetRequireExp(currentLevel);
@@ -141,7 +152,7 @@ public class UIPanelCommander : UIPanelBase
             }
         }
 
-        LayoutRebuilder.ForceRebuildLayoutImmediate(m_commanderLevelText.transform as RectTransform);
+        LayoutRebuilder.ForceRebuildLayoutImmediate(m_commanderLevel.transform as RectTransform);
     }
 
     private CommanderData GetNextCommanderLevelNode(Commander commander)

@@ -76,11 +76,12 @@ ship_reset_no_refund,,Nothing to recover,회수할 자원 없음
 Restart,,RESTART,재시작
 UITabButton_Commander,,COMMANDER,지휘
 UITabButton_Fleet,,FLEET,함대
-UITabCommander_Title,,COMMANDER LEVEL,지휘 레벨
-UITabCommander_LevelTitle,,Commander Level,지휘관 레벨
-UITabCommander_ShipCountMaxTitle,,Max Ship Slots,최대 함선 슬롯
-UITabCommander_ShipCountUnit,,ships,척
-UITabCommander_CommandPower,,Command Power,지휘력
+Commander,,COMMANDER,지휘관
+Commander_Level,,Commander Level,지휘관 레벨
+MaxShipSlots,,Max Ship Slots,최대 함선 슬롯
+ShipCountUnit,,ships,척
+CommandPower,,Command Power,지휘력
+TacticPower,,Tactic Power,전술력
 UITabTech_NextUnlockTitle,,Next Level - Lv.{0},다음 레벨 - Lv.{0}
 UITabTech_NextUnlockShipCount,,{0} Next Level Ship Slots,다음 레벨 함선 슬롯 {0}척
 UITabTech_NextModuleGrade,,Next Level Module Grade - T.{0},다음 레벨 모듈 그래이드 - T.{0}

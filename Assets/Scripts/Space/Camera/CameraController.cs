@@ -421,8 +421,13 @@ public class CameraController : MonoSingleton<CameraController>
     }
 
     // 화면 전체 기준 비율(Screen.width 기준 0~1) → SafeArea 내부 기준 0~1
+    // 0과 1(화면의 진짜 양 끝)은 항상 리터럴로 취급 — "화면 전체를 덮는다"는 의도(닫힘/풀스크린, 분할의 바깥쪽 끝)가
+    // margin만큼 안쪽으로 밀려 들어가 화면 끝에 아무 카메라도 안 그리는 틈이 생기는 문제를 막기 위함
     private float ScreenFractionToSafeAreaNormalized(float screenFraction)
     {
+        if (screenFraction <= 0f) return 0f;
+        if (screenFraction >= 1f) return 1f;
+
         float marginMin = GetSafeAreaMarginMin();
         float marginMax = GetSafeAreaMarginMax();
         float safeAreaWidth = marginMax - marginMin;
@@ -431,8 +436,12 @@ public class CameraController : MonoSingleton<CameraController>
     }
 
     // SafeArea 내부 기준 0~1 → 화면 전체 기준 비율(Camera.rect에 그대로 대입 가능)
+    // 0과 1은 위와 동일한 이유로 리터럴 취급
     private float SafeAreaNormalizedToScreenFraction(float normalized)
     {
+        if (normalized <= 0f) return 0f;
+        if (normalized >= 1f) return 1f;
+
         float marginMin = GetSafeAreaMarginMin();
         float marginMax = GetSafeAreaMarginMax();
         return marginMin + normalized * (marginMax - marginMin);

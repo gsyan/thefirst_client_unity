@@ -844,18 +844,6 @@ MonoBehaviour:
     m_Localized: 'EXP to next level : {0}'
     m_Metadata:
       m_Items: []
-  - m_Id: 51579544800198656
-    m_Localized: COMMANDER LEVEL
-    m_Metadata:
-      m_Items: []
-  - m_Id: 51580479907692544
-    m_Localized: Max Ship Slots
-    m_Metadata:
-      m_Items: []
-  - m_Id: 51580479907692545
-    m_Localized: ships
-    m_Metadata:
-      m_Items: []
   - m_Id: 52355318322954240
     m_Localized: Code redeemed successfully
     m_Metadata:
@@ -983,10 +971,6 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 59723571500285953
     m_Localized: Start Battle
-    m_Metadata:
-      m_Items: []
-  - m_Id: 59873222333431808
-    m_Localized: Command Power
     m_Metadata:
       m_Items: []
   - m_Id: 61639704113446912
@@ -1283,10 +1267,6 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 72478145331986432
     m_Localized: Escape Reward
-    m_Metadata:
-      m_Items: []
-  - m_Id: 73189850148110336
-    m_Localized: Commander Level
     m_Metadata:
       m_Items: []
   - m_Id: 74139633343922176
@@ -2891,6 +2871,22 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 76861906244993024
     m_Localized: Increase TP
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76876329680502784
+    m_Localized: COMMANDER
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76876329768583168
+    m_Localized: Commander Level
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76884303979347968
+    m_Localized: Max Ship Slots
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76884304033873920
+    m_Localized: ships
     m_Metadata:
       m_Items: []
   references:
