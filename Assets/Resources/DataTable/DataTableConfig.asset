@@ -32,6 +32,7 @@ MonoBehaviour:
     aircraftTacticDamageMultiplier: 2
     aircraftTacticAmmoMultiplier: 2
     shieldTacticExplorationPointPerSec: 1
+    interceptorTacticExplorationPointPerSec: 1
     shipStatFormula:
       maxModuleSlots: 6
       maxAttackReinforcePointsPerSlot: 10
@@ -69,8 +70,9 @@ MonoBehaviour:
     1,\r\n  \"missileTacticDamageMultiplier\": 2.0,\r\n  \"missileTacticExplosionMultiplier\":
     2.0,\r\n  \"aircraftTacticExplorationPointPerSec\": 1,\r\n  \"aircraftTacticDamageMultiplier\":
     2.0,\r\n  \"aircraftTacticAmmoMultiplier\": 2.0,\r\n  \"shieldTacticExplorationPointPerSec\":
-    1,\r\n  \"shipStatFormula\": {\r\n    \"maxModuleSlots\": 6,\r\n    \"maxAttackReinforcePointsPerSlot\":
-    10,\r\n    \"beam\": {\r\n      \"attackPerPoint\": 0.1,\r\n      \"attackCoolReductionPerPoint\":
+    1,\r\n  \"interceptorTacticExplorationPointPerSec\": 1,\r\n  \"shipStatFormula\":
+    {\r\n    \"maxModuleSlots\": 6,\r\n    \"maxAttackReinforcePointsPerSlot\": 10,\r\n   
+    \"beam\": {\r\n      \"attackPerPoint\": 0.1,\r\n      \"attackCoolReductionPerPoint\":
     0.02,\r\n      \"attackCoolFloor\": 0.5,\r\n      \"projectileSpeedPerPoint\":
     1.0\r\n    },\r\n    \"missile\": {\r\n      \"attackPerPoint\": 0.1,\r\n     
     \"attackCoolReductionPerPoint\": 0.02,\r\n      \"attackCoolFloor\": 0.5,\r\n     

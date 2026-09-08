@@ -818,6 +818,7 @@ public class DataTableZoneEditor : Editor
         EditorGUILayout.LabelField("셀 클리어 보상 (웨이브 있던 셀만 적립)", EditorStyles.miniBoldLabel);
         zoneConfig.explorationPointReward = EditorGUILayout.IntField(new GUIContent("Exploration Point Reward", "적 함대 성능과 무관한 고정 탐험 포인트 적립량"), zoneConfig.explorationPointReward);
         zoneConfig.commanderExpReward     = EditorGUILayout.IntField(new GUIContent("Commander Exp Reward",     "고정 지휘관 경험치 적립량"),                     zoneConfig.commanderExpReward);
+
         EditorGUI.indentLevel--;
 
         if (EditorGUI.EndChangeCheck())

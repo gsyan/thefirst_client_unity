@@ -21,7 +21,7 @@ public class ModuleData
 
     // common ---------------------------------------------------------------------------
     public int statPoint; // 이 서브타입(티어)을 슬롯에 설치할 때 드는 성능포인트 비용 — 티어가 오를수록 가파르게 증가
-    public int unlockCommanderLevel; // hull 전용 — 이 함체가 해금되는 지휘관 레벨. hull 외 카테고리는 0(미사용)
+    public int unlockAchievementPointCost; // hull 전용 — 0이면 즉시 사용 가능(티어1~3), 0보다 크면 이 값만큼 업적포인트를 소모해야 언락(티어4+). hull 외 카테고리는 0(미사용)
 
     [Header("Description")]
     [TextArea(2, 4)]
@@ -240,11 +240,6 @@ public class DataTableModule : ScriptableObject
         return group.modules[0];
     }
 
-    // 해금 커맨더 레벨 이하인 hull(함체) 목록만 — 함대 편성 화면의 "선택 가능한 함체 목록"용
-    public List<ModuleData> GetUnlockedHullModules(int commanderLevel)
-    {
-        return HullModules.FindAll(data => data.unlockCommanderLevel <= commanderLevel);
-    }
 
     private ModuleSubTypeGroup FindGroup(string subType)
     {
@@ -443,7 +438,7 @@ public class DataTableModule : ScriptableObject
             {
                 moduleName      = $"{moduleSubType}",
                 moduleSubType   = moduleSubType,
-                unlockCommanderLevel = ParseCsvInt (cols, 1),
+                unlockAchievementPointCost = ParseCsvInt(cols, 1),
                 statPoint           = ParseCsvInt  (cols, 2),
                 health              = ParseCsvFloat(cols, 3),
                 repair              = ParseCsvFloat(cols, 4),

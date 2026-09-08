@@ -128,8 +128,9 @@ public class UIHullPickerView : MonoBehaviour
         int projectedCost = composition != null ? composition.ComputeProjectedSlotCommandCost(hullSubType, keptModulesForRow) : hull.statPoint;
         int deltaCost = projectedCost - m_currentSlotCommandCost;
 
-        row.Setup(hull, deltaCost, OnHullClicked);
-        row.SetSelectedAvailableHullRow(hullSubType == m_selectedHullSubType);
+        bool isLocked = IsHullLocked(hull);
+        row.Setup(hull, deltaCost, isLocked, OnHullClicked, OnHullUnlockClicked);
+        row.SetSelectedAvailableHullRow(isLocked == false && hullSubType == m_selectedHullSubType);
 
         LayoutRebuilder.ForceRebuildLayoutImmediate(rowObject.transform as RectTransform);
     }
@@ -141,6 +142,51 @@ public class UIHullPickerView : MonoBehaviour
         RefreshStatsDisplay();
         RefreshCommandPowerPreview();
         RefreshPreview();
+    }
+
+    // unlockAchievementPointCost가 0보다 크면 티어4+ 언락 대상 — 아직 언락 안 됐으면 잠김
+    private bool IsHullLocked(ModuleData hull)
+    {
+        if (hull == null || hull.unlockAchievementPointCost <= 0) return false;
+        Commander commander = DataManager.Instance.m_currentCommander;
+        return commander == null || commander.IsHullUnlocked(hull.moduleSubType) == false;
+    }
+
+    // 언락 버튼 클릭 — 함체명/비용 확인 팝업 후 확정 시 서버에 업적포인트 소모 요청
+    private void OnHullUnlockClicked(ModuleData hull)
+    {
+        Commander commander = DataManager.Instance.m_currentCommander;
+        int ownedAchievementPoint = commander != null ? commander.GetAchievementPoint() : 0;
+
+        UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig
+        {
+            message = string.Format(LocalizationManager.Instance.Get("UIHullPicker_UnlockConfirmMessage"), hull.moduleSubType, hull.unlockAchievementPointCost, ownedAchievementPoint),
+            onConfirm = () => RequestUnlockHull(hull.moduleSubType),
+            onCancel = () => { },
+        });
+    }
+
+    private void RequestUnlockHull(string hullSubType)
+    {
+        UnlockHullRequest request = new UnlockHullRequest { hullSubType = hullSubType };
+        NetworkManager.Instance.UnlockHull(request, response =>
+        {
+            if (response.errorCode != 0)
+            {
+                Debug.LogError($"[UIHullPickerView] UnlockHull 실패: {response.errorCode}");
+                return;
+            }
+
+            Commander commander = DataManager.Instance.m_currentCommander;
+            if (commander != null)
+            {
+                commander.UpdateUnlockedHulls(response.data.unlockedHulls);
+                commander.UpdateAchievementPoint(response.data.achievementPointRemain);
+            }
+
+            m_scrollView.RefreshVisible();
+            RefreshCommandPowerPreview();
+        });
     }
 
     // 선택 후보를 실제로 적용했다고 가정했을 때의 지휘력 사용량을 미리 계산해서 보여줌 — 최대치 초과 시 경고색 + 확인 버튼 비활성화
@@ -160,8 +206,10 @@ public class UIHullPickerView : MonoBehaviour
         m_commandPowerRow.SetValueColor(CommonUtility.PaletteColor(isOverCommandPower == true ? "Text.Warning" : "Text.Dark1"));
         LayoutRebuilder.ForceRebuildLayoutImmediate(m_commandPowerRow.transform as RectTransform);
 
+        ModuleData selectedHull = m_hullsCache.Find(p => p.moduleSubType == m_selectedHullSubType);
+        bool isSelectedHullLocked = IsHullLocked(selectedHull);
         if (m_confirmButton != null)
-            m_confirmButton.interactable = isOverCommandPower == false;
+            m_confirmButton.interactable = isOverCommandPower == false && isSelectedHullLocked == false;
     }
 
     // m_currentModules를 targetHullSubType의 슬롯 범위로 필터링한 결과 — 리스트 각 행의 비용 미리보기와 선택된 함체의 미리보기/Confirm에 공용으로 사용

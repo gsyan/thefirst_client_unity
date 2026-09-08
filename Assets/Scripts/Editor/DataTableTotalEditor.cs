@@ -14,6 +14,7 @@ public class DataTableTotalEditor : EditorWindow
     private DataTableForbiddenWords dataTableForbiddenWords;
     private DataTablePvpSeason dataTablePvpSeason;
     private DataTableDailyBonus dataTableDailyBonus;
+    private DataTableAchievement dataTableAchievement;
     private Vector2 scrollPosition;
 
     [MenuItem("Tools/DataTable Total Manager")]
@@ -56,6 +57,9 @@ public class DataTableTotalEditor : EditorWindow
 
         dataTableDailyBonus = (DataTableDailyBonus)EditorGUILayout.ObjectField(
             "DataTable DailyBonus", dataTableDailyBonus, typeof(DataTableDailyBonus), false);
+
+        dataTableAchievement = (DataTableAchievement)EditorGUILayout.ObjectField(
+            "DataTable Achievement", dataTableAchievement, typeof(DataTableAchievement), false);
 
         EditorGUILayout.EndVertical();
         EditorGUILayout.Space(10);
@@ -124,6 +128,7 @@ public class DataTableTotalEditor : EditorWindow
         TryLoad(ref dataTableForbiddenWords,"t:DataTableForbiddenWords");
         TryLoad(ref dataTablePvpSeason,     "t:DataTablePvpSeason");
         TryLoad(ref dataTableDailyBonus,    "t:DataTableDailyBonus");
+        TryLoad(ref dataTableAchievement,   "t:DataTableAchievement");
     }
 
     private void TryLoad<T>(ref T field, string filter) where T : UnityEngine.Object
@@ -147,6 +152,7 @@ public class DataTableTotalEditor : EditorWindow
         if (dataTableForbiddenWords != null) WriteJson(folderPath, "DataTableForbiddenWords.json", dataTableForbiddenWords.ExportToJson());
         if (dataTablePvpSeason != null) WriteJson(folderPath, "DataTablePvpSeason.json", dataTablePvpSeason.ExportToJson());
         if (dataTableDailyBonus != null) WriteJson(folderPath, "DataTableDailyBonus.json", dataTableDailyBonus.ExportToJson());
+        if (dataTableAchievement != null) WriteJson(folderPath, "DataTableAchievement.json", dataTableAchievement.ExportToJson());
 
         EditorUtility.DisplayDialog("Export Successful", $"Exported to:\n{folderPath}", "OK");
     }
@@ -168,6 +174,7 @@ public class DataTableTotalEditor : EditorWindow
             if (dataTableForbiddenWords != null) WriteJson(serverDataPath, "DataTableForbiddenWords.json", dataTableForbiddenWords.ExportToJson());
             if (dataTablePvpSeason != null) WriteJson(serverDataPath, "DataTablePvpSeason.json", dataTablePvpSeason.ExportToJson());
             if (dataTableDailyBonus != null) WriteJson(serverDataPath, "DataTableDailyBonus.json", dataTableDailyBonus.ExportToJson());
+            if (dataTableAchievement != null) WriteJson(serverDataPath, "DataTableAchievement.json", dataTableAchievement.ExportToJson());
 
             EditorUtility.DisplayDialog("Export Successful", $"Exported to server:\n{serverDataPath}", "OK");
         }

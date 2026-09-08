@@ -76,6 +76,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     explorationPointReward: 10
     commanderExpReward: 10
+    achievementPointReward: 100
   - zoneIndex: 2
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 3000
@@ -139,6 +140,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     explorationPointReward: 10
     commanderExpReward: 10
+    achievementPointReward: 100
   - zoneIndex: 3
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 3000
@@ -202,6 +204,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     explorationPointReward: 10
     commanderExpReward: 10
+    achievementPointReward: 100
   - zoneIndex: 4
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 3000
@@ -265,6 +268,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     explorationPointReward: 10
     commanderExpReward: 10
+    achievementPointReward: 100
   - zoneIndex: 5
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 5000
@@ -336,6 +340,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     explorationPointReward: 10
     commanderExpReward: 10
+    achievementPointReward: 100
   - zoneIndex: 6
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 5000
@@ -407,6 +412,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     explorationPointReward: 10
     commanderExpReward: 10
+    achievementPointReward: 100
   - zoneIndex: 7
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 5000
@@ -478,6 +484,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     explorationPointReward: 10
     commanderExpReward: 10
+    achievementPointReward: 100
   - zoneIndex: 8
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 5000
@@ -549,6 +556,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     explorationPointReward: 10
     commanderExpReward: 10
+    achievementPointReward: 100
   - zoneIndex: 9
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 5000
@@ -620,6 +628,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     explorationPointReward: 10
     commanderExpReward: 10
+    achievementPointReward: 100
   - zoneIndex: 10
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 5000
@@ -691,6 +700,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     explorationPointReward: 10
     commanderExpReward: 10
+    achievementPointReward: 100
   - zoneIndex: 11
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 5000
@@ -762,6 +772,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     explorationPointReward: 10
     commanderExpReward: 10
+    achievementPointReward: 100
   - zoneIndex: 12
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 5000
@@ -833,6 +844,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     explorationPointReward: 10
     commanderExpReward: 10
+    achievementPointReward: 100
   - zoneIndex: 13
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 5000
@@ -904,6 +916,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     explorationPointReward: 10
     commanderExpReward: 10
+    achievementPointReward: 100
   - zoneIndex: 14
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 5000
@@ -975,6 +988,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     explorationPointReward: 10
     commanderExpReward: 10
+    achievementPointReward: 100
   - zoneIndex: 15
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 5000
@@ -1046,6 +1060,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     explorationPointReward: 10
     commanderExpReward: 10
+    achievementPointReward: 100
   - zoneIndex: 16
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 5000
@@ -1117,6 +1132,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     explorationPointReward: 10
     commanderExpReward: 10
+    achievementPointReward: 100
   - zoneIndex: 17
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 5000
@@ -1188,6 +1204,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     explorationPointReward: 10
     commanderExpReward: 10
+    achievementPointReward: 100
   - zoneIndex: 18
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 5000
@@ -1259,6 +1276,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     explorationPointReward: 10
     commanderExpReward: 10
+    achievementPointReward: 100
   - zoneIndex: 19
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 5000
@@ -1330,6 +1348,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     explorationPointReward: 10
     commanderExpReward: 10
+    achievementPointReward: 100
   - zoneIndex: 20
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 5000
@@ -1401,6 +1420,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     explorationPointReward: 10
     commanderExpReward: 10
+    achievementPointReward: 100
   - zoneIndex: 21
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 5000
@@ -1472,6 +1492,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     explorationPointReward: 10
     commanderExpReward: 10
+    achievementPointReward: 100
   - zoneIndex: 22
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 5000
@@ -1543,6 +1564,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     explorationPointReward: 10
     commanderExpReward: 10
+    achievementPointReward: 100
   - zoneIndex: 23
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 5000
@@ -1614,6 +1636,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     explorationPointReward: 10
     commanderExpReward: 10
+    achievementPointReward: 100
   - zoneIndex: 24
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 5000
@@ -1685,6 +1708,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     explorationPointReward: 10
     commanderExpReward: 10
+    achievementPointReward: 100
   - zoneIndex: 25
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 5000
@@ -1756,6 +1780,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     explorationPointReward: 10
     commanderExpReward: 10
+    achievementPointReward: 100
   - zoneIndex: 26
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 5000
@@ -1827,6 +1852,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     explorationPointReward: 10
     commanderExpReward: 10
+    achievementPointReward: 100
   - zoneIndex: 27
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 5000
@@ -1898,6 +1924,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     explorationPointReward: 10
     commanderExpReward: 10
+    achievementPointReward: 100
   - zoneIndex: 28
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 5000
@@ -1969,6 +1996,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     explorationPointReward: 10
     commanderExpReward: 10
+    achievementPointReward: 100
   - zoneIndex: 29
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 5000
@@ -2040,6 +2068,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     explorationPointReward: 10
     commanderExpReward: 10
+    achievementPointReward: 100
   - zoneIndex: 30
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 5000
@@ -2111,6 +2140,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     explorationPointReward: 10
     commanderExpReward: 10
+    achievementPointReward: 100
   - zoneIndex: 31
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -2198,6 +2228,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     explorationPointReward: 10
     commanderExpReward: 10
+    achievementPointReward: 100
   - zoneIndex: 32
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -2285,6 +2316,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     explorationPointReward: 10
     commanderExpReward: 10
+    achievementPointReward: 100
   - zoneIndex: 33
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -2372,6 +2404,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     explorationPointReward: 10
     commanderExpReward: 10
+    achievementPointReward: 100
   - zoneIndex: 34
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -2459,6 +2492,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     explorationPointReward: 10
     commanderExpReward: 10
+    achievementPointReward: 100
   - zoneIndex: 35
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -2546,6 +2580,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     explorationPointReward: 10
     commanderExpReward: 10
+    achievementPointReward: 100
   - zoneIndex: 36
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -2633,6 +2668,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     explorationPointReward: 10
     commanderExpReward: 10
+    achievementPointReward: 100
   - zoneIndex: 37
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -2720,6 +2756,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     explorationPointReward: 10
     commanderExpReward: 10
+    achievementPointReward: 100
   - zoneIndex: 38
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -2807,6 +2844,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     explorationPointReward: 10
     commanderExpReward: 10
+    achievementPointReward: 100
   - zoneIndex: 39
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -2894,6 +2932,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     explorationPointReward: 10
     commanderExpReward: 10
+    achievementPointReward: 100
   - zoneIndex: 40
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -2981,6 +3020,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     explorationPointReward: 10
     commanderExpReward: 10
+    achievementPointReward: 100
   - zoneIndex: 41
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -3068,6 +3108,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     explorationPointReward: 10
     commanderExpReward: 10
+    achievementPointReward: 100
   - zoneIndex: 42
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -3155,6 +3196,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     explorationPointReward: 10
     commanderExpReward: 10
+    achievementPointReward: 100
   - zoneIndex: 43
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -3242,6 +3284,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     explorationPointReward: 10
     commanderExpReward: 10
+    achievementPointReward: 100
   - zoneIndex: 44
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -3329,6 +3372,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     explorationPointReward: 10
     commanderExpReward: 10
+    achievementPointReward: 100
   - zoneIndex: 45
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -3416,6 +3460,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     explorationPointReward: 10
     commanderExpReward: 10
+    achievementPointReward: 100
   - zoneIndex: 46
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -3503,6 +3548,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     explorationPointReward: 10
     commanderExpReward: 10
+    achievementPointReward: 100
   - zoneIndex: 47
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -3590,6 +3636,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     explorationPointReward: 10
     commanderExpReward: 10
+    achievementPointReward: 100
   - zoneIndex: 48
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -3677,6 +3724,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     explorationPointReward: 10
     commanderExpReward: 10
+    achievementPointReward: 100
   - zoneIndex: 49
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -3764,6 +3812,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     explorationPointReward: 10
     commanderExpReward: 10
+    achievementPointReward: 100
   - zoneIndex: 50
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -3851,6 +3900,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     explorationPointReward: 10
     commanderExpReward: 10
+    achievementPointReward: 100
   - zoneIndex: 51
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -3938,6 +3988,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     explorationPointReward: 10
     commanderExpReward: 10
+    achievementPointReward: 100
   - zoneIndex: 52
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -4025,6 +4076,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     explorationPointReward: 10
     commanderExpReward: 10
+    achievementPointReward: 100
   - zoneIndex: 53
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -4112,6 +4164,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     explorationPointReward: 10
     commanderExpReward: 10
+    achievementPointReward: 100
   - zoneIndex: 54
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -4199,6 +4252,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     explorationPointReward: 10
     commanderExpReward: 10
+    achievementPointReward: 100
   - zoneIndex: 55
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -4286,6 +4340,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     explorationPointReward: 10
     commanderExpReward: 10
+    achievementPointReward: 100
   - zoneIndex: 56
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -4373,6 +4428,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     explorationPointReward: 10
     commanderExpReward: 10
+    achievementPointReward: 100
   - zoneIndex: 57
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -4460,6 +4516,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     explorationPointReward: 10
     commanderExpReward: 10
+    achievementPointReward: 100
   - zoneIndex: 58
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -4547,6 +4604,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     explorationPointReward: 10
     commanderExpReward: 10
+    achievementPointReward: 100
   - zoneIndex: 59
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -4634,6 +4692,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     explorationPointReward: 10
     commanderExpReward: 10
+    achievementPointReward: 100
   - zoneIndex: 60
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -4721,6 +4780,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     explorationPointReward: 10
     commanderExpReward: 10
+    achievementPointReward: 100
   - zoneIndex: 61
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -4808,6 +4868,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     explorationPointReward: 10
     commanderExpReward: 10
+    achievementPointReward: 100
   - zoneIndex: 62
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -4895,6 +4956,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     explorationPointReward: 10
     commanderExpReward: 10
+    achievementPointReward: 100
   - zoneIndex: 63
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -4982,6 +5044,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     explorationPointReward: 10
     commanderExpReward: 10
+    achievementPointReward: 100
   - zoneIndex: 64
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -5069,6 +5132,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     explorationPointReward: 10
     commanderExpReward: 10
+    achievementPointReward: 100
   - zoneIndex: 65
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -5156,6 +5220,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     explorationPointReward: 10
     commanderExpReward: 10
+    achievementPointReward: 100
   - zoneIndex: 66
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -5243,6 +5308,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     explorationPointReward: 10
     commanderExpReward: 10
+    achievementPointReward: 100
   - zoneIndex: 67
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -5330,6 +5396,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     explorationPointReward: 10
     commanderExpReward: 10
+    achievementPointReward: 100
   - zoneIndex: 68
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -5417,6 +5484,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     explorationPointReward: 10
     commanderExpReward: 10
+    achievementPointReward: 100
   - zoneIndex: 69
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -5504,6 +5572,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     explorationPointReward: 10
     commanderExpReward: 10
+    achievementPointReward: 100
   - zoneIndex: 70
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -5591,6 +5660,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     explorationPointReward: 10
     commanderExpReward: 10
+    achievementPointReward: 100
   - zoneIndex: 71
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -5678,6 +5748,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     explorationPointReward: 10
     commanderExpReward: 10
+    achievementPointReward: 100
   - zoneIndex: 72
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -5765,6 +5836,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     explorationPointReward: 10
     commanderExpReward: 10
+    achievementPointReward: 100
   - zoneIndex: 73
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -5852,6 +5924,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     explorationPointReward: 10
     commanderExpReward: 10
+    achievementPointReward: 100
   - zoneIndex: 74
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -5939,6 +6012,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     explorationPointReward: 10
     commanderExpReward: 10
+    achievementPointReward: 100
   - zoneIndex: 75
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -6026,6 +6100,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     explorationPointReward: 10
     commanderExpReward: 10
+    achievementPointReward: 100
   - zoneIndex: 76
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -6113,6 +6188,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     explorationPointReward: 10
     commanderExpReward: 10
+    achievementPointReward: 100
   - zoneIndex: 77
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -6200,6 +6276,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     explorationPointReward: 10
     commanderExpReward: 10
+    achievementPointReward: 100
   - zoneIndex: 78
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -6287,6 +6364,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     explorationPointReward: 10
     commanderExpReward: 10
+    achievementPointReward: 100
   - zoneIndex: 79
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -6374,6 +6452,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     explorationPointReward: 10
     commanderExpReward: 10
+    achievementPointReward: 100
   - zoneIndex: 80
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -6461,6 +6540,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     explorationPointReward: 10
     commanderExpReward: 10
+    achievementPointReward: 100
   - zoneIndex: 81
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -6548,6 +6628,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     explorationPointReward: 10
     commanderExpReward: 10
+    achievementPointReward: 100
   - zoneIndex: 82
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -6635,6 +6716,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     explorationPointReward: 10
     commanderExpReward: 10
+    achievementPointReward: 100
   - zoneIndex: 83
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -6722,6 +6804,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     explorationPointReward: 10
     commanderExpReward: 10
+    achievementPointReward: 100
   - zoneIndex: 84
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -6809,6 +6892,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     explorationPointReward: 10
     commanderExpReward: 10
+    achievementPointReward: 100
   - zoneIndex: 85
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -6896,6 +6980,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     explorationPointReward: 10
     commanderExpReward: 10
+    achievementPointReward: 100
   - zoneIndex: 86
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -6983,6 +7068,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     explorationPointReward: 10
     commanderExpReward: 10
+    achievementPointReward: 100
   - zoneIndex: 87
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -7070,6 +7156,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     explorationPointReward: 10
     commanderExpReward: 10
+    achievementPointReward: 100
   - zoneIndex: 88
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -7157,6 +7244,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     explorationPointReward: 10
     commanderExpReward: 10
+    achievementPointReward: 100
   - zoneIndex: 89
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -7244,6 +7332,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     explorationPointReward: 10
     commanderExpReward: 10
+    achievementPointReward: 100
   - zoneIndex: 90
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -7331,6 +7420,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     explorationPointReward: 10
     commanderExpReward: 10
+    achievementPointReward: 100
   - zoneIndex: 91
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -7418,6 +7508,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     explorationPointReward: 10
     commanderExpReward: 10
+    achievementPointReward: 100
   - zoneIndex: 92
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -7505,6 +7596,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     explorationPointReward: 10
     commanderExpReward: 10
+    achievementPointReward: 100
   - zoneIndex: 93
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -7592,6 +7684,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     explorationPointReward: 10
     commanderExpReward: 10
+    achievementPointReward: 100
   - zoneIndex: 94
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -7679,6 +7772,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     explorationPointReward: 10
     commanderExpReward: 10
+    achievementPointReward: 100
   - zoneIndex: 95
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -7766,6 +7860,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     explorationPointReward: 10
     commanderExpReward: 10
+    achievementPointReward: 100
   - zoneIndex: 96
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -7853,6 +7948,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     explorationPointReward: 10
     commanderExpReward: 10
+    achievementPointReward: 100
   - zoneIndex: 97
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -7940,6 +8036,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     explorationPointReward: 10
     commanderExpReward: 10
+    achievementPointReward: 100
   - zoneIndex: 98
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -8027,6 +8124,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     explorationPointReward: 10
     commanderExpReward: 10
+    achievementPointReward: 100
   - zoneIndex: 99
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -8114,6 +8212,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     explorationPointReward: 10
     commanderExpReward: 10
+    achievementPointReward: 100
   - zoneIndex: 100
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -8201,3 +8300,4 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     explorationPointReward: 10
     commanderExpReward: 10
+    achievementPointReward: 100

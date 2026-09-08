@@ -486,6 +486,24 @@ public class ApiClient
         return await PostAsync<SetModuleResponse>("/fleet/set-modules", request);
     }
 
+    public async Task<ApiResponse<UnlockHullResponse>> UnlockHullAsync(UnlockHullRequest request)
+    {
+        return await PostAsync<UnlockHullResponse>("/fleet/unlock-hull", request);
+    }
+
+    #endregion
+
+    #region Achievement API Methods -------------------------------------------------------------------------------
+    public async Task<ApiResponse<GetAchievementListResponse>> GetAchievementListAsync(GetAchievementListRequest request)
+    {
+        return await PostAsync<GetAchievementListResponse>("/achievement/list", request);
+    }
+
+    public async Task<ApiResponse<ClaimAchievementResponse>> ClaimAchievementAsync(ClaimAchievementRequest request)
+    {
+        return await PostAsync<ClaimAchievementResponse>("/achievement/claim", request);
+    }
+
     #endregion
 
     #region Zone Battle API Methods -------------------------------------------------------------------------------

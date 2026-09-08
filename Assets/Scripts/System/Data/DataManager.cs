@@ -15,6 +15,7 @@ public class DataManager : Singleton<DataManager>
         LoadDataTableRewardCard();
         LoadDataTablePvpSeason();
         LoadDataTableDailyBonus();
+        LoadDataTableAchievement();
         LoadColorPalette();
     }
     #endregion
@@ -161,6 +162,17 @@ public class DataManager : Singleton<DataManager>
         m_dataTableRewardCard = ResourceManager.Instance.Load<DataTableRewardCard>("DataTable/DataTableRewardCard");
         if (m_dataTableRewardCard == null)
             Debug.LogError("DataTableRewardCard is not exist");
+    }
+    #endregion
+
+    #region Data Table Achievement ###############################################################
+    public DataTableAchievement m_dataTableAchievement;
+
+    private void LoadDataTableAchievement()
+    {
+        m_dataTableAchievement = ResourceManager.Instance.Load<DataTableAchievement>("DataTable/DataTableAchievement");
+        if (m_dataTableAchievement == null)
+            Debug.LogError("DataTableAchievement is not exist");
     }
     #endregion
 

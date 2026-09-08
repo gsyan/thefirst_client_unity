@@ -9,17 +9,24 @@ public class UIAvailableHullRow : MonoBehaviour
     [SerializeField] private Button m_button; // 클릭(선택) — 눌림 시각 피드백까지 기본 제공
     [SerializeField] private Image m_selectedImage; // 이 함체가 현재 선택 상태임을 표시 — 색 변경이 아니라 오브젝트 자체를 켜고 끔
 
+    [Header("티어4+ 언락 상태 (미배치 시 null이면 항상 일반 상태로 동작)")]
+    [SerializeField] private GameObject m_lockedRoot; // 잠김 상태에서만 켜지는 오브젝트(언락 버튼을 이 아래 배치) — 구체적 비용은 언락 확인 팝업에 표시
+    [SerializeField] private Button m_unlockButton;
+
     // 증감 표시 색상 - 지휘력이 늘어나면(더 비싼 함체) 경고색, 줄어들면(여유 확보) 강조색
     private const string k_increaseColorHex = "#FF5555";
     private const string k_decreaseColorHex = "#4CD97B";
 
     private ModuleData m_hull;
     private System.Action<ModuleData> m_onClick;
+    private System.Action<ModuleData> m_onUnlockClick;
 
     private void Awake()
     {
         if (m_button != null)
             m_button.onClick.AddListener(OnButtonClicked);
+        if (m_unlockButton != null)
+            m_unlockButton.onClick.AddListener(OnUnlockButtonClicked);
         if (m_selectedImage != null)
             m_selectedImage.gameObject.SetActive(false);
     }
@@ -32,18 +39,24 @@ public class UIAvailableHullRow : MonoBehaviour
     }
 
     // deltaCost: 이 함체로 교체했을 때 현재 슬롯 대비 지휘력 증감(유지되는 모듈 반영, 양수=추가 소모/음수=회수) —
-    // 정적 statPoint가 아니라 호출부(UIHullPickerView)가 슬롯 유지 계산 결과로 넘겨줌
-    public void Setup(ModuleData hull, int deltaCost, System.Action<ModuleData> onClick)
+    // 정적 statPoint가 아니라 호출부(UIHullPickerView)가 슬롯 유지 계산 결과로 넘겨줌.
+    // isLocked==true면 선택 불가 + 언락 버튼만 노출(언락 비용은 hull.unlockAchievementPointCost)
+    public void Setup(ModuleData hull, int deltaCost, bool isLocked, System.Action<ModuleData> onClick, System.Action<ModuleData> onUnlockClick)
     {
         gameObject.SetActive(true);
         m_hull = hull;
         m_onClick = onClick;
+        m_onUnlockClick = onUnlockClick;
 
         // 함선 이름은 moduleSubType 이름을 UI.csv 로컬라이즈 키로 그대로 사용(별도 displayNameKey 없음)
         if (m_nameRow != null)
             m_nameRow.SetRow("UIAvailableHullRow_Name", hull.moduleSubType, rawValue: false);
         if (m_costRow != null)
             m_costRow.SetRow("UIAvailableHullRow_Cost", $"{BuildDeltaText(deltaCost)} CP", rawValue: true);
+
+        // 잠긴 함체도 클릭은 허용(우측 패널에서 프리뷰/스펙 확인 가능) — 실제 확정(Confirm)만 UIHullPickerView가 별도로 막음
+        if (m_lockedRoot != null)
+            m_lockedRoot.SetActive(isLocked);
     }
 
     // 0이면 부호 없이 "0", 양수면 "+N"(경고색), 음수면 "-N"(강조색) — 부호와 숫자를 리치텍스트 색으로 함께 표시
@@ -64,5 +77,11 @@ public class UIAvailableHullRow : MonoBehaviour
     {
         SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true);
         if (m_onClick != null) m_onClick(m_hull);
+    }
+
+    private void OnUnlockButtonClicked()
+    {
+        SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true);
+        if (m_onUnlockClick != null) m_onUnlockClick(m_hull);
     }
 }

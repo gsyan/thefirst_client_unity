@@ -445,6 +445,13 @@ public class CameraController : MonoSingleton<CameraController>
         return ScreenFractionToSafeAreaNormalized(screenX / Screen.width);
     }
 
+    // SafeArea 내부 기준 0~1 → 화면 전체 기준 비율 — CameraController가 관리하지 않는 별도 카메라(적함대
+    // 카메라 등)가 이 카메라와 동일한 좌표계로 rect를 맞추기 위해 사용
+    public float ConvertSafeAreaNormalizedToScreenFraction(float normalized)
+    {
+        return SafeAreaNormalizedToScreenFraction(normalized);
+    }
+
     // 대치 화면(UIPanelPrepareBattle)이 현재 top일 때만 빈 공간 터치를 차단 — 그 위에 함대 UI 등 다른 패널이
     // 열려있으면(top이 바뀌었으면) 그 패널은 평소대로 빈 공간 터치로 닫을 수 있어야 함
     private bool IsEmptySpaceTapBlocked()

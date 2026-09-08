@@ -634,6 +634,7 @@ public class UIPanelExplorationGrid : UIPanelBase
             ApplyOwnedPointRemain(response.data.explorationPointRemain);
             ApplyExpAndLevel(response.data.totalExp, response.data.commanderLevel);
             ApplyTacticPowerRecovered(response.data.tacticPower);
+            ApplyHasUnclaimedAchievement(response.data.hasUnclaimedAchievement);
             ClearActiveRunZoneCache();
 
             ConfirmEnterCell(row, col);
@@ -875,6 +876,7 @@ public class UIPanelExplorationGrid : UIPanelBase
             ApplyOwnedPointRemain(response.data.explorationPointRemain);
             ApplyExpAndLevel(response.data.totalExp, response.data.commanderLevel);
             ApplyTacticPowerRecovered(response.data.tacticPower);
+            ApplyHasUnclaimedAchievement(response.data.hasUnclaimedAchievement);
             RequestEnemyFleetForCurrentCell(); // 기존 런 정리 완료 — 원래 셀 도전 요청을 재시도
         });
     }
@@ -1107,6 +1109,7 @@ public class UIPanelExplorationGrid : UIPanelBase
             ApplyOwnedPointRemain(response.data.explorationPointRemain);
             ApplyExpAndLevel(response.data.totalExp, response.data.commanderLevel);
             ApplyTacticPowerRecovered(response.data.tacticPower);
+            ApplyHasUnclaimedAchievement(response.data.hasUnclaimedAchievement);
             ClearActiveRunZoneCache();
             ApplyHighestClearedZoneNumber(response.data.highestClearedZoneNumber);
             m_pendingFleetRepositionForZoneAdvance = true;
@@ -1174,6 +1177,13 @@ public class UIPanelExplorationGrid : UIPanelBase
             DataManager.Instance.m_currentCommander.UpdateExplorationPoint(explorationPointRemain);
 
         RefreshOwnedPointText();
+    }
+
+    // 탈출/포기 정산 응답의 hasUnclaimedAchievement를 커맨더 캐시에 반영 — 업적 버튼/패널 레드닷이 존런 정산 즉시 갱신됨
+    private void ApplyHasUnclaimedAchievement(bool hasUnclaimedAchievement)
+    {
+        if (DataManager.Instance.m_currentCommander != null)
+            DataManager.Instance.m_currentCommander.UpdateHasUnclaimedAchievement(hasUnclaimedAchievement);
     }
 
     // 탈출/포기 응답의 tacticPower(런 종료로 회복된 전술력 현재치)를 커맨더 정보에 반영 — 게이지 등 다른 열린 UI도 즉시 갱신
@@ -1263,6 +1273,7 @@ public class UIPanelExplorationGrid : UIPanelBase
             ApplyOwnedPointRemain(response.data.explorationPointRemain);
             ApplyExpAndLevel(response.data.totalExp, response.data.commanderLevel);
             ApplyTacticPowerRecovered(response.data.tacticPower);
+            ApplyHasUnclaimedAchievement(response.data.hasUnclaimedAchievement);
             ClearActiveRunZoneCache();
 
             // 런 자체가 완전히 종료되므로 함대 손상(체력/실드)도 다음 런을 위해 전부 복구.

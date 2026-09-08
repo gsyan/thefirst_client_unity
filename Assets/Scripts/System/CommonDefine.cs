@@ -96,6 +96,23 @@ public enum ETreasureRewardType
     TacticPowerRestore, // 전술력 전액 회복
 }
 
+// 업적 조건 타입 — AchievementData.conditionType. conditionParam 해석은 타입별로 다름(예: ZoneClearSpecific="존번호", EventCell="ETreasureRewardType 이름",
+// HullTierCount="티어 숫자", ModuleTierCount="{EModuleType 이름}_{티어}"), 나머지 타입은 conditionParam 미사용
+[System.Serializable]
+public enum EAchievementConditionType
+{
+    CellClear,             // 일반 셀(비이벤트) 누적 클리어수
+    EventCell,              // 이벤트 셀(ETreasureRewardType 종류별) 누적 클리어수
+    ZoneClearTotal,        // 누적 존 클리어 개수(Commander.highestClearedZoneNumber 기준)
+    ZoneClearSpecific,     // 특정 존 번호 클리어 여부
+    CommanderLevel,        // 지휘관 레벨 스냅샷
+    CommandPower,          // 지휘력(commandPowerMax) 스냅샷
+    TacticPower,           // 전술력(tacticPowerMax) 스냅샷
+    ExplorationPointTotal, // 역대 누적 획득 탐사포인트(Commander.explorationPointEarnedTotal)
+    HullTierCount,         // 활성 함대 내 특정 티어 함체 동시보유 개수
+    ModuleTierCount,       // 활성 함대 내 특정 카테고리+티어 모듈 동시보유 개수
+}
+
 // 존 진행(ZoneRun) 상태 — 서버 엔티티 필드용. 클라는 직접 이 값을 받지 않고 EscapeExplorationZoneRequest.isSuccess(bool)로만 결과를 통지하지만,
 // 모든 enum은 이 파일에서 생성해 서버와 동기화하는 프로젝트 관례를 따름
 [System.Serializable]

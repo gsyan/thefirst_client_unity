@@ -111,6 +111,18 @@ public class UIFleetStandoffView : MonoBehaviour
             CameraController.Instance.SetInputScreenXRange(k_myFleetViewportX, 1f);
         }
 
+        // 적함대 카메라 rect도 내 함대 카메라와 같은 SafeArea 좌표계로 맞춤 — 안 맞추면 두 카메라의 실제 경계
+        // 사이에 아무 카메라도 그리지 않는 틈이 생겨(노치 있는 기기에서) 그 지점이 깜박여 보임
+        if (m_enemyFleetCamera != null && CameraController.Instance != null)
+        {
+            float screenLeft = CameraController.Instance.ConvertSafeAreaNormalizedToScreenFraction(0f);
+            float screenRight = CameraController.Instance.ConvertSafeAreaNormalizedToScreenFraction(k_myFleetViewportX);
+            Rect enemyRect = m_enemyFleetCamera.rect;
+            enemyRect.x = screenLeft;
+            enemyRect.width = screenRight - screenLeft;
+            m_enemyFleetCamera.rect = enemyRect;
+        }
+
         if (m_enemyFleetCamera != null)
             m_enemyFleetCamera.gameObject.SetActive(true);
         if (m_dividerLine != null)

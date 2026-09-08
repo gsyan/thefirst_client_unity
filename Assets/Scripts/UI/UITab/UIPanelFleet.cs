@@ -2,7 +2,6 @@
 // 배치된 함선 전방/후방 토글, 클릭 시 성능 컬럼에 상세 스탯 표시, 타입선택 버튼으로 함체 교체(UIHullPickerView)
 // 상단 FleetStats(항상 보이는 지휘력/배치 수 요약)와 2열(함대구성/성능)은 역할이 분리됨 —
 // 성능 컬럼은 순수하게 "선택한 함선의 상세 스탯"만 담당(선택 없으면 비어있음)
-// 행은 프리팹에 미리 배치하지 않고, 필요한 개수만큼 풀에서 동적으로 늘려가며 사용(부족하면 Instantiate, 남으면 비활성화)
 // 이 패널이 열리면 화면 좌측 3D 카메라 viewport를 축소해 우측에 자리를 만듦(카메라 애니메이션은 CameraController가 담당,
 // 여기서는 열고 닫을 시점과 목표 폭만 결정) — 애니메이션이 끝나기 전엔 내용을 CanvasGroup으로 가려둠(구 TabSystem deferReveal 대체)
 using System.Collections.Generic;
@@ -12,7 +11,8 @@ using UnityEngine.UI;
 
 public class UIPanelFleet : UIPanelBase
 {
-    [SerializeField] private RowLabelValue m_fleetStatsRowPrefab; // 상단 FleetStats 전용(지휘력/배치 함선 수) — 항상 텍스트로 표시
+    [SerializeField] private RowLabelValue m_commandPowerRow; // 상단 FleetStats — 지휘력(사용량/최대치)
+    [SerializeField] private RowLabelValue m_tacticPowerRow; // 상단 FleetStats — 전술력(현재치/최대치)
     [SerializeField] private UIStatRow m_statsRowPrefab;     // 성능 컬럼 전용 — 선택한 함선의 상세 스탯
     [SerializeField] private UIPlacedShipRow m_placedShipRowPrefab;
     [SerializeField] private InfiniteScrollView m_placedShipsScrollView; // 배치된 함선 목록 — 세로 가상 스크롤(PlacedShipsContainer 아래 배치된 스크롤뷰)
@@ -22,8 +22,8 @@ public class UIPanelFleet : UIPanelBase
     [SerializeField] private TMP_Text m_editLoadoutButtonText;
 
     [SerializeField] private RectTransform m_columnContainer; // 2열(함대구성/성능)을 감싸는 최상위 컨테이너 — Horizontal Layout Group. 각 열 안에도 Title+행 컨테이너를 감싸는 Vertical Layout Group이 있어, 리빌드는 이 최상위에서 한 번만 해도 하위가 전부 재계산됨
-    [SerializeField] private RectTransform m_fleetStatsRoot; // FleetStats(최상위) — EnemyFleetStats와 배타적으로 켜고 끄는 대상. m_fleetStatsContainer는 그 자식으로, 행 풀링/레이아웃 리빌드 전용
-    [SerializeField] private RectTransform m_fleetStatsContainer; // FleetStats/FleetStatsContainer — 상단 요약 행(RowLabelValue) 풀링 부모 겸 레이아웃 리빌드 대상
+    [SerializeField] private RectTransform m_fleetStatsRoot; // FleetStats(최상위) — EnemyFleetStats와 배타적으로 켜고 끄는 대상. m_fleetStatsContainer는 그 자식으로, 레이아웃 리빌드 전용
+    [SerializeField] private RectTransform m_fleetStatsContainer; // FleetStats/FleetStatsContainer — 상단 요약 행(m_commandPowerRow/m_tacticPowerRow) 레이아웃 리빌드 대상
     [SerializeField] private TMP_Text m_fleetManagementText; // FleetStatsContainer 상단 타이틀
     [SerializeField] private InfiniteScrollView m_statsScrollView; // 성능 컬럼 — 하단 "함선 수정" 버튼 자리 확보 위해 고정 높이+가상 스크롤로 변경(PlacedShipsScrollView와 동일 패턴)
     [SerializeField] private Button m_convertCommandPowerButton; // 탐험 포인트 -> 지휘력 최대치 변환 팝업(UIPopupConvertExplorationPoint)을 염 — 교환비는 ExplorationService 서버값과 항상 함께 수정
@@ -38,13 +38,6 @@ public class UIPanelFleet : UIPanelBase
 
     [Header("카메라 Viewport 애니메이션")]
     [SerializeField] private float m_animDuration = 0.3f;
-
-    // 상단 요약 행 구성: 0=보유 탐험 포인트, 1=지휘력, 2=전술력
-    private const int k_summaryRowCount = 3;
-    private const int k_rowIndexExplorationPoint = 0;
-    private const int k_rowIndexCommandPower = 1;
-    private const int k_rowIndexTacticPower = 2;
-    private readonly List<RowLabelValue> m_fleetStatsRows = new();
 
     // 성능 컬럼(StatsScrollView) — InfiniteScrollView가 화면에 보이는 행만 OnStatsItemBind로 바인딩하므로,
     // 선택된 함선의 전체 스탯 항목은 여기 캐싱해두고 바인드 시점에 조회
@@ -94,9 +87,6 @@ public class UIPanelFleet : UIPanelBase
         if (m_canvasGroup == null)
             m_canvasGroup = gameObject.AddComponent<CanvasGroup>();
 
-        // 프리팹에 미리 배치해둔 행이 있으면 초기 풀로 흡수 — 없어도 무방(전부 동적 생성으로 채워짐)
-        if (m_fleetStatsContainer != null)
-            m_fleetStatsRows.AddRange(m_fleetStatsContainer.GetComponentsInChildren<RowLabelValue>(true));
         if (m_placedShipsScrollView != null)
             m_placedShipsScrollView.onItemBind = OnPlacedShipItemBind;
         if (m_statsScrollView != null)
@@ -104,7 +94,6 @@ public class UIPanelFleet : UIPanelBase
 
         EventManager.Subscribe_CommanderLevelChanged(OnCommanderLevelChanged);
         EventManager.Subscribe_MyFleetStateChanged(OnMyFleetStateChanged);
-        EventManager.Subscribe_ExplorationPointChanged(OnExplorationPointChanged);
 
         if (m_convertCommandPowerButton != null)
             m_convertCommandPowerButton.onClick.AddListener(() => OnConvertExplorationPointButtonClicked(EExplorationPointConvertTarget.CommandPower));
@@ -125,9 +114,9 @@ public class UIPanelFleet : UIPanelBase
         if (m_fleetManagementText != null)
             CommonUtility.SetUILocText(m_fleetManagementText, "FleetManagement");
         if (m_convertCommandPowerButtonText != null)
-            CommonUtility.SetUILocText(m_convertCommandPowerButtonText, "Convert");
+            CommonUtility.SetUILocText(m_convertCommandPowerButtonText, "UIFleet_IncreaseCommandPowerButton");
         if (m_convertTacticPowerButtonText != null)
-            CommonUtility.SetUILocText(m_convertTacticPowerButtonText, "Convert");
+            CommonUtility.SetUILocText(m_convertTacticPowerButtonText, "UIFleet_IncreaseTacticPowerButton");
         if (m_editLoadoutButtonText != null)
             CommonUtility.SetUILocText(m_editLoadoutButtonText, "UIFleet_EditLoadoutButton");
         if (m_enemyFleetManagementText != null)
@@ -142,13 +131,6 @@ public class UIPanelFleet : UIPanelBase
     {
         EventManager.Unsubscribe_CommanderLevelChanged(OnCommanderLevelChanged);
         EventManager.Unsubscribe_MyFleetStateChanged(OnMyFleetStateChanged);
-        EventManager.Unsubscribe_ExplorationPointChanged(OnExplorationPointChanged);
-    }
-
-    // 다른 화면(탐험 그리드 등)에서 탐험 포인트가 바뀌면 이 패널이 열려있지 않아도 안전하게 호출됨 — 행 갱신 자체가 null 체크 포함
-    private void OnExplorationPointChanged(int explorationPoint)
-    {
-        RefreshOwnedExplorationPointRow();
     }
 
     // 함대편성 UI가 열려있는 도중 전투가 시작/종료되면 함체 교체 버튼 활성 상태를 즉시 갱신
@@ -502,25 +484,9 @@ public class UIPanelFleet : UIPanelBase
         LayoutRebuilder.ForceRebuildLayoutImmediate(m_columnContainer);
     }
 
-    // 풀에 행이 부족하면 새로 Instantiate해서 채움 — 실제 활성/비활성은 호출부가 SetRow()/Hide()로 처리
-    // container/prefab은 인스펙터에 반드시 연결돼 있어야 하는 필수 참조라, 비어있으면 조용히 넘기지 않고 바로 에러로 드러냄
-    private void EnsureRowCount<T>(List<T> pool, RectTransform container, T prefab, int neededCount) where T : Component
-    {
-        if (container == null || prefab == null)
-        {
-            Debug.LogError($"[UIPanelFleet] EnsureRowCount: container 또는 prefab이 인스펙터에 연결되지 않음 (container={container}, prefab={prefab})");
-            return;
-        }
-
-        while (pool.Count < neededCount)
-            pool.Add(Instantiate(prefab, container));
-    }
-
-    // 상단 — 항상 보이는 요약(보유 탐험 포인트, 지휘력 사용량/최대치, 전술력 현재치/최대치)
+    // 상단 — 항상 보이는 요약(지휘력 사용량/최대치, 전술력 현재치/최대치)
     private void RefreshFleetStatsSummary(FleetComposition composition)
     {
-        EnsureRowCount(m_fleetStatsRows, m_fleetStatsContainer, m_fleetStatsRowPrefab, k_summaryRowCount);
-
         int usedCommandPower = composition.GetUsedCommandPower();
         int maxCommandPower = composition.GetMaxCommandPower();
 
@@ -528,25 +494,10 @@ public class UIPanelFleet : UIPanelBase
         int tacticPower = commanderInfo != null ? commanderInfo.tacticPower : 0;
         int tacticPowerMax = commanderInfo != null ? commanderInfo.tacticPowerMax : 0;
 
-        RefreshOwnedExplorationPointRow();
-        m_fleetStatsRows[k_rowIndexCommandPower].SetRow("UITabCommander_CommandPower", $"{usedCommandPower} / {maxCommandPower}", rawValue: true);
-        m_fleetStatsRows[k_rowIndexTacticPower].SetRow("TacticPower", $"{tacticPower} / {tacticPowerMax}", rawValue: true);
-
-        for (int i = k_summaryRowCount; i < m_fleetStatsRows.Count; i++)
-            m_fleetStatsRows[i].Hide();
-    }
-
-    // 지휘력 증가 버튼이 소모하는 값 — m_fleetStatsRows[k_rowIndexExplorationPoint](풀링된 요약 행)을 그대로 사용
-    private void RefreshOwnedExplorationPointRow()
-    {
-        EnsureRowCount(m_fleetStatsRows, m_fleetStatsContainer, m_fleetStatsRowPrefab, k_summaryRowCount);
-
-        CommanderInfo commanderInfo = DataManager.Instance.m_currentCommander != null ? DataManager.Instance.m_currentCommander.m_commanderInfo : null;
-        int ownedExplorationPoint = commanderInfo != null ? commanderInfo.explorationPoint : 0;
-
-        m_fleetStatsRows[k_rowIndexExplorationPoint].SetRow("UIPanelExplorationGrid_OwnedPoint", ownedExplorationPoint.ToString(), rawValue: true);
-        LayoutRebuilder.ForceRebuildLayoutImmediate(m_fleetStatsRows[k_rowIndexExplorationPoint].transform as RectTransform);
-
+        if (m_commandPowerRow != null)
+            m_commandPowerRow.SetRow("UITabCommander_CommandPower", $"{usedCommandPower} / {maxCommandPower}", rawValue: true);
+        if (m_tacticPowerRow != null)
+            m_tacticPowerRow.SetRow("TacticPower", $"{tacticPower} / {tacticPowerMax}", rawValue: true);
     }
 
     // 소모량 조정 팝업(UIPopupConvertExplorationPoint)을 열어 사용자가 직접 수치를 정하도록 함
@@ -728,12 +679,10 @@ public class UIPanelFleet : UIPanelBase
         ObjectManager.Instance.ReplaceMyFleetShipAt(m_selectedSlotIndex, entry.hullSubType, entry.isFront, entry.modules);
     }
 
-    // 커맨더 레벨 기준으로 배치 가능한 함체만 필터링 — 함체 선택 팝업(UIHullPickerView)을 열 때마다 새로 계산
+    // 전체 함체 목록 — 티어1~3은 무조건, 티어4+는 잠김 상태로 표시(UIHullPickerView가 unlockAchievementPointCost 기준으로 잠금/언락 버튼 처리)
     private List<ModuleData> ComputeUnlockedHulls()
     {
-        Commander commander = DataManager.Instance.m_currentCommander;
-        int commanderLevel = commander != null ? commander.GetCommanderLevel() : 0;
-        return DataManager.Instance.m_dataTableModule.GetUnlockedHullModules(commanderLevel);
+        return DataManager.Instance.m_dataTableModule.HullModules.modules;
     }
 
     // ── 배치된 함선 — 전방/후방 토글 ──────────────────────────────────

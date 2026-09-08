@@ -58,6 +58,18 @@ public static class EventManager
     public static void Subscribe_ExplorationPointChanged(Action<int> callback)   { OnExplorationPointChanged += callback; }
     public static void Unsubscribe_ExplorationPointChanged(Action<int> callback) { OnExplorationPointChanged -= callback; }
 
+    // achievementPoint — 값을 직접 대입하지 말고 반드시 Commander.UpdateAchievementPoint()를 거칠 것(이 이벤트가 자동 발행됨)
+    public static event Action<int> OnAchievementPointChanged;
+    public static void TriggerAchievementPointChanged(int achievementPoint) { OnAchievementPointChanged?.Invoke(achievementPoint); }
+    public static void Subscribe_AchievementPointChanged(Action<int> callback)   { OnAchievementPointChanged += callback; }
+    public static void Unsubscribe_AchievementPointChanged(Action<int> callback) { OnAchievementPointChanged -= callback; }
+
+    // hasUnclaimedAchievement — 값을 직접 대입하지 말고 반드시 Commander.UpdateHasUnclaimedAchievement()를 거칠 것(이 이벤트가 자동 발행됨)
+    public static event Action<bool> OnUnclaimedAchievementChanged;
+    public static void TriggerUnclaimedAchievementChanged(bool hasUnclaimedAchievement) { OnUnclaimedAchievementChanged?.Invoke(hasUnclaimedAchievement); }
+    public static void Subscribe_UnclaimedAchievementChanged(Action<bool> callback)   { OnUnclaimedAchievementChanged += callback; }
+    public static void Unsubscribe_UnclaimedAchievementChanged(Action<bool> callback) { OnUnclaimedAchievementChanged -= callback; }
+
     #endregion Commander Tech, Mineral ----------------------------------------------------------------------
     
     # region Fleet ShipCount / HP----------------------------------------------------------------------

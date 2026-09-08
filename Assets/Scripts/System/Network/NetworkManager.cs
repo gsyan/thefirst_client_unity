@@ -675,6 +675,24 @@ public class NetworkManager : MonoSingleton<NetworkManager>
         StartCoroutine(RunAsync(() => m_apiClient.SetModuleAsync(request), onComplete));
     }
 
+    public void UnlockHull(UnlockHullRequest request, System.Action<ApiResponse<UnlockHullResponse>> onComplete)
+    {
+        if (m_bConnected == false) return;
+        StartCoroutine(RunAsync(() => m_apiClient.UnlockHullAsync(request), onComplete));
+    }
+
+    public void GetAchievementList(GetAchievementListRequest request, System.Action<ApiResponse<GetAchievementListResponse>> onComplete)
+    {
+        if (m_bConnected == false) return;
+        StartCoroutine(RunAsync(() => m_apiClient.GetAchievementListAsync(request), onComplete));
+    }
+
+    public void ClaimAchievement(ClaimAchievementRequest request, System.Action<ApiResponse<ClaimAchievementResponse>> onComplete)
+    {
+        if (m_bConnected == false) return;
+        StartCoroutine(RunAsync(() => m_apiClient.ClaimAchievementAsync(request), onComplete));
+    }
+
     // public void GetFleetStats(FleetStatsRequest request, System.Action<ApiResponse<FleetStatsResponse>> onComplete)
     // {
     //     if (m_bConnected == false) return;

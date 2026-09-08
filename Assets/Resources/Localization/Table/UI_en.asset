@@ -1310,10 +1310,6 @@ MonoBehaviour:
     m_Localized: FLEET MANAGEMENT
     m_Metadata:
       m_Items: []
-  - m_Id: 74149109719498752
-    m_Localized: Convert
-    m_Metadata:
-      m_Items: []
   - m_Id: 74331910964117504
     m_Localized: Module Reinforce
     m_Metadata:
@@ -1356,6 +1352,1545 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 76543106714828800
     m_Localized: Tactic power restored by {0}%!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76574125773946880
+    m_Localized: Achievement Point
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76574125828472833
+    m_Localized: 'Unlock {0} for {1} AP?\n(Owned: {2} AP)'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76604851600883712
+    m_Localized: Progress
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76604851655409664
+    m_Localized: Cell Clear
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76604851655409665
+    m_Localized: Event Cell Clear
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76604851655409666
+    m_Localized: Zone Clear (Total)
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76604851655409667
+    m_Localized: Zone Clear
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76604851655409668
+    m_Localized: Commander Level
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76604851655409669
+    m_Localized: Command Power
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76604851655409670
+    m_Localized: Tactic Power
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76604851655409671
+    m_Localized: Exploration Point (Total)
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76604851655409672
+    m_Localized: Hull Tier
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76604851655409673
+    m_Localized: Module Tier
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608773181440
+    m_Localized: Clear 10 Cells
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608827707392
+    m_Localized: Clear 10 normal (non-event) cells cumulatively
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608827707393
+    m_Localized: Clear 50 Cells
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608827707394
+    m_Localized: Clear 50 normal (non-event) cells cumulatively
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608827707395
+    m_Localized: Clear 100 Cells
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608827707396
+    m_Localized: Clear 100 normal (non-event) cells cumulatively
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608831901696
+    m_Localized: Clear 300 Cells
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608831901697
+    m_Localized: Clear 300 normal (non-event) cells cumulatively
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608831901698
+    m_Localized: Clear 500 Cells
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608831901699
+    m_Localized: Clear 500 normal (non-event) cells cumulatively
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608831901700
+    m_Localized: Clear 1000 Cells
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608831901701
+    m_Localized: Clear 1000 normal (non-event) cells cumulatively
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608831901702
+    m_Localized: Treasure(Exploration Point) x5
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608831901703
+    m_Localized: Clear Treasure(Exploration Point) event cells 5 times cumulatively
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608831901704
+    m_Localized: Treasure(Exploration Point) x10
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608831901705
+    m_Localized: Clear Treasure(Exploration Point) event cells 10 times cumulatively
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608831901706
+    m_Localized: Treasure(Exploration Point) x20
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608831901707
+    m_Localized: Clear Treasure(Exploration Point) event cells 20 times cumulatively
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608831901708
+    m_Localized: Treasure(Exploration Point) x50
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608831901709
+    m_Localized: Clear Treasure(Exploration Point) event cells 50 times cumulatively
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608831901710
+    m_Localized: Treasure(Fleet Heal) x5
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608831901711
+    m_Localized: Clear Treasure(Fleet Heal) event cells 5 times cumulatively
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608831901712
+    m_Localized: Treasure(Fleet Heal) x10
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608831901713
+    m_Localized: Clear Treasure(Fleet Heal) event cells 10 times cumulatively
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608831901714
+    m_Localized: Treasure(Fleet Heal) x20
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608831901715
+    m_Localized: Clear Treasure(Fleet Heal) event cells 20 times cumulatively
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608831901716
+    m_Localized: Treasure(Fleet Heal) x50
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608831901717
+    m_Localized: Clear Treasure(Fleet Heal) event cells 50 times cumulatively
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608831901718
+    m_Localized: Treasure(Tactic Power) x5
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608831901719
+    m_Localized: Clear Treasure(Tactic Power) event cells 5 times cumulatively
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608831901720
+    m_Localized: Treasure(Tactic Power) x10
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608831901721
+    m_Localized: Clear Treasure(Tactic Power) event cells 10 times cumulatively
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608831901722
+    m_Localized: Treasure(Tactic Power) x20
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608831901723
+    m_Localized: Clear Treasure(Tactic Power) event cells 20 times cumulatively
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608831901724
+    m_Localized: Treasure(Tactic Power) x50
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608831901725
+    m_Localized: Clear Treasure(Tactic Power) event cells 50 times cumulatively
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608831901726
+    m_Localized: Clear 10 Zones
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608831901727
+    m_Localized: Clear 10 different zones cumulatively
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608831901728
+    m_Localized: Clear 25 Zones
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608831901729
+    m_Localized: Clear 25 different zones cumulatively
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608831901730
+    m_Localized: Clear 50 Zones
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608831901731
+    m_Localized: Clear 50 different zones cumulatively
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608831901732
+    m_Localized: Clear 75 Zones
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608831901733
+    m_Localized: Clear 75 different zones cumulatively
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608831901734
+    m_Localized: Clear 100 Zones
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608831901735
+    m_Localized: Clear 100 different zones cumulatively
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608831901736
+    m_Localized: Clear Zone 1
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608831901737
+    m_Localized: Clear Zone 1 for the first time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608831901738
+    m_Localized: Clear Zone 2
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608831901739
+    m_Localized: Clear Zone 2 for the first time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608831901740
+    m_Localized: Clear Zone 3
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608831901741
+    m_Localized: Clear Zone 3 for the first time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608831901742
+    m_Localized: Clear Zone 4
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608831901743
+    m_Localized: Clear Zone 4 for the first time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608831901744
+    m_Localized: Clear Zone 5
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608831901745
+    m_Localized: Clear Zone 5 for the first time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608831901746
+    m_Localized: Clear Zone 6
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608831901747
+    m_Localized: Clear Zone 6 for the first time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608831901748
+    m_Localized: Clear Zone 7
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608831901749
+    m_Localized: Clear Zone 7 for the first time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608831901750
+    m_Localized: Clear Zone 8
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608831901751
+    m_Localized: Clear Zone 8 for the first time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608831901752
+    m_Localized: Clear Zone 9
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608831901753
+    m_Localized: Clear Zone 9 for the first time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608831901754
+    m_Localized: Clear Zone 10
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608831901755
+    m_Localized: Clear Zone 10 for the first time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608831901756
+    m_Localized: Clear Zone 11
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608831901757
+    m_Localized: Clear Zone 11 for the first time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608831901758
+    m_Localized: Clear Zone 12
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608831901759
+    m_Localized: Clear Zone 12 for the first time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608831901760
+    m_Localized: Clear Zone 13
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608831901761
+    m_Localized: Clear Zone 13 for the first time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608831901762
+    m_Localized: Clear Zone 14
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608836096000
+    m_Localized: Clear Zone 14 for the first time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608836096001
+    m_Localized: Clear Zone 15
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608836096002
+    m_Localized: Clear Zone 15 for the first time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608836096003
+    m_Localized: Clear Zone 16
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608836096004
+    m_Localized: Clear Zone 16 for the first time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608836096005
+    m_Localized: Clear Zone 17
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608836096006
+    m_Localized: Clear Zone 17 for the first time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608836096007
+    m_Localized: Clear Zone 18
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608836096008
+    m_Localized: Clear Zone 18 for the first time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608836096009
+    m_Localized: Clear Zone 19
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608836096010
+    m_Localized: Clear Zone 19 for the first time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608836096011
+    m_Localized: Clear Zone 20
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608836096012
+    m_Localized: Clear Zone 20 for the first time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608836096013
+    m_Localized: Clear Zone 21
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608836096014
+    m_Localized: Clear Zone 21 for the first time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608836096015
+    m_Localized: Clear Zone 22
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608836096016
+    m_Localized: Clear Zone 22 for the first time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608836096017
+    m_Localized: Clear Zone 23
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608836096018
+    m_Localized: Clear Zone 23 for the first time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608836096019
+    m_Localized: Clear Zone 24
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608836096020
+    m_Localized: Clear Zone 24 for the first time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608836096021
+    m_Localized: Clear Zone 25
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608836096022
+    m_Localized: Clear Zone 25 for the first time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608836096023
+    m_Localized: Clear Zone 26
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608836096024
+    m_Localized: Clear Zone 26 for the first time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608836096025
+    m_Localized: Clear Zone 27
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608836096026
+    m_Localized: Clear Zone 27 for the first time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608836096027
+    m_Localized: Clear Zone 28
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608836096028
+    m_Localized: Clear Zone 28 for the first time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608836096029
+    m_Localized: Clear Zone 29
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608836096030
+    m_Localized: Clear Zone 29 for the first time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608836096031
+    m_Localized: Clear Zone 30
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608836096032
+    m_Localized: Clear Zone 30 for the first time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608836096033
+    m_Localized: Clear Zone 31
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608836096034
+    m_Localized: Clear Zone 31 for the first time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608836096035
+    m_Localized: Clear Zone 32
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608836096036
+    m_Localized: Clear Zone 32 for the first time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608836096037
+    m_Localized: Clear Zone 33
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608836096038
+    m_Localized: Clear Zone 33 for the first time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608836096039
+    m_Localized: Clear Zone 34
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608836096040
+    m_Localized: Clear Zone 34 for the first time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608836096041
+    m_Localized: Clear Zone 35
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608836096042
+    m_Localized: Clear Zone 35 for the first time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608836096043
+    m_Localized: Clear Zone 36
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608836096044
+    m_Localized: Clear Zone 36 for the first time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608836096045
+    m_Localized: Clear Zone 37
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608836096046
+    m_Localized: Clear Zone 37 for the first time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608836096047
+    m_Localized: Clear Zone 38
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608836096048
+    m_Localized: Clear Zone 38 for the first time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608836096049
+    m_Localized: Clear Zone 39
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608836096050
+    m_Localized: Clear Zone 39 for the first time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608836096051
+    m_Localized: Clear Zone 40
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608836096052
+    m_Localized: Clear Zone 40 for the first time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608836096053
+    m_Localized: Clear Zone 41
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608836096054
+    m_Localized: Clear Zone 41 for the first time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608836096055
+    m_Localized: Clear Zone 42
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608836096056
+    m_Localized: Clear Zone 42 for the first time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608836096057
+    m_Localized: Clear Zone 43
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608836096058
+    m_Localized: Clear Zone 43 for the first time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608836096059
+    m_Localized: Clear Zone 44
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608836096060
+    m_Localized: Clear Zone 44 for the first time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608836096061
+    m_Localized: Clear Zone 45
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608836096062
+    m_Localized: Clear Zone 45 for the first time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608836096063
+    m_Localized: Clear Zone 46
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608836096064
+    m_Localized: Clear Zone 46 for the first time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608836096065
+    m_Localized: Clear Zone 47
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608836096066
+    m_Localized: Clear Zone 47 for the first time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608836096067
+    m_Localized: Clear Zone 48
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608836096068
+    m_Localized: Clear Zone 48 for the first time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608836096069
+    m_Localized: Clear Zone 49
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608836096070
+    m_Localized: Clear Zone 49 for the first time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608836096071
+    m_Localized: Clear Zone 50
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608836096072
+    m_Localized: Clear Zone 50 for the first time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608836096073
+    m_Localized: Clear Zone 51
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608836096074
+    m_Localized: Clear Zone 51 for the first time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608836096075
+    m_Localized: Clear Zone 52
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608836096076
+    m_Localized: Clear Zone 52 for the first time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608836096077
+    m_Localized: Clear Zone 53
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608836096078
+    m_Localized: Clear Zone 53 for the first time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608836096079
+    m_Localized: Clear Zone 54
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608836096080
+    m_Localized: Clear Zone 54 for the first time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608836096081
+    m_Localized: Clear Zone 55
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608836096082
+    m_Localized: Clear Zone 55 for the first time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608836096083
+    m_Localized: Clear Zone 56
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608836096084
+    m_Localized: Clear Zone 56 for the first time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608836096085
+    m_Localized: Clear Zone 57
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608836096086
+    m_Localized: Clear Zone 57 for the first time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608836096087
+    m_Localized: Clear Zone 58
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608836096088
+    m_Localized: Clear Zone 58 for the first time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608840290304
+    m_Localized: Clear Zone 59
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608840290305
+    m_Localized: Clear Zone 59 for the first time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608840290306
+    m_Localized: Clear Zone 60
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608840290307
+    m_Localized: Clear Zone 60 for the first time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608840290308
+    m_Localized: Clear Zone 61
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608840290309
+    m_Localized: Clear Zone 61 for the first time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608840290310
+    m_Localized: Clear Zone 62
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608840290311
+    m_Localized: Clear Zone 62 for the first time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608840290312
+    m_Localized: Clear Zone 63
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608840290313
+    m_Localized: Clear Zone 63 for the first time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608840290314
+    m_Localized: Clear Zone 64
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608840290315
+    m_Localized: Clear Zone 64 for the first time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608840290316
+    m_Localized: Clear Zone 65
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608840290317
+    m_Localized: Clear Zone 65 for the first time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608840290318
+    m_Localized: Clear Zone 66
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608840290319
+    m_Localized: Clear Zone 66 for the first time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608840290320
+    m_Localized: Clear Zone 67
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608840290321
+    m_Localized: Clear Zone 67 for the first time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608840290322
+    m_Localized: Clear Zone 68
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608840290323
+    m_Localized: Clear Zone 68 for the first time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608840290324
+    m_Localized: Clear Zone 69
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608840290325
+    m_Localized: Clear Zone 69 for the first time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608840290326
+    m_Localized: Clear Zone 70
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608840290327
+    m_Localized: Clear Zone 70 for the first time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608840290328
+    m_Localized: Clear Zone 71
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608840290329
+    m_Localized: Clear Zone 71 for the first time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608840290330
+    m_Localized: Clear Zone 72
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608840290331
+    m_Localized: Clear Zone 72 for the first time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608840290332
+    m_Localized: Clear Zone 73
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608840290333
+    m_Localized: Clear Zone 73 for the first time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608840290334
+    m_Localized: Clear Zone 74
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608840290335
+    m_Localized: Clear Zone 74 for the first time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608840290336
+    m_Localized: Clear Zone 75
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608840290337
+    m_Localized: Clear Zone 75 for the first time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608840290338
+    m_Localized: Clear Zone 76
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608840290339
+    m_Localized: Clear Zone 76 for the first time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608840290340
+    m_Localized: Clear Zone 77
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608840290341
+    m_Localized: Clear Zone 77 for the first time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608840290342
+    m_Localized: Clear Zone 78
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608840290343
+    m_Localized: Clear Zone 78 for the first time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608840290344
+    m_Localized: Clear Zone 79
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608840290345
+    m_Localized: Clear Zone 79 for the first time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608840290346
+    m_Localized: Clear Zone 80
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608840290347
+    m_Localized: Clear Zone 80 for the first time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608840290348
+    m_Localized: Clear Zone 81
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608840290349
+    m_Localized: Clear Zone 81 for the first time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608840290350
+    m_Localized: Clear Zone 82
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608840290351
+    m_Localized: Clear Zone 82 for the first time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608840290352
+    m_Localized: Clear Zone 83
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608840290353
+    m_Localized: Clear Zone 83 for the first time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608840290354
+    m_Localized: Clear Zone 84
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608840290355
+    m_Localized: Clear Zone 84 for the first time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608840290356
+    m_Localized: Clear Zone 85
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608840290357
+    m_Localized: Clear Zone 85 for the first time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608840290358
+    m_Localized: Clear Zone 86
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608840290359
+    m_Localized: Clear Zone 86 for the first time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608840290360
+    m_Localized: Clear Zone 87
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608840290361
+    m_Localized: Clear Zone 87 for the first time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608840290362
+    m_Localized: Clear Zone 88
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608840290363
+    m_Localized: Clear Zone 88 for the first time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608840290364
+    m_Localized: Clear Zone 89
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608840290365
+    m_Localized: Clear Zone 89 for the first time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608840290366
+    m_Localized: Clear Zone 90
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608840290367
+    m_Localized: Clear Zone 90 for the first time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608840290368
+    m_Localized: Clear Zone 91
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608840290369
+    m_Localized: Clear Zone 91 for the first time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608840290370
+    m_Localized: Clear Zone 92
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608840290371
+    m_Localized: Clear Zone 92 for the first time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608840290372
+    m_Localized: Clear Zone 93
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608840290373
+    m_Localized: Clear Zone 93 for the first time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608840290374
+    m_Localized: Clear Zone 94
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608840290375
+    m_Localized: Clear Zone 94 for the first time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608840290376
+    m_Localized: Clear Zone 95
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608840290377
+    m_Localized: Clear Zone 95 for the first time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608840290378
+    m_Localized: Clear Zone 96
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608840290379
+    m_Localized: Clear Zone 96 for the first time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608840290380
+    m_Localized: Clear Zone 97
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608840290381
+    m_Localized: Clear Zone 97 for the first time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608840290382
+    m_Localized: Clear Zone 98
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608840290383
+    m_Localized: Clear Zone 98 for the first time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608840290384
+    m_Localized: Clear Zone 99
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608840290385
+    m_Localized: Clear Zone 99 for the first time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608840290386
+    m_Localized: Clear Zone 100
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608840290387
+    m_Localized: Clear Zone 100 for the first time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608840290388
+    m_Localized: Reach Commander Level 5
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608840290389
+    m_Localized: Reach Commander Level 5
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608840290390
+    m_Localized: Reach Commander Level 10
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608840290391
+    m_Localized: Reach Commander Level 10
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608840290392
+    m_Localized: Reach Commander Level 15
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608844484608
+    m_Localized: Reach Commander Level 15
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608844484609
+    m_Localized: Reach Commander Level 20
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608844484610
+    m_Localized: Reach Commander Level 20
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608844484611
+    m_Localized: Reach Commander Level 25
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608844484612
+    m_Localized: Reach Commander Level 25
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608844484613
+    m_Localized: Reach Commander Level 30
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608844484614
+    m_Localized: Reach Commander Level 30
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608844484615
+    m_Localized: Reach 400 Command Power
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608844484616
+    m_Localized: Reach 400 Command Power
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608844484617
+    m_Localized: Reach 500 Command Power
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608844484618
+    m_Localized: Reach 500 Command Power
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608844484619
+    m_Localized: Reach 600 Command Power
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608844484620
+    m_Localized: Reach 600 Command Power
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608844484621
+    m_Localized: Reach 700 Command Power
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608844484622
+    m_Localized: Reach 700 Command Power
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608844484623
+    m_Localized: Reach 800 Command Power
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608844484624
+    m_Localized: Reach 800 Command Power
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608844484625
+    m_Localized: Reach 100 Tactic Power
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608844484626
+    m_Localized: Reach 100 Tactic Power
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608844484627
+    m_Localized: Reach 200 Tactic Power
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608844484628
+    m_Localized: Reach 200 Tactic Power
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608844484629
+    m_Localized: Reach 300 Tactic Power
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608844484630
+    m_Localized: Reach 300 Tactic Power
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608844484631
+    m_Localized: Reach 400 Tactic Power
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608844484632
+    m_Localized: Reach 400 Tactic Power
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608844484633
+    m_Localized: Reach 500 Tactic Power
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608844484634
+    m_Localized: Reach 500 Tactic Power
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608844484635
+    m_Localized: Earn 100 Exploration Points (Total)
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608844484636
+    m_Localized: Earn 100 Exploration Points cumulatively (lifetime, not current
+      balance)
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608844484637
+    m_Localized: Earn 200 Exploration Points (Total)
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608844484638
+    m_Localized: Earn 200 Exploration Points cumulatively (lifetime, not current
+      balance)
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608844484639
+    m_Localized: Earn 300 Exploration Points (Total)
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608844484640
+    m_Localized: Earn 300 Exploration Points cumulatively (lifetime, not current
+      balance)
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608844484641
+    m_Localized: Earn 400 Exploration Points (Total)
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608844484642
+    m_Localized: Earn 400 Exploration Points cumulatively (lifetime, not current
+      balance)
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608844484643
+    m_Localized: Earn 500 Exploration Points (Total)
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608844484644
+    m_Localized: Earn 500 Exploration Points cumulatively (lifetime, not current
+      balance)
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608844484645
+    m_Localized: Deploy 1 Tier 4 Hulls
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608844484646
+    m_Localized: Have 1 Tier 4 hulls in your active fleet at the same time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608844484647
+    m_Localized: Deploy 2 Tier 4 Hulls
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608844484648
+    m_Localized: Have 2 Tier 4 hulls in your active fleet at the same time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608844484649
+    m_Localized: Deploy 3 Tier 4 Hulls
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608848678912
+    m_Localized: Have 3 Tier 4 hulls in your active fleet at the same time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608848678913
+    m_Localized: Deploy 1 Tier 5 Hulls
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608848678914
+    m_Localized: Have 1 Tier 5 hulls in your active fleet at the same time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608848678915
+    m_Localized: Deploy 2 Tier 5 Hulls
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608848678916
+    m_Localized: Have 2 Tier 5 hulls in your active fleet at the same time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608848678917
+    m_Localized: Deploy 3 Tier 5 Hulls
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608848678918
+    m_Localized: Have 3 Tier 5 hulls in your active fleet at the same time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608848678919
+    m_Localized: Equip 1 Tier 2 Beam Modules
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608848678920
+    m_Localized: Have 1 Tier 2 Beam modules equipped in your active fleet at the
+      same time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608848678921
+    m_Localized: Equip 2 Tier 2 Beam Modules
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608848678922
+    m_Localized: Have 2 Tier 2 Beam modules equipped in your active fleet at the
+      same time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608848678923
+    m_Localized: Equip 3 Tier 2 Beam Modules
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608848678924
+    m_Localized: Have 3 Tier 2 Beam modules equipped in your active fleet at the
+      same time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608848678925
+    m_Localized: Equip 1 Tier 3 Beam Modules
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608848678926
+    m_Localized: Have 1 Tier 3 Beam modules equipped in your active fleet at the
+      same time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608848678927
+    m_Localized: Equip 2 Tier 3 Beam Modules
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608848678928
+    m_Localized: Have 2 Tier 3 Beam modules equipped in your active fleet at the
+      same time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608848678929
+    m_Localized: Equip 3 Tier 3 Beam Modules
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608848678930
+    m_Localized: Have 3 Tier 3 Beam modules equipped in your active fleet at the
+      same time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608848678931
+    m_Localized: Equip 1 Tier 2 Missile Modules
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608848678932
+    m_Localized: Have 1 Tier 2 Missile modules equipped in your active fleet at the
+      same time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608848678933
+    m_Localized: Equip 2 Tier 2 Missile Modules
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608848678934
+    m_Localized: Have 2 Tier 2 Missile modules equipped in your active fleet at the
+      same time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608848678935
+    m_Localized: Equip 3 Tier 2 Missile Modules
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608848678936
+    m_Localized: Have 3 Tier 2 Missile modules equipped in your active fleet at the
+      same time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608848678937
+    m_Localized: Equip 1 Tier 3 Missile Modules
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608848678938
+    m_Localized: Have 1 Tier 3 Missile modules equipped in your active fleet at the
+      same time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608848678939
+    m_Localized: Equip 2 Tier 3 Missile Modules
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608848678940
+    m_Localized: Have 2 Tier 3 Missile modules equipped in your active fleet at the
+      same time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608848678941
+    m_Localized: Equip 3 Tier 3 Missile Modules
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608848678942
+    m_Localized: Have 3 Tier 3 Missile modules equipped in your active fleet at the
+      same time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608848678943
+    m_Localized: Equip 1 Tier 2 Hangar Modules
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608848678944
+    m_Localized: Have 1 Tier 2 Hangar modules equipped in your active fleet at the
+      same time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608848678945
+    m_Localized: Equip 2 Tier 2 Hangar Modules
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608848678946
+    m_Localized: Have 2 Tier 2 Hangar modules equipped in your active fleet at the
+      same time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608848678947
+    m_Localized: Equip 3 Tier 2 Hangar Modules
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608848678948
+    m_Localized: Have 3 Tier 2 Hangar modules equipped in your active fleet at the
+      same time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608848678949
+    m_Localized: Equip 1 Tier 3 Hangar Modules
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608848678950
+    m_Localized: Have 1 Tier 3 Hangar modules equipped in your active fleet at the
+      same time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608848678951
+    m_Localized: Equip 2 Tier 3 Hangar Modules
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608848678952
+    m_Localized: Have 2 Tier 3 Hangar modules equipped in your active fleet at the
+      same time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608848678953
+    m_Localized: Equip 3 Tier 3 Hangar Modules
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608848678954
+    m_Localized: Have 3 Tier 3 Hangar modules equipped in your active fleet at the
+      same time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608848678955
+    m_Localized: Equip 1 Tier 2 Shield Modules
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608848678956
+    m_Localized: Have 1 Tier 2 Shield modules equipped in your active fleet at the
+      same time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608848678957
+    m_Localized: Equip 2 Tier 2 Shield Modules
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608848678958
+    m_Localized: Have 2 Tier 2 Shield modules equipped in your active fleet at the
+      same time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608848678959
+    m_Localized: Equip 3 Tier 2 Shield Modules
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608848678960
+    m_Localized: Have 3 Tier 2 Shield modules equipped in your active fleet at the
+      same time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608848678961
+    m_Localized: Equip 1 Tier 3 Shield Modules
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608848678962
+    m_Localized: Have 1 Tier 3 Shield modules equipped in your active fleet at the
+      same time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608848678963
+    m_Localized: Equip 2 Tier 3 Shield Modules
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608848678964
+    m_Localized: Have 2 Tier 3 Shield modules equipped in your active fleet at the
+      same time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608848678965
+    m_Localized: Equip 3 Tier 3 Shield Modules
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608848678966
+    m_Localized: Have 3 Tier 3 Shield modules equipped in your active fleet at the
+      same time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608848678967
+    m_Localized: Equip 1 Tier 2 Interceptor Modules
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608848678968
+    m_Localized: Have 1 Tier 2 Interceptor modules equipped in your active fleet
+      at the same time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608848678969
+    m_Localized: Equip 2 Tier 2 Interceptor Modules
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608848678970
+    m_Localized: Have 2 Tier 2 Interceptor modules equipped in your active fleet
+      at the same time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608848678971
+    m_Localized: Equip 3 Tier 2 Interceptor Modules
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608848678972
+    m_Localized: Have 3 Tier 2 Interceptor modules equipped in your active fleet
+      at the same time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608848678973
+    m_Localized: Equip 1 Tier 3 Interceptor Modules
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608848678974
+    m_Localized: Have 1 Tier 3 Interceptor modules equipped in your active fleet
+      at the same time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608848678975
+    m_Localized: Equip 2 Tier 3 Interceptor Modules
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608848678976
+    m_Localized: Have 2 Tier 3 Interceptor modules equipped in your active fleet
+      at the same time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608848678977
+    m_Localized: Equip 3 Tier 3 Interceptor Modules
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76631608848678978
+    m_Localized: Have 3 Tier 3 Interceptor modules equipped in your active fleet
+      at the same time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76833988689133568
+    m_Localized: AP Reward
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76861906198855680
+    m_Localized: Increase CP
+    m_Metadata:
+      m_Items: []
+  - m_Id: 76861906244993024
+    m_Localized: Increase TP
     m_Metadata:
       m_Items: []
   references:

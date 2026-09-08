@@ -109,12 +109,15 @@ public class CommanderInfo
     public int explorationSeedBase;  // 서버 월드 시드+커맨더 조합 고정값 — 존별 그리드/적함대 시드는 클라에서 이 값과 zoneNumber를 조합해 결정론적으로 계산
     public List<string> clearedZones;  // 클리어한 존 이름 목록 (순서 무관, 각 독립)
     public int explorationPoint;    // 보유(확정 지급된) 탐험 포인트 — 적립(ZoneRun.explorationPointBanked)과 별개
+    public int achievementPoint;    // 보유 업적포인트 — 티어4+ 함체 언락(소모형)에 사용, 존 탈출/포기 정산 시 지급
+    public List<string> unlockedHulls;  // 업적포인트로 언락 완료한 hullSubType 목록(티어1~3은 언락 불필요라 여기 없어도 사용 가능)
     public int explorationZoneNumber;  // 진행 중인 탐험 런의 존 번호, 없으면 0
     public string explorationCell;  // 진행 중인 탐험 런의 마지막 클리어 셀 "row-col"(0-indexed, ZoneRun.currentCell과 동일 포맷), 없으면 빈 문자열
     public int highestClearedZoneNumber;  // 존 탈출(ESCAPED)로 확정된 존 번호 중 최댓값, 없으면 0
     public int pvpPoint;
     public int pvpPointMaxGot;
     public string pvpPointExpiry;   // ISO 8601 — PvP 정산 배치 지급, 만료 시 소멸
+    public bool hasUnclaimedAchievement;  // 완료했지만 아직 안 받은 업적 존재 여부 — 로그인/재접속 시 레드닷 초기값용
 
 }
 
@@ -387,6 +390,7 @@ public class EscapeExplorationZoneResponse
     public int commanderLevel;           // 반영 후 커맨더 레벨(레벨업 없으면 기존과 동일)
     public int highestClearedZoneNumber; // 탈출 성공 시 갱신된 값(권위값) — 클라 GetInitialZoneIndex()가 이 값 기준으로 다음 존을 계산
     public int tacticPower;              // 런 종료로 회복된 전술력 현재치(=tacticPowerMax, 권위값)
+    public bool hasUnclaimedAchievement; // 이 존런 정산 시점 기준 완료+미수령 업적 존재 여부(업적 버튼 레드닷용)
 }
 
 [System.Serializable]
@@ -401,6 +405,53 @@ public class AbandonZoneRunResponse
     public int totalExp;               // 반영 후 누적 경험치(권위값)
     public int commanderLevel;         // 반영 후 커맨더 레벨(레벨업 없으면 기존과 동일)
     public int tacticPower;            // 런 종료로 회복된 전술력 현재치(=tacticPowerMax, 권위값)
+    public bool hasUnclaimedAchievement; // 이 존런 정산 시점 기준 완료+미수령 업적 존재 여부(업적 버튼 레드닷용)
+}
+
+[System.Serializable]
+public class UnlockHullRequest
+{
+    public string hullSubType; // 언락할 티어4+ 함체
+}
+
+[System.Serializable]
+public class UnlockHullResponse
+{
+    public string hullSubType;          // 언락 완료된 함체
+    public int achievementPointRemain;  // 소모 후 보유량
+    public List<string> unlockedHulls;  // 갱신된 전체 언락 목록(권위값) — 클라 로컬 캐시 갱신용
+}
+
+[System.Serializable]
+public class AchievementStatus
+{
+    // 업적 항목 1개의 동적(커맨더별) 상태 — 정적 정의(조건/임계값/보상)는 클라가 DataTableAchievement로 이미 보유
+    public string achievementId;
+    public int currentValue; // 서버가 조건 타입별로 계산한 현재 진행도
+    public bool isClaimed;
+}
+
+[System.Serializable]
+public class GetAchievementListRequest { }
+
+[System.Serializable]
+public class GetAchievementListResponse
+{
+    public List<AchievementStatus> achievements;
+}
+
+[System.Serializable]
+public class ClaimAchievementRequest
+{
+    public string achievementId;
+}
+
+[System.Serializable]
+public class ClaimAchievementResponse
+{
+    public string achievementId;
+    public int achievementPointReward; // 이번 수령으로 지급된 양
+    public int achievementPointRemain; // 지급 후 보유량
 }
 
 [System.Serializable]
