@@ -11,7 +11,7 @@ public class UIPopupRenameCommander : UIPopupBase
     [Header("UI References")]
     [SerializeField] private TMP_InputField m_nameInput;
     [SerializeField] private TMP_Text m_validationText;
-    [SerializeField] private UIButtonHasChildren m_confirmButton;
+    [SerializeField] private Button m_confirmButton;
     [SerializeField] private Button m_cancelButton;
 
     [Header("색상")]
@@ -38,8 +38,7 @@ public class UIPopupRenameCommander : UIPopupBase
         m_forbiddenWords = ResourceManager.Instance.Load<DataTableForbiddenWords>("DataTable/DataTableForbiddenWords");
         if (m_confirmButton != null)
         {
-            m_confirmButton.GetButton().onClick.AddListener(OnConfirmClicked);
-            m_confirmButton.SetActiveColorKey("Action.Primary");
+            m_confirmButton.onClick.AddListener(OnConfirmClicked);
         }
         if (m_cancelButton != null)  m_cancelButton.onClick.AddListener(OnCancelClicked);
         if (m_nameInput != null)
@@ -138,7 +137,7 @@ public class UIPopupRenameCommander : UIPopupBase
         SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true);
         if (m_isNameValid == false) return;
 
-        m_confirmButton.SetInteractable(false);  // 중복 클릭 방지
+        m_confirmButton.interactable = false; // 중복 클릭 방지
 
         var request = new CommanderRenameRequest { newName = m_nameInput.text };
         NetworkManager.Instance.RenameCommander(request, OnRenameResponse);
@@ -195,6 +194,6 @@ public class UIPopupRenameCommander : UIPopupBase
         Commander currentCommander = DataManager.Instance.m_currentCommander;
         CommanderInfo info = (currentCommander != null) ? currentCommander.m_commanderInfo : null;
         int remaining = (info != null) ? info.nameChangeCount : 0;
-        m_confirmButton.SetInteractable(m_isNameValid && remaining > 0);
+        m_confirmButton.interactable = (m_isNameValid && remaining > 0);
     }
 }
