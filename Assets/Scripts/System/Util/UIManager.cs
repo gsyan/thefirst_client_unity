@@ -531,7 +531,7 @@ public class UIManager : MonoSingleton<UIManager>
         var rows = new List<(string label, string value, Color? color)>
         {
             ("Commander_Level", newLevel.ToString(), defaultColor),
-            ("UITabCommander_ShipCountMaxTitle", shipCount.ToString(), defaultColor),
+            ("MaxShipSlots", shipCount.ToString(), defaultColor),
         };
         ShowConfirmPopup(new ConfirmPopupConfig
         {
@@ -615,18 +615,6 @@ public class UIManager : MonoSingleton<UIManager>
 
         ReplacePopup(popup, EPopupLayer.Normal);
         popup.ShowPopupLicense(() => CloseTopPopup(EPopupLayer.Normal));
-    }
-
-    // 함체 상세 스탯 팝업 (함대편성 UI — 배치가능 함체 클릭 시) — 전용 팝업 대신 UIPopupConfirm의 stat gauge 섹션 재사용
-    public void ShowShipStatsPopup(ModuleData hull)
-    {
-        // 함선 이름 로컬라이즈는 아직 미정 — 함체 코드(hullSubType)를 그대로 표시
-        ShowConfirmPopup(new ConfirmPopupConfig
-        {
-            message = hull.moduleSubType,
-            statGaugeRows = ShipStatGaugeBuilder.Build(hull),
-            onConfirm = null,
-        });
     }
 
 }

@@ -1367,7 +1367,7 @@ GameObject:
   - component: {fileID: 8408283221782546455}
   - component: {fileID: 3359767443971541976}
   m_Layer: 0
-  m_Name: h1_44300
+  m_Name: hull_11_1_44300
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1441,6 +1441,7 @@ MonoBehaviour:
   m_missiles: []
   m_hangars: []
   m_shield: {fileID: 0}
+  m_interceptor: {fileID: 0}
   m_hitPoints:
   - {x: -0.62215734, y: 0.7289416, z: 0.94885445}
   - {x: -0.8288011, y: 0.28830785, z: 1.6632781}
@@ -1524,6 +1525,8 @@ MonoBehaviour:
   - {x: 0.89101446, y: 0.31455684, z: 0.2749196}
   m_cameraMinZoom: 8
   m_cameraMaxZoom: 24
+  m_interceptorOrbitRadius: 2
+  m_interceptorOrbitCenter: {fileID: 0}
   bShowHitPointGizmos: 1
 --- !u!114 &8408283221782546455
 MonoBehaviour:
@@ -4069,7 +4072,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &3580233270527120267
 Transform:
   m_ObjectHideFlags: 0
@@ -4353,7 +4356,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &3237022135345305581
 Transform:
   m_ObjectHideFlags: 0

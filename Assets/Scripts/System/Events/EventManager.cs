@@ -286,6 +286,12 @@ public static class EventManager
     public static void Subscribe_ExplorationTabClosed(Action callback)   { OnExplorationTabClosed += callback; }
     public static void Unsubscribe_ExplorationTabClosed(Action callback) { OnExplorationTabClosed -= callback; }
 
+    // 존런 종료(탈출 성공 또는 포기 확정) — 셀 단위 전투 종료와 달리 런 전체가 끝나는 시점에만 발행
+    public static event Action OnZoneRunEnded;
+    public static void Trigger_ZoneRunEnded() { OnZoneRunEnded?.Invoke(); }
+    public static void Subscribe_ZoneRunEnded(Action callback)   { OnZoneRunEnded += callback; }
+    public static void Unsubscribe_ZoneRunEnded(Action callback) { OnZoneRunEnded -= callback; }
+
     // UIManager 패널 스택의 top이 바뀔 때 발행 — 진입 버튼 하이라이트 갱신 및 메인 UI 진입 버튼 노출 판단(스택 깊이==1)에 사용
     public static event Action<string> OnCurrentPanelChanged;
     public static void TriggerCurrentPanelChanged(string panelName) { OnCurrentPanelChanged?.Invoke(panelName); }
@@ -323,17 +329,17 @@ public static class EventManager
     public static void Subscribe_PvpBattleEnd(Action<bool> callback)   { OnPvpBattleEnd += callback; }
     public static void Unsubscribe_PvpBattleEnd(Action<bool> callback) { OnPvpBattleEnd -= callback; }
 
-    // 존 진입 (zoneName, isFirstClear)
-    public static event Action<string, bool> OnZoneEntered;
-    public static void TriggerZoneEntered(string zoneName, bool isFirstClear)
+    // 존 진입 (zoneNumber, cellDisplay)
+    public static event Action<int, string> OnZoneEntered;
+    public static void TriggerZoneEntered(int zoneNumber, string cellDisplay)
     {
-        OnZoneEntered?.Invoke(zoneName, isFirstClear);
+        OnZoneEntered?.Invoke(zoneNumber, cellDisplay);
     }
-    public static void Subscribe_ZoneEntered(Action<string, bool> callback)
+    public static void Subscribe_ZoneEntered(Action<int, string> callback)
     {
         OnZoneEntered += callback;
     }
-    public static void Unsubscribe_ZoneEntered(Action<string, bool> callback)
+    public static void Unsubscribe_ZoneEntered(Action<int, string> callback)
     {
         OnZoneEntered -= callback;
     }

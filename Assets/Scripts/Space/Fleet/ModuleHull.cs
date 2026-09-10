@@ -27,6 +27,10 @@ public class ModuleHull : ModuleBase
     [SerializeField] public float m_cameraMinZoom = 4f;
     [SerializeField] public float m_cameraMaxZoom = 20f;
 
+    // 요격체 궤도 — 함체마다 크기/형상이 달라 자동 계산 불가, 프리팹에서 직접 조정
+    [SerializeField] public float m_interceptorOrbitRadius = 2f;
+    [SerializeField] public Transform m_interceptorOrbitCenter; // 궤도 중심점 오브젝트(프리팹에 직접 배치) — 비어있으면 함체 피벗을 그대로 사용
+
     private float m_repair;
     private float m_speed;
 

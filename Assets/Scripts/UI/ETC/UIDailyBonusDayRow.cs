@@ -29,9 +29,12 @@ public class UIDailyBonusDayRow : MonoBehaviour
 
         m_onClaimClick = onClaimClick;
         if (m_claimButton != null)
+        {
+            m_claimButton.gameObject.SetActive(claimed == false);
             m_claimButton.interactable = bToday && claimed == false;
+        }
         if (m_claimedRoot != null)
-            m_claimedRoot.SetActive(bToday && claimed);
+            m_claimedRoot.SetActive(claimed);
 
         RefreshRewards(rewards);
     }

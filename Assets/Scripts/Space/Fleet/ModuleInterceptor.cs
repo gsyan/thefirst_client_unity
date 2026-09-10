@@ -11,8 +11,6 @@ public class ModuleInterceptor : ModuleBase
     private const int k_interceptorTacticBit = 1 << 4;
     private const float SCAN_INTERVAL = 0.2f;
     private const float DETECTION_RADIUS = 30f;
-    private const float ORBIT_RADIUS = 6f;
-    private const float ORBIT_FORWARD_OFFSET = 1f;
 
     [SerializeField] private ModuleHull m_parentBody;
 
@@ -78,6 +76,12 @@ public class ModuleInterceptor : ModuleBase
         return m_maxCount > 0;
     }
 
+    // ProjectileMissile.CheckCollision이 요격체 명중 시 소속 함대(적/아군) 판정에 사용
+    public SpaceFleet GetOwnerFleet()
+    {
+        return m_ownerFleet;
+    }
+
     public bool HasEmptySlot()
     {
         if (m_slots == null) return false;
@@ -127,7 +131,9 @@ public class ModuleInterceptor : ModuleBase
         m_slots[index] = null;
     }
 
-    private void ClearAllSlots()
+    // 함선이 곧 Destroy될 때도(SpaceFleet.RemoveShip) 미리 호출됨 — 파괴된 뒤엔 요격체가 같은 Destroy() 호출에
+    // 자식으로 걸려 풀 반납(SetParent)이 막히므로, 반드시 파괴 전에 불러야 함
+    public void ClearAllSlots()
     {
         StopScanCoroutine();
         if (m_slots != null)
@@ -165,8 +171,10 @@ public class ModuleInterceptor : ModuleBase
     private void SpawnInterceptorUnitAt(int index)
     {
         Transform shipTransform = m_parentBody != null ? m_parentBody.transform : transform;
+        Transform orbitCenter = m_parentBody != null && m_parentBody.m_interceptorOrbitCenter != null ? m_parentBody.m_interceptorOrbitCenter : shipTransform;
+        float orbitRadius = m_parentBody != null ? m_parentBody.m_interceptorOrbitRadius : 2f;
         InterceptorUnit unit = ObjectManager.Instance.m_poolManager.Get<InterceptorUnit>(EPoolName.PROJECTILE_INTERCEPTOR);
-        unit.Initialize(this, index, shipTransform, ORBIT_RADIUS, ORBIT_FORWARD_OFFSET, m_maxCount);
+        unit.Initialize(this, index, shipTransform, orbitCenter, orbitRadius, m_maxCount);
         m_slots[index] = unit;
     }
 

@@ -103,7 +103,6 @@ public class UIPanelFleet : UIPanelBase
         if (m_editLoadoutButton != null)
         {
             m_editLoadoutButton.onClick.AddListener(OnEditLoadoutButtonClicked);
-            m_editLoadoutButton.interactable = false;
         }
 
         // 한 번 세팅되면 바뀌지 않는 정적 라벨 — 패널 초기화 시점에 1회만 처리
@@ -652,7 +651,7 @@ public class UIPanelFleet : UIPanelBase
     private void RefreshEditLoadoutButtonInteractable()
     {
         if (m_editLoadoutButton == null) return;
-        m_editLoadoutButton.interactable = m_selectedSlotIndex >= 0 && m_isReadOnlyMode == false;
+        m_editLoadoutButton.gameObject.SetActive(m_selectedSlotIndex >= 0 && m_isReadOnlyMode == false);
     }
 
     // 성능 컬럼 하단 "함선 수정" 버튼 — 현재 선택된 슬롯의 로드아웃 편집 화면(UIShipLoadoutEditorView)을 염

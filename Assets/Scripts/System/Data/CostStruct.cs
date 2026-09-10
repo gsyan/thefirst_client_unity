@@ -1,6 +1,7 @@
 public enum ECostType
 {
-    PvpPoint
+    PvpPoint,
+    AchievementPoint
 }
 
 [System.Serializable]

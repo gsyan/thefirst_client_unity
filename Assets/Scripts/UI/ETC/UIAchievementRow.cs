@@ -12,6 +12,7 @@ public class UIAchievementRow : MonoBehaviour
 
     [Header("업적 항목 상태")]
     [SerializeField] private GameObject m_itemRoot;
+    [SerializeField] private GameObject m_itemRedDot; // 이 항목이 완료+미수령 상태일 때만 표시
     [SerializeField] private TMP_Text m_nameText;
     [SerializeField] private TMP_Text m_descText;
     [SerializeField] private RowLabelValue m_progressRow;
@@ -70,6 +71,8 @@ public class UIAchievementRow : MonoBehaviour
             m_claimButton.gameObject.SetActive(isClaimed == false);
             m_claimButton.interactable = isCompleted;
         }
+        if (m_itemRedDot != null)
+            m_itemRedDot.SetActive(isCompleted && isClaimed == false);
     }
 
     private void OnClaimButtonClicked()

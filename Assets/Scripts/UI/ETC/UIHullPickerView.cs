@@ -153,14 +153,13 @@ public class UIHullPickerView : MonoBehaviour
     }
 
     // 언락 버튼 클릭 — 함체명/비용 확인 팝업 후 확정 시 서버에 업적포인트 소모 요청
+    // cost를 CostStruct로 넘기면 UIPopupConfirm이 부족 시 빨간색 표기 + 확인 버튼 비활성을 알아서 처리함
     private void OnHullUnlockClicked(ModuleData hull)
     {
-        Commander commander = DataManager.Instance.m_currentCommander;
-        int ownedAchievementPoint = commander != null ? commander.GetAchievementPoint() : 0;
-
         UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig
         {
-            message = string.Format(LocalizationManager.Instance.Get("UIHullPicker_UnlockConfirmMessage"), hull.moduleSubType, hull.unlockAchievementPointCost, ownedAchievementPoint),
+            message = string.Format(LocalizationManager.Instance.Get("UIHullPicker_UnlockConfirmMessage"), hull.moduleSubType),
+            cost = new CostStruct(ECostType.AchievementPoint, hull.unlockAchievementPointCost),
             onConfirm = () => RequestUnlockHull(hull.moduleSubType),
             onCancel = () => { },
         });

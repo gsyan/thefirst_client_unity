@@ -40,7 +40,7 @@ public class UIPanelDailyBonus : UIPanelBase
             m_titleText.text = loc.Get("DailyBonus_Title");
 
         if (m_rewardDescText != null)
-            m_rewardDescText.gameObject.SetActive(false);
+            m_rewardDescText.text = string.Empty;
 
         var mgr = DailyBonusManager.Instance;
         RefreshCalendar(mgr.GetClaimedDaysMask(), mgr.GetTodayDay());
@@ -88,10 +88,7 @@ public class UIPanelDailyBonus : UIPanelBase
         if (response == null || response.available == false) return;
 
         if (m_rewardDescText != null)
-        {
-            m_rewardDescText.gameObject.SetActive(true);
             m_rewardDescText.text = BuildGrantedDescription(response);
-        }
 
         m_claimedDaysMask = response.claimedDaysMask;
         m_todayDay        = response.todayDay;

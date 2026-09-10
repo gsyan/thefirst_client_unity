@@ -14,7 +14,6 @@ public class ConfirmPopupConfig
     public List<(string label, string value, Color? color)> resultRows;
     public bool resultRowsVertical; // 라벨+값 행은 항상 한 줄에 한 항목이라 현재는 무의미(시그니처 호환용으로만 유지)
     public string resultSectionTitle = "RESULT"; // resultRows 섹션 헤더 텍스트
-    public List<ShipStatRowEntry> statGaugeRows; // 함선 스탯 게이지 목록(함대편성 배치가능 함체 클릭 등) — UISection과 별개로 m_sectionsRoot에 먼저 쌓임
     public List<(string label, string value)> pvpOpponentRows; // STATUS 섹션 (General.Bright1 색)
     public RequireStruct require;
     public CostStruct cost;
@@ -37,12 +36,11 @@ public class UIPopupConfirm : UIPopupBase
     [SerializeField] private TMP_Text m_bodyText;
 
     [SerializeField] private RectTransform m_layoutRoot;
-    
-    [SerializeField] private RectTransform m_statsRoot;
-    [SerializeField] private UIStatRow m_statGaugeRowPrefab; // m_sectionsRoot는 VerticalLayoutGroup이라 UISection과 다른 프리팹을 섞어도 순서대로 쌓임
 
     [SerializeField] private RectTransform m_sectionsRoot;
     [SerializeField] private UISection m_sectionPrefab;
+
+    [SerializeField] private RowLabelValue m_ownedPointRow; // COST 섹션 바로 위에 현재 보유량을 한 줄로 표시(값 우측 정렬은 프리팹 TMP_Text Alignment 설정)
 
     [SerializeField] private Button cancelButton;
     [SerializeField] private TMP_Text m_cancelText1;
@@ -56,7 +54,6 @@ public class UIPopupConfirm : UIPopupBase
     private static readonly WaitForSecondsRealtime s_wait1Sec = new WaitForSecondsRealtime(1f);
 
     private List<UISection> m_sectionCache = new List<UISection>();
-    private List<UIStatRow> m_statGaugeRowCache = new List<UIStatRow>();
 
     protected override void Awake()
     {
@@ -91,8 +88,6 @@ public class UIPopupConfirm : UIPopupBase
             m_bodyText.text = bodyStr;
             m_bodyText.gameObject.SetActive(string.IsNullOrEmpty(bodyStr) == false);
         }
-
-        BuildStatGaugeRows(config.statGaugeRows);
 
         // 섹션 빌드 시작 전 무조건 켜두고, 끝난 뒤 필요 여부에 따라 다시 정리
         if (m_sectionsRoot != null) m_sectionsRoot.gameObject.SetActive(true);
@@ -175,7 +170,10 @@ public class UIPopupConfirm : UIPopupBase
     private bool BuildCostSection(CostStruct cost, ref int sectionIdx)
     {
         if (cost == null || cost.amount <= 0)
+        {
+            if (m_ownedPointRow != null) m_ownedPointRow.Hide();
             return true;
+        }
 
         UISection sec = GetOrCreateSection(ref sectionIdx);
         sec.gameObject.name = "UISection_Cost";
@@ -186,11 +184,20 @@ public class UIPopupConfirm : UIPopupBase
         long current = 0;
         if (cost.costType == ECostType.PvpPoint)
             current = ch != null ? ch.GetPvpPoint() : 0;
+        else if (cost.costType == ECostType.AchievementPoint)
+            current = ch != null ? ch.GetAchievementPoint() : 0;
 
         bool canAfford = current >= cost.amount;
         string val = CommonUtility.FormatBigNumber(cost.amount);
         Color iconColor = GetCostColor(cost.costType);
         sec.SetRow(0, GetCostLabelKey(cost.costType), iconColor, canAfford ? val : $"<color=red>{val}</color>");
+
+        if (m_ownedPointRow != null)
+        {
+            m_ownedPointRow.SetRow("UIPopupConfirm_OwnedLabel", CommonUtility.FormatBigNumber(current), rawValue: true);
+            m_ownedPointRow.SetValueColor(iconColor);
+            LayoutRebuilder.ForceRebuildLayoutImmediate(m_ownedPointRow.transform as RectTransform);
+        }
 
         return canAfford;
     }
@@ -198,52 +205,8 @@ public class UIPopupConfirm : UIPopupBase
     private static string GetCostLabelKey(ECostType costType)
     {
         if (costType == ECostType.PvpPoint) return "UIPopupConfirm_PvpPointLabel";
+        if (costType == ECostType.AchievementPoint) return "UIPanelFleet_AchievementPoint";
         return "UIPopupConfirm_PvpPointLabel";
-    }
-
-    // 함선 스탯 게이지 목록 — UISection 풀과 별개 캐시로 관리, m_statsRoot에 별도로 쌓임(섹션들과 부모가 달라 순서 무관)
-    private void BuildStatGaugeRows(List<ShipStatRowEntry> entries)
-    {
-        if (entries == null || entries.Count <= 0)
-        {
-            HideUnusedStatGaugeRows(0);
-            if (m_statsRoot != null)
-                m_statsRoot.gameObject.SetActive(false);
-            return;
-        }
-
-        if (m_statsRoot != null)
-            m_statsRoot.gameObject.SetActive(true);
-
-        for (int i = 0; i < entries.Count; i++)
-        {
-            UIStatRow row = GetOrCreateStatGaugeRow(i);
-            ShipStatRowEntry entry = entries[i];
-            if (entry.isNumericValue == true)
-                row.SetStatRow(entry.label, entry.value);
-            else
-                row.SetValueOnly(entry.label, entry.rawValueText);
-        }
-
-        HideUnusedStatGaugeRows(entries.Count);
-    }
-
-    private UIStatRow GetOrCreateStatGaugeRow(int idx)
-    {
-        if (idx < m_statGaugeRowCache.Count)
-        {
-            m_statGaugeRowCache[idx].gameObject.SetActive(true);
-            return m_statGaugeRowCache[idx];
-        }
-        UIStatRow row = Instantiate(m_statGaugeRowPrefab, m_statsRoot);
-        m_statGaugeRowCache.Add(row);
-        return row;
-    }
-
-    private void HideUnusedStatGaugeRows(int usedCount)
-    {
-        for (int i = usedCount; i < m_statGaugeRowCache.Count; i++)
-            m_statGaugeRowCache[i].Hide();
     }
 
     private void BuildResultRows(List<(string label, string value, Color? color)> rows, bool vertical, string title, ref int sectionIdx)
@@ -350,13 +313,9 @@ public class UIPopupConfirm : UIPopupBase
             if (m_sectionCache[i].gameObject.activeSelf == true)
                 m_sectionCache[i].RebuildLayout();
         }
-        for (int i = 0; i < m_statGaugeRowCache.Count; i++)
-        {
-            if (m_statGaugeRowCache[i].gameObject.activeSelf == true)
-                LayoutRebuilder.ForceRebuildLayoutImmediate(m_statGaugeRowCache[i].transform as RectTransform);
-        }
+        if (m_ownedPointRow != null && m_ownedPointRow.gameObject.activeSelf == true)
+            LayoutRebuilder.ForceRebuildLayoutImmediate(m_ownedPointRow.transform as RectTransform);
         if (m_sectionsRoot != null) LayoutRebuilder.ForceRebuildLayoutImmediate(m_sectionsRoot);
-        if (m_statsRoot != null) LayoutRebuilder.ForceRebuildLayoutImmediate(m_statsRoot);
         if (cancelButton != null) LayoutRebuilder.ForceRebuildLayoutImmediate(cancelButton.GetComponent<RectTransform>());
         if (confirmButton != null) LayoutRebuilder.ForceRebuildLayoutImmediate(confirmButton.GetComponent<RectTransform>());
         if (m_layoutRoot != null) LayoutRebuilder.ForceRebuildLayoutImmediate(m_layoutRoot);
@@ -389,6 +348,8 @@ public class UIPopupConfirm : UIPopupBase
     private static Color GetCostColor(ECostType costType)
     {
         if (costType == ECostType.PvpPoint) return CommonUtility.PaletteColor("PvpPoint");
+        // 업적포인트 전용 팔레트 키가 아직 없어 기본색 사용
+        if (costType == ECostType.AchievementPoint) return CommonUtility.PaletteColor("General.Bright1");
         return Color.white;
     }
 }

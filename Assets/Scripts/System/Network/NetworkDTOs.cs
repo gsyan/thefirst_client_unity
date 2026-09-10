@@ -455,6 +455,17 @@ public class ClaimAchievementResponse
 }
 
 [System.Serializable]
+public class ClaimAllAchievementsRequest { }
+
+[System.Serializable]
+public class ClaimAllAchievementsResponse
+{
+    public List<string> claimedAchievementIds;    // 이번 호출로 수령 처리된 업적 id 목록
+    public int totalAchievementPointGranted;       // 이번 호출로 지급된 총 업적포인트
+    public int achievementPointRemain;             // 지급 후 보유량
+}
+
+[System.Serializable]
 public class IncreaseCommandPowerMaxRequest
 {
     public int amount; // 소모할 탐험 포인트 — 지휘력 최대치도 동일 수치만큼 증가(교환비 1:1)

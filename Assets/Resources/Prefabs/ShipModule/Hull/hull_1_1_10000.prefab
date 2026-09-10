@@ -913,6 +913,7 @@ MonoBehaviour:
   m_missiles: []
   m_hangars: []
   m_shield: {fileID: 0}
+  m_interceptor: {fileID: 0}
   m_hitPoints:
   - {x: -0.23070693, y: 0.39556476, z: 0.28485435}
   - {x: -0.42654902, y: 0.25752988, z: 0.695205}
@@ -996,6 +997,8 @@ MonoBehaviour:
   - {x: 0.42303568, y: 0.2592622, z: 0.064140044}
   m_cameraMinZoom: 3
   m_cameraMaxZoom: 20
+  m_interceptorOrbitRadius: 2
+  m_interceptorOrbitCenter: {fileID: 0}
   bShowHitPointGizmos: 1
 --- !u!114 &8408283221782546455
 MonoBehaviour:

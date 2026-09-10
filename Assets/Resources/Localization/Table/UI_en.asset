@@ -290,10 +290,6 @@ MonoBehaviour:
     m_Localized: Max level of {0}(Lv.{1} / Lv.{2})
     m_Metadata:
       m_Items: []
-  - m_Id: 14282967706632192
-    m_Localized: Are you sure you want to enter this zone?
-    m_Metadata:
-      m_Items: []
   - m_Id: 14291245362708480
     m_Localized: Refresh opponent list? ({0} remaining)
     m_Metadata:
@@ -958,7 +954,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 59435713895989248
-    m_Localized: Are you sure you want to move to this cell?
+    m_Localized: Move to Cell\n\nZone:\t\t {0}\nCell:\t\t {1}
     m_Metadata:
       m_Items: []
   - m_Id: 59723571462537216
@@ -1339,7 +1335,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 76574125828472833
-    m_Localized: 'Unlock {0} for {1} AP?\n(Owned: {2} AP)'
+    m_Localized: Unlock {0}
     m_Metadata:
       m_Items: []
   - m_Id: 76604851600883712
@@ -2903,6 +2899,22 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 76938861619314688
     m_Localized: Day {0}
+    m_Metadata:
+      m_Items: []
+  - m_Id: 77181750161047552
+    m_Localized: Zone:\t{0}\nCell:\t{1}
+    m_Metadata:
+      m_Items: []
+  - m_Id: 77305147213873152
+    m_Localized: Claim All
+    m_Metadata:
+      m_Items: []
+  - m_Id: 77305147276787712
+    m_Localized: Find Next
+    m_Metadata:
+      m_Items: []
+  - m_Id: 77649464394645504
+    m_Localized: Owned
     m_Metadata:
       m_Items: []
   references:

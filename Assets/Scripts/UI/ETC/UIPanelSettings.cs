@@ -44,6 +44,7 @@ public class UIPanelSettings : UIPanelBase
     [SerializeField] private Toggle   m_toggleCommander;
     [SerializeField] private Toggle   m_toggleExploPoint;
     [SerializeField] private Toggle   m_togglePvpPoint;
+    [SerializeField] private Toggle   m_toggleAchievementPoint;
     [SerializeField] private Button   m_expPointButton;
 
     [SerializeField] private Toggle   m_toggleRemoveAd;
@@ -238,12 +239,13 @@ public class UIPanelSettings : UIPanelBase
         SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true);
 
         // 서버 adddevresources 1번째 파라미터는 raw exp가 아닌 "1레벨 증가" 트리거 플래그
-        string levelUp     = (m_toggleCommander  != null && m_toggleCommander.isOn  == true) ? "1"   : "0";
-        string exploPoint  = (m_toggleExploPoint != null && m_toggleExploPoint.isOn == true) ? "100000" : "0";
-        string pvpPoint    = (m_togglePvpPoint   != null && m_togglePvpPoint.isOn   == true) ? "100" : "0";
+        string levelUp         = (m_toggleCommander        != null && m_toggleCommander.isOn        == true) ? "1"   : "0";
+        string exploPoint      = (m_toggleExploPoint       != null && m_toggleExploPoint.isOn       == true) ? "100000" : "0";
+        string pvpPoint        = (m_togglePvpPoint         != null && m_togglePvpPoint.isOn         == true) ? "100" : "0";
+        string achievementPoint = (m_toggleAchievementPoint != null && m_toggleAchievementPoint.isOn == true) ? "10000" : "0";
 
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
-        DeveloperConsole.ExecuteCommandStatic($"adddevresources {levelUp} {exploPoint} {pvpPoint}");
+        DeveloperConsole.ExecuteCommandStatic($"adddevresources {levelUp} {exploPoint} {pvpPoint} {achievementPoint}");
 #endif
     }
 

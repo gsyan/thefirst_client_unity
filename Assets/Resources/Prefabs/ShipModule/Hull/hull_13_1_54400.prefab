@@ -1477,7 +1477,7 @@ GameObject:
   - component: {fileID: 8408283221782546455}
   - component: {fileID: 9139057567121076768}
   m_Layer: 0
-  m_Name: h1_54400
+  m_Name: hull_13_1_54400
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1550,6 +1550,7 @@ MonoBehaviour:
   m_missiles: []
   m_hangars: []
   m_shield: {fileID: 0}
+  m_interceptor: {fileID: 0}
   m_hitPoints:
   - {x: -0.61557746, y: 0.6979977, z: 1.3472856}
   - {x: -0.64049226, y: 0.207066, z: 1.777281}
@@ -1632,7 +1633,7 @@ MonoBehaviour:
   - {x: 0.5861977, y: 0.43673238, z: 0.6412538}
   - {x: 0.64131105, y: 0.21140587, z: 0.6412592}
   m_cameraMinZoom: 9
-  m_cameraMaxZoom: 25
+  m_cameraMaxZoom: 30
   bShowHitPointGizmos: 1
 --- !u!114 &8408283221782546455
 MonoBehaviour:

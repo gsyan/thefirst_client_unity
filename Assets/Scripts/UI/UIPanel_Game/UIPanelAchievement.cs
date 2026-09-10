@@ -1,6 +1,7 @@
 // 업적 패널 — 카테고리 헤더 + 업적 행을 하나의 InfiniteScrollView에 순서대로 펼쳐서 표시.
 // 완료된 업적은 유저가 직접 "받기"를 눌러야 업적포인트가 지급됨(자동 지급 아님)
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,6 +11,10 @@ public class UIPanelAchievement : UIPanelBase
     [SerializeField] private UIAchievementRow m_rowPrefab;
     [SerializeField] private GameObject m_titleRedDot;
     [SerializeField] private RowLabelValue m_achievementPointRow; // 타이틀 아래 보유 업적포인트 상시 표시
+    [SerializeField] private Button m_claimAllButton;
+    [SerializeField] private TMP_Text m_claimAllButtonText;
+    [SerializeField] private Button m_findNextUnclaimedButton;
+    [SerializeField] private TMP_Text m_findNextUnclaimedButtonText;
 
     // 카테고리(조건 타입) 표시 순서 — 여기 순서가 곧 패널에 보이는 헤더 순서
     private static readonly EAchievementConditionType[] k_categoryOrder =
@@ -39,17 +44,27 @@ public class UIPanelAchievement : UIPanelBase
     }
 
     private readonly List<AchievementListEntry> m_flattenedList = new();
+    private int m_lastFoundUnclaimedIndex = -1; // "다음 찾기" 순환 검색 시작점 — 목록을 새로 받을 때마다 리셋
 
     private void Awake()
     {
         if (m_scrollView != null)
             m_scrollView.onItemBind = OnItemBind;
+        if (m_claimAllButton != null)
+            m_claimAllButton.onClick.AddListener(OnClaimAllClicked);
+        if (m_findNextUnclaimedButton != null)
+            m_findNextUnclaimedButton.onClick.AddListener(OnFindNextUnclaimedClicked);
     }
 
     public override void InitializeUIPanel()
     {
         EventManager.Subscribe_AchievementPointChanged(OnAchievementPointChanged);
         RefreshAchievementPointRow();
+
+        if (m_claimAllButtonText != null)
+            CommonUtility.SetUILocText(m_claimAllButtonText, "UIAchievement_ClaimAllButton");
+        if (m_findNextUnclaimedButtonText != null)
+            CommonUtility.SetUILocText(m_findNextUnclaimedButtonText, "UIAchievement_FindNextButton");
     }
 
     private void OnDestroy()
@@ -101,6 +116,7 @@ public class UIPanelAchievement : UIPanelBase
 
         BuildFlattenedList(statusById);
         RefreshUnclaimedIndicators();
+        m_lastFoundUnclaimedIndex = -1;
 
         if (m_scrollView != null && m_rowPrefab != null)
             m_scrollView.Initialize(m_flattenedList.Count, m_rowPrefab.gameObject);
@@ -161,6 +177,10 @@ public class UIPanelAchievement : UIPanelBase
 
         if (m_titleRedDot != null)
             m_titleRedDot.SetActive(anyUnclaimed);
+        if (m_claimAllButton != null)
+            m_claimAllButton.interactable = anyUnclaimed;
+        if (m_findNextUnclaimedButton != null)
+            m_findNextUnclaimedButton.interactable = anyUnclaimed;
 
         Commander commander = DataManager.Instance.m_currentCommander;
         if (commander != null)
@@ -208,7 +228,7 @@ public class UIPanelAchievement : UIPanelBase
         });
     }
 
-    // claimedEntry가 속한 카테고리의 헤더 엔트리를 찾아 headerHasUnclaimed를 처음부터 다시 계산 — 수령으로 그 카테고리의 마지막 미수령 항목이 없어졌을 수 있어서 단순 false 대입이 아니라 재순회 필요
+    // claimedEntry가 속한 카테고리의 헤더 엔트리를 찾아 headerHasUnclaimed를 다시 계산 — 수령으로 그 카테고리의 마지막 미수령 항목이 없어졌을 수 있어서 단순 false 대입이 아니라 재순회 필요
     private void RecomputeCategoryHeaderUnclaimed(AchievementListEntry claimedEntry)
     {
         if (claimedEntry == null) return;
@@ -216,17 +236,89 @@ public class UIPanelAchievement : UIPanelBase
         AchievementListEntry headerEntry = m_flattenedList.Find(e => e.isHeader == true && e.category == claimedEntry.category);
         if (headerEntry == null) return;
 
-        bool categoryHasUnclaimed = false;
+        headerEntry.headerHasUnclaimed = ComputeCategoryHasUnclaimed(claimedEntry.category);
+    }
+
+    // 전체 받기처럼 여러 카테고리가 한 번에 영향받을 수 있는 경우 모든 헤더를 한 번에 재계산
+    private void RecomputeAllCategoryHeaders()
+    {
         foreach (AchievementListEntry entry in m_flattenedList)
         {
-            if (entry.isHeader == true || entry.category != claimedEntry.category) continue;
-            if (entry.isClaimed == false && entry.currentValue >= entry.data.threshold)
-            {
-                categoryHasUnclaimed = true;
-                break;
-            }
+            if (entry.isHeader == true)
+                entry.headerHasUnclaimed = ComputeCategoryHasUnclaimed(entry.category);
         }
-        headerEntry.headerHasUnclaimed = categoryHasUnclaimed;
+    }
+
+    private bool ComputeCategoryHasUnclaimed(EAchievementConditionType category)
+    {
+        foreach (AchievementListEntry entry in m_flattenedList)
+        {
+            if (entry.isHeader == true || entry.category != category) continue;
+            if (entry.isClaimed == false && entry.currentValue >= entry.data.threshold)
+                return true;
+        }
+        return false;
+    }
+
+    private void OnClaimAllClicked()
+    {
+        SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true);
+
+        NetworkManager.Instance.ClaimAllAchievements(new ClaimAllAchievementsRequest(), response =>
+        {
+            if (response.errorCode != 0)
+            {
+                Debug.LogError($"[UIPanelAchievement] ClaimAllAchievements 실패: {response.errorCode}");
+                return;
+            }
+
+            if (response.data.claimedAchievementIds == null || response.data.claimedAchievementIds.Count == 0) return;
+
+            HashSet<string> claimedIds = new HashSet<string>(response.data.claimedAchievementIds);
+            foreach (AchievementListEntry entry in m_flattenedList)
+            {
+                if (entry.isHeader == false && claimedIds.Contains(entry.data.achievementId) == true)
+                    entry.isClaimed = true;
+            }
+
+            RecomputeAllCategoryHeaders();
+            RefreshUnclaimedIndicators();
+
+            Commander commander = DataManager.Instance.m_currentCommander;
+            if (commander != null)
+                commander.UpdateAchievementPoint(response.data.achievementPointRemain);
+
+            if (m_scrollView != null)
+                m_scrollView.RefreshVisible();
+
+            UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig
+            {
+                message = LocalizationManager.Instance.Get("DailyBonus_DescAchievement", response.data.totalAchievementPointGranted),
+                autoCloseSec = 3f,
+            });
+        });
+    }
+
+    // m_lastFoundUnclaimedIndex 다음 지점부터 순환 탐색 — 완료+미수령 항목을 찾으면 그 위치로 스크롤 이동하고 다음 검색 시작점으로 기억
+    private void OnFindNextUnclaimedClicked()
+    {
+        SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true);
+
+        if (m_flattenedList.Count == 0 || m_scrollView == null) return;
+
+        int startIndex = (m_lastFoundUnclaimedIndex + 1) % m_flattenedList.Count;
+        for (int i = 0; i < m_flattenedList.Count; i++)
+        {
+            int index = (startIndex + i) % m_flattenedList.Count;
+            AchievementListEntry entry = m_flattenedList[index];
+            if (entry.isHeader == true) continue;
+            if (entry.isClaimed == true) continue;
+            if (entry.currentValue < entry.data.threshold) continue;
+
+            m_lastFoundUnclaimedIndex = index;
+            m_scrollView.JumpToIndex(index);
+            return;
+        }
     }
 
     private string GetCategoryLocKey(EAchievementConditionType category)

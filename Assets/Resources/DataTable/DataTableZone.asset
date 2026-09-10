@@ -69,14 +69,15 @@ MonoBehaviour:
     enemyBaseHullTier: 1
     enemyModulePlacementProbability: 1
     enemyModulePerformanceProbability: 1
-    enemyShieldProbability: 0.1
+    enemyHullWeightNone: 98
+    enemyHullWeightShield: 1
+    enemyHullWeightInterceptor: 1
+    enemyHullWeightBoth: 0
     enemyHealthMultiplier: 0.3
     enemyAttackMultiplier: 0.1
-    enemyInterceptorEquipSlots: 9
     enemyWaveSpawnTermSec: 5
     explorationPointReward: 10
     commanderExpReward: 10
-    achievementPointReward: 100
   - zoneIndex: 2
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 3000
@@ -133,14 +134,15 @@ MonoBehaviour:
     enemyBaseHullTier: 1
     enemyModulePlacementProbability: 1
     enemyModulePerformanceProbability: 1
-    enemyShieldProbability: 0.1
+    enemyHullWeightNone: 98
+    enemyHullWeightShield: 1
+    enemyHullWeightInterceptor: 1
+    enemyHullWeightBoth: 0
     enemyHealthMultiplier: 0.6
     enemyAttackMultiplier: 0.2
-    enemyInterceptorEquipSlots: 9
     enemyWaveSpawnTermSec: 5
-    explorationPointReward: 10
-    commanderExpReward: 10
-    achievementPointReward: 100
+    explorationPointReward: 20
+    commanderExpReward: 11
   - zoneIndex: 3
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 3000
@@ -197,14 +199,15 @@ MonoBehaviour:
     enemyBaseHullTier: 2
     enemyModulePlacementProbability: 0.5
     enemyModulePerformanceProbability: 0.5
-    enemyShieldProbability: 0.1
+    enemyHullWeightNone: 98
+    enemyHullWeightShield: 1
+    enemyHullWeightInterceptor: 1
+    enemyHullWeightBoth: 0
     enemyHealthMultiplier: 0.9
     enemyAttackMultiplier: 0.3
-    enemyInterceptorEquipSlots: 9
     enemyWaveSpawnTermSec: 5
-    explorationPointReward: 10
-    commanderExpReward: 10
-    achievementPointReward: 100
+    explorationPointReward: 30
+    commanderExpReward: 12
   - zoneIndex: 4
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 3000
@@ -261,14 +264,15 @@ MonoBehaviour:
     enemyBaseHullTier: 2
     enemyModulePlacementProbability: 0.8
     enemyModulePerformanceProbability: 0.8
-    enemyShieldProbability: 0.1
+    enemyHullWeightNone: 98
+    enemyHullWeightShield: 1
+    enemyHullWeightInterceptor: 1
+    enemyHullWeightBoth: 0
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 0.4
-    enemyInterceptorEquipSlots: 9
     enemyWaveSpawnTermSec: 5
-    explorationPointReward: 10
-    commanderExpReward: 10
-    achievementPointReward: 100
+    explorationPointReward: 40
+    commanderExpReward: 13
   - zoneIndex: 5
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 5000
@@ -333,14 +337,15 @@ MonoBehaviour:
     enemyBaseHullTier: 2
     enemyModulePlacementProbability: 1
     enemyModulePerformanceProbability: 1
-    enemyShieldProbability: 0.1
+    enemyHullWeightNone: 98
+    enemyHullWeightShield: 1
+    enemyHullWeightInterceptor: 1
+    enemyHullWeightBoth: 0
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 0.5
-    enemyInterceptorEquipSlots: 9
     enemyWaveSpawnTermSec: 5
-    explorationPointReward: 10
-    commanderExpReward: 10
-    achievementPointReward: 100
+    explorationPointReward: 50
+    commanderExpReward: 14
   - zoneIndex: 6
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 5000
@@ -405,14 +410,15 @@ MonoBehaviour:
     enemyBaseHullTier: 3
     enemyModulePlacementProbability: 0.5
     enemyModulePerformanceProbability: 0.5
-    enemyShieldProbability: 0.1
+    enemyHullWeightNone: 98
+    enemyHullWeightShield: 1
+    enemyHullWeightInterceptor: 1
+    enemyHullWeightBoth: 0
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 0.6
-    enemyInterceptorEquipSlots: 9
     enemyWaveSpawnTermSec: 5
-    explorationPointReward: 10
-    commanderExpReward: 10
-    achievementPointReward: 100
+    explorationPointReward: 60
+    commanderExpReward: 15
   - zoneIndex: 7
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 5000
@@ -477,14 +483,15 @@ MonoBehaviour:
     enemyBaseHullTier: 3
     enemyModulePlacementProbability: 0.7
     enemyModulePerformanceProbability: 0.7
-    enemyShieldProbability: 0.1
+    enemyHullWeightNone: 98
+    enemyHullWeightShield: 1
+    enemyHullWeightInterceptor: 1
+    enemyHullWeightBoth: 0
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 0.7
-    enemyInterceptorEquipSlots: 9
     enemyWaveSpawnTermSec: 5
-    explorationPointReward: 10
-    commanderExpReward: 10
-    achievementPointReward: 100
+    explorationPointReward: 70
+    commanderExpReward: 16
   - zoneIndex: 8
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 5000
@@ -549,14 +556,15 @@ MonoBehaviour:
     enemyBaseHullTier: 3
     enemyModulePlacementProbability: 0.9
     enemyModulePerformanceProbability: 0.9
-    enemyShieldProbability: 0.1
+    enemyHullWeightNone: 98
+    enemyHullWeightShield: 1
+    enemyHullWeightInterceptor: 1
+    enemyHullWeightBoth: 0
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 0.8
-    enemyInterceptorEquipSlots: 9
     enemyWaveSpawnTermSec: 5
-    explorationPointReward: 10
-    commanderExpReward: 10
-    achievementPointReward: 100
+    explorationPointReward: 80
+    commanderExpReward: 17
   - zoneIndex: 9
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 5000
@@ -621,14 +629,15 @@ MonoBehaviour:
     enemyBaseHullTier: 3
     enemyModulePlacementProbability: 1
     enemyModulePerformanceProbability: 1
-    enemyShieldProbability: 0.1
+    enemyHullWeightNone: 98
+    enemyHullWeightShield: 1
+    enemyHullWeightInterceptor: 1
+    enemyHullWeightBoth: 0
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 0.9
-    enemyInterceptorEquipSlots: 9
     enemyWaveSpawnTermSec: 5
-    explorationPointReward: 10
-    commanderExpReward: 10
-    achievementPointReward: 100
+    explorationPointReward: 90
+    commanderExpReward: 18
   - zoneIndex: 10
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 5000
@@ -693,14 +702,15 @@ MonoBehaviour:
     enemyBaseHullTier: 4
     enemyModulePlacementProbability: 0.5
     enemyModulePerformanceProbability: 0.5
-    enemyShieldProbability: 0.1
+    enemyHullWeightNone: 98
+    enemyHullWeightShield: 1
+    enemyHullWeightInterceptor: 1
+    enemyHullWeightBoth: 0
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyInterceptorEquipSlots: 9
     enemyWaveSpawnTermSec: 5
-    explorationPointReward: 10
-    commanderExpReward: 10
-    achievementPointReward: 100
+    explorationPointReward: 100
+    commanderExpReward: 19
   - zoneIndex: 11
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 5000
@@ -765,14 +775,15 @@ MonoBehaviour:
     enemyBaseHullTier: 4
     enemyModulePlacementProbability: 0.7
     enemyModulePerformanceProbability: 0.7
-    enemyShieldProbability: 0.1
+    enemyHullWeightNone: 98
+    enemyHullWeightShield: 1
+    enemyHullWeightInterceptor: 1
+    enemyHullWeightBoth: 0
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyInterceptorEquipSlots: 9
     enemyWaveSpawnTermSec: 5
-    explorationPointReward: 10
-    commanderExpReward: 10
-    achievementPointReward: 100
+    explorationPointReward: 110
+    commanderExpReward: 20
   - zoneIndex: 12
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 5000
@@ -837,14 +848,15 @@ MonoBehaviour:
     enemyBaseHullTier: 4
     enemyModulePlacementProbability: 0.9
     enemyModulePerformanceProbability: 0.9
-    enemyShieldProbability: 0.1
+    enemyHullWeightNone: 98
+    enemyHullWeightShield: 1
+    enemyHullWeightInterceptor: 1
+    enemyHullWeightBoth: 0
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyInterceptorEquipSlots: 9
     enemyWaveSpawnTermSec: 5
-    explorationPointReward: 10
-    commanderExpReward: 10
-    achievementPointReward: 100
+    explorationPointReward: 120
+    commanderExpReward: 21
   - zoneIndex: 13
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 5000
@@ -909,14 +921,15 @@ MonoBehaviour:
     enemyBaseHullTier: 4
     enemyModulePlacementProbability: 1
     enemyModulePerformanceProbability: 1
-    enemyShieldProbability: 0.1
+    enemyHullWeightNone: 98
+    enemyHullWeightShield: 1
+    enemyHullWeightInterceptor: 1
+    enemyHullWeightBoth: 0
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyInterceptorEquipSlots: 9
     enemyWaveSpawnTermSec: 5
-    explorationPointReward: 10
-    commanderExpReward: 10
-    achievementPointReward: 100
+    explorationPointReward: 130
+    commanderExpReward: 22
   - zoneIndex: 14
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 5000
@@ -981,14 +994,15 @@ MonoBehaviour:
     enemyBaseHullTier: 5
     enemyModulePlacementProbability: 0.5
     enemyModulePerformanceProbability: 0.5
-    enemyShieldProbability: 0.1
+    enemyHullWeightNone: 98
+    enemyHullWeightShield: 1
+    enemyHullWeightInterceptor: 1
+    enemyHullWeightBoth: 0
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyInterceptorEquipSlots: 9
     enemyWaveSpawnTermSec: 5
-    explorationPointReward: 10
-    commanderExpReward: 10
-    achievementPointReward: 100
+    explorationPointReward: 140
+    commanderExpReward: 23
   - zoneIndex: 15
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 5000
@@ -1053,14 +1067,15 @@ MonoBehaviour:
     enemyBaseHullTier: 5
     enemyModulePlacementProbability: 0.7
     enemyModulePerformanceProbability: 0.7
-    enemyShieldProbability: 0.1
+    enemyHullWeightNone: 98
+    enemyHullWeightShield: 1
+    enemyHullWeightInterceptor: 1
+    enemyHullWeightBoth: 0
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyInterceptorEquipSlots: 9
     enemyWaveSpawnTermSec: 5
-    explorationPointReward: 10
-    commanderExpReward: 10
-    achievementPointReward: 100
+    explorationPointReward: 150
+    commanderExpReward: 24
   - zoneIndex: 16
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 5000
@@ -1125,14 +1140,15 @@ MonoBehaviour:
     enemyBaseHullTier: 5
     enemyModulePlacementProbability: 0.9
     enemyModulePerformanceProbability: 0.9
-    enemyShieldProbability: 0.1
+    enemyHullWeightNone: 98
+    enemyHullWeightShield: 1
+    enemyHullWeightInterceptor: 1
+    enemyHullWeightBoth: 0
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyInterceptorEquipSlots: 9
     enemyWaveSpawnTermSec: 5
-    explorationPointReward: 10
-    commanderExpReward: 10
-    achievementPointReward: 100
+    explorationPointReward: 160
+    commanderExpReward: 25
   - zoneIndex: 17
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 5000
@@ -1197,14 +1213,15 @@ MonoBehaviour:
     enemyBaseHullTier: 5
     enemyModulePlacementProbability: 1
     enemyModulePerformanceProbability: 1
-    enemyShieldProbability: 0.1
+    enemyHullWeightNone: 98
+    enemyHullWeightShield: 1
+    enemyHullWeightInterceptor: 1
+    enemyHullWeightBoth: 0
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyInterceptorEquipSlots: 9
     enemyWaveSpawnTermSec: 5
-    explorationPointReward: 10
-    commanderExpReward: 10
-    achievementPointReward: 100
+    explorationPointReward: 170
+    commanderExpReward: 26
   - zoneIndex: 18
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 5000
@@ -1269,14 +1286,15 @@ MonoBehaviour:
     enemyBaseHullTier: 6
     enemyModulePlacementProbability: 0.5
     enemyModulePerformanceProbability: 0.5
-    enemyShieldProbability: 0.1
+    enemyHullWeightNone: 98
+    enemyHullWeightShield: 1
+    enemyHullWeightInterceptor: 1
+    enemyHullWeightBoth: 0
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyInterceptorEquipSlots: 9
     enemyWaveSpawnTermSec: 5
-    explorationPointReward: 10
-    commanderExpReward: 10
-    achievementPointReward: 100
+    explorationPointReward: 180
+    commanderExpReward: 27
   - zoneIndex: 19
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 5000
@@ -1341,14 +1359,15 @@ MonoBehaviour:
     enemyBaseHullTier: 6
     enemyModulePlacementProbability: 0.7
     enemyModulePerformanceProbability: 0.7
-    enemyShieldProbability: 0.1
+    enemyHullWeightNone: 98
+    enemyHullWeightShield: 1
+    enemyHullWeightInterceptor: 1
+    enemyHullWeightBoth: 0
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyInterceptorEquipSlots: 9
     enemyWaveSpawnTermSec: 5
-    explorationPointReward: 10
-    commanderExpReward: 10
-    achievementPointReward: 100
+    explorationPointReward: 190
+    commanderExpReward: 28
   - zoneIndex: 20
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 5000
@@ -1413,14 +1432,15 @@ MonoBehaviour:
     enemyBaseHullTier: 6
     enemyModulePlacementProbability: 0.9
     enemyModulePerformanceProbability: 0.9
-    enemyShieldProbability: 0.1
+    enemyHullWeightNone: 98
+    enemyHullWeightShield: 1
+    enemyHullWeightInterceptor: 1
+    enemyHullWeightBoth: 0
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyInterceptorEquipSlots: 9
     enemyWaveSpawnTermSec: 5
-    explorationPointReward: 10
-    commanderExpReward: 10
-    achievementPointReward: 100
+    explorationPointReward: 200
+    commanderExpReward: 29
   - zoneIndex: 21
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 5000
@@ -1485,14 +1505,15 @@ MonoBehaviour:
     enemyBaseHullTier: 6
     enemyModulePlacementProbability: 1
     enemyModulePerformanceProbability: 1
-    enemyShieldProbability: 0.1
+    enemyHullWeightNone: 98
+    enemyHullWeightShield: 1
+    enemyHullWeightInterceptor: 1
+    enemyHullWeightBoth: 0
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyInterceptorEquipSlots: 9
     enemyWaveSpawnTermSec: 5
-    explorationPointReward: 10
-    commanderExpReward: 10
-    achievementPointReward: 100
+    explorationPointReward: 210
+    commanderExpReward: 30
   - zoneIndex: 22
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 5000
@@ -1557,14 +1578,15 @@ MonoBehaviour:
     enemyBaseHullTier: 7
     enemyModulePlacementProbability: 0.5
     enemyModulePerformanceProbability: 0.5
-    enemyShieldProbability: 0.1
+    enemyHullWeightNone: 98
+    enemyHullWeightShield: 1
+    enemyHullWeightInterceptor: 1
+    enemyHullWeightBoth: 0
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyInterceptorEquipSlots: 9
     enemyWaveSpawnTermSec: 5
-    explorationPointReward: 10
-    commanderExpReward: 10
-    achievementPointReward: 100
+    explorationPointReward: 220
+    commanderExpReward: 31
   - zoneIndex: 23
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 5000
@@ -1629,14 +1651,15 @@ MonoBehaviour:
     enemyBaseHullTier: 7
     enemyModulePlacementProbability: 0.7
     enemyModulePerformanceProbability: 0.7
-    enemyShieldProbability: 0.1
+    enemyHullWeightNone: 98
+    enemyHullWeightShield: 1
+    enemyHullWeightInterceptor: 1
+    enemyHullWeightBoth: 0
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyInterceptorEquipSlots: 9
     enemyWaveSpawnTermSec: 5
-    explorationPointReward: 10
-    commanderExpReward: 10
-    achievementPointReward: 100
+    explorationPointReward: 230
+    commanderExpReward: 32
   - zoneIndex: 24
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 5000
@@ -1701,14 +1724,15 @@ MonoBehaviour:
     enemyBaseHullTier: 7
     enemyModulePlacementProbability: 0.9
     enemyModulePerformanceProbability: 0.9
-    enemyShieldProbability: 0.1
+    enemyHullWeightNone: 98
+    enemyHullWeightShield: 1
+    enemyHullWeightInterceptor: 1
+    enemyHullWeightBoth: 0
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyInterceptorEquipSlots: 9
     enemyWaveSpawnTermSec: 5
-    explorationPointReward: 10
-    commanderExpReward: 10
-    achievementPointReward: 100
+    explorationPointReward: 240
+    commanderExpReward: 33
   - zoneIndex: 25
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 5000
@@ -1773,14 +1797,15 @@ MonoBehaviour:
     enemyBaseHullTier: 7
     enemyModulePlacementProbability: 1
     enemyModulePerformanceProbability: 1
-    enemyShieldProbability: 0.1
+    enemyHullWeightNone: 98
+    enemyHullWeightShield: 1
+    enemyHullWeightInterceptor: 1
+    enemyHullWeightBoth: 0
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyInterceptorEquipSlots: 9
     enemyWaveSpawnTermSec: 5
-    explorationPointReward: 10
-    commanderExpReward: 10
-    achievementPointReward: 100
+    explorationPointReward: 250
+    commanderExpReward: 34
   - zoneIndex: 26
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 5000
@@ -1845,14 +1870,15 @@ MonoBehaviour:
     enemyBaseHullTier: 8
     enemyModulePlacementProbability: 0.5
     enemyModulePerformanceProbability: 0.5
-    enemyShieldProbability: 0.1
+    enemyHullWeightNone: 98
+    enemyHullWeightShield: 1
+    enemyHullWeightInterceptor: 1
+    enemyHullWeightBoth: 0
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyInterceptorEquipSlots: 9
     enemyWaveSpawnTermSec: 5
-    explorationPointReward: 10
-    commanderExpReward: 10
-    achievementPointReward: 100
+    explorationPointReward: 260
+    commanderExpReward: 35
   - zoneIndex: 27
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 5000
@@ -1917,14 +1943,15 @@ MonoBehaviour:
     enemyBaseHullTier: 8
     enemyModulePlacementProbability: 0.7
     enemyModulePerformanceProbability: 0.7
-    enemyShieldProbability: 0.1
+    enemyHullWeightNone: 98
+    enemyHullWeightShield: 1
+    enemyHullWeightInterceptor: 1
+    enemyHullWeightBoth: 0
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyInterceptorEquipSlots: 9
     enemyWaveSpawnTermSec: 5
-    explorationPointReward: 10
-    commanderExpReward: 10
-    achievementPointReward: 100
+    explorationPointReward: 270
+    commanderExpReward: 36
   - zoneIndex: 28
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 5000
@@ -1989,14 +2016,15 @@ MonoBehaviour:
     enemyBaseHullTier: 8
     enemyModulePlacementProbability: 0.9
     enemyModulePerformanceProbability: 0.9
-    enemyShieldProbability: 0.1
+    enemyHullWeightNone: 98
+    enemyHullWeightShield: 1
+    enemyHullWeightInterceptor: 1
+    enemyHullWeightBoth: 0
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyInterceptorEquipSlots: 9
     enemyWaveSpawnTermSec: 5
-    explorationPointReward: 10
-    commanderExpReward: 10
-    achievementPointReward: 100
+    explorationPointReward: 280
+    commanderExpReward: 37
   - zoneIndex: 29
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 5000
@@ -2061,14 +2089,15 @@ MonoBehaviour:
     enemyBaseHullTier: 8
     enemyModulePlacementProbability: 1
     enemyModulePerformanceProbability: 1
-    enemyShieldProbability: 0.1
+    enemyHullWeightNone: 98
+    enemyHullWeightShield: 1
+    enemyHullWeightInterceptor: 1
+    enemyHullWeightBoth: 0
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyInterceptorEquipSlots: 9
     enemyWaveSpawnTermSec: 5
-    explorationPointReward: 10
-    commanderExpReward: 10
-    achievementPointReward: 100
+    explorationPointReward: 290
+    commanderExpReward: 38
   - zoneIndex: 30
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 5000
@@ -2133,14 +2162,15 @@ MonoBehaviour:
     enemyBaseHullTier: 9
     enemyModulePlacementProbability: 0.5
     enemyModulePerformanceProbability: 0.5
-    enemyShieldProbability: 0.1
+    enemyHullWeightNone: 98
+    enemyHullWeightShield: 1
+    enemyHullWeightInterceptor: 1
+    enemyHullWeightBoth: 0
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyInterceptorEquipSlots: 9
     enemyWaveSpawnTermSec: 5
-    explorationPointReward: 10
-    commanderExpReward: 10
-    achievementPointReward: 100
+    explorationPointReward: 300
+    commanderExpReward: 39
   - zoneIndex: 31
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -2221,14 +2251,15 @@ MonoBehaviour:
     enemyBaseHullTier: 9
     enemyModulePlacementProbability: 0.7
     enemyModulePerformanceProbability: 0.7
-    enemyShieldProbability: 0.1
+    enemyHullWeightNone: 98
+    enemyHullWeightShield: 1
+    enemyHullWeightInterceptor: 1
+    enemyHullWeightBoth: 0
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyInterceptorEquipSlots: 9
     enemyWaveSpawnTermSec: 5
-    explorationPointReward: 10
-    commanderExpReward: 10
-    achievementPointReward: 100
+    explorationPointReward: 310
+    commanderExpReward: 40
   - zoneIndex: 32
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -2309,14 +2340,15 @@ MonoBehaviour:
     enemyBaseHullTier: 9
     enemyModulePlacementProbability: 0.9
     enemyModulePerformanceProbability: 0.9
-    enemyShieldProbability: 0.1
+    enemyHullWeightNone: 98
+    enemyHullWeightShield: 1
+    enemyHullWeightInterceptor: 1
+    enemyHullWeightBoth: 0
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyInterceptorEquipSlots: 9
     enemyWaveSpawnTermSec: 5
-    explorationPointReward: 10
-    commanderExpReward: 10
-    achievementPointReward: 100
+    explorationPointReward: 320
+    commanderExpReward: 41
   - zoneIndex: 33
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -2397,14 +2429,15 @@ MonoBehaviour:
     enemyBaseHullTier: 9
     enemyModulePlacementProbability: 1
     enemyModulePerformanceProbability: 1
-    enemyShieldProbability: 0.1
+    enemyHullWeightNone: 98
+    enemyHullWeightShield: 1
+    enemyHullWeightInterceptor: 1
+    enemyHullWeightBoth: 0
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyInterceptorEquipSlots: 9
     enemyWaveSpawnTermSec: 5
-    explorationPointReward: 10
-    commanderExpReward: 10
-    achievementPointReward: 100
+    explorationPointReward: 330
+    commanderExpReward: 42
   - zoneIndex: 34
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -2485,14 +2518,15 @@ MonoBehaviour:
     enemyBaseHullTier: 10
     enemyModulePlacementProbability: 0.5
     enemyModulePerformanceProbability: 0.5
-    enemyShieldProbability: 0.1
+    enemyHullWeightNone: 98
+    enemyHullWeightShield: 1
+    enemyHullWeightInterceptor: 1
+    enemyHullWeightBoth: 0
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyInterceptorEquipSlots: 9
     enemyWaveSpawnTermSec: 5
-    explorationPointReward: 10
-    commanderExpReward: 10
-    achievementPointReward: 100
+    explorationPointReward: 340
+    commanderExpReward: 43
   - zoneIndex: 35
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -2573,14 +2607,15 @@ MonoBehaviour:
     enemyBaseHullTier: 10
     enemyModulePlacementProbability: 0.7
     enemyModulePerformanceProbability: 0.7
-    enemyShieldProbability: 0.1
+    enemyHullWeightNone: 98
+    enemyHullWeightShield: 1
+    enemyHullWeightInterceptor: 1
+    enemyHullWeightBoth: 0
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyInterceptorEquipSlots: 9
     enemyWaveSpawnTermSec: 5
-    explorationPointReward: 10
-    commanderExpReward: 10
-    achievementPointReward: 100
+    explorationPointReward: 350
+    commanderExpReward: 44
   - zoneIndex: 36
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -2661,14 +2696,15 @@ MonoBehaviour:
     enemyBaseHullTier: 10
     enemyModulePlacementProbability: 0.9
     enemyModulePerformanceProbability: 0.9
-    enemyShieldProbability: 0.1
+    enemyHullWeightNone: 98
+    enemyHullWeightShield: 1
+    enemyHullWeightInterceptor: 1
+    enemyHullWeightBoth: 0
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyInterceptorEquipSlots: 9
     enemyWaveSpawnTermSec: 5
-    explorationPointReward: 10
-    commanderExpReward: 10
-    achievementPointReward: 100
+    explorationPointReward: 360
+    commanderExpReward: 45
   - zoneIndex: 37
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -2749,14 +2785,15 @@ MonoBehaviour:
     enemyBaseHullTier: 10
     enemyModulePlacementProbability: 1
     enemyModulePerformanceProbability: 1
-    enemyShieldProbability: 0.1
+    enemyHullWeightNone: 98
+    enemyHullWeightShield: 1
+    enemyHullWeightInterceptor: 1
+    enemyHullWeightBoth: 0
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyInterceptorEquipSlots: 9
     enemyWaveSpawnTermSec: 5
-    explorationPointReward: 10
-    commanderExpReward: 10
-    achievementPointReward: 100
+    explorationPointReward: 370
+    commanderExpReward: 46
   - zoneIndex: 38
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -2837,14 +2874,15 @@ MonoBehaviour:
     enemyBaseHullTier: 11
     enemyModulePlacementProbability: 0.5
     enemyModulePerformanceProbability: 0.5
-    enemyShieldProbability: 0.1
+    enemyHullWeightNone: 98
+    enemyHullWeightShield: 1
+    enemyHullWeightInterceptor: 1
+    enemyHullWeightBoth: 0
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyInterceptorEquipSlots: 9
     enemyWaveSpawnTermSec: 5
-    explorationPointReward: 10
-    commanderExpReward: 10
-    achievementPointReward: 100
+    explorationPointReward: 380
+    commanderExpReward: 47
   - zoneIndex: 39
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -2925,14 +2963,15 @@ MonoBehaviour:
     enemyBaseHullTier: 11
     enemyModulePlacementProbability: 0.7
     enemyModulePerformanceProbability: 0.7
-    enemyShieldProbability: 0.1
+    enemyHullWeightNone: 98
+    enemyHullWeightShield: 1
+    enemyHullWeightInterceptor: 1
+    enemyHullWeightBoth: 0
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyInterceptorEquipSlots: 9
     enemyWaveSpawnTermSec: 5
-    explorationPointReward: 10
-    commanderExpReward: 10
-    achievementPointReward: 100
+    explorationPointReward: 390
+    commanderExpReward: 48
   - zoneIndex: 40
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -3013,14 +3052,15 @@ MonoBehaviour:
     enemyBaseHullTier: 11
     enemyModulePlacementProbability: 0.9
     enemyModulePerformanceProbability: 0.9
-    enemyShieldProbability: 0.1
+    enemyHullWeightNone: 98
+    enemyHullWeightShield: 1
+    enemyHullWeightInterceptor: 1
+    enemyHullWeightBoth: 0
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyInterceptorEquipSlots: 9
     enemyWaveSpawnTermSec: 5
-    explorationPointReward: 10
-    commanderExpReward: 10
-    achievementPointReward: 100
+    explorationPointReward: 400
+    commanderExpReward: 49
   - zoneIndex: 41
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -3101,14 +3141,15 @@ MonoBehaviour:
     enemyBaseHullTier: 11
     enemyModulePlacementProbability: 1
     enemyModulePerformanceProbability: 1
-    enemyShieldProbability: 0.1
+    enemyHullWeightNone: 98
+    enemyHullWeightShield: 1
+    enemyHullWeightInterceptor: 1
+    enemyHullWeightBoth: 0
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyInterceptorEquipSlots: 9
     enemyWaveSpawnTermSec: 5
-    explorationPointReward: 10
-    commanderExpReward: 10
-    achievementPointReward: 100
+    explorationPointReward: 410
+    commanderExpReward: 50
   - zoneIndex: 42
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -3189,14 +3230,15 @@ MonoBehaviour:
     enemyBaseHullTier: 12
     enemyModulePlacementProbability: 0.5
     enemyModulePerformanceProbability: 0.5
-    enemyShieldProbability: 0.1
+    enemyHullWeightNone: 98
+    enemyHullWeightShield: 1
+    enemyHullWeightInterceptor: 1
+    enemyHullWeightBoth: 0
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyInterceptorEquipSlots: 9
     enemyWaveSpawnTermSec: 5
-    explorationPointReward: 10
-    commanderExpReward: 10
-    achievementPointReward: 100
+    explorationPointReward: 420
+    commanderExpReward: 51
   - zoneIndex: 43
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -3277,14 +3319,15 @@ MonoBehaviour:
     enemyBaseHullTier: 12
     enemyModulePlacementProbability: 0.7
     enemyModulePerformanceProbability: 0.7
-    enemyShieldProbability: 0.1
+    enemyHullWeightNone: 98
+    enemyHullWeightShield: 1
+    enemyHullWeightInterceptor: 1
+    enemyHullWeightBoth: 0
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyInterceptorEquipSlots: 9
     enemyWaveSpawnTermSec: 5
-    explorationPointReward: 10
-    commanderExpReward: 10
-    achievementPointReward: 100
+    explorationPointReward: 430
+    commanderExpReward: 52
   - zoneIndex: 44
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -3365,14 +3408,15 @@ MonoBehaviour:
     enemyBaseHullTier: 12
     enemyModulePlacementProbability: 0.9
     enemyModulePerformanceProbability: 0.9
-    enemyShieldProbability: 0.1
+    enemyHullWeightNone: 98
+    enemyHullWeightShield: 1
+    enemyHullWeightInterceptor: 1
+    enemyHullWeightBoth: 0
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyInterceptorEquipSlots: 9
     enemyWaveSpawnTermSec: 5
-    explorationPointReward: 10
-    commanderExpReward: 10
-    achievementPointReward: 100
+    explorationPointReward: 440
+    commanderExpReward: 53
   - zoneIndex: 45
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -3453,14 +3497,15 @@ MonoBehaviour:
     enemyBaseHullTier: 12
     enemyModulePlacementProbability: 1
     enemyModulePerformanceProbability: 1
-    enemyShieldProbability: 0.1
+    enemyHullWeightNone: 98
+    enemyHullWeightShield: 1
+    enemyHullWeightInterceptor: 1
+    enemyHullWeightBoth: 0
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyInterceptorEquipSlots: 9
     enemyWaveSpawnTermSec: 5
-    explorationPointReward: 10
-    commanderExpReward: 10
-    achievementPointReward: 100
+    explorationPointReward: 450
+    commanderExpReward: 54
   - zoneIndex: 46
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -3541,14 +3586,15 @@ MonoBehaviour:
     enemyBaseHullTier: 13
     enemyModulePlacementProbability: 0.5
     enemyModulePerformanceProbability: 0.5
-    enemyShieldProbability: 0.1
+    enemyHullWeightNone: 98
+    enemyHullWeightShield: 1
+    enemyHullWeightInterceptor: 1
+    enemyHullWeightBoth: 0
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyInterceptorEquipSlots: 9
     enemyWaveSpawnTermSec: 5
-    explorationPointReward: 10
-    commanderExpReward: 10
-    achievementPointReward: 100
+    explorationPointReward: 460
+    commanderExpReward: 55
   - zoneIndex: 47
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -3629,14 +3675,15 @@ MonoBehaviour:
     enemyBaseHullTier: 13
     enemyModulePlacementProbability: 0.7
     enemyModulePerformanceProbability: 0.7
-    enemyShieldProbability: 0.1
+    enemyHullWeightNone: 98
+    enemyHullWeightShield: 1
+    enemyHullWeightInterceptor: 1
+    enemyHullWeightBoth: 0
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyInterceptorEquipSlots: 9
     enemyWaveSpawnTermSec: 5
-    explorationPointReward: 10
-    commanderExpReward: 10
-    achievementPointReward: 100
+    explorationPointReward: 470
+    commanderExpReward: 56
   - zoneIndex: 48
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -3717,14 +3764,15 @@ MonoBehaviour:
     enemyBaseHullTier: 13
     enemyModulePlacementProbability: 0.9
     enemyModulePerformanceProbability: 0.9
-    enemyShieldProbability: 0.1
+    enemyHullWeightNone: 98
+    enemyHullWeightShield: 1
+    enemyHullWeightInterceptor: 1
+    enemyHullWeightBoth: 0
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyInterceptorEquipSlots: 9
     enemyWaveSpawnTermSec: 5
-    explorationPointReward: 10
-    commanderExpReward: 10
-    achievementPointReward: 100
+    explorationPointReward: 480
+    commanderExpReward: 57
   - zoneIndex: 49
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -3805,14 +3853,15 @@ MonoBehaviour:
     enemyBaseHullTier: 13
     enemyModulePlacementProbability: 1
     enemyModulePerformanceProbability: 1
-    enemyShieldProbability: 0.1
+    enemyHullWeightNone: 98
+    enemyHullWeightShield: 1
+    enemyHullWeightInterceptor: 1
+    enemyHullWeightBoth: 0
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyInterceptorEquipSlots: 9
     enemyWaveSpawnTermSec: 5
-    explorationPointReward: 10
-    commanderExpReward: 10
-    achievementPointReward: 100
+    explorationPointReward: 490
+    commanderExpReward: 58
   - zoneIndex: 50
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -3893,14 +3942,15 @@ MonoBehaviour:
     enemyBaseHullTier: 14
     enemyModulePlacementProbability: 1
     enemyModulePerformanceProbability: 1
-    enemyShieldProbability: 0.2
+    enemyHullWeightNone: 80
+    enemyHullWeightShield: 10
+    enemyHullWeightInterceptor: 10
+    enemyHullWeightBoth: 0
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyInterceptorEquipSlots: 9
     enemyWaveSpawnTermSec: 5
-    explorationPointReward: 10
-    commanderExpReward: 10
-    achievementPointReward: 100
+    explorationPointReward: 500
+    commanderExpReward: 59
   - zoneIndex: 51
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -3981,14 +4031,15 @@ MonoBehaviour:
     enemyBaseHullTier: 14
     enemyModulePlacementProbability: 1
     enemyModulePerformanceProbability: 1
-    enemyShieldProbability: 0.2
+    enemyHullWeightNone: 80
+    enemyHullWeightShield: 10
+    enemyHullWeightInterceptor: 10
+    enemyHullWeightBoth: 0
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyInterceptorEquipSlots: 9
     enemyWaveSpawnTermSec: 5
-    explorationPointReward: 10
-    commanderExpReward: 10
-    achievementPointReward: 100
+    explorationPointReward: 510
+    commanderExpReward: 60
   - zoneIndex: 52
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -4069,14 +4120,15 @@ MonoBehaviour:
     enemyBaseHullTier: 14
     enemyModulePlacementProbability: 1
     enemyModulePerformanceProbability: 1
-    enemyShieldProbability: 0.2
+    enemyHullWeightNone: 80
+    enemyHullWeightShield: 10
+    enemyHullWeightInterceptor: 10
+    enemyHullWeightBoth: 0
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyInterceptorEquipSlots: 9
     enemyWaveSpawnTermSec: 5
-    explorationPointReward: 10
-    commanderExpReward: 10
-    achievementPointReward: 100
+    explorationPointReward: 520
+    commanderExpReward: 61
   - zoneIndex: 53
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -4157,14 +4209,15 @@ MonoBehaviour:
     enemyBaseHullTier: 14
     enemyModulePlacementProbability: 1
     enemyModulePerformanceProbability: 1
-    enemyShieldProbability: 0.2
+    enemyHullWeightNone: 80
+    enemyHullWeightShield: 10
+    enemyHullWeightInterceptor: 10
+    enemyHullWeightBoth: 0
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyInterceptorEquipSlots: 9
     enemyWaveSpawnTermSec: 5
-    explorationPointReward: 10
-    commanderExpReward: 10
-    achievementPointReward: 100
+    explorationPointReward: 530
+    commanderExpReward: 62
   - zoneIndex: 54
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -4245,14 +4298,15 @@ MonoBehaviour:
     enemyBaseHullTier: 14
     enemyModulePlacementProbability: 1
     enemyModulePerformanceProbability: 1
-    enemyShieldProbability: 0.2
+    enemyHullWeightNone: 80
+    enemyHullWeightShield: 10
+    enemyHullWeightInterceptor: 10
+    enemyHullWeightBoth: 0
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyInterceptorEquipSlots: 9
     enemyWaveSpawnTermSec: 5
-    explorationPointReward: 10
-    commanderExpReward: 10
-    achievementPointReward: 100
+    explorationPointReward: 540
+    commanderExpReward: 63
   - zoneIndex: 55
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -4333,14 +4387,15 @@ MonoBehaviour:
     enemyBaseHullTier: 14
     enemyModulePlacementProbability: 1
     enemyModulePerformanceProbability: 1
-    enemyShieldProbability: 0.2
+    enemyHullWeightNone: 80
+    enemyHullWeightShield: 10
+    enemyHullWeightInterceptor: 10
+    enemyHullWeightBoth: 0
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyInterceptorEquipSlots: 9
     enemyWaveSpawnTermSec: 5
-    explorationPointReward: 10
-    commanderExpReward: 10
-    achievementPointReward: 100
+    explorationPointReward: 550
+    commanderExpReward: 64
   - zoneIndex: 56
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -4421,14 +4476,15 @@ MonoBehaviour:
     enemyBaseHullTier: 14
     enemyModulePlacementProbability: 1
     enemyModulePerformanceProbability: 1
-    enemyShieldProbability: 0.2
+    enemyHullWeightNone: 80
+    enemyHullWeightShield: 10
+    enemyHullWeightInterceptor: 10
+    enemyHullWeightBoth: 0
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyInterceptorEquipSlots: 9
     enemyWaveSpawnTermSec: 5
-    explorationPointReward: 10
-    commanderExpReward: 10
-    achievementPointReward: 100
+    explorationPointReward: 560
+    commanderExpReward: 65
   - zoneIndex: 57
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -4509,14 +4565,15 @@ MonoBehaviour:
     enemyBaseHullTier: 14
     enemyModulePlacementProbability: 1
     enemyModulePerformanceProbability: 1
-    enemyShieldProbability: 0.2
+    enemyHullWeightNone: 80
+    enemyHullWeightShield: 10
+    enemyHullWeightInterceptor: 10
+    enemyHullWeightBoth: 0
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyInterceptorEquipSlots: 9
     enemyWaveSpawnTermSec: 5
-    explorationPointReward: 10
-    commanderExpReward: 10
-    achievementPointReward: 100
+    explorationPointReward: 570
+    commanderExpReward: 66
   - zoneIndex: 58
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -4597,14 +4654,15 @@ MonoBehaviour:
     enemyBaseHullTier: 14
     enemyModulePlacementProbability: 1
     enemyModulePerformanceProbability: 1
-    enemyShieldProbability: 0.2
+    enemyHullWeightNone: 80
+    enemyHullWeightShield: 10
+    enemyHullWeightInterceptor: 10
+    enemyHullWeightBoth: 0
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyInterceptorEquipSlots: 9
     enemyWaveSpawnTermSec: 5
-    explorationPointReward: 10
-    commanderExpReward: 10
-    achievementPointReward: 100
+    explorationPointReward: 580
+    commanderExpReward: 67
   - zoneIndex: 59
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -4685,14 +4743,15 @@ MonoBehaviour:
     enemyBaseHullTier: 14
     enemyModulePlacementProbability: 1
     enemyModulePerformanceProbability: 1
-    enemyShieldProbability: 0.2
+    enemyHullWeightNone: 80
+    enemyHullWeightShield: 10
+    enemyHullWeightInterceptor: 10
+    enemyHullWeightBoth: 0
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyInterceptorEquipSlots: 9
     enemyWaveSpawnTermSec: 5
-    explorationPointReward: 10
-    commanderExpReward: 10
-    achievementPointReward: 100
+    explorationPointReward: 590
+    commanderExpReward: 68
   - zoneIndex: 60
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -4773,14 +4832,15 @@ MonoBehaviour:
     enemyBaseHullTier: 14
     enemyModulePlacementProbability: 1
     enemyModulePerformanceProbability: 1
-    enemyShieldProbability: 0.3
+    enemyHullWeightNone: 70
+    enemyHullWeightShield: 15
+    enemyHullWeightInterceptor: 15
+    enemyHullWeightBoth: 0
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyInterceptorEquipSlots: 9
     enemyWaveSpawnTermSec: 5
-    explorationPointReward: 10
-    commanderExpReward: 10
-    achievementPointReward: 100
+    explorationPointReward: 600
+    commanderExpReward: 69
   - zoneIndex: 61
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -4861,14 +4921,15 @@ MonoBehaviour:
     enemyBaseHullTier: 14
     enemyModulePlacementProbability: 1
     enemyModulePerformanceProbability: 1
-    enemyShieldProbability: 0.3
+    enemyHullWeightNone: 70
+    enemyHullWeightShield: 15
+    enemyHullWeightInterceptor: 15
+    enemyHullWeightBoth: 0
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyInterceptorEquipSlots: 9
     enemyWaveSpawnTermSec: 5
-    explorationPointReward: 10
-    commanderExpReward: 10
-    achievementPointReward: 100
+    explorationPointReward: 610
+    commanderExpReward: 70
   - zoneIndex: 62
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -4949,14 +5010,15 @@ MonoBehaviour:
     enemyBaseHullTier: 14
     enemyModulePlacementProbability: 1
     enemyModulePerformanceProbability: 1
-    enemyShieldProbability: 0.3
+    enemyHullWeightNone: 70
+    enemyHullWeightShield: 15
+    enemyHullWeightInterceptor: 15
+    enemyHullWeightBoth: 0
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyInterceptorEquipSlots: 9
     enemyWaveSpawnTermSec: 5
-    explorationPointReward: 10
-    commanderExpReward: 10
-    achievementPointReward: 100
+    explorationPointReward: 620
+    commanderExpReward: 71
   - zoneIndex: 63
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -5037,14 +5099,15 @@ MonoBehaviour:
     enemyBaseHullTier: 14
     enemyModulePlacementProbability: 1
     enemyModulePerformanceProbability: 1
-    enemyShieldProbability: 0.3
+    enemyHullWeightNone: 70
+    enemyHullWeightShield: 15
+    enemyHullWeightInterceptor: 15
+    enemyHullWeightBoth: 0
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyInterceptorEquipSlots: 9
     enemyWaveSpawnTermSec: 5
-    explorationPointReward: 10
-    commanderExpReward: 10
-    achievementPointReward: 100
+    explorationPointReward: 630
+    commanderExpReward: 72
   - zoneIndex: 64
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -5125,14 +5188,15 @@ MonoBehaviour:
     enemyBaseHullTier: 14
     enemyModulePlacementProbability: 1
     enemyModulePerformanceProbability: 1
-    enemyShieldProbability: 0.3
+    enemyHullWeightNone: 70
+    enemyHullWeightShield: 15
+    enemyHullWeightInterceptor: 15
+    enemyHullWeightBoth: 0
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyInterceptorEquipSlots: 9
     enemyWaveSpawnTermSec: 5
-    explorationPointReward: 10
-    commanderExpReward: 10
-    achievementPointReward: 100
+    explorationPointReward: 640
+    commanderExpReward: 73
   - zoneIndex: 65
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -5213,14 +5277,15 @@ MonoBehaviour:
     enemyBaseHullTier: 14
     enemyModulePlacementProbability: 1
     enemyModulePerformanceProbability: 1
-    enemyShieldProbability: 0.3
+    enemyHullWeightNone: 70
+    enemyHullWeightShield: 15
+    enemyHullWeightInterceptor: 15
+    enemyHullWeightBoth: 0
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyInterceptorEquipSlots: 9
     enemyWaveSpawnTermSec: 5
-    explorationPointReward: 10
-    commanderExpReward: 10
-    achievementPointReward: 100
+    explorationPointReward: 650
+    commanderExpReward: 74
   - zoneIndex: 66
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -5301,14 +5366,15 @@ MonoBehaviour:
     enemyBaseHullTier: 14
     enemyModulePlacementProbability: 1
     enemyModulePerformanceProbability: 1
-    enemyShieldProbability: 0.3
+    enemyHullWeightNone: 70
+    enemyHullWeightShield: 15
+    enemyHullWeightInterceptor: 15
+    enemyHullWeightBoth: 0
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyInterceptorEquipSlots: 9
     enemyWaveSpawnTermSec: 5
-    explorationPointReward: 10
-    commanderExpReward: 10
-    achievementPointReward: 100
+    explorationPointReward: 660
+    commanderExpReward: 75
   - zoneIndex: 67
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -5389,14 +5455,15 @@ MonoBehaviour:
     enemyBaseHullTier: 14
     enemyModulePlacementProbability: 1
     enemyModulePerformanceProbability: 1
-    enemyShieldProbability: 0.3
+    enemyHullWeightNone: 70
+    enemyHullWeightShield: 15
+    enemyHullWeightInterceptor: 15
+    enemyHullWeightBoth: 0
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyInterceptorEquipSlots: 9
     enemyWaveSpawnTermSec: 5
-    explorationPointReward: 10
-    commanderExpReward: 10
-    achievementPointReward: 100
+    explorationPointReward: 670
+    commanderExpReward: 76
   - zoneIndex: 68
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -5477,14 +5544,15 @@ MonoBehaviour:
     enemyBaseHullTier: 14
     enemyModulePlacementProbability: 1
     enemyModulePerformanceProbability: 1
-    enemyShieldProbability: 0.3
+    enemyHullWeightNone: 70
+    enemyHullWeightShield: 15
+    enemyHullWeightInterceptor: 15
+    enemyHullWeightBoth: 0
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyInterceptorEquipSlots: 9
     enemyWaveSpawnTermSec: 5
-    explorationPointReward: 10
-    commanderExpReward: 10
-    achievementPointReward: 100
+    explorationPointReward: 680
+    commanderExpReward: 77
   - zoneIndex: 69
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -5565,14 +5633,15 @@ MonoBehaviour:
     enemyBaseHullTier: 14
     enemyModulePlacementProbability: 1
     enemyModulePerformanceProbability: 1
-    enemyShieldProbability: 0.3
+    enemyHullWeightNone: 70
+    enemyHullWeightShield: 15
+    enemyHullWeightInterceptor: 15
+    enemyHullWeightBoth: 0
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyInterceptorEquipSlots: 9
     enemyWaveSpawnTermSec: 5
-    explorationPointReward: 10
-    commanderExpReward: 10
-    achievementPointReward: 100
+    explorationPointReward: 690
+    commanderExpReward: 78
   - zoneIndex: 70
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -5653,14 +5722,15 @@ MonoBehaviour:
     enemyBaseHullTier: 14
     enemyModulePlacementProbability: 1
     enemyModulePerformanceProbability: 1
-    enemyShieldProbability: 0.4
+    enemyHullWeightNone: 60
+    enemyHullWeightShield: 20
+    enemyHullWeightInterceptor: 20
+    enemyHullWeightBoth: 0
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyInterceptorEquipSlots: 9
     enemyWaveSpawnTermSec: 5
-    explorationPointReward: 10
-    commanderExpReward: 10
-    achievementPointReward: 100
+    explorationPointReward: 700
+    commanderExpReward: 79
   - zoneIndex: 71
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -5741,14 +5811,15 @@ MonoBehaviour:
     enemyBaseHullTier: 14
     enemyModulePlacementProbability: 1
     enemyModulePerformanceProbability: 1
-    enemyShieldProbability: 0.4
+    enemyHullWeightNone: 60
+    enemyHullWeightShield: 20
+    enemyHullWeightInterceptor: 20
+    enemyHullWeightBoth: 0
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyInterceptorEquipSlots: 9
     enemyWaveSpawnTermSec: 5
-    explorationPointReward: 10
-    commanderExpReward: 10
-    achievementPointReward: 100
+    explorationPointReward: 710
+    commanderExpReward: 80
   - zoneIndex: 72
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -5829,14 +5900,15 @@ MonoBehaviour:
     enemyBaseHullTier: 14
     enemyModulePlacementProbability: 1
     enemyModulePerformanceProbability: 1
-    enemyShieldProbability: 0.4
+    enemyHullWeightNone: 60
+    enemyHullWeightShield: 20
+    enemyHullWeightInterceptor: 20
+    enemyHullWeightBoth: 0
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyInterceptorEquipSlots: 9
     enemyWaveSpawnTermSec: 5
-    explorationPointReward: 10
-    commanderExpReward: 10
-    achievementPointReward: 100
+    explorationPointReward: 720
+    commanderExpReward: 81
   - zoneIndex: 73
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -5917,14 +5989,15 @@ MonoBehaviour:
     enemyBaseHullTier: 14
     enemyModulePlacementProbability: 1
     enemyModulePerformanceProbability: 1
-    enemyShieldProbability: 0.4
+    enemyHullWeightNone: 60
+    enemyHullWeightShield: 20
+    enemyHullWeightInterceptor: 20
+    enemyHullWeightBoth: 0
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyInterceptorEquipSlots: 9
     enemyWaveSpawnTermSec: 5
-    explorationPointReward: 10
-    commanderExpReward: 10
-    achievementPointReward: 100
+    explorationPointReward: 730
+    commanderExpReward: 82
   - zoneIndex: 74
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -6005,14 +6078,15 @@ MonoBehaviour:
     enemyBaseHullTier: 14
     enemyModulePlacementProbability: 1
     enemyModulePerformanceProbability: 1
-    enemyShieldProbability: 0.4
+    enemyHullWeightNone: 60
+    enemyHullWeightShield: 20
+    enemyHullWeightInterceptor: 20
+    enemyHullWeightBoth: 0
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyInterceptorEquipSlots: 9
     enemyWaveSpawnTermSec: 5
-    explorationPointReward: 10
-    commanderExpReward: 10
-    achievementPointReward: 100
+    explorationPointReward: 740
+    commanderExpReward: 83
   - zoneIndex: 75
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -6093,14 +6167,15 @@ MonoBehaviour:
     enemyBaseHullTier: 14
     enemyModulePlacementProbability: 1
     enemyModulePerformanceProbability: 1
-    enemyShieldProbability: 0.4
+    enemyHullWeightNone: 60
+    enemyHullWeightShield: 20
+    enemyHullWeightInterceptor: 20
+    enemyHullWeightBoth: 0
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyInterceptorEquipSlots: 9
     enemyWaveSpawnTermSec: 5
-    explorationPointReward: 10
-    commanderExpReward: 10
-    achievementPointReward: 100
+    explorationPointReward: 750
+    commanderExpReward: 84
   - zoneIndex: 76
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -6181,14 +6256,15 @@ MonoBehaviour:
     enemyBaseHullTier: 14
     enemyModulePlacementProbability: 1
     enemyModulePerformanceProbability: 1
-    enemyShieldProbability: 0.4
+    enemyHullWeightNone: 60
+    enemyHullWeightShield: 20
+    enemyHullWeightInterceptor: 20
+    enemyHullWeightBoth: 0
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyInterceptorEquipSlots: 9
     enemyWaveSpawnTermSec: 5
-    explorationPointReward: 10
-    commanderExpReward: 10
-    achievementPointReward: 100
+    explorationPointReward: 760
+    commanderExpReward: 85
   - zoneIndex: 77
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -6269,14 +6345,15 @@ MonoBehaviour:
     enemyBaseHullTier: 14
     enemyModulePlacementProbability: 1
     enemyModulePerformanceProbability: 1
-    enemyShieldProbability: 0.4
+    enemyHullWeightNone: 60
+    enemyHullWeightShield: 20
+    enemyHullWeightInterceptor: 20
+    enemyHullWeightBoth: 0
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyInterceptorEquipSlots: 9
     enemyWaveSpawnTermSec: 5
-    explorationPointReward: 10
-    commanderExpReward: 10
-    achievementPointReward: 100
+    explorationPointReward: 770
+    commanderExpReward: 86
   - zoneIndex: 78
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -6357,14 +6434,15 @@ MonoBehaviour:
     enemyBaseHullTier: 14
     enemyModulePlacementProbability: 1
     enemyModulePerformanceProbability: 1
-    enemyShieldProbability: 0.4
+    enemyHullWeightNone: 60
+    enemyHullWeightShield: 20
+    enemyHullWeightInterceptor: 20
+    enemyHullWeightBoth: 0
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyInterceptorEquipSlots: 9
     enemyWaveSpawnTermSec: 5
-    explorationPointReward: 10
-    commanderExpReward: 10
-    achievementPointReward: 100
+    explorationPointReward: 780
+    commanderExpReward: 87
   - zoneIndex: 79
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -6445,14 +6523,15 @@ MonoBehaviour:
     enemyBaseHullTier: 14
     enemyModulePlacementProbability: 1
     enemyModulePerformanceProbability: 1
-    enemyShieldProbability: 0.4
+    enemyHullWeightNone: 60
+    enemyHullWeightShield: 20
+    enemyHullWeightInterceptor: 20
+    enemyHullWeightBoth: 0
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyInterceptorEquipSlots: 9
     enemyWaveSpawnTermSec: 5
-    explorationPointReward: 10
-    commanderExpReward: 10
-    achievementPointReward: 100
+    explorationPointReward: 790
+    commanderExpReward: 88
   - zoneIndex: 80
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -6533,14 +6612,15 @@ MonoBehaviour:
     enemyBaseHullTier: 14
     enemyModulePlacementProbability: 1
     enemyModulePerformanceProbability: 1
-    enemyShieldProbability: 0.5
+    enemyHullWeightNone: 50
+    enemyHullWeightShield: 25
+    enemyHullWeightInterceptor: 25
+    enemyHullWeightBoth: 0
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyInterceptorEquipSlots: 9
     enemyWaveSpawnTermSec: 5
-    explorationPointReward: 10
-    commanderExpReward: 10
-    achievementPointReward: 100
+    explorationPointReward: 800
+    commanderExpReward: 89
   - zoneIndex: 81
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -6621,14 +6701,15 @@ MonoBehaviour:
     enemyBaseHullTier: 14
     enemyModulePlacementProbability: 1
     enemyModulePerformanceProbability: 1
-    enemyShieldProbability: 0.5
+    enemyHullWeightNone: 50
+    enemyHullWeightShield: 25
+    enemyHullWeightInterceptor: 25
+    enemyHullWeightBoth: 0
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyInterceptorEquipSlots: 9
     enemyWaveSpawnTermSec: 5
-    explorationPointReward: 10
-    commanderExpReward: 10
-    achievementPointReward: 100
+    explorationPointReward: 810
+    commanderExpReward: 90
   - zoneIndex: 82
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -6709,14 +6790,15 @@ MonoBehaviour:
     enemyBaseHullTier: 14
     enemyModulePlacementProbability: 1
     enemyModulePerformanceProbability: 1
-    enemyShieldProbability: 0.5
+    enemyHullWeightNone: 50
+    enemyHullWeightShield: 25
+    enemyHullWeightInterceptor: 25
+    enemyHullWeightBoth: 0
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyInterceptorEquipSlots: 9
     enemyWaveSpawnTermSec: 5
-    explorationPointReward: 10
-    commanderExpReward: 10
-    achievementPointReward: 100
+    explorationPointReward: 820
+    commanderExpReward: 91
   - zoneIndex: 83
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -6797,14 +6879,15 @@ MonoBehaviour:
     enemyBaseHullTier: 14
     enemyModulePlacementProbability: 1
     enemyModulePerformanceProbability: 1
-    enemyShieldProbability: 0.5
+    enemyHullWeightNone: 50
+    enemyHullWeightShield: 25
+    enemyHullWeightInterceptor: 25
+    enemyHullWeightBoth: 0
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyInterceptorEquipSlots: 9
     enemyWaveSpawnTermSec: 5
-    explorationPointReward: 10
-    commanderExpReward: 10
-    achievementPointReward: 100
+    explorationPointReward: 830
+    commanderExpReward: 92
   - zoneIndex: 84
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -6885,14 +6968,15 @@ MonoBehaviour:
     enemyBaseHullTier: 14
     enemyModulePlacementProbability: 1
     enemyModulePerformanceProbability: 1
-    enemyShieldProbability: 0.5
+    enemyHullWeightNone: 50
+    enemyHullWeightShield: 25
+    enemyHullWeightInterceptor: 25
+    enemyHullWeightBoth: 0
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyInterceptorEquipSlots: 9
     enemyWaveSpawnTermSec: 5
-    explorationPointReward: 10
-    commanderExpReward: 10
-    achievementPointReward: 100
+    explorationPointReward: 840
+    commanderExpReward: 93
   - zoneIndex: 85
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -6973,14 +7057,15 @@ MonoBehaviour:
     enemyBaseHullTier: 14
     enemyModulePlacementProbability: 1
     enemyModulePerformanceProbability: 1
-    enemyShieldProbability: 0.5
+    enemyHullWeightNone: 50
+    enemyHullWeightShield: 25
+    enemyHullWeightInterceptor: 25
+    enemyHullWeightBoth: 0
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyInterceptorEquipSlots: 9
     enemyWaveSpawnTermSec: 5
-    explorationPointReward: 10
-    commanderExpReward: 10
-    achievementPointReward: 100
+    explorationPointReward: 850
+    commanderExpReward: 94
   - zoneIndex: 86
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -7061,14 +7146,15 @@ MonoBehaviour:
     enemyBaseHullTier: 14
     enemyModulePlacementProbability: 1
     enemyModulePerformanceProbability: 1
-    enemyShieldProbability: 0.5
+    enemyHullWeightNone: 50
+    enemyHullWeightShield: 25
+    enemyHullWeightInterceptor: 25
+    enemyHullWeightBoth: 0
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyInterceptorEquipSlots: 9
     enemyWaveSpawnTermSec: 5
-    explorationPointReward: 10
-    commanderExpReward: 10
-    achievementPointReward: 100
+    explorationPointReward: 860
+    commanderExpReward: 95
   - zoneIndex: 87
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -7149,14 +7235,15 @@ MonoBehaviour:
     enemyBaseHullTier: 14
     enemyModulePlacementProbability: 1
     enemyModulePerformanceProbability: 1
-    enemyShieldProbability: 0.5
+    enemyHullWeightNone: 50
+    enemyHullWeightShield: 25
+    enemyHullWeightInterceptor: 25
+    enemyHullWeightBoth: 0
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyInterceptorEquipSlots: 9
     enemyWaveSpawnTermSec: 5
-    explorationPointReward: 10
-    commanderExpReward: 10
-    achievementPointReward: 100
+    explorationPointReward: 870
+    commanderExpReward: 96
   - zoneIndex: 88
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -7237,14 +7324,15 @@ MonoBehaviour:
     enemyBaseHullTier: 14
     enemyModulePlacementProbability: 1
     enemyModulePerformanceProbability: 1
-    enemyShieldProbability: 0.5
+    enemyHullWeightNone: 50
+    enemyHullWeightShield: 25
+    enemyHullWeightInterceptor: 25
+    enemyHullWeightBoth: 0
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyInterceptorEquipSlots: 9
     enemyWaveSpawnTermSec: 5
-    explorationPointReward: 10
-    commanderExpReward: 10
-    achievementPointReward: 100
+    explorationPointReward: 880
+    commanderExpReward: 97
   - zoneIndex: 89
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -7325,14 +7413,15 @@ MonoBehaviour:
     enemyBaseHullTier: 14
     enemyModulePlacementProbability: 1
     enemyModulePerformanceProbability: 1
-    enemyShieldProbability: 0.5
+    enemyHullWeightNone: 50
+    enemyHullWeightShield: 25
+    enemyHullWeightInterceptor: 25
+    enemyHullWeightBoth: 0
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyInterceptorEquipSlots: 9
     enemyWaveSpawnTermSec: 5
-    explorationPointReward: 10
-    commanderExpReward: 10
-    achievementPointReward: 100
+    explorationPointReward: 890
+    commanderExpReward: 98
   - zoneIndex: 90
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -7413,14 +7502,15 @@ MonoBehaviour:
     enemyBaseHullTier: 14
     enemyModulePlacementProbability: 1
     enemyModulePerformanceProbability: 1
-    enemyShieldProbability: 0.6
+    enemyHullWeightNone: 40
+    enemyHullWeightShield: 25
+    enemyHullWeightInterceptor: 25
+    enemyHullWeightBoth: 10
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyInterceptorEquipSlots: 9
     enemyWaveSpawnTermSec: 5
-    explorationPointReward: 10
-    commanderExpReward: 10
-    achievementPointReward: 100
+    explorationPointReward: 900
+    commanderExpReward: 99
   - zoneIndex: 91
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -7501,14 +7591,15 @@ MonoBehaviour:
     enemyBaseHullTier: 14
     enemyModulePlacementProbability: 1
     enemyModulePerformanceProbability: 1
-    enemyShieldProbability: 0.6
+    enemyHullWeightNone: 40
+    enemyHullWeightShield: 25
+    enemyHullWeightInterceptor: 25
+    enemyHullWeightBoth: 10
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyInterceptorEquipSlots: 9
     enemyWaveSpawnTermSec: 5
-    explorationPointReward: 10
-    commanderExpReward: 10
-    achievementPointReward: 100
+    explorationPointReward: 910
+    commanderExpReward: 100
   - zoneIndex: 92
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -7589,14 +7680,15 @@ MonoBehaviour:
     enemyBaseHullTier: 14
     enemyModulePlacementProbability: 1
     enemyModulePerformanceProbability: 1
-    enemyShieldProbability: 0.6
+    enemyHullWeightNone: 40
+    enemyHullWeightShield: 25
+    enemyHullWeightInterceptor: 25
+    enemyHullWeightBoth: 10
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyInterceptorEquipSlots: 9
     enemyWaveSpawnTermSec: 5
-    explorationPointReward: 10
-    commanderExpReward: 10
-    achievementPointReward: 100
+    explorationPointReward: 920
+    commanderExpReward: 101
   - zoneIndex: 93
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -7677,14 +7769,15 @@ MonoBehaviour:
     enemyBaseHullTier: 14
     enemyModulePlacementProbability: 1
     enemyModulePerformanceProbability: 1
-    enemyShieldProbability: 0.6
+    enemyHullWeightNone: 40
+    enemyHullWeightShield: 25
+    enemyHullWeightInterceptor: 25
+    enemyHullWeightBoth: 10
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyInterceptorEquipSlots: 9
     enemyWaveSpawnTermSec: 5
-    explorationPointReward: 10
-    commanderExpReward: 10
-    achievementPointReward: 100
+    explorationPointReward: 930
+    commanderExpReward: 102
   - zoneIndex: 94
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -7765,14 +7858,15 @@ MonoBehaviour:
     enemyBaseHullTier: 14
     enemyModulePlacementProbability: 1
     enemyModulePerformanceProbability: 1
-    enemyShieldProbability: 0.6
+    enemyHullWeightNone: 40
+    enemyHullWeightShield: 25
+    enemyHullWeightInterceptor: 25
+    enemyHullWeightBoth: 10
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyInterceptorEquipSlots: 9
     enemyWaveSpawnTermSec: 5
-    explorationPointReward: 10
-    commanderExpReward: 10
-    achievementPointReward: 100
+    explorationPointReward: 940
+    commanderExpReward: 103
   - zoneIndex: 95
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -7853,14 +7947,15 @@ MonoBehaviour:
     enemyBaseHullTier: 14
     enemyModulePlacementProbability: 1
     enemyModulePerformanceProbability: 1
-    enemyShieldProbability: 0.6
+    enemyHullWeightNone: 40
+    enemyHullWeightShield: 25
+    enemyHullWeightInterceptor: 25
+    enemyHullWeightBoth: 10
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyInterceptorEquipSlots: 9
     enemyWaveSpawnTermSec: 5
-    explorationPointReward: 10
-    commanderExpReward: 10
-    achievementPointReward: 100
+    explorationPointReward: 950
+    commanderExpReward: 104
   - zoneIndex: 96
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -7941,14 +8036,15 @@ MonoBehaviour:
     enemyBaseHullTier: 14
     enemyModulePlacementProbability: 1
     enemyModulePerformanceProbability: 1
-    enemyShieldProbability: 0.6
+    enemyHullWeightNone: 40
+    enemyHullWeightShield: 25
+    enemyHullWeightInterceptor: 25
+    enemyHullWeightBoth: 10
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyInterceptorEquipSlots: 9
     enemyWaveSpawnTermSec: 5
-    explorationPointReward: 10
-    commanderExpReward: 10
-    achievementPointReward: 100
+    explorationPointReward: 960
+    commanderExpReward: 105
   - zoneIndex: 97
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -8029,14 +8125,15 @@ MonoBehaviour:
     enemyBaseHullTier: 14
     enemyModulePlacementProbability: 1
     enemyModulePerformanceProbability: 1
-    enemyShieldProbability: 0.6
+    enemyHullWeightNone: 40
+    enemyHullWeightShield: 25
+    enemyHullWeightInterceptor: 25
+    enemyHullWeightBoth: 10
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyInterceptorEquipSlots: 9
     enemyWaveSpawnTermSec: 5
-    explorationPointReward: 10
-    commanderExpReward: 10
-    achievementPointReward: 100
+    explorationPointReward: 970
+    commanderExpReward: 106
   - zoneIndex: 98
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -8117,14 +8214,15 @@ MonoBehaviour:
     enemyBaseHullTier: 14
     enemyModulePlacementProbability: 1
     enemyModulePerformanceProbability: 1
-    enemyShieldProbability: 0.6
+    enemyHullWeightNone: 40
+    enemyHullWeightShield: 25
+    enemyHullWeightInterceptor: 25
+    enemyHullWeightBoth: 10
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyInterceptorEquipSlots: 9
     enemyWaveSpawnTermSec: 5
-    explorationPointReward: 10
-    commanderExpReward: 10
-    achievementPointReward: 100
+    explorationPointReward: 980
+    commanderExpReward: 107
   - zoneIndex: 99
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -8205,14 +8303,15 @@ MonoBehaviour:
     enemyBaseHullTier: 14
     enemyModulePlacementProbability: 1
     enemyModulePerformanceProbability: 1
-    enemyShieldProbability: 0.6
+    enemyHullWeightNone: 40
+    enemyHullWeightShield: 25
+    enemyHullWeightInterceptor: 25
+    enemyHullWeightBoth: 10
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyInterceptorEquipSlots: 9
     enemyWaveSpawnTermSec: 5
-    explorationPointReward: 10
-    commanderExpReward: 10
-    achievementPointReward: 100
+    explorationPointReward: 990
+    commanderExpReward: 108
   - zoneIndex: 100
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -8289,15 +8388,16 @@ MonoBehaviour:
       col: 4
       type: 3
       eventType: 0
-    enemyHullTierSum: 18
-    enemyBaseHullTier: 2
+    enemyHullTierSum: 98
+    enemyBaseHullTier: 14
     enemyModulePlacementProbability: 1
     enemyModulePerformanceProbability: 1
-    enemyShieldProbability: 0.7
+    enemyHullWeightNone: 30
+    enemyHullWeightShield: 30
+    enemyHullWeightInterceptor: 30
+    enemyHullWeightBoth: 10
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
-    enemyInterceptorEquipSlots: 9
     enemyWaveSpawnTermSec: 5
-    explorationPointReward: 10
-    commanderExpReward: 10
-    achievementPointReward: 100
+    explorationPointReward: 1000
+    commanderExpReward: 109

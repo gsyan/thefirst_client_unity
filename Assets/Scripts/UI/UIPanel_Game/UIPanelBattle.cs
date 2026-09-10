@@ -24,6 +24,7 @@ public class UIPanelBattle : UIPanelBase
         EventManager.Subscribe_ExplorationTabOpened(OnExplorationTabOpened);
         EventManager.Subscribe_ExplorationTabClosed(OnExplorationTabClosed);
         EventManager.Subscribe_TacticToggleRequested(OnTacticToggleRequested);
+        EventManager.Subscribe_ZoneRunEnded(OnZoneRunEnded);
     }
 
     void OnDestroy()
@@ -32,12 +33,22 @@ public class UIPanelBattle : UIPanelBase
         EventManager.Unsubscribe_ExplorationTabOpened(OnExplorationTabOpened);
         EventManager.Unsubscribe_ExplorationTabClosed(OnExplorationTabClosed);
         EventManager.Unsubscribe_TacticToggleRequested(OnTacticToggleRequested);
+        EventManager.Unsubscribe_ZoneRunEnded(OnZoneRunEnded);
     }
 
     private void OnFleetStateChanged(EUnitState state)
     {
         m_fleetState = state;
         RefreshVisibility();
+    }
+
+    // 존런이 완전히 끝났을 때만(탈출 성공/포기 확정) 전술 토글(요격체 포함)을 전부 끔 — 셀 단위 전투 종료마다
+    // 껐다 켰다 하면 그 사이 전술력 부족 등으로 재활성화가 막힐 수 있어, 런 종료 시점에만 정리하도록 함
+    private void OnZoneRunEnded()
+    {
+        SpaceFleet myFleet = ObjectManager.Instance.GetMyFleet();
+        if (myFleet != null)
+            TurnOffAllTacticToggles(myFleet);
     }
 
     private void OnExplorationTabOpened()

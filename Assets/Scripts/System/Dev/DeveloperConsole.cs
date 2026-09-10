@@ -429,8 +429,8 @@ public class DeveloperConsole : MonoSingleton<DeveloperConsole>
             });
         });
 
-        // usage: adddevresources [levelUp] [exploPoint] [pvpPoint] — 0이면 해당 타입 스킵, levelUp>0이면 정확히 1레벨만 증가
-        RegisterCommand("adddevresources", "Add resources (usage: adddevresources [levelUp] [exploPoint] [pvpPoint])", (args) =>
+        // usage: adddevresources [levelUp] [exploPoint] [pvpPoint] [achievementPoint] — 0이면 해당 타입 스킵, levelUp>0이면 정확히 1레벨만 증가
+        RegisterCommand("adddevresources", "Add resources (usage: adddevresources [levelUp] [exploPoint] [pvpPoint] [achievementPoint])", (args) =>
         {
             if (args.Length < 3) return;
             if (NetworkManager.Instance == null) return;
@@ -510,6 +510,10 @@ public class DeveloperConsole : MonoSingleton<DeveloperConsole>
             case "pvppoint":
                 if (int.TryParse(value, out int pvpPoint))
                     DataManager.Instance.m_currentCommander.UpdatePvpPoint(pvpPoint);
+                break;
+            case "achievementpoint":
+                if (int.TryParse(value, out int achievementPoint))
+                    DataManager.Instance.m_currentCommander.UpdateAchievementPoint(achievementPoint);
                 break;
         }
     }

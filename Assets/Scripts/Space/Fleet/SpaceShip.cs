@@ -553,7 +553,7 @@ public class SpaceShip : MonoBehaviour
         // 화재 이펙트: 체력 비율이 임계값 이하로 떨어진 시점에 하나씩 생성
         if (IsAlive() == true)
         {
-            UpdateFireEffects(hitPosition);
+            UpdateFireEffects(hitPosition, damageInfo.damageType);
             // 실드가 완전히 막았으면 함체 표면에 실제로 닿지 않았으므로 피탄 자국(데칼)도 남기지 않음
             if (damageInfo.damageType == EDamageType.Beam && wasFullyShielded == false)
                 SpawnScorchMark(hitPosition);
@@ -570,6 +570,15 @@ public class SpaceShip : MonoBehaviour
         ClearAllScorchMarks();
         // 코루틴 중지
         StopAllCoroutines();
+
+        // SetShipNullified가 마지막 함선이면 그 안에서 곧바로 함대 전체를 Destroy할 수 있어(OnZoneEnemyFleetDefeated 등),
+        // 그 전에 미리 요격체를 반납해야 함 — 늦게 하면 함대가 이미 파괴 처리에 들어가 있어 SetParent가 막힘
+        foreach (ModuleHull body in m_moduleHulls)
+        {
+            if (body != null && body.m_interceptor != null)
+                body.m_interceptor.ClearAllSlots();
+        }
+
         // 전투 중 파괴 — 슬롯 null 처리 (인덱스 유지, UI 파괴 표시용)
         SpaceFleet parentFleet = GetComponentInParent<SpaceFleet>();
         if (parentFleet != null)
@@ -579,6 +588,7 @@ public class SpaceShip : MonoBehaviour
         effect.transform.position = transform.position;
         effect.PlayEffect();
         SoundManager.Instance.PlayFX(EFx.Explosion_Ship, transform.position);
+
         // 파괴 처리
         Destroy(gameObject);
     }
@@ -589,13 +599,13 @@ public class SpaceShip : MonoBehaviour
         HandleShipDestroyed();
     }
 
-    private void UpdateFireEffects(Vector3 hitPosition)
+    private void UpdateFireEffects(Vector3 hitPosition, EDamageType damageType)
     {
         if (m_spaceShipStatsOrg.health <= 0f) return;
         float ratio = m_spaceShipStatsCur.health / m_spaceShipStatsOrg.health;
-        if (ratio < 0.5f && m_fireEffect50 == null) SpawnFireEffect(ref m_fireEffect50, hitPosition);
-        if (ratio < 0.3f && m_fireEffect30 == null) SpawnFireEffect(ref m_fireEffect30, hitPosition);
-        if (ratio < 0.1f && m_fireEffect10 == null) SpawnFireEffect(ref m_fireEffect10, hitPosition);
+        if (ratio < 0.5f && m_fireEffect50 == null) SpawnFireEffect(ref m_fireEffect50, hitPosition, damageType);
+        if (ratio < 0.3f && m_fireEffect30 == null) SpawnFireEffect(ref m_fireEffect30, hitPosition, damageType);
+        if (ratio < 0.1f && m_fireEffect10 == null) SpawnFireEffect(ref m_fireEffect10, hitPosition, damageType);
     }
 
     public void CheckFireEffects()
@@ -607,8 +617,11 @@ public class SpaceShip : MonoBehaviour
         if (ratio >= 0.1f) ReturnFireEffect(ref m_fireEffect10);
     }
 
-    private void SpawnFireEffect(ref EffectBase slot, Vector3 position)
+    private void SpawnFireEffect(ref EffectBase slot, Vector3 position, EDamageType damageType)
     {
+        bool isMyFleet = m_ownerFleet != null && ObjectManager.Instance.IsEnemyOfMyTeam(m_ownerFleet) == false;
+        if (isMyFleet == true)
+            Debug.Log($"[화재LOG] SpawnFireEffect ship={name} position={position} damageType={damageType} healthRatio={m_spaceShipStatsCur.health / m_spaceShipStatsOrg.health}");
         slot = ObjectManager.Instance.m_poolManager.Get<EffectBase>(EPoolName.EFFECT_FIRE_ON_SHIP);
         slot.transform.SetParent(transform, false);
         slot.transform.position = position;

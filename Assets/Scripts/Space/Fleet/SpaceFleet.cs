@@ -632,6 +632,13 @@ public class SpaceFleet : MonoBehaviour
         if (ship == null) return;
         m_ships.Remove(ship);
 
+        // Destroy() 이후엔 요격체가 같은 파괴 호출에 자식으로 걸려 풀 반납(SetParent)이 막히므로, 파괴 전에 미리 반납
+        foreach (ModuleHull body in ship.m_moduleHulls)
+        {
+            if (body != null && body.m_interceptor != null)
+                body.m_interceptor.ClearAllSlots();
+        }
+
         Destroy(ship.gameObject);
         if (refreshFormation)
             RefreshFormation();

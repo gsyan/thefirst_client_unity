@@ -46,6 +46,10 @@ public static class ExplorationShipSpawnBridge
             ? actualModules.shieldModuleSubType
             : "";
 
+        hullInfo.interceptorModuleSubType = actualModules != null && string.IsNullOrEmpty(actualModules.interceptorModuleSubType) == false
+            ? actualModules.interceptorModuleSubType
+            : "";
+
         return new ShipInfo
         {
             id               = id,

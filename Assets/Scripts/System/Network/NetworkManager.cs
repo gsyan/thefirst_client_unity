@@ -693,6 +693,12 @@ public class NetworkManager : MonoSingleton<NetworkManager>
         StartCoroutine(RunAsync(() => m_apiClient.ClaimAchievementAsync(request), onComplete));
     }
 
+    public void ClaimAllAchievements(ClaimAllAchievementsRequest request, System.Action<ApiResponse<ClaimAllAchievementsResponse>> onComplete)
+    {
+        if (m_bConnected == false) return;
+        StartCoroutine(RunAsync(() => m_apiClient.ClaimAllAchievementsAsync(request), onComplete));
+    }
+
     // public void GetFleetStats(FleetStatsRequest request, System.Action<ApiResponse<FleetStatsResponse>> onComplete)
     // {
     //     if (m_bConnected == false) return;

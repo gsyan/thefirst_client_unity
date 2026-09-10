@@ -133,10 +133,12 @@ public class DataTableZoneEditor : Editor
                 enemyBaseHullTier                = oldZone != null ? oldZone.enemyBaseHullTier                : 3,
                 enemyModulePlacementProbability   = oldZone != null ? oldZone.enemyModulePlacementProbability   : 1f,
                 enemyModulePerformanceProbability = oldZone != null ? oldZone.enemyModulePerformanceProbability : 1f,
-                enemyShieldProbability = oldZone != null ? oldZone.enemyShieldProbability : 0f,
+                enemyHullWeightNone = oldZone != null ? oldZone.enemyHullWeightNone : 9f,
+                enemyHullWeightShield = oldZone != null ? oldZone.enemyHullWeightShield : 1f,
+                enemyHullWeightInterceptor = oldZone != null ? oldZone.enemyHullWeightInterceptor : 0f,
+                enemyHullWeightBoth = oldZone != null ? oldZone.enemyHullWeightBoth : 0f,
                 enemyHealthMultiplier = oldZone != null ? oldZone.enemyHealthMultiplier : 1f,
                 enemyAttackMultiplier = oldZone != null ? oldZone.enemyAttackMultiplier : 1f,
-                enemyInterceptorEquipSlots = oldZone != null ? oldZone.enemyInterceptorEquipSlots : 9,
                 enemyWaveSpawnTermSec = oldZone != null ? oldZone.enemyWaveSpawnTermSec : 5f,
                 explorationPointReward = oldZone != null ? oldZone.explorationPointReward : 0,
                 commanderExpReward     = oldZone != null ? oldZone.commanderExpReward     : 0,
@@ -213,13 +215,15 @@ public class DataTableZoneEditor : Editor
             int.TryParse(col[4], out zc.enemyBaseHullTier);
             float.TryParse(col[5], out zc.enemyModulePlacementProbability);
             float.TryParse(col[6], out zc.enemyModulePerformanceProbability);
-            float.TryParse(col[7], out zc.enemyShieldProbability);
-            float.TryParse(col[8], out zc.enemyHealthMultiplier);
-            float.TryParse(col[9], out zc.enemyAttackMultiplier);
-            int.TryParse(col[10], out zc.enemyInterceptorEquipSlots);
-            float.TryParse(col[11], out zc.enemyWaveSpawnTermSec);
-            int.TryParse(col[12], out zc.explorationPointReward);
-            int.TryParse(col[13], out zc.commanderExpReward);
+            float.TryParse(col[7], out zc.enemyHullWeightNone);
+            float.TryParse(col[8], out zc.enemyHullWeightShield);
+            float.TryParse(col[9], out zc.enemyHullWeightInterceptor);
+            float.TryParse(col[10], out zc.enemyHullWeightBoth);
+            float.TryParse(col[11], out zc.enemyHealthMultiplier);
+            float.TryParse(col[12], out zc.enemyAttackMultiplier);
+            float.TryParse(col[13], out zc.enemyWaveSpawnTermSec);
+            int.TryParse(col[14], out zc.explorationPointReward);
+            int.TryParse(col[15], out zc.commanderExpReward);
         }
         EditorUtility.SetDirty(m_dataTableZone);
         AssetDatabase.Refresh();
@@ -808,10 +812,12 @@ public class DataTableZoneEditor : Editor
         zoneConfig.enemyBaseHullTier = EditorGUILayout.IntField(new GUIContent("Base Hull Tier", "각 함대 1번 함선(기함)의 함체 티어 — 남은 예산이 이보다 적으면 남은 만큼만 씀"), zoneConfig.enemyBaseHullTier);
         zoneConfig.enemyModulePlacementProbability = EditorGUILayout.Slider(new GUIContent("Module Placement Probability", "함체가 가진 모듈 슬롯 하나하나마다 이 확률로 장착/미장착 결정(0~1)"), zoneConfig.enemyModulePlacementProbability, 0f, 1f);
         zoneConfig.enemyModulePerformanceProbability = EditorGUILayout.Slider(new GUIContent("Module Performance Probability", "장착된 슬롯의 모듈 티어 범위 — max(1,함체티어*이값)~함체티어 사이 랜덤(1이면 항상 함체티어 그대로)"), zoneConfig.enemyModulePerformanceProbability, 0f, 1f);
-        zoneConfig.enemyShieldProbability = EditorGUILayout.Slider(new GUIContent("Shield Probability", "뽑힌 함체티어에 실드형(gen2) 버전이 있을 때 그걸 고를 확률(0~1)"), zoneConfig.enemyShieldProbability, 0f, 1f);
+        zoneConfig.enemyHullWeightNone = EditorGUILayout.FloatField(new GUIContent("Hull Weight - None", "실드/요격체 둘 다 없는 변형을 고를 상대 가중치 — 같은 티어에 실제 존재하는 변형들끼리 합을 정규화해서 적용(절대 확률 아님)"), zoneConfig.enemyHullWeightNone);
+        zoneConfig.enemyHullWeightShield = EditorGUILayout.FloatField(new GUIContent("Hull Weight - Shield", "실드만 있는 변형을 고를 상대 가중치"), zoneConfig.enemyHullWeightShield);
+        zoneConfig.enemyHullWeightInterceptor = EditorGUILayout.FloatField(new GUIContent("Hull Weight - Interceptor", "요격체만 있는 변형을 고를 상대 가중치"), zoneConfig.enemyHullWeightInterceptor);
+        zoneConfig.enemyHullWeightBoth = EditorGUILayout.FloatField(new GUIContent("Hull Weight - Both", "실드+요격체 둘 다 있는 변형을 고를 상대 가중치"), zoneConfig.enemyHullWeightBoth);
         zoneConfig.enemyHealthMultiplier = EditorGUILayout.FloatField(new GUIContent("Enemy Health Multiplier", "이 존 적함대 체력 배율 (0.1=10%, 1.0=원본)"), zoneConfig.enemyHealthMultiplier);
         zoneConfig.enemyAttackMultiplier = EditorGUILayout.FloatField(new GUIContent("Enemy Attack Multiplier", "이 존 적함대 공격력 배율 (0.1=10%, 1.0=원본)"), zoneConfig.enemyAttackMultiplier);
-        zoneConfig.enemyInterceptorEquipSlots = EditorGUILayout.IntField(new GUIContent("Enemy Interceptor Equip Slots", "요격체 장착 여부 (0=미장착, 1 이상=장착)"), zoneConfig.enemyInterceptorEquipSlots);
         zoneConfig.enemyWaveSpawnTermSec = EditorGUILayout.FloatField(new GUIContent("Enemy Wave Spawn Term Sec", "웨이브가 여러 개일 때 다음 웨이브 스폰 간격(초) — 현재 웨이브를 먼저 전멸시키면 대기 없이 즉시 다음 웨이브 스폰"), zoneConfig.enemyWaveSpawnTermSec);
 
         EditorGUILayout.Space(4);
@@ -995,6 +1001,7 @@ public class DataTableZoneEditor : Editor
                 int missileCount = modules != null && modules.missiles != null ? modules.missiles.Count : 0;
                 int hangarCount = modules != null && modules.hangars != null ? modules.hangars.Count : 0;
                 bool hasShield = modules != null && string.IsNullOrEmpty(modules.shieldModuleSubType) == false;
+                bool hasInterceptor = modules != null && string.IsNullOrEmpty(modules.interceptorModuleSubType) == false;
 
                 int hullTier = CommonUtility.ParseTier(ship.hullSubType);
                 int hullGen = CommonUtility.ParseGen(ship.hullSubType);
@@ -1003,7 +1010,7 @@ public class DataTableZoneEditor : Editor
                     : hangarCount > 0 && modules.hangars[0] != null ? CommonUtility.ParseTier(modules.hangars[0].moduleSubType)
                     : 0;
 
-                EditorGUILayout.LabelField($"  {ship.hullSubType} (함티={hullTier}, gen={hullGen}, {(ship.isFront ? "전방" : "후방")}, 모티={moduleTier}, 빔={beamCount}, 미={missileCount}, 격={hangarCount}, 실={hasShield})");
+                EditorGUILayout.LabelField($"  {ship.hullSubType} (함티={hullTier}, gen={hullGen}, {(ship.isFront ? "전방" : "후방")}, 모티={moduleTier}, 빔={beamCount}, 미={missileCount}, 격={hangarCount}, 실={hasShield}, 요={hasInterceptor})");
             }
         }
     }

@@ -1,6 +1,7 @@
 //------------------------------------------------------------------------------
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class EffectBase : MonoBehaviour
 {
@@ -8,6 +9,7 @@ public class EffectBase : MonoBehaviour
     [SerializeField] protected string m_poolName;
 
     private ParticleSystem m_ps;
+    private static readonly List<ParticleSystem> s_particleSystemBuffer = new List<ParticleSystem>();
 
     protected virtual void Awake()
     {
@@ -61,6 +63,17 @@ public class EffectBase : MonoBehaviour
     public virtual ParticleSystem GetParticleSystem()
     {
         return m_ps;
+    }
+
+    // 인스턴스별 색 지정(빔 색 등) — 자식까지 포함한 모든 ParticleSystem의 시작 색을 덮어씀
+    public virtual void SetColor(Color color)
+    {
+        GetComponentsInChildren(true, s_particleSystemBuffer);
+        for (int i = 0; i < s_particleSystemBuffer.Count; i++)
+        {
+            ParticleSystem.MainModule main = s_particleSystemBuffer[i].main;
+            main.startColor = new ParticleSystem.MinMaxGradient(color);
+        }
     }
 
     

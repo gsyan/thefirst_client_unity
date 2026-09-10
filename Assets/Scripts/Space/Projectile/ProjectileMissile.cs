@@ -230,6 +230,23 @@ public class ProjectileMissile : ProjectileBase
                 }
             }
 
+            // 요격체 명중 체크 — InterceptorUnit이 매 프레임 거리를 재는 대신, 미사일의 기존 스윕 레이캐스트에
+            // 올라타는 방식(터널링 방지). 소속 함대가 이 미사일을 쏜 함대와 다른 팀이어야 실제 요격으로 인정
+            InterceptorUnit hitInterceptor = hit.collider.GetComponentInParent<InterceptorUnit>();
+            if (hitInterceptor != null)
+            {
+                SpaceFleet interceptorFleet = hitInterceptor.GetOwnerFleet();
+                bool interceptorIsOpposing = m_sourceShip != null && m_sourceShip.m_ownerFleet != null && interceptorFleet != null
+                    && interceptorFleet.m_team != m_sourceShip.m_ownerFleet.m_team;
+                if (interceptorIsOpposing == true)
+                {
+                    SoundManager.Instance.PlayFX(EFx.Explosion_Missile, hit.point);
+                    hitInterceptor.ConsumeByMissileHit();
+                    ReturnToPool(hitPosition: hit.point);
+                    return true;
+                }
+            }
+
             SpaceShip hitShip = hit.collider.GetComponentInParent<SpaceShip>();
             if (hitShip != null && (m_sourceShip == null || hitShip.m_ownerFleet != m_sourceShip.m_ownerFleet))
             {

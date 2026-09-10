@@ -97,13 +97,15 @@ public class ProjectileBeam : ProjectileBase
         {
             m_headEffect = ObjectManager.Instance.m_poolManager.Get<EffectBase>(EPoolName.EFFECT_BEAM_HEAD);
             m_headEffect.transform.position = m_firePointTransform.position;
+            m_headEffect.SetColor(m_beamColor);
             m_headEffect.PlayEffect();
         }
-        
+
         if (m_muzzleEffect == null)
         {
-            m_muzzleEffect = ObjectManager.Instance.m_poolManager.Get<EffectBase>(EPoolName.EFFECT_BEAM_MUZZLE);    
+            m_muzzleEffect = ObjectManager.Instance.m_poolManager.Get<EffectBase>(EPoolName.EFFECT_BEAM_MUZZLE);
             m_muzzleEffect.transform.position = m_firePointTransform.position;
+            m_muzzleEffect.SetColor(m_beamColor);
             m_muzzleEffect.PlayEffect();
         }
         
@@ -302,6 +304,7 @@ public class ProjectileBeam : ProjectileBase
         {
             m_hitEffect = ObjectManager.Instance.m_poolManager.Get<EffectBase>(EPoolName.EFFECT_BEAM_HIT);
             m_hitEffect.transform.position = finalHitPoint;
+            m_hitEffect.SetColor(m_beamColor);
         }
 
         // 3단계: 흩어지며 소멸

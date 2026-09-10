@@ -559,9 +559,10 @@ public class UIPanelExplorationGrid : UIPanelBase
             return;
         }
 
+        string targetCellDisplay = FormatCellForDisplay($"{row}-{col}");
         UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig
         {
-            message = LocalizationManager.Instance.Get("UIPopupMessage_ConfirmTryCell"),
+            message = LocalizationManager.Instance.Get("UIPopupMessage_ConfirmTryCell", m_currentZoneNumber, targetCellDisplay),
             onConfirm = () => ConfirmEnterCell(row, col),
             onCancel = () => { }
         });
@@ -692,7 +693,8 @@ public class UIPanelExplorationGrid : UIPanelBase
         UIPanelPrepareBattle panel = UIManager.Instance.GetPanel<UIPanelPrepareBattle>("UIPanelPrepareBattle");
         if (panel == null) return;
 
-        panel.SetupContent(myFleet, enemyFleet, OnConfirmStartBattle, OnConfirmRetreat);
+        string cellDisplay = FormatCellForDisplay($"{m_currentRow}-{m_currentCol}");
+        panel.SetupContent(myFleet, enemyFleet, m_currentZoneNumber, cellDisplay, OnConfirmStartBattle, OnConfirmRetreat);
     }
 
     // 전투시작 확정 — 적 함대는 서버 응답으로 이미 스폰돼 있으므로 별도 통신 없이 바로 교전 전환
@@ -704,6 +706,9 @@ public class UIPanelExplorationGrid : UIPanelBase
         const float BATTLE_START_DELAY_SEC = 0.5f;
         ObjectManager.Instance.TryStartCombat(m_standoffEnemyFleet, EUnitState.BattleExploration, BATTLE_START_DELAY_SEC, BATTLE_START_DELAY_SEC);
         m_standoffEnemyFleet = null;
+
+        string cellDisplay = FormatCellForDisplay($"{m_currentRow}-{m_currentCol}");
+        EventManager.TriggerZoneEntered(m_currentZoneNumber, cellDisplay);
 
         // 이 셀에 웨이브가 2개 이상이면 나머지를 term 간격 순차 스폰으로 등록 — 위치는 내 함대를 중심으로 웨이브0과 같은 반지름의 원주 위에 배치(ObjectManager.SpawnZoneWave)
         if (m_pendingRemainingWaves != null)
@@ -1102,6 +1107,8 @@ public class UIPanelExplorationGrid : UIPanelBase
                 return;
             }
 
+            EventManager.Trigger_ZoneRunEnded();
+
             m_bankedReward.Clear();
             m_pendingBankedRewardGain.Clear(); // 탈출로 이미 100% 정산됨 — 다음 존으로 누수되지 않도록 함께 리셋
             RefreshBankedPointText();
@@ -1265,6 +1272,8 @@ public class UIPanelExplorationGrid : UIPanelBase
                 Debug.LogError($"[UIPanelExplorationGrid] AbandonZoneRun 실패: {response.errorCode}");
                 return;
             }
+
+            EventManager.Trigger_ZoneRunEnded();
 
             m_bankedReward.Clear();
             m_pendingBankedRewardGain.Clear(); // 포기로 이미 정산됨 — 다음 진입 시 누수되지 않도록 함께 리셋

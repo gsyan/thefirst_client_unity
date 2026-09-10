@@ -181,13 +181,11 @@ public class UIBattleView : MonoBehaviour
             : LocalizationManager.Instance.Get("UICOMMON_AdmiralFeature");
     }
 
-    private void OnZoneEntered(string zoneName, bool isFirstClear)
+    private void OnZoneEntered(int zoneNumber, string cellDisplay)
     {
         if (m_zoneNameText != null)
         {
-            string label = LocalizationManager.Instance.Get("exploration_zone_list_name");
-            m_zoneNameText.text = $"{label} {zoneName}";
-            m_zoneNameText.color = CommonUtility.PaletteColor("Text.Dark1");
+            m_zoneNameText.text = LocalizationManager.Instance.Get("Zone_Cell_Text", zoneNumber, cellDisplay);
             LayoutRebuilder.ForceRebuildLayoutImmediate(m_zoneNameText.transform.parent as RectTransform);
         }
     }

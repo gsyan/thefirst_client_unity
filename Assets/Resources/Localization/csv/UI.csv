@@ -29,7 +29,6 @@ exploration_collect_mineral,,Collect Mineral,미네랄 수확
 exploration_collect_available_title,,Harvest,수확
 exploration_elapsed_time,,Elapsed,경과 시간
 exploration_zone_insufficient_ships,,Not enough ships,함선이 부족합니다
-exploration_zone_enter_confirm,,Are you sure you want to enter this zone?,존에 입장 하시겠습니까?
 pending_reward_title,,Pending Rewards,미수령 보상
 pending_reward_message,,Claimed rewards from completed zones.,완료된 존의 미수령 보상을 수령했습니다.
 exploration_battle_victory,,Battle Victory,전투 승리
@@ -155,9 +154,11 @@ UIFleet_Stats_InterceptorRegenRate,,Interceptor Regen Rate,요격체 회복속�
 UIFleet_ShipLoadOut_Title,,Ship Loadout,함선 모듈 관리
 UIFleet_EditLoadoutButton,,Edit,함선 수정
 UIFleet_HullPicker_Title,,Select Hull,함체 선택
-UIHullPicker_UnlockConfirmMessage,,Unlock {0} for {1} AP?\n(Owned: {2} AP),{0}을(를) 업적포인트 {1}로 언락하시겠습니까?\n(보유: {2} AP)
+UIHullPicker_UnlockConfirmMessage,,Unlock {0},{0}을(를) 언락하시겠습니까?
 UIAchievement_Progress,,Progress,진행도
 UIAchievement_Reward,,AP Reward,업적포인트 보상
+UIAchievement_ClaimAllButton,,Claim All,전체 받기
+UIAchievement_FindNextButton,,Find Next,다음 찾기
 UIAchievement_Category_CellClear,,Cell Clear,셀 클리어
 UIAchievement_Category_EventCell,,Event Cell Clear,이벤트 셀 클리어
 UIAchievement_Category_ZoneClearTotal,,Zone Clear (Total),존 클리어(누적)
@@ -225,6 +226,7 @@ UITabPvp_RetreatConfirm,,Retreat from the PvP battle?,PvP 전투에서 퇴각하
 require_level_compare,,Lv.{0} (Current Lv.{1}),Lv.{0} (현재 Lv.{1})
 UIPopupConfirm_RequireLevel,,Required Level,필요 레벨
 UIPopupConfirm_PvpPointLabel,,PVP Point,PVP 포인트
+UIPopupConfirm_OwnedLabel,,Owned,보유
 UIPopupConfirm_ExpLabel,,EXP,경험치
 UIPopupConfirm_AircraftCount,,Aircraft,함재기 수
 UITabShip_ShipNameHeader,,SHIP {0},함선 {0}
@@ -314,7 +316,8 @@ UIPopupMessage_LogoutGuest,,Logging out as a guest will permanently delete your 
 UIPopupMessage_GoogleLink,,Would you like to link your Google account?,구글 계정을 연동하시겠습니까?
 UIPopupMessage_GoogleUnlink,,Unlinking Google will revert your account to guest status. Continue?,구글 연동을 해제하면 게스트 상태로 변경됩니다. 계속하시겠습니까?
 UIPopupMessage_CommanderLevelupMessage,,COMMANDER LEVEL UP,지휘 레벨업
-UIPopupMessage_ConfirmTryCell,,Are you sure you want to move to this cell?,선택한 셀로 이동 하시겠습니까?
+UIPopupMessage_ConfirmTryCell,,Move to Cell\n\nZone:\t\t {0}\nCell:\t\t {1},셀 이동\n\n존:\t\t {0}\n구역:\t\t {1}
+Zone_Cell_Text,,Zone:\t{0}\nCell:\t{1},존:\t{0}\n구역:\t{1}
 UIPopupMessage_ZoneLocked,,This zone is still locked. Clear the previous zone first.,아직 잠긴 존입니다. 이전 존을 먼저 클리어하세요.
 UIPopupMessage_MineralResetTitle,,MINERAL ENHANCEMENT RESET,미네랄 강화 초기화
 UIPopupMessage_MineralResetMessage,,Mineral enhancements have been reset after stage clear.,스테이지 클리어로 미네랄 강화가 초기화되었습니다.

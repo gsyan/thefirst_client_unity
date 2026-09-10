@@ -504,6 +504,11 @@ public class ApiClient
         return await PostAsync<ClaimAchievementResponse>("/achievement/claim", request);
     }
 
+    public async Task<ApiResponse<ClaimAllAchievementsResponse>> ClaimAllAchievementsAsync(ClaimAllAchievementsRequest request)
+    {
+        return await PostAsync<ClaimAllAchievementsResponse>("/achievement/claim-all", request);
+    }
+
     #endregion
 
     #region Zone Battle API Methods -------------------------------------------------------------------------------

@@ -108,21 +108,46 @@ public static class ExplorationEnemyFleetGenerator
         List<ModuleData> candidates = hulls.FindAll(h => CommonUtility.ParseTier(h.moduleSubType) == hullTier);
         if (candidates.Count == 0) return null;
 
-        ModuleData chosenHull = ResolveHullByShieldProbability(candidates, zoneConfig.enemyShieldProbability, random);
+        ModuleData chosenHull = ResolveHullVariant(candidates, zoneConfig, random);
         return NewBuildingShip(chosenHull, hullTier, moduleTable, zoneConfig, random);
     }
 
-    // 후보 중 gen2(실드형)가 있으면 enemyShieldProbability 확률로 선택, 없으면(현재 CSV 기준 tier 1~5) gen1로 폴백.
-    // CrossPlatformRandom이 정수 전용 API라 확률을 10000분율 정수로 스케일링해서 비교
-    private static ModuleData ResolveHullByShieldProbability(List<ModuleData> candidates, float shieldProbability, CrossPlatformRandom random)
+    // 실드/요격체 유무 4가지 조합(없음/실드만/요격체만/둘다) 중 그 티어에 실제 존재하는 것들끼리 zoneConfig의
+    // 상대 가중치를 정규화해서 룰렛 방식으로 하나를 고름. CrossPlatformRandom이 정수 전용 API라 가중치 합을
+    // 10000분율 정수로 스케일링해서 비교
+    private static ModuleData ResolveHullVariant(List<ModuleData> candidates, ZoneConfig zoneConfig, CrossPlatformRandom random)
     {
-        ModuleData gen1 = candidates.Find(h => CommonUtility.ParseGen(h.moduleSubType) == 1);
-        ModuleData gen2 = candidates.Find(h => CommonUtility.ParseGen(h.moduleSubType) == 2);
-        if (gen2 == null) return gen1 != null ? gen1 : candidates[0];
-        if (gen1 == null) return gen2;
+        ModuleData noneHull = candidates.Find(h => HasVariant(h, false, false));
+        ModuleData shieldHull = candidates.Find(h => HasVariant(h, true, false));
+        ModuleData interceptorHull = candidates.Find(h => HasVariant(h, false, true));
+        ModuleData bothHull = candidates.Find(h => HasVariant(h, true, true));
 
-        int threshold = UnityEngine.Mathf.RoundToInt(shieldProbability * 10000f);
-        return random.Next(10000) < threshold ? gen2 : gen1;
+        List<(ModuleData hull, float weight)> options = new List<(ModuleData, float)>();
+        if (noneHull != null) options.Add((noneHull, zoneConfig.enemyHullWeightNone));
+        if (shieldHull != null) options.Add((shieldHull, zoneConfig.enemyHullWeightShield));
+        if (interceptorHull != null) options.Add((interceptorHull, zoneConfig.enemyHullWeightInterceptor));
+        if (bothHull != null) options.Add((bothHull, zoneConfig.enemyHullWeightBoth));
+        if (options.Count == 0) return candidates[0];
+
+        float totalWeight = 0f;
+        for (int i = 0; i < options.Count; i++) totalWeight += options[i].weight;
+        if (totalWeight <= 0f) return options[0].hull; // 전부 0이면 목록 첫 항목(보통 none)으로 폴백
+
+        int roll = random.Next(UnityEngine.Mathf.RoundToInt(totalWeight * 10000f));
+        float cumulative = 0f;
+        for (int i = 0; i < options.Count; i++)
+        {
+            cumulative += options[i].weight;
+            if (roll < UnityEngine.Mathf.RoundToInt(cumulative * 10000f)) return options[i].hull;
+        }
+        return options[options.Count - 1].hull;
+    }
+
+    // 후보 함체의 구성 문자열(실드 자리/요격체 자리)이 원하는 실드·요격체 유무와 정확히 일치하는지
+    private static bool HasVariant(ModuleData hull, bool wantsShield, bool wantsInterceptor)
+    {
+        int[] composition = CommonUtility.ParseHullSlotComposition(hull.moduleSubType);
+        return (composition[3] > 0) == wantsShield && (composition[4] > 0) == wantsInterceptor;
     }
 
     private static BuildingShip NewBuildingShip(ModuleData hull, int hullTier, DataTableModule moduleTable, ZoneConfig zoneConfig, CrossPlatformRandom random)
@@ -140,9 +165,9 @@ public static class ExplorationEnemyFleetGenerator
         if (ship.beams.Count == 0 && ship.missiles.Count == 0 && ship.hangars.Count == 0 && maxSlots[0] > 0)
             TryEquipModuleAtSlot(ship.beams, EModuleType.beam, moduleTable.BeamModules, hullTier, 0, zoneConfig, random);
 
-        // 실드는 함체 gen 선택으로 이미 유무가 결정됨(슬롯 있으면 항상 장착) — 인터셉터는 이번 개편 범위 밖, 기존 0/1 스위치 그대로 유지
+        // 실드/요격체 둘 다 함체 변형 선택 단계(ResolveHullVariant)에서 이미 유무가 결정됨(슬롯 있으면 항상 장착)
         ship.shieldSubType = maxSlots[3] > 0 ? "shield_1_1" : "";
-        ship.interceptorSubType = maxSlots[4] > 0 && zoneConfig.enemyInterceptorEquipSlots > 0 ? "interceptor_1_1" : "";
+        ship.interceptorSubType = maxSlots[4] > 0 ? "interceptor_1_1" : "";
         return ship;
     }
 

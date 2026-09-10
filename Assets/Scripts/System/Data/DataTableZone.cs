@@ -85,10 +85,13 @@ public class ZoneConfig
     public int enemyBaseHullTier = 3;     // 1번 함선의 함체 티어(고정) — 이후 함선들은 enemyHullTierSum에서 이 값을 뺀 나머지를 나눠 가짐
     public float enemyModulePlacementProbability = 1f;  // 함체가 가진 모듈 슬롯 하나하나마다 이 확률로 장착/미장착을 결정(0~1)
     public float enemyModulePerformanceProbability = 1f; // 장착이 확정된 슬롯의 모듈 티어 범위 — max(1, 그 함선 함체티어 × 이 값) ~ 함체티어 사이 랜덤(1이면 항상 함체티어 그대로)
-    public float enemyShieldProbability = 0f; // 뽑힌 함체티어에 실드형(gen2) 버전이 있을 때 그걸 고를 확률(0~1). 그 티어에 gen2가 없으면 무조건 gen1
+    public float enemyHullWeightNone = 9f;          // 실드/요격체 둘 다 없는 변형을 고를 상대 가중치
+    public float enemyHullWeightShield = 1f;        // 실드만 있는 변형을 고를 상대 가중치
+    public float enemyHullWeightInterceptor = 0f;   // 요격체만 있는 변형을 고를 상대 가중치
+    public float enemyHullWeightBoth = 0f;          // 실드+요격체 둘 다 있는 변형을 고를 상대 가중치
+    // 절대 확률이 아니라 상대 비중 — 그 티어에 실제 존재하는 변형들끼리 합을 100%로 정규화해서 적용(총합이 1일 필요 없음)
     public float enemyHealthMultiplier = 1.0f; // 이 존의 적함대 체력 배율 (0.1=10%, 1.0=원본)
     public float enemyAttackMultiplier = 1.0f; // 이 존의 적함대 공격력 배율 (0.1=10%, 1.0=원본)
-    public int enemyInterceptorEquipSlots = 9; // 요격체 장착 여부 — 요격체도 슬롯 1개뿐이라 사실상 0/1 스위치
     public float enemyWaveSpawnTermSec = 5f; // 셀에 웨이브가 여러 개일 때 다음 웨이브 스폰 간격(초) — 현재 웨이브를 그 전에 전멸시키면 대기 없이 즉시 다음 웨이브 스폰
 
     [Header("셀 클리어 보상 (웨이브가 있던 셀만 적립, 존 단위 고정값)")]
