@@ -403,12 +403,28 @@ MonoBehaviour:
     m_Key: UIPanelExplorationGrid_OtherRunInProgress
     m_Metadata:
       m_Items: []
+  - m_Id: 78143796457373696
+    m_Key: UIPanelExplorationGrid_OtherRunInProgressWithAd
+    m_Metadata:
+      m_Items: []
   - m_Id: 74139633398448128
     m_Key: UIPanelExplorationGrid_AbandonAnotherRunConfirm
     m_Metadata:
       m_Items: []
+  - m_Id: 78143796528676864
+    m_Key: UIPanelExplorationGrid_AbandonAnotherRunConfirmWithAd
+    m_Metadata:
+      m_Items: []
   - m_Id: 74139633398448129
     m_Key: UIPanelExplorationGrid_AbandonRunConfirm
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78143796528676865
+    m_Key: UIPanelExplorationGrid_AbandonRunConfirmWithAd
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78141668900864000
+    m_Key: UIPanelExplorationGrid_AbandonConfirmButton
     m_Metadata:
       m_Items: []
   - m_Id: 66832217589809152

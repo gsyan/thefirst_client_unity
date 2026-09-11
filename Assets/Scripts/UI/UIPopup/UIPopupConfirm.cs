@@ -27,6 +27,10 @@ public class ConfirmPopupConfig
     // 버튼 커스터마이징 (null이면 프리팹 기본값 유지)
     public string cancelText1;
     public string confirmText1;
+
+    // 3번째 버튼(선택) — extraText1/onExtra 둘 다 null이면 버튼 자체가 숨겨짐(기존 2버튼 팝업과 동일하게 동작)
+    public string extraText1;
+    public Action onExtra;
 }
 
 // 확인/취소 팝업: bodyText에 message + detailText를 표시, 요구/비용은 UISection으로 표시
@@ -47,9 +51,13 @@ public class UIPopupConfirm : UIPopupBase
     
     [SerializeField] private Button confirmButton;
     [SerializeField] private TMP_Text m_confirmText1;
-    
+
+    [SerializeField] private Button m_extraButton;
+    [SerializeField] private TMP_Text m_extraText1;
+
     private Action onCancelCallback;
     private Action onConfirmCallback;
+    private Action onExtraCallback;
     private Coroutine m_autoCloseCoroutine;
     private static readonly WaitForSecondsRealtime s_wait1Sec = new WaitForSecondsRealtime(1f);
 
@@ -61,6 +69,8 @@ public class UIPopupConfirm : UIPopupBase
         if (cancelButton != null) cancelButton.onClick.AddListener(OnCancelClicked);
         if (confirmButton != null)
             confirmButton.onClick.AddListener(OnConfirmClicked);
+        if (m_extraButton != null)
+            m_extraButton.onClick.AddListener(OnExtraClicked);
     }
 
     private void OnCancelClicked()
@@ -75,6 +85,13 @@ public class UIPopupConfirm : UIPopupBase
         SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true);
         StopAutoClose();
         onConfirmCallback?.Invoke();
+    }
+
+    private void OnExtraClicked()
+    {
+        SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true);
+        StopAutoClose();
+        onExtraCallback?.Invoke();
     }
 
     public void ShowPopupConfirm(ConfirmPopupConfig config)
@@ -110,6 +127,7 @@ public class UIPopupConfirm : UIPopupBase
 
         onCancelCallback = config.onCancel;
         onConfirmCallback = config.onConfirm;
+        onExtraCallback = config.onExtra;
 
         if (m_autoCloseCoroutine != null) StopCoroutine(m_autoCloseCoroutine);
         m_autoCloseCoroutine = null;
@@ -171,7 +189,11 @@ public class UIPopupConfirm : UIPopupBase
     {
         if (cost == null || cost.amount <= 0)
         {
-            if (m_ownedPointRow != null) m_ownedPointRow.Hide();
+            if (m_ownedPointRow != null)
+            {
+                m_ownedPointRow.Hide();
+                SetOwnedPointRowParentActive(false);
+            }
             return true;
         }
 
@@ -196,10 +218,19 @@ public class UIPopupConfirm : UIPopupBase
         {
             m_ownedPointRow.SetRow("UIPopupConfirm_OwnedLabel", CommonUtility.FormatBigNumber(current), rawValue: true);
             m_ownedPointRow.SetValueColor(iconColor);
+            SetOwnedPointRowParentActive(true);
             LayoutRebuilder.ForceRebuildLayoutImmediate(m_ownedPointRow.transform as RectTransform);
         }
 
         return canAfford;
+    }
+
+    // m_ownedPointRow 자신만 SetActive로는 부모 컨테이너(패딩/배경 등)가 그대로 남아 빈 여백이 생길 수 있어 부모도 같이 토글
+    private void SetOwnedPointRowParentActive(bool active)
+    {
+        if (m_ownedPointRow == null) return;
+        Transform parent = m_ownedPointRow.transform.parent;
+        if (parent != null) parent.gameObject.SetActive(active);
     }
 
     private static string GetCostLabelKey(ECostType costType)
@@ -304,6 +335,10 @@ public class UIPopupConfirm : UIPopupBase
             if (m_cancelText1 != null) m_cancelText1.text = config.cancelText1 ?? loc.Get("Simple_Cancel");
 
         if (m_confirmText1 != null) m_confirmText1.text = config.confirmText1 ?? loc.Get("Simple_Confirm");
+
+        bool showExtra = config.onExtra != null;
+        if (m_extraButton != null) m_extraButton.gameObject.SetActive(showExtra);
+        if (showExtra && m_extraText1 != null) m_extraText1.text = config.extraText1 ?? "";
     }
 
     private void RebuildLayout()
@@ -318,6 +353,7 @@ public class UIPopupConfirm : UIPopupBase
         if (m_sectionsRoot != null) LayoutRebuilder.ForceRebuildLayoutImmediate(m_sectionsRoot);
         if (cancelButton != null) LayoutRebuilder.ForceRebuildLayoutImmediate(cancelButton.GetComponent<RectTransform>());
         if (confirmButton != null) LayoutRebuilder.ForceRebuildLayoutImmediate(confirmButton.GetComponent<RectTransform>());
+        if (m_extraButton != null) LayoutRebuilder.ForceRebuildLayoutImmediate(m_extraButton.GetComponent<RectTransform>());
         if (m_layoutRoot != null) LayoutRebuilder.ForceRebuildLayoutImmediate(m_layoutRoot);
     }
 

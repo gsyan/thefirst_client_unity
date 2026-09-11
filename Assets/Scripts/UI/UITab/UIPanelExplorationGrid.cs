@@ -1,6 +1,7 @@
 // 탐사 그리드 패널 — 그리드 생성 + 셀 배치 + 인접 이동 + 갤럭시뷰 연동 + 셀 진입(워프인) 담당. UIManager가 관리하는 독립 패널(다른 진입 화면과 배타적)
 // 패널 자체(존 탭/포인트 표시 등)는 열리자마자 바로 보임 — 그리드 셀 버튼만 갤럭시뷰 카메라가 실제로 정착한 시점(SettleZoneEntry)에 생성됨.
 // 이전엔 CanvasGroup 알파로 패널 전체를 가려뒀었으나, 버튼을 미리 비우는 것만으로 충분해 제거함(향후 버튼 순차/랜덤 등장 연출의 선행 작업)
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -600,13 +601,9 @@ public class UIPanelExplorationGrid : UIPanelBase
             string lastCell = clearedCells[^1];
             string otherCellDisplay = FormatCellForDisplay(lastCell);
 
-            UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig
-            {
-                message = LocalizationManager.Instance.Get("UIPanelExplorationGrid_OtherRunInProgress",
-                    otherZoneNumber, otherCellDisplay, CommonUtility.FormatNumber(otherBanked)),
-                onConfirm = () => ConfirmAbandonThenEnterCell(newRow, newCol),
-                onCancel = () => { }
-            });
+            ShowAbandonConfirmPopup("UIPanelExplorationGrid_OtherRunInProgress",
+                data => OnOtherRunAbandonedThenEnterCell(data, newRow, newCol),
+                otherZoneNumber, otherCellDisplay, CommonUtility.FormatNumber(otherBanked));
         });
     }
 
@@ -625,25 +622,21 @@ public class UIPanelExplorationGrid : UIPanelBase
         return $"{row + 1}-{col + 1}";
     }
 
-    // 다른 존 런을 포기하고, 곧바로 지금 클릭한 셀로 새 런 진입을 확정
+    // 진행도 없는 다른 존 런(보상 0)을 조용히 포기하고, 곧바로 지금 클릭한 셀로 새 런 진입을 확정 — 보상이 없어 광고 옵션 의미 없음
     private void ConfirmAbandonThenEnterCell(int row, int col)
     {
-        NetworkManager.Instance.AbandonZoneRun(new AbandonZoneRunRequest(), response =>
-        {
-            if (response.errorCode != 0)
-            {
-                Debug.LogError($"[UIPanelExplorationGrid] AbandonZoneRun 실패: {response.errorCode}");
-                return;
-            }
+        RequestAbandonZoneRun(false, data => OnOtherRunAbandonedThenEnterCell(data, row, col));
+    }
 
-            ApplyOwnedPointRemain(response.data.explorationPointRemain);
-            ApplyExpAndLevel(response.data.totalExp, response.data.commanderLevel);
-            ApplyTacticPowerRecovered(response.data.tacticPower);
-            ApplyHasUnclaimedAchievement(response.data.hasUnclaimedAchievement);
-            ClearActiveRunZoneCache();
+    private void OnOtherRunAbandonedThenEnterCell(AbandonZoneRunResponse data, int row, int col)
+    {
+        ApplyOwnedPointRemain(data.explorationPointRemain);
+        ApplyExpAndLevel(data.totalExp, data.commanderLevel);
+        ApplyTacticPowerRecovered(data.tacticPower);
+        ApplyHasUnclaimedAchievement(data.hasUnclaimedAchievement);
+        ClearActiveRunZoneCache();
 
-            ConfirmEnterCell(row, col);
-        });
+        ConfirmEnterCell(row, col);
     }
 
     // 확인 팝업 승인 — 전투 여부를 아직 모르므로 카메라는 갤럭시뷰에 그대로 둔 채 서버(EnterExplorationCell)부터 물어봄.
@@ -865,29 +858,16 @@ public class UIPanelExplorationGrid : UIPanelBase
     // 이미 다른 존에 IN_PROGRESS 런이 있을 때 — 포기 후 재시도 확인
     private void ShowAbandonAnotherRunConfirmPopup()
     {
-        UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig
-        {
-            message = LocalizationManager.Instance.Get("UIPanelExplorationGrid_AbandonAnotherRunConfirm"),
-            onConfirm = OnConfirmAbandonAnotherRunAndRetry,
-            onCancel = () => { }
-        });
+        ShowAbandonConfirmPopup("UIPanelExplorationGrid_AbandonAnotherRunConfirm", OnAnotherRunAbandonedAndRetry);
     }
 
-    private void OnConfirmAbandonAnotherRunAndRetry()
+    private void OnAnotherRunAbandonedAndRetry(AbandonZoneRunResponse data)
     {
-        NetworkManager.Instance.AbandonZoneRun(new AbandonZoneRunRequest(), response =>
-        {
-            if (response.errorCode != 0)
-            {
-                Debug.LogError($"[UIPanelExplorationGrid] AbandonZoneRun 실패: {response.errorCode}");
-                return;
-            }
-            ApplyOwnedPointRemain(response.data.explorationPointRemain);
-            ApplyExpAndLevel(response.data.totalExp, response.data.commanderLevel);
-            ApplyTacticPowerRecovered(response.data.tacticPower);
-            ApplyHasUnclaimedAchievement(response.data.hasUnclaimedAchievement);
-            RequestEnemyFleetForCurrentCell(); // 기존 런 정리 완료 — 원래 셀 도전 요청을 재시도
-        });
+        ApplyOwnedPointRemain(data.explorationPointRemain);
+        ApplyExpAndLevel(data.totalExp, data.commanderLevel);
+        ApplyTacticPowerRecovered(data.tacticPower);
+        ApplyHasUnclaimedAchievement(data.hasUnclaimedAchievement);
+        RequestEnemyFleetForCurrentCell(); // 기존 런 정리 완료 — 원래 셀 도전 요청을 재시도
     }
 
     // 전투 종료(승리/패배) 공통 이벤트 — 승리 시 서버에 클리어 통지 후 그리드(갤럭시뷰)로 복귀, 패배(퇴각 포함)는 이전 셀 위치로 되돌아감
@@ -1259,54 +1239,77 @@ public class UIPanelExplorationGrid : UIPanelBase
     private void OnAbandonRunButtonClicked()
     {
         SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true);
+        ShowAbandonConfirmPopup("UIPanelExplorationGrid_AbandonRunConfirm", OnAbandonRunConfirmed);
+    }
+
+    // 존런 포기 확인 팝업 — 취소/포기(20%) 기본 2버튼 + 광고가 준비된 경우에만 광고시청(100%) 3번째 버튼 추가
+    private void ShowAbandonConfirmPopup(string messageKey, Action<AbandonZoneRunResponse> onComplete, params object[] messageArgs)
+    {
+        bool adReady = AdManager.Instance.IsRewardedAdReady;
+        // 광고가 준비됐을 때만 "광고보면 100%" 문구가 있는 WithAd 버전 키를 씀 — 버튼이 안 뜨는데 문구만 광고를 언급하는 불일치 방지
+        string finalMessageKey = adReady ? messageKey + "WithAd" : messageKey;
         UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig
         {
-            message = LocalizationManager.Instance.Get("UIPanelExplorationGrid_AbandonRunConfirm"),
-            onConfirm = ConfirmAbandonRun,
+            message = LocalizationManager.Instance.Get(finalMessageKey, messageArgs),
+            confirmText1 = LocalizationManager.Instance.Get("UIPanelExplorationGrid_AbandonConfirmButton"),
+            extraText1 = adReady ? LocalizationManager.Instance.Get("Simple_WatchAD") : null,
+            onConfirm = () => RequestAbandonZoneRun(false, onComplete),
+            onExtra = adReady ? () => RequestAbandonZoneRunWithAd(onComplete) : null,
             onCancel = () => { }
         });
     }
 
-    private void ConfirmAbandonRun()
+    private void RequestAbandonZoneRunWithAd(Action<AbandonZoneRunResponse> onComplete)
     {
-        NetworkManager.Instance.AbandonZoneRun(new AbandonZoneRunRequest(), response =>
+        AdManager.Instance.ShowRewardedAd(result => RequestAbandonZoneRun(result == EAdResult.Rewarded, onComplete));
+    }
+
+    // 광고 미시청(watchedAd=false)이면 기본 지급률(20%), 시청 완료면 전액(100%) — 서버가 최종 판단/지급
+    private void RequestAbandonZoneRun(bool watchedAd, Action<AbandonZoneRunResponse> onComplete)
+    {
+        AbandonZoneRunRequest request = new AbandonZoneRunRequest { watchedAd = watchedAd };
+        NetworkManager.Instance.AbandonZoneRun(request, response =>
         {
             if (response.errorCode != 0)
             {
                 Debug.LogError($"[UIPanelExplorationGrid] AbandonZoneRun 실패: {response.errorCode}");
                 return;
             }
-
-            EventManager.Trigger_ZoneRunEnded();
-
-            m_bankedReward.Clear();
-            m_pendingBankedRewardGain.Clear(); // 포기로 이미 정산됨 — 다음 진입 시 누수되지 않도록 함께 리셋
-            RefreshBankedPointText();
-            RefreshAbandonRunButtonState();
-            ApplyOwnedPointRemain(response.data.explorationPointRemain);
-            ApplyExpAndLevel(response.data.totalExp, response.data.commanderLevel);
-            ApplyTacticPowerRecovered(response.data.tacticPower);
-            ApplyHasUnclaimedAchievement(response.data.hasUnclaimedAchievement);
-            ClearActiveRunZoneCache();
-
-            // 런 자체가 완전히 종료되므로 함대 손상(체력/실드)도 다음 런을 위해 전부 복구.
-            // 전투 중 파괴된 함선은 m_ships에서 null로만 표시돼 있어 FullRepair(생존 함선만 순회)로는 되살아나지 않으므로 먼저 복구
-            SpaceFleet myFleet = ObjectManager.Instance.GetMyFleet();
-            if (myFleet != null)
-            {
-                myFleet.RestoreAllDestroyedShips(0.1f);
-                myFleet.FullRepair();
-            }
-
-            // 보상카드 지속버프도 이번 런 한정(세션 스코프)이므로 런 종료와 함께 초기화
-            ObjectManager.Instance.m_rewardCardSessionState.Reset();
-            ObjectManager.Instance.RefreshRewardCardBuffsOnMyFleet();
-            RefreshRewardCardBuffDisplay();
-
-            // 진행 중이던 런이 종료되었으므로 현재 존을 시작 셀 상태로 다시 진입 — m_gridData를 비워 SelectZoneTab의 좌표 보존 경로를 건너뜀
-            m_gridData = null;
-            SelectZoneTab(m_currentZoneNumber, ComputeZoneSeed(m_currentZoneNumber));
+            onComplete(response.data);
         });
+    }
+
+    private void OnAbandonRunConfirmed(AbandonZoneRunResponse data)
+    {
+        EventManager.Trigger_ZoneRunEnded();
+
+        m_bankedReward.Clear();
+        m_pendingBankedRewardGain.Clear(); // 포기로 이미 정산됨 — 다음 진입 시 누수되지 않도록 함께 리셋
+        RefreshBankedPointText();
+        RefreshAbandonRunButtonState();
+        ApplyOwnedPointRemain(data.explorationPointRemain);
+        ApplyExpAndLevel(data.totalExp, data.commanderLevel);
+        ApplyTacticPowerRecovered(data.tacticPower);
+        ApplyHasUnclaimedAchievement(data.hasUnclaimedAchievement);
+        ClearActiveRunZoneCache();
+
+        // 런 자체가 완전히 종료되므로 함대 손상(체력/실드)도 다음 런을 위해 전부 복구.
+        // 전투 중 파괴된 함선은 m_ships에서 null로만 표시돼 있어 FullRepair(생존 함선만 순회)로는 되살아나지 않으므로 먼저 복구
+        SpaceFleet myFleet = ObjectManager.Instance.GetMyFleet();
+        if (myFleet != null)
+        {
+            myFleet.RestoreAllDestroyedShips(0.1f);
+            myFleet.FullRepair();
+        }
+
+        // 보상카드 지속버프도 이번 런 한정(세션 스코프)이므로 런 종료와 함께 초기화
+        ObjectManager.Instance.m_rewardCardSessionState.Reset();
+        ObjectManager.Instance.RefreshRewardCardBuffsOnMyFleet();
+        RefreshRewardCardBuffDisplay();
+
+        // 진행 중이던 런이 종료되었으므로 현재 존을 시작 셀 상태로 다시 진입 — m_gridData를 비워 SelectZoneTab의 좌표 보존 경로를 건너뜀
+        m_gridData = null;
+        SelectZoneTab(m_currentZoneNumber, ComputeZoneSeed(m_currentZoneNumber));
     }
 
     // 퇴각 — 적 함대만 제거하고 내 함대를 대치 진입 직전 위치/셀로 복귀

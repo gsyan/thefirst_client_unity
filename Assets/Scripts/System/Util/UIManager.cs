@@ -514,9 +514,13 @@ public class UIManager : MonoSingleton<UIManager>
 
         System.Action userConfirm = config.onConfirm;
         System.Action userCancel  = config.onCancel;
+        System.Action userExtra   = config.onExtra;
         config.onConfirm = () => { userConfirm?.Invoke(); CloseTopPopup(EPopupLayer.Overlay); ShowNextConfirmPopup(); };
         config.onCancel  = userCancel != null
             ? () => { userCancel.Invoke(); CloseTopPopup(EPopupLayer.Overlay); ShowNextConfirmPopup(); }
+            : (System.Action)null;
+        config.onExtra   = userExtra != null
+            ? () => { userExtra.Invoke(); CloseTopPopup(EPopupLayer.Overlay); ShowNextConfirmPopup(); }
             : (System.Action)null;
 
         popup.ShowPopupConfirm(config);

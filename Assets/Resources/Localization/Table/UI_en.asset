@@ -1268,17 +1268,17 @@ MonoBehaviour:
   - m_Id: 74139633343922176
     m_Localized: There is another exploration in progress.\nZone {0} / Cell {1} /
       Banked Exploration Point {2}\nAbandon it and start a new challenge in the selected
-      zone?\n* Only 50% of banked points will be recovered if abandoned
+      zone?\n* Only 20% of banked points will be recovered if abandoned
     m_Metadata:
       m_Items: []
   - m_Id: 74139633398448128
     m_Localized: There is an exploration in progress in another zone. Abandoning
-      it now only grants 50% of the banked exploration points. Abandon it and start
+      it now only grants 20% of the banked exploration points. Abandon it and start
       a new challenge?
     m_Metadata:
       m_Items: []
   - m_Id: 74139633398448129
-    m_Localized: Abandon the exploration in progress? Only 50% of the banked exploration
+    m_Localized: Abandon the exploration in progress?\nOnly 20% of the banked exploration
       points will be granted.
     m_Metadata:
       m_Items: []
@@ -3277,6 +3277,28 @@ MonoBehaviour:
   - m_Id: 78132264960917534
     m_Localized: Unlock the hull_14_1_55411 hull to complete. Refunds 10% of the
       achievement points spent.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78141668900864000
+    m_Localized: Abandon
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78143796457373696
+    m_Localized: There is another exploration in progress.\nZone {0} / Cell {1} /
+      Banked Exploration Point {2}\nAbandon it and start a new challenge in the selected
+      zone?\n* Only 20% of banked points will be recovered if abandoned\n* Watch
+      an ad to recover 100% instead
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78143796528676864
+    m_Localized: There is an exploration in progress in another zone. Abandoning
+      it now only grants 20% of the banked exploration points(watch an ad to receive
+      100% instead). Abandon it and start a new challenge?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78143796528676865
+    m_Localized: Abandon the exploration in progress?\nOnly 20% of the banked exploration
+      points will be granted.\nWatch an ad to receive 100% of the banked points instead.
     m_Metadata:
       m_Items: []
   references:

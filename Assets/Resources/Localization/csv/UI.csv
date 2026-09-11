@@ -95,9 +95,13 @@ UIPopupRewardCardSelect_TreasureTitle,,Treasure Reward,트레저 보상
 UIPanelExplorationGrid_EscapeConfirmMessage,,Escape Reward,탈출 보상
 UIPanelExplorationGrid_TreasureHealthHeal,,Fleet health restored by {0}%!,함대 체력을 {0}% 회복했습니다!
 UIPanelExplorationGrid_TreasureTacticPowerRestore,,Tactic power restored by {0}%!,전술력을 {0}% 회복했습니다!
-UIPanelExplorationGrid_OtherRunInProgress,,There is another exploration in progress.\nZone {0} / Cell {1} / Banked Exploration Point {2}\nAbandon it and start a new challenge in the selected zone?\n* Only 50% of banked points will be recovered if abandoned,진행 중인 다른 탐험이 있습니다.\n존 {0} / 구역 {1} / 적립된 탐험 포인트 {2}\n포기하고 선택한 존에 새로 도전하시겠습니까?\n* 포기 시 적립된 포인트의 50%만 회수 가능합니다
-UIPanelExplorationGrid_AbandonAnotherRunConfirm,,There is an exploration in progress in another zone. Abandoning it now only grants 50% of the banked exploration points. Abandon it and start a new challenge?,다른 존에 진행 중인 탐험이 있습니다. 지금 포기하면 쌓인 탐험 포인트의 50%만 획득합니다. 포기하고 새로 도전하시겠습니까?
-UIPanelExplorationGrid_AbandonRunConfirm,,Abandon the exploration in progress? Only 50% of the banked exploration points will be granted.,진행 중인 탐험을 포기하시겠습니까? 지금까지 쌓인 탐험 포인트의 50%만 획득합니다.
+UIPanelExplorationGrid_OtherRunInProgress,,There is another exploration in progress.\nZone {0} / Cell {1} / Banked Exploration Point {2}\nAbandon it and start a new challenge in the selected zone?\n* Only 20% of banked points will be recovered if abandoned,진행 중인 다른 탐험이 있습니다.\n존 {0} / 구역 {1} / 적립된 탐험 포인트 {2}\n포기하고 선택한 존에 새로 도전하시겠습니까?\n* 포기 시 적립된 포인트의 20%만 회수 가능합니다
+UIPanelExplorationGrid_OtherRunInProgressWithAd,,There is another exploration in progress.\nZone {0} / Cell {1} / Banked Exploration Point {2}\nAbandon it and start a new challenge in the selected zone?\n* Only 20% will be recovered — watch an ad for 100%,진행 중인 다른 탐험이 있습니다.\n존 {0} / 구역 {1} / 적립된 탐험 포인트 {2}\n포기하고 선택한 존에 새로 도전하시겠습니까?\n* 20%만 회수 — 광고 시청 시 100%
+UIPanelExplorationGrid_AbandonAnotherRunConfirm,,There is an exploration in progress in another zone. Abandoning it now only grants 20% of the banked exploration points. Abandon it and start a new challenge?,다른 존에 진행 중인 탐험이 있습니다. 지금 포기하면 쌓인 탐험 포인트의 20%만 획득합니다. 포기하고 새로 도전하시겠습니까?
+UIPanelExplorationGrid_AbandonAnotherRunConfirmWithAd,,There is an exploration in progress in another zone. Abandoning it now only grants 20% of the banked exploration points(watch an ad to receive 100% instead). Abandon it and start a new challenge?,다른 존에 진행 중인 탐험이 있습니다. 지금 포기하면 쌓인 탐험 포인트의 20%만 획득합니다(광고를 시청하면 100% 획득 가능). 포기하고 새로 도전하시겠습니까?
+UIPanelExplorationGrid_AbandonRunConfirm,,Abandon the exploration in progress?\nOnly 20% of the banked exploration points will be granted.,진행 중인 탐험을 포기하시겠습니까?\n지금까지 쌓인 탐험 포인트의 20%만 획득합니다.
+UIPanelExplorationGrid_AbandonRunConfirmWithAd,,Abandon the exploration in progress?\nOnly 20% will be granted — watch an ad for 100%.,진행 중인 탐험을 포기하시겠습니까?\n20%만 획득 — 광고 시청 시 100%.
+UIPanelExplorationGrid_AbandonConfirmButton,,Abandon,포기
 RewardCard_BeamAttack_Name,,Beam Power Up,빔 공격력 강화
 RewardCard_BeamAttack_Desc,,Beam attack +{0:P0},빔 공격력 {0:P0} 증가
 RewardCard_BeamFireRate_Name,,Beam Rate of Fire Up,빔 연사속도 강화

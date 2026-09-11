@@ -394,14 +394,18 @@ public class EscapeExplorationZoneResponse
 }
 
 [System.Serializable]
-public class AbandonZoneRunRequest { } // 다른 존 도전 전 진행 중인 런을 명시적으로 포기 — 커맨더당 IN_PROGRESS 런은 항상 1개뿐이라 zoneNumber 불필요
+public class AbandonZoneRunRequest
+{
+    // 다른 존 도전 전 진행 중인 런을 명시적으로 포기 — 커맨더당 IN_PROGRESS 런은 항상 1개뿐이라 zoneNumber 불필요
+    public bool watchedAd; // 포기 확인 팝업에서 광고를 시청했는지 — true면 적립 보상 전액(100%), false면 기본 지급률(20%)
+}
 
 [System.Serializable]
 public class AbandonZoneRunResponse
 {
-    public int explorationPointGained; // 포기로 확정 지급된 탐험 포인트(50%)
+    public int explorationPointGained; // 포기로 확정 지급된 탐험 포인트(watchedAd 여부에 따라 20%/100%)
     public int explorationPointRemain; // 확정 지급 후 은행 잔액
-    public int expGained;              // 포기로 확정 지급된 지휘관 경험치(50%)
+    public int expGained;              // 포기로 확정 지급된 지휘관 경험치(watchedAd 여부에 따라 20%/100%)
     public int totalExp;               // 반영 후 누적 경험치(권위값)
     public int commanderLevel;         // 반영 후 커맨더 레벨(레벨업 없으면 기존과 동일)
     public int tacticPower;            // 런 종료로 회복된 전술력 현재치(=tacticPowerMax, 권위값)
