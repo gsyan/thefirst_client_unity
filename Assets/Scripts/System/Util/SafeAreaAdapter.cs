@@ -62,7 +62,5 @@ public class SafeAreaAdapter : MonoBehaviour
 
         m_rectTransform.anchorMin = anchorMin;
         m_rectTransform.anchorMax = anchorMax;
-
-        Debug.Log($"[SafeAreaLOG] {name} screenSize=({Screen.width},{Screen.height}) safeArea={safeArea} anchorMin={anchorMin} anchorMax={anchorMax}");
     }
 }

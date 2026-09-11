@@ -30,6 +30,7 @@ public enum ETargetingRule
 {
     None = 0,
     FlagshipLast = 1 << 0, // 기함 아닌 함선이 하나라도 남아있으면 기함을 후보에서 제외, 기함만 남으면 타격 허용
+    RearLast = 1 << 1, // 전방 함선이 하나라도 남아있으면 후방(isFront==false) 함선을 후보에서 제외, 전방 전멸 시 타격 허용
 }
 
 public class SpaceShip : MonoBehaviour
@@ -44,8 +45,8 @@ public class SpaceShip : MonoBehaviour
     public EUnitState m_shipState;
     [HideInInspector] public Outline m_shipOutline;
 
-    // 자동 타겟팅 후보 필터링 룰 (기본값 None = 기존 동작과 동일). 시네마틱 등 특수 전투용 함선에만 설정
-    public ETargetingRule m_targetingRule = ETargetingRule.None;
+    // 자동 타겟팅 후보 필터링 룰 (기본값 RearLast = 후방 함선은 전방 전멸 전까지 타격 후보 제외). 시네마틱 등 특수 전투용 함선은 별도로 덮어씀
+    public ETargetingRule m_targetingRule = ETargetingRule.RearLast;
 
     // 전투 피격으로 실제 파괴되지 않도록 막는 체력 비율 하한선 (기본값 0 = 하한 없음, 기존 동작과 동일). 튜토리얼 지크프리트 기함처럼 스크립트로만 파괴되어야 하는 함선에 설정
     public float m_minHealthRatio = 0f;
@@ -264,6 +265,9 @@ public class SpaceShip : MonoBehaviour
 
         if ((m_targetingRule & ETargetingRule.FlagshipLast) != 0)
             ApplyFlagshipLastRule(targetFleet, result);
+
+        if ((m_targetingRule & ETargetingRule.RearLast) != 0)
+            ApplyRearLastRule(result);
     }
 
     // 기함 아닌 함선이 후보에 하나라도 있으면 기함 바디를 후보에서 제외 (기함만 남았을 때만 타격 허용)
@@ -288,6 +292,28 @@ public class SpaceShip : MonoBehaviour
         for (int i = candidates.Count - 1; i >= 0; i--)
         {
             if (candidates[i].GetShip() == currentFlagship)
+                candidates.RemoveAt(i);
+        }
+    }
+
+    // 전방(isFront == true) 함선이 후보에 하나라도 있으면 후방 함선을 후보에서 제외 (전방 전멸 시에만 타격 허용)
+    private void ApplyRearLastRule(List<ModuleHull> candidates)
+    {
+        bool bFind = false;
+        for (int i = 0; i < candidates.Count; i++)
+        {
+            if (candidates[i].GetShip().m_shipInfo.isFront == true)
+            {
+                bFind = true;
+                break;
+            }
+        }
+        // 전방 함선이 하나도 없으면(=후방만 남음) candidates를 건드리지 않고 그대로 반환
+        if (bFind == false) return;
+
+        for (int i = candidates.Count - 1; i >= 0; i--)
+        {
+            if (candidates[i].GetShip().m_shipInfo.isFront == false)
                 candidates.RemoveAt(i);
         }
     }
@@ -563,8 +589,8 @@ public class SpaceShip : MonoBehaviour
         HandleShipDestroyed();
     }
 
-    // 전투 피격으로 인한 사망 처리 — 폭발 이펙트/사운드 후 파괴
-    private void HandleShipDestroyed()
+    // 전투 피격으로 인한 사망 처리 — playEffects=false면 폭발 이펙트/사운드 없이 슬롯만 조용히 비움(재접속 시 이미 죽었던 슬롯 동기화용)
+    private void HandleShipDestroyed(bool playEffects = true)
     {
         ClearAllFireEffects();
         ClearAllScorchMarks();
@@ -583,11 +609,15 @@ public class SpaceShip : MonoBehaviour
         SpaceFleet parentFleet = GetComponentInParent<SpaceFleet>();
         if (parentFleet != null)
             parentFleet.SetShipNullified(this);
-        // 폭발 이펙트 생성
-        EffectBase effect = ObjectManager.Instance.m_poolManager.Get<EffectBase>(EPoolName.EFFECT_EXPLOSION_SHIP);
-        effect.transform.position = transform.position;
-        effect.PlayEffect();
-        SoundManager.Instance.PlayFX(EFx.Explosion_Ship, transform.position);
+
+        if (playEffects == true)
+        {
+            // 폭발 이펙트 생성
+            EffectBase effect = ObjectManager.Instance.m_poolManager.Get<EffectBase>(EPoolName.EFFECT_EXPLOSION_SHIP);
+            effect.transform.position = transform.position;
+            effect.PlayEffect();
+            SoundManager.Instance.PlayFX(EFx.Explosion_Ship, transform.position);
+        }
 
         // 파괴 처리
         Destroy(gameObject);
@@ -597,6 +627,12 @@ public class SpaceShip : MonoBehaviour
     public void DestroyForCinematic()
     {
         HandleShipDestroyed();
+    }
+
+    // 재접속 등으로 이미 파괴가 확정된 슬롯을 뒤늦게 동기화할 때 — 폭발 이펙트/사운드 없이 조용히 슬롯만 비움
+    public void DestroySilently()
+    {
+        HandleShipDestroyed(playEffects: false);
     }
 
     private void UpdateFireEffects(Vector3 hitPosition, EDamageType damageType)

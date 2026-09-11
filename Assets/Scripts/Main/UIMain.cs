@@ -20,10 +20,6 @@ public class UIMain : UIManager
 
         InitializeUIManager();
         NetworkManager.Instance.OnChangeScene();
-
-        RectTransform backgroundRect = transform.Find("Background") as RectTransform;
-        if (backgroundRect != null)
-            Debug.Log($"[SafeAreaLOG] Background anchorMin={backgroundRect.anchorMin} anchorMax={backgroundRect.anchorMax} sizeDelta={backgroundRect.sizeDelta} localPosition={backgroundRect.localPosition} rect={backgroundRect.rect}");
     }
 
     public override void InitializeUIManager()
@@ -140,7 +136,22 @@ public class UIMain : UIManager
                     }
                 }
 
-                LoadingManager.LoadSceneWithLoading("SpaceScene");
+                // 진행 중인 존런이 있으면 SpaceScene 진입 전에 그 스냅샷(체력/보상카드)을 미리 받아둠 —
+                // ObjectManager가 함대를 스폰한 직후 동기적으로 바로 적용해, 파괴됐던 함선이 잠깐이라도 풀피로 보이지 않게 함
+                int activeZoneNumber = response.data != null && response.data.commanderInfo != null ? response.data.commanderInfo.explorationZoneNumber : 0;
+                if (activeZoneNumber > 0)
+                {
+                    NetworkManager.Instance.GetActiveZoneRunProgress(new GetActiveZoneRunProgressRequest(), progressResponse =>
+                    {
+                        if (progressResponse != null && progressResponse.errorCode == 0 && progressResponse.data != null)
+                            DataManager.Instance.m_pendingActiveZoneRunProgress = progressResponse.data;
+                        LoadingManager.LoadSceneWithLoading("SpaceScene");
+                    });
+                }
+                else
+                {
+                    LoadingManager.LoadSceneWithLoading("SpaceScene");
+                }
             }
             else
             {

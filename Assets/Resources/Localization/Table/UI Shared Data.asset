@@ -383,6 +383,10 @@ MonoBehaviour:
     m_Key: UIPopupRewardCardSelect_EscapeTitle
     m_Metadata:
       m_Items: []
+  - m_Id: 78109183722782720
+    m_Key: UIPopupRewardCardSelect_TreasureTitle
+    m_Metadata:
+      m_Items: []
   - m_Id: 72478145331986432
     m_Key: UIPanelExplorationGrid_EscapeConfirmMessage
     m_Metadata:
@@ -693,6 +697,10 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 76604851655409673
     m_Key: UIAchievement_Category_ModuleTierCount
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264847671296
+    m_Key: UIAchievement_Category_HullUnlocked
     m_Metadata:
       m_Items: []
   - m_Id: 76279911311867904
@@ -1105,6 +1113,18 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 74331910964117504
     m_Key: UIFleet_ModuleReinforce_Title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78028320871940096
+    m_Key: UIFleet_ModuleReinforce_ColStatus
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78028320939048960
+    m_Key: UIFleet_ModuleReinforce_ColValue
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78028320939048961
+    m_Key: UIFleet_ModuleReinforce_ColInvested
     m_Metadata:
       m_Items: []
   - m_Id: 34285289056632833
@@ -2877,6 +2897,310 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 76631608848678978
     m_Key: UIAchievement_Desc_module_interceptor_tier3_count_3
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264956723200
+    m_Key: UIAchievement_Name_hull_unlock_hull_4_1_21100
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264956723201
+    m_Key: UIAchievement_Desc_hull_unlock_hull_4_1_21100
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264956723202
+    m_Key: UIAchievement_Name_hull_unlock_hull_5_1_22100
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264956723203
+    m_Key: UIAchievement_Desc_hull_unlock_hull_5_1_22100
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264956723204
+    m_Key: UIAchievement_Name_hull_unlock_hull_6_1_22200
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264956723205
+    m_Key: UIAchievement_Desc_hull_unlock_hull_6_1_22200
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264956723206
+    m_Key: UIAchievement_Name_hull_unlock_hull_6_1_22201
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264956723207
+    m_Key: UIAchievement_Desc_hull_unlock_hull_6_1_22201
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264956723208
+    m_Key: UIAchievement_Name_hull_unlock_hull_6_1_22210
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264956723209
+    m_Key: UIAchievement_Desc_hull_unlock_hull_6_1_22210
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264956723210
+    m_Key: UIAchievement_Name_hull_unlock_hull_6_1_22211
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264956723211
+    m_Key: UIAchievement_Desc_hull_unlock_hull_6_1_22211
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264956723212
+    m_Key: UIAchievement_Name_hull_unlock_hull_7_1_32200
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264956723213
+    m_Key: UIAchievement_Desc_hull_unlock_hull_7_1_32200
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264956723214
+    m_Key: UIAchievement_Name_hull_unlock_hull_7_1_32201
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264956723215
+    m_Key: UIAchievement_Desc_hull_unlock_hull_7_1_32201
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264956723216
+    m_Key: UIAchievement_Name_hull_unlock_hull_7_1_32210
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264956723217
+    m_Key: UIAchievement_Desc_hull_unlock_hull_7_1_32210
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264956723218
+    m_Key: UIAchievement_Name_hull_unlock_hull_7_1_32211
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264956723219
+    m_Key: UIAchievement_Desc_hull_unlock_hull_7_1_32211
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264956723220
+    m_Key: UIAchievement_Name_hull_unlock_hull_8_1_33200
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264956723221
+    m_Key: UIAchievement_Desc_hull_unlock_hull_8_1_33200
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264956723222
+    m_Key: UIAchievement_Name_hull_unlock_hull_8_1_33201
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264956723223
+    m_Key: UIAchievement_Desc_hull_unlock_hull_8_1_33201
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264956723224
+    m_Key: UIAchievement_Name_hull_unlock_hull_8_1_33210
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264956723225
+    m_Key: UIAchievement_Desc_hull_unlock_hull_8_1_33210
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264956723226
+    m_Key: UIAchievement_Name_hull_unlock_hull_8_1_33211
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264956723227
+    m_Key: UIAchievement_Desc_hull_unlock_hull_8_1_33211
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264956723228
+    m_Key: UIAchievement_Name_hull_unlock_hull_9_1_33300
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264956723229
+    m_Key: UIAchievement_Desc_hull_unlock_hull_9_1_33300
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264956723230
+    m_Key: UIAchievement_Name_hull_unlock_hull_9_1_33301
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264956723231
+    m_Key: UIAchievement_Desc_hull_unlock_hull_9_1_33301
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264956723232
+    m_Key: UIAchievement_Name_hull_unlock_hull_9_1_33310
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264956723233
+    m_Key: UIAchievement_Desc_hull_unlock_hull_9_1_33310
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264956723234
+    m_Key: UIAchievement_Name_hull_unlock_hull_9_1_33311
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264956723235
+    m_Key: UIAchievement_Desc_hull_unlock_hull_9_1_33311
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264956723236
+    m_Key: UIAchievement_Name_hull_unlock_hull_10_1_43300
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264956723237
+    m_Key: UIAchievement_Desc_hull_unlock_hull_10_1_43300
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264956723238
+    m_Key: UIAchievement_Name_hull_unlock_hull_10_1_43301
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264956723239
+    m_Key: UIAchievement_Desc_hull_unlock_hull_10_1_43301
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264956723240
+    m_Key: UIAchievement_Name_hull_unlock_hull_10_1_43310
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264956723241
+    m_Key: UIAchievement_Desc_hull_unlock_hull_10_1_43310
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264956723242
+    m_Key: UIAchievement_Name_hull_unlock_hull_10_1_43311
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264956723243
+    m_Key: UIAchievement_Desc_hull_unlock_hull_10_1_43311
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264956723244
+    m_Key: UIAchievement_Name_hull_unlock_hull_11_1_44300
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264960917504
+    m_Key: UIAchievement_Desc_hull_unlock_hull_11_1_44300
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264960917505
+    m_Key: UIAchievement_Name_hull_unlock_hull_11_1_44301
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264960917506
+    m_Key: UIAchievement_Desc_hull_unlock_hull_11_1_44301
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264960917507
+    m_Key: UIAchievement_Name_hull_unlock_hull_11_1_44310
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264960917508
+    m_Key: UIAchievement_Desc_hull_unlock_hull_11_1_44310
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264960917509
+    m_Key: UIAchievement_Name_hull_unlock_hull_11_1_44311
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264960917510
+    m_Key: UIAchievement_Desc_hull_unlock_hull_11_1_44311
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264960917511
+    m_Key: UIAchievement_Name_hull_unlock_hull_12_1_44400
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264960917512
+    m_Key: UIAchievement_Desc_hull_unlock_hull_12_1_44400
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264960917513
+    m_Key: UIAchievement_Name_hull_unlock_hull_12_1_44401
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264960917514
+    m_Key: UIAchievement_Desc_hull_unlock_hull_12_1_44401
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264960917515
+    m_Key: UIAchievement_Name_hull_unlock_hull_12_1_44410
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264960917516
+    m_Key: UIAchievement_Desc_hull_unlock_hull_12_1_44410
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264960917517
+    m_Key: UIAchievement_Name_hull_unlock_hull_12_1_44411
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264960917518
+    m_Key: UIAchievement_Desc_hull_unlock_hull_12_1_44411
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264960917519
+    m_Key: UIAchievement_Name_hull_unlock_hull_13_1_54400
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264960917520
+    m_Key: UIAchievement_Desc_hull_unlock_hull_13_1_54400
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264960917521
+    m_Key: UIAchievement_Name_hull_unlock_hull_13_1_54401
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264960917522
+    m_Key: UIAchievement_Desc_hull_unlock_hull_13_1_54401
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264960917523
+    m_Key: UIAchievement_Name_hull_unlock_hull_13_1_54410
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264960917524
+    m_Key: UIAchievement_Desc_hull_unlock_hull_13_1_54410
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264960917525
+    m_Key: UIAchievement_Name_hull_unlock_hull_13_1_54411
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264960917526
+    m_Key: UIAchievement_Desc_hull_unlock_hull_13_1_54411
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264960917527
+    m_Key: UIAchievement_Name_hull_unlock_hull_14_1_55400
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264960917528
+    m_Key: UIAchievement_Desc_hull_unlock_hull_14_1_55400
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264960917529
+    m_Key: UIAchievement_Name_hull_unlock_hull_14_1_55401
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264960917530
+    m_Key: UIAchievement_Desc_hull_unlock_hull_14_1_55401
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264960917531
+    m_Key: UIAchievement_Name_hull_unlock_hull_14_1_55410
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264960917532
+    m_Key: UIAchievement_Desc_hull_unlock_hull_14_1_55410
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264960917533
+    m_Key: UIAchievement_Name_hull_unlock_hull_14_1_55411
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264960917534
+    m_Key: UIAchievement_Desc_hull_unlock_hull_14_1_55411
     m_Metadata:
       m_Items: []
   m_Metadata:

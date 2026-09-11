@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class UIReinforceStatRow : MonoBehaviour
 {
     [SerializeField] private TMP_Text m_labelText;
+    [SerializeField] private TMP_Text m_statValueText; // 강화 포인트가 실제로 만들어내는 스탯 수치(공격력/체력 등) 표시
     [SerializeField] private TMP_Text m_valueText;
     [SerializeField] private Button m_upButton;
     [SerializeField] private Button m_downButton;
@@ -14,12 +15,13 @@ public class UIReinforceStatRow : MonoBehaviour
     private int m_dataIndex;
     private System.Action<int, int> m_onPointsChanged; // (dataIndex, delta) delta=+1 또는 -1
 
-    public void Setup(int dataIndex, string label, int currentValue, bool isEditable, bool canIncrease, bool canDecrease, System.Action<int, int> onPointsChanged)
+    public void Setup(int dataIndex, string label, float actualValue, int currentValue, bool isEditable, bool canIncrease, bool canDecrease, System.Action<int, int> onPointsChanged)
     {
         m_dataIndex = dataIndex;
         m_onPointsChanged = onPointsChanged;
 
         if (m_labelText != null) m_labelText.text = label;
+        if (m_statValueText != null) m_statValueText.text = $"{CommonUtility.FloorToDecimals(actualValue, 1):F1}";
         if (m_valueText != null) m_valueText.text = currentValue.ToString();
 
         if (m_upButton != null)

@@ -1273,3 +1273,269 @@ MonoBehaviour:
     achievementPointReward: 60
     nameKey: UIAchievement_Name_module_interceptor_tier3_count_3
     descKey: UIAchievement_Desc_module_interceptor_tier3_count_3
+  - achievementId: hull_unlock_hull_4_1_21100
+    conditionType: 10
+    conditionParam: hull_4_1_21100
+    threshold: 1
+    achievementPointReward: 40
+    nameKey: UIAchievement_Name_hull_unlock_hull_4_1_21100
+    descKey: UIAchievement_Desc_hull_unlock_hull_4_1_21100
+  - achievementId: hull_unlock_hull_5_1_22100
+    conditionType: 10
+    conditionParam: hull_5_1_22100
+    threshold: 1
+    achievementPointReward: 50
+    nameKey: UIAchievement_Name_hull_unlock_hull_5_1_22100
+    descKey: UIAchievement_Desc_hull_unlock_hull_5_1_22100
+  - achievementId: hull_unlock_hull_6_1_22200
+    conditionType: 10
+    conditionParam: hull_6_1_22200
+    threshold: 1
+    achievementPointReward: 60
+    nameKey: UIAchievement_Name_hull_unlock_hull_6_1_22200
+    descKey: UIAchievement_Desc_hull_unlock_hull_6_1_22200
+  - achievementId: hull_unlock_hull_6_1_22201
+    conditionType: 10
+    conditionParam: hull_6_1_22201
+    threshold: 1
+    achievementPointReward: 120
+    nameKey: UIAchievement_Name_hull_unlock_hull_6_1_22201
+    descKey: UIAchievement_Desc_hull_unlock_hull_6_1_22201
+  - achievementId: hull_unlock_hull_6_1_22210
+    conditionType: 10
+    conditionParam: hull_6_1_22210
+    threshold: 1
+    achievementPointReward: 120
+    nameKey: UIAchievement_Name_hull_unlock_hull_6_1_22210
+    descKey: UIAchievement_Desc_hull_unlock_hull_6_1_22210
+  - achievementId: hull_unlock_hull_6_1_22211
+    conditionType: 10
+    conditionParam: hull_6_1_22211
+    threshold: 1
+    achievementPointReward: 180
+    nameKey: UIAchievement_Name_hull_unlock_hull_6_1_22211
+    descKey: UIAchievement_Desc_hull_unlock_hull_6_1_22211
+  - achievementId: hull_unlock_hull_7_1_32200
+    conditionType: 10
+    conditionParam: hull_7_1_32200
+    threshold: 1
+    achievementPointReward: 70
+    nameKey: UIAchievement_Name_hull_unlock_hull_7_1_32200
+    descKey: UIAchievement_Desc_hull_unlock_hull_7_1_32200
+  - achievementId: hull_unlock_hull_7_1_32201
+    conditionType: 10
+    conditionParam: hull_7_1_32201
+    threshold: 1
+    achievementPointReward: 140
+    nameKey: UIAchievement_Name_hull_unlock_hull_7_1_32201
+    descKey: UIAchievement_Desc_hull_unlock_hull_7_1_32201
+  - achievementId: hull_unlock_hull_7_1_32210
+    conditionType: 10
+    conditionParam: hull_7_1_32210
+    threshold: 1
+    achievementPointReward: 140
+    nameKey: UIAchievement_Name_hull_unlock_hull_7_1_32210
+    descKey: UIAchievement_Desc_hull_unlock_hull_7_1_32210
+  - achievementId: hull_unlock_hull_7_1_32211
+    conditionType: 10
+    conditionParam: hull_7_1_32211
+    threshold: 1
+    achievementPointReward: 210
+    nameKey: UIAchievement_Name_hull_unlock_hull_7_1_32211
+    descKey: UIAchievement_Desc_hull_unlock_hull_7_1_32211
+  - achievementId: hull_unlock_hull_8_1_33200
+    conditionType: 10
+    conditionParam: hull_8_1_33200
+    threshold: 1
+    achievementPointReward: 80
+    nameKey: UIAchievement_Name_hull_unlock_hull_8_1_33200
+    descKey: UIAchievement_Desc_hull_unlock_hull_8_1_33200
+  - achievementId: hull_unlock_hull_8_1_33201
+    conditionType: 10
+    conditionParam: hull_8_1_33201
+    threshold: 1
+    achievementPointReward: 160
+    nameKey: UIAchievement_Name_hull_unlock_hull_8_1_33201
+    descKey: UIAchievement_Desc_hull_unlock_hull_8_1_33201
+  - achievementId: hull_unlock_hull_8_1_33210
+    conditionType: 10
+    conditionParam: hull_8_1_33210
+    threshold: 1
+    achievementPointReward: 160
+    nameKey: UIAchievement_Name_hull_unlock_hull_8_1_33210
+    descKey: UIAchievement_Desc_hull_unlock_hull_8_1_33210
+  - achievementId: hull_unlock_hull_8_1_33211
+    conditionType: 10
+    conditionParam: hull_8_1_33211
+    threshold: 1
+    achievementPointReward: 240
+    nameKey: UIAchievement_Name_hull_unlock_hull_8_1_33211
+    descKey: UIAchievement_Desc_hull_unlock_hull_8_1_33211
+  - achievementId: hull_unlock_hull_9_1_33300
+    conditionType: 10
+    conditionParam: hull_9_1_33300
+    threshold: 1
+    achievementPointReward: 90
+    nameKey: UIAchievement_Name_hull_unlock_hull_9_1_33300
+    descKey: UIAchievement_Desc_hull_unlock_hull_9_1_33300
+  - achievementId: hull_unlock_hull_9_1_33301
+    conditionType: 10
+    conditionParam: hull_9_1_33301
+    threshold: 1
+    achievementPointReward: 180
+    nameKey: UIAchievement_Name_hull_unlock_hull_9_1_33301
+    descKey: UIAchievement_Desc_hull_unlock_hull_9_1_33301
+  - achievementId: hull_unlock_hull_9_1_33310
+    conditionType: 10
+    conditionParam: hull_9_1_33310
+    threshold: 1
+    achievementPointReward: 180
+    nameKey: UIAchievement_Name_hull_unlock_hull_9_1_33310
+    descKey: UIAchievement_Desc_hull_unlock_hull_9_1_33310
+  - achievementId: hull_unlock_hull_9_1_33311
+    conditionType: 10
+    conditionParam: hull_9_1_33311
+    threshold: 1
+    achievementPointReward: 270
+    nameKey: UIAchievement_Name_hull_unlock_hull_9_1_33311
+    descKey: UIAchievement_Desc_hull_unlock_hull_9_1_33311
+  - achievementId: hull_unlock_hull_10_1_43300
+    conditionType: 10
+    conditionParam: hull_10_1_43300
+    threshold: 1
+    achievementPointReward: 150
+    nameKey: UIAchievement_Name_hull_unlock_hull_10_1_43300
+    descKey: UIAchievement_Desc_hull_unlock_hull_10_1_43300
+  - achievementId: hull_unlock_hull_10_1_43301
+    conditionType: 10
+    conditionParam: hull_10_1_43301
+    threshold: 1
+    achievementPointReward: 300
+    nameKey: UIAchievement_Name_hull_unlock_hull_10_1_43301
+    descKey: UIAchievement_Desc_hull_unlock_hull_10_1_43301
+  - achievementId: hull_unlock_hull_10_1_43310
+    conditionType: 10
+    conditionParam: hull_10_1_43310
+    threshold: 1
+    achievementPointReward: 300
+    nameKey: UIAchievement_Name_hull_unlock_hull_10_1_43310
+    descKey: UIAchievement_Desc_hull_unlock_hull_10_1_43310
+  - achievementId: hull_unlock_hull_10_1_43311
+    conditionType: 10
+    conditionParam: hull_10_1_43311
+    threshold: 1
+    achievementPointReward: 450
+    nameKey: UIAchievement_Name_hull_unlock_hull_10_1_43311
+    descKey: UIAchievement_Desc_hull_unlock_hull_10_1_43311
+  - achievementId: hull_unlock_hull_11_1_44300
+    conditionType: 10
+    conditionParam: hull_11_1_44300
+    threshold: 1
+    achievementPointReward: 200
+    nameKey: UIAchievement_Name_hull_unlock_hull_11_1_44300
+    descKey: UIAchievement_Desc_hull_unlock_hull_11_1_44300
+  - achievementId: hull_unlock_hull_11_1_44301
+    conditionType: 10
+    conditionParam: hull_11_1_44301
+    threshold: 1
+    achievementPointReward: 400
+    nameKey: UIAchievement_Name_hull_unlock_hull_11_1_44301
+    descKey: UIAchievement_Desc_hull_unlock_hull_11_1_44301
+  - achievementId: hull_unlock_hull_11_1_44310
+    conditionType: 10
+    conditionParam: hull_11_1_44310
+    threshold: 1
+    achievementPointReward: 400
+    nameKey: UIAchievement_Name_hull_unlock_hull_11_1_44310
+    descKey: UIAchievement_Desc_hull_unlock_hull_11_1_44310
+  - achievementId: hull_unlock_hull_11_1_44311
+    conditionType: 10
+    conditionParam: hull_11_1_44311
+    threshold: 1
+    achievementPointReward: 600
+    nameKey: UIAchievement_Name_hull_unlock_hull_11_1_44311
+    descKey: UIAchievement_Desc_hull_unlock_hull_11_1_44311
+  - achievementId: hull_unlock_hull_12_1_44400
+    conditionType: 10
+    conditionParam: hull_12_1_44400
+    threshold: 1
+    achievementPointReward: 250
+    nameKey: UIAchievement_Name_hull_unlock_hull_12_1_44400
+    descKey: UIAchievement_Desc_hull_unlock_hull_12_1_44400
+  - achievementId: hull_unlock_hull_12_1_44401
+    conditionType: 10
+    conditionParam: hull_12_1_44401
+    threshold: 1
+    achievementPointReward: 500
+    nameKey: UIAchievement_Name_hull_unlock_hull_12_1_44401
+    descKey: UIAchievement_Desc_hull_unlock_hull_12_1_44401
+  - achievementId: hull_unlock_hull_12_1_44410
+    conditionType: 10
+    conditionParam: hull_12_1_44410
+    threshold: 1
+    achievementPointReward: 500
+    nameKey: UIAchievement_Name_hull_unlock_hull_12_1_44410
+    descKey: UIAchievement_Desc_hull_unlock_hull_12_1_44410
+  - achievementId: hull_unlock_hull_12_1_44411
+    conditionType: 10
+    conditionParam: hull_12_1_44411
+    threshold: 1
+    achievementPointReward: 750
+    nameKey: UIAchievement_Name_hull_unlock_hull_12_1_44411
+    descKey: UIAchievement_Desc_hull_unlock_hull_12_1_44411
+  - achievementId: hull_unlock_hull_13_1_54400
+    conditionType: 10
+    conditionParam: hull_13_1_54400
+    threshold: 1
+    achievementPointReward: 300
+    nameKey: UIAchievement_Name_hull_unlock_hull_13_1_54400
+    descKey: UIAchievement_Desc_hull_unlock_hull_13_1_54400
+  - achievementId: hull_unlock_hull_13_1_54401
+    conditionType: 10
+    conditionParam: hull_13_1_54401
+    threshold: 1
+    achievementPointReward: 600
+    nameKey: UIAchievement_Name_hull_unlock_hull_13_1_54401
+    descKey: UIAchievement_Desc_hull_unlock_hull_13_1_54401
+  - achievementId: hull_unlock_hull_13_1_54410
+    conditionType: 10
+    conditionParam: hull_13_1_54410
+    threshold: 1
+    achievementPointReward: 600
+    nameKey: UIAchievement_Name_hull_unlock_hull_13_1_54410
+    descKey: UIAchievement_Desc_hull_unlock_hull_13_1_54410
+  - achievementId: hull_unlock_hull_13_1_54411
+    conditionType: 10
+    conditionParam: hull_13_1_54411
+    threshold: 1
+    achievementPointReward: 900
+    nameKey: UIAchievement_Name_hull_unlock_hull_13_1_54411
+    descKey: UIAchievement_Desc_hull_unlock_hull_13_1_54411
+  - achievementId: hull_unlock_hull_14_1_55400
+    conditionType: 10
+    conditionParam: hull_14_1_55400
+    threshold: 1
+    achievementPointReward: 350
+    nameKey: UIAchievement_Name_hull_unlock_hull_14_1_55400
+    descKey: UIAchievement_Desc_hull_unlock_hull_14_1_55400
+  - achievementId: hull_unlock_hull_14_1_55401
+    conditionType: 10
+    conditionParam: hull_14_1_55401
+    threshold: 1
+    achievementPointReward: 700
+    nameKey: UIAchievement_Name_hull_unlock_hull_14_1_55401
+    descKey: UIAchievement_Desc_hull_unlock_hull_14_1_55401
+  - achievementId: hull_unlock_hull_14_1_55410
+    conditionType: 10
+    conditionParam: hull_14_1_55410
+    threshold: 1
+    achievementPointReward: 700
+    nameKey: UIAchievement_Name_hull_unlock_hull_14_1_55410
+    descKey: UIAchievement_Desc_hull_unlock_hull_14_1_55410
+  - achievementId: hull_unlock_hull_14_1_55411
+    conditionType: 10
+    conditionParam: hull_14_1_55411
+    threshold: 1
+    achievementPointReward: 1050
+    nameKey: UIAchievement_Name_hull_unlock_hull_14_1_55411
+    descKey: UIAchievement_Desc_hull_unlock_hull_14_1_55411

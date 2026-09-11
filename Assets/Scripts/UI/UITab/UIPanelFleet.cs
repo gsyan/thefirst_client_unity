@@ -284,8 +284,21 @@ public class UIPanelFleet : UIPanelBase
         List<PlacedShipView> placedShips = GetCurrentPlacedShips();
         if (placedShips.Count == 0) return;
 
-        int index = m_selectedSlotIndex >= 0 && m_selectedSlotIndex < placedShips.Count ? m_selectedSlotIndex : 0;
+        bool hasValidSelection = m_selectedSlotIndex >= 0 && m_selectedSlotIndex < placedShips.Count && IsShipDestroyedThisRun(m_selectedSlotIndex) == false;
+        int index = hasValidSelection == true ? m_selectedSlotIndex : FindLowestSelectableSlotIndex(placedShips);
+        if (index < 0) return; // 선택 가능한(파괴되지 않은) 함선이 하나도 없음 — 기존 상태 유지
+
         OnPlacedShipRowClickedFromUI(index, placedShips[index].hullSubType);
+    }
+
+    // 특정 함선을 지정할 수 없는 진입(패널을 그냥 다시 열 때 등)의 기본 선택 대상 — 파괴되지 않은 가장 낮은 인덱스
+    private int FindLowestSelectableSlotIndex(List<PlacedShipView> placedShips)
+    {
+        for (int i = 0; i < placedShips.Count; i++)
+        {
+            if (IsShipDestroyedThisRun(i) == false) return i;
+        }
+        return -1;
     }
 
     // 이 패널 좌측 경계의 실제 스크린 좌표 기준으로 카메라 viewport 비율 계산
@@ -547,7 +560,8 @@ public class UIPanelFleet : UIPanelBase
         {
             PlacedShipView entry = m_placedShipsCache[dataIndex];
             System.Action<int, bool> onFrontToggled = m_isReadOnlyMode == true ? null : OnShipFrontToggled;
-            row.Setup(dataIndex, entry.hullSubType, entry.isFront, onFrontToggled, OnPlacedShipRowClickedFromUI, onTypeSelectClicked, showFrontToggle: m_isReadOnlyMode == false);
+            bool isDestroyedThisRun = IsShipDestroyedThisRun(dataIndex);
+            row.Setup(dataIndex, entry.hullSubType, entry.isFront, onFrontToggled, OnPlacedShipRowClickedFromUI, onTypeSelectClicked, showFrontToggle: m_isReadOnlyMode == false, isDestroyedThisRun: isDestroyedThisRun);
             row.SetSelected(dataIndex == m_selectedSlotIndex);
         }
         else if (dataIndex < m_placedOpenSlotCount)
@@ -600,6 +614,17 @@ public class UIPanelFleet : UIPanelBase
             m_statsScrollView.Initialize(m_statEntries.Count, m_statsRowPrefab.gameObject);
     }
 
+    // 존런 진행 중 + 편집 모드일 때만 의미 있음 — 읽기전용(적 함대 열람)엔 해당 없음
+    private bool IsShipDestroyedThisRun(int positionIndex)
+    {
+        if (m_isReadOnlyMode == true) return false;
+        if (ObjectManager.Instance.IsExplorationRunActive() == false) return false;
+
+        SpaceFleet myFleet = ObjectManager.Instance.GetMyFleet();
+        SpaceShip ship = myFleet != null ? myFleet.m_ships.Find(s => s != null && s.m_shipInfo.positionIndex == positionIndex) : null;
+        return ship == null || ship.IsAlive() == false;
+    }
+
     // m_statEntries의 Health/Shield Gauge 항목을 "현재/최대" 텍스트로 교체 — 3D 씬에 해당 함선이 없으면(파괴/미스폰) 원본 유지
     private void OverlayCurrentHealthAndShield(int positionIndex)
     {
@@ -644,7 +669,7 @@ public class UIPanelFleet : UIPanelBase
         if (entry.isNumericValue == true)
             row.SetStatRow(entry.label, entry.value, buffDiffText: entry.buffDiffText);
         else
-            row.SetValueOnly(entry.label, entry.rawValueText);
+            row.SetValueOnly(entry.label, entry.rawValueText, buffDiffText: entry.buffDiffText);
     }
 
     // 선택된 함선이 없거나 읽기전용 모드(적 함대 열람)면 "함선 수정" 버튼 비활성화

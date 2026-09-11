@@ -22,13 +22,13 @@ public class UIStatRow : MonoBehaviour
         RebuildSelf();
     }
 
-    // 감소형 스탯(쿨다운/딜레이 등)/게이지 의미 없는 스탯(침묵 시간 등) 공통 — 이미 포맷된 값 텍스트를 그대로 표시
-    public void SetValueOnly(string label, string valueText, string diffText = null)
+    // 감소형 스탯(쿨다운/딜레이 등)/게이지 의미 없는 스탯(침묵 시간 등)/현재-최대 덮어쓰기(체력 등) 공통 — 이미 포맷된 값 텍스트를 그대로 표시
+    public void SetValueOnly(string label, string valueText, string diffText = null, string buffDiffText = null)
     {
         gameObject.SetActive(true);
         if (m_labelText != null) m_labelText.text = label;
         if (m_valueText != null) m_valueText.text = valueText;
-        SetDiffText(diffText, null);
+        SetDiffText(diffText, buffDiffText);
 
         RebuildSelf();
     }

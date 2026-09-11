@@ -367,7 +367,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 29120731379793920
-    m_Localized: + ADD SHIP
+    m_Localized: '#NAME?'
     m_Metadata:
       m_Items: []
   - m_Id: 29169225431908352
@@ -2915,6 +2915,368 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 77649464394645504
     m_Localized: Owned
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78028320871940096
+    m_Localized: Status
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78028320939048960
+    m_Localized: Value
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78028320939048961
+    m_Localized: Invested
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78109183722782720
+    m_Localized: Treasure Reward
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264847671296
+    m_Localized: Hull Unlock
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264956723200
+    m_Localized: Unlock hull_4_1_21100
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264956723201
+    m_Localized: Unlock the hull_4_1_21100 hull to complete. Refunds 10% of the achievement
+      points spent.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264956723202
+    m_Localized: Unlock hull_5_1_22100
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264956723203
+    m_Localized: Unlock the hull_5_1_22100 hull to complete. Refunds 10% of the achievement
+      points spent.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264956723204
+    m_Localized: Unlock hull_6_1_22200
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264956723205
+    m_Localized: Unlock the hull_6_1_22200 hull to complete. Refunds 10% of the achievement
+      points spent.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264956723206
+    m_Localized: Unlock hull_6_1_22201
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264956723207
+    m_Localized: Unlock the hull_6_1_22201 hull to complete. Refunds 10% of the achievement
+      points spent.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264956723208
+    m_Localized: Unlock hull_6_1_22210
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264956723209
+    m_Localized: Unlock the hull_6_1_22210 hull to complete. Refunds 10% of the achievement
+      points spent.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264956723210
+    m_Localized: Unlock hull_6_1_22211
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264956723211
+    m_Localized: Unlock the hull_6_1_22211 hull to complete. Refunds 10% of the achievement
+      points spent.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264956723212
+    m_Localized: Unlock hull_7_1_32200
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264956723213
+    m_Localized: Unlock the hull_7_1_32200 hull to complete. Refunds 10% of the achievement
+      points spent.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264956723214
+    m_Localized: Unlock hull_7_1_32201
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264956723215
+    m_Localized: Unlock the hull_7_1_32201 hull to complete. Refunds 10% of the achievement
+      points spent.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264956723216
+    m_Localized: Unlock hull_7_1_32210
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264956723217
+    m_Localized: Unlock the hull_7_1_32210 hull to complete. Refunds 10% of the achievement
+      points spent.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264956723218
+    m_Localized: Unlock hull_7_1_32211
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264956723219
+    m_Localized: Unlock the hull_7_1_32211 hull to complete. Refunds 10% of the achievement
+      points spent.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264956723220
+    m_Localized: Unlock hull_8_1_33200
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264956723221
+    m_Localized: Unlock the hull_8_1_33200 hull to complete. Refunds 10% of the achievement
+      points spent.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264956723222
+    m_Localized: Unlock hull_8_1_33201
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264956723223
+    m_Localized: Unlock the hull_8_1_33201 hull to complete. Refunds 10% of the achievement
+      points spent.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264956723224
+    m_Localized: Unlock hull_8_1_33210
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264956723225
+    m_Localized: Unlock the hull_8_1_33210 hull to complete. Refunds 10% of the achievement
+      points spent.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264956723226
+    m_Localized: Unlock hull_8_1_33211
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264956723227
+    m_Localized: Unlock the hull_8_1_33211 hull to complete. Refunds 10% of the achievement
+      points spent.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264956723228
+    m_Localized: Unlock hull_9_1_33300
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264956723229
+    m_Localized: Unlock the hull_9_1_33300 hull to complete. Refunds 10% of the achievement
+      points spent.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264956723230
+    m_Localized: Unlock hull_9_1_33301
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264956723231
+    m_Localized: Unlock the hull_9_1_33301 hull to complete. Refunds 10% of the achievement
+      points spent.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264956723232
+    m_Localized: Unlock hull_9_1_33310
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264956723233
+    m_Localized: Unlock the hull_9_1_33310 hull to complete. Refunds 10% of the achievement
+      points spent.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264956723234
+    m_Localized: Unlock hull_9_1_33311
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264956723235
+    m_Localized: Unlock the hull_9_1_33311 hull to complete. Refunds 10% of the achievement
+      points spent.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264956723236
+    m_Localized: Unlock hull_10_1_43300
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264956723237
+    m_Localized: Unlock the hull_10_1_43300 hull to complete. Refunds 10% of the
+      achievement points spent.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264956723238
+    m_Localized: Unlock hull_10_1_43301
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264956723239
+    m_Localized: Unlock the hull_10_1_43301 hull to complete. Refunds 10% of the
+      achievement points spent.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264956723240
+    m_Localized: Unlock hull_10_1_43310
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264956723241
+    m_Localized: Unlock the hull_10_1_43310 hull to complete. Refunds 10% of the
+      achievement points spent.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264956723242
+    m_Localized: Unlock hull_10_1_43311
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264956723243
+    m_Localized: Unlock the hull_10_1_43311 hull to complete. Refunds 10% of the
+      achievement points spent.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264956723244
+    m_Localized: Unlock hull_11_1_44300
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264960917504
+    m_Localized: Unlock the hull_11_1_44300 hull to complete. Refunds 10% of the
+      achievement points spent.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264960917505
+    m_Localized: Unlock hull_11_1_44301
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264960917506
+    m_Localized: Unlock the hull_11_1_44301 hull to complete. Refunds 10% of the
+      achievement points spent.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264960917507
+    m_Localized: Unlock hull_11_1_44310
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264960917508
+    m_Localized: Unlock the hull_11_1_44310 hull to complete. Refunds 10% of the
+      achievement points spent.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264960917509
+    m_Localized: Unlock hull_11_1_44311
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264960917510
+    m_Localized: Unlock the hull_11_1_44311 hull to complete. Refunds 10% of the
+      achievement points spent.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264960917511
+    m_Localized: Unlock hull_12_1_44400
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264960917512
+    m_Localized: Unlock the hull_12_1_44400 hull to complete. Refunds 10% of the
+      achievement points spent.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264960917513
+    m_Localized: Unlock hull_12_1_44401
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264960917514
+    m_Localized: Unlock the hull_12_1_44401 hull to complete. Refunds 10% of the
+      achievement points spent.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264960917515
+    m_Localized: Unlock hull_12_1_44410
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264960917516
+    m_Localized: Unlock the hull_12_1_44410 hull to complete. Refunds 10% of the
+      achievement points spent.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264960917517
+    m_Localized: Unlock hull_12_1_44411
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264960917518
+    m_Localized: Unlock the hull_12_1_44411 hull to complete. Refunds 10% of the
+      achievement points spent.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264960917519
+    m_Localized: Unlock hull_13_1_54400
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264960917520
+    m_Localized: Unlock the hull_13_1_54400 hull to complete. Refunds 10% of the
+      achievement points spent.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264960917521
+    m_Localized: Unlock hull_13_1_54401
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264960917522
+    m_Localized: Unlock the hull_13_1_54401 hull to complete. Refunds 10% of the
+      achievement points spent.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264960917523
+    m_Localized: Unlock hull_13_1_54410
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264960917524
+    m_Localized: Unlock the hull_13_1_54410 hull to complete. Refunds 10% of the
+      achievement points spent.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264960917525
+    m_Localized: Unlock hull_13_1_54411
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264960917526
+    m_Localized: Unlock the hull_13_1_54411 hull to complete. Refunds 10% of the
+      achievement points spent.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264960917527
+    m_Localized: Unlock hull_14_1_55400
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264960917528
+    m_Localized: Unlock the hull_14_1_55400 hull to complete. Refunds 10% of the
+      achievement points spent.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264960917529
+    m_Localized: Unlock hull_14_1_55401
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264960917530
+    m_Localized: Unlock the hull_14_1_55401 hull to complete. Refunds 10% of the
+      achievement points spent.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264960917531
+    m_Localized: Unlock hull_14_1_55410
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264960917532
+    m_Localized: Unlock the hull_14_1_55410 hull to complete. Refunds 10% of the
+      achievement points spent.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264960917533
+    m_Localized: Unlock hull_14_1_55411
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78132264960917534
+    m_Localized: Unlock the hull_14_1_55411 hull to complete. Refunds 10% of the
+      achievement points spent.
     m_Metadata:
       m_Items: []
   references:

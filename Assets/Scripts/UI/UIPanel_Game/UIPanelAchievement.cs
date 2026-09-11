@@ -29,6 +29,7 @@ public class UIPanelAchievement : UIPanelBase
         EAchievementConditionType.ExplorationPointTotal,
         EAchievementConditionType.HullTierCount,
         EAchievementConditionType.ModuleTierCount,
+        EAchievementConditionType.HullUnlocked,
     };
 
     // 평탄화 리스트의 행 1개 — 헤더 또는 업적 항목 중 하나만 유효. category는 헤더/항목 둘 다 채워서 항목→헤더 역참조(레드닷 재계산)에 사용

@@ -35,10 +35,17 @@ public class UIPopupRewardCardSelect : UIPopupBase
         m_onConfirmed = onConfirmed;
         m_selectedIndex = -1;
 
-        // 탈출 셀은 일반 셀 클리어와 다른 타이틀로 구분 — "탈출 지점 발견". isEscapeCell은 호출부가 명시적으로 판정해서 넘김(카드 후보 유무만으로는
-        // 탈출 셀과 Treasure(카드 없이 포인트만 지급) 셀을 구분할 수 없음)
+        // 탈출 셀은 "탈출 지점 발견", 카드 후보 없이 포인트만 지급되는 트레저(전투 없는 이벤트 셀에서 탐험 포인트 당첨)는
+        // "트레저 보상"으로 구분 — 카드 선택 문구("Choose a Reward Card")는 실제로 고를 카드가 있을 때만 맞는 표현이라
+        // 카드 후보가 없으면 결과 안내형 타이틀을 써야 함. isEscapeCell은 호출부가 명시적으로 판정해서 넘김
         bool hasCardCandidates = candidateCardIds != null && candidateCardIds.Count > 0;
-        string titleKey = isEscapeCell == true ? "UIPopupRewardCardSelect_EscapeTitle" : "UIPopupRewardCardSelect_Title";
+        string titleKey;
+        if (isEscapeCell == true)
+            titleKey = "UIPopupRewardCardSelect_EscapeTitle";
+        else if (hasCardCandidates == false)
+            titleKey = "UIPopupRewardCardSelect_TreasureTitle";
+        else
+            titleKey = "UIPopupRewardCardSelect_Title";
         CommonUtility.SetUILocText(m_titleText, titleKey);
 
         // 재접속 복구로 뜬 경우(포인트/경험치가 이미 반영되어 0으로 전달됨) 어색한 "+0" 문구 대신 요약 자체를 숨김

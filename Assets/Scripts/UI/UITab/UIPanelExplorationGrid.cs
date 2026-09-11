@@ -469,7 +469,11 @@ public class UIPanelExplorationGrid : UIPanelBase
         foreach (ShipHealthRatioInfo entry in shipHealthRatios)
         {
             SpaceShip ship = myFleet.m_ships.Find(s => s != null && s.m_shipInfo.positionIndex == entry.positionIndex);
-            if (ship != null)
+            if (ship == null) continue;
+
+            if (entry.healthRatio <= 0f)
+                ship.DestroySilently(); // 마지막 클리어 시점에 이미 파괴됐던 슬롯 — 되살아난 풀피 함선을 조용히 다시 파괴 상태로 동기화
+            else
                 ship.ApplyHealthAndShieldRatio(entry.healthRatio, entry.shieldRatio);
         }
     }

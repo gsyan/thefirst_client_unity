@@ -1,4 +1,4 @@
-Key,Id,English(en),Korean(ko)
+﻿Key,Id,English(en),Korean(ko)
 empty_text,,,
 ok,,OK,확인
 tab_fleet,,Fleet,함대
@@ -91,6 +91,7 @@ UIPanelExplorationGrid_OwnedPoint,,Exploration Point,탐험 포인트
 UIPanelFleet_AchievementPoint,,Achievement Point,업적포인트
 UIPopupRewardCardSelect_Title,,Choose a Reward Card,보상 카드를 선택하세요
 UIPopupRewardCardSelect_EscapeTitle,,Escape Point Found,탈출 지점 발견
+UIPopupRewardCardSelect_TreasureTitle,,Treasure Reward,트레저 보상
 UIPanelExplorationGrid_EscapeConfirmMessage,,Escape Reward,탈출 보상
 UIPanelExplorationGrid_TreasureHealthHeal,,Fleet health restored by {0}%!,함대 체력을 {0}% 회복했습니다!
 UIPanelExplorationGrid_TreasureTacticPowerRestore,,Tactic power restored by {0}%!,전술력을 {0}% 회복했습니다!
@@ -125,7 +126,7 @@ RewardCard_PointFlat_Name,,Exploration Point Bonus,탐험 포인트 획득
 RewardCard_PointFlat_Desc,,Exploration Point +{0:F0},탐험 포인트 +{0:F0}
 UIAvailableHullRow_Name,,Name:,이름:
 UIAvailableHullRow_Cost,,Cost:,비용:
-UITabFleet_AddShipText,,+ ADD SHIP,+ 함선 추가
+UITabFleet_AddShipText,,#NAME?,#NAME?
 UITabFleet_FleetSynergyMultiply,,( Fleet Synergy : x{0} ),( 함대 시너지 : x{0} )
 UIFleet_Front,,Front,전방
 UIFleet_Rear,,Rear,후방
@@ -169,6 +170,7 @@ UIAchievement_Category_TacticPower,,Tactic Power,전술력
 UIAchievement_Category_ExplorationPointTotal,,Exploration Point (Total),탐사포인트(누적)
 UIAchievement_Category_HullTierCount,,Hull Tier,함체 티어
 UIAchievement_Category_ModuleTierCount,,Module Tier,모듈 티어
+UIAchievement_Category_HullUnlocked,,Hull Unlock,함체 언락
 UIFleet_EnemyFleetTitle,,Enemy Fleet,적함대
 UITabFleetTactics_Name,,FLEET TACTICS,함대 전술
 UITabFleetTactics_NameShort,,TACTICS,전술
@@ -272,6 +274,9 @@ module_type_interceptor,,Interceptor,요격체
 UIFleet_ModuleSlot_Installed,,Installed,장착
 UIFleet_ModuleSlot_NotInstalled,,Not Installed,해제
 UIFleet_ModuleReinforce_Title,,Module Reinforce,모듈 강화
+UIFleet_ModuleReinforce_ColStatus,,Status,상태
+UIFleet_ModuleReinforce_ColValue,,Value,수치
+UIFleet_ModuleReinforce_ColInvested,,Invested,투입 포인트
 UIButton_Reset,,RESET,초기화
 UIButton_All,,ALL,전체
 Simple_WatchAD,,WATCH AD,광고 보기
@@ -715,3 +720,79 @@ UIAchievement_Name_module_interceptor_tier3_count_2,,Equip 2 Tier 3 Interceptor 
 UIAchievement_Desc_module_interceptor_tier3_count_2,,Have 2 Tier 3 Interceptor modules equipped in your active fleet at the same time,활성 함대에 인터셉터 티어3 모듈을 동시에 2개 장착하면 완료
 UIAchievement_Name_module_interceptor_tier3_count_3,,Equip 3 Tier 3 Interceptor Modules,인터셉터 티어3 3개 동시 장착
 UIAchievement_Desc_module_interceptor_tier3_count_3,,Have 3 Tier 3 Interceptor modules equipped in your active fleet at the same time,활성 함대에 인터셉터 티어3 모듈을 동시에 3개 장착하면 완료
+UIAchievement_Name_hull_unlock_hull_4_1_21100,,Unlock hull_4_1_21100,hull_4_1_21100 언락
+UIAchievement_Desc_hull_unlock_hull_4_1_21100,,Unlock the hull_4_1_21100 hull to complete. Refunds 10% of the achievement points spent.,hull_4_1_21100 함체를 언락하면 완료 — 소비한 업적 포인트의 10% 환급
+UIAchievement_Name_hull_unlock_hull_5_1_22100,,Unlock hull_5_1_22100,hull_5_1_22100 언락
+UIAchievement_Desc_hull_unlock_hull_5_1_22100,,Unlock the hull_5_1_22100 hull to complete. Refunds 10% of the achievement points spent.,hull_5_1_22100 함체를 언락하면 완료 — 소비한 업적 포인트의 10% 환급
+UIAchievement_Name_hull_unlock_hull_6_1_22200,,Unlock hull_6_1_22200,hull_6_1_22200 언락
+UIAchievement_Desc_hull_unlock_hull_6_1_22200,,Unlock the hull_6_1_22200 hull to complete. Refunds 10% of the achievement points spent.,hull_6_1_22200 함체를 언락하면 완료 — 소비한 업적 포인트의 10% 환급
+UIAchievement_Name_hull_unlock_hull_6_1_22201,,Unlock hull_6_1_22201,hull_6_1_22201 언락
+UIAchievement_Desc_hull_unlock_hull_6_1_22201,,Unlock the hull_6_1_22201 hull to complete. Refunds 10% of the achievement points spent.,hull_6_1_22201 함체를 언락하면 완료 — 소비한 업적 포인트의 10% 환급
+UIAchievement_Name_hull_unlock_hull_6_1_22210,,Unlock hull_6_1_22210,hull_6_1_22210 언락
+UIAchievement_Desc_hull_unlock_hull_6_1_22210,,Unlock the hull_6_1_22210 hull to complete. Refunds 10% of the achievement points spent.,hull_6_1_22210 함체를 언락하면 완료 — 소비한 업적 포인트의 10% 환급
+UIAchievement_Name_hull_unlock_hull_6_1_22211,,Unlock hull_6_1_22211,hull_6_1_22211 언락
+UIAchievement_Desc_hull_unlock_hull_6_1_22211,,Unlock the hull_6_1_22211 hull to complete. Refunds 10% of the achievement points spent.,hull_6_1_22211 함체를 언락하면 완료 — 소비한 업적 포인트의 10% 환급
+UIAchievement_Name_hull_unlock_hull_7_1_32200,,Unlock hull_7_1_32200,hull_7_1_32200 언락
+UIAchievement_Desc_hull_unlock_hull_7_1_32200,,Unlock the hull_7_1_32200 hull to complete. Refunds 10% of the achievement points spent.,hull_7_1_32200 함체를 언락하면 완료 — 소비한 업적 포인트의 10% 환급
+UIAchievement_Name_hull_unlock_hull_7_1_32201,,Unlock hull_7_1_32201,hull_7_1_32201 언락
+UIAchievement_Desc_hull_unlock_hull_7_1_32201,,Unlock the hull_7_1_32201 hull to complete. Refunds 10% of the achievement points spent.,hull_7_1_32201 함체를 언락하면 완료 — 소비한 업적 포인트의 10% 환급
+UIAchievement_Name_hull_unlock_hull_7_1_32210,,Unlock hull_7_1_32210,hull_7_1_32210 언락
+UIAchievement_Desc_hull_unlock_hull_7_1_32210,,Unlock the hull_7_1_32210 hull to complete. Refunds 10% of the achievement points spent.,hull_7_1_32210 함체를 언락하면 완료 — 소비한 업적 포인트의 10% 환급
+UIAchievement_Name_hull_unlock_hull_7_1_32211,,Unlock hull_7_1_32211,hull_7_1_32211 언락
+UIAchievement_Desc_hull_unlock_hull_7_1_32211,,Unlock the hull_7_1_32211 hull to complete. Refunds 10% of the achievement points spent.,hull_7_1_32211 함체를 언락하면 완료 — 소비한 업적 포인트의 10% 환급
+UIAchievement_Name_hull_unlock_hull_8_1_33200,,Unlock hull_8_1_33200,hull_8_1_33200 언락
+UIAchievement_Desc_hull_unlock_hull_8_1_33200,,Unlock the hull_8_1_33200 hull to complete. Refunds 10% of the achievement points spent.,hull_8_1_33200 함체를 언락하면 완료 — 소비한 업적 포인트의 10% 환급
+UIAchievement_Name_hull_unlock_hull_8_1_33201,,Unlock hull_8_1_33201,hull_8_1_33201 언락
+UIAchievement_Desc_hull_unlock_hull_8_1_33201,,Unlock the hull_8_1_33201 hull to complete. Refunds 10% of the achievement points spent.,hull_8_1_33201 함체를 언락하면 완료 — 소비한 업적 포인트의 10% 환급
+UIAchievement_Name_hull_unlock_hull_8_1_33210,,Unlock hull_8_1_33210,hull_8_1_33210 언락
+UIAchievement_Desc_hull_unlock_hull_8_1_33210,,Unlock the hull_8_1_33210 hull to complete. Refunds 10% of the achievement points spent.,hull_8_1_33210 함체를 언락하면 완료 — 소비한 업적 포인트의 10% 환급
+UIAchievement_Name_hull_unlock_hull_8_1_33211,,Unlock hull_8_1_33211,hull_8_1_33211 언락
+UIAchievement_Desc_hull_unlock_hull_8_1_33211,,Unlock the hull_8_1_33211 hull to complete. Refunds 10% of the achievement points spent.,hull_8_1_33211 함체를 언락하면 완료 — 소비한 업적 포인트의 10% 환급
+UIAchievement_Name_hull_unlock_hull_9_1_33300,,Unlock hull_9_1_33300,hull_9_1_33300 언락
+UIAchievement_Desc_hull_unlock_hull_9_1_33300,,Unlock the hull_9_1_33300 hull to complete. Refunds 10% of the achievement points spent.,hull_9_1_33300 함체를 언락하면 완료 — 소비한 업적 포인트의 10% 환급
+UIAchievement_Name_hull_unlock_hull_9_1_33301,,Unlock hull_9_1_33301,hull_9_1_33301 언락
+UIAchievement_Desc_hull_unlock_hull_9_1_33301,,Unlock the hull_9_1_33301 hull to complete. Refunds 10% of the achievement points spent.,hull_9_1_33301 함체를 언락하면 완료 — 소비한 업적 포인트의 10% 환급
+UIAchievement_Name_hull_unlock_hull_9_1_33310,,Unlock hull_9_1_33310,hull_9_1_33310 언락
+UIAchievement_Desc_hull_unlock_hull_9_1_33310,,Unlock the hull_9_1_33310 hull to complete. Refunds 10% of the achievement points spent.,hull_9_1_33310 함체를 언락하면 완료 — 소비한 업적 포인트의 10% 환급
+UIAchievement_Name_hull_unlock_hull_9_1_33311,,Unlock hull_9_1_33311,hull_9_1_33311 언락
+UIAchievement_Desc_hull_unlock_hull_9_1_33311,,Unlock the hull_9_1_33311 hull to complete. Refunds 10% of the achievement points spent.,hull_9_1_33311 함체를 언락하면 완료 — 소비한 업적 포인트의 10% 환급
+UIAchievement_Name_hull_unlock_hull_10_1_43300,,Unlock hull_10_1_43300,hull_10_1_43300 언락
+UIAchievement_Desc_hull_unlock_hull_10_1_43300,,Unlock the hull_10_1_43300 hull to complete. Refunds 10% of the achievement points spent.,hull_10_1_43300 함체를 언락하면 완료 — 소비한 업적 포인트의 10% 환급
+UIAchievement_Name_hull_unlock_hull_10_1_43301,,Unlock hull_10_1_43301,hull_10_1_43301 언락
+UIAchievement_Desc_hull_unlock_hull_10_1_43301,,Unlock the hull_10_1_43301 hull to complete. Refunds 10% of the achievement points spent.,hull_10_1_43301 함체를 언락하면 완료 — 소비한 업적 포인트의 10% 환급
+UIAchievement_Name_hull_unlock_hull_10_1_43310,,Unlock hull_10_1_43310,hull_10_1_43310 언락
+UIAchievement_Desc_hull_unlock_hull_10_1_43310,,Unlock the hull_10_1_43310 hull to complete. Refunds 10% of the achievement points spent.,hull_10_1_43310 함체를 언락하면 완료 — 소비한 업적 포인트의 10% 환급
+UIAchievement_Name_hull_unlock_hull_10_1_43311,,Unlock hull_10_1_43311,hull_10_1_43311 언락
+UIAchievement_Desc_hull_unlock_hull_10_1_43311,,Unlock the hull_10_1_43311 hull to complete. Refunds 10% of the achievement points spent.,hull_10_1_43311 함체를 언락하면 완료 — 소비한 업적 포인트의 10% 환급
+UIAchievement_Name_hull_unlock_hull_11_1_44300,,Unlock hull_11_1_44300,hull_11_1_44300 언락
+UIAchievement_Desc_hull_unlock_hull_11_1_44300,,Unlock the hull_11_1_44300 hull to complete. Refunds 10% of the achievement points spent.,hull_11_1_44300 함체를 언락하면 완료 — 소비한 업적 포인트의 10% 환급
+UIAchievement_Name_hull_unlock_hull_11_1_44301,,Unlock hull_11_1_44301,hull_11_1_44301 언락
+UIAchievement_Desc_hull_unlock_hull_11_1_44301,,Unlock the hull_11_1_44301 hull to complete. Refunds 10% of the achievement points spent.,hull_11_1_44301 함체를 언락하면 완료 — 소비한 업적 포인트의 10% 환급
+UIAchievement_Name_hull_unlock_hull_11_1_44310,,Unlock hull_11_1_44310,hull_11_1_44310 언락
+UIAchievement_Desc_hull_unlock_hull_11_1_44310,,Unlock the hull_11_1_44310 hull to complete. Refunds 10% of the achievement points spent.,hull_11_1_44310 함체를 언락하면 완료 — 소비한 업적 포인트의 10% 환급
+UIAchievement_Name_hull_unlock_hull_11_1_44311,,Unlock hull_11_1_44311,hull_11_1_44311 언락
+UIAchievement_Desc_hull_unlock_hull_11_1_44311,,Unlock the hull_11_1_44311 hull to complete. Refunds 10% of the achievement points spent.,hull_11_1_44311 함체를 언락하면 완료 — 소비한 업적 포인트의 10% 환급
+UIAchievement_Name_hull_unlock_hull_12_1_44400,,Unlock hull_12_1_44400,hull_12_1_44400 언락
+UIAchievement_Desc_hull_unlock_hull_12_1_44400,,Unlock the hull_12_1_44400 hull to complete. Refunds 10% of the achievement points spent.,hull_12_1_44400 함체를 언락하면 완료 — 소비한 업적 포인트의 10% 환급
+UIAchievement_Name_hull_unlock_hull_12_1_44401,,Unlock hull_12_1_44401,hull_12_1_44401 언락
+UIAchievement_Desc_hull_unlock_hull_12_1_44401,,Unlock the hull_12_1_44401 hull to complete. Refunds 10% of the achievement points spent.,hull_12_1_44401 함체를 언락하면 완료 — 소비한 업적 포인트의 10% 환급
+UIAchievement_Name_hull_unlock_hull_12_1_44410,,Unlock hull_12_1_44410,hull_12_1_44410 언락
+UIAchievement_Desc_hull_unlock_hull_12_1_44410,,Unlock the hull_12_1_44410 hull to complete. Refunds 10% of the achievement points spent.,hull_12_1_44410 함체를 언락하면 완료 — 소비한 업적 포인트의 10% 환급
+UIAchievement_Name_hull_unlock_hull_12_1_44411,,Unlock hull_12_1_44411,hull_12_1_44411 언락
+UIAchievement_Desc_hull_unlock_hull_12_1_44411,,Unlock the hull_12_1_44411 hull to complete. Refunds 10% of the achievement points spent.,hull_12_1_44411 함체를 언락하면 완료 — 소비한 업적 포인트의 10% 환급
+UIAchievement_Name_hull_unlock_hull_13_1_54400,,Unlock hull_13_1_54400,hull_13_1_54400 언락
+UIAchievement_Desc_hull_unlock_hull_13_1_54400,,Unlock the hull_13_1_54400 hull to complete. Refunds 10% of the achievement points spent.,hull_13_1_54400 함체를 언락하면 완료 — 소비한 업적 포인트의 10% 환급
+UIAchievement_Name_hull_unlock_hull_13_1_54401,,Unlock hull_13_1_54401,hull_13_1_54401 언락
+UIAchievement_Desc_hull_unlock_hull_13_1_54401,,Unlock the hull_13_1_54401 hull to complete. Refunds 10% of the achievement points spent.,hull_13_1_54401 함체를 언락하면 완료 — 소비한 업적 포인트의 10% 환급
+UIAchievement_Name_hull_unlock_hull_13_1_54410,,Unlock hull_13_1_54410,hull_13_1_54410 언락
+UIAchievement_Desc_hull_unlock_hull_13_1_54410,,Unlock the hull_13_1_54410 hull to complete. Refunds 10% of the achievement points spent.,hull_13_1_54410 함체를 언락하면 완료 — 소비한 업적 포인트의 10% 환급
+UIAchievement_Name_hull_unlock_hull_13_1_54411,,Unlock hull_13_1_54411,hull_13_1_54411 언락
+UIAchievement_Desc_hull_unlock_hull_13_1_54411,,Unlock the hull_13_1_54411 hull to complete. Refunds 10% of the achievement points spent.,hull_13_1_54411 함체를 언락하면 완료 — 소비한 업적 포인트의 10% 환급
+UIAchievement_Name_hull_unlock_hull_14_1_55400,,Unlock hull_14_1_55400,hull_14_1_55400 언락
+UIAchievement_Desc_hull_unlock_hull_14_1_55400,,Unlock the hull_14_1_55400 hull to complete. Refunds 10% of the achievement points spent.,hull_14_1_55400 함체를 언락하면 완료 — 소비한 업적 포인트의 10% 환급
+UIAchievement_Name_hull_unlock_hull_14_1_55401,,Unlock hull_14_1_55401,hull_14_1_55401 언락
+UIAchievement_Desc_hull_unlock_hull_14_1_55401,,Unlock the hull_14_1_55401 hull to complete. Refunds 10% of the achievement points spent.,hull_14_1_55401 함체를 언락하면 완료 — 소비한 업적 포인트의 10% 환급
+UIAchievement_Name_hull_unlock_hull_14_1_55410,,Unlock hull_14_1_55410,hull_14_1_55410 언락
+UIAchievement_Desc_hull_unlock_hull_14_1_55410,,Unlock the hull_14_1_55410 hull to complete. Refunds 10% of the achievement points spent.,hull_14_1_55410 함체를 언락하면 완료 — 소비한 업적 포인트의 10% 환급
+UIAchievement_Name_hull_unlock_hull_14_1_55411,,Unlock hull_14_1_55411,hull_14_1_55411 언락
+UIAchievement_Desc_hull_unlock_hull_14_1_55411,,Unlock the hull_14_1_55411 hull to complete. Refunds 10% of the achievement points spent.,hull_14_1_55411 함체를 언락하면 완료 — 소비한 업적 포인트의 10% 환급

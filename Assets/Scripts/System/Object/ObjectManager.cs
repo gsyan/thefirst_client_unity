@@ -398,7 +398,7 @@ public class ObjectManager : MonoSingleton<ObjectManager>
             SwitchFromSiegfriedFleetToRealFleet();
         else
             SpawnFleet();
-        RestoreActiveRunRewardCardBuffs();
+        ApplyPendingActiveZoneRunProgress();
         EventManager.Subscribe_MyFleetDestroyed(OnMyFleetDestroyed);// 플레이어 함대 전멸 이벤트 구독
         NetworkManager.Instance.StartHeartbeat();
         UIManager.Instance.ShowMainPanel();
@@ -410,22 +410,19 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         TutorialManager.Instance.StartTutorial("Tutorial_Exploration");
     }
 
-    // 재접속 시 진행 중인 탐험 런이 있으면 그 런에서 이미 확정 선택한 보상카드(지속버프)와 마지막 클리어 시점 함선 체력/실드를
-    // 로그인 시점에 미리 복원 — 탐사UI(UIPanelExplorationGrid)를 열어야만 반영되던 문제 방지. 탐사UI의 RequestActiveZoneRunProgress는
-    // 적립포인트/클리어셀 등 그리드 상태 복원용으로 별도 유지하되, 카드/체력 재적용은 하지 않음(중복 적용 방지)
-    private void RestoreActiveRunRewardCardBuffs()
+    // MainScene(UIMain.SelectCommander)에서 SpaceScene 진입 전에 미리 받아둔 진행중 존런 스냅샷(있으면)을
+    // 함대 스폰 직후 같은 프레임에 적용 — 죽은 함선이 잠깐이라도 풀피로 그려지는 프레임 자체가 없음.
+    // 탐사UI(UIPanelExplorationGrid)의 RequestActiveZoneRunProgress는 적립포인트/클리어셀 등 그리드 상태
+    // 복원용으로 별도 유지하되, 보상카드 지속버프는 여기서 이미 끝났으므로 거기선 재적용하지 않음(체력 스냅샷만 자체적으로 다시 적용)
+    private void ApplyPendingActiveZoneRunProgress()
     {
-        Commander commander = DataManager.Instance.m_currentCommander;
-        int activeZoneNumber = commander != null && commander.m_commanderInfo != null ? commander.m_commanderInfo.explorationZoneNumber : 0;
-        if (activeZoneNumber <= 0) return; // 진행 중인 런이 없으면 요청 자체를 안 함
+        GetActiveZoneRunProgressResponse progress = DataManager.Instance.m_pendingActiveZoneRunProgress;
+        DataManager.Instance.m_pendingActiveZoneRunProgress = null; // 1회성 소비
+        if (progress == null) return;
 
-        NetworkManager.Instance.GetActiveZoneRunProgress(new GetActiveZoneRunProgressRequest(), response =>
-        {
-            if (response == null || response.errorCode != 0 || response.data == null) return;
-            m_rewardCardSessionState.ApplyPersistentCardIds(response.data.selectedRewardCards);
-            RefreshRewardCardBuffsOnMyFleet(); // 이미 스폰된 내 함선 모듈/체력에 즉시 반영
-            ApplyFleetHealthSnapshotOnMyFleet(response.data.shipHealthRatios);
-        });
+        m_rewardCardSessionState.ApplyPersistentCardIds(progress.selectedRewardCards);
+        RefreshRewardCardBuffsOnMyFleet(); // 이미 스폰된 내 함선 모듈/체력에 즉시 반영
+        ApplyFleetHealthSnapshotOnMyFleet(progress.shipHealthRatios);
     }
 
     // 슬롯 포지션 인덱스 기준으로 이미 스폰된 내 함대에 마지막 클리어 시점 체력/실드 스냅샷을 적용 —
@@ -440,7 +437,11 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         foreach (ShipHealthRatioInfo entry in shipHealthRatios)
         {
             SpaceShip ship = myFleet.m_ships.Find(s => s != null && s.m_shipInfo.positionIndex == entry.positionIndex);
-            if (ship != null)
+            if (ship == null) continue;
+
+            if (entry.healthRatio <= 0f)
+                ship.DestroySilently(); // 마지막 클리어 시점에 이미 파괴됐던 슬롯 — 되살아난 풀피 함선을 조용히 다시 파괴 상태로 동기화
+            else
                 ship.ApplyHealthAndShieldRatio(entry.healthRatio, entry.shieldRatio);
         }
     }

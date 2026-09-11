@@ -15,6 +15,11 @@ public class UIPopupModuleReinforce : UIPopupBase
     [SerializeField] private Button m_confirmButton;
     [SerializeField] private Button m_cancelButton;
 
+    [Header("컬럼 헤더 — 고정 텍스트라 Awake에서 한 번만 로컬라이즈")]
+    [SerializeField] private TMP_Text m_colStatusText;
+    [SerializeField] private TMP_Text m_colValueText;
+    [SerializeField] private TMP_Text m_colInvestedText;
+
     [Header("티어업/다운 — 무기 모듈 서브타입 자체를 한 티어 위/아래로 교체(강화 포인트와는 별개 축)")]
     [SerializeField] private Button m_tierDownButton;
     [SerializeField] private TMP_Text m_tierText;
@@ -49,6 +54,10 @@ public class UIPopupModuleReinforce : UIPopupBase
         if (m_tierUpButton != null) m_tierUpButton.onClick.AddListener(() => OnTierClicked(+1));
         if (m_tierDownButton != null) m_tierDownButton.onClick.AddListener(() => OnTierClicked(-1));
         if (m_scrollView != null) m_scrollView.onItemBind = OnItemBind;
+
+        CommonUtility.SetUILocText(m_colStatusText, "UIFleet_ModuleReinforce_ColStatus");
+        CommonUtility.SetUILocText(m_colValueText, "UIFleet_ModuleReinforce_ColValue");
+        CommonUtility.SetUILocText(m_colInvestedText, "UIFleet_ModuleReinforce_ColInvested");
     }
 
     // usedByOtherSlots: 이 슬롯을 제외한 다른 슬롯들의 지휘력 사용량(설치비+강화포인트 포함, 호출부가 FleetComposition 기준으로 계산해 넘김)
@@ -126,6 +135,7 @@ public class UIPopupModuleReinforce : UIPopupBase
 
         RefreshCommandPowerPreview();
         RefreshTierButtons();
+        if (m_scrollView != null) m_scrollView.RefreshVisible(); // 티어가 바뀌면 m_localModuleSubType 기준 실제 수치(StatValue)도 다시 그려야 함
     }
 
     private void RefreshEntries()
@@ -170,7 +180,44 @@ public class UIPopupModuleReinforce : UIPopupBase
         bool canIncrease = isAtSlotCap == false && hasRemainingCommandPower == true;
         bool canDecrease = entry.currentValue > 0;
 
-        row.Setup(dataIndex, entry.label, entry.currentValue, entry.isEditable, canIncrease, canDecrease, OnRowPointsChanged);
+        float actualValue = CalculateActualStatValue(entry);
+        row.Setup(dataIndex, entry.label, actualValue, entry.currentValue, entry.isEditable, canIncrease, canDecrease, OnRowPointsChanged);
+    }
+
+    // 강화 포인트(entry.currentValue)가 실제로 만들어내는 스탯 수치 — ShipStatCalculator.CalculateWeaponSlots/CalculateHangarSlots와 동일한 공식 사용
+    private float CalculateActualStatValue(ReinforceEntry entry)
+    {
+        ModuleData moduleData = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(m_localModuleSubType);
+        ShipStatFormulaSettings formula = DataManager.Instance.m_dataTableConfig.gameSettings.shipStatFormula;
+
+        if (m_moduleType == EModuleType.beam || m_moduleType == EModuleType.missile)
+        {
+            float baseAttack = moduleData != null ? moduleData.attack : 0f;
+            float baseAttackCool = moduleData != null ? moduleData.attackCool : 0f;
+            float baseProjectileSpeed = moduleData != null ? moduleData.speed : 0f;
+            float attackPerPoint = m_moduleType == EModuleType.beam ? formula.beam.attackPerPoint : formula.missile.attackPerPoint;
+            float attackCoolReductionPerPoint = m_moduleType == EModuleType.beam ? formula.beam.attackCoolReductionPerPoint : formula.missile.attackCoolReductionPerPoint;
+            float attackCoolFloor = m_moduleType == EModuleType.beam ? formula.beam.attackCoolFloor : formula.missile.attackCoolFloor;
+            float projectileSpeedPerPoint = m_moduleType == EModuleType.beam ? formula.beam.projectileSpeedPerPoint : formula.missile.projectileSpeedPerPoint;
+
+            if (entry.label == "Attack") return baseAttack + entry.currentValue * attackPerPoint;
+            if (entry.label == "Fire Rate") return Mathf.Max(attackCoolFloor, baseAttackCool - entry.currentValue * attackCoolReductionPerPoint);
+            if (entry.label == "Projectile Speed") return baseProjectileSpeed + entry.currentValue * projectileSpeedPerPoint;
+            if (entry.label == "Silence Time" && m_moduleType == EModuleType.missile)
+            {
+                float baseSilenceTime = moduleData != null ? moduleData.silenceTime : 0f;
+                return baseSilenceTime + entry.currentValue * formula.missile.silenceTimePerPoint;
+            }
+        }
+        else if (m_moduleType == EModuleType.hangar)
+        {
+            if (entry.label == "Attack To Ship") return formula.hangar.baseShipAttack + entry.currentValue * formula.hangar.reinforcePerPoint;
+            if (entry.label == "Attack To Fighter") return formula.hangar.baseFighterAttack + entry.currentValue * formula.hangar.reinforcePerPoint;
+            if (entry.label == "Ammo") return formula.hangar.baseAmmo + entry.currentValue * formula.hangar.reinforcePerPoint;
+            if (entry.label == "Health") return formula.hangar.baseHealth + entry.currentValue * formula.hangar.reinforcePerPoint;
+        }
+
+        return 0f;
     }
 
     private void OnRowPointsChanged(int dataIndex, int delta)

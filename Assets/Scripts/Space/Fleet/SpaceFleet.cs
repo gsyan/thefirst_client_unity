@@ -303,15 +303,19 @@ public class SpaceFleet : MonoBehaviour
     public List<ShipHealthRatioInfo> BuildHealthRatioSnapshot()
     {
         var result = new List<ShipHealthRatioInfo>();
-        foreach (SpaceShip ship in m_ships)
+        if (m_fleetInfo == null || m_fleetInfo.ships == null) return result;
+
+        // m_ships에서 죽은 슬롯을 건너뛰면 서버엔 "그 슬롯이 죽었다"는 정보가 아예 안 남으므로,
+        // 로스터(m_fleetInfo.ships) 기준으로 순회해 죽은 슬롯도 healthRatio=0으로 명시해서 보냄
+        foreach (ShipInfo shipInfo in m_fleetInfo.ships)
         {
-            if (ship == null) continue;
+            SpaceShip ship = m_ships.Find(s => s != null && s.m_shipInfo.positionIndex == shipInfo.positionIndex);
             result.Add(new ShipHealthRatioInfo
             {
-                shipId = ship.m_shipInfo.id,
-                positionIndex = ship.m_shipInfo.positionIndex,
-                healthRatio = ship.GetHealthRatio(),
-                shieldRatio = ship.GetShieldRatio()
+                shipId = shipInfo.id,
+                positionIndex = shipInfo.positionIndex,
+                healthRatio = ship != null ? ship.GetHealthRatio() : 0f,
+                shieldRatio = ship != null ? ship.GetShieldRatio() : 0f
             });
         }
         return result;

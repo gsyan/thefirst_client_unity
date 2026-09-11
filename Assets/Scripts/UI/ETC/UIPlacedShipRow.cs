@@ -24,6 +24,7 @@ public class UIPlacedShipRow : MonoBehaviour
     private Color m_lockedColor;
     private bool m_hasShip;
     private bool m_isLocked;
+    private bool m_isDestroyedThisRun;
 
     private int m_index;
     private string m_hullSubType;
@@ -54,6 +55,7 @@ public class UIPlacedShipRow : MonoBehaviour
         m_hullSubType = null;
         m_hasShip = false;
         m_isLocked = false;
+        m_isDestroyedThisRun = false;
         m_onTypeSelectClicked = onTypeSelectClicked;
 
         if (m_shipNameText != null)
@@ -81,6 +83,7 @@ public class UIPlacedShipRow : MonoBehaviour
         m_hullSubType = null;
         m_hasShip = false;
         m_isLocked = true;
+        m_isDestroyedThisRun = false;
         m_onTypeSelectClicked = null;
 
         if (m_shipNameText != null)
@@ -102,13 +105,14 @@ public class UIPlacedShipRow : MonoBehaviour
     }
 
     // showFrontToggle=false면 전방/후방을 편집 불가능한 라벨 텍스트로만 표시하고 타입선택 버튼도 숨김(적 함대 정보 열람 등 읽기전용 목적)
-    public void Setup(int index, string hullSubType, bool isFront, System.Action<int, bool> onFrontToggled, System.Action<int, string> onRowClicked, System.Action<int> onTypeSelectClicked, bool showFrontToggle = true)
+    public void Setup(int index, string hullSubType, bool isFront, System.Action<int, bool> onFrontToggled, System.Action<int, string> onRowClicked, System.Action<int> onTypeSelectClicked, bool showFrontToggle = true, bool isDestroyedThisRun = false)
     {
         gameObject.SetActive(true);
         m_index = index;
         m_hullSubType = hullSubType;
         m_hasShip = true;
         m_isLocked = false;
+        m_isDestroyedThisRun = isDestroyedThisRun;
         m_onFrontToggled = onFrontToggled;
         m_onRowClicked = onRowClicked;
         m_onTypeSelectClicked = onTypeSelectClicked;
@@ -131,6 +135,7 @@ public class UIPlacedShipRow : MonoBehaviour
             if (m_frontToggleSlide != null)
             {
                 m_frontToggleSlide.gameObject.SetActive(true);
+                m_frontToggleSlide.SetInteractable(true); // 풀링 재사용 대비 — 이전 바인딩에서 파괴 표시로 비활성화됐을 수 있어 매번 초기화
                 // UIToggleSlide는 on=오른쪽/off=왼쪽인데, 이 스위치는 왼쪽=전방/오른쪽=후방이라 값을 반전해서 넘김
                 m_frontToggleSlide.SetOn(isFront == false, OnToggleSlideChanged);
                 m_frontToggleSlide.SetLabelText(positionKey);
@@ -151,6 +156,14 @@ public class UIPlacedShipRow : MonoBehaviour
         }
 
         SetHighlighted(false);
+
+        // 이번 존런에서 파괴된 슬롯 — 선택/수정 모두 막고 순수 레드로 표시(팔레트 미사용, 배경 스프라이트 자체 색 때문에 의도적으로 원색 지정)
+        if (isDestroyedThisRun == true)
+        {
+            if (m_backgroundImage != null) m_backgroundImage.color = Color.red;
+            if (m_shipTypeSelectButton != null) m_shipTypeSelectButton.interactable = false;
+            if (m_frontToggleSlide != null) m_frontToggleSlide.SetInteractable(false);
+        }
     }
 
     // 재사용된(이미 active였던) 풀 오브젝트는 SetActive(true) 호출이 no-op이라 ContentSizeFitter의 OnEnable 재계산이
@@ -195,7 +208,7 @@ public class UIPlacedShipRow : MonoBehaviour
 
     private void OnRowClicked()
     {
-        if (m_hasShip == false) return;
+        if (m_hasShip == false || m_isDestroyedThisRun == true) return;
 
         SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true);
         if (m_onRowClicked != null) m_onRowClicked(m_index, m_hullSubType);

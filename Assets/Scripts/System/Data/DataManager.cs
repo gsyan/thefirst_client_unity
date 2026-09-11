@@ -27,6 +27,9 @@ public class DataManager : Singleton<DataManager>
     #region Commander Info Management ###########################################################
     public Commander m_currentCommander;
 
+    // MainScene에서 SpaceScene 진입 전에 미리 받아온 진행중 존런 정보 — ObjectManager.StartNormalPlay가 스폰 직후 소비하고 비움
+    public GetActiveZoneRunProgressResponse m_pendingActiveZoneRunProgress;
+
     // 서버에서 받은 커맨더 정보 설정 — 로컬 저장 없음
     public void SetCommanderInfo(CommanderInfo commanderInfo)
     {
