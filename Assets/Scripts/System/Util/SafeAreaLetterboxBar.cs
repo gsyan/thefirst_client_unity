@@ -10,7 +10,7 @@ public class SafeAreaLetterboxBar : MonoBehaviour
     public enum ESide { Left, Right }
 
     [SerializeField] private ESide m_side;
-    [SerializeField] private float m_fixedMargin = 0.02f;
+    [SerializeField] private float m_fixedMargin = 0f;
 
     private RectTransform m_rectTransform;
     private Rect m_lastSafeArea;

@@ -1084,7 +1084,7 @@ MonoBehaviour:
   m_Name:
   m_EditorClassIdentifier:
   m_side: 0
-  m_fixedMargin: 0.02
+  m_fixedMargin: 0
 --- !u!1 &2116974995
 GameObject:
   m_ObjectHideFlags: 0
@@ -1174,7 +1174,7 @@ MonoBehaviour:
   m_Name:
   m_EditorClassIdentifier:
   m_side: 1
-  m_fixedMargin: 0.02
+  m_fixedMargin: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
