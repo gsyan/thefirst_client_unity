@@ -15,7 +15,7 @@ MonoBehaviour:
   gameSettings:
     version: 0.0.1
     addShipCost: 10
-    commandPowerMaxInit: 310
+    commandPowerMaxInit: 400
     pvpMinCommanderLevel: 2
     pvpListCount: 3
     pvpListRefreshCount: 5
@@ -37,12 +37,12 @@ MonoBehaviour:
       maxModuleSlots: 6
       maxAttackReinforcePointsPerSlot: 10
       beam:
-        attackPerPoint: 0.1
+        attackPerPoint: 1
         attackCoolReductionPerPoint: 0.02
         attackCoolFloor: 0.5
         projectileSpeedPerPoint: 1
       missile:
-        attackPerPoint: 0.1
+        attackPerPoint: 1
         attackCoolReductionPerPoint: 0.02
         attackCoolFloor: 0.5
         projectileSpeedPerPoint: 1
@@ -52,7 +52,7 @@ MonoBehaviour:
         baseFighterAttack: 10
         baseAmmo: 10
         baseHealth: 50
-        reinforcePerPoint: 0.1
+        reinforcePerPoint: 1
       shield:
         gaugePerPoint: 0.5
         regenRatePerPoint: 0.1
@@ -63,7 +63,7 @@ MonoBehaviour:
       flatStats:
         perPoint: 0.1
   exportedJson: "{\r\n  \"version\": \"0.0.1\",\r\n  \"addShipCost\": 10,\r\n  \"commandPowerMaxInit\":
-    310,\r\n  \"pvpMinCommanderLevel\": 2,\r\n  \"pvpListCount\": 3,\r\n  \"pvpListRefreshCount\":
+    400,\r\n  \"pvpMinCommanderLevel\": 2,\r\n  \"pvpListCount\": 3,\r\n  \"pvpListRefreshCount\":
     5,\r\n  \"pvpRankScoreInit\": 1000,\r\n  \"pvpRankScorePenalty\": 1,\r\n  \"moduleUnlockPrice\":
     1,\r\n  \"repairBoostExplorationPointPerSec\": 1,\r\n  \"repairBoostMultiplier\":
     2.0,\r\n  \"instantRepairBaseSecs\": 60,\r\n  \"missileTacticExplorationPointPerSec\":
@@ -72,14 +72,14 @@ MonoBehaviour:
     2.0,\r\n  \"aircraftTacticAmmoMultiplier\": 2.0,\r\n  \"shieldTacticExplorationPointPerSec\":
     1,\r\n  \"interceptorTacticExplorationPointPerSec\": 1,\r\n  \"shipStatFormula\":
     {\r\n    \"maxModuleSlots\": 6,\r\n    \"maxAttackReinforcePointsPerSlot\": 10,\r\n   
-    \"beam\": {\r\n      \"attackPerPoint\": 0.1,\r\n      \"attackCoolReductionPerPoint\":
+    \"beam\": {\r\n      \"attackPerPoint\": 1.0,\r\n      \"attackCoolReductionPerPoint\":
     0.02,\r\n      \"attackCoolFloor\": 0.5,\r\n      \"projectileSpeedPerPoint\":
-    1.0\r\n    },\r\n    \"missile\": {\r\n      \"attackPerPoint\": 0.1,\r\n     
+    1.0\r\n    },\r\n    \"missile\": {\r\n      \"attackPerPoint\": 1.0,\r\n     
     \"attackCoolReductionPerPoint\": 0.02,\r\n      \"attackCoolFloor\": 0.5,\r\n     
     \"projectileSpeedPerPoint\": 1.0,\r\n      \"silenceTimePerPoint\": 0.1\r\n   
     },\r\n    \"hangar\": {\r\n      \"baseShipAttack\": 10.0,\r\n      \"baseFighterAttack\":
     10.0,\r\n      \"baseAmmo\": 10.0,\r\n      \"baseHealth\": 50.0,\r\n      \"reinforcePerPoint\":
-    0.1\r\n    },\r\n    \"shield\": {\r\n      \"gaugePerPoint\": 0.5,\r\n     
+    1.0\r\n    },\r\n    \"shield\": {\r\n      \"gaugePerPoint\": 0.5,\r\n     
     \"regenRatePerPoint\": 0.1\r\n    },\r\n    \"interceptor\": {\r\n      \"delayReductionPerPoint\":
     0.02,\r\n      \"regenRatePerPoint\": 0.1,\r\n      \"delayFloor\": 1.0\r\n   
     },\r\n    \"flatStats\": {\r\n      \"perPoint\": 0.1\r\n    }\r\n  }\r\n}"

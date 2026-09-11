@@ -344,8 +344,9 @@ public class UIShipLoadoutEditorView : MonoBehaviour
         string currentSubType = m_pendingModuleSubType[dataIndex];
         int installCost = GetModuleInstallCostBySubType(moduleTable, currentSubType);
 
+        int thisSlotReinforceCost = FleetComposition.k_reinforceCpCostPerPoint * (m_pendingAttackPoints[dataIndex] + m_pendingAttackToFighterPoints[dataIndex]);
         int usedByOtherSlots = composition.GetUsedCommandPower() - composition.GetSlotCommandCost(m_slotIndex)
-            + (ComputePendingSlotCost() - installCost - m_pendingAttackPoints[dataIndex] - m_pendingAttackToFighterPoints[dataIndex]);
+            + (ComputePendingSlotCost() - installCost - thisSlotReinforceCost);
         int maxCommandPower = composition.GetMaxCommandPower();
 
         int hullTier = CommonUtility.ParseTier(m_hullSubType);
@@ -601,7 +602,7 @@ public class UIShipLoadoutEditorView : MonoBehaviour
         {
             if (m_pendingInstalled[i] == false) continue;
             int installCost = GetModuleInstallCostBySubType(moduleTable, m_pendingModuleSubType[i]);
-            int reinforceCost = m_pendingAttackPoints[i] + m_pendingAttackToFighterPoints[i];
+            int reinforceCost = FleetComposition.k_reinforceCpCostPerPoint * (m_pendingAttackPoints[i] + m_pendingAttackToFighterPoints[i]);
             modulesCost += installCost + reinforceCost;
         }
 

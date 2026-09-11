@@ -47,6 +47,7 @@ pvp_battle_result_win,,Victory,승리
 pvp_battle_result_lose,,Defeat,패배
 pvp_battle_result_score,,Score: {0} <voffset=6>→</voffset> {1} ({2}),점수: {0} <voffset=6>→</voffset> {1} ({2})
 pvp_battle_result_rank,,Rank: {0} <voffset=6>→</voffset> {1},순위: {0}위 <voffset=6>→</voffset> {1}위
+pvp_blocked_by_zone_run,,Cannot start PVP while an exploration run is in progress.,탐사(존런) 진행 중에는 PVP를 시작할 수 없습니다.
 rank_first_row_ranking,,Rank,순위
 rank_first_row_name,,Name,이름
 rank_first_row_score,,Score,점수

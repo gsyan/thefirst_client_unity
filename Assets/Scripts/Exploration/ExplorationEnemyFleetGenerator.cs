@@ -9,7 +9,8 @@
 // 만큼 나눠 가짐 — "그 함대 자신의 기함 티어"로 캡을 거는 이유는, 예산 부족으로 기함이 enemyBaseHullTier보다 낮게 확정된 함대에서도
 // 뒤 함선이 그 함대의 기함보다 세지지 않게 하기 위함.
 // 모듈(빔/미사일/격납고)은 독립 예산 없이 그 함선 자신의 함체티어에 종속 — 슬롯 하나하나마다 enemyModulePlacementProbability로 장착 여부를,
-// enemyModulePerformanceProbability로 [max(1,함체티어*이값) ~ 함체티어] 범위에서 모듈 티어를 굴림(1이면 항상 함체티어 그대로).
+// enemyModulePerformanceProbability를 정점(평균) 위치로 삼은 정규분포로 [1, 함체티어] 범위에서 모듈 티어를 굴림
+// (표준편차는 구간폭(함체티어-1)에 비례해 자동 계산 — k_tierSpreadRatio 참고. 1이면 정점이 함체티어 자체지만 편차가 있어 그보다 낮은 티어도 섞일 수 있음).
 // (예산 기반으로 하면 슬롯 수가 다른 함체끼리 "모듈티어 롤 1회=슬롯 전부 무료 적용"이 되어 슬롯 많은 함체가 상대적으로 이득 보는 문제가 있었음 — 슬롯 단위로 바꿔서 해결)
 using System.Collections.Generic;
 using System.Linq;
@@ -161,7 +162,7 @@ public static class ExplorationEnemyFleetGenerator
         FillSlotsBySlotChance(ship.hangars, EModuleType.hangar, moduleTable.HangarModules, hullTier, maxSlots[2], zoneConfig, random);
 
         // 배치확률이 낮으면 슬롯 전부가 미장착으로 굴러 공격수단이 하나도 없는 함선이 나올 수 있음 —
-        // 최소한의 전투력 보장을 위해 그럴 땐 빔 슬롯 0번만은 배치확률 체크 없이 강제 장착(티어는 enemyModulePerformanceProbability를 그대로 적용)
+        // 최소한의 전투력 보장을 위해 그럴 땐 빔 슬롯 0번만은 배치확률 체크 없이 강제 장착(티어는 정규분포 굴림을 그대로 적용)
         if (ship.beams.Count == 0 && ship.missiles.Count == 0 && ship.hangars.Count == 0 && maxSlots[0] > 0)
             TryEquipModuleAtSlot(ship.beams, EModuleType.beam, moduleTable.BeamModules, hullTier, 0, zoneConfig, random);
 
@@ -171,8 +172,8 @@ public static class ExplorationEnemyFleetGenerator
         return ship;
     }
 
-    // 슬롯 하나하나마다: enemyModulePlacementProbability로 장착 여부를, 장착이 확정되면 enemyModulePerformanceProbability로
-    // [max(1, 함체티어*이값) ~ 함체티어] 범위에서 모듈 티어를 굴려 그 카테고리 데이터를 찾아 채움(모듈은 그 함선 자신의 함체티어에 종속, 별도 예산 없음)
+    // 슬롯 하나하나마다: enemyModulePlacementProbability로 장착 여부를, 장착이 확정되면 정규분포 굴림으로
+    // 모듈 티어를 뽑아 그 카테고리 데이터를 찾아 채움(모듈은 그 함선 자신의 함체티어에 종속, 별도 예산 없음)
     private static void FillSlotsBySlotChance(List<ModuleInfo> list, EModuleType type, ModuleDataList categoryModules, int hullTier, int slotCount, ZoneConfig zoneConfig, CrossPlatformRandom random)
     {
         int placementThreshold = UnityEngine.Mathf.RoundToInt(zoneConfig.enemyModulePlacementProbability * 10000f);
@@ -184,11 +185,18 @@ public static class ExplorationEnemyFleetGenerator
         }
     }
 
-    // enemyModulePerformanceProbability로 [max(1, 함체티어*이값) ~ 함체티어] 범위에서 모듈 티어를 굴려 슬롯 하나를 채움(배치확률 체크 없이 바로 장착 시도)
+    // 정규분포 표준편차 = 구간폭(함체티어-1) × 이 비율 — 함체티어가 클수록 편차도 비례해서 넓어짐
+    private const float k_tierSpreadRatio = 0.25f;
+
+    // enemyModulePerformanceProbability를 정점(평균) 위치로 삼아 [1, 함체티어] 범위에서 정규분포로 모듈 티어를 굴려 슬롯 하나를 채움
+    // (배치확률 체크 없이 바로 장착 시도) — 1이면 정점이 함체티어 자체지만 편차가 있어 그보다 낮은 티어도 확률적으로 섞임
     private static void TryEquipModuleAtSlot(List<ModuleInfo> list, EModuleType type, ModuleDataList categoryModules, int hullTier, int slotIndex, ZoneConfig zoneConfig, CrossPlatformRandom random)
     {
-        int lowerTier = System.Math.Max(1, UnityEngine.Mathf.RoundToInt(hullTier * zoneConfig.enemyModulePerformanceProbability));
-        int tier = random.Next(lowerTier, hullTier + 1);
+        float mean = 1f + zoneConfig.enemyModulePerformanceProbability * (hullTier - 1);
+        float sigma = (hullTier - 1) * k_tierSpreadRatio;
+        float sample = mean + (float)random.NextGaussian() * sigma;
+        float clampedSample = UnityEngine.Mathf.Clamp(sample, 1f, hullTier);
+        int tier = UnityEngine.Mathf.RoundToInt(clampedSample);
         ModuleData data = categoryModules.Find(d => CommonUtility.ParseTier(d.moduleSubType) == tier);
         if (data == null) return; // 해당 티어 모듈 데이터 없음 — 이 슬롯만 자연스럽게 빈 채로 스킵
 

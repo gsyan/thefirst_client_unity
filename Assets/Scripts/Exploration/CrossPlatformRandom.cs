@@ -1,6 +1,5 @@
-// SplitMix64 기반 결정론적 PRNG — C#(클라)과 Java(서버)에서 동일한 seed로 항상 동일한 결과를 내야 함
-// System.Random/java.util.Random은 언어별 내부 알고리즘이 달라 같은 seed에서도 다른 값이 나오므로 직접 구현.
-// 서버 대응 구현: com.bk.sbs.util.CrossPlatformRandom.java — 두 파일은 항상 함께 수정할 것
+// SplitMix64 기반 결정론적 PRNG(클라 전용) — 같은 seed면 항상 같은 결과를 내는 시드 기반 난수열이 필요한 곳(적 함대 생성 등)에 사용
+// System.Random은 실행 환경에 따라 내부 알고리즘이 보장되지 않아 대신 직접 구현.
 public class CrossPlatformRandom
 {
     private ulong m_state;
@@ -31,5 +30,20 @@ public class CrossPlatformRandom
     {
         if (maxExclusive <= minInclusive) return minInclusive;
         return minInclusive + Next(maxExclusive - minInclusive);
+    }
+
+    // [0,1) 균등분포 — NextUInt64()의 상위 53비트를 double 정밀도로 정규화
+    private double NextDouble01()
+    {
+        return (NextUInt64() >> 11) * (1.0 / 9007199254740992.0);
+    }
+
+    // 표준정규분포(평균0, 표준편차1) 샘플 1개 — Box-Muller 변환
+    public double NextGaussian()
+    {
+        double u1 = NextDouble01();
+        if (u1 <= 0.0) u1 = double.Epsilon; // Log(0) 방지
+        double u2 = NextDouble01();
+        return System.Math.Sqrt(-2.0 * System.Math.Log(u1)) * System.Math.Cos(2.0 * System.Math.PI * u2);
     }
 }

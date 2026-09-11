@@ -12,6 +12,7 @@ public enum EFleetPlaceResult
 
 public class FleetComposition
 {
+    public const int k_reinforceCpCostPerPoint = 10; // 강화 포인트 1당 소모 CP — 서버 FleetService.REINFORCE_CP_COST_PER_POINT와 동일해야 함
     private int m_maxCommandPower;
     private List<FleetSlotEntry> m_placedShips = new();
     private DataTableModule m_moduleTable;
@@ -95,7 +96,7 @@ public class FleetComposition
         {
             ModuleData data = m_moduleTable.GetModuleDataFromTable(modules[i].moduleSubType);
             int installCost = data != null ? data.statPoint : 0;
-            int reinforceCost = modules[i].attackPoints + modules[i].attackToFighterPoints;
+            int reinforceCost = k_reinforceCpCostPerPoint * (modules[i].attackPoints + modules[i].attackToFighterPoints);
             sum += installCost + reinforceCost;
         }
         return sum;

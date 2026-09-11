@@ -228,6 +228,13 @@ public class UIPanelRank : UIPanelBase
 
     private void OnBattleStartResponse(ApiResponse<PvpBattleStartResponse> response)
     {
+        if (response != null && response.errorCode == (int)ServerErrorCode.PVP_START_FAIL_ZONE_RUN_IN_PROGRESS)
+        {
+            m_isBattleInProgress = false;
+            ShowErrorMessage(LocalizationManager.Instance.Get("pvp_blocked_by_zone_run"));
+            return;
+        }
+
         if (response == null || response.errorCode != 0 || response.data == null)
         {
             m_isBattleInProgress = false;

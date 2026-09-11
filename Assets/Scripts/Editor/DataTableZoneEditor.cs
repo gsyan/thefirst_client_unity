@@ -811,7 +811,7 @@ public class DataTableZoneEditor : Editor
         zoneConfig.enemyHullTierSum = EditorGUILayout.IntField(new GUIContent("Hull Tier Sum", "이 셀 전체 함선들의 함체티어 총합 — 다 쓸 때까지 함선이 계속 생성되고, 9척마다 자동으로 새 함대(웨이브)로 나뉨"), zoneConfig.enemyHullTierSum);
         zoneConfig.enemyBaseHullTier = EditorGUILayout.IntField(new GUIContent("Base Hull Tier", "각 함대 1번 함선(기함)의 함체 티어 — 남은 예산이 이보다 적으면 남은 만큼만 씀"), zoneConfig.enemyBaseHullTier);
         zoneConfig.enemyModulePlacementProbability = EditorGUILayout.Slider(new GUIContent("Module Placement Probability", "함체가 가진 모듈 슬롯 하나하나마다 이 확률로 장착/미장착 결정(0~1)"), zoneConfig.enemyModulePlacementProbability, 0f, 1f);
-        zoneConfig.enemyModulePerformanceProbability = EditorGUILayout.Slider(new GUIContent("Module Performance Probability", "장착된 슬롯의 모듈 티어 범위 — max(1,함체티어*이값)~함체티어 사이 랜덤(1이면 항상 함체티어 그대로)"), zoneConfig.enemyModulePerformanceProbability, 0f, 1f);
+        zoneConfig.enemyModulePerformanceProbability = EditorGUILayout.Slider(new GUIContent("Module Performance Probability", "장착된 슬롯의 모듈 티어 정규분포 정점 위치 — [1,함체티어] 구간에서 이 값이 가리키는 지점에 확률이 몰림(1이면 정점이 함체티어 자체, 편차로 낮은 티어도 섞일 수 있음)"), zoneConfig.enemyModulePerformanceProbability, 0f, 1f);
         zoneConfig.enemyHullWeightNone = EditorGUILayout.FloatField(new GUIContent("Hull Weight - None", "실드/요격체 둘 다 없는 변형을 고를 상대 가중치 — 같은 티어에 실제 존재하는 변형들끼리 합을 정규화해서 적용(절대 확률 아님)"), zoneConfig.enemyHullWeightNone);
         zoneConfig.enemyHullWeightShield = EditorGUILayout.FloatField(new GUIContent("Hull Weight - Shield", "실드만 있는 변형을 고를 상대 가중치"), zoneConfig.enemyHullWeightShield);
         zoneConfig.enemyHullWeightInterceptor = EditorGUILayout.FloatField(new GUIContent("Hull Weight - Interceptor", "요격체만 있는 변형을 고를 상대 가중치"), zoneConfig.enemyHullWeightInterceptor);

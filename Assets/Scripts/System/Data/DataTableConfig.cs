@@ -88,7 +88,7 @@ public class ShipStatFormulaSettings
 public class BeamFormula
 {
     [Tooltip("공격력 강화 1포인트당 가산")]
-    public float attackPerPoint = 0.1f;
+    public float attackPerPoint = 1f;
     [Tooltip("연사력 강화 1포인트당 쿨다운 감소량")]
     public float attackCoolReductionPerPoint = 0.02f;
     public float attackCoolFloor = 0.5f;
@@ -100,7 +100,7 @@ public class BeamFormula
 public class MissileFormula
 {
     [Tooltip("공격력 강화 1포인트당 가산")]
-    public float attackPerPoint = 0.1f;
+    public float attackPerPoint = 1f;
     [Tooltip("연사력 강화 1포인트당 쿨다운 감소량")]
     public float attackCoolReductionPerPoint = 0.02f;
     public float attackCoolFloor = 0.5f;
@@ -118,7 +118,7 @@ public class HangarFormula
     public float baseAmmo = 10f;
     public float baseHealth = 50f;
     [Tooltip("강화 서브스탯(4종) 1포인트당 가산")]
-    public float reinforcePerPoint = 0.1f;
+    public float reinforcePerPoint = 1f;
 }
 
 [System.Serializable]
