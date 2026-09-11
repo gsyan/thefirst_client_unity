@@ -77,7 +77,7 @@ public class UIManager : MonoSingleton<UIManager>
     }
 
     // 곡면(엣지) 디스플레이 대비 좌우 마진 비율 — SafeAreaRoot·레터박스 커버 바·GaugeBar 컬링이 공유
-    public const float CURVED_EDGE_MARGIN = 0.02f;
+    public const float CURVED_EDGE_MARGIN = 0f;
 
     // 컨테이너 초기화 (하이라키 순서 = 렌더 순서) — 컨테이너들은 씬/캔버스에 미리 만들어둔 것을 찾아서 씀(동적 생성 아님)
     protected void InitializeContainers()

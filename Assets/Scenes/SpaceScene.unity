@@ -343,8 +343,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d141ae4136ed4d43833e3bd3ceb0512, type: 3}
   m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::SafeAreaAdapter
-  m_extraMarginLeft: 0.02
-  m_extraMarginRight: 0.02
+  m_extraMarginLeft: 0
+  m_extraMarginRight: 0
   m_extraMarginTop: 0
   m_extraMarginBottom: 0
 --- !u!1 &310669924
