@@ -20,6 +20,10 @@ public class UIMain : UIManager
 
         InitializeUIManager();
         NetworkManager.Instance.OnChangeScene();
+
+        RectTransform backgroundRect = transform.Find("Background") as RectTransform;
+        if (backgroundRect != null)
+            Debug.Log($"[SafeAreaLOG] Background anchorMin={backgroundRect.anchorMin} anchorMax={backgroundRect.anchorMax} sizeDelta={backgroundRect.sizeDelta} localPosition={backgroundRect.localPosition} rect={backgroundRect.rect}");
     }
 
     public override void InitializeUIManager()
