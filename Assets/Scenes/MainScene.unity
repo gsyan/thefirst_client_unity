@@ -1006,6 +1006,7 @@ GameObject:
   - component: {fileID: 2102985667}
   - component: {fileID: 2102985669}
   - component: {fileID: 2102985668}
+  - component: {fileID: 2102985670}
   m_Layer: 0
   m_Name: LetterboxBarLeft
   m_TagString: Untagged
@@ -1070,6 +1071,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2102985666}
   m_CullTransparentMesh: 1
+--- !u!114 &2102985670
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2102985666}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6082f0760f154e68a1149f0bdba85cc7, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
+  m_side: 0
+  m_fixedMargin: 0.02
 --- !u!1 &2116974995
 GameObject:
   m_ObjectHideFlags: 0
@@ -1081,6 +1096,7 @@ GameObject:
   - component: {fileID: 2116974996}
   - component: {fileID: 2116974998}
   - component: {fileID: 2116974997}
+  - component: {fileID: 2116974999}
   m_Layer: 0
   m_Name: LetterboxBarRight
   m_TagString: Untagged
@@ -1145,6 +1161,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2116974995}
   m_CullTransparentMesh: 1
+--- !u!114 &2116974999
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2116974995}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6082f0760f154e68a1149f0bdba85cc7, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
+  m_side: 1
+  m_fixedMargin: 0.02
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
