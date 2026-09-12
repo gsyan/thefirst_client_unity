@@ -181,7 +181,8 @@ public class UIPopupModuleReinforce : UIPopupBase
         bool canDecrease = entry.currentValue > 0;
 
         float actualValue = CalculateActualStatValue(entry);
-        row.Setup(dataIndex, entry.label, actualValue, entry.currentValue, entry.isEditable, canIncrease, canDecrease, OnRowPointsChanged);
+        int cpSpent = entry.currentValue * FleetComposition.k_reinforceCpCostPerPoint;
+        row.Setup(dataIndex, entry.label, actualValue, cpSpent, entry.isEditable, canIncrease, canDecrease, OnRowPointsChanged);
     }
 
     // 강화 포인트(entry.currentValue)가 실제로 만들어내는 스탯 수치 — ShipStatCalculator.CalculateWeaponSlots/CalculateHangarSlots와 동일한 공식 사용

@@ -18,1524 +18,1671 @@ MonoBehaviour:
     conditionParam: 
     threshold: 10
     achievementPointReward: 5
-    nameKey: UIAchievement_Name_cell_clear_10
-    descKey: UIAchievement_Desc_cell_clear_10
+    nameKey: UIAchievement_Name_cell_clear
+    descKey: UIAchievement_Desc_cell_clear
   - achievementId: cell_clear_50
     conditionType: 0
     conditionParam: 
     threshold: 50
     achievementPointReward: 20
-    nameKey: UIAchievement_Name_cell_clear_50
-    descKey: UIAchievement_Desc_cell_clear_50
+    nameKey: UIAchievement_Name_cell_clear
+    descKey: UIAchievement_Desc_cell_clear
   - achievementId: cell_clear_100
     conditionType: 0
     conditionParam: 
     threshold: 100
     achievementPointReward: 40
-    nameKey: UIAchievement_Name_cell_clear_100
-    descKey: UIAchievement_Desc_cell_clear_100
+    nameKey: UIAchievement_Name_cell_clear
+    descKey: UIAchievement_Desc_cell_clear
   - achievementId: cell_clear_300
     conditionType: 0
     conditionParam: 
     threshold: 300
     achievementPointReward: 100
-    nameKey: UIAchievement_Name_cell_clear_300
-    descKey: UIAchievement_Desc_cell_clear_300
+    nameKey: UIAchievement_Name_cell_clear
+    descKey: UIAchievement_Desc_cell_clear
   - achievementId: cell_clear_500
     conditionType: 0
     conditionParam: 
     threshold: 500
     achievementPointReward: 150
-    nameKey: UIAchievement_Name_cell_clear_500
-    descKey: UIAchievement_Desc_cell_clear_500
+    nameKey: UIAchievement_Name_cell_clear
+    descKey: UIAchievement_Desc_cell_clear
   - achievementId: cell_clear_1000
     conditionType: 0
     conditionParam: 
     threshold: 1000
     achievementPointReward: 250
-    nameKey: UIAchievement_Name_cell_clear_1000
-    descKey: UIAchievement_Desc_cell_clear_1000
+    nameKey: UIAchievement_Name_cell_clear
+    descKey: UIAchievement_Desc_cell_clear
   - achievementId: event_cell_explorationpoint_5
     conditionType: 1
     conditionParam: ExplorationPoint
     threshold: 5
     achievementPointReward: 10
-    nameKey: UIAchievement_Name_event_cell_explorationpoint_5
-    descKey: UIAchievement_Desc_event_cell_explorationpoint_5
+    nameKey: UIAchievement_Name_event_cell_explorationpoint
+    descKey: UIAchievement_Desc_event_cell_explorationpoint
   - achievementId: event_cell_explorationpoint_10
     conditionType: 1
     conditionParam: ExplorationPoint
     threshold: 10
     achievementPointReward: 20
-    nameKey: UIAchievement_Name_event_cell_explorationpoint_10
-    descKey: UIAchievement_Desc_event_cell_explorationpoint_10
+    nameKey: UIAchievement_Name_event_cell_explorationpoint
+    descKey: UIAchievement_Desc_event_cell_explorationpoint
   - achievementId: event_cell_explorationpoint_20
     conditionType: 1
     conditionParam: ExplorationPoint
     threshold: 20
     achievementPointReward: 40
-    nameKey: UIAchievement_Name_event_cell_explorationpoint_20
-    descKey: UIAchievement_Desc_event_cell_explorationpoint_20
+    nameKey: UIAchievement_Name_event_cell_explorationpoint
+    descKey: UIAchievement_Desc_event_cell_explorationpoint
   - achievementId: event_cell_explorationpoint_50
     conditionType: 1
     conditionParam: ExplorationPoint
     threshold: 50
     achievementPointReward: 80
-    nameKey: UIAchievement_Name_event_cell_explorationpoint_50
-    descKey: UIAchievement_Desc_event_cell_explorationpoint_50
+    nameKey: UIAchievement_Name_event_cell_explorationpoint
+    descKey: UIAchievement_Desc_event_cell_explorationpoint
   - achievementId: event_cell_shiphealthheal_5
     conditionType: 1
     conditionParam: ShipHealthHeal
     threshold: 5
     achievementPointReward: 10
-    nameKey: UIAchievement_Name_event_cell_shiphealthheal_5
-    descKey: UIAchievement_Desc_event_cell_shiphealthheal_5
+    nameKey: UIAchievement_Name_event_cell_shiphealthheal
+    descKey: UIAchievement_Desc_event_cell_shiphealthheal
   - achievementId: event_cell_shiphealthheal_10
     conditionType: 1
     conditionParam: ShipHealthHeal
     threshold: 10
     achievementPointReward: 20
-    nameKey: UIAchievement_Name_event_cell_shiphealthheal_10
-    descKey: UIAchievement_Desc_event_cell_shiphealthheal_10
+    nameKey: UIAchievement_Name_event_cell_shiphealthheal
+    descKey: UIAchievement_Desc_event_cell_shiphealthheal
   - achievementId: event_cell_shiphealthheal_20
     conditionType: 1
     conditionParam: ShipHealthHeal
     threshold: 20
     achievementPointReward: 40
-    nameKey: UIAchievement_Name_event_cell_shiphealthheal_20
-    descKey: UIAchievement_Desc_event_cell_shiphealthheal_20
+    nameKey: UIAchievement_Name_event_cell_shiphealthheal
+    descKey: UIAchievement_Desc_event_cell_shiphealthheal
   - achievementId: event_cell_shiphealthheal_50
     conditionType: 1
     conditionParam: ShipHealthHeal
     threshold: 50
     achievementPointReward: 80
-    nameKey: UIAchievement_Name_event_cell_shiphealthheal_50
-    descKey: UIAchievement_Desc_event_cell_shiphealthheal_50
+    nameKey: UIAchievement_Name_event_cell_shiphealthheal
+    descKey: UIAchievement_Desc_event_cell_shiphealthheal
   - achievementId: event_cell_tacticpowerrestore_5
     conditionType: 1
     conditionParam: TacticPowerRestore
     threshold: 5
     achievementPointReward: 10
-    nameKey: UIAchievement_Name_event_cell_tacticpowerrestore_5
-    descKey: UIAchievement_Desc_event_cell_tacticpowerrestore_5
+    nameKey: UIAchievement_Name_event_cell_tacticpowerrestore
+    descKey: UIAchievement_Desc_event_cell_tacticpowerrestore
   - achievementId: event_cell_tacticpowerrestore_10
     conditionType: 1
     conditionParam: TacticPowerRestore
     threshold: 10
     achievementPointReward: 20
-    nameKey: UIAchievement_Name_event_cell_tacticpowerrestore_10
-    descKey: UIAchievement_Desc_event_cell_tacticpowerrestore_10
+    nameKey: UIAchievement_Name_event_cell_tacticpowerrestore
+    descKey: UIAchievement_Desc_event_cell_tacticpowerrestore
   - achievementId: event_cell_tacticpowerrestore_20
     conditionType: 1
     conditionParam: TacticPowerRestore
     threshold: 20
     achievementPointReward: 40
-    nameKey: UIAchievement_Name_event_cell_tacticpowerrestore_20
-    descKey: UIAchievement_Desc_event_cell_tacticpowerrestore_20
+    nameKey: UIAchievement_Name_event_cell_tacticpowerrestore
+    descKey: UIAchievement_Desc_event_cell_tacticpowerrestore
   - achievementId: event_cell_tacticpowerrestore_50
     conditionType: 1
     conditionParam: TacticPowerRestore
     threshold: 50
     achievementPointReward: 80
-    nameKey: UIAchievement_Name_event_cell_tacticpowerrestore_50
-    descKey: UIAchievement_Desc_event_cell_tacticpowerrestore_50
+    nameKey: UIAchievement_Name_event_cell_tacticpowerrestore
+    descKey: UIAchievement_Desc_event_cell_tacticpowerrestore
   - achievementId: zone_clear_total_10
     conditionType: 2
     conditionParam: 
     threshold: 10
     achievementPointReward: 30
-    nameKey: UIAchievement_Name_zone_clear_total_10
-    descKey: UIAchievement_Desc_zone_clear_total_10
+    nameKey: UIAchievement_Name_zone_clear_total
+    descKey: UIAchievement_Desc_zone_clear_total
   - achievementId: zone_clear_total_25
     conditionType: 2
     conditionParam: 
     threshold: 25
     achievementPointReward: 60
-    nameKey: UIAchievement_Name_zone_clear_total_25
-    descKey: UIAchievement_Desc_zone_clear_total_25
+    nameKey: UIAchievement_Name_zone_clear_total
+    descKey: UIAchievement_Desc_zone_clear_total
   - achievementId: zone_clear_total_50
     conditionType: 2
     conditionParam: 
     threshold: 50
     achievementPointReward: 100
-    nameKey: UIAchievement_Name_zone_clear_total_50
-    descKey: UIAchievement_Desc_zone_clear_total_50
+    nameKey: UIAchievement_Name_zone_clear_total
+    descKey: UIAchievement_Desc_zone_clear_total
   - achievementId: zone_clear_total_75
     conditionType: 2
     conditionParam: 
     threshold: 75
     achievementPointReward: 150
-    nameKey: UIAchievement_Name_zone_clear_total_75
-    descKey: UIAchievement_Desc_zone_clear_total_75
+    nameKey: UIAchievement_Name_zone_clear_total
+    descKey: UIAchievement_Desc_zone_clear_total
   - achievementId: zone_clear_total_100
     conditionType: 2
     conditionParam: 
     threshold: 100
     achievementPointReward: 200
-    nameKey: UIAchievement_Name_zone_clear_total_100
-    descKey: UIAchievement_Desc_zone_clear_total_100
+    nameKey: UIAchievement_Name_zone_clear_total
+    descKey: UIAchievement_Desc_zone_clear_total
   - achievementId: zone_clear_1
     conditionType: 3
     conditionParam: 1
     threshold: 1
     achievementPointReward: 20
-    nameKey: UIAchievement_Name_zone_clear_1
-    descKey: UIAchievement_Desc_zone_clear_1
+    nameKey: UIAchievement_Name_zone_clear
+    descKey: UIAchievement_Desc_zone_clear
   - achievementId: zone_clear_2
     conditionType: 3
     conditionParam: 2
     threshold: 1
     achievementPointReward: 20
-    nameKey: UIAchievement_Name_zone_clear_2
-    descKey: UIAchievement_Desc_zone_clear_2
+    nameKey: UIAchievement_Name_zone_clear
+    descKey: UIAchievement_Desc_zone_clear
   - achievementId: zone_clear_3
     conditionType: 3
     conditionParam: 3
     threshold: 1
     achievementPointReward: 20
-    nameKey: UIAchievement_Name_zone_clear_3
-    descKey: UIAchievement_Desc_zone_clear_3
+    nameKey: UIAchievement_Name_zone_clear
+    descKey: UIAchievement_Desc_zone_clear
   - achievementId: zone_clear_4
     conditionType: 3
     conditionParam: 4
     threshold: 1
     achievementPointReward: 20
-    nameKey: UIAchievement_Name_zone_clear_4
-    descKey: UIAchievement_Desc_zone_clear_4
+    nameKey: UIAchievement_Name_zone_clear
+    descKey: UIAchievement_Desc_zone_clear
   - achievementId: zone_clear_5
     conditionType: 3
     conditionParam: 5
     threshold: 1
     achievementPointReward: 20
-    nameKey: UIAchievement_Name_zone_clear_5
-    descKey: UIAchievement_Desc_zone_clear_5
+    nameKey: UIAchievement_Name_zone_clear
+    descKey: UIAchievement_Desc_zone_clear
   - achievementId: zone_clear_6
     conditionType: 3
     conditionParam: 6
     threshold: 1
     achievementPointReward: 20
-    nameKey: UIAchievement_Name_zone_clear_6
-    descKey: UIAchievement_Desc_zone_clear_6
+    nameKey: UIAchievement_Name_zone_clear
+    descKey: UIAchievement_Desc_zone_clear
   - achievementId: zone_clear_7
     conditionType: 3
     conditionParam: 7
     threshold: 1
     achievementPointReward: 20
-    nameKey: UIAchievement_Name_zone_clear_7
-    descKey: UIAchievement_Desc_zone_clear_7
+    nameKey: UIAchievement_Name_zone_clear
+    descKey: UIAchievement_Desc_zone_clear
   - achievementId: zone_clear_8
     conditionType: 3
     conditionParam: 8
     threshold: 1
     achievementPointReward: 20
-    nameKey: UIAchievement_Name_zone_clear_8
-    descKey: UIAchievement_Desc_zone_clear_8
+    nameKey: UIAchievement_Name_zone_clear
+    descKey: UIAchievement_Desc_zone_clear
   - achievementId: zone_clear_9
     conditionType: 3
     conditionParam: 9
     threshold: 1
     achievementPointReward: 20
-    nameKey: UIAchievement_Name_zone_clear_9
-    descKey: UIAchievement_Desc_zone_clear_9
+    nameKey: UIAchievement_Name_zone_clear
+    descKey: UIAchievement_Desc_zone_clear
   - achievementId: zone_clear_10
     conditionType: 3
     conditionParam: 10
     threshold: 1
     achievementPointReward: 30
-    nameKey: UIAchievement_Name_zone_clear_10
-    descKey: UIAchievement_Desc_zone_clear_10
+    nameKey: UIAchievement_Name_zone_clear
+    descKey: UIAchievement_Desc_zone_clear
   - achievementId: zone_clear_11
     conditionType: 3
     conditionParam: 11
     threshold: 1
     achievementPointReward: 30
-    nameKey: UIAchievement_Name_zone_clear_11
-    descKey: UIAchievement_Desc_zone_clear_11
+    nameKey: UIAchievement_Name_zone_clear
+    descKey: UIAchievement_Desc_zone_clear
   - achievementId: zone_clear_12
     conditionType: 3
     conditionParam: 12
     threshold: 1
     achievementPointReward: 30
-    nameKey: UIAchievement_Name_zone_clear_12
-    descKey: UIAchievement_Desc_zone_clear_12
+    nameKey: UIAchievement_Name_zone_clear
+    descKey: UIAchievement_Desc_zone_clear
   - achievementId: zone_clear_13
     conditionType: 3
     conditionParam: 13
     threshold: 1
     achievementPointReward: 30
-    nameKey: UIAchievement_Name_zone_clear_13
-    descKey: UIAchievement_Desc_zone_clear_13
+    nameKey: UIAchievement_Name_zone_clear
+    descKey: UIAchievement_Desc_zone_clear
   - achievementId: zone_clear_14
     conditionType: 3
     conditionParam: 14
     threshold: 1
     achievementPointReward: 30
-    nameKey: UIAchievement_Name_zone_clear_14
-    descKey: UIAchievement_Desc_zone_clear_14
+    nameKey: UIAchievement_Name_zone_clear
+    descKey: UIAchievement_Desc_zone_clear
   - achievementId: zone_clear_15
     conditionType: 3
     conditionParam: 15
     threshold: 1
     achievementPointReward: 30
-    nameKey: UIAchievement_Name_zone_clear_15
-    descKey: UIAchievement_Desc_zone_clear_15
+    nameKey: UIAchievement_Name_zone_clear
+    descKey: UIAchievement_Desc_zone_clear
   - achievementId: zone_clear_16
     conditionType: 3
     conditionParam: 16
     threshold: 1
     achievementPointReward: 30
-    nameKey: UIAchievement_Name_zone_clear_16
-    descKey: UIAchievement_Desc_zone_clear_16
+    nameKey: UIAchievement_Name_zone_clear
+    descKey: UIAchievement_Desc_zone_clear
   - achievementId: zone_clear_17
     conditionType: 3
     conditionParam: 17
     threshold: 1
     achievementPointReward: 30
-    nameKey: UIAchievement_Name_zone_clear_17
-    descKey: UIAchievement_Desc_zone_clear_17
+    nameKey: UIAchievement_Name_zone_clear
+    descKey: UIAchievement_Desc_zone_clear
   - achievementId: zone_clear_18
     conditionType: 3
     conditionParam: 18
     threshold: 1
     achievementPointReward: 30
-    nameKey: UIAchievement_Name_zone_clear_18
-    descKey: UIAchievement_Desc_zone_clear_18
+    nameKey: UIAchievement_Name_zone_clear
+    descKey: UIAchievement_Desc_zone_clear
   - achievementId: zone_clear_19
     conditionType: 3
     conditionParam: 19
     threshold: 1
     achievementPointReward: 30
-    nameKey: UIAchievement_Name_zone_clear_19
-    descKey: UIAchievement_Desc_zone_clear_19
+    nameKey: UIAchievement_Name_zone_clear
+    descKey: UIAchievement_Desc_zone_clear
   - achievementId: zone_clear_20
     conditionType: 3
     conditionParam: 20
     threshold: 1
     achievementPointReward: 40
-    nameKey: UIAchievement_Name_zone_clear_20
-    descKey: UIAchievement_Desc_zone_clear_20
+    nameKey: UIAchievement_Name_zone_clear
+    descKey: UIAchievement_Desc_zone_clear
   - achievementId: zone_clear_21
     conditionType: 3
     conditionParam: 21
     threshold: 1
     achievementPointReward: 40
-    nameKey: UIAchievement_Name_zone_clear_21
-    descKey: UIAchievement_Desc_zone_clear_21
+    nameKey: UIAchievement_Name_zone_clear
+    descKey: UIAchievement_Desc_zone_clear
   - achievementId: zone_clear_22
     conditionType: 3
     conditionParam: 22
     threshold: 1
     achievementPointReward: 40
-    nameKey: UIAchievement_Name_zone_clear_22
-    descKey: UIAchievement_Desc_zone_clear_22
+    nameKey: UIAchievement_Name_zone_clear
+    descKey: UIAchievement_Desc_zone_clear
   - achievementId: zone_clear_23
     conditionType: 3
     conditionParam: 23
     threshold: 1
     achievementPointReward: 40
-    nameKey: UIAchievement_Name_zone_clear_23
-    descKey: UIAchievement_Desc_zone_clear_23
+    nameKey: UIAchievement_Name_zone_clear
+    descKey: UIAchievement_Desc_zone_clear
   - achievementId: zone_clear_24
     conditionType: 3
     conditionParam: 24
     threshold: 1
     achievementPointReward: 40
-    nameKey: UIAchievement_Name_zone_clear_24
-    descKey: UIAchievement_Desc_zone_clear_24
+    nameKey: UIAchievement_Name_zone_clear
+    descKey: UIAchievement_Desc_zone_clear
   - achievementId: zone_clear_25
     conditionType: 3
     conditionParam: 25
     threshold: 1
     achievementPointReward: 40
-    nameKey: UIAchievement_Name_zone_clear_25
-    descKey: UIAchievement_Desc_zone_clear_25
+    nameKey: UIAchievement_Name_zone_clear
+    descKey: UIAchievement_Desc_zone_clear
   - achievementId: zone_clear_26
     conditionType: 3
     conditionParam: 26
     threshold: 1
     achievementPointReward: 40
-    nameKey: UIAchievement_Name_zone_clear_26
-    descKey: UIAchievement_Desc_zone_clear_26
+    nameKey: UIAchievement_Name_zone_clear
+    descKey: UIAchievement_Desc_zone_clear
   - achievementId: zone_clear_27
     conditionType: 3
     conditionParam: 27
     threshold: 1
     achievementPointReward: 40
-    nameKey: UIAchievement_Name_zone_clear_27
-    descKey: UIAchievement_Desc_zone_clear_27
+    nameKey: UIAchievement_Name_zone_clear
+    descKey: UIAchievement_Desc_zone_clear
   - achievementId: zone_clear_28
     conditionType: 3
     conditionParam: 28
     threshold: 1
     achievementPointReward: 40
-    nameKey: UIAchievement_Name_zone_clear_28
-    descKey: UIAchievement_Desc_zone_clear_28
+    nameKey: UIAchievement_Name_zone_clear
+    descKey: UIAchievement_Desc_zone_clear
   - achievementId: zone_clear_29
     conditionType: 3
     conditionParam: 29
     threshold: 1
     achievementPointReward: 40
-    nameKey: UIAchievement_Name_zone_clear_29
-    descKey: UIAchievement_Desc_zone_clear_29
+    nameKey: UIAchievement_Name_zone_clear
+    descKey: UIAchievement_Desc_zone_clear
   - achievementId: zone_clear_30
     conditionType: 3
     conditionParam: 30
     threshold: 1
     achievementPointReward: 50
-    nameKey: UIAchievement_Name_zone_clear_30
-    descKey: UIAchievement_Desc_zone_clear_30
+    nameKey: UIAchievement_Name_zone_clear
+    descKey: UIAchievement_Desc_zone_clear
   - achievementId: zone_clear_31
     conditionType: 3
     conditionParam: 31
     threshold: 1
     achievementPointReward: 50
-    nameKey: UIAchievement_Name_zone_clear_31
-    descKey: UIAchievement_Desc_zone_clear_31
+    nameKey: UIAchievement_Name_zone_clear
+    descKey: UIAchievement_Desc_zone_clear
   - achievementId: zone_clear_32
     conditionType: 3
     conditionParam: 32
     threshold: 1
     achievementPointReward: 50
-    nameKey: UIAchievement_Name_zone_clear_32
-    descKey: UIAchievement_Desc_zone_clear_32
+    nameKey: UIAchievement_Name_zone_clear
+    descKey: UIAchievement_Desc_zone_clear
   - achievementId: zone_clear_33
     conditionType: 3
     conditionParam: 33
     threshold: 1
     achievementPointReward: 50
-    nameKey: UIAchievement_Name_zone_clear_33
-    descKey: UIAchievement_Desc_zone_clear_33
+    nameKey: UIAchievement_Name_zone_clear
+    descKey: UIAchievement_Desc_zone_clear
   - achievementId: zone_clear_34
     conditionType: 3
     conditionParam: 34
     threshold: 1
     achievementPointReward: 50
-    nameKey: UIAchievement_Name_zone_clear_34
-    descKey: UIAchievement_Desc_zone_clear_34
+    nameKey: UIAchievement_Name_zone_clear
+    descKey: UIAchievement_Desc_zone_clear
   - achievementId: zone_clear_35
     conditionType: 3
     conditionParam: 35
     threshold: 1
     achievementPointReward: 50
-    nameKey: UIAchievement_Name_zone_clear_35
-    descKey: UIAchievement_Desc_zone_clear_35
+    nameKey: UIAchievement_Name_zone_clear
+    descKey: UIAchievement_Desc_zone_clear
   - achievementId: zone_clear_36
     conditionType: 3
     conditionParam: 36
     threshold: 1
     achievementPointReward: 50
-    nameKey: UIAchievement_Name_zone_clear_36
-    descKey: UIAchievement_Desc_zone_clear_36
+    nameKey: UIAchievement_Name_zone_clear
+    descKey: UIAchievement_Desc_zone_clear
   - achievementId: zone_clear_37
     conditionType: 3
     conditionParam: 37
     threshold: 1
     achievementPointReward: 50
-    nameKey: UIAchievement_Name_zone_clear_37
-    descKey: UIAchievement_Desc_zone_clear_37
+    nameKey: UIAchievement_Name_zone_clear
+    descKey: UIAchievement_Desc_zone_clear
   - achievementId: zone_clear_38
     conditionType: 3
     conditionParam: 38
     threshold: 1
     achievementPointReward: 50
-    nameKey: UIAchievement_Name_zone_clear_38
-    descKey: UIAchievement_Desc_zone_clear_38
+    nameKey: UIAchievement_Name_zone_clear
+    descKey: UIAchievement_Desc_zone_clear
   - achievementId: zone_clear_39
     conditionType: 3
     conditionParam: 39
     threshold: 1
     achievementPointReward: 50
-    nameKey: UIAchievement_Name_zone_clear_39
-    descKey: UIAchievement_Desc_zone_clear_39
+    nameKey: UIAchievement_Name_zone_clear
+    descKey: UIAchievement_Desc_zone_clear
   - achievementId: zone_clear_40
     conditionType: 3
     conditionParam: 40
     threshold: 1
     achievementPointReward: 60
-    nameKey: UIAchievement_Name_zone_clear_40
-    descKey: UIAchievement_Desc_zone_clear_40
+    nameKey: UIAchievement_Name_zone_clear
+    descKey: UIAchievement_Desc_zone_clear
   - achievementId: zone_clear_41
     conditionType: 3
     conditionParam: 41
     threshold: 1
     achievementPointReward: 60
-    nameKey: UIAchievement_Name_zone_clear_41
-    descKey: UIAchievement_Desc_zone_clear_41
+    nameKey: UIAchievement_Name_zone_clear
+    descKey: UIAchievement_Desc_zone_clear
   - achievementId: zone_clear_42
     conditionType: 3
     conditionParam: 42
     threshold: 1
     achievementPointReward: 60
-    nameKey: UIAchievement_Name_zone_clear_42
-    descKey: UIAchievement_Desc_zone_clear_42
+    nameKey: UIAchievement_Name_zone_clear
+    descKey: UIAchievement_Desc_zone_clear
   - achievementId: zone_clear_43
     conditionType: 3
     conditionParam: 43
     threshold: 1
     achievementPointReward: 60
-    nameKey: UIAchievement_Name_zone_clear_43
-    descKey: UIAchievement_Desc_zone_clear_43
+    nameKey: UIAchievement_Name_zone_clear
+    descKey: UIAchievement_Desc_zone_clear
   - achievementId: zone_clear_44
     conditionType: 3
     conditionParam: 44
     threshold: 1
     achievementPointReward: 60
-    nameKey: UIAchievement_Name_zone_clear_44
-    descKey: UIAchievement_Desc_zone_clear_44
+    nameKey: UIAchievement_Name_zone_clear
+    descKey: UIAchievement_Desc_zone_clear
   - achievementId: zone_clear_45
     conditionType: 3
     conditionParam: 45
     threshold: 1
     achievementPointReward: 60
-    nameKey: UIAchievement_Name_zone_clear_45
-    descKey: UIAchievement_Desc_zone_clear_45
+    nameKey: UIAchievement_Name_zone_clear
+    descKey: UIAchievement_Desc_zone_clear
   - achievementId: zone_clear_46
     conditionType: 3
     conditionParam: 46
     threshold: 1
     achievementPointReward: 60
-    nameKey: UIAchievement_Name_zone_clear_46
-    descKey: UIAchievement_Desc_zone_clear_46
+    nameKey: UIAchievement_Name_zone_clear
+    descKey: UIAchievement_Desc_zone_clear
   - achievementId: zone_clear_47
     conditionType: 3
     conditionParam: 47
     threshold: 1
     achievementPointReward: 60
-    nameKey: UIAchievement_Name_zone_clear_47
-    descKey: UIAchievement_Desc_zone_clear_47
+    nameKey: UIAchievement_Name_zone_clear
+    descKey: UIAchievement_Desc_zone_clear
   - achievementId: zone_clear_48
     conditionType: 3
     conditionParam: 48
     threshold: 1
     achievementPointReward: 60
-    nameKey: UIAchievement_Name_zone_clear_48
-    descKey: UIAchievement_Desc_zone_clear_48
+    nameKey: UIAchievement_Name_zone_clear
+    descKey: UIAchievement_Desc_zone_clear
   - achievementId: zone_clear_49
     conditionType: 3
     conditionParam: 49
     threshold: 1
     achievementPointReward: 60
-    nameKey: UIAchievement_Name_zone_clear_49
-    descKey: UIAchievement_Desc_zone_clear_49
+    nameKey: UIAchievement_Name_zone_clear
+    descKey: UIAchievement_Desc_zone_clear
   - achievementId: zone_clear_50
     conditionType: 3
     conditionParam: 50
     threshold: 1
     achievementPointReward: 70
-    nameKey: UIAchievement_Name_zone_clear_50
-    descKey: UIAchievement_Desc_zone_clear_50
+    nameKey: UIAchievement_Name_zone_clear
+    descKey: UIAchievement_Desc_zone_clear
   - achievementId: zone_clear_51
     conditionType: 3
     conditionParam: 51
     threshold: 1
     achievementPointReward: 70
-    nameKey: UIAchievement_Name_zone_clear_51
-    descKey: UIAchievement_Desc_zone_clear_51
+    nameKey: UIAchievement_Name_zone_clear
+    descKey: UIAchievement_Desc_zone_clear
   - achievementId: zone_clear_52
     conditionType: 3
     conditionParam: 52
     threshold: 1
     achievementPointReward: 70
-    nameKey: UIAchievement_Name_zone_clear_52
-    descKey: UIAchievement_Desc_zone_clear_52
+    nameKey: UIAchievement_Name_zone_clear
+    descKey: UIAchievement_Desc_zone_clear
   - achievementId: zone_clear_53
     conditionType: 3
     conditionParam: 53
     threshold: 1
     achievementPointReward: 70
-    nameKey: UIAchievement_Name_zone_clear_53
-    descKey: UIAchievement_Desc_zone_clear_53
+    nameKey: UIAchievement_Name_zone_clear
+    descKey: UIAchievement_Desc_zone_clear
   - achievementId: zone_clear_54
     conditionType: 3
     conditionParam: 54
     threshold: 1
     achievementPointReward: 70
-    nameKey: UIAchievement_Name_zone_clear_54
-    descKey: UIAchievement_Desc_zone_clear_54
+    nameKey: UIAchievement_Name_zone_clear
+    descKey: UIAchievement_Desc_zone_clear
   - achievementId: zone_clear_55
     conditionType: 3
     conditionParam: 55
     threshold: 1
     achievementPointReward: 70
-    nameKey: UIAchievement_Name_zone_clear_55
-    descKey: UIAchievement_Desc_zone_clear_55
+    nameKey: UIAchievement_Name_zone_clear
+    descKey: UIAchievement_Desc_zone_clear
   - achievementId: zone_clear_56
     conditionType: 3
     conditionParam: 56
     threshold: 1
     achievementPointReward: 70
-    nameKey: UIAchievement_Name_zone_clear_56
-    descKey: UIAchievement_Desc_zone_clear_56
+    nameKey: UIAchievement_Name_zone_clear
+    descKey: UIAchievement_Desc_zone_clear
   - achievementId: zone_clear_57
     conditionType: 3
     conditionParam: 57
     threshold: 1
     achievementPointReward: 70
-    nameKey: UIAchievement_Name_zone_clear_57
-    descKey: UIAchievement_Desc_zone_clear_57
+    nameKey: UIAchievement_Name_zone_clear
+    descKey: UIAchievement_Desc_zone_clear
   - achievementId: zone_clear_58
     conditionType: 3
     conditionParam: 58
     threshold: 1
     achievementPointReward: 70
-    nameKey: UIAchievement_Name_zone_clear_58
-    descKey: UIAchievement_Desc_zone_clear_58
+    nameKey: UIAchievement_Name_zone_clear
+    descKey: UIAchievement_Desc_zone_clear
   - achievementId: zone_clear_59
     conditionType: 3
     conditionParam: 59
     threshold: 1
     achievementPointReward: 70
-    nameKey: UIAchievement_Name_zone_clear_59
-    descKey: UIAchievement_Desc_zone_clear_59
+    nameKey: UIAchievement_Name_zone_clear
+    descKey: UIAchievement_Desc_zone_clear
   - achievementId: zone_clear_60
     conditionType: 3
     conditionParam: 60
     threshold: 1
     achievementPointReward: 80
-    nameKey: UIAchievement_Name_zone_clear_60
-    descKey: UIAchievement_Desc_zone_clear_60
+    nameKey: UIAchievement_Name_zone_clear
+    descKey: UIAchievement_Desc_zone_clear
   - achievementId: zone_clear_61
     conditionType: 3
     conditionParam: 61
     threshold: 1
     achievementPointReward: 80
-    nameKey: UIAchievement_Name_zone_clear_61
-    descKey: UIAchievement_Desc_zone_clear_61
+    nameKey: UIAchievement_Name_zone_clear
+    descKey: UIAchievement_Desc_zone_clear
   - achievementId: zone_clear_62
     conditionType: 3
     conditionParam: 62
     threshold: 1
     achievementPointReward: 80
-    nameKey: UIAchievement_Name_zone_clear_62
-    descKey: UIAchievement_Desc_zone_clear_62
+    nameKey: UIAchievement_Name_zone_clear
+    descKey: UIAchievement_Desc_zone_clear
   - achievementId: zone_clear_63
     conditionType: 3
     conditionParam: 63
     threshold: 1
     achievementPointReward: 80
-    nameKey: UIAchievement_Name_zone_clear_63
-    descKey: UIAchievement_Desc_zone_clear_63
+    nameKey: UIAchievement_Name_zone_clear
+    descKey: UIAchievement_Desc_zone_clear
   - achievementId: zone_clear_64
     conditionType: 3
     conditionParam: 64
     threshold: 1
     achievementPointReward: 80
-    nameKey: UIAchievement_Name_zone_clear_64
-    descKey: UIAchievement_Desc_zone_clear_64
+    nameKey: UIAchievement_Name_zone_clear
+    descKey: UIAchievement_Desc_zone_clear
   - achievementId: zone_clear_65
     conditionType: 3
     conditionParam: 65
     threshold: 1
     achievementPointReward: 80
-    nameKey: UIAchievement_Name_zone_clear_65
-    descKey: UIAchievement_Desc_zone_clear_65
+    nameKey: UIAchievement_Name_zone_clear
+    descKey: UIAchievement_Desc_zone_clear
   - achievementId: zone_clear_66
     conditionType: 3
     conditionParam: 66
     threshold: 1
     achievementPointReward: 80
-    nameKey: UIAchievement_Name_zone_clear_66
-    descKey: UIAchievement_Desc_zone_clear_66
+    nameKey: UIAchievement_Name_zone_clear
+    descKey: UIAchievement_Desc_zone_clear
   - achievementId: zone_clear_67
     conditionType: 3
     conditionParam: 67
     threshold: 1
     achievementPointReward: 80
-    nameKey: UIAchievement_Name_zone_clear_67
-    descKey: UIAchievement_Desc_zone_clear_67
+    nameKey: UIAchievement_Name_zone_clear
+    descKey: UIAchievement_Desc_zone_clear
   - achievementId: zone_clear_68
     conditionType: 3
     conditionParam: 68
     threshold: 1
     achievementPointReward: 80
-    nameKey: UIAchievement_Name_zone_clear_68
-    descKey: UIAchievement_Desc_zone_clear_68
+    nameKey: UIAchievement_Name_zone_clear
+    descKey: UIAchievement_Desc_zone_clear
   - achievementId: zone_clear_69
     conditionType: 3
     conditionParam: 69
     threshold: 1
     achievementPointReward: 80
-    nameKey: UIAchievement_Name_zone_clear_69
-    descKey: UIAchievement_Desc_zone_clear_69
+    nameKey: UIAchievement_Name_zone_clear
+    descKey: UIAchievement_Desc_zone_clear
   - achievementId: zone_clear_70
     conditionType: 3
     conditionParam: 70
     threshold: 1
     achievementPointReward: 90
-    nameKey: UIAchievement_Name_zone_clear_70
-    descKey: UIAchievement_Desc_zone_clear_70
+    nameKey: UIAchievement_Name_zone_clear
+    descKey: UIAchievement_Desc_zone_clear
   - achievementId: zone_clear_71
     conditionType: 3
     conditionParam: 71
     threshold: 1
     achievementPointReward: 90
-    nameKey: UIAchievement_Name_zone_clear_71
-    descKey: UIAchievement_Desc_zone_clear_71
+    nameKey: UIAchievement_Name_zone_clear
+    descKey: UIAchievement_Desc_zone_clear
   - achievementId: zone_clear_72
     conditionType: 3
     conditionParam: 72
     threshold: 1
     achievementPointReward: 90
-    nameKey: UIAchievement_Name_zone_clear_72
-    descKey: UIAchievement_Desc_zone_clear_72
+    nameKey: UIAchievement_Name_zone_clear
+    descKey: UIAchievement_Desc_zone_clear
   - achievementId: zone_clear_73
     conditionType: 3
     conditionParam: 73
     threshold: 1
     achievementPointReward: 90
-    nameKey: UIAchievement_Name_zone_clear_73
-    descKey: UIAchievement_Desc_zone_clear_73
+    nameKey: UIAchievement_Name_zone_clear
+    descKey: UIAchievement_Desc_zone_clear
   - achievementId: zone_clear_74
     conditionType: 3
     conditionParam: 74
     threshold: 1
     achievementPointReward: 90
-    nameKey: UIAchievement_Name_zone_clear_74
-    descKey: UIAchievement_Desc_zone_clear_74
+    nameKey: UIAchievement_Name_zone_clear
+    descKey: UIAchievement_Desc_zone_clear
   - achievementId: zone_clear_75
     conditionType: 3
     conditionParam: 75
     threshold: 1
     achievementPointReward: 90
-    nameKey: UIAchievement_Name_zone_clear_75
-    descKey: UIAchievement_Desc_zone_clear_75
+    nameKey: UIAchievement_Name_zone_clear
+    descKey: UIAchievement_Desc_zone_clear
   - achievementId: zone_clear_76
     conditionType: 3
     conditionParam: 76
     threshold: 1
     achievementPointReward: 90
-    nameKey: UIAchievement_Name_zone_clear_76
-    descKey: UIAchievement_Desc_zone_clear_76
+    nameKey: UIAchievement_Name_zone_clear
+    descKey: UIAchievement_Desc_zone_clear
   - achievementId: zone_clear_77
     conditionType: 3
     conditionParam: 77
     threshold: 1
     achievementPointReward: 90
-    nameKey: UIAchievement_Name_zone_clear_77
-    descKey: UIAchievement_Desc_zone_clear_77
+    nameKey: UIAchievement_Name_zone_clear
+    descKey: UIAchievement_Desc_zone_clear
   - achievementId: zone_clear_78
     conditionType: 3
     conditionParam: 78
     threshold: 1
     achievementPointReward: 90
-    nameKey: UIAchievement_Name_zone_clear_78
-    descKey: UIAchievement_Desc_zone_clear_78
+    nameKey: UIAchievement_Name_zone_clear
+    descKey: UIAchievement_Desc_zone_clear
   - achievementId: zone_clear_79
     conditionType: 3
     conditionParam: 79
     threshold: 1
     achievementPointReward: 90
-    nameKey: UIAchievement_Name_zone_clear_79
-    descKey: UIAchievement_Desc_zone_clear_79
+    nameKey: UIAchievement_Name_zone_clear
+    descKey: UIAchievement_Desc_zone_clear
   - achievementId: zone_clear_80
     conditionType: 3
     conditionParam: 80
     threshold: 1
     achievementPointReward: 100
-    nameKey: UIAchievement_Name_zone_clear_80
-    descKey: UIAchievement_Desc_zone_clear_80
+    nameKey: UIAchievement_Name_zone_clear
+    descKey: UIAchievement_Desc_zone_clear
   - achievementId: zone_clear_81
     conditionType: 3
     conditionParam: 81
     threshold: 1
     achievementPointReward: 100
-    nameKey: UIAchievement_Name_zone_clear_81
-    descKey: UIAchievement_Desc_zone_clear_81
+    nameKey: UIAchievement_Name_zone_clear
+    descKey: UIAchievement_Desc_zone_clear
   - achievementId: zone_clear_82
     conditionType: 3
     conditionParam: 82
     threshold: 1
     achievementPointReward: 100
-    nameKey: UIAchievement_Name_zone_clear_82
-    descKey: UIAchievement_Desc_zone_clear_82
+    nameKey: UIAchievement_Name_zone_clear
+    descKey: UIAchievement_Desc_zone_clear
   - achievementId: zone_clear_83
     conditionType: 3
     conditionParam: 83
     threshold: 1
     achievementPointReward: 100
-    nameKey: UIAchievement_Name_zone_clear_83
-    descKey: UIAchievement_Desc_zone_clear_83
+    nameKey: UIAchievement_Name_zone_clear
+    descKey: UIAchievement_Desc_zone_clear
   - achievementId: zone_clear_84
     conditionType: 3
     conditionParam: 84
     threshold: 1
     achievementPointReward: 100
-    nameKey: UIAchievement_Name_zone_clear_84
-    descKey: UIAchievement_Desc_zone_clear_84
+    nameKey: UIAchievement_Name_zone_clear
+    descKey: UIAchievement_Desc_zone_clear
   - achievementId: zone_clear_85
     conditionType: 3
     conditionParam: 85
     threshold: 1
     achievementPointReward: 100
-    nameKey: UIAchievement_Name_zone_clear_85
-    descKey: UIAchievement_Desc_zone_clear_85
+    nameKey: UIAchievement_Name_zone_clear
+    descKey: UIAchievement_Desc_zone_clear
   - achievementId: zone_clear_86
     conditionType: 3
     conditionParam: 86
     threshold: 1
     achievementPointReward: 100
-    nameKey: UIAchievement_Name_zone_clear_86
-    descKey: UIAchievement_Desc_zone_clear_86
+    nameKey: UIAchievement_Name_zone_clear
+    descKey: UIAchievement_Desc_zone_clear
   - achievementId: zone_clear_87
     conditionType: 3
     conditionParam: 87
     threshold: 1
     achievementPointReward: 100
-    nameKey: UIAchievement_Name_zone_clear_87
-    descKey: UIAchievement_Desc_zone_clear_87
+    nameKey: UIAchievement_Name_zone_clear
+    descKey: UIAchievement_Desc_zone_clear
   - achievementId: zone_clear_88
     conditionType: 3
     conditionParam: 88
     threshold: 1
     achievementPointReward: 100
-    nameKey: UIAchievement_Name_zone_clear_88
-    descKey: UIAchievement_Desc_zone_clear_88
+    nameKey: UIAchievement_Name_zone_clear
+    descKey: UIAchievement_Desc_zone_clear
   - achievementId: zone_clear_89
     conditionType: 3
     conditionParam: 89
     threshold: 1
     achievementPointReward: 100
-    nameKey: UIAchievement_Name_zone_clear_89
-    descKey: UIAchievement_Desc_zone_clear_89
+    nameKey: UIAchievement_Name_zone_clear
+    descKey: UIAchievement_Desc_zone_clear
   - achievementId: zone_clear_90
     conditionType: 3
     conditionParam: 90
     threshold: 1
     achievementPointReward: 110
-    nameKey: UIAchievement_Name_zone_clear_90
-    descKey: UIAchievement_Desc_zone_clear_90
+    nameKey: UIAchievement_Name_zone_clear
+    descKey: UIAchievement_Desc_zone_clear
   - achievementId: zone_clear_91
     conditionType: 3
     conditionParam: 91
     threshold: 1
     achievementPointReward: 110
-    nameKey: UIAchievement_Name_zone_clear_91
-    descKey: UIAchievement_Desc_zone_clear_91
+    nameKey: UIAchievement_Name_zone_clear
+    descKey: UIAchievement_Desc_zone_clear
   - achievementId: zone_clear_92
     conditionType: 3
     conditionParam: 92
     threshold: 1
     achievementPointReward: 110
-    nameKey: UIAchievement_Name_zone_clear_92
-    descKey: UIAchievement_Desc_zone_clear_92
+    nameKey: UIAchievement_Name_zone_clear
+    descKey: UIAchievement_Desc_zone_clear
   - achievementId: zone_clear_93
     conditionType: 3
     conditionParam: 93
     threshold: 1
     achievementPointReward: 110
-    nameKey: UIAchievement_Name_zone_clear_93
-    descKey: UIAchievement_Desc_zone_clear_93
+    nameKey: UIAchievement_Name_zone_clear
+    descKey: UIAchievement_Desc_zone_clear
   - achievementId: zone_clear_94
     conditionType: 3
     conditionParam: 94
     threshold: 1
     achievementPointReward: 110
-    nameKey: UIAchievement_Name_zone_clear_94
-    descKey: UIAchievement_Desc_zone_clear_94
+    nameKey: UIAchievement_Name_zone_clear
+    descKey: UIAchievement_Desc_zone_clear
   - achievementId: zone_clear_95
     conditionType: 3
     conditionParam: 95
     threshold: 1
     achievementPointReward: 110
-    nameKey: UIAchievement_Name_zone_clear_95
-    descKey: UIAchievement_Desc_zone_clear_95
+    nameKey: UIAchievement_Name_zone_clear
+    descKey: UIAchievement_Desc_zone_clear
   - achievementId: zone_clear_96
     conditionType: 3
     conditionParam: 96
     threshold: 1
     achievementPointReward: 110
-    nameKey: UIAchievement_Name_zone_clear_96
-    descKey: UIAchievement_Desc_zone_clear_96
+    nameKey: UIAchievement_Name_zone_clear
+    descKey: UIAchievement_Desc_zone_clear
   - achievementId: zone_clear_97
     conditionType: 3
     conditionParam: 97
     threshold: 1
     achievementPointReward: 110
-    nameKey: UIAchievement_Name_zone_clear_97
-    descKey: UIAchievement_Desc_zone_clear_97
+    nameKey: UIAchievement_Name_zone_clear
+    descKey: UIAchievement_Desc_zone_clear
   - achievementId: zone_clear_98
     conditionType: 3
     conditionParam: 98
     threshold: 1
     achievementPointReward: 110
-    nameKey: UIAchievement_Name_zone_clear_98
-    descKey: UIAchievement_Desc_zone_clear_98
+    nameKey: UIAchievement_Name_zone_clear
+    descKey: UIAchievement_Desc_zone_clear
   - achievementId: zone_clear_99
     conditionType: 3
     conditionParam: 99
     threshold: 1
     achievementPointReward: 110
-    nameKey: UIAchievement_Name_zone_clear_99
-    descKey: UIAchievement_Desc_zone_clear_99
+    nameKey: UIAchievement_Name_zone_clear
+    descKey: UIAchievement_Desc_zone_clear
   - achievementId: zone_clear_100
     conditionType: 3
     conditionParam: 100
     threshold: 1
     achievementPointReward: 120
-    nameKey: UIAchievement_Name_zone_clear_100
-    descKey: UIAchievement_Desc_zone_clear_100
+    nameKey: UIAchievement_Name_zone_clear
+    descKey: UIAchievement_Desc_zone_clear
   - achievementId: commander_level_5
     conditionType: 4
     conditionParam: 
     threshold: 5
     achievementPointReward: 20
-    nameKey: UIAchievement_Name_commander_level_5
-    descKey: UIAchievement_Desc_commander_level_5
+    nameKey: UIAchievement_Name_commander_level
+    descKey: UIAchievement_Desc_commander_level
   - achievementId: commander_level_10
     conditionType: 4
     conditionParam: 
     threshold: 10
     achievementPointReward: 40
-    nameKey: UIAchievement_Name_commander_level_10
-    descKey: UIAchievement_Desc_commander_level_10
+    nameKey: UIAchievement_Name_commander_level
+    descKey: UIAchievement_Desc_commander_level
   - achievementId: commander_level_15
     conditionType: 4
     conditionParam: 
     threshold: 15
     achievementPointReward: 60
-    nameKey: UIAchievement_Name_commander_level_15
-    descKey: UIAchievement_Desc_commander_level_15
+    nameKey: UIAchievement_Name_commander_level
+    descKey: UIAchievement_Desc_commander_level
   - achievementId: commander_level_20
     conditionType: 4
     conditionParam: 
     threshold: 20
     achievementPointReward: 80
-    nameKey: UIAchievement_Name_commander_level_20
-    descKey: UIAchievement_Desc_commander_level_20
+    nameKey: UIAchievement_Name_commander_level
+    descKey: UIAchievement_Desc_commander_level
   - achievementId: commander_level_25
     conditionType: 4
     conditionParam: 
     threshold: 25
     achievementPointReward: 100
-    nameKey: UIAchievement_Name_commander_level_25
-    descKey: UIAchievement_Desc_commander_level_25
+    nameKey: UIAchievement_Name_commander_level
+    descKey: UIAchievement_Desc_commander_level
   - achievementId: commander_level_30
     conditionType: 4
     conditionParam: 
     threshold: 30
     achievementPointReward: 120
-    nameKey: UIAchievement_Name_commander_level_30
-    descKey: UIAchievement_Desc_commander_level_30
-  - achievementId: command_power_400
-    conditionType: 5
-    conditionParam: 
-    threshold: 400
-    achievementPointReward: 30
-    nameKey: UIAchievement_Name_command_power_400
-    descKey: UIAchievement_Desc_command_power_400
+    nameKey: UIAchievement_Name_commander_level
+    descKey: UIAchievement_Desc_commander_level
   - achievementId: command_power_500
     conditionType: 5
     conditionParam: 
     threshold: 500
     achievementPointReward: 40
-    nameKey: UIAchievement_Name_command_power_500
-    descKey: UIAchievement_Desc_command_power_500
+    nameKey: UIAchievement_Name_command_power
+    descKey: UIAchievement_Desc_command_power
   - achievementId: command_power_600
     conditionType: 5
     conditionParam: 
     threshold: 600
     achievementPointReward: 50
-    nameKey: UIAchievement_Name_command_power_600
-    descKey: UIAchievement_Desc_command_power_600
+    nameKey: UIAchievement_Name_command_power
+    descKey: UIAchievement_Desc_command_power
   - achievementId: command_power_700
     conditionType: 5
     conditionParam: 
     threshold: 700
     achievementPointReward: 60
-    nameKey: UIAchievement_Name_command_power_700
-    descKey: UIAchievement_Desc_command_power_700
+    nameKey: UIAchievement_Name_command_power
+    descKey: UIAchievement_Desc_command_power
   - achievementId: command_power_800
     conditionType: 5
     conditionParam: 
     threshold: 800
     achievementPointReward: 70
-    nameKey: UIAchievement_Name_command_power_800
-    descKey: UIAchievement_Desc_command_power_800
+    nameKey: UIAchievement_Name_command_power
+    descKey: UIAchievement_Desc_command_power
+  - achievementId: command_power_900
+    conditionType: 5
+    conditionParam: 
+    threshold: 900
+    achievementPointReward: 80
+    nameKey: UIAchievement_Name_command_power
+    descKey: UIAchievement_Desc_command_power
+  - achievementId: command_power_1000
+    conditionType: 5
+    conditionParam: 
+    threshold: 1000
+    achievementPointReward: 90
+    nameKey: UIAchievement_Name_command_power
+    descKey: UIAchievement_Desc_command_power
+  - achievementId: command_power_1100
+    conditionType: 5
+    conditionParam: 
+    threshold: 1100
+    achievementPointReward: 100
+    nameKey: UIAchievement_Name_command_power
+    descKey: UIAchievement_Desc_command_power
+  - achievementId: command_power_1200
+    conditionType: 5
+    conditionParam: 
+    threshold: 1200
+    achievementPointReward: 110
+    nameKey: UIAchievement_Name_command_power
+    descKey: UIAchievement_Desc_command_power
+  - achievementId: command_power_1300
+    conditionType: 5
+    conditionParam: 
+    threshold: 1300
+    achievementPointReward: 120
+    nameKey: UIAchievement_Name_command_power
+    descKey: UIAchievement_Desc_command_power
+  - achievementId: command_power_1400
+    conditionType: 5
+    conditionParam: 
+    threshold: 1400
+    achievementPointReward: 130
+    nameKey: UIAchievement_Name_command_power
+    descKey: UIAchievement_Desc_command_power
+  - achievementId: command_power_1500
+    conditionType: 5
+    conditionParam: 
+    threshold: 1500
+    achievementPointReward: 140
+    nameKey: UIAchievement_Name_command_power
+    descKey: UIAchievement_Desc_command_power
+  - achievementId: command_power_1600
+    conditionType: 5
+    conditionParam: 
+    threshold: 1600
+    achievementPointReward: 150
+    nameKey: UIAchievement_Name_command_power
+    descKey: UIAchievement_Desc_command_power
+  - achievementId: command_power_1700
+    conditionType: 5
+    conditionParam: 
+    threshold: 1700
+    achievementPointReward: 160
+    nameKey: UIAchievement_Name_command_power
+    descKey: UIAchievement_Desc_command_power
+  - achievementId: command_power_1800
+    conditionType: 5
+    conditionParam: 
+    threshold: 1800
+    achievementPointReward: 170
+    nameKey: UIAchievement_Name_command_power
+    descKey: UIAchievement_Desc_command_power
+  - achievementId: command_power_1900
+    conditionType: 5
+    conditionParam: 
+    threshold: 1900
+    achievementPointReward: 180
+    nameKey: UIAchievement_Name_command_power
+    descKey: UIAchievement_Desc_command_power
+  - achievementId: command_power_2000
+    conditionType: 5
+    conditionParam: 
+    threshold: 2000
+    achievementPointReward: 190
+    nameKey: UIAchievement_Name_command_power
+    descKey: UIAchievement_Desc_command_power
+  - achievementId: command_power_2100
+    conditionType: 5
+    conditionParam: 
+    threshold: 2100
+    achievementPointReward: 200
+    nameKey: UIAchievement_Name_command_power
+    descKey: UIAchievement_Desc_command_power
+  - achievementId: command_power_2200
+    conditionType: 5
+    conditionParam: 
+    threshold: 2200
+    achievementPointReward: 210
+    nameKey: UIAchievement_Name_command_power
+    descKey: UIAchievement_Desc_command_power
+  - achievementId: command_power_2300
+    conditionType: 5
+    conditionParam: 
+    threshold: 2300
+    achievementPointReward: 220
+    nameKey: UIAchievement_Name_command_power
+    descKey: UIAchievement_Desc_command_power
+  - achievementId: command_power_2400
+    conditionType: 5
+    conditionParam: 
+    threshold: 2400
+    achievementPointReward: 230
+    nameKey: UIAchievement_Name_command_power
+    descKey: UIAchievement_Desc_command_power
+  - achievementId: command_power_2500
+    conditionType: 5
+    conditionParam: 
+    threshold: 2500
+    achievementPointReward: 240
+    nameKey: UIAchievement_Name_command_power
+    descKey: UIAchievement_Desc_command_power
+  - achievementId: command_power_2600
+    conditionType: 5
+    conditionParam: 
+    threshold: 2600
+    achievementPointReward: 250
+    nameKey: UIAchievement_Name_command_power
+    descKey: UIAchievement_Desc_command_power
+  - achievementId: command_power_2700
+    conditionType: 5
+    conditionParam: 
+    threshold: 2700
+    achievementPointReward: 260
+    nameKey: UIAchievement_Name_command_power
+    descKey: UIAchievement_Desc_command_power
+  - achievementId: command_power_2800
+    conditionType: 5
+    conditionParam: 
+    threshold: 2800
+    achievementPointReward: 270
+    nameKey: UIAchievement_Name_command_power
+    descKey: UIAchievement_Desc_command_power
+  - achievementId: command_power_2900
+    conditionType: 5
+    conditionParam: 
+    threshold: 2900
+    achievementPointReward: 280
+    nameKey: UIAchievement_Name_command_power
+    descKey: UIAchievement_Desc_command_power
+  - achievementId: command_power_3000
+    conditionType: 5
+    conditionParam: 
+    threshold: 3000
+    achievementPointReward: 290
+    nameKey: UIAchievement_Name_command_power
+    descKey: UIAchievement_Desc_command_power
   - achievementId: tactic_power_100
     conditionType: 6
     conditionParam: 
     threshold: 100
     achievementPointReward: 20
-    nameKey: UIAchievement_Name_tactic_power_100
-    descKey: UIAchievement_Desc_tactic_power_100
+    nameKey: UIAchievement_Name_tactic_power
+    descKey: UIAchievement_Desc_tactic_power
   - achievementId: tactic_power_200
     conditionType: 6
     conditionParam: 
     threshold: 200
     achievementPointReward: 30
-    nameKey: UIAchievement_Name_tactic_power_200
-    descKey: UIAchievement_Desc_tactic_power_200
+    nameKey: UIAchievement_Name_tactic_power
+    descKey: UIAchievement_Desc_tactic_power
   - achievementId: tactic_power_300
     conditionType: 6
     conditionParam: 
     threshold: 300
     achievementPointReward: 40
-    nameKey: UIAchievement_Name_tactic_power_300
-    descKey: UIAchievement_Desc_tactic_power_300
+    nameKey: UIAchievement_Name_tactic_power
+    descKey: UIAchievement_Desc_tactic_power
   - achievementId: tactic_power_400
     conditionType: 6
     conditionParam: 
     threshold: 400
     achievementPointReward: 50
-    nameKey: UIAchievement_Name_tactic_power_400
-    descKey: UIAchievement_Desc_tactic_power_400
+    nameKey: UIAchievement_Name_tactic_power
+    descKey: UIAchievement_Desc_tactic_power
   - achievementId: tactic_power_500
     conditionType: 6
     conditionParam: 
     threshold: 500
     achievementPointReward: 60
-    nameKey: UIAchievement_Name_tactic_power_500
-    descKey: UIAchievement_Desc_tactic_power_500
+    nameKey: UIAchievement_Name_tactic_power
+    descKey: UIAchievement_Desc_tactic_power
   - achievementId: exploration_point_total_100
     conditionType: 7
     conditionParam: 
     threshold: 100
     achievementPointReward: 20
-    nameKey: UIAchievement_Name_exploration_point_total_100
-    descKey: UIAchievement_Desc_exploration_point_total_100
+    nameKey: UIAchievement_Name_exploration_point_total
+    descKey: UIAchievement_Desc_exploration_point_total
   - achievementId: exploration_point_total_200
     conditionType: 7
     conditionParam: 
     threshold: 200
     achievementPointReward: 30
-    nameKey: UIAchievement_Name_exploration_point_total_200
-    descKey: UIAchievement_Desc_exploration_point_total_200
+    nameKey: UIAchievement_Name_exploration_point_total
+    descKey: UIAchievement_Desc_exploration_point_total
   - achievementId: exploration_point_total_300
     conditionType: 7
     conditionParam: 
     threshold: 300
     achievementPointReward: 40
-    nameKey: UIAchievement_Name_exploration_point_total_300
-    descKey: UIAchievement_Desc_exploration_point_total_300
+    nameKey: UIAchievement_Name_exploration_point_total
+    descKey: UIAchievement_Desc_exploration_point_total
   - achievementId: exploration_point_total_400
     conditionType: 7
     conditionParam: 
     threshold: 400
     achievementPointReward: 50
-    nameKey: UIAchievement_Name_exploration_point_total_400
-    descKey: UIAchievement_Desc_exploration_point_total_400
+    nameKey: UIAchievement_Name_exploration_point_total
+    descKey: UIAchievement_Desc_exploration_point_total
   - achievementId: exploration_point_total_500
     conditionType: 7
     conditionParam: 
     threshold: 500
     achievementPointReward: 60
-    nameKey: UIAchievement_Name_exploration_point_total_500
-    descKey: UIAchievement_Desc_exploration_point_total_500
+    nameKey: UIAchievement_Name_exploration_point_total
+    descKey: UIAchievement_Desc_exploration_point_total
   - achievementId: hull_tier4_count_1
     conditionType: 8
     conditionParam: 4
     threshold: 1
     achievementPointReward: 30
-    nameKey: UIAchievement_Name_hull_tier4_count_1
-    descKey: UIAchievement_Desc_hull_tier4_count_1
+    nameKey: UIAchievement_Name_hull_tier_count
+    descKey: UIAchievement_Desc_hull_tier_count
   - achievementId: hull_tier4_count_2
     conditionType: 8
     conditionParam: 4
     threshold: 2
     achievementPointReward: 60
-    nameKey: UIAchievement_Name_hull_tier4_count_2
-    descKey: UIAchievement_Desc_hull_tier4_count_2
+    nameKey: UIAchievement_Name_hull_tier_count
+    descKey: UIAchievement_Desc_hull_tier_count
   - achievementId: hull_tier4_count_3
     conditionType: 8
     conditionParam: 4
     threshold: 3
     achievementPointReward: 100
-    nameKey: UIAchievement_Name_hull_tier4_count_3
-    descKey: UIAchievement_Desc_hull_tier4_count_3
+    nameKey: UIAchievement_Name_hull_tier_count
+    descKey: UIAchievement_Desc_hull_tier_count
   - achievementId: hull_tier5_count_1
     conditionType: 8
     conditionParam: 5
     threshold: 1
     achievementPointReward: 50
-    nameKey: UIAchievement_Name_hull_tier5_count_1
-    descKey: UIAchievement_Desc_hull_tier5_count_1
+    nameKey: UIAchievement_Name_hull_tier_count
+    descKey: UIAchievement_Desc_hull_tier_count
   - achievementId: hull_tier5_count_2
     conditionType: 8
     conditionParam: 5
     threshold: 2
     achievementPointReward: 100
-    nameKey: UIAchievement_Name_hull_tier5_count_2
-    descKey: UIAchievement_Desc_hull_tier5_count_2
+    nameKey: UIAchievement_Name_hull_tier_count
+    descKey: UIAchievement_Desc_hull_tier_count
   - achievementId: hull_tier5_count_3
     conditionType: 8
     conditionParam: 5
     threshold: 3
     achievementPointReward: 150
-    nameKey: UIAchievement_Name_hull_tier5_count_3
-    descKey: UIAchievement_Desc_hull_tier5_count_3
+    nameKey: UIAchievement_Name_hull_tier_count
+    descKey: UIAchievement_Desc_hull_tier_count
   - achievementId: module_beam_tier2_count_1
     conditionType: 9
     conditionParam: beam_2
     threshold: 1
     achievementPointReward: 10
-    nameKey: UIAchievement_Name_module_beam_tier2_count_1
-    descKey: UIAchievement_Desc_module_beam_tier2_count_1
+    nameKey: UIAchievement_Name_module_tier_count
+    descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_beam_tier2_count_2
     conditionType: 9
     conditionParam: beam_2
     threshold: 2
     achievementPointReward: 20
-    nameKey: UIAchievement_Name_module_beam_tier2_count_2
-    descKey: UIAchievement_Desc_module_beam_tier2_count_2
+    nameKey: UIAchievement_Name_module_tier_count
+    descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_beam_tier2_count_3
     conditionType: 9
     conditionParam: beam_2
     threshold: 3
     achievementPointReward: 30
-    nameKey: UIAchievement_Name_module_beam_tier2_count_3
-    descKey: UIAchievement_Desc_module_beam_tier2_count_3
+    nameKey: UIAchievement_Name_module_tier_count
+    descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_beam_tier3_count_1
     conditionType: 9
     conditionParam: beam_3
     threshold: 1
     achievementPointReward: 20
-    nameKey: UIAchievement_Name_module_beam_tier3_count_1
-    descKey: UIAchievement_Desc_module_beam_tier3_count_1
+    nameKey: UIAchievement_Name_module_tier_count
+    descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_beam_tier3_count_2
     conditionType: 9
     conditionParam: beam_3
     threshold: 2
     achievementPointReward: 40
-    nameKey: UIAchievement_Name_module_beam_tier3_count_2
-    descKey: UIAchievement_Desc_module_beam_tier3_count_2
+    nameKey: UIAchievement_Name_module_tier_count
+    descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_beam_tier3_count_3
     conditionType: 9
     conditionParam: beam_3
     threshold: 3
     achievementPointReward: 60
-    nameKey: UIAchievement_Name_module_beam_tier3_count_3
-    descKey: UIAchievement_Desc_module_beam_tier3_count_3
+    nameKey: UIAchievement_Name_module_tier_count
+    descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_missile_tier2_count_1
     conditionType: 9
     conditionParam: missile_2
     threshold: 1
     achievementPointReward: 10
-    nameKey: UIAchievement_Name_module_missile_tier2_count_1
-    descKey: UIAchievement_Desc_module_missile_tier2_count_1
+    nameKey: UIAchievement_Name_module_tier_count
+    descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_missile_tier2_count_2
     conditionType: 9
     conditionParam: missile_2
     threshold: 2
     achievementPointReward: 20
-    nameKey: UIAchievement_Name_module_missile_tier2_count_2
-    descKey: UIAchievement_Desc_module_missile_tier2_count_2
+    nameKey: UIAchievement_Name_module_tier_count
+    descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_missile_tier2_count_3
     conditionType: 9
     conditionParam: missile_2
     threshold: 3
     achievementPointReward: 30
-    nameKey: UIAchievement_Name_module_missile_tier2_count_3
-    descKey: UIAchievement_Desc_module_missile_tier2_count_3
+    nameKey: UIAchievement_Name_module_tier_count
+    descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_missile_tier3_count_1
     conditionType: 9
     conditionParam: missile_3
     threshold: 1
     achievementPointReward: 20
-    nameKey: UIAchievement_Name_module_missile_tier3_count_1
-    descKey: UIAchievement_Desc_module_missile_tier3_count_1
+    nameKey: UIAchievement_Name_module_tier_count
+    descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_missile_tier3_count_2
     conditionType: 9
     conditionParam: missile_3
     threshold: 2
     achievementPointReward: 40
-    nameKey: UIAchievement_Name_module_missile_tier3_count_2
-    descKey: UIAchievement_Desc_module_missile_tier3_count_2
+    nameKey: UIAchievement_Name_module_tier_count
+    descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_missile_tier3_count_3
     conditionType: 9
     conditionParam: missile_3
     threshold: 3
     achievementPointReward: 60
-    nameKey: UIAchievement_Name_module_missile_tier3_count_3
-    descKey: UIAchievement_Desc_module_missile_tier3_count_3
+    nameKey: UIAchievement_Name_module_tier_count
+    descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_hangar_tier2_count_1
     conditionType: 9
     conditionParam: hangar_2
     threshold: 1
     achievementPointReward: 10
-    nameKey: UIAchievement_Name_module_hangar_tier2_count_1
-    descKey: UIAchievement_Desc_module_hangar_tier2_count_1
+    nameKey: UIAchievement_Name_module_tier_count
+    descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_hangar_tier2_count_2
     conditionType: 9
     conditionParam: hangar_2
     threshold: 2
     achievementPointReward: 20
-    nameKey: UIAchievement_Name_module_hangar_tier2_count_2
-    descKey: UIAchievement_Desc_module_hangar_tier2_count_2
+    nameKey: UIAchievement_Name_module_tier_count
+    descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_hangar_tier2_count_3
     conditionType: 9
     conditionParam: hangar_2
     threshold: 3
     achievementPointReward: 30
-    nameKey: UIAchievement_Name_module_hangar_tier2_count_3
-    descKey: UIAchievement_Desc_module_hangar_tier2_count_3
+    nameKey: UIAchievement_Name_module_tier_count
+    descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_hangar_tier3_count_1
     conditionType: 9
     conditionParam: hangar_3
     threshold: 1
     achievementPointReward: 20
-    nameKey: UIAchievement_Name_module_hangar_tier3_count_1
-    descKey: UIAchievement_Desc_module_hangar_tier3_count_1
+    nameKey: UIAchievement_Name_module_tier_count
+    descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_hangar_tier3_count_2
     conditionType: 9
     conditionParam: hangar_3
     threshold: 2
     achievementPointReward: 40
-    nameKey: UIAchievement_Name_module_hangar_tier3_count_2
-    descKey: UIAchievement_Desc_module_hangar_tier3_count_2
+    nameKey: UIAchievement_Name_module_tier_count
+    descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_hangar_tier3_count_3
     conditionType: 9
     conditionParam: hangar_3
     threshold: 3
     achievementPointReward: 60
-    nameKey: UIAchievement_Name_module_hangar_tier3_count_3
-    descKey: UIAchievement_Desc_module_hangar_tier3_count_3
+    nameKey: UIAchievement_Name_module_tier_count
+    descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_shield_tier2_count_1
     conditionType: 9
     conditionParam: shield_2
     threshold: 1
     achievementPointReward: 10
-    nameKey: UIAchievement_Name_module_shield_tier2_count_1
-    descKey: UIAchievement_Desc_module_shield_tier2_count_1
+    nameKey: UIAchievement_Name_module_tier_count
+    descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_shield_tier2_count_2
     conditionType: 9
     conditionParam: shield_2
     threshold: 2
     achievementPointReward: 20
-    nameKey: UIAchievement_Name_module_shield_tier2_count_2
-    descKey: UIAchievement_Desc_module_shield_tier2_count_2
+    nameKey: UIAchievement_Name_module_tier_count
+    descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_shield_tier2_count_3
     conditionType: 9
     conditionParam: shield_2
     threshold: 3
     achievementPointReward: 30
-    nameKey: UIAchievement_Name_module_shield_tier2_count_3
-    descKey: UIAchievement_Desc_module_shield_tier2_count_3
+    nameKey: UIAchievement_Name_module_tier_count
+    descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_shield_tier3_count_1
     conditionType: 9
     conditionParam: shield_3
     threshold: 1
     achievementPointReward: 20
-    nameKey: UIAchievement_Name_module_shield_tier3_count_1
-    descKey: UIAchievement_Desc_module_shield_tier3_count_1
+    nameKey: UIAchievement_Name_module_tier_count
+    descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_shield_tier3_count_2
     conditionType: 9
     conditionParam: shield_3
     threshold: 2
     achievementPointReward: 40
-    nameKey: UIAchievement_Name_module_shield_tier3_count_2
-    descKey: UIAchievement_Desc_module_shield_tier3_count_2
+    nameKey: UIAchievement_Name_module_tier_count
+    descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_shield_tier3_count_3
     conditionType: 9
     conditionParam: shield_3
     threshold: 3
     achievementPointReward: 60
-    nameKey: UIAchievement_Name_module_shield_tier3_count_3
-    descKey: UIAchievement_Desc_module_shield_tier3_count_3
+    nameKey: UIAchievement_Name_module_tier_count
+    descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_interceptor_tier2_count_1
     conditionType: 9
     conditionParam: interceptor_2
     threshold: 1
     achievementPointReward: 10
-    nameKey: UIAchievement_Name_module_interceptor_tier2_count_1
-    descKey: UIAchievement_Desc_module_interceptor_tier2_count_1
+    nameKey: UIAchievement_Name_module_tier_count
+    descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_interceptor_tier2_count_2
     conditionType: 9
     conditionParam: interceptor_2
     threshold: 2
     achievementPointReward: 20
-    nameKey: UIAchievement_Name_module_interceptor_tier2_count_2
-    descKey: UIAchievement_Desc_module_interceptor_tier2_count_2
+    nameKey: UIAchievement_Name_module_tier_count
+    descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_interceptor_tier2_count_3
     conditionType: 9
     conditionParam: interceptor_2
     threshold: 3
     achievementPointReward: 30
-    nameKey: UIAchievement_Name_module_interceptor_tier2_count_3
-    descKey: UIAchievement_Desc_module_interceptor_tier2_count_3
+    nameKey: UIAchievement_Name_module_tier_count
+    descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_interceptor_tier3_count_1
     conditionType: 9
     conditionParam: interceptor_3
     threshold: 1
     achievementPointReward: 20
-    nameKey: UIAchievement_Name_module_interceptor_tier3_count_1
-    descKey: UIAchievement_Desc_module_interceptor_tier3_count_1
+    nameKey: UIAchievement_Name_module_tier_count
+    descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_interceptor_tier3_count_2
     conditionType: 9
     conditionParam: interceptor_3
     threshold: 2
     achievementPointReward: 40
-    nameKey: UIAchievement_Name_module_interceptor_tier3_count_2
-    descKey: UIAchievement_Desc_module_interceptor_tier3_count_2
+    nameKey: UIAchievement_Name_module_tier_count
+    descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_interceptor_tier3_count_3
     conditionType: 9
     conditionParam: interceptor_3
     threshold: 3
     achievementPointReward: 60
-    nameKey: UIAchievement_Name_module_interceptor_tier3_count_3
-    descKey: UIAchievement_Desc_module_interceptor_tier3_count_3
+    nameKey: UIAchievement_Name_module_tier_count
+    descKey: UIAchievement_Desc_module_tier_count
   - achievementId: hull_unlock_hull_4_1_21100
     conditionType: 10
     conditionParam: hull_4_1_21100
     threshold: 1
     achievementPointReward: 40
-    nameKey: UIAchievement_Name_hull_unlock_hull_4_1_21100
-    descKey: UIAchievement_Desc_hull_unlock_hull_4_1_21100
+    nameKey: UIAchievement_Name_hull_unlock
+    descKey: UIAchievement_Desc_hull_unlock
   - achievementId: hull_unlock_hull_5_1_22100
     conditionType: 10
     conditionParam: hull_5_1_22100
     threshold: 1
     achievementPointReward: 50
-    nameKey: UIAchievement_Name_hull_unlock_hull_5_1_22100
-    descKey: UIAchievement_Desc_hull_unlock_hull_5_1_22100
+    nameKey: UIAchievement_Name_hull_unlock
+    descKey: UIAchievement_Desc_hull_unlock
   - achievementId: hull_unlock_hull_6_1_22200
     conditionType: 10
     conditionParam: hull_6_1_22200
     threshold: 1
     achievementPointReward: 60
-    nameKey: UIAchievement_Name_hull_unlock_hull_6_1_22200
-    descKey: UIAchievement_Desc_hull_unlock_hull_6_1_22200
+    nameKey: UIAchievement_Name_hull_unlock
+    descKey: UIAchievement_Desc_hull_unlock
   - achievementId: hull_unlock_hull_6_1_22201
     conditionType: 10
     conditionParam: hull_6_1_22201
     threshold: 1
     achievementPointReward: 120
-    nameKey: UIAchievement_Name_hull_unlock_hull_6_1_22201
-    descKey: UIAchievement_Desc_hull_unlock_hull_6_1_22201
+    nameKey: UIAchievement_Name_hull_unlock
+    descKey: UIAchievement_Desc_hull_unlock
   - achievementId: hull_unlock_hull_6_1_22210
     conditionType: 10
     conditionParam: hull_6_1_22210
     threshold: 1
     achievementPointReward: 120
-    nameKey: UIAchievement_Name_hull_unlock_hull_6_1_22210
-    descKey: UIAchievement_Desc_hull_unlock_hull_6_1_22210
+    nameKey: UIAchievement_Name_hull_unlock
+    descKey: UIAchievement_Desc_hull_unlock
   - achievementId: hull_unlock_hull_6_1_22211
     conditionType: 10
     conditionParam: hull_6_1_22211
     threshold: 1
     achievementPointReward: 180
-    nameKey: UIAchievement_Name_hull_unlock_hull_6_1_22211
-    descKey: UIAchievement_Desc_hull_unlock_hull_6_1_22211
+    nameKey: UIAchievement_Name_hull_unlock
+    descKey: UIAchievement_Desc_hull_unlock
   - achievementId: hull_unlock_hull_7_1_32200
     conditionType: 10
     conditionParam: hull_7_1_32200
     threshold: 1
     achievementPointReward: 70
-    nameKey: UIAchievement_Name_hull_unlock_hull_7_1_32200
-    descKey: UIAchievement_Desc_hull_unlock_hull_7_1_32200
+    nameKey: UIAchievement_Name_hull_unlock
+    descKey: UIAchievement_Desc_hull_unlock
   - achievementId: hull_unlock_hull_7_1_32201
     conditionType: 10
     conditionParam: hull_7_1_32201
     threshold: 1
     achievementPointReward: 140
-    nameKey: UIAchievement_Name_hull_unlock_hull_7_1_32201
-    descKey: UIAchievement_Desc_hull_unlock_hull_7_1_32201
+    nameKey: UIAchievement_Name_hull_unlock
+    descKey: UIAchievement_Desc_hull_unlock
   - achievementId: hull_unlock_hull_7_1_32210
     conditionType: 10
     conditionParam: hull_7_1_32210
     threshold: 1
     achievementPointReward: 140
-    nameKey: UIAchievement_Name_hull_unlock_hull_7_1_32210
-    descKey: UIAchievement_Desc_hull_unlock_hull_7_1_32210
+    nameKey: UIAchievement_Name_hull_unlock
+    descKey: UIAchievement_Desc_hull_unlock
   - achievementId: hull_unlock_hull_7_1_32211
     conditionType: 10
     conditionParam: hull_7_1_32211
     threshold: 1
     achievementPointReward: 210
-    nameKey: UIAchievement_Name_hull_unlock_hull_7_1_32211
-    descKey: UIAchievement_Desc_hull_unlock_hull_7_1_32211
+    nameKey: UIAchievement_Name_hull_unlock
+    descKey: UIAchievement_Desc_hull_unlock
   - achievementId: hull_unlock_hull_8_1_33200
     conditionType: 10
     conditionParam: hull_8_1_33200
     threshold: 1
     achievementPointReward: 80
-    nameKey: UIAchievement_Name_hull_unlock_hull_8_1_33200
-    descKey: UIAchievement_Desc_hull_unlock_hull_8_1_33200
+    nameKey: UIAchievement_Name_hull_unlock
+    descKey: UIAchievement_Desc_hull_unlock
   - achievementId: hull_unlock_hull_8_1_33201
     conditionType: 10
     conditionParam: hull_8_1_33201
     threshold: 1
     achievementPointReward: 160
-    nameKey: UIAchievement_Name_hull_unlock_hull_8_1_33201
-    descKey: UIAchievement_Desc_hull_unlock_hull_8_1_33201
+    nameKey: UIAchievement_Name_hull_unlock
+    descKey: UIAchievement_Desc_hull_unlock
   - achievementId: hull_unlock_hull_8_1_33210
     conditionType: 10
     conditionParam: hull_8_1_33210
     threshold: 1
     achievementPointReward: 160
-    nameKey: UIAchievement_Name_hull_unlock_hull_8_1_33210
-    descKey: UIAchievement_Desc_hull_unlock_hull_8_1_33210
+    nameKey: UIAchievement_Name_hull_unlock
+    descKey: UIAchievement_Desc_hull_unlock
   - achievementId: hull_unlock_hull_8_1_33211
     conditionType: 10
     conditionParam: hull_8_1_33211
     threshold: 1
     achievementPointReward: 240
-    nameKey: UIAchievement_Name_hull_unlock_hull_8_1_33211
-    descKey: UIAchievement_Desc_hull_unlock_hull_8_1_33211
+    nameKey: UIAchievement_Name_hull_unlock
+    descKey: UIAchievement_Desc_hull_unlock
   - achievementId: hull_unlock_hull_9_1_33300
     conditionType: 10
     conditionParam: hull_9_1_33300
     threshold: 1
     achievementPointReward: 90
-    nameKey: UIAchievement_Name_hull_unlock_hull_9_1_33300
-    descKey: UIAchievement_Desc_hull_unlock_hull_9_1_33300
+    nameKey: UIAchievement_Name_hull_unlock
+    descKey: UIAchievement_Desc_hull_unlock
   - achievementId: hull_unlock_hull_9_1_33301
     conditionType: 10
     conditionParam: hull_9_1_33301
     threshold: 1
     achievementPointReward: 180
-    nameKey: UIAchievement_Name_hull_unlock_hull_9_1_33301
-    descKey: UIAchievement_Desc_hull_unlock_hull_9_1_33301
+    nameKey: UIAchievement_Name_hull_unlock
+    descKey: UIAchievement_Desc_hull_unlock
   - achievementId: hull_unlock_hull_9_1_33310
     conditionType: 10
     conditionParam: hull_9_1_33310
     threshold: 1
     achievementPointReward: 180
-    nameKey: UIAchievement_Name_hull_unlock_hull_9_1_33310
-    descKey: UIAchievement_Desc_hull_unlock_hull_9_1_33310
+    nameKey: UIAchievement_Name_hull_unlock
+    descKey: UIAchievement_Desc_hull_unlock
   - achievementId: hull_unlock_hull_9_1_33311
     conditionType: 10
     conditionParam: hull_9_1_33311
     threshold: 1
     achievementPointReward: 270
-    nameKey: UIAchievement_Name_hull_unlock_hull_9_1_33311
-    descKey: UIAchievement_Desc_hull_unlock_hull_9_1_33311
+    nameKey: UIAchievement_Name_hull_unlock
+    descKey: UIAchievement_Desc_hull_unlock
   - achievementId: hull_unlock_hull_10_1_43300
     conditionType: 10
     conditionParam: hull_10_1_43300
     threshold: 1
     achievementPointReward: 150
-    nameKey: UIAchievement_Name_hull_unlock_hull_10_1_43300
-    descKey: UIAchievement_Desc_hull_unlock_hull_10_1_43300
+    nameKey: UIAchievement_Name_hull_unlock
+    descKey: UIAchievement_Desc_hull_unlock
   - achievementId: hull_unlock_hull_10_1_43301
     conditionType: 10
     conditionParam: hull_10_1_43301
     threshold: 1
     achievementPointReward: 300
-    nameKey: UIAchievement_Name_hull_unlock_hull_10_1_43301
-    descKey: UIAchievement_Desc_hull_unlock_hull_10_1_43301
+    nameKey: UIAchievement_Name_hull_unlock
+    descKey: UIAchievement_Desc_hull_unlock
   - achievementId: hull_unlock_hull_10_1_43310
     conditionType: 10
     conditionParam: hull_10_1_43310
     threshold: 1
     achievementPointReward: 300
-    nameKey: UIAchievement_Name_hull_unlock_hull_10_1_43310
-    descKey: UIAchievement_Desc_hull_unlock_hull_10_1_43310
+    nameKey: UIAchievement_Name_hull_unlock
+    descKey: UIAchievement_Desc_hull_unlock
   - achievementId: hull_unlock_hull_10_1_43311
     conditionType: 10
     conditionParam: hull_10_1_43311
     threshold: 1
     achievementPointReward: 450
-    nameKey: UIAchievement_Name_hull_unlock_hull_10_1_43311
-    descKey: UIAchievement_Desc_hull_unlock_hull_10_1_43311
+    nameKey: UIAchievement_Name_hull_unlock
+    descKey: UIAchievement_Desc_hull_unlock
   - achievementId: hull_unlock_hull_11_1_44300
     conditionType: 10
     conditionParam: hull_11_1_44300
     threshold: 1
     achievementPointReward: 200
-    nameKey: UIAchievement_Name_hull_unlock_hull_11_1_44300
-    descKey: UIAchievement_Desc_hull_unlock_hull_11_1_44300
+    nameKey: UIAchievement_Name_hull_unlock
+    descKey: UIAchievement_Desc_hull_unlock
   - achievementId: hull_unlock_hull_11_1_44301
     conditionType: 10
     conditionParam: hull_11_1_44301
     threshold: 1
     achievementPointReward: 400
-    nameKey: UIAchievement_Name_hull_unlock_hull_11_1_44301
-    descKey: UIAchievement_Desc_hull_unlock_hull_11_1_44301
+    nameKey: UIAchievement_Name_hull_unlock
+    descKey: UIAchievement_Desc_hull_unlock
   - achievementId: hull_unlock_hull_11_1_44310
     conditionType: 10
     conditionParam: hull_11_1_44310
     threshold: 1
     achievementPointReward: 400
-    nameKey: UIAchievement_Name_hull_unlock_hull_11_1_44310
-    descKey: UIAchievement_Desc_hull_unlock_hull_11_1_44310
+    nameKey: UIAchievement_Name_hull_unlock
+    descKey: UIAchievement_Desc_hull_unlock
   - achievementId: hull_unlock_hull_11_1_44311
     conditionType: 10
     conditionParam: hull_11_1_44311
     threshold: 1
     achievementPointReward: 600
-    nameKey: UIAchievement_Name_hull_unlock_hull_11_1_44311
-    descKey: UIAchievement_Desc_hull_unlock_hull_11_1_44311
+    nameKey: UIAchievement_Name_hull_unlock
+    descKey: UIAchievement_Desc_hull_unlock
   - achievementId: hull_unlock_hull_12_1_44400
     conditionType: 10
     conditionParam: hull_12_1_44400
     threshold: 1
     achievementPointReward: 250
-    nameKey: UIAchievement_Name_hull_unlock_hull_12_1_44400
-    descKey: UIAchievement_Desc_hull_unlock_hull_12_1_44400
+    nameKey: UIAchievement_Name_hull_unlock
+    descKey: UIAchievement_Desc_hull_unlock
   - achievementId: hull_unlock_hull_12_1_44401
     conditionType: 10
     conditionParam: hull_12_1_44401
     threshold: 1
     achievementPointReward: 500
-    nameKey: UIAchievement_Name_hull_unlock_hull_12_1_44401
-    descKey: UIAchievement_Desc_hull_unlock_hull_12_1_44401
+    nameKey: UIAchievement_Name_hull_unlock
+    descKey: UIAchievement_Desc_hull_unlock
   - achievementId: hull_unlock_hull_12_1_44410
     conditionType: 10
     conditionParam: hull_12_1_44410
     threshold: 1
     achievementPointReward: 500
-    nameKey: UIAchievement_Name_hull_unlock_hull_12_1_44410
-    descKey: UIAchievement_Desc_hull_unlock_hull_12_1_44410
+    nameKey: UIAchievement_Name_hull_unlock
+    descKey: UIAchievement_Desc_hull_unlock
   - achievementId: hull_unlock_hull_12_1_44411
     conditionType: 10
     conditionParam: hull_12_1_44411
     threshold: 1
     achievementPointReward: 750
-    nameKey: UIAchievement_Name_hull_unlock_hull_12_1_44411
-    descKey: UIAchievement_Desc_hull_unlock_hull_12_1_44411
+    nameKey: UIAchievement_Name_hull_unlock
+    descKey: UIAchievement_Desc_hull_unlock
   - achievementId: hull_unlock_hull_13_1_54400
     conditionType: 10
     conditionParam: hull_13_1_54400
     threshold: 1
     achievementPointReward: 300
-    nameKey: UIAchievement_Name_hull_unlock_hull_13_1_54400
-    descKey: UIAchievement_Desc_hull_unlock_hull_13_1_54400
+    nameKey: UIAchievement_Name_hull_unlock
+    descKey: UIAchievement_Desc_hull_unlock
   - achievementId: hull_unlock_hull_13_1_54401
     conditionType: 10
     conditionParam: hull_13_1_54401
     threshold: 1
     achievementPointReward: 600
-    nameKey: UIAchievement_Name_hull_unlock_hull_13_1_54401
-    descKey: UIAchievement_Desc_hull_unlock_hull_13_1_54401
+    nameKey: UIAchievement_Name_hull_unlock
+    descKey: UIAchievement_Desc_hull_unlock
   - achievementId: hull_unlock_hull_13_1_54410
     conditionType: 10
     conditionParam: hull_13_1_54410
     threshold: 1
     achievementPointReward: 600
-    nameKey: UIAchievement_Name_hull_unlock_hull_13_1_54410
-    descKey: UIAchievement_Desc_hull_unlock_hull_13_1_54410
+    nameKey: UIAchievement_Name_hull_unlock
+    descKey: UIAchievement_Desc_hull_unlock
   - achievementId: hull_unlock_hull_13_1_54411
     conditionType: 10
     conditionParam: hull_13_1_54411
     threshold: 1
     achievementPointReward: 900
-    nameKey: UIAchievement_Name_hull_unlock_hull_13_1_54411
-    descKey: UIAchievement_Desc_hull_unlock_hull_13_1_54411
+    nameKey: UIAchievement_Name_hull_unlock
+    descKey: UIAchievement_Desc_hull_unlock
   - achievementId: hull_unlock_hull_14_1_55400
     conditionType: 10
     conditionParam: hull_14_1_55400
     threshold: 1
     achievementPointReward: 350
-    nameKey: UIAchievement_Name_hull_unlock_hull_14_1_55400
-    descKey: UIAchievement_Desc_hull_unlock_hull_14_1_55400
+    nameKey: UIAchievement_Name_hull_unlock
+    descKey: UIAchievement_Desc_hull_unlock
   - achievementId: hull_unlock_hull_14_1_55401
     conditionType: 10
     conditionParam: hull_14_1_55401
     threshold: 1
     achievementPointReward: 700
-    nameKey: UIAchievement_Name_hull_unlock_hull_14_1_55401
-    descKey: UIAchievement_Desc_hull_unlock_hull_14_1_55401
+    nameKey: UIAchievement_Name_hull_unlock
+    descKey: UIAchievement_Desc_hull_unlock
   - achievementId: hull_unlock_hull_14_1_55410
     conditionType: 10
     conditionParam: hull_14_1_55410
     threshold: 1
     achievementPointReward: 700
-    nameKey: UIAchievement_Name_hull_unlock_hull_14_1_55410
-    descKey: UIAchievement_Desc_hull_unlock_hull_14_1_55410
+    nameKey: UIAchievement_Name_hull_unlock
+    descKey: UIAchievement_Desc_hull_unlock
   - achievementId: hull_unlock_hull_14_1_55411
     conditionType: 10
     conditionParam: hull_14_1_55411
     threshold: 1
     achievementPointReward: 1050
-    nameKey: UIAchievement_Name_hull_unlock_hull_14_1_55411
-    descKey: UIAchievement_Desc_hull_unlock_hull_14_1_55411
+    nameKey: UIAchievement_Name_hull_unlock
+    descKey: UIAchievement_Desc_hull_unlock

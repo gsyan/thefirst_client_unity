@@ -54,9 +54,9 @@ public class UIAchievementRow : MonoBehaviour
         bool isCompleted = currentValue >= data.threshold;
 
         if (m_nameText != null)
-            CommonUtility.SetUILocText(m_nameText, data.nameKey);
+            m_nameText.text = string.Format(LocalizationManager.Instance.Get(data.nameKey), data.conditionParam, data.threshold, data.achievementPointReward);
         if (m_descText != null)
-            m_descText.text = string.Format(LocalizationManager.Instance.Get(data.descKey), data.threshold, data.achievementPointReward);
+            m_descText.text = string.Format(LocalizationManager.Instance.Get(data.descKey), data.conditionParam, data.threshold, data.achievementPointReward);
         if (m_progressRow != null)
             m_progressRow.SetRow("UIAchievement_Progress", $"{Mathf.Min(currentValue, data.threshold)}/{data.threshold}", rawValue: true);
         if (m_rewardRow != null)
