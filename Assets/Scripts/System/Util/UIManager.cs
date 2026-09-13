@@ -534,8 +534,8 @@ public class UIManager : MonoSingleton<UIManager>
         Color defaultColor = CommonUtility.PaletteColor("General.Bright1");
         var rows = new List<(string label, string value, Color? color)>
         {
-            ("Commander_Level", newLevel.ToString(), defaultColor),
-            ("MaxShipSlots", shipCount.ToString(), defaultColor),
+            ("UI_CommanderLevel", newLevel.ToString(), defaultColor),
+            ("UI_MaxShipSlots", shipCount.ToString(), defaultColor),
         };
         ShowConfirmPopup(new ConfirmPopupConfig
         {

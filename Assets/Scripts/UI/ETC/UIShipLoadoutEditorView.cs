@@ -73,9 +73,9 @@ public class UIShipLoadoutEditorView : MonoBehaviour
         if (m_statsTitleText != null)
             CommonUtility.SetUILocText(m_statsTitleText, "UIFleet_StatsTitle");
         if (m_confirmButtonText != null)
-            CommonUtility.SetUILocText(m_confirmButtonText, "Simple_Confirm");
+            CommonUtility.SetUILocText(m_confirmButtonText, "UI_Confirm");
         if (m_cancelButtonText != null)
-            CommonUtility.SetUILocText(m_cancelButtonText, "Simple_Cancel");
+            CommonUtility.SetUILocText(m_cancelButtonText, "UI_Cancel");
 
         gameObject.SetActive(false);
     }
@@ -580,7 +580,7 @@ public class UIShipLoadoutEditorView : MonoBehaviour
         int max = composition.GetMaxCommandPower();
         bool isOverCommandPower = projectedUsed > max;
 
-        m_commandPowerRow.SetRow("CommandPower", $"{projectedUsed} / {max}", rawValue: true);
+        m_commandPowerRow.SetRow("UI_CommandPower", $"{projectedUsed} / {max}", rawValue: true);
         m_commandPowerRow.SetValueColor(CommonUtility.PaletteColor(isOverCommandPower == true ? "Text.Warning" : "Text.Dark1"));
         LayoutRebuilder.ForceRebuildLayoutImmediate(m_commandPowerRow.transform as RectTransform);
 
@@ -641,6 +641,18 @@ public class UIShipLoadoutEditorView : MonoBehaviour
         }
 
         ModuleHullInfo desired = BuildPendingModuleHullInfo();
+
+        // 지크프리트 함대(서버 미등록)는 SetModule을 호출해도 서버가 모르는 슬롯이라 항상 실패함 — 로컬 FleetComposition에 바로 반영
+        if (ObjectManager.Instance.IsSiegfriedFleetActive() == true)
+        {
+            FleetComposition tutorialComposition = DataManager.Instance.m_currentFleetComposition;
+            if (tutorialComposition != null)
+                tutorialComposition.ApplyModuleToggleResult(m_slotIndex, desired);
+
+            if (m_onChanged != null) m_onChanged();
+            Close();
+            return;
+        }
 
         SetModuleRequest request = new SetModuleRequest
         {

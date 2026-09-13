@@ -7,6 +7,11 @@ using UnityEngine.UI;
 
 public class UIPanelRank : UIPanelBase
 {
+    [Header("타이틀/탭 라벨 — 프리팹에 로컬라이즈 키를 박아두지 않고 코드에서 직접 세팅")]
+    [SerializeField] private TMP_Text m_titleText;
+    [SerializeField] private TMP_Text m_myInfoTabText;
+    [SerializeField] private TMP_Text m_rankListTabText;
+
     [SerializeField] private TMP_Text m_myScoreText;
     [SerializeField] private TMP_Text m_myRankText;
     [SerializeField] private TMP_Text m_seasonText;
@@ -27,6 +32,13 @@ public class UIPanelRank : UIPanelBase
 
     public override void InitializeUIPanel()
     {
+        if (m_titleText != null)
+            CommonUtility.SetUILocText(m_titleText, "UI_Pvp");
+        if (m_myInfoTabText != null)
+            CommonUtility.SetUILocText(m_myInfoTabText, "UI_MyInfo");
+        if (m_rankListTabText != null)
+            CommonUtility.SetUILocText(m_rankListTabText, "UI_RankList");
+
         if (m_refreshButton != null)
             m_refreshButton.onClick.AddListener(OnRefreshClicked);
         if (m_opponentCardContainer != null)
@@ -110,7 +122,7 @@ public class UIPanelRank : UIPanelBase
         var loc = LocalizationManager.Instance;
 
         if (m_myScoreText != null) m_myScoreText.text = $"{m_myScore}";
-        if (m_myRankText != null) m_myRankText.text = loc.Get("UITabRank_Rank") + $" {m_myRank}";
+        if (m_myRankText != null) m_myRankText.text = loc.Get("UI_Rank") + $" {m_myRank}";
 
         if (m_seasonText != null)
         {

@@ -148,7 +148,13 @@ public class ModuleBeam : ModuleBase
             if (IsSilenced() == false && m_currentTarget != null && m_currentTarget.m_health > 0)
             {
                 float harassDelay = m_ownerShip != null ? m_ownerShip.GetHarassAdditionalCool() : 0f;
-                if (Time.time >= m_lastAttackTime + m_attackCool + harassDelay)
+
+                if (m_isAttackSignalFired == false)
+                {
+                    if (Time.time >= m_lastAttackTime + m_attackCool + harassDelay)
+                        ArmAttackSignal();
+                }
+                else if (Time.time >= m_lastAttackTime + m_attackCool + harassDelay + m_attackPhaseOffset)
                 {
                     bool isFacing = true;
                     if (m_ownerShip != null)
@@ -156,7 +162,9 @@ public class ModuleBeam : ModuleBase
                     if (isFacing == true)
                     {
                         ExecuteAttackOnTarget(m_currentTarget);
-                        m_lastAttackTime = Time.time;
+                        m_lastAttackTime = Time.time - m_attackPhaseOffset;
+                        m_attackPhaseOffset = 0f;
+                        m_isAttackSignalFired = false;
                     }
                 }
             }
@@ -217,7 +225,7 @@ public class ModuleBeam : ModuleBase
     // 다음 공격까지 남은 시간
     public float GetRemainingCoolTime()
     {
-        float remaining = (m_lastAttackTime + m_attackCool) - Time.time;
+        float remaining = (m_lastAttackTime + m_attackCool + m_attackPhaseOffset) - Time.time;
         return Mathf.Max(0f, remaining);
     }
     

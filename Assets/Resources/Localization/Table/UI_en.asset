@@ -18,28 +18,12 @@ MonoBehaviour:
   m_Metadata:
     m_Items: []
   m_TableData:
-  - m_Id: 39525816336384
-    m_Localized: Fleet Status
-    m_Metadata:
-      m_Items: []
   - m_Id: 63232261619720
     m_Localized: Level
     m_Metadata:
       m_Items: []
   - m_Id: 394150433325056
     m_Localized: Mineral
-    m_Metadata:
-      m_Items: []
-  - m_Id: 767916345524225
-    m_Localized: Beam(Locked)
-    m_Metadata:
-      m_Items: []
-  - m_Id: 767916349718528
-    m_Localized: Missile(Locked)
-    m_Metadata:
-      m_Items: []
-  - m_Id: 767916349718531
-    m_Localized: Engine
     m_Metadata:
       m_Items: []
   - m_Id: 767916349718532
@@ -66,96 +50,20 @@ MonoBehaviour:
     m_Localized: My Fleet
     m_Metadata:
       m_Items: []
-  - m_Id: 2924654586888192
-    m_Localized: Fleet
-    m_Metadata:
-      m_Items: []
   - m_Id: 2924654624636928
     m_Localized: Ship
-    m_Metadata:
-      m_Items: []
-  - m_Id: 2924654624636930
-    m_Localized: Research
-    m_Metadata:
-      m_Items: []
-  - m_Id: 31773314347040768
-    m_Localized: SETTINGS
     m_Metadata:
       m_Items: []
   - m_Id: 2924654624636933
     m_Localized: Ships
     m_Metadata:
       m_Items: []
-  - m_Id: 2924654624636936
-    m_Localized: Weapons
-    m_Metadata:
-      m_Items: []
-  - m_Id: 2924654624636937
-    m_Localized: Engines
-    m_Metadata:
-      m_Items: []
-  - m_Id: 2924654624636939
-    m_Localized: Type
-    m_Metadata:
-      m_Items: []
-  - m_Id: 2924654624636940
-    m_Localized: Unlock Module
-    m_Metadata:
-      m_Items: []
   - m_Id: 2924654624636952
     m_Localized: PVP List
     m_Metadata:
       m_Items: []
-  - m_Id: 2929882979762176
-    m_Localized: Module Researched List
-    m_Metadata:
-      m_Items: []
-  - m_Id: 2952446292656128
-    m_Localized: My PVP Info
-    m_Metadata:
-      m_Items: []
-  - m_Id: 3370864741318656
-    m_Localized: 
-    m_Metadata:
-      m_Items: []
   - m_Id: 3668074850811904
     m_Localized: Opponent Fleet Power
-    m_Metadata:
-      m_Items: []
-  - m_Id: 4035192935022592
-    m_Localized: Cost
-    m_Metadata:
-      m_Items: []
-  - m_Id: 4035192976965632
-    m_Localized: Details
-    m_Metadata:
-      m_Items: []
-  - m_Id: 6655868837691392
-    m_Localized: Add\nShip
-    m_Metadata:
-      m_Items: []
-  - m_Id: 6697022492901376
-    m_Localized: Harvest
-    m_Metadata:
-      m_Items: []
-  - m_Id: 6697022530650112
-    m_Localized: Elapsed
-    m_Metadata:
-      m_Items: []
-  - m_Id: 7977027994779648
-    m_Localized: Rank List
-    m_Metadata:
-      m_Items: []
-  - m_Id: 8001513162932224
-    m_Localized: Rank
-    m_Metadata:
-      m_Items: []
-  - m_Id: 8001513192292352
-    m_Localized: Name
-    m_Metadata:
-      m_Items: []
-  - m_Id: 8001513192292353
-    m_Localized: Score
     m_Metadata:
       m_Items: []
   - m_Id: 8029751440441344
@@ -194,188 +102,20 @@ MonoBehaviour:
     m_Localized: English/Korean/Numbers 2-16 chars
     m_Metadata:
       m_Items: []
-  - m_Id: 8422640620273665
-    m_Localized: Google account linked successfully.
-    m_Metadata:
-      m_Items: []
-  - m_Id: 8422640620273666
-    m_Localized: Google account unlinked successfully.
-    m_Metadata:
-      m_Items: []
-  - m_Id: 8795249610457088
-    m_Localized: Commander
-    m_Metadata:
-      m_Items: []
-  - m_Id: 10734488275255297
-    m_Localized: Offline Cap (After)
-    m_Metadata:
-      m_Items: []
-  - m_Id: 10761965592772608
-    m_Localized: Not enough ships
-    m_Metadata:
-      m_Items: []
-  - m_Id: 11055826378555392
-    m_Localized: Level up Module
-    m_Metadata:
-      m_Items: []
-  - m_Id: 11055826416304128
-    m_Localized: Manage Module Type
-    m_Metadata:
-      m_Items: []
-  - m_Id: 11317517746044928
-    m_Localized: Change Formation
-    m_Metadata:
-      m_Items: []
-  - m_Id: 11674320539353088
-    m_Localized: Manage Ship
-    m_Metadata:
-      m_Items: []
-  - m_Id: 11674320577101824
-    m_Localized: Focus Repair
-    m_Metadata:
-      m_Items: []
-  - m_Id: 12029587550502914
-    m_Localized: Research complete
-    m_Metadata:
-      m_Items: []
-  - m_Id: 12029587550502915
-    m_Localized: Insufficient resources
-    m_Metadata:
-      m_Items: []
-  - m_Id: 13164879267364864
-    m_Localized: Offline
-    m_Metadata:
-      m_Items: []
-  - m_Id: 13164879321890816
-    m_Localized: Online (Uncollected)
-    m_Metadata:
-      m_Items: []
-  - m_Id: 13164879321890817
-    m_Localized: Total
-    m_Metadata:
-      m_Items: []
-  - m_Id: 13853203355271168
-    m_Localized: Stage
-    m_Metadata:
-      m_Items: []
   - m_Id: 13853203393019904
     m_Localized: Cleared
-    m_Metadata:
-      m_Items: []
-  - m_Id: 13853203393019905
-    m_Localized: Auto Exploration
-    m_Metadata:
-      m_Items: []
-  - m_Id: 13853203393019906
-    m_Localized: Wave
-    m_Metadata:
-      m_Items: []
-  - m_Id: 13853203393019907
-    m_Localized: Safe Zone
-    m_Metadata:
-      m_Items: []
-  - m_Id: 13853203393019909
-    m_Localized: Collect Mineral
-    m_Metadata:
-      m_Items: []
-  - m_Id: 13892162051506176
-    m_Localized: Max Collectable
-    m_Metadata:
-      m_Items: []
-  - m_Id: 13982624544325632
-    m_Localized: OK
-    m_Metadata:
-      m_Items: []
-  - m_Id: 14264662300164096
-    m_Localized: Max level of {0}(Lv.{1} / Lv.{2})
     m_Metadata:
       m_Items: []
   - m_Id: 14291245362708480
     m_Localized: Refresh opponent list? ({0} remaining)
     m_Metadata:
       m_Items: []
-  - m_Id: 15625537795784706
-    m_Localized: Commander
-    m_Metadata:
-      m_Items: []
   - m_Id: 26480402604359680
     m_Localized: Lv.{0} (Current Lv.{1})
     m_Metadata:
       m_Items: []
-  - m_Id: 26803779604971521
-    m_Localized: Reset Ship
-    m_Metadata:
-      m_Items: []
-  - m_Id: 26803779604971522
-    m_Localized: Reset this ship and recover all invested resources?
-    m_Metadata:
-      m_Items: []
-  - m_Id: 26803779604971523
-    m_Localized: The flagship cannot be reset.
-    m_Metadata:
-      m_Items: []
-  - m_Id: 26803779604971524
-    m_Localized: Nothing to recover
-    m_Metadata:
-      m_Items: []
-  - m_Id: 26943208810217472
-    m_Localized: Battle Victory
-    m_Metadata:
-      m_Items: []
-  - m_Id: 26943208852160512
-    m_Localized: Mineral +{0}
-    m_Metadata:
-      m_Items: []
-  - m_Id: 28734126081048576
-    m_Localized: Fleet Defeated
-    m_Metadata:
-      m_Items: []
-  - m_Id: 28734126122991616
-    m_Localized: Retreating to previous zone
-    m_Metadata:
-      m_Items: []
-  - m_Id: 29032478144331776
-    m_Localized: UPGRADE
-    m_Metadata:
-      m_Items: []
-  - m_Id: 29007716294721538
-    m_Localized: Next Level - Lv.{0}
-    m_Metadata:
-      m_Items: []
-  - m_Id: 29004056152113152
-    m_Localized: RESTART
-    m_Metadata:
-      m_Items: []
-  - m_Id: 29033643212931072
-    m_Localized: DONE
-    m_Metadata:
-      m_Items: []
-  - m_Id: 29032478144331777
-    m_Localized: LEVEL UP
-    m_Metadata:
-      m_Items: []
-  - m_Id: 29033643212931073
-    m_Localized: MAX
-    m_Metadata:
-      m_Items: []
-  - m_Id: 29084800778108928
-    m_Localized: '{0} Next Level Ship Slots'
-    m_Metadata:
-      m_Items: []
   - m_Id: 74144327743176704
     m_Localized: Tactic Power
-    m_Metadata:
-      m_Items: []
-  - m_Id: 29120731379793920
-    m_Localized: '#NAME?'
-    m_Metadata:
-      m_Items: []
-  - m_Id: 29169225431908352
-    m_Localized: FLEET
-    m_Metadata:
-      m_Items: []
-  - m_Id: 31664304520298496
-    m_Localized: UNLOCK
     m_Metadata:
       m_Items: []
   - m_Id: 31773314347040769
@@ -398,10 +138,6 @@ MonoBehaviour:
     m_Localized: Unlink Google Account
     m_Metadata:
       m_Items: []
-  - m_Id: 31783074207236099
-    m_Localized: ACCOUNT
-    m_Metadata:
-      m_Items: []
   - m_Id: 31783074207236100
     m_Localized: GENERAL
     m_Metadata:
@@ -414,18 +150,6 @@ MonoBehaviour:
     m_Localized: INFO
     m_Metadata:
       m_Items: []
-  - m_Id: 32106946823585792
-    m_Localized: SCORE
-    m_Metadata:
-      m_Items: []
-  - m_Id: 32106946823585793
-    m_Localized: RANK
-    m_Metadata:
-      m_Items: []
-  - m_Id: 32106946823585794
-    m_Localized: SEASON
-    m_Metadata:
-      m_Items: []
   - m_Id: 32106946823585795
     m_Localized: Score:{0} (Rank {1})
     m_Metadata:
@@ -434,132 +158,12 @@ MonoBehaviour:
     m_Localized: REFRESH({0}/{1})
     m_Metadata:
       m_Items: []
-  - m_Id: 32106946823585797
-    m_Localized: MY INFO
-    m_Metadata:
-      m_Items: []
-  - m_Id: 32106946823585798
-    m_Localized: PVP
-    m_Metadata:
-      m_Items: []
-  - m_Id: 32106946823585799
-    m_Localized: EXPLORATION
-    m_Metadata:
-      m_Items: []
   - m_Id: 32107824360062976
     m_Localized: SEASON {0}
     m_Metadata:
       m_Items: []
-  - m_Id: 33428911052161024
-    m_Localized: Enter
-    m_Metadata:
-      m_Items: []
-  - m_Id: 34285289010495488
-    m_Localized: Reset Module
-    m_Metadata:
-      m_Items: []
-  - m_Id: 34285289056632832
-    m_Localized: Reset this module and recover invested resources?
-    m_Metadata:
-      m_Items: []
-  - m_Id: 34285289056632833
-    m_Localized: RESET
-    m_Metadata:
-      m_Items: []
-  - m_Id: 34837143712825344
-    m_Localized: WATCH AD
-    m_Metadata:
-      m_Items: []
-  - m_Id: 34837143750574080
-    m_Localized: NO THANKS
-    m_Metadata:
-      m_Items: []
-  - m_Id: 34837143750574082
-    m_Localized: FREE
-    m_Metadata:
-      m_Items: []
-  - m_Id: 35605468558524416
-    m_Localized: 1 x MINERAL
-    m_Metadata:
-      m_Items: []
-  - m_Id: 35605468608856064
-    m_Localized: '{0} x MINERAL'
-    m_Metadata:
-      m_Items: []
-  - m_Id: 35624047941124096
-    m_Localized: CANCEL
-    m_Metadata:
-      m_Items: []
-  - m_Id: 35624047941124097
-    m_Localized: CONFIRM
-    m_Metadata:
-      m_Items: []
-  - m_Id: 35640746719444992
-    m_Localized: Clear the previous stage first.
-    m_Metadata:
-      m_Items: []
-  - m_Id: 35928926043635712
-    m_Localized: FLEET TACTICS
-    m_Metadata:
-      m_Items: []
-  - m_Id: 35928926072995840
-    m_Localized: Balanced
-    m_Metadata:
-      m_Items: []
-  - m_Id: 35979842788655104
-    m_Localized: Balanced Offense & Defense
-    m_Metadata:
-      m_Items: []
-  - m_Id: 35979842818015232
-    m_Localized: Offensive
-    m_Metadata:
-      m_Items: []
-  - m_Id: 35979842818015233
-    m_Localized: Attack increased / Damage taken increased
-    m_Metadata:
-      m_Items: []
-  - m_Id: 35979842818015234
-    m_Localized: Defensive
-    m_Metadata:
-      m_Items: []
-  - m_Id: 35979842818015235
-    m_Localized: Attack decreased / Damage taken decreased
-    m_Metadata:
-      m_Items: []
-  - m_Id: 36387413043314688
-    m_Localized: Locked
-    m_Metadata:
-      m_Items: []
-  - m_Id: 36387413089452032
-    m_Localized: Requires 3 or more ships in fleet
-    m_Metadata:
-      m_Items: []
   - m_Id: 37053841400528896
     m_Localized: Retreat to the previous zone?
-    m_Metadata:
-      m_Items: []
-  - m_Id: 38995797596831744
-    m_Localized: FULL REPAIR
-    m_Metadata:
-      m_Items: []
-  - m_Id: 39970930285215744
-    m_Localized: CLAIM REWARD
-    m_Metadata:
-      m_Items: []
-  - m_Id: 39970930322964480
-    m_Localized: VIP Daily Bonus
-    m_Metadata:
-      m_Items: []
-  - m_Id: 39970930322964481
-    m_Localized: +{0} Minerals received!
-    m_Metadata:
-      m_Items: []
-  - m_Id: 39970930322964482
-    m_Localized: FRONTIER
-    m_Metadata:
-      m_Items: []
-  - m_Id: 39970930322964483
-    m_Localized: ADMIRAL
     m_Metadata:
       m_Items: []
   - m_Id: 39970930322964484
@@ -580,10 +184,6 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 40210342097059840
     m_Localized: No Ads
-    m_Metadata:
-      m_Items: []
-  - m_Id: 40210342097059841
-    m_Localized: Stage Mineral Rewards x{0} (Excl. Commander & Module Points)
     m_Metadata:
       m_Items: []
   - m_Id: 40210342097059842
@@ -613,30 +213,6 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 42163135078858755
     m_Localized: 'Tip: Run explorations to gather resources when you run short.'
-    m_Metadata:
-      m_Items: []
-  - m_Id: 43020881605033984
-    m_Localized: UPGRADE
-    m_Metadata:
-      m_Items: []
-  - m_Id: 43020881659559936
-    m_Localized: REFUND
-    m_Metadata:
-      m_Items: []
-  - m_Id: 43020881659559937
-    m_Localized: LV UP
-    m_Metadata:
-      m_Items: []
-  - m_Id: 43020881659559938
-    m_Localized: REFUND
-    m_Metadata:
-      m_Items: []
-  - m_Id: 43056462032666624
-    m_Localized: REQUIRE
-    m_Metadata:
-      m_Items: []
-  - m_Id: 43649151207866368
-    m_Localized: Retreat
     m_Metadata:
       m_Items: []
   - m_Id: 43649151266586624
@@ -679,36 +255,12 @@ MonoBehaviour:
     m_Localized: India
     m_Metadata:
       m_Items: []
-  - m_Id: 44270707776815104
-    m_Localized: INSTANT REPAIR
-    m_Metadata:
-      m_Items: []
-  - m_Id: 44270707831341056
-    m_Localized: Instantly restore all fleet HP by consuming Minerals.
-    m_Metadata:
-      m_Items: []
-  - m_Id: 44270707831341057
-    m_Localized: REPAIR
-    m_Metadata:
-      m_Items: []
   - m_Id: 44304125210263552
     m_Localized: Daily Login Bonus
     m_Metadata:
       m_Items: []
   - m_Id: 44304125248012288
     m_Localized: +{0} Minerals received!
-    m_Metadata:
-      m_Items: []
-  - m_Id: 44653455670640640
-    m_Localized: Next Level Module Grade - T.{0}
-    m_Metadata:
-      m_Items: []
-  - m_Id: 45034403373383680
-    m_Localized: Week Reset In
-    m_Metadata:
-      m_Items: []
-  - m_Id: 45034403495018496
-    m_Localized: Next Reward In
     m_Metadata:
       m_Items: []
   - m_Id: 45034403495018497
@@ -721,22 +273,6 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 45040859153825792
     m_Localized: Instantly Restore Fleet HP After Battle
-    m_Metadata:
-      m_Items: []
-  - m_Id: 45106829071351808
-    m_Localized: Pending Rewards
-    m_Metadata:
-      m_Items: []
-  - m_Id: 45106829100711936
-    m_Localized: Claimed rewards from completed zones.
-    m_Metadata:
-      m_Items: []
-  - m_Id: 46124173239386112
-    m_Localized: ADD SHIP
-    m_Metadata:
-      m_Items: []
-  - m_Id: 46124173268746240
-    m_Localized: Do you want to add a new ship to your fleet?
     m_Metadata:
       m_Items: []
   - m_Id: 46124173268746241
@@ -756,48 +292,12 @@ MonoBehaviour:
     m_Localized: Unlinking Google will revert your account to guest status. Continue?
     m_Metadata:
       m_Items: []
-  - m_Id: 46939500441370624
-    m_Localized: MINERAL ENHANCEMENT RESET
-    m_Metadata:
-      m_Items: []
-  - m_Id: 46939500504285184
-    m_Localized: Mineral enhancements have been reset after stage clear.
-    m_Metadata:
-      m_Items: []
   - m_Id: 48702148229070848
     m_Localized: An update to version {0} is required.
     m_Metadata:
       m_Items: []
   - m_Id: 48702148229070849
     m_Localized: Update
-    m_Metadata:
-      m_Items: []
-  - m_Id: 49703030982836224
-    m_Localized: Repair Boost
-    m_Metadata:
-      m_Items: []
-  - m_Id: 49703031016390656
-    m_Localized: '{0} Mineral / sec'
-    m_Metadata:
-      m_Items: []
-  - m_Id: 49703031016390657
-    m_Localized: Missile Boost
-    m_Metadata:
-      m_Items: []
-  - m_Id: 49703031016390658
-    m_Localized: '{0} Mineral / sec'
-    m_Metadata:
-      m_Items: []
-  - m_Id: 49703031016390659
-    m_Localized: Aircraft Boost
-    m_Metadata:
-      m_Items: []
-  - m_Id: 49703031016390660
-    m_Localized: '{0} Mineral / sec'
-    m_Metadata:
-      m_Items: []
-  - m_Id: 49731971877568512
-    m_Localized: '( Fleet Synergy : x{0} )'
     m_Metadata:
       m_Items: []
   - m_Id: 49760963871506432
@@ -812,32 +312,8 @@ MonoBehaviour:
     m_Localized: Admiral Feature
     m_Metadata:
       m_Items: []
-  - m_Id: 51134935167008768
-    m_Localized: BGM
-    m_Metadata:
-      m_Items: []
-  - m_Id: 51134935167008769
-    m_Localized: FX
-    m_Metadata:
-      m_Items: []
-  - m_Id: 51571244754927616
-    m_Localized: COMMANDER
-    m_Metadata:
-      m_Items: []
-  - m_Id: 51571244796870656
-    m_Localized: Module Point
-    m_Metadata:
-      m_Items: []
-  - m_Id: 51571244805259265
-    m_Localized: PVP Locked
-    m_Metadata:
-      m_Items: []
   - m_Id: 51571244805259266
     m_Localized: Commander Level {0} or above is required to enter PVP.
-    m_Metadata:
-      m_Items: []
-  - m_Id: 51578528474202112
-    m_Localized: 'EXP to next level : {0}'
     m_Metadata:
       m_Items: []
   - m_Id: 52355318322954240
@@ -848,125 +324,24 @@ MonoBehaviour:
     m_Localized: REDEEM CODE
     m_Metadata:
       m_Items: []
-  - m_Id: 52375965195436032
-    m_Localized: RESET ALL INVESTED MINERAL
-    m_Metadata:
-      m_Items: []
-  - m_Id: 52375965233184768
-    m_Localized: All modules across your fleet will be reset and the invested mineral
-      will be fully refunded. Continue?
-    m_Metadata:
-      m_Items: []
-  - m_Id: 56724262160826368
-    m_Localized: TACTICS
-    m_Metadata:
-      m_Items: []
   - m_Id: 56724262198575105
     m_Localized: The server is currently under maintenance.
-    m_Metadata:
-      m_Items: []
-  - m_Id: 57012466176884736
-    m_Localized: SHIP {0}
-    m_Metadata:
-      m_Items: []
-  - m_Id: 57014645939896320
-    m_Localized: Module Select
-    m_Metadata:
-      m_Items: []
-  - m_Id: 57014645939896321
-    m_Localized: Module Status
-    m_Metadata:
-      m_Items: []
-  - m_Id: 57014645944090624
-    m_Localized: Module Enhancement
     m_Metadata:
       m_Items: []
   - m_Id: 57079978713284608
     m_Localized: Att
     m_Metadata:
       m_Items: []
-  - m_Id: 57079978742644736
-    m_Localized: HP
-    m_Metadata:
-      m_Items: []
-  - m_Id: 57079978746839040
-    m_Localized: Spd
-    m_Metadata:
-      m_Items: []
-  - m_Id: 57079978746839041
-    m_Localized: Repair
-    m_Metadata:
-      m_Items: []
   - m_Id: 57079978746839042
     m_Localized: Aircraft Att
-    m_Metadata:
-      m_Items: []
-  - m_Id: 57079978746839043
-    m_Localized: Aircraft HP
-    m_Metadata:
-      m_Items: []
-  - m_Id: 57079978746839044
-    m_Localized: Aircraft Spd
     m_Metadata:
       m_Items: []
   - m_Id: 57079978746839045
     m_Localized: Aircrafts
     m_Metadata:
       m_Items: []
-  - m_Id: 57079978746839046
-    m_Localized: Launch
-    m_Metadata:
-      m_Items: []
-  - m_Id: 57098646889299968
-    m_Localized: Fire Count
-    m_Metadata:
-      m_Items: []
-  - m_Id: 57098646914465792
-    m_Localized: Cooldown
-    m_Metadata:
-      m_Items: []
-  - m_Id: 57098646914465793
-    m_Localized: Projectile Speed
-    m_Metadata:
-      m_Items: []
-  - m_Id: 57098646914465794
-    m_Localized: Silence Time
-    m_Metadata:
-      m_Items: []
-  - m_Id: 57098646914465795
-    m_Localized: Aircraft Maintenance Time
-    m_Metadata:
-      m_Items: []
-  - m_Id: 57098646914465796
-    m_Localized: Aircraft Attack Range
-    m_Metadata:
-      m_Items: []
-  - m_Id: 57098646914465797
-    m_Localized: Aircraft Attack Cooldown
-    m_Metadata:
-      m_Items: []
-  - m_Id: 57098646914465798
-    m_Localized: Aircraft Ammo
-    m_Metadata:
-      m_Items: []
-  - m_Id: 57108516506042368
-    m_Localized: EXPLORATION
-    m_Metadata:
-      m_Items: []
   - m_Id: 59435713895989248
     m_Localized: Move to Cell\n\nZone:\t\t {0}\nCell:\t\t {1}
-    m_Metadata:
-      m_Items: []
-  - m_Id: 59723571462537216
-    m_Localized: Retreat
-    m_Metadata:
-      m_Items: []
-  - m_Id: 59723571500285952
-    m_Localized: Fleet Settings
-    m_Metadata:
-      m_Items: []
-  - m_Id: 59723571500285953
-    m_Localized: Start Battle
     m_Metadata:
       m_Items: []
   - m_Id: 61639704113446912
@@ -1061,10 +436,6 @@ MonoBehaviour:
     m_Localized: Interceptor Regen Rate
     m_Metadata:
       m_Items: []
-  - m_Id: 61660888288854016
-    m_Localized: Disrupt
-    m_Metadata:
-      m_Items: []
   - m_Id: 61708245596504064
     m_Localized: Banked Exploration Point
     m_Metadata:
@@ -1087,10 +458,6 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 64946077664411649
     m_Localized: EXP
-    m_Metadata:
-      m_Items: []
-  - m_Id: 64946077664411650
-    m_Localized: Aircraft
     m_Metadata:
       m_Items: []
   - m_Id: 65433715576012800
@@ -1217,10 +584,6 @@ MonoBehaviour:
     m_Localized: Fighter dogfight attack +{0:P0}
     m_Metadata:
       m_Items: []
-  - m_Id: 70994983829504000
-    m_Localized: ECT
-    m_Metadata:
-      m_Items: []
   - m_Id: 71138710669623296
     m_Localized: This zone is still locked. Clear the previous zone first.
     m_Metadata:
@@ -1233,28 +596,12 @@ MonoBehaviour:
     m_Localized: Missile Att
     m_Metadata:
       m_Items: []
-  - m_Id: 72095040133791744
-    m_Localized: ALL
-    m_Metadata:
-      m_Items: []
-  - m_Id: 72095040133791745
-    m_Localized: Convert
-    m_Metadata:
-      m_Items: []
   - m_Id: 72096273103978496
     m_Localized: Exploration Point
     m_Metadata:
       m_Items: []
   - m_Id: 72096273103978497
     m_Localized: Command Power
-    m_Metadata:
-      m_Items: []
-  - m_Id: 72099489506000896
-    m_Localized: Reset
-    m_Metadata:
-      m_Items: []
-  - m_Id: 72099489506000897
-    m_Localized: MAX
     m_Metadata:
       m_Items: []
   - m_Id: 72478145264877568
@@ -1286,10 +633,6 @@ MonoBehaviour:
     m_Localized: FLEET MANAGEMENT
     m_Metadata:
       m_Items: []
-  - m_Id: 74331910964117504
-    m_Localized: Module Reinforce
-    m_Metadata:
-      m_Items: []
   - m_Id: 74419203678797824
     m_Localized: 'Name:'
     m_Metadata:
@@ -1300,10 +643,6 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 74419203729129473
     m_Localized: This hull is unavailable.
-    m_Metadata:
-      m_Items: []
-  - m_Id: 74453435637694464
-    m_Localized: Hull
     m_Metadata:
       m_Items: []
   - m_Id: 74453435688026112
@@ -1394,22 +733,6 @@ MonoBehaviour:
     m_Localized: Increase TP
     m_Metadata:
       m_Items: []
-  - m_Id: 76876329680502784
-    m_Localized: COMMANDER
-    m_Metadata:
-      m_Items: []
-  - m_Id: 76876329768583168
-    m_Localized: Commander Level
-    m_Metadata:
-      m_Items: []
-  - m_Id: 76884303979347968
-    m_Localized: Max Ship Slots
-    m_Metadata:
-      m_Items: []
-  - m_Id: 76884304033873920
-    m_Localized: ships
-    m_Metadata:
-      m_Items: []
   - m_Id: 76937344908656640
     m_Localized: +{0} Achievement Points received!
     m_Metadata:
@@ -1464,23 +787,6 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 78141668900864000
     m_Localized: Abandon
-    m_Metadata:
-      m_Items: []
-  - m_Id: 78143796457373696
-    m_Localized: "There is another exploration in progress.\\nZone {0} / Cell {1}
-      / Banked Exploration Point {2}\\nAbandon it and start a new challenge in the
-      selected zone?\\n* Only 20% will be recovered \u2014 watch an ad for 100%"
-    m_Metadata:
-      m_Items: []
-  - m_Id: 78143796528676864
-    m_Localized: There is an exploration in progress in another zone. Abandoning
-      it now only grants 20% of the banked exploration points(watch an ad to receive
-      100% instead). Abandon it and start a new challenge?
-    m_Metadata:
-      m_Items: []
-  - m_Id: 78143796528676865
-    m_Localized: "Abandon the exploration in progress?\\nOnly 20% will be granted
-      \u2014 watch an ad for 100%."
     m_Metadata:
       m_Items: []
   - m_Id: 78447295653085184
@@ -1591,6 +897,90 @@ MonoBehaviour:
   - m_Id: 78447295728582681
     m_Localized: Unlock the {0} hull to complete. Refunds 10% of the achievement
       points spent.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78718003033538560
+    m_Localized: COMMANDER
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78718003083870208
+    m_Localized: FLEET
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78720883341787136
+    m_Localized: OK
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78720883400507392
+    m_Localized: WATCH AD
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78720883400507393
+    m_Localized: CANCEL
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78720883400507394
+    m_Localized: CONFIRM
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78720883404701696
+    m_Localized: SETTINGS
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78720883404701697
+    m_Localized: RANK
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78720883404701698
+    m_Localized: EXPLORATION
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78723064602165248
+    m_Localized: Commander Level
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78723064656691200
+    m_Localized: 'EXP to next level : {0}'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78723064656691201
+    m_Localized: Max Ship Slots
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78723064656691202
+    m_Localized: ships
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78723064656691203
+    m_Localized: Command Power
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78723064656691204
+    m_Localized: Tactic Power
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78728054842458112
+    m_Localized: ACCOUNT
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78728054896984064
+    m_Localized: BGM
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78728054896984065
+    m_Localized: FX
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78778773750546432
+    m_Localized: PVP
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78778773809266688
+    m_Localized: MY INFO
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78778773809266689
+    m_Localized: Rank List
     m_Metadata:
       m_Items: []
   references:

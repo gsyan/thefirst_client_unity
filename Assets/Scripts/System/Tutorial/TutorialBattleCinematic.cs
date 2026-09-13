@@ -1,5 +1,3 @@
-// TutorialCinematicController(구식 그레이드 기반) 의존으로 전체 주석처리 — 프리셋 기반으로 재작성 전까지 비활성화
-#if false
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -115,8 +113,10 @@ public class TutorialBattleCinematic
         m_enemyWaveFleets.Clear();
         m_waveIndexOccupancy.Clear();
 
-        int flagshipGrade = shipGradeLevels.Length > 0 ? shipGradeLevels[0] : 1;
-        int maxPositions = DataManager.Instance.m_dataTableZone.GetFleetPositionCount(flagshipGrade);
+        // TODO(3단계): 삭제된 DataTableZone.GetFleetPositionCount를 대체할 신규 탐사 그리드 기준 자리 수 산출로 교체 필요
+        // 지금은 웨이브2 최대 물량(10)을 넉넉히 수용하는 고정값으로 임시 대체
+        const int k_tempMaxPositions = 12;
+        int maxPositions = k_tempMaxPositions;
 
         for (int i = 0; i < fleetCount; i++)
         {
@@ -207,10 +207,10 @@ public class TutorialBattleCinematic
             CameraController.Instance.SetTargetRotation(escapeYaw + 180f + 30f, +30f);
 
             SpaceShip escapeShip = m_escapeFleet.GetFlagship();
-            if (escapeShip != null && escapeShip.m_moduleBodys.Count > 0 && escapeShip.m_moduleBodys[0] != null)
+            if (escapeShip != null && escapeShip.m_moduleHulls.Count > 0 && escapeShip.m_moduleHulls[0] != null)
             {
                 CameraController.Instance.ApplyZoomRangeFromShip(escapeShip);
-                CameraController.Instance.SetTargetZoom(escapeShip.m_moduleBodys[0].m_cameraMaxZoom);
+                CameraController.Instance.SetTargetZoom(escapeShip.m_moduleHulls[0].m_cameraMaxZoom);
             }
         }
 
@@ -316,4 +316,3 @@ public class TutorialBattleCinematic
         }
     }
 }
-#endif

@@ -9,6 +9,7 @@ using TMPro;
 public class UIPanelSettings : UIPanelBase
 {
     [SerializeField] private TMP_Text m_versionText;
+    [SerializeField] private TMP_Text m_panelTitleText;
 
     [Header("계정")]
     [SerializeField] private TMP_Text m_sectionAccountText;
@@ -23,9 +24,11 @@ public class UIPanelSettings : UIPanelBase
     [SerializeField] private TMP_Text m_sectionGeneralText;
     [SerializeField] private TMP_Text m_languageText;
     [SerializeField] private TMP_Dropdown m_languageDropdown;
+    [SerializeField] private TMP_Text m_bgmLabelText;
     [SerializeField] private Button m_bgmButton;
     [SerializeField] private Image  m_bgmButtonImage;
     [SerializeField] private Slider m_bgmSlider;
+    [SerializeField] private TMP_Text m_fxLabelText;
     [SerializeField] private Button m_fxButton;
     [SerializeField] private Image  m_fxButtonImage;
     [SerializeField] private Slider m_fxSlider;
@@ -213,10 +216,13 @@ public class UIPanelSettings : UIPanelBase
     // 섹션 헤더·라벨 등 고정 문자열 로컬라이즈
     private void RefreshStaticLocText()
     {
-        CommonUtility.SetUILocText(m_sectionAccountText, "UITabSettings_Account");
+        CommonUtility.SetUILocText(m_panelTitleText,     "UI_Settings");
+        CommonUtility.SetUILocText(m_sectionAccountText, "UI_Account");
         CommonUtility.SetUILocText(m_sectionGeneralText, "UITabSettings_General");
         CommonUtility.SetUILocText(m_sectionInfolText,   "UITabSettings_Info");
         CommonUtility.SetUILocText(m_languageText,       "UITabSettings_Language");
+        CommonUtility.SetUILocText(m_bgmLabelText,       "UI_Bgm");
+        CommonUtility.SetUILocText(m_fxLabelText,        "UI_Fx");
         if (m_languageText != null)
             m_languageText.color = CommonUtility.PaletteColor("Text.Dark1");
 

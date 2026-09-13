@@ -3,12 +3,34 @@
 // 스택 깊이가 1(base만 남음)일 때만 노출. COMMANDER/SETTINGS/EXPLORATION/FLEET 등은 이제 전부 독립 UIPanelBase 프리팹이라
 // 이 스크립트가 그 참조를 들고 있지 않음 — 각자가 UIManager에 스스로 등록되고, 서로 UIManager를 통해서만 상호작용함
 // (구 TabSystem 컴포넌트는 실사용 항목이 전부 죽은 참조이거나 다른 전용 스크립트로 이미 대체돼 있어 제거함)
+using TMPro;
 using UnityEngine;
 
 public class UIPanelSpace : UIPanelBase
 {
     [Header("진입 버튼 그룹 (기본 상태에서만 노출)")]
     [SerializeField] private GameObject m_tapButtons; // COMMANDER/FLEET/SETTINGS/RANK/EXPLORATION 진입 버튼 컨테이너 — 스택 위에 뭐라도 쌓이면 숨김. 캘린더/VIP(Top)도 이 컨테이너의 자식으로 옮겨져 함께 숨겨짐
+
+    [Header("진입 버튼 라벨 — 프리팹에 로컬라이즈 키를 박아두지 않고 코드에서 직접 세팅")]
+    [SerializeField] private TMP_Text m_commanderLabelText;
+    [SerializeField] private TMP_Text m_fleetLabelText;
+    [SerializeField] private TMP_Text m_settingsLabelText;
+    [SerializeField] private TMP_Text m_rankLabelText;
+    [SerializeField] private TMP_Text m_explorationLabelText;
+
+    public override void InitializeUIPanel()
+    {
+        if (m_commanderLabelText != null)
+            CommonUtility.SetUILocText(m_commanderLabelText, "UI_Commander");
+        if (m_fleetLabelText != null)
+            CommonUtility.SetUILocText(m_fleetLabelText, "UI_Fleet");
+        if (m_settingsLabelText != null)
+            CommonUtility.SetUILocText(m_settingsLabelText, "UI_Settings");
+        if (m_rankLabelText != null)
+            CommonUtility.SetUILocText(m_rankLabelText, "UI_Rank");
+        if (m_explorationLabelText != null)
+            CommonUtility.SetUILocText(m_explorationLabelText, "UI_Exploration");
+    }
 
     public override void OnShowUIPanel()
     {

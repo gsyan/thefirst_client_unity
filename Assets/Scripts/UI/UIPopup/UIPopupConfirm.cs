@@ -332,9 +332,9 @@ public class UIPopupConfirm : UIPopupBase
         bool showCancel = config.onCancel != null;
         if (cancelButton != null) cancelButton.gameObject.SetActive(showCancel);
         if (showCancel)
-            if (m_cancelText1 != null) m_cancelText1.text = config.cancelText1 ?? loc.Get("Simple_Cancel");
+            if (m_cancelText1 != null) m_cancelText1.text = config.cancelText1 ?? loc.Get("UI_Cancel");
 
-        if (m_confirmText1 != null) m_confirmText1.text = config.confirmText1 ?? loc.Get("Simple_Confirm");
+        if (m_confirmText1 != null) m_confirmText1.text = config.confirmText1 ?? loc.Get("UI_Confirm");
 
         bool showExtra = config.onExtra != null;
         if (m_extraButton != null) m_extraButton.gameObject.SetActive(showExtra);

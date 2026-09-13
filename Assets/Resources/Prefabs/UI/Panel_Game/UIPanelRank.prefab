@@ -3358,9 +3358,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::UIPanelPvp
   panelName: UIPanelRank
   bMainPanel: 0
-  bHideCurWhenActive: 1
   bCameraMove: 0
-  bAffectsOverlayCount: 1
+  m_titleText: {fileID: 8367353610988025118}
+  m_myInfoTabText: {fileID: 4243826560506626765}
+  m_rankListTabText: {fileID: 9182864378775563354}
   m_myScoreText: {fileID: 4030009830522311507}
   m_myRankText: {fileID: 3303958775969483213}
   m_seasonText: {fileID: 4005864138938150747}

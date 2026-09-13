@@ -2453,9 +2453,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_StringReference:
     m_TableReference:
-      m_TableCollectionName: GUID:d85d8ecc73ff1304c8410066ceb06829
+      m_TableCollectionName: 
     m_TableEntryReference:
-      m_KeyId: 31783074207236100
+      m_KeyId: 0
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 0
@@ -3988,9 +3988,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Components.LocalizeStringEvent
   m_StringReference:
     m_TableReference:
-      m_TableCollectionName: GUID:d85d8ecc73ff1304c8410066ceb06829
+      m_TableCollectionName: 
     m_TableEntryReference:
-      m_KeyId: 52355318373285888
+      m_KeyId: 0
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 0
@@ -4821,9 +4821,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_StringReference:
     m_TableReference:
-      m_TableCollectionName: GUID:d85d8ecc73ff1304c8410066ceb06829
+      m_TableCollectionName: 
     m_TableEntryReference:
-      m_KeyId: 31783074203041792
+      m_KeyId: 0
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 0
@@ -5383,9 +5383,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_StringReference:
     m_TableReference:
-      m_TableCollectionName: GUID:d85d8ecc73ff1304c8410066ceb06829
+      m_TableCollectionName: 
     m_TableEntryReference:
-      m_KeyId: 31783074207236096
+      m_KeyId: 0
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 0
@@ -7371,7 +7371,7 @@ GameObject:
   - component: {fileID: 6469545115053826126}
   - component: {fileID: 4631461386197292079}
   m_Layer: 5
-  m_Name: Name
+  m_Name: AccountSectionText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7510,9 +7510,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Components.LocalizeStringEvent
   m_StringReference:
     m_TableReference:
-      m_TableCollectionName: GUID:d85d8ecc73ff1304c8410066ceb06829
+      m_TableCollectionName: 
     m_TableEntryReference:
-      m_KeyId: 31783074207236099
+      m_KeyId: 0
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 0
@@ -7844,9 +7844,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_StringReference:
     m_TableReference:
-      m_TableCollectionName: GUID:d85d8ecc73ff1304c8410066ceb06829
+      m_TableCollectionName: 
     m_TableEntryReference:
-      m_KeyId: 31773314347040769
+      m_KeyId: 0
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 0
@@ -8539,6 +8539,7 @@ MonoBehaviour:
   bMainPanel: 0
   bCameraMove: 0
   m_versionText: {fileID: 6020480630011144505}
+  m_panelTitleText: {fileID: 6959647186911156786}
   m_sectionAccountText: {fileID: 6469545115053826126}
   m_nameText: {fileID: 882191714371069487}
   m_renameCommanderButton: {fileID: 8381011340897831362}
@@ -8549,9 +8550,11 @@ MonoBehaviour:
   m_sectionGeneralText: {fileID: 495031651210006158}
   m_languageText: {fileID: 3250869236717624687}
   m_languageDropdown: {fileID: 2643880498224961894}
+  m_bgmLabelText: {fileID: 8946842156047497353}
   m_bgmButton: {fileID: 4041129314389427715}
   m_bgmButtonImage: {fileID: 4673304800355536352}
   m_bgmSlider: {fileID: 3534682457483962485}
+  m_fxLabelText: {fileID: 3223142336622876670}
   m_fxButton: {fileID: 8651746041421662173}
   m_fxButtonImage: {fileID: 990590276506569512}
   m_fxSlider: {fileID: 1538153424027380378}

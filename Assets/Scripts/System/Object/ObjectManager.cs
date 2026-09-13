@@ -158,7 +158,9 @@ public class ObjectManager : MonoSingleton<ObjectManager>
 
     // 지크프리트(튜토리얼 연출용) 함대 사용 중 여부 — 튜토리얼 종료 시 실제 함대로 전환하는 데 사용
     private bool m_isSiegfriedFleetActive = false;
+    public bool IsSiegfriedFleetActive() => m_isSiegfriedFleetActive;
     private int m_realCommanderLevelBackup;
+    private FleetComposition m_realFleetCompositionBackup;
 
     // 온보딩 튜토리얼(TutorialManager.ONBOARDING_TUTORIAL_SEQUENCE) 진행 중 스킵 버튼을 눌렀는지 여부
     private bool m_isOnboardingTutorialSkipped = false;
@@ -255,17 +257,8 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         AdManager.Instance.ToString();// 광고 초기화 (존 입장 전 미리 로드)
 
         // 튜토리얼 진행도는 SelectCommander 응답 시점(UIMain.cs)에 이미 확보되어 있음 — 씬 로드 중 깜빡임 없이 바로 결정
-        // 지크프리트 오프닝 시네마틱(TutorialCinematicController)이 주석처리되어 있어 튜토리얼 시작 자체를 임시로 막아둠 — 프리셋 기반으로 재작성 전까지
-        /*
-        bool bPassTutorial = false;
-        if (bPassTutorial == true)
-            StartNormalPlay();
-        else
-            // UI 초기화 후 약간의 딜레이 후 시작
-            StartCoroutine(StartTutorial());
-        */
-
-        StartNormalPlay();
+        // 완료 여부 체크는 StartTutorial() 코루틴 내부에서 처리 — 이미 완료된 경우 즉시 StartNormalPlay()로 넘어감
+        StartCoroutine(StartTutorial());
     }
 
     // 탐사 그리드를 연 적이 없어도, UITabExplorationGrid가 실제로 계산할 것과 동일한 시작 셀 월드좌표를 미리 구함 —
@@ -347,9 +340,11 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         if (TutorialManager.Instance.IsTutorialCompleted("Tutorial_FirstPlay_Complete") == true)
         { StartNormalPlay(); yield break; }
 
-        // TutorialCinematicController 주석처리로 임시 비활성화 — 프리셋 기반으로 재작성 전까지 시네마틱 함대 스폰 안 함
         m_isSiegfriedFleetActive = true;
 
+        // 함선 수 요구 레벨 계산(GrantTutorialCommanderLevel)이 지크프리트 함대의 기존 함선 수를 참조하므로 스폰이 먼저 일어나야 함
+        SpawnSiegfriedFleet();
+        SwapToSiegfriedFleetComposition();
         GrantTutorialCommanderLevel();
 
         // Tutorial 안에 함선추가 등 실제 UI 조작 스텝이 있어 메인 패널(TapButtons 등)이 미리 열려있어야 함
@@ -792,6 +787,42 @@ public class ObjectManager : MonoSingleton<ObjectManager>
             aircraft.ForceReturnToPoolImmediate();
     }
 
+    // 지크프리트 함대(연출용, 서버 미등록)를 실제 함대 자리에 스폰 — fleet_source_player로 등록해야
+    // GetMyFleet()을 참조하는 카메라/UI 탭들이 정상적으로 "내 함대"로 인식함(fleet_source_cinematic은 전멸해도 게임 상태가 안 바뀌는 NPC 전용)
+    private void SpawnSiegfriedFleet()
+    {
+        FleetInfo fleetInfo = TutorialCinematicController.BuildSiegfriedFleetInfo("Siegfried Fleet");
+        Vector3 startPos = GetInitialGridStartCellPosition();
+
+        GameObject fleetObj = new GameObject("SiegfriedFleet");
+        fleetObj.transform.position = startPos;
+        SpaceFleet fleet = fleetObj.AddComponent<SpaceFleet>();
+        fleet.InitializeSpaceFleet(fleetInfo, m_myTeam, EFleetSource.fleet_source_player, EUnitState.Idle);
+        GetTeamFleets(m_myTeam).Add(fleet);
+
+        FinalizeMyFleetSpawn(fleet, warpIn: false);
+    }
+
+    // UIPanelFleet(함대편성 UI)는 3D 씬의 SpaceFleet이 아니라 DataManager.m_currentFleetComposition만 읽으므로,
+    // 지크프리트 함대 구성도 여기 그대로 반영해야 튜토리얼 중 화면에 지크프리트 함선이 보임 — 실제 계정 데이터는 백업 후 복원
+    private void SwapToSiegfriedFleetComposition()
+    {
+        m_realFleetCompositionBackup = DataManager.Instance.m_currentFleetComposition;
+
+        const int k_tutorialCommandPowerCap = 999999; // 튜토리얼 중 지휘력 부족으로 배치/강화가 막히지 않도록 넉넉한 임시값
+        FleetComposition siegfriedComposition = new FleetComposition(k_tutorialCommandPowerCap, DataManager.Instance.m_dataTableModule);
+
+        FleetInfo fleetInfo = TutorialCinematicController.BuildSiegfriedFleetInfo("Siegfried Fleet");
+        for (int i = 0; i < fleetInfo.ships.Count; i++)
+        {
+            ShipInfo shipInfo = fleetInfo.ships[i];
+            ModuleHullInfo modules = shipInfo.hulls != null && shipInfo.hulls.Count > 0 ? shipInfo.hulls[0] : null;
+            siegfriedComposition.TryPlaceShip(shipInfo.hullSubType, isFront: i == 0, modules);
+        }
+
+        DataManager.Instance.m_currentFleetComposition = siegfriedComposition;
+    }
+
     // 튜토리얼 중 함선 추가(4→5번째) 및 지크프리트 함대(T14 기함 포함)의 모듈 레벨업이 지휘 레벨 요구사항에
     // 막히지 않도록 임시로 레벨 지급 — 함선 수 요구 레벨과 T14 서브타입 상한 요구 레벨 중 더 높은 쪽을 지급
     private void GrantTutorialCommanderLevel()
@@ -829,6 +860,8 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         {
             commander.UpdateCommanderLevel(m_realCommanderLevelBackup);
         }
+
+        DataManager.Instance.m_currentFleetComposition = m_realFleetCompositionBackup;
 
         SpawnFleet(warpIn: true);
     }

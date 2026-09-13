@@ -18,6 +18,12 @@ public class ModuleBase : MonoBehaviour
 
     protected EUnitState m_moduleState;
 
+    // 발사 타이밍 지터 — 쿨다운 완료(발사 신호) 후 실제 발사까지의 랜덤 지연(신호 전엔 0)
+    protected float m_attackPhaseOffset = 0f;
+    protected bool m_isAttackSignalFired = false;
+    private const float k_attackJitterMin = 0.1f;
+    private const float k_attackJitterMax = 0.5f;
+
     public virtual void Start()
     {
 
@@ -71,6 +77,15 @@ public class ModuleBase : MonoBehaviour
     // 교체 시 구 모듈의 공격 타이머를 신 모듈에 승계 — 무기 모듈에서 override
     public virtual float GetLastAttackTime() { return 0f; }
     public virtual void SetLastAttackTime(float t) { }
+
+    // 쿨다운 완료(발사 신호) 시점에 호출 — 다음 발사까지의 랜덤 지연(양수)을 굴리고 대기 상태로 전환
+    protected void ArmAttackSignal()
+    {
+        m_attackPhaseOffset = UnityEngine.Random.Range(k_attackJitterMin, k_attackJitterMax);
+        m_isAttackSignalFired = true;
+    }
+
+    public float GetAttackPhaseOffset() { return m_attackPhaseOffset; }
     public virtual int GetModuleHullIndex()
     {
         return 0;

@@ -169,10 +169,18 @@ public class ModuleHangar : ModuleBase
             if (IsSilenced() == false && m_currentTarget != null && m_currentTarget.m_health > 0)
             {
                 float hangarHarassDelay = m_ownerShip != null ? m_ownerShip.GetHarassAdditionalCool() : 0f;
-                if (Time.time >= m_lastLaunchTime + m_launchCool + hangarHarassDelay)
+
+                if (m_isAttackSignalFired == false)
+                {
+                    if (Time.time >= m_lastLaunchTime + m_launchCool + hangarHarassDelay)
+                        ArmAttackSignal();
+                }
+                else if (Time.time >= m_lastLaunchTime + m_launchCool + hangarHarassDelay + m_attackPhaseOffset)
                 {
                     ExecuteLaunchOnTarget(m_currentTarget);
-                    m_lastLaunchTime = Time.time;
+                    m_lastLaunchTime = Time.time - m_attackPhaseOffset;
+                    m_attackPhaseOffset = 0f;
+                    m_isAttackSignalFired = false;
                 }
             }
 

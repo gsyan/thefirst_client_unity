@@ -15,160 +15,132 @@ MonoBehaviour:
   m_TableCollectionName: UI
   m_TableCollectionNameGuidString: d85d8ecc73ff1304c8410066ceb06829
   m_Entries:
-  - m_Id: 3370864741318656
-    m_Key: empty_text
+  - m_Id: 78720883341787136
+    m_Key: UI_OK
     m_Metadata:
       m_Items: []
-  - m_Id: 13982624544325632
-    m_Key: ok
+  - m_Id: 78720883400507392
+    m_Key: UI_WatchAD
     m_Metadata:
       m_Items: []
-  - m_Id: 2924654586888192
-    m_Key: tab_fleet
+  - m_Id: 78720883400507393
+    m_Key: UI_Cancel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78720883400507394
+    m_Key: UI_Confirm
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78718003033538560
+    m_Key: UI_Commander
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78718003083870208
+    m_Key: UI_Fleet
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78720883404701696
+    m_Key: UI_Settings
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78720883404701697
+    m_Key: UI_Rank
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78720883404701698
+    m_Key: UI_Exploration
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78723064602165248
+    m_Key: UI_CommanderLevel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78723064656691200
+    m_Key: UI_ExpToNextLevel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78723064656691201
+    m_Key: UI_MaxShipSlots
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78723064656691202
+    m_Key: UI_ShipCountUnit
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78723064656691203
+    m_Key: UI_CommandPower
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78723064656691204
+    m_Key: UI_TacticPower
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78728054842458112
+    m_Key: UI_Account
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78728054896984064
+    m_Key: UI_Bgm
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78728054896984065
+    m_Key: UI_Fx
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78778773750546432
+    m_Key: UI_Pvp
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78778773809266688
+    m_Key: UI_MyInfo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78778773809266689
+    m_Key: UI_RankList
+    m_Metadata:
+      m_Items: []
+  - m_Id: 31773314347040769
+    m_Key: UITabSettings_NameChange
+    m_Metadata:
+      m_Items: []
+  - m_Id: 52355318373285888
+    m_Key: UITabSettings_RedeemCode
+    m_Metadata:
+      m_Items: []
+  - m_Id: 31783074207236097
+    m_Key: UITabSettings_GoogleLink
+    m_Metadata:
+      m_Items: []
+  - m_Id: 31783074207236098
+    m_Key: UITabSettings_GoogleUnlink
+    m_Metadata:
+      m_Items: []
+  - m_Id: 31783074207236096
+    m_Key: UITabSettings_Logout
+    m_Metadata:
+      m_Items: []
+  - m_Id: 31783074207236100
+    m_Key: UITabSettings_General
+    m_Metadata:
+      m_Items: []
+  - m_Id: 31783074203041792
+    m_Key: UITabSettings_Language
+    m_Metadata:
+      m_Items: []
+  - m_Id: 31783074207236101
+    m_Key: UITabSettings_License
     m_Metadata:
       m_Items: []
   - m_Id: 2924654624636928
     m_Key: tab_ship
     m_Metadata:
       m_Items: []
-  - m_Id: 2924654624636930
-    m_Key: tab_research
-    m_Metadata:
-      m_Items: []
-  - m_Id: 39525816336384
-    m_Key: fleet_status
-    m_Metadata:
-      m_Items: []
   - m_Id: 2924654624636933
     m_Key: fleet_ship_count
     m_Metadata:
       m_Items: []
-  - m_Id: 6655868837691392
-    m_Key: fleet_add_ship_button
-    m_Metadata:
-      m_Items: []
-  - m_Id: 11317517746044928
-    m_Key: fleet_formation_change
-    m_Metadata:
-      m_Items: []
-  - m_Id: 11674320539353088
-    m_Key: fleet_btn_ship_manage
-    m_Metadata:
-      m_Items: []
-  - m_Id: 11674320577101824
-    m_Key: fleet_btn_ship_repair
-    m_Metadata:
-      m_Items: []
-  - m_Id: 12029587550502914
-    m_Key: research_complete
-    m_Metadata:
-      m_Items: []
-  - m_Id: 12029587550502915
-    m_Key: error_insufficient_resources
-    m_Metadata:
-      m_Items: []
-  - m_Id: 2924654624636936
-    m_Key: ship_module_weapon_count
-    m_Metadata:
-      m_Items: []
-  - m_Id: 2924654624636937
-    m_Key: ship_module_engine_count
-    m_Metadata:
-      m_Items: []
-  - m_Id: 2924654624636939
-    m_Key: ship_module_type
-    m_Metadata:
-      m_Items: []
-  - m_Id: 2924654624636940
-    m_Key: ship_module_unlock
-    m_Metadata:
-      m_Items: []
-  - m_Id: 11055826378555392
-    m_Key: ship_module_levelup
-    m_Metadata:
-      m_Items: []
-  - m_Id: 11055826416304128
-    m_Key: ship_module_subtype_manage
-    m_Metadata:
-      m_Items: []
-  - m_Id: 2929882979762176
-    m_Key: ship_module_researched_list
-    m_Metadata:
-      m_Items: []
-  - m_Id: 13853203355271168
-    m_Key: exploration_zone_list_name
-    m_Metadata:
-      m_Items: []
   - m_Id: 13853203393019904
     m_Key: exploration_cleared
-    m_Metadata:
-      m_Items: []
-  - m_Id: 13853203393019905
-    m_Key: exploration_toggle_auto
-    m_Metadata:
-      m_Items: []
-  - m_Id: 13853203393019906
-    m_Key: exploration_wave_list_name
-    m_Metadata:
-      m_Items: []
-  - m_Id: 13853203393019907
-    m_Key: exploration_safe_zone
-    m_Metadata:
-      m_Items: []
-  - m_Id: 13892162051506176
-    m_Key: exploration_collectable_minerals_max
-    m_Metadata:
-      m_Items: []
-  - m_Id: 13853203393019909
-    m_Key: exploration_collect_mineral
-    m_Metadata:
-      m_Items: []
-  - m_Id: 6697022492901376
-    m_Key: exploration_collect_available_title
-    m_Metadata:
-      m_Items: []
-  - m_Id: 6697022530650112
-    m_Key: exploration_elapsed_time
-    m_Metadata:
-      m_Items: []
-  - m_Id: 10761965592772608
-    m_Key: exploration_zone_insufficient_ships
-    m_Metadata:
-      m_Items: []
-  - m_Id: 45106829071351808
-    m_Key: pending_reward_title
-    m_Metadata:
-      m_Items: []
-  - m_Id: 45106829100711936
-    m_Key: pending_reward_message
-    m_Metadata:
-      m_Items: []
-  - m_Id: 26943208810217472
-    m_Key: exploration_battle_victory
-    m_Metadata:
-      m_Items: []
-  - m_Id: 26943208852160512
-    m_Key: exploration_battle_mineral_reward
-    m_Metadata:
-      m_Items: []
-  - m_Id: 28734126081048576
-    m_Key: exploration_fleet_wiped
-    m_Metadata:
-      m_Items: []
-  - m_Id: 28734126122991616
-    m_Key: exploration_wipe_retreat
-    m_Metadata:
-      m_Items: []
-  - m_Id: 13164879267364864
-    m_Key: harvest_offline_elapsed
-    m_Metadata:
-      m_Items: []
-  - m_Id: 13164879321890816
-    m_Key: harvest_online_uncollected
-    m_Metadata:
-      m_Items: []
-  - m_Id: 13164879321890817
-    m_Key: harvest_total
     m_Metadata:
       m_Items: []
   - m_Id: 2924654624636952
@@ -179,16 +151,8 @@ MonoBehaviour:
     m_Key: pvp_refresh_confirm
     m_Metadata:
       m_Items: []
-  - m_Id: 2952446292656128
-    m_Key: pvp_score_mine_head
-    m_Metadata:
-      m_Items: []
   - m_Id: 3668074850811904
     m_Key: pvp_opponent_info
-    m_Metadata:
-      m_Items: []
-  - m_Id: 7977027994779648
-    m_Key: pvp_rank_title
     m_Metadata:
       m_Items: []
   - m_Id: 8029751440441344
@@ -211,30 +175,6 @@ MonoBehaviour:
     m_Key: pvp_blocked_by_zone_run
     m_Metadata:
       m_Items: []
-  - m_Id: 8001513162932224
-    m_Key: rank_first_row_ranking
-    m_Metadata:
-      m_Items: []
-  - m_Id: 8001513192292352
-    m_Key: rank_first_row_name
-    m_Metadata:
-      m_Items: []
-  - m_Id: 8001513192292353
-    m_Key: rank_first_row_score
-    m_Metadata:
-      m_Items: []
-  - m_Id: 15625537795784706
-    m_Key: settings_commander_name
-    m_Metadata:
-      m_Items: []
-  - m_Id: 8422640620273665
-    m_Key: settings_google_link_success
-    m_Metadata:
-      m_Items: []
-  - m_Id: 8422640620273666
-    m_Key: settings_google_unlink_success
-    m_Metadata:
-      m_Items: []
   - m_Id: 1211027840434176
     m_Key: camera_focus_enemy_fleet
     m_Metadata:
@@ -253,14 +193,6 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 394150433325056
     m_Key: mineral_amount
-    m_Metadata:
-      m_Items: []
-  - m_Id: 4035192935022592
-    m_Key: cost_text
-    m_Metadata:
-      m_Items: []
-  - m_Id: 4035192976965632
-    m_Key: details_text
     m_Metadata:
       m_Items: []
   - m_Id: 8166668865765377
@@ -285,86 +217,6 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 52355318322954240
     m_Key: UIPopupRedeemCode_Success
-    m_Metadata:
-      m_Items: []
-  - m_Id: 8795249610457088
-    m_Key: char_default_name
-    m_Metadata:
-      m_Items: []
-  - m_Id: 10734488275255297
-    m_Key: offline_cap_after
-    m_Metadata:
-      m_Items: []
-  - m_Id: 26803779604971521
-    m_Key: ship_reset
-    m_Metadata:
-      m_Items: []
-  - m_Id: 26803779604971522
-    m_Key: ship_reset_confirm
-    m_Metadata:
-      m_Items: []
-  - m_Id: 26803779604971523
-    m_Key: ship_reset_flagship_forbidden
-    m_Metadata:
-      m_Items: []
-  - m_Id: 26803779604971524
-    m_Key: ship_reset_no_refund
-    m_Metadata:
-      m_Items: []
-  - m_Id: 29004056152113152
-    m_Key: Restart
-    m_Metadata:
-      m_Items: []
-  - m_Id: 51571244754927616
-    m_Key: UITabButton_Commander
-    m_Metadata:
-      m_Items: []
-  - m_Id: 29169225431908352
-    m_Key: UITabButton_Fleet
-    m_Metadata:
-      m_Items: []
-  - m_Id: 76876329680502784
-    m_Key: Commander
-    m_Metadata:
-      m_Items: []
-  - m_Id: 76876329768583168
-    m_Key: Commander_Level
-    m_Metadata:
-      m_Items: []
-  - m_Id: 76884303979347968
-    m_Key: MaxShipSlots
-    m_Metadata:
-      m_Items: []
-  - m_Id: 76884304033873920
-    m_Key: ShipCountUnit
-    m_Metadata:
-      m_Items: []
-  - m_Id: 72096273103978497
-    m_Key: CommandPower
-    m_Metadata:
-      m_Items: []
-  - m_Id: 74144327743176704
-    m_Key: TacticPower
-    m_Metadata:
-      m_Items: []
-  - m_Id: 29007716294721538
-    m_Key: UITabTech_NextUnlockTitle
-    m_Metadata:
-      m_Items: []
-  - m_Id: 29084800778108928
-    m_Key: UITabTech_NextUnlockShipCount
-    m_Metadata:
-      m_Items: []
-  - m_Id: 44653455670640640
-    m_Key: UITabTech_NextModuleGrade
-    m_Metadata:
-      m_Items: []
-  - m_Id: 51578528474202112
-    m_Key: UITabCommander_PointsToNextLevel
-    m_Metadata:
-      m_Items: []
-  - m_Id: 51571244796870656
-    m_Key: UITabTech_ModulePointGetTitle
     m_Metadata:
       m_Items: []
   - m_Id: 61708245596504064
@@ -407,24 +259,12 @@ MonoBehaviour:
     m_Key: UIPanelExplorationGrid_OtherRunInProgress
     m_Metadata:
       m_Items: []
-  - m_Id: 78143796457373696
-    m_Key: UIPanelExplorationGrid_OtherRunInProgressWithAd
-    m_Metadata:
-      m_Items: []
   - m_Id: 74139633398448128
     m_Key: UIPanelExplorationGrid_AbandonAnotherRunConfirm
     m_Metadata:
       m_Items: []
-  - m_Id: 78143796528676864
-    m_Key: UIPanelExplorationGrid_AbandonAnotherRunConfirmWithAd
-    m_Metadata:
-      m_Items: []
   - m_Id: 74139633398448129
     m_Key: UIPanelExplorationGrid_AbandonRunConfirm
-    m_Metadata:
-      m_Items: []
-  - m_Id: 78143796528676865
-    m_Key: UIPanelExplorationGrid_AbandonRunConfirmWithAd
     m_Metadata:
       m_Items: []
   - m_Id: 78141668900864000
@@ -541,14 +381,6 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 74419203729129472
     m_Key: UIAvailableHullRow_Cost
-    m_Metadata:
-      m_Items: []
-  - m_Id: 29120731379793920
-    m_Key: UITabFleet_AddShipText
-    m_Metadata:
-      m_Items: []
-  - m_Id: 49731971877568512
-    m_Key: UITabFleet_FleetSynergyMultiply
     m_Metadata:
       m_Items: []
   - m_Id: 61639704113446912
@@ -727,156 +559,8 @@ MonoBehaviour:
     m_Key: UIFleet_EnemyFleetTitle
     m_Metadata:
       m_Items: []
-  - m_Id: 35928926043635712
-    m_Key: UITabFleetTactics_Name
-    m_Metadata:
-      m_Items: []
-  - m_Id: 56724262160826368
-    m_Key: UITabFleetTactics_NameShort
-    m_Metadata:
-      m_Items: []
-  - m_Id: 35928926072995840
-    m_Key: UITabFleetTactics_FormationType_LinearHorizontal
-    m_Metadata:
-      m_Items: []
-  - m_Id: 35979842788655104
-    m_Key: UITabFleetTactics_FormationType_LinearHorizontal_description
-    m_Metadata:
-      m_Items: []
-  - m_Id: 35979842818015232
-    m_Key: UITabFleetTactics_FormationType_XOffensive
-    m_Metadata:
-      m_Items: []
-  - m_Id: 35979842818015233
-    m_Key: UITabFleetTactics_FormationType_XOffensive_description
-    m_Metadata:
-      m_Items: []
-  - m_Id: 35979842818015234
-    m_Key: UITabFleetTactics_FormationType_XDefensive
-    m_Metadata:
-      m_Items: []
-  - m_Id: 35979842818015235
-    m_Key: UITabFleetTactics_FormationType_XDefensive_description
-    m_Metadata:
-      m_Items: []
-  - m_Id: 49703030982836224
-    m_Key: UITabFleetTactics_RepairBoost
-    m_Metadata:
-      m_Items: []
-  - m_Id: 49703031016390656
-    m_Key: UITabFleetTactics_RepairBoost_description
-    m_Metadata:
-      m_Items: []
-  - m_Id: 49703031016390657
-    m_Key: UITabFleetTactics_MissileBoost
-    m_Metadata:
-      m_Items: []
-  - m_Id: 49703031016390658
-    m_Key: UITabFleetTactics_MissileBoost_description
-    m_Metadata:
-      m_Items: []
-  - m_Id: 49703031016390659
-    m_Key: UITabFleetTactics_AircraftBoost
-    m_Metadata:
-      m_Items: []
-  - m_Id: 49703031016390660
-    m_Key: UITabFleetTactics_AircraftBoost_description
-    m_Metadata:
-      m_Items: []
-  - m_Id: 36387413043314688
-    m_Key: UITabFleetTactics_LockedTitle
-    m_Metadata:
-      m_Items: []
-  - m_Id: 36387413089452032
-    m_Key: UITabFleetTactics_LockedMessage
-    m_Metadata:
-      m_Items: []
-  - m_Id: 31664304520298496
-    m_Key: UnlockButtonText
-    m_Metadata:
-      m_Items: []
-  - m_Id: 29032478144331777
-    m_Key: LevelupButtonText
-    m_Metadata:
-      m_Items: []
-  - m_Id: 29032478144331776
-    m_Key: UpgradeButtonText
-    m_Metadata:
-      m_Items: []
-  - m_Id: 29033643212931072
-    m_Key: UpgradeButtonTextCompleted
-    m_Metadata:
-      m_Items: []
-  - m_Id: 29033643212931073
-    m_Key: LevelupButtonTextMax
-    m_Metadata:
-      m_Items: []
-  - m_Id: 31773314347040768
-    m_Key: UITabSettings_SettingsText
-    m_Metadata:
-      m_Items: []
-  - m_Id: 31783074207236099
-    m_Key: UITabSettings_Account
-    m_Metadata:
-      m_Items: []
-  - m_Id: 31773314347040769
-    m_Key: UITabSettings_NameChange
-    m_Metadata:
-      m_Items: []
-  - m_Id: 52355318373285888
-    m_Key: UITabSettings_RedeemCode
-    m_Metadata:
-      m_Items: []
-  - m_Id: 31783074207236097
-    m_Key: UITabSettings_GoogleLink
-    m_Metadata:
-      m_Items: []
-  - m_Id: 31783074207236098
-    m_Key: UITabSettings_GoogleUnlink
-    m_Metadata:
-      m_Items: []
-  - m_Id: 31783074207236096
-    m_Key: UITabSettings_Logout
-    m_Metadata:
-      m_Items: []
-  - m_Id: 31783074207236100
-    m_Key: UITabSettings_General
-    m_Metadata:
-      m_Items: []
-  - m_Id: 31783074203041792
-    m_Key: UITabSettings_Language
-    m_Metadata:
-      m_Items: []
-  - m_Id: 51134935167008768
-    m_Key: UITabSettings_Bgm
-    m_Metadata:
-      m_Items: []
-  - m_Id: 51134935167008769
-    m_Key: UITabSettings_Fx
-    m_Metadata:
-      m_Items: []
-  - m_Id: 70994983829504000
-    m_Key: UITabSettings_ETC
-    m_Metadata:
-      m_Items: []
-  - m_Id: 31783074207236101
-    m_Key: UITabSettings_License
-    m_Metadata:
-      m_Items: []
   - m_Id: 31783074207236102
     m_Key: UITabSettings_Info
-    m_Metadata:
-      m_Items: []
-  - m_Id: 32106946823585792
-    m_Key: UITabRank_Score
-    m_Metadata:
-      m_Items: []
-  - m_Id: 32106946823585793
-    m_Key: UITabRank_Rank
-    m_Metadata:
-      m_Items: []
-  - m_Id: 32106946823585794
-    m_Key: UITabRank_Season
     m_Metadata:
       m_Items: []
   - m_Id: 32107824360062976
@@ -891,48 +575,8 @@ MonoBehaviour:
     m_Key: UITabRank_refresh
     m_Metadata:
       m_Items: []
-  - m_Id: 32106946823585797
-    m_Key: UITabRank_MyInfo
-    m_Metadata:
-      m_Items: []
-  - m_Id: 32106946823585798
-    m_Key: UITabRank_Pvp
-    m_Metadata:
-      m_Items: []
-  - m_Id: 32106946823585799
-    m_Key: UITabRank_Exploration
-    m_Metadata:
-      m_Items: []
-  - m_Id: 57108516506042368
-    m_Key: UITabExploration_exploration
-    m_Metadata:
-      m_Items: []
-  - m_Id: 33428911052161024
-    m_Key: UITabExploration_TryZone
-    m_Metadata:
-      m_Items: []
-  - m_Id: 35640746719444992
-    m_Key: UITabExploration_PreviousStageRequired
-    m_Metadata:
-      m_Items: []
   - m_Id: 37053841400528896
     m_Key: UITabExploration_RetreatConfirm
-    m_Metadata:
-      m_Items: []
-  - m_Id: 59723571462537216
-    m_Key: UIPrepareBattle_Retreat
-    m_Metadata:
-      m_Items: []
-  - m_Id: 59723571500285952
-    m_Key: UIPrepareBattle_FleetSettings
-    m_Metadata:
-      m_Items: []
-  - m_Id: 59723571500285953
-    m_Key: UIPrepareBattle_StartBattle
-    m_Metadata:
-      m_Items: []
-  - m_Id: 43649151207866368
-    m_Key: UITabPvp_RetreatTitle
     m_Metadata:
       m_Items: []
   - m_Id: 43649151266586624
@@ -959,54 +603,6 @@ MonoBehaviour:
     m_Key: UIPopupConfirm_ExpLabel
     m_Metadata:
       m_Items: []
-  - m_Id: 64946077664411650
-    m_Key: UIPopupConfirm_AircraftCount
-    m_Metadata:
-      m_Items: []
-  - m_Id: 57012466176884736
-    m_Key: UITabShip_ShipNameHeader
-    m_Metadata:
-      m_Items: []
-  - m_Id: 57014645939896320
-    m_Key: UITabShip_ModuleSelectSectionText
-    m_Metadata:
-      m_Items: []
-  - m_Id: 57014645939896321
-    m_Key: UITabShip_ModuleStatusSectionText
-    m_Metadata:
-      m_Items: []
-  - m_Id: 57014645944090624
-    m_Key: UITabShip_ModuleEnhanceSectionText
-    m_Metadata:
-      m_Items: []
-  - m_Id: 34285289010495488
-    m_Key: UITabShip_ModuleReset
-    m_Metadata:
-      m_Items: []
-  - m_Id: 34285289056632832
-    m_Key: UITabShip_ModuleResetConfirm
-    m_Metadata:
-      m_Items: []
-  - m_Id: 43020881605033984
-    m_Key: UITabShip_GradeUp
-    m_Metadata:
-      m_Items: []
-  - m_Id: 43056462032666624
-    m_Key: UITabShip_Require
-    m_Metadata:
-      m_Items: []
-  - m_Id: 43020881659559936
-    m_Key: UITabShip_GradeDown
-    m_Metadata:
-      m_Items: []
-  - m_Id: 43020881659559937
-    m_Key: UITabShip_LevelUp
-    m_Metadata:
-      m_Items: []
-  - m_Id: 43020881659559938
-    m_Key: UITabShip_LevelDown
-    m_Metadata:
-      m_Items: []
   - m_Id: 57079978713284608
     m_Key: Simple_Attack
     m_Metadata:
@@ -1019,88 +615,12 @@ MonoBehaviour:
     m_Key: Simple_MissileAttack
     m_Metadata:
       m_Items: []
-  - m_Id: 57079978742644736
-    m_Key: Simple_Health
-    m_Metadata:
-      m_Items: []
-  - m_Id: 57079978746839040
-    m_Key: Simple_Speed
-    m_Metadata:
-      m_Items: []
-  - m_Id: 57079978746839041
-    m_Key: Simple_Repair
-    m_Metadata:
-      m_Items: []
   - m_Id: 57079978746839042
     m_Key: Simple_AirAttack
     m_Metadata:
       m_Items: []
-  - m_Id: 57079978746839043
-    m_Key: Simple_AirHealth
-    m_Metadata:
-      m_Items: []
-  - m_Id: 57079978746839044
-    m_Key: Simple_AirSpeed
-    m_Metadata:
-      m_Items: []
   - m_Id: 57079978746839045
     m_Key: Simple_AirCount
-    m_Metadata:
-      m_Items: []
-  - m_Id: 57079978746839046
-    m_Key: Simple_AirLaunchCount
-    m_Metadata:
-      m_Items: []
-  - m_Id: 57098646889299968
-    m_Key: Simple_AttackFireCount
-    m_Metadata:
-      m_Items: []
-  - m_Id: 57098646914465792
-    m_Key: Simple_AttackCool
-    m_Metadata:
-      m_Items: []
-  - m_Id: 57098646914465793
-    m_Key: Simple_ProjectileSpeed
-    m_Metadata:
-      m_Items: []
-  - m_Id: 57098646914465794
-    m_Key: Simple_SilenceTime
-    m_Metadata:
-      m_Items: []
-  - m_Id: 57098646914465795
-    m_Key: Simple_AirMaintenanceTime
-    m_Metadata:
-      m_Items: []
-  - m_Id: 57098646914465796
-    m_Key: Simple_AirAttackRange
-    m_Metadata:
-      m_Items: []
-  - m_Id: 57098646914465797
-    m_Key: Simple_AirAttackCool
-    m_Metadata:
-      m_Items: []
-  - m_Id: 57098646914465798
-    m_Key: Simple_AirAmmo
-    m_Metadata:
-      m_Items: []
-  - m_Id: 61660888288854016
-    m_Key: Simple_AirDisrupt
-    m_Metadata:
-      m_Items: []
-  - m_Id: 767916345524225
-    m_Key: module_type_beam_placeholder
-    m_Metadata:
-      m_Items: []
-  - m_Id: 767916349718528
-    m_Key: module_type_missile_placeholder
-    m_Metadata:
-      m_Items: []
-  - m_Id: 74453435637694464
-    m_Key: module_type_hull
-    m_Metadata:
-      m_Items: []
-  - m_Id: 767916349718531
-    m_Key: module_type_engine
     m_Metadata:
       m_Items: []
   - m_Id: 767916349718532
@@ -1131,10 +651,6 @@ MonoBehaviour:
     m_Key: UIFleet_ModuleSlot_NotInstalled
     m_Metadata:
       m_Items: []
-  - m_Id: 74331910964117504
-    m_Key: UIFleet_ModuleReinforce_Title
-    m_Metadata:
-      m_Items: []
   - m_Id: 78028320871940096
     m_Key: UIFleet_ModuleReinforce_ColStatus
     m_Metadata:
@@ -1147,70 +663,6 @@ MonoBehaviour:
     m_Key: UIFleet_ModuleReinforce_ColInvested
     m_Metadata:
       m_Items: []
-  - m_Id: 34285289056632833
-    m_Key: UIButton_Reset
-    m_Metadata:
-      m_Items: []
-  - m_Id: 72095040133791744
-    m_Key: UIButton_All
-    m_Metadata:
-      m_Items: []
-  - m_Id: 34837143712825344
-    m_Key: Simple_WatchAD
-    m_Metadata:
-      m_Items: []
-  - m_Id: 34837143750574080
-    m_Key: Simple_NoThanks
-    m_Metadata:
-      m_Items: []
-  - m_Id: 35605468558524416
-    m_Key: Simple_MineralX1
-    m_Metadata:
-      m_Items: []
-  - m_Id: 35605468608856064
-    m_Key: Simple_MineralX
-    m_Metadata:
-      m_Items: []
-  - m_Id: 38995797596831744
-    m_Key: Simple_FleetFullRepair
-    m_Metadata:
-      m_Items: []
-  - m_Id: 44270707776815104
-    m_Key: fleet_instant_repair_title
-    m_Metadata:
-      m_Items: []
-  - m_Id: 44270707831341056
-    m_Key: fleet_instant_repair_message
-    m_Metadata:
-      m_Items: []
-  - m_Id: 44270707831341057
-    m_Key: fleet_instant_repair_confirm
-    m_Metadata:
-      m_Items: []
-  - m_Id: 34837143750574082
-    m_Key: Simple_Free
-    m_Metadata:
-      m_Items: []
-  - m_Id: 35624047941124096
-    m_Key: Simple_Cancel
-    m_Metadata:
-      m_Items: []
-  - m_Id: 35624047941124097
-    m_Key: Simple_Confirm
-    m_Metadata:
-      m_Items: []
-  - m_Id: 39970930285215744
-    m_Key: Simple_VipReward
-    m_Metadata:
-      m_Items: []
-  - m_Id: 39970930322964480
-    m_Key: VipDailyBonus_Title
-    m_Metadata:
-      m_Items: []
-  - m_Id: 39970930322964481
-    m_Key: VipDailyBonus_Desc
-    m_Metadata:
-      m_Items: []
   - m_Id: 44304125210263552
     m_Key: DailyBonus_Title
     m_Metadata:
@@ -1221,14 +673,6 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 76937344908656640
     m_Key: DailyBonus_DescAchievement
-    m_Metadata:
-      m_Items: []
-  - m_Id: 45034403373383680
-    m_Key: DailyBonus_MonthLabel
-    m_Metadata:
-      m_Items: []
-  - m_Id: 45034403495018496
-    m_Key: DailyBonus_DailyLabel
     m_Metadata:
       m_Items: []
   - m_Id: 45034403495018497
@@ -1251,14 +695,6 @@ MonoBehaviour:
     m_Key: DailyBonus_VipPrefix
     m_Metadata:
       m_Items: []
-  - m_Id: 39970930322964482
-    m_Key: UIVipStatus_Frontier
-    m_Metadata:
-      m_Items: []
-  - m_Id: 39970930322964483
-    m_Key: UIVipStatus_Admiral
-    m_Metadata:
-      m_Items: []
   - m_Id: 40210342046728192
     m_Key: UIVipStatus_BenefitTitle
     m_Metadata:
@@ -1279,10 +715,6 @@ MonoBehaviour:
     m_Key: UIVipStatus_Benefit_Daily
     m_Metadata:
       m_Items: []
-  - m_Id: 40210342097059841
-    m_Key: UIVipStatus_Benefit_Mineral
-    m_Metadata:
-      m_Items: []
   - m_Id: 45040859153825792
     m_Key: UIVipStatus_Benefit_InstantFleetRestore
     m_Metadata:
@@ -1293,14 +725,6 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 39970930322964488
     m_Key: UIVipStatus_PurchasePrice
-    m_Metadata:
-      m_Items: []
-  - m_Id: 46124173239386112
-    m_Key: UIPopupMessage_AddShipTitle
-    m_Metadata:
-      m_Items: []
-  - m_Id: 46124173268746240
-    m_Key: UIPopupMessage_AddShipMessage
     m_Metadata:
       m_Items: []
   - m_Id: 46124173268746241
@@ -1335,22 +759,6 @@ MonoBehaviour:
     m_Key: UIPopupMessage_ZoneLocked
     m_Metadata:
       m_Items: []
-  - m_Id: 46939500441370624
-    m_Key: UIPopupMessage_MineralResetTitle
-    m_Metadata:
-      m_Items: []
-  - m_Id: 46939500504285184
-    m_Key: UIPopupMessage_MineralResetMessage
-    m_Metadata:
-      m_Items: []
-  - m_Id: 52375965195436032
-    m_Key: UIPopupMessage_ResetAllInvestedMineralTitle
-    m_Metadata:
-      m_Items: []
-  - m_Id: 52375965233184768
-    m_Key: UIPopupMessage_ResetAllInvestedMineralMessage
-    m_Metadata:
-      m_Items: []
   - m_Id: 48702148229070848
     m_Key: UIPopupMessage_VersionUpdateMessage
     m_Metadata:
@@ -1371,16 +779,8 @@ MonoBehaviour:
     m_Key: UIPopupMessage_PvpSeasonRewardMessage
     m_Metadata:
       m_Items: []
-  - m_Id: 51571244805259265
-    m_Key: UIPopupMessage_PvpTechCommanderRequiredTitle
-    m_Metadata:
-      m_Items: []
   - m_Id: 51571244805259266
     m_Key: UIPopupMessage_PvpCommanderLevelRequiredMessage
-    m_Metadata:
-      m_Items: []
-  - m_Id: 72095040133791745
-    m_Key: UIPopupMessage_ConvertPointMessage
     m_Metadata:
       m_Items: []
   - m_Id: 72096273103978496
@@ -1395,20 +795,8 @@ MonoBehaviour:
     m_Key: TacticPower
     m_Metadata:
       m_Items: []
-  - m_Id: 72099489506000896
-    m_Key: ConvertPointReset
-    m_Metadata:
-      m_Items: []
-  - m_Id: 72099489506000897
-    m_Key: ConvertPointAll
-    m_Metadata:
-      m_Items: []
   - m_Id: 50053580165349376
     m_Key: UICOMMON_AdmiralFeature
-    m_Metadata:
-      m_Items: []
-  - m_Id: 14264662300164096
-    m_Key: module_subtype_max_level_required
     m_Metadata:
       m_Items: []
   - m_Id: 42163135020138496

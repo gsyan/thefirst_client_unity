@@ -30,10 +30,6 @@ MonoBehaviour:
       continue today''s training to become a fleet commander.'
     m_Metadata:
       m_Items: []
-  - m_Id: 267705026215937
-    m_Localized: Open the Fleet tab.
-    m_Metadata:
-      m_Items: []
   - m_Id: 267705026215938
     m_Localized: Press the Add Ship button.
     m_Metadata:
@@ -87,18 +83,6 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 1368444066725888
     m_Localized: Upgrade the Missile module. You still have enough Module Points.
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1368444075114496
-    m_Localized: Select the Hangar module.
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1368444079308800
-    m_Localized: Unlock the Hangar module. You still have enough Module Points.
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1368444083503104
-    m_Localized: Upgrade the Hangar module. You still have enough Module Points.
     m_Metadata:
       m_Items: []
   - m_Id: 1368444087697408
@@ -174,10 +158,6 @@ MonoBehaviour:
     m_Localized: The Missile module is now Level 2.
     m_Metadata:
       m_Items: []
-  - m_Id: 5376173940801537
-    m_Localized: The Hangar module is now Level 2.
-    m_Metadata:
-      m_Items: []
   - m_Id: 5376173940801538
     m_Localized: The Hull module is now Tier 2.
     m_Metadata:
@@ -198,6 +178,10 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 5392725700378626
     m_Localized: Confirm your entry.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26288532360134656
+    m_Localized: Open the Fleet Manage Panel.
     m_Metadata:
       m_Items: []
   references:

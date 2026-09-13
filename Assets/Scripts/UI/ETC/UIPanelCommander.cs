@@ -29,19 +29,19 @@ public class UIPanelCommander : UIPanelBase
     public override void InitializeUIPanel()
     {
         if (m_commanderText != null)
-            CommonUtility.SetUILocText(m_commanderText, "Commander");
+            CommonUtility.SetUILocText(m_commanderText, "UI_Commander");
         
         if (m_commanderLevelText != null)
-            CommonUtility.SetUILocText(m_commanderLevelText, "Commander_Level");
+            CommonUtility.SetUILocText(m_commanderLevelText, "UI_CommanderLevel");
 
         if (m_shipCountTitleText != null)
-            CommonUtility.SetUILocText(m_shipCountTitleText, "MaxShipSlots");
+            CommonUtility.SetUILocText(m_shipCountTitleText, "UI_MaxShipSlots");
         if (m_shipCountUnitText != null)
-            CommonUtility.SetUILocText(m_shipCountUnitText, "ShipCountUnit");
+            CommonUtility.SetUILocText(m_shipCountUnitText, "UI_ShipCountUnit");
         if (m_commandPowerTitleText != null)
-            CommonUtility.SetUILocText(m_commandPowerTitleText, "CommandPower");
+            CommonUtility.SetUILocText(m_commandPowerTitleText, "UI_CommandPower");
         if (m_tacticPowerTitleText != null)
-            CommonUtility.SetUILocText(m_tacticPowerTitleText, "TacticPower");
+            CommonUtility.SetUILocText(m_tacticPowerTitleText, "UI_TacticPower");
 
         m_colorActive   = CommonUtility.PaletteColor("GeneralNeon");
         m_colorInactive = CommonUtility.PaletteColor("GeneralNeon.Dark1");
@@ -132,7 +132,7 @@ public class UIPanelCommander : UIPanelBase
             {
                 int progressRequired = nextNode.requireExp - currentLevelRequired;
                 int remaining = progressRequired - progressCurrent;
-                m_expGaugeText.text = LocalizationManager.Instance.Get("UITabCommander_PointsToNextLevel", remaining);
+                m_expGaugeText.text = LocalizationManager.Instance.Get("UI_ExpToNextLevel", remaining);
             }
             else
                 m_expGaugeText.text = string.Empty;

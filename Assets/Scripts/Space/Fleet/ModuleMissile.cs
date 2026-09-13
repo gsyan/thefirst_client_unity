@@ -160,13 +160,21 @@ public class ModuleMissile : ModuleBase
         {
             if (m_moduleState.IsBattleState() == false) { yield return null; continue; }
 
-            float missileHarassDelay = m_ownerShip != null ? m_ownerShip.GetHarassAdditionalCool() : 0f;
-            if (IsSilenced() == false && Time.time >= m_lastAttackTime + m_attackCoolTime + missileHarassDelay)
+            if (IsSilenced() == false && m_currentTarget != null && m_currentTarget.m_health > 0)
             {
-                if (m_currentTarget != null && m_currentTarget.m_health > 0)
+                float missileHarassDelay = m_ownerShip != null ? m_ownerShip.GetHarassAdditionalCool() : 0f;
+
+                if (m_isAttackSignalFired == false)
+                {
+                    if (Time.time >= m_lastAttackTime + m_attackCoolTime + missileHarassDelay)
+                        ArmAttackSignal();
+                }
+                else if (Time.time >= m_lastAttackTime + m_attackCoolTime + missileHarassDelay + m_attackPhaseOffset)
                 {
                     ExecuteAttackOnTarget(m_currentTarget);
-                    m_lastAttackTime = Time.time;
+                    m_lastAttackTime = Time.time - m_attackPhaseOffset;
+                    m_attackPhaseOffset = 0f;
+                    m_isAttackSignalFired = false;
                 }
             }
 
@@ -221,7 +229,7 @@ public class ModuleMissile : ModuleBase
     // 다음 공격까지 남은 시간
     public float GetRemainingCoolTime()
     {
-        float remaining = (m_lastAttackTime + m_attackCoolTime) - Time.time;
+        float remaining = (m_lastAttackTime + m_attackCoolTime + m_attackPhaseOffset) - Time.time;
         return Mathf.Max(0f, remaining);
     }
     

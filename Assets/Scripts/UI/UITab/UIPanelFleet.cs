@@ -507,9 +507,9 @@ public class UIPanelFleet : UIPanelBase
         int tacticPowerMax = commanderInfo != null ? commanderInfo.tacticPowerMax : 0;
 
         if (m_commandPowerRow != null)
-            m_commandPowerRow.SetRow("CommandPower", $"{usedCommandPower} / {maxCommandPower}", rawValue: true);
+            m_commandPowerRow.SetRow("UI_CommandPower", $"{usedCommandPower} / {maxCommandPower}", rawValue: true);
         if (m_tacticPowerRow != null)
-            m_tacticPowerRow.SetRow("TacticPower", $"{tacticPower} / {tacticPowerMax}", rawValue: true);
+            m_tacticPowerRow.SetRow("UI_TacticPower", $"{tacticPower} / {tacticPowerMax}", rawValue: true);
     }
 
     // 소모량 조정 팝업(UIPopupConvertExplorationPoint)을 열어 사용자가 직접 수치를 정하도록 함
@@ -833,12 +833,16 @@ public class UIPanelFleet : UIPanelBase
             return;
         }
 
-        NetworkManager.Instance.PlaceFleetShip(new FleetPlaceShipRequest
+        // 지크프리트 함대(서버 미등록)는 서버가 모르는 슬롯이라 PlaceFleetShip을 호출하면 항상 실패함 — 로컬 반영만으로 끝냄
+        if (ObjectManager.Instance.IsSiegfriedFleetActive() == false)
         {
-            slotIndex = slotIndex,
-            hullSubType = hullSubType,
-            isFront = slotIsFront,
-        }, OnPlaceFleetShipResponse);
+            NetworkManager.Instance.PlaceFleetShip(new FleetPlaceShipRequest
+            {
+                slotIndex = slotIndex,
+                hullSubType = hullSubType,
+                isFront = slotIsFront,
+            }, OnPlaceFleetShipResponse);
+        }
 
         ObjectManager.Instance.ReplaceMyFleetShipAt(slotIndex, hullSubType, slotIsFront, keptModules);
         RefreshFleetComposition();

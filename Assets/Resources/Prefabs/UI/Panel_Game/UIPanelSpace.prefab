@@ -1376,6 +1376,11 @@ MonoBehaviour:
   bMainPanel: 1
   bCameraMove: 0
   m_tapButtons: {fileID: 9014777236800911226}
+  m_commanderLabelText: {fileID: 5818859552005244532}
+  m_fleetLabelText: {fileID: 5210933064446688075}
+  m_settingsLabelText: {fileID: 7062801169084796950}
+  m_rankLabelText: {fileID: 8650421527237253204}
+  m_explorationLabelText: {fileID: 9100000000000104}
 --- !u!1 &3560948174848336326
 GameObject:
   m_ObjectHideFlags: 0
@@ -3564,9 +3569,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_StringReference:
     m_TableReference:
-      m_TableCollectionName: GUID:d85d8ecc73ff1304c8410066ceb06829
+      m_TableCollectionName: 
     m_TableEntryReference:
-      m_KeyId: 32106946823585793
+      m_KeyId: 0
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 0
@@ -3695,7 +3700,7 @@ GameObject:
   - component: {fileID: 5818859552005244532}
   - component: {fileID: 2772843785164193066}
   m_Layer: 5
-  m_Name: TextTech
+  m_Name: TextCommander
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

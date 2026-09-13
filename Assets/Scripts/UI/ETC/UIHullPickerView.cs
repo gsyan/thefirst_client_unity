@@ -51,9 +51,9 @@ public class UIHullPickerView : MonoBehaviour
         if (m_statsTitleText != null)
             CommonUtility.SetUILocText(m_statsTitleText, "UIFleet_StatsTitle");
         if (m_confirmButtonText != null)
-            CommonUtility.SetUILocText(m_confirmButtonText, "Simple_Confirm");
+            CommonUtility.SetUILocText(m_confirmButtonText, "UI_Confirm");
         if (m_cancelButtonText != null)
-            CommonUtility.SetUILocText(m_cancelButtonText, "Simple_Cancel");
+            CommonUtility.SetUILocText(m_cancelButtonText, "UI_Cancel");
 
         gameObject.SetActive(false);
     }
@@ -201,7 +201,7 @@ public class UIHullPickerView : MonoBehaviour
         int projectedUsedCommandPower = m_baseUsedCommandPower + selectedCost;
         bool isOverCommandPower = projectedUsedCommandPower > m_maxCommandPower;
 
-        m_commandPowerRow.SetRow("CommandPower", $"{projectedUsedCommandPower} / {m_maxCommandPower}", rawValue: true);
+        m_commandPowerRow.SetRow("UI_CommandPower", $"{projectedUsedCommandPower} / {m_maxCommandPower}", rawValue: true);
         m_commandPowerRow.SetValueColor(CommonUtility.PaletteColor(isOverCommandPower == true ? "Text.Warning" : "Text.Dark1"));
         LayoutRebuilder.ForceRebuildLayoutImmediate(m_commandPowerRow.transform as RectTransform);
 

@@ -1,49 +1,26 @@
-// 구식 그레이드 기반 함대 구성 전체 주석처리 — 프리셋 기반으로 재작성 전까지 비활성화
-#if false
 using System.Collections.Generic;
 using UnityEngine;
 
 // 튜토리얼 오프닝 시네마틱(관전 전투 연출) 전용 — 플레이어 개입 없는 NPC 함대 즉석 생성
 public static class TutorialCinematicController
 {
-    // T1~T14 함체 프리팹의 빔/미사일/격납고 슬롯 개수 상한 (datatable_module.csv 기준, moduleLevel=1 슬롯 구성)
-    // DataTableZoneEditor.k_slotCap과 동일 데이터 — 그쪽은 에디터 전용 코드라 런타임에서 재사용 불가해 복제
-    private static readonly Dictionary<int, (int beam, int missile, int hangar)> k_slotCap = new Dictionary<int, (int, int, int)>
-    {
-        { 1,  (1, 1, 1) }, { 2,  (2, 1, 1) }, { 3,  (2, 1, 1) }, { 4,  (2, 2, 1) },
-        { 5,  (2, 2, 2) }, { 6,  (2, 2, 2) }, { 7,  (3, 2, 2) }, { 8,  (3, 3, 2) },
-        { 9,  (3, 3, 3) }, { 10, (4, 3, 3) }, { 11, (4, 4, 3) }, { 12, (4, 4, 4) },
-        { 13, (5, 4, 4) }, { 14, (5, 5, 4) },
-    };
-
-    // gradeLevel 함체 등급(1~14) 함선 1척 정보 생성 — 빔/미사일/격납고 슬롯을 풀로 채움
+    // gradeLevel(함체 티어) 함선 1척 정보 생성 — 그 티어의 함체 데이터(실드/요격체 없는 기본형)를 찾아 빔/미사일/격납고 슬롯을 전부 같은 티어 모듈로 채움
     public static ShipInfo BuildCinematicShipInfo(int gradeLevel, int positionIndex)
     {
-        (int beam, int missile, int hangar) cap;
-        if (k_slotCap.TryGetValue(gradeLevel, out cap) == false)
-            cap = k_slotCap[14];
+        DataTableModule moduleTable = DataManager.Instance.m_dataTableModule;
+        ModuleData hullData = FindBasicHullDataAtTier(moduleTable, gradeLevel);
+        if (hullData == null) return null;
 
-        // moduleLevel은 서브타입(등급) 안에서의 세부 레벨(1부터 시작) — 등급 자체는 moduleSubType(t{gradeLevel})으로 이미 표현됨
-        const int moduleLevel = 1;
+        int[] maxSlots = FleetComposition.ParseMaxSlotsFromHullSubType(hullData.moduleSubType); // [beam, missile, hangar, shield, interceptor]
 
-        List<ModuleInfo> beams = new List<ModuleInfo>();
-        for (int b = 0; b < cap.beam; b++)
-            beams.Add(new ModuleInfo { moduleType = EModuleType.beam, moduleSubType = ParseSubType($"beam_t{gradeLevel}_m1"), moduleLevel = moduleLevel, bodyIndex = 0, slotIndex = b });
+        List<ModuleInfo> beams    = BuildFullModuleList(EModuleType.beam,    moduleTable.BeamModules,    gradeLevel, maxSlots[0]);
+        List<ModuleInfo> missiles = BuildFullModuleList(EModuleType.missile, moduleTable.MissileModules, gradeLevel, maxSlots[1]);
+        List<ModuleInfo> hangars  = BuildFullModuleList(EModuleType.hangar,  moduleTable.HangarModules,  gradeLevel, maxSlots[2]);
 
-        List<ModuleInfo> missiles = new List<ModuleInfo>();
-        for (int m = 0; m < cap.missile; m++)
-            missiles.Add(new ModuleInfo { moduleType = EModuleType.missile, moduleSubType = ParseSubType($"missile_t{gradeLevel}_m1"), moduleLevel = moduleLevel, bodyIndex = 0, slotIndex = m });
-
-        List<ModuleInfo> hangars = new List<ModuleInfo>();
-        for (int h = 0; h < cap.hangar; h++)
-            hangars.Add(new ModuleInfo { moduleType = EModuleType.hangar, moduleSubType = ParseSubType($"hangar_t{gradeLevel}_m1"), moduleLevel = moduleLevel, bodyIndex = 0, slotIndex = h });
-
-        ModuleBodyInfo body = new ModuleBodyInfo
+        ModuleHullInfo hull = new ModuleHullInfo
         {
             moduleType = EModuleType.hull,
-            moduleSubType = ParseSubType($"body_t{gradeLevel}_m1"),
-            moduleLevel = moduleLevel,
-            bodyIndex = 0,
+            moduleSubType = hullData.moduleSubType,
             beams = beams,
             missiles = missiles,
             hangars = hangars,
@@ -56,8 +33,60 @@ public static class TutorialCinematicController
             id = -(positionIndex + 1),
             shipName = $"CinematicShip_{positionIndex}",
             positionIndex = positionIndex,
-            bodies = new List<ModuleBodyInfo> { body },
+            hullSubType = hullData.moduleSubType,
+            hulls = new List<ModuleHullInfo> { hull },
         };
+    }
+
+    // gradeLevel 티어의 함체 데이터 중 실드/요격체가 없는 기본형을 찾음 — 없으면 그 티어에서 찾은 첫 항목으로 대체
+    private static ModuleData FindBasicHullDataAtTier(DataTableModule moduleTable, int gradeLevel)
+    {
+        List<ModuleData> hulls = moduleTable.HullModules.modules;
+        ModuleData fallback = null;
+
+        for (int i = 0; i < hulls.Count; i++)
+        {
+            ModuleData data = hulls[i];
+            if (CommonUtility.ParseTier(data.moduleSubType) != gradeLevel) continue;
+            if (fallback == null) fallback = data;
+
+            int[] composition = CommonUtility.ParseHullSlotComposition(data.moduleSubType);
+            if (composition[3] == 0 && composition[4] == 0) return data; // 실드/요격체 없는 기본형
+        }
+
+        return fallback;
+    }
+
+    // slotCount칸 전부를 gradeLevel 티어 모듈로 채움 — 정확히 그 티어 데이터가 없으면 그보다 낮은 티어 중 가장 높은 것으로 대체
+    private static List<ModuleInfo> BuildFullModuleList(EModuleType moduleType, ModuleDataList categoryModules, int gradeLevel, int slotCount)
+    {
+        List<ModuleInfo> list = new List<ModuleInfo>();
+        if (slotCount <= 0) return list;
+
+        ModuleData data = FindClosestModuleDataAtOrBelowTier(categoryModules, gradeLevel);
+        if (data == null) return list;
+
+        for (int i = 0; i < slotCount; i++)
+            list.Add(new ModuleInfo { moduleType = moduleType, moduleSubType = data.moduleSubType, slotIndex = i });
+
+        return list;
+    }
+
+    private static ModuleData FindClosestModuleDataAtOrBelowTier(ModuleDataList categoryModules, int gradeLevel)
+    {
+        ModuleData best = null;
+        int bestTier = 0;
+        for (int i = 0; i < categoryModules.modules.Count; i++)
+        {
+            ModuleData data = categoryModules.modules[i];
+            int tier = CommonUtility.ParseTier(data.moduleSubType);
+            if (tier <= gradeLevel && tier > bestTier)
+            {
+                bestTier = tier;
+                best = data;
+            }
+        }
+        return best;
     }
 
     // gradeLevel 등급 함선 shipCount척으로 구성된 함대 정보 생성 (positionIndex 0 = 기함)
@@ -65,7 +94,10 @@ public static class TutorialCinematicController
     {
         List<ShipInfo> ships = new List<ShipInfo>();
         for (int i = 0; i < shipCount; i++)
-            ships.Add(BuildCinematicShipInfo(gradeLevel, i));
+        {
+            ShipInfo ship = BuildCinematicShipInfo(gradeLevel, i);
+            if (ship != null) ships.Add(ship);
+        }
 
         return new FleetInfo { fleetName = fleetName, ships = ships };
     }
@@ -82,7 +114,10 @@ public static class TutorialCinematicController
     {
         List<ShipInfo> ships = new List<ShipInfo>();
         for (int i = 0; i < k_siegfriedGradeLevels.Length; i++)
-            ships.Add(BuildCinematicShipInfo(k_siegfriedGradeLevels[i], i));
+        {
+            ShipInfo ship = BuildCinematicShipInfo(k_siegfriedGradeLevels[i], i);
+            if (ship != null) ships.Add(ship);
+        }
 
         return new FleetInfo { fleetName = fleetName, ships = ships };
     }
@@ -107,27 +142,29 @@ public static class TutorialCinematicController
     {
         List<ShipInfo> ships = new List<ShipInfo>();
         for (int i = 0; i < shipGradeLevels.Length; i++)
-            ships.Add(BuildCinematicShipInfo(shipGradeLevels[i], i));
+        {
+            ShipInfo ship = BuildCinematicShipInfo(shipGradeLevels[i], i);
+            if (ship != null) ships.Add(ship);
+        }
 
         return new FleetInfo { fleetName = fleetName, ships = ships };
     }
 
-    // 적 웨이브 함대 1개 스폰 — 실제 게임의 ObjectManager.SpawnWave()/GetEnemySpawnPositionFromWave()와 동일한 방식
-    // 기함 그레이드(shipGradeLevels[0])에 맞는 grade 그룹의 프리셋을 사용 — 등급이 높을수록(함선이 커질수록) distance가 넓은 세트로 자동 전환됨
+    // 적 웨이브 함대 1개 스폰
+    // TODO(3단계): 스폰 위치 산출이 임시 배치임 — 삭제된 DataTableZone.GetFleetPosition/FleetPositionPreset을 대체할
+    // 신규 탐사 그리드 기준 위치 산출 로직으로 교체 필요. 지금은 내 함대 정면에 positionIndex만큼 옆으로 벌려 배치.
     public static SpaceFleet SpawnEnemyWaveFleet(int[] shipGradeLevels, int positionIndex)
     {
         SpaceFleet siegfriedFleet = ObjectManager.Instance.GetMyFleet();
         if (siegfriedFleet == null) return null;
 
-        int flagshipGrade = shipGradeLevels.Length > 0 ? shipGradeLevels[0] : 1;
-        FleetPositionPreset preset = DataManager.Instance.m_dataTableZone.GetFleetPosition(flagshipGrade, positionIndex);
-        if (preset == null) return null;
+        const float k_tempDistance = 150f;
+        const float k_tempLateralSpacing = 40f;
 
-        // 내 함대를 중심으로 한 구 표면 위에 배치 — distance가 항상 실제 거리(구의 반지름)가 되도록 y를 눌러 깎지 않음
         Vector3 basePos = siegfriedFleet.transform.position;
-        Vector3 localDir = Quaternion.Euler(preset.rotX, preset.rotY, preset.rotZ) * Vector3.forward;
-        Vector3 worldDir = siegfriedFleet.transform.TransformDirection(localDir);
-        Vector3 spawnPos = basePos + worldDir * preset.distance;
+        Vector3 forward = siegfriedFleet.transform.forward;
+        Vector3 right = siegfriedFleet.transform.right;
+        Vector3 spawnPos = basePos + forward * k_tempDistance + right * (positionIndex * k_tempLateralSpacing);
 
         Vector3 dirToPlayer = basePos - spawnPos;
         Quaternion spawnRot = dirToPlayer != Vector3.zero ? Quaternion.LookRotation(dirToPlayer) : Quaternion.identity;
@@ -141,8 +178,6 @@ public static class TutorialCinematicController
         SpaceFleet fleet = fleetObj.AddComponent<SpaceFleet>();
         fleet.InitializeSpaceFleet(fleetInfo, ETeam.TeamB, EFleetSource.fleet_source_cinematic, EUnitState.Move);
         ObjectManager.Instance.GetTeamFleets(ETeam.TeamB).Add(fleet);
-        // TEMP DEBUG — 튜토리얼 적함대 잔존 버그 추적용, 확인 끝나면 제거
-        Debug.Log($"[Tutorial][DEBUG] SpawnEnemyWaveFleet: {fleetObj.name} spawned, instanceID={fleet.GetInstanceID()}, TeamB count={ObjectManager.Instance.GetTeamFleets(ETeam.TeamB).Count}");
 
         // 지크프리트 기함은 다른 함선이 모두 전멸하기 전까지 공격 대상에서 제외
         foreach (SpaceShip ship in fleet.m_ships)
@@ -156,7 +191,7 @@ public static class TutorialCinematicController
             // 실제 게임의 TryStartCombat()과 동일 — 적뿐 아니라 내 함대도 같이 전투 상태로 전환해야 교전이 실제로 진행됨
             siegfriedFleet.SetFleetState(EUnitState.BattleExploration);
             fleet.SetFleetState(EUnitState.BattleExploration);
-            siegfriedFleet.StartCombat();            
+            siegfriedFleet.StartCombat();
             fleet.StartCombat();
         });
 
@@ -182,16 +217,7 @@ public static class TutorialCinematicController
     {
         if (fleet == null) return;
 
-        // TEMP DEBUG — 튜토리얼 적함대 잔존 버그 추적용, 확인 끝나면 제거
-        Debug.Log($"[Tutorial][DEBUG] DespawnCinematicFleet: {fleet.name} instanceID={fleet.GetInstanceID()} team={fleet.m_team}");
-
         ObjectManager.Instance.GetTeamFleets(fleet.m_team).Remove(fleet);
         Object.Destroy(fleet.gameObject);
     }
-
-    private static EModuleSubType ParseSubType(string name)
-    {
-        return System.Enum.TryParse(name, out EModuleSubType result) ? result : EModuleSubType.none;
-    }
 }
-#endif

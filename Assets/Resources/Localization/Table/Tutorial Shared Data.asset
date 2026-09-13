@@ -23,8 +23,8 @@ MonoBehaviour:
     m_Key: Tutorial_FirstPlay_SiegfriedAddShip
     m_Metadata:
       m_Items: []
-  - m_Id: 267705026215937
-    m_Key: Tutorial_FirstPlay_OpenFleetTab
+  - m_Id: 26288532360134656
+    m_Key: Tutorial_FirstPlay_OpenFleetPanel
     m_Metadata:
       m_Items: []
   - m_Id: 267705026215938
@@ -81,22 +81,6 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 5376173940801536
     m_Key: Tutorial_FirstPlay_LevelUpModuleMissileResult
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1368444075114496
-    m_Key: Tutorial_FirstPlay_TouchModuleHanger
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1368444079308800
-    m_Key: Tutorial_FirstPlay_UnlockModuleHanger
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1368444083503104
-    m_Key: Tutorial_FirstPlay_LevelUpModuleHanger
-    m_Metadata:
-      m_Items: []
-  - m_Id: 5376173940801537
-    m_Key: Tutorial_FirstPlay_LevelUpModuleHangerResult
     m_Metadata:
       m_Items: []
   - m_Id: 1368444087697408

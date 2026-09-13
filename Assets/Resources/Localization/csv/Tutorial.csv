@@ -3,8 +3,8 @@ Tutorial_FirstPlay_AiFirstHello,,"Hello again, Commander. This is your training 
 Let's continue today's training to become a fleet commander.","안녕하세요, 지휘관님. 훈련 AI입니다.
 오늘도 함대 지휘관이 되기 위한 훈련을 이어 가겠습니다."
 Tutorial_FirstPlay_SiegfriedAddShip,,"The Siegfried Fleet needs a new ship right now. Please follow my instructions and proceed.","지크프리트 함대는 지금 새로운 함선을 추가해야 합니다. 제 설명에 따라 진행해 주세요."
-Tutorial_FirstPlay_OpenFleetTab,,"Open the Fleet tab.","함대 탭을 열어보세요."
-Tutorial_FirstPlay_AddShip,,"Press the Add Ship button.","함선 추가 버튼을 눌러보세요."
+Tutorial_FirstPlay_OpenFleetPanel,,"Open the Fleet Manage Panel.","함대 관리창을 열어보세요."
+Tutorial_FirstPlay_DeployShip,,"Press the Deploy Ship button.","함선 배치 버튼을 눌러보세요."
 Tutorial_FirstPlay_CheckCommanderLevel,,"Adding a ship requires a certain Commander Level, and you currently meet it.","함선을 추가하려면 일정 수준의 지휘 레벨이 필요한데, 지금은 충분하네요."
 Tutorial_FirstPlay_CheckModulePoint,,"Adding a ship consumes Module Points, but they can be recovered anytime, so don't worry.","함선을 추가할 때는 모듈 포인트가 소모됩니다. 모듈 포인트는 언제든 회수할 수 있으니 걱정 마세요."
 Tutorial_FirstPlay_AddShipConfirm,,"Please confirm adding the ship.","함선 추가를 결정 해주세요."

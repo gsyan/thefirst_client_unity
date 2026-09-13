@@ -18,7 +18,7 @@ public class Commander
     public static string GetDisplayName(string rawName, long commanderId)
     {
         if (string.IsNullOrEmpty(rawName) || rawName.StartsWith("commander_", System.StringComparison.OrdinalIgnoreCase))
-            return LocalizationManager.Instance.Get("char_default_name") + commanderId;
+            return LocalizationManager.Instance.Get("UI_Commander") + commanderId;
         return rawName;
     }
 
