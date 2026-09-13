@@ -10,7 +10,9 @@ public static class ExplorationShipSpawnBridge
     // id는 서버가 실제 함대 편성과 대조(SpaceFleet.RestoreDestroyedShips의 생존 판정, 체력 스냅샷 매칭 등)하는 데 쓰는 고유값 —
     // 호출부가 서버 응답의 ShipInfo.id를 그대로 넘겨야 함(생략하면 0 — 새로 배치돼 아직 서버에 확정되지 않은 슬롯에만 해당)
     // actualModules: 이 함선이 실제로 장착한 모듈 구성(슬롯 인덱스 포함) — null이면 무장 없는 빈 로드아웃
-    public static SpaceShip SpawnShip(SpaceFleet fleet, ModuleData hull, ShipFinalStats finalStats, ModuleHullInfo actualModules, int positionIndex, bool isFront, float healthMultiplier = 1f, float attackMultiplier = 1f, long id = 0)
+    // bWarp: true면 함대 후방에서 워프 이펙트+고속 이동으로 대형 자리에 합류(신규 함선 추가), false면 워프 이펙트 없이
+    // 후방에 스폰만 하고 최종 위치는 호출부의 UpdateShipFormation이 잡아줌(기존 슬롯 함체 교체 등)
+    public static SpaceShip SpawnShip(SpaceFleet fleet, ModuleData hull, ShipFinalStats finalStats, ModuleHullInfo actualModules, int positionIndex, bool isFront, float healthMultiplier = 1f, float attackMultiplier = 1f, long id = 0, bool bWarp = false)
     {
         if (fleet == null || hull == null) return null;
 
@@ -22,8 +24,7 @@ public static class ExplorationShipSpawnBridge
         spaceShip.m_healthMultiplier = healthMultiplier;
         spaceShip.m_attackMultiplier = attackMultiplier;
         spaceShip.InitializeSpaceShip(fleet, shipInfo, finalStats);
-        // bWarp=false — 워프 이펙트 없이 최종 대형 위치로 즉시 배치 (UpdateShipFormation이 그 자리를 잡아줌)
-        fleet.AddShip(spaceShip, bWarp: false);
+        fleet.AddShip(spaceShip, bWarp: bWarp);
         return spaceShip;
     }
 

@@ -16,6 +16,7 @@ public class UIPanelFleet : UIPanelBase
     [SerializeField] private UIStatRow m_statsRowPrefab;     // 성능 컬럼 전용 — 선택한 함선의 상세 스탯
     [SerializeField] private UIPlacedShipRow m_placedShipRowPrefab;
     [SerializeField] private InfiniteScrollView m_placedShipsScrollView; // 배치된 함선 목록 — 세로 가상 스크롤(PlacedShipsContainer 아래 배치된 스크롤뷰)
+    private bool m_placedShipRowActionsLocked; // 튜토리얼 등에서 행 선택 클릭은 유지한 채 함체교체 버튼/전후방 토글만 잠글 때 사용(OnPlacedShipItemBind에서 재적용)
     [SerializeField] private UIHullPickerView m_hullPicker; // 함선 타입선택 버튼을 누르면 뜨는 함체 선택 팝업(UIPanelFleet 루트 아래 내장, PlacedShipsContainer와는 별개)
     [SerializeField] private UIShipLoadoutEditorView m_shipLoadoutEditor; // 성능 컬럼 하단 "함선 수정" 버튼을 누르면 뜨는 슬롯별 모듈 on/off 편집 화면(읽기전용 모드에서는 버튼 비활성)
     [SerializeField] private Button m_editLoadoutButton; // 선택된 함선이 없으면(m_selectedSlotIndex == -1) 비활성화
@@ -544,6 +545,20 @@ public class UIPanelFleet : UIPanelBase
             m_placedShipsScrollView.Initialize(m_placedTotalSlotCount, m_placedShipRowPrefab.gameObject);
     }
 
+    // 튜토리얼 등에서 배치된 함선 행의 함체교체 버튼/전후방 토글만 잠금(행 자체 선택 클릭은 유지) — 스크롤로 풀 재바인딩돼도
+    // OnPlacedShipItemBind에서 계속 재적용되도록 플래그로 저장하고, 지금 보이는 행에도 즉시 반영
+    public void SetPlacedShipRowActionsLocked(bool locked)
+    {
+        m_placedShipRowActionsLocked = locked;
+        if (m_placedShipsScrollView == null) return;
+
+        m_placedShipsScrollView.ForEachVisibleItem((dataIndex, rowObject) =>
+        {
+            UIPlacedShipRow row = rowObject.GetComponent<UIPlacedShipRow>();
+            if (row != null) row.SetActionsInteractable(locked == false);
+        });
+    }
+
     // InfiniteScrollView가 dataIndex번 슬롯을 화면에 배치할 때마다 호출 — 캐시된 데이터로 실제 바인딩
     private void OnPlacedShipItemBind(int dataIndex, GameObject rowObject)
     {
@@ -563,6 +578,8 @@ public class UIPanelFleet : UIPanelBase
             bool isDestroyedThisRun = IsShipDestroyedThisRun(dataIndex);
             row.Setup(dataIndex, entry.hullSubType, entry.isFront, onFrontToggled, OnPlacedShipRowClickedFromUI, onTypeSelectClicked, showFrontToggle: m_isReadOnlyMode == false, isDestroyedThisRun: isDestroyedThisRun);
             row.SetSelected(dataIndex == m_selectedSlotIndex);
+            if (m_placedShipRowActionsLocked == true)
+                row.SetActionsInteractable(false);
         }
         else if (dataIndex < m_placedOpenSlotCount)
         {

@@ -396,6 +396,18 @@ public class UIManager : MonoSingleton<UIManager>
         return mainPanel != null && mainPanel.gameObject.activeInHierarchy;
     }
 
+    // 현재 top 패널의 CanvasGroup.interactable만 토글 — blocksRaycasts는 건드리지 않으므로 패널이 화면에서 차지하는
+    // 레이캐스트 차단 범위는 그대로 유지됨(그 바깥 3D 뷰 등은 영향 없음). 튜토리얼 Custom 트리거 대기 중처럼
+    // 패널 안 버튼만 잠깐 막고 싶을 때 사용
+    public void SetTopPanelInteractable(bool interactable)
+    {
+        UIPanelBase top = GetTop();
+        if (top == null || top.gameObject == null) return;
+
+        CanvasGroup canvasGroup = GetOrAddCanvasGroup(top.gameObject);
+        canvasGroup.interactable = interactable;
+    }
+
     public bool CanCameraMove()
     {
         UIPanelBase top = GetTop();

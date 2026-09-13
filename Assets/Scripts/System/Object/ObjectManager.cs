@@ -817,7 +817,7 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         {
             ShipInfo shipInfo = fleetInfo.ships[i];
             ModuleHullInfo modules = shipInfo.hulls != null && shipInfo.hulls.Count > 0 ? shipInfo.hulls[0] : null;
-            siegfriedComposition.TryPlaceShip(shipInfo.hullSubType, isFront: i == 0, modules);
+            siegfriedComposition.TryPlaceShip(shipInfo.hullSubType, isFront: true, modules); // 지크프리트 함대는 전원 전방 배치
         }
 
         DataManager.Instance.m_currentFleetComposition = siegfriedComposition;
@@ -955,6 +955,7 @@ public class ObjectManager : MonoSingleton<ObjectManager>
 
         // 존 런 진행 중 함선 종류를 바꿔도 체력이 회복되면 안 되므로, 교체 전 이전 함선의 체력 비율을 미리 계산해둠(빈 슬롯이면 1f=만피)
         SpaceShip oldShip = myFleet.m_ships.Find(s => s != null && s.m_shipInfo.positionIndex == positionIndex);
+        bool isNewShip = oldShip == null; // 빈 슬롯에 처음 배치되는 경우 — 워프인 연출 대상(기존 함선의 함체 교체는 즉시 적용 유지)
         float previousHealthRatio = oldShip != null ? oldShip.GetHealthRatio() : 1f;
         if (oldShip != null)
             myFleet.RemoveShip(oldShip, refreshFormation: false, triggerDefeatEvents: false);
@@ -973,7 +974,7 @@ public class ObjectManager : MonoSingleton<ObjectManager>
 
         // 슬롯 정체성(id)은 함체가 바뀌어도 유지 — 비어있던 슬롯이었으면(oldShip null) 아직 서버에 확정된 id가 없으므로 0
         long preservedId = oldShip != null ? oldShip.m_shipInfo.id : 0;
-        SpaceShip newShip = ExplorationShipSpawnBridge.SpawnShip(myFleet, bodyModuleData, finalStats, modules, positionIndex, isFront, id: preservedId);
+        SpaceShip newShip = ExplorationShipSpawnBridge.SpawnShip(myFleet, bodyModuleData, finalStats, modules, positionIndex, isFront, id: preservedId, bWarp: isNewShip);
         // 존 런 진행 중이면 이전 함선의 손상 비율을 새 함선에 그대로 이전(회복 금지) — 평시 편성(런 없음)은 만피 유지
         if (newShip != null && IsExplorationRunActive() == true)
             newShip.ApplyHealthRatio(previousHealthRatio);
@@ -983,8 +984,13 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         if (newShip != null)
             UpdateFleetInfoShipAt(myFleet, positionIndex, newShip.m_shipInfo);
 
-        // 스무스 이동(RefreshFormation) 대신 bSmooth: false로 즉시 최종 위치에 배치 — 연출 없이 바로 나옴
-        myFleet.UpdateShipFormation(myFleet.m_currentFormationType, bSmooth: false);
+        // 신규 함선은 튜토리얼의 ShipArrivedAtFormation 조건(step6)이 도착을 기다릴 수 있게 등록
+        if (isNewShip == true && newShip != null && TutorialManager.Instance != null && TutorialManager.Instance.IsPlaying == true)
+            TutorialManager.Instance.SetPendingNewShip(newShip);
+
+        // 신규 함선(isNewShip)은 이미 워프인 이동 중이므로 재스냅 대상에서 제외 — 나머지 함선만 대형 조정을 위해 부드럽게 슬라이드.
+        // 기존 슬롯 함체 교체는 그대로 즉시 배치(bSmooth: false, 연출 없음)
+        myFleet.UpdateShipFormation(myFleet.m_currentFormationType, bSmooth: isNewShip, excludeShip: isNewShip ? newShip : null);
     }
 
     // myFleet.m_fleetInfo.ships에서 positionIndex가 일치하는 항목을 새 ShipInfo로 교체(없으면 추가) — ReplaceMyFleetShipAt 전용

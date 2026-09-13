@@ -9951,7 +9951,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1745369608396899380}
   m_Layer: 5
-  m_Name: Content
+  m_Name: Content(Hulls)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -11118,7 +11118,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2291591765581472073}
   m_Layer: 5
-  m_Name: Content
+  m_Name: Content(Modules)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

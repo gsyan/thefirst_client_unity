@@ -27,8 +27,8 @@ MonoBehaviour:
     m_Key: Tutorial_FirstPlay_OpenFleetPanel
     m_Metadata:
       m_Items: []
-  - m_Id: 267705026215938
-    m_Key: Tutorial_FirstPlay_AddShip
+  - m_Id: 26434500229464064
+    m_Key: Tutorial_FirstPlay_DeployShip
     m_Metadata:
       m_Items: []
   - m_Id: 1319437449691136
@@ -47,56 +47,20 @@ MonoBehaviour:
     m_Key: Tutorial_FirstPlay_AddShipComplete
     m_Metadata:
       m_Items: []
-  - m_Id: 1368444003811328
-    m_Key: Tutorial_FirstPlay_TouchShipSelector
+  - m_Id: 26469773436911616
+    m_Key: Tutorial_FirstPlay_SelectPlacedShip
     m_Metadata:
       m_Items: []
-  - m_Id: 1368444041560064
-    m_Key: Tutorial_FirstPlay_TouchShipManage
+  - m_Id: 26469773495631872
+    m_Key: Tutorial_FirstPlay_OpenLoadoutEditor
     m_Metadata:
       m_Items: []
-  - m_Id: 1368444049948672
-    m_Key: Tutorial_FirstPlay_TouchModuleBeam
+  - m_Id: 26469773495631873
+    m_Key: Tutorial_FirstPlay_ToggleBeamInstall
     m_Metadata:
       m_Items: []
-  - m_Id: 1368444054142976
-    m_Key: Tutorial_FirstPlay_LevelUpModuleBeam
-    m_Metadata:
-      m_Items: []
-  - m_Id: 5376173907247104
-    m_Key: Tutorial_FirstPlay_LevelUpModuleBeamResult
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1368444058337280
-    m_Key: Tutorial_FirstPlay_TouchModuleMissile
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1368444062531584
-    m_Key: Tutorial_FirstPlay_UnlockModuleMissile
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1368444066725888
-    m_Key: Tutorial_FirstPlay_LevelUpModuleMissile
-    m_Metadata:
-      m_Items: []
-  - m_Id: 5376173940801536
-    m_Key: Tutorial_FirstPlay_LevelUpModuleMissileResult
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1368444087697408
-    m_Key: Tutorial_FirstPlay_TouchModuleBody
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1368444091891712
-    m_Key: Tutorial_FirstPlay_UpgradeModuleBody
-    m_Metadata:
-      m_Items: []
-  - m_Id: 5376173940801538
-    m_Key: Tutorial_FirstPlay_UpgradeModuleBodyResult
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1368444096086016
-    m_Key: Tutorial_FirstPlay_UpgradeModuleBodyEffect
+  - m_Id: 26469773495631874
+    m_Key: Tutorial_FirstPlay_LoadoutConfirm
     m_Metadata:
       m_Items: []
   - m_Id: 1380098930245632

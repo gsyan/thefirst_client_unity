@@ -388,7 +388,8 @@ public class SpaceFleet : MonoBehaviour
         transform.rotation = Quaternion.LookRotation(dir);
     }
 
-    public void UpdateShipFormation(EFormationType formationType = EFormationType.linear_horizontal, bool bSmooth = true)
+    // excludeShip: 이 함선은 위치 재계산에서 제외 — 이미 별도로 워프인 이동 중인 신규 함선을 여기서 재스냅하면 그 연출이 끊김
+    public void UpdateShipFormation(EFormationType formationType = EFormationType.linear_horizontal, bool bSmooth = true, SpaceShip excludeShip = null)
     {
         m_currentFormationType = formationType;
         Dictionary<SpaceShip, Vector3> targets = CalculateFormationTargets(formationType);
@@ -396,6 +397,7 @@ public class SpaceFleet : MonoBehaviour
         foreach (var kv in targets)
         {
             if (kv.Key == null) continue;
+            if (kv.Key == excludeShip) continue;
             if (bSmooth == true)
                 kv.Key.MoveToFormation(kv.Value, bWarp: false, speedMult: 1f);
             else

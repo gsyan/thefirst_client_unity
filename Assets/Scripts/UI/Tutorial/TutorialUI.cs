@@ -16,6 +16,7 @@ public class TutorialUI : UIPopupBase
     private float m_borderPadding = 10f;
 
     private RectTransform m_targetRect;
+    private TutorialStep m_currentStep; // TargetClick 스텝 진행 중 m_targetRect가 파괴되면(풀링된 스크롤뷰 아이템 등) Update()에서 재조회하는 데 사용
     private Coroutine m_autoNextCoroutine;
     private Coroutine m_waitTargetCoroutine;
 
@@ -33,6 +34,8 @@ public class TutorialUI : UIPopupBase
     // 스텝 표시
     public void ShowStep(TutorialStep step)
     {
+        m_currentStep = step;
+
         // 진행 중인 코루틴 취소
         if (m_autoNextCoroutine != null)
         {
@@ -111,6 +114,19 @@ public class TutorialUI : UIPopupBase
                 m_mask.HideDim(); // targetUIId가 없으면 dim 없이 완전히 열림
         }
 
+        // Custom 트리거(자동 진행 대기)는 클릭으로 진행되면 안 되므로 현재 열린 패널의 버튼 입력만 잠금 —
+        // 화면 전체를 덮는 방식이 아니라 패널의 CanvasGroup만 건드리므로 3D 뷰 카메라 드래그는 그대로 동작함
+        UIManager.Instance.SetTopPanelInteractable(step.triggerType != ETutorialTrigger.Custom);
+
+        // 배치된 함선 "행 전체"를 타겟팅하는 스텝(targetUIId가 "[N]" 단독형 — 예: 함선 선택)에서는 그 안의
+        // 함체교체 버튼/전후방 토글이 행 클릭보다 먼저 클릭을 가로채면 안 되므로 같이 잠금 — 그 외 스텝은 항상 해제
+        UIPanelFleet fleetPanel = UIManager.Instance.GetPanel<UIPanelFleet>("UIPanelFleet");
+        if (fleetPanel != null)
+        {
+            bool isBareRowTarget = step.targetPanelName == "PlacedShipsContent" && IsBareIndexTargetId(step.targetUIId);
+            fleetPanel.SetPlacedShipRowActionsLocked(isBareRowTarget);
+        }
+
         // dim 없는 스텝(m_targetRect == null)에서는 3D 조작은 열어두되 상단 탭 버튼 등 일반 UI는 차단
         EventManager.Trigger_TutorialGeneralUIBlockedChanged(m_targetRect == null);
 
@@ -156,9 +172,28 @@ public class TutorialUI : UIPopupBase
         SetupStepTrigger(step);
     }
 
+    // TargetClick 스텝 진행 중 m_targetRect가 파괴되면(예: InfiniteScrollView 풀 리빌드로 대상 오브젝트가 교체됨) 매 프레임 재조회해서
+    // 마스크 훌/화살표/클릭핸들러를 새 인스턴스에 재연결 — Custom 트리거는 조건 코루틴 중복 시작을 피하기 위해 대상에서 제외
+    private void Update()
+    {
+        if (m_currentStep == null) return;
+        if (m_currentStep.triggerType != ETutorialTrigger.TargetClick) return;
+        if (m_targetRect != null) return; // 파괴된 오브젝트 참조는 Unity가 자동으로 null 취급함
+
+        RectTransform reResolved = FindTargetUI(m_currentStep.targetUIId, m_currentStep.targetPanelName);
+        if (reResolved == null) return; // 아직 못 찾음 — 다음 프레임에 다시 시도
+
+        m_targetRect = reResolved;
+        if (m_mask != null) m_mask.ShowDimWithHole(m_targetRect);
+        if (m_arrow != null && m_currentStep.showArrow) m_arrow.Show(m_targetRect, m_currentStep.arrowDirection);
+        EnsureClickHandler(m_currentStep.targetUIId);
+    }
+
     // 숨기기
     public void HideTutorialUI()
     {
+        m_currentStep = null;
+
         if (m_autoNextCoroutine != null)
         {
             StopCoroutine(m_autoNextCoroutine);
@@ -173,8 +208,21 @@ public class TutorialUI : UIPopupBase
         if (m_mask != null) m_mask.HideDim();
         if (m_arrow != null) m_arrow.Hide();
         if (m_borderFrame != null) m_borderFrame.gameObject.SetActive(false);
+        UIManager.Instance.SetTopPanelInteractable(true); // 튜토리얼 종료/스킵 시 패널이 잠긴 채로 남지 않게 원복
+        UIPanelFleet fleetPanel = UIManager.Instance.GetPanel<UIPanelFleet>("UIPanelFleet");
+        if (fleetPanel != null) fleetPanel.SetPlacedShipRowActionsLocked(false);
         EventManager.Trigger_TutorialGeneralUIBlockedChanged(false); // 튜토리얼 종료 — 일반 UI 차단 해제
         HidePopup();
+    }
+
+    // targetUIId가 "[N]" 단독형(뒤에 "/추가경로" 없이 인덱스만)인지 확인 — 배치된 함선 "행 전체"를 타겟팅하는 스텝 판별용
+    private bool IsBareIndexTargetId(string targetUIId)
+    {
+        if (string.IsNullOrEmpty(targetUIId)) return false;
+        if (targetUIId[0] != '[') return false;
+
+        int closeIdx = targetUIId.IndexOf(']');
+        return closeIdx == targetUIId.Length - 1;
     }
 
     // 대상 UI 찾기

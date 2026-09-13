@@ -30,22 +30,17 @@ MonoBehaviour:
       continue today''s training to become a fleet commander.'
     m_Metadata:
       m_Items: []
-  - m_Id: 267705026215938
-    m_Localized: Press the Add Ship button.
-    m_Metadata:
-      m_Items: []
   - m_Id: 1319437449691136
-    m_Localized: Adding a ship requires a certain Commander Level, and you currently
-      meet it.
+    m_Localized: Select the hull for the ship you want to add.
     m_Metadata:
       m_Items: []
   - m_Id: 1319437483245568
-    m_Localized: Adding a ship consumes Module Points, but they can be recovered
-      anytime, so don't worry.
+    m_Localized: Placing a hull requires allocating a certain amount of Command Power.
+      Please choose one that doesn't exceed your Command Power limit.
     m_Metadata:
       m_Items: []
   - m_Id: 1319437483245569
-    m_Localized: Please confirm adding the ship.
+    m_Localized: Press Confirm to finalize your selection.
     m_Metadata:
       m_Items: []
   - m_Id: 1328699047542784
@@ -55,47 +50,6 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 1336507092566016
     m_Localized: The new ship has been added.
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1368444003811328
-    m_Localized: The new ship has been added. Touch the ship.
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1368444041560064
-    m_Localized: Touch the Ship Management button.
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1368444049948672
-    m_Localized: Select the Beam module.
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1368444054142976
-    m_Localized: Upgrade the Beam module. You still have enough Module Points.
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1368444058337280
-    m_Localized: Select the Missile module.
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1368444062531584
-    m_Localized: Unlock the Missile module. You still have enough Module Points.
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1368444066725888
-    m_Localized: Upgrade the Missile module. You still have enough Module Points.
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1368444087697408
-    m_Localized: Select the Hull module.
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1368444091891712
-    m_Localized: Upgrade the Hull module. You still have enough Module Points.
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1368444096086016
-    m_Localized: Upgrading the Hull module increases not only the ship's HP but also
-      the number of attack modules.
     m_Metadata:
       m_Items: []
   - m_Id: 1380098930245632
@@ -150,18 +104,6 @@ MonoBehaviour:
       deducted once you win the battle.
     m_Metadata:
       m_Items: []
-  - m_Id: 5376173907247104
-    m_Localized: The Beam module is now Level 2.
-    m_Metadata:
-      m_Items: []
-  - m_Id: 5376173940801536
-    m_Localized: The Missile module is now Level 2.
-    m_Metadata:
-      m_Items: []
-  - m_Id: 5376173940801538
-    m_Localized: The Hull module is now Tier 2.
-    m_Metadata:
-      m_Items: []
   - m_Id: 5392725658435584
     m_Localized: To grow your fleet and withstand the enemies in pursuit, you need
       to explore to gain resources and strengthen your fleet. Try tapping the Exploration
@@ -182,6 +124,26 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 26288532360134656
     m_Localized: Open the Fleet Manage Panel.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26434500229464064
+    m_Localized: Press the Deploy Ship button.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26469773436911616
+    m_Localized: The new ship has been added. Select it.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26469773495631872
+    m_Localized: Press the Edit Ship button to edit its modules.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26469773495631873
+    m_Localized: Try installing the Beam module.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26469773495631874
+    m_Localized: Press Confirm to apply the changes.
     m_Metadata:
       m_Items: []
   references:

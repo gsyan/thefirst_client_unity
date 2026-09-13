@@ -116,7 +116,10 @@ public static class TutorialCinematicController
         for (int i = 0; i < k_siegfriedGradeLevels.Length; i++)
         {
             ShipInfo ship = BuildCinematicShipInfo(k_siegfriedGradeLevels[i], i);
-            if (ship != null) ships.Add(ship);
+            if (ship == null) continue;
+
+            ship.isFront = true; // 지크프리트 함대는 전원 전방 배치
+            ships.Add(ship);
         }
 
         return new FleetInfo { fleetName = fleetName, ships = ships };

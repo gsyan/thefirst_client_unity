@@ -192,6 +192,15 @@ public class UIPlacedShipRow : MonoBehaviour
         gameObject.SetActive(false);
     }
 
+    // 튜토리얼 등에서 행 자체 선택(OnRowClicked)은 유지한 채 함체교체 버튼/전후방 토글만 일시적으로 잠글 때 사용
+    public void SetActionsInteractable(bool interactable)
+    {
+        if (m_shipTypeSelectButton != null)
+            m_shipTypeSelectButton.interactable = interactable;
+        if (m_frontToggleSlide != null)
+            m_frontToggleSlide.SetInteractable(interactable);
+    }
+
     // isOn=true는 스위치가 오른쪽(후방)에 있다는 뜻이라 전방 여부로 다시 반전
     private void OnToggleSlideChanged(bool isOn)
     {
