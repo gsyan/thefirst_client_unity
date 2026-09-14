@@ -1,0 +1,6 @@
+stepId,message,triggerType,targetPanelName,targetUIId,showArrow,arrowDirection,textBoxOffsetX,textBoxOffsetY,textBoxSizeX,textBoxSizeY,textBoxPositionX,textBoxPositionY,autoNextDelay,preActionPanelName,preActionTabName,conditionType,conditionThreshold,conditionCount,targetModuleType
+step1,Tutorial_CommandPowerIncrease_OpenFleet,TargetClick,,FleetButton,True,Auto,0,0,0,0,0,-500,0,,,None,90,3,none
+step2,Tutorial_CommandPowerIncrease_OpenConvert,TargetClick,UIPanelFleet,ConvertToCommandPowerButton,True,Auto,0,0,0,0,0,-500,0,,,None,90,3,none
+step3,Tutorial_CommandPowerIncrease_SelectAll,TargetClick,UIPopupConvertExplorationPoint,AllButton,True,Auto,0,0,0,0,0,-500,0,,,None,90,3,none
+step4,Tutorial_CommandPowerIncrease_Confirm,TargetClick,UIPopupConvertExplorationPoint,ConfirmButton,True,Auto,0,0,0,0,0,-500,0,,,None,90,3,none
+step5,Tutorial_CommandPowerIncrease_Complete,AnyClick,,,False,Auto,0,0,0,0,0,-500,0,,,None,90,3,none

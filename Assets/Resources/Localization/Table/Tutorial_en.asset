@@ -162,6 +162,28 @@ MonoBehaviour:
       this run (not yet confirmed)."
     m_Metadata:
       m_Items: []
+  - m_Id: 26917950338236416
+    m_Localized: Let's check your Fleet. Open the fleet management screen.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26917950392762368
+    m_Localized: Command Power lets you deploy more or stronger ships. Tap here to
+      increase it.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26917950392762369
+    m_Localized: Select the All button to use all your Exploration Points.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26917950392762370
+    m_Localized: Press Confirm to convert your Exploration Points into Command Power.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26917950392762371
+    m_Localized: Command Power increased! Come back anytime you have spare Exploration
+      Points.
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

@@ -785,10 +785,6 @@ MonoBehaviour:
     m_Localized: Hull Unlock
     m_Metadata:
       m_Items: []
-  - m_Id: 78141668900864000
-    m_Localized: Abandon
-    m_Metadata:
-      m_Items: []
   - m_Id: 78447295653085184
     m_Localized: Cannot start PVP while an exploration run is in progress.
     m_Metadata:
@@ -1005,6 +1001,88 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 79158737540874241
     m_Localized: Convert Exploration Points
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79331435193696256
+    m_Localized: Daily Cell Clear
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79331435248222208
+    m_Localized: Daily Event Cell Clear
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79331435252416512
+    m_Localized: Daily Zone Clear
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79331435256610816
+    m_Localized: Clear {1} Cells Today
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79331435256610817
+    m_Localized: Clear {1} normal (non-event) cells today
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79331435256610818
+    m_Localized: Treasure(Exploration Point) x{1} Today
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79331435256610819
+    m_Localized: Clear Treasure(Exploration Point) event cells {1} times today
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79331435256610820
+    m_Localized: Treasure(Fleet Heal) x{1} Today
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79331435256610821
+    m_Localized: Clear Treasure(Fleet Heal) event cells {1} times today
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79331435256610822
+    m_Localized: Treasure(Tactic Power) x{1} Today
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79331435256610823
+    m_Localized: Clear Treasure(Tactic Power) event cells {1} times today
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79331435256610824
+    m_Localized: Clear {1} Zones Today
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79331435256610825
+    m_Localized: Escape {1} zone runs today (revisiting cleared zones counts too)
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79336418345615360
+    m_Localized: Achievements
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79336418400141312
+    m_Localized: Module Reinforce
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79356561679319040
+    m_Localized: There is another exploration in progress.\nZone {0} / Cell {1} /
+      Banked Exploration Point {2}\nAbandon it and start a new challenge in the selected
+      zone?\n* Watch an ad to recover 100% of banked points. Otherwise only 20% will
+      be recovered
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79356561738039296
+    m_Localized: There is an exploration in progress in another zone. Watch an ad
+      to receive 100% of the banked exploration points or abandon now for only 20%.
+      Abandon it and start a new challenge?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79356561738039297
+    m_Localized: Abandon the exploration in progress?\nWatch an ad to receive 100%
+      of the banked exploration points or abandon now for only 20%.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79356561738039298
+    m_Localized: ABANDON
     m_Metadata:
       m_Items: []
   references:

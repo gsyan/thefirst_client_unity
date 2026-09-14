@@ -12,8 +12,11 @@ public class UIPopupModuleReinforce : UIPopupBase
     [SerializeField] private UIReinforceStatRow m_rowPrefab;
     [SerializeField] private InfiniteScrollView m_scrollView;
     [SerializeField] private RowLabelValue m_commandPowerRow; // 잔여 지휘력 표시 — UIShipLoadoutEditorView.RefreshCommandPowerPreview와 동일한 표시 방식
+    [SerializeField] private TMP_Text m_titleText;
     [SerializeField] private Button m_confirmButton;
+    [SerializeField] private TMP_Text m_confirmButtonText;
     [SerializeField] private Button m_cancelButton;
+    [SerializeField] private TMP_Text m_cancelButtonText;
 
     [Header("컬럼 헤더 — 고정 텍스트라 Awake에서 한 번만 로컬라이즈")]
     [SerializeField] private TMP_Text m_colStatusText;
@@ -55,6 +58,9 @@ public class UIPopupModuleReinforce : UIPopupBase
         if (m_tierDownButton != null) m_tierDownButton.onClick.AddListener(() => OnTierClicked(-1));
         if (m_scrollView != null) m_scrollView.onItemBind = OnItemBind;
 
+        CommonUtility.SetUILocText(m_titleText, "UI_ModuleReinforce");
+        CommonUtility.SetUILocText(m_confirmButtonText, "UI_Confirm");
+        CommonUtility.SetUILocText(m_cancelButtonText, "UI_Cancel");
         CommonUtility.SetUILocText(m_colStatusText, "UIFleet_ModuleReinforce_ColStatus");
         CommonUtility.SetUILocText(m_colValueText, "UIFleet_ModuleReinforce_ColValue");
         CommonUtility.SetUILocText(m_colInvestedText, "UIFleet_ModuleReinforce_ColInvested");
@@ -212,10 +218,15 @@ public class UIPopupModuleReinforce : UIPopupBase
         }
         else if (m_moduleType == EModuleType.hangar)
         {
-            if (entry.label == "Attack To Ship") return formula.hangar.baseShipAttack + entry.currentValue * formula.hangar.reinforcePerPoint;
-            if (entry.label == "Attack To Fighter") return formula.hangar.baseFighterAttack + entry.currentValue * formula.hangar.reinforcePerPoint;
-            if (entry.label == "Ammo") return formula.hangar.baseAmmo + entry.currentValue * formula.hangar.reinforcePerPoint;
-            if (entry.label == "Health") return formula.hangar.baseHealth + entry.currentValue * formula.hangar.reinforcePerPoint;
+            float baseShipAttack = moduleData != null ? moduleData.airAttackToShip : 0f;
+            float baseFighterAttack = moduleData != null ? moduleData.airAttackToFighter : 0f;
+            float baseAmmo = moduleData != null ? moduleData.airAmmo : 0f;
+            float baseHealth = moduleData != null ? moduleData.airHealth : 0f;
+
+            if (entry.label == "Attack To Ship") return baseShipAttack + entry.currentValue * formula.hangar.attackPerPoint;
+            if (entry.label == "Attack To Fighter") return baseFighterAttack + entry.currentValue * formula.hangar.attackPerPoint;
+            if (entry.label == "Ammo") return baseAmmo + entry.currentValue * formula.hangar.reinforcePerPoint;
+            if (entry.label == "Health") return baseHealth + entry.currentValue * formula.hangar.reinforcePerPoint;
         }
 
         return 0f;

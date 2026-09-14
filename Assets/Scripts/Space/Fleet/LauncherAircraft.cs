@@ -43,11 +43,12 @@ public class LauncherAircraft : LauncherBase
         AircraftInfo aircraftInfo = m_moduleHangar.GetReadyAircraft();
         if (aircraftInfo == null) yield break;
 
-        // 출격 시 최신 격납고 스펙으로 세팅
+        // 출격 시 최신 격납고 스펙으로 세팅 — 공격력은 원본 moduleData가 아니라 ModuleHangar가 강화 포인트를 반영해 확정해둔 값을 씀
+        // (그렇지 않으면 재출격마다 강화 포인트가 반영 안 된 원본 티어값으로 되돌아감)
         ModuleData moduleData = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(
             m_moduleHangar.m_moduleInfo.moduleSubType);
         if (moduleData != null)
-            aircraftInfo.UpdateAircraftInfo(moduleData);
+            aircraftInfo.UpdateAircraftInfo(moduleData, m_moduleHangar.GetFinalAttackToShip(), m_moduleHangar.GetFinalAttackToFighter());
 
         // 출격 시 공격 배율 조립 — airAttack은 원본 유지, 배율만 airAttackMultiplier에 저장 (귀환 시 UpdateAircraftInfo로 1f 원복)
         SpaceShip carrierShip = m_moduleHangar.GetSpaceShip();

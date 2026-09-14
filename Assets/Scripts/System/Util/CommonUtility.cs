@@ -144,7 +144,7 @@ public static class CommonUtility
         }
         else if (moduleInfo.moduleType == EModuleType.hangar)
         {
-            stats.airAttack = moduleData.airAttack * moduleData.airCount; // 함재기 1기당 공격력 × 함재기 수 = 이 격납고의 총 화력
+            stats.airAttack = moduleData.airAttackToShip * moduleData.airCount; // 함재기 1기당 대함 공격력 × 함재기 수 = 이 격납고의 총 화력
             stats.airCount = moduleData.airCount;              // 함재기 수
             stats.totalWeapons = 1;
         }

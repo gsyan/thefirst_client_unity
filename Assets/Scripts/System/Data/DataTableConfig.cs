@@ -113,11 +113,9 @@ public class MissileFormula
 [System.Serializable]
 public class HangarFormula
 {
-    public float baseShipAttack = 10f;
-    public float baseFighterAttack = 10f;
-    public float baseAmmo = 10f;
-    public float baseHealth = 50f;
-    [Tooltip("강화 서브스탯(4종) 1포인트당 가산")]
+    [Tooltip("대함/대전투기 공격력 강화 1포인트당 가산")]
+    public float attackPerPoint = 0.1f;
+    [Tooltip("탄약/체력 강화 1포인트당 가산")]
     public float reinforcePerPoint = 1f;
 }
 

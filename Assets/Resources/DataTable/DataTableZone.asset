@@ -130,7 +130,7 @@ MonoBehaviour:
       col: 0
       type: 2
       eventType: 0
-    enemyHullTierSum: 2
+    enemyHullTierSum: 1
     enemyBaseHullTier: 1
     enemyModulePlacementProbability: 1
     enemyModulePerformanceProbability: 1
@@ -195,7 +195,7 @@ MonoBehaviour:
       col: 0
       type: 2
       eventType: 0
-    enemyHullTierSum: 3
+    enemyHullTierSum: 1
     enemyBaseHullTier: 1
     enemyModulePlacementProbability: 1
     enemyModulePerformanceProbability: 1
@@ -260,10 +260,10 @@ MonoBehaviour:
       col: 1
       type: 2
       eventType: 0
-    enemyHullTierSum: 4
-    enemyBaseHullTier: 2
-    enemyModulePlacementProbability: 0.4
-    enemyModulePerformanceProbability: 0.4
+    enemyHullTierSum: 1
+    enemyBaseHullTier: 1
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
     enemyHullWeightNone: 98
     enemyHullWeightShield: 1
     enemyHullWeightInterceptor: 1
@@ -333,10 +333,10 @@ MonoBehaviour:
       col: 4
       type: 3
       eventType: 0
-    enemyHullTierSum: 5
+    enemyHullTierSum: 2
     enemyBaseHullTier: 2
-    enemyModulePlacementProbability: 0.8
-    enemyModulePerformanceProbability: 0.8
+    enemyModulePlacementProbability: 0.5
+    enemyModulePerformanceProbability: 0.5
     enemyHullWeightNone: 98
     enemyHullWeightShield: 1
     enemyHullWeightInterceptor: 1
@@ -406,10 +406,10 @@ MonoBehaviour:
       col: 3
       type: 3
       eventType: 0
-    enemyHullTierSum: 6
+    enemyHullTierSum: 2
     enemyBaseHullTier: 2
-    enemyModulePlacementProbability: 1
-    enemyModulePerformanceProbability: 1
+    enemyModulePlacementProbability: 0.6
+    enemyModulePerformanceProbability: 0.6
     enemyHullWeightNone: 98
     enemyHullWeightShield: 1
     enemyHullWeightInterceptor: 1
@@ -479,10 +479,10 @@ MonoBehaviour:
       col: 4
       type: 3
       eventType: 0
-    enemyHullTierSum: 7
-    enemyBaseHullTier: 3
-    enemyModulePlacementProbability: 0.3
-    enemyModulePerformanceProbability: 0.3
+    enemyHullTierSum: 2
+    enemyBaseHullTier: 2
+    enemyModulePlacementProbability: 0.7
+    enemyModulePerformanceProbability: 0.7
     enemyHullWeightNone: 98
     enemyHullWeightShield: 1
     enemyHullWeightInterceptor: 1
@@ -552,10 +552,10 @@ MonoBehaviour:
       col: 3
       type: 3
       eventType: 0
-    enemyHullTierSum: 8
-    enemyBaseHullTier: 3
-    enemyModulePlacementProbability: 0.6
-    enemyModulePerformanceProbability: 0.6
+    enemyHullTierSum: 2
+    enemyBaseHullTier: 2
+    enemyModulePlacementProbability: 0.8
+    enemyModulePerformanceProbability: 0.8
     enemyHullWeightNone: 98
     enemyHullWeightShield: 1
     enemyHullWeightInterceptor: 1
@@ -625,8 +625,8 @@ MonoBehaviour:
       col: 0
       type: 3
       eventType: 0
-    enemyHullTierSum: 9
-    enemyBaseHullTier: 3
+    enemyHullTierSum: 2
+    enemyBaseHullTier: 2
     enemyModulePlacementProbability: 0.9
     enemyModulePerformanceProbability: 0.9
     enemyHullWeightNone: 98
@@ -698,8 +698,8 @@ MonoBehaviour:
       col: 1
       type: 3
       eventType: 0
-    enemyHullTierSum: 10
-    enemyBaseHullTier: 3
+    enemyHullTierSum: 2
+    enemyBaseHullTier: 2
     enemyModulePlacementProbability: 1
     enemyModulePerformanceProbability: 1
     enemyHullWeightNone: 98
@@ -771,8 +771,8 @@ MonoBehaviour:
       col: 4
       type: 3
       eventType: 0
-    enemyHullTierSum: 11
-    enemyBaseHullTier: 4
+    enemyHullTierSum: 3
+    enemyBaseHullTier: 3
     enemyModulePlacementProbability: 0.2
     enemyModulePerformanceProbability: 0.2
     enemyHullWeightNone: 98
@@ -844,8 +844,8 @@ MonoBehaviour:
       col: 0
       type: 3
       eventType: 0
-    enemyHullTierSum: 12
-    enemyBaseHullTier: 4
+    enemyHullTierSum: 4
+    enemyBaseHullTier: 3
     enemyModulePlacementProbability: 0.3
     enemyModulePerformanceProbability: 0.3
     enemyHullWeightNone: 98
@@ -917,8 +917,8 @@ MonoBehaviour:
       col: 2
       type: 3
       eventType: 0
-    enemyHullTierSum: 13
-    enemyBaseHullTier: 4
+    enemyHullTierSum: 5
+    enemyBaseHullTier: 3
     enemyModulePlacementProbability: 0.4
     enemyModulePerformanceProbability: 0.4
     enemyHullWeightNone: 98
@@ -990,8 +990,8 @@ MonoBehaviour:
       col: 0
       type: 3
       eventType: 0
-    enemyHullTierSum: 14
-    enemyBaseHullTier: 4
+    enemyHullTierSum: 6
+    enemyBaseHullTier: 3
     enemyModulePlacementProbability: 0.5
     enemyModulePerformanceProbability: 0.5
     enemyHullWeightNone: 98
@@ -1063,8 +1063,8 @@ MonoBehaviour:
       col: 0
       type: 3
       eventType: 0
-    enemyHullTierSum: 15
-    enemyBaseHullTier: 4
+    enemyHullTierSum: 7
+    enemyBaseHullTier: 3
     enemyModulePlacementProbability: 0.6
     enemyModulePerformanceProbability: 0.6
     enemyHullWeightNone: 98
@@ -1136,8 +1136,8 @@ MonoBehaviour:
       col: 3
       type: 3
       eventType: 0
-    enemyHullTierSum: 16
-    enemyBaseHullTier: 4
+    enemyHullTierSum: 8
+    enemyBaseHullTier: 3
     enemyModulePlacementProbability: 0.7
     enemyModulePerformanceProbability: 0.7
     enemyHullWeightNone: 98
@@ -1209,8 +1209,8 @@ MonoBehaviour:
       col: 3
       type: 3
       eventType: 0
-    enemyHullTierSum: 17
-    enemyBaseHullTier: 4
+    enemyHullTierSum: 9
+    enemyBaseHullTier: 3
     enemyModulePlacementProbability: 0.8
     enemyModulePerformanceProbability: 0.8
     enemyHullWeightNone: 98
@@ -1282,8 +1282,8 @@ MonoBehaviour:
       col: 3
       type: 3
       eventType: 0
-    enemyHullTierSum: 18
-    enemyBaseHullTier: 4
+    enemyHullTierSum: 10
+    enemyBaseHullTier: 3
     enemyModulePlacementProbability: 0.9
     enemyModulePerformanceProbability: 0.9
     enemyHullWeightNone: 98
@@ -1355,8 +1355,8 @@ MonoBehaviour:
       col: 4
       type: 3
       eventType: 0
-    enemyHullTierSum: 19
-    enemyBaseHullTier: 4
+    enemyHullTierSum: 11
+    enemyBaseHullTier: 3
     enemyModulePlacementProbability: 1
     enemyModulePerformanceProbability: 1
     enemyHullWeightNone: 98
@@ -1428,8 +1428,8 @@ MonoBehaviour:
       col: 3
       type: 3
       eventType: 0
-    enemyHullTierSum: 20
-    enemyBaseHullTier: 4
+    enemyHullTierSum: 12
+    enemyBaseHullTier: 3
     enemyModulePlacementProbability: 1
     enemyModulePerformanceProbability: 1
     enemyHullWeightNone: 98
@@ -1501,8 +1501,8 @@ MonoBehaviour:
       col: 1
       type: 3
       eventType: 0
-    enemyHullTierSum: 21
-    enemyBaseHullTier: 5
+    enemyHullTierSum: 13
+    enemyBaseHullTier: 4
     enemyModulePlacementProbability: 0.2
     enemyModulePerformanceProbability: 0.2
     enemyHullWeightNone: 98
@@ -1574,8 +1574,8 @@ MonoBehaviour:
       col: 1
       type: 3
       eventType: 0
-    enemyHullTierSum: 22
-    enemyBaseHullTier: 5
+    enemyHullTierSum: 14
+    enemyBaseHullTier: 4
     enemyModulePlacementProbability: 0.3
     enemyModulePerformanceProbability: 0.3
     enemyHullWeightNone: 98
@@ -1647,8 +1647,8 @@ MonoBehaviour:
       col: 3
       type: 3
       eventType: 0
-    enemyHullTierSum: 23
-    enemyBaseHullTier: 5
+    enemyHullTierSum: 15
+    enemyBaseHullTier: 4
     enemyModulePlacementProbability: 0.4
     enemyModulePerformanceProbability: 0.4
     enemyHullWeightNone: 98
@@ -1720,8 +1720,8 @@ MonoBehaviour:
       col: 1
       type: 3
       eventType: 0
-    enemyHullTierSum: 24
-    enemyBaseHullTier: 5
+    enemyHullTierSum: 16
+    enemyBaseHullTier: 4
     enemyModulePlacementProbability: 0.5
     enemyModulePerformanceProbability: 0.5
     enemyHullWeightNone: 98
@@ -1793,8 +1793,8 @@ MonoBehaviour:
       col: 4
       type: 3
       eventType: 0
-    enemyHullTierSum: 25
-    enemyBaseHullTier: 5
+    enemyHullTierSum: 17
+    enemyBaseHullTier: 4
     enemyModulePlacementProbability: 0.6
     enemyModulePerformanceProbability: 0.6
     enemyHullWeightNone: 98
@@ -1866,8 +1866,8 @@ MonoBehaviour:
       col: 4
       type: 3
       eventType: 0
-    enemyHullTierSum: 26
-    enemyBaseHullTier: 5
+    enemyHullTierSum: 18
+    enemyBaseHullTier: 4
     enemyModulePlacementProbability: 0.7
     enemyModulePerformanceProbability: 0.7
     enemyHullWeightNone: 98
@@ -1939,8 +1939,8 @@ MonoBehaviour:
       col: 1
       type: 3
       eventType: 0
-    enemyHullTierSum: 27
-    enemyBaseHullTier: 5
+    enemyHullTierSum: 19
+    enemyBaseHullTier: 4
     enemyModulePlacementProbability: 0.8
     enemyModulePerformanceProbability: 0.8
     enemyHullWeightNone: 98
@@ -2012,8 +2012,8 @@ MonoBehaviour:
       col: 4
       type: 3
       eventType: 0
-    enemyHullTierSum: 28
-    enemyBaseHullTier: 5
+    enemyHullTierSum: 20
+    enemyBaseHullTier: 4
     enemyModulePlacementProbability: 0.9
     enemyModulePerformanceProbability: 0.9
     enemyHullWeightNone: 98
@@ -2085,8 +2085,8 @@ MonoBehaviour:
       col: 1
       type: 3
       eventType: 0
-    enemyHullTierSum: 29
-    enemyBaseHullTier: 5
+    enemyHullTierSum: 21
+    enemyBaseHullTier: 4
     enemyModulePlacementProbability: 1
     enemyModulePerformanceProbability: 1
     enemyHullWeightNone: 98
@@ -2158,8 +2158,8 @@ MonoBehaviour:
       col: 2
       type: 3
       eventType: 0
-    enemyHullTierSum: 30
-    enemyBaseHullTier: 5
+    enemyHullTierSum: 22
+    enemyBaseHullTier: 4
     enemyModulePlacementProbability: 1
     enemyModulePerformanceProbability: 1
     enemyHullWeightNone: 98
@@ -2247,8 +2247,8 @@ MonoBehaviour:
       col: 3
       type: 3
       eventType: 0
-    enemyHullTierSum: 31
-    enemyBaseHullTier: 6
+    enemyHullTierSum: 23
+    enemyBaseHullTier: 5
     enemyModulePlacementProbability: 0.2
     enemyModulePerformanceProbability: 0.2
     enemyHullWeightNone: 98
@@ -2336,8 +2336,8 @@ MonoBehaviour:
       col: 6
       type: 3
       eventType: 0
-    enemyHullTierSum: 32
-    enemyBaseHullTier: 6
+    enemyHullTierSum: 24
+    enemyBaseHullTier: 5
     enemyModulePlacementProbability: 0.3
     enemyModulePerformanceProbability: 0.3
     enemyHullWeightNone: 98
@@ -2425,8 +2425,8 @@ MonoBehaviour:
       col: 1
       type: 3
       eventType: 0
-    enemyHullTierSum: 33
-    enemyBaseHullTier: 6
+    enemyHullTierSum: 25
+    enemyBaseHullTier: 5
     enemyModulePlacementProbability: 0.4
     enemyModulePerformanceProbability: 0.4
     enemyHullWeightNone: 98
@@ -2514,8 +2514,8 @@ MonoBehaviour:
       col: 3
       type: 3
       eventType: 0
-    enemyHullTierSum: 34
-    enemyBaseHullTier: 6
+    enemyHullTierSum: 26
+    enemyBaseHullTier: 5
     enemyModulePlacementProbability: 0.5
     enemyModulePerformanceProbability: 0.5
     enemyHullWeightNone: 98
@@ -2603,8 +2603,8 @@ MonoBehaviour:
       col: 3
       type: 3
       eventType: 0
-    enemyHullTierSum: 35
-    enemyBaseHullTier: 6
+    enemyHullTierSum: 27
+    enemyBaseHullTier: 5
     enemyModulePlacementProbability: 0.6
     enemyModulePerformanceProbability: 0.6
     enemyHullWeightNone: 98
@@ -2692,8 +2692,8 @@ MonoBehaviour:
       col: 5
       type: 3
       eventType: 0
-    enemyHullTierSum: 36
-    enemyBaseHullTier: 6
+    enemyHullTierSum: 28
+    enemyBaseHullTier: 5
     enemyModulePlacementProbability: 0.7
     enemyModulePerformanceProbability: 0.7
     enemyHullWeightNone: 98
@@ -2781,8 +2781,8 @@ MonoBehaviour:
       col: 2
       type: 3
       eventType: 0
-    enemyHullTierSum: 37
-    enemyBaseHullTier: 6
+    enemyHullTierSum: 29
+    enemyBaseHullTier: 5
     enemyModulePlacementProbability: 0.8
     enemyModulePerformanceProbability: 0.8
     enemyHullWeightNone: 98
@@ -2870,8 +2870,8 @@ MonoBehaviour:
       col: 6
       type: 3
       eventType: 0
-    enemyHullTierSum: 38
-    enemyBaseHullTier: 6
+    enemyHullTierSum: 30
+    enemyBaseHullTier: 5
     enemyModulePlacementProbability: 0.9
     enemyModulePerformanceProbability: 0.9
     enemyHullWeightNone: 98
@@ -2959,8 +2959,8 @@ MonoBehaviour:
       col: 6
       type: 3
       eventType: 0
-    enemyHullTierSum: 39
-    enemyBaseHullTier: 6
+    enemyHullTierSum: 31
+    enemyBaseHullTier: 5
     enemyModulePlacementProbability: 1
     enemyModulePerformanceProbability: 1
     enemyHullWeightNone: 98
@@ -3048,8 +3048,8 @@ MonoBehaviour:
       col: 2
       type: 3
       eventType: 0
-    enemyHullTierSum: 40
-    enemyBaseHullTier: 6
+    enemyHullTierSum: 32
+    enemyBaseHullTier: 5
     enemyModulePlacementProbability: 1
     enemyModulePerformanceProbability: 1
     enemyHullWeightNone: 98
@@ -3137,8 +3137,8 @@ MonoBehaviour:
       col: 1
       type: 3
       eventType: 0
-    enemyHullTierSum: 41
-    enemyBaseHullTier: 7
+    enemyHullTierSum: 33
+    enemyBaseHullTier: 6
     enemyModulePlacementProbability: 0.2
     enemyModulePerformanceProbability: 0.2
     enemyHullWeightNone: 98
@@ -3226,8 +3226,8 @@ MonoBehaviour:
       col: 1
       type: 3
       eventType: 0
-    enemyHullTierSum: 42
-    enemyBaseHullTier: 7
+    enemyHullTierSum: 34
+    enemyBaseHullTier: 6
     enemyModulePlacementProbability: 0.3
     enemyModulePerformanceProbability: 0.3
     enemyHullWeightNone: 98
@@ -3315,8 +3315,8 @@ MonoBehaviour:
       col: 2
       type: 3
       eventType: 0
-    enemyHullTierSum: 43
-    enemyBaseHullTier: 7
+    enemyHullTierSum: 35
+    enemyBaseHullTier: 6
     enemyModulePlacementProbability: 0.4
     enemyModulePerformanceProbability: 0.4
     enemyHullWeightNone: 98
@@ -3404,8 +3404,8 @@ MonoBehaviour:
       col: 3
       type: 3
       eventType: 0
-    enemyHullTierSum: 44
-    enemyBaseHullTier: 7
+    enemyHullTierSum: 36
+    enemyBaseHullTier: 6
     enemyModulePlacementProbability: 0.5
     enemyModulePerformanceProbability: 0.5
     enemyHullWeightNone: 98
@@ -3493,8 +3493,8 @@ MonoBehaviour:
       col: 5
       type: 3
       eventType: 0
-    enemyHullTierSum: 45
-    enemyBaseHullTier: 7
+    enemyHullTierSum: 37
+    enemyBaseHullTier: 6
     enemyModulePlacementProbability: 0.6
     enemyModulePerformanceProbability: 0.6
     enemyHullWeightNone: 98
@@ -3582,8 +3582,8 @@ MonoBehaviour:
       col: 2
       type: 3
       eventType: 0
-    enemyHullTierSum: 46
-    enemyBaseHullTier: 7
+    enemyHullTierSum: 38
+    enemyBaseHullTier: 6
     enemyModulePlacementProbability: 0.7
     enemyModulePerformanceProbability: 0.7
     enemyHullWeightNone: 98
@@ -3671,8 +3671,8 @@ MonoBehaviour:
       col: 1
       type: 3
       eventType: 0
-    enemyHullTierSum: 47
-    enemyBaseHullTier: 7
+    enemyHullTierSum: 39
+    enemyBaseHullTier: 6
     enemyModulePlacementProbability: 0.8
     enemyModulePerformanceProbability: 0.8
     enemyHullWeightNone: 98
@@ -3760,8 +3760,8 @@ MonoBehaviour:
       col: 4
       type: 3
       eventType: 0
-    enemyHullTierSum: 48
-    enemyBaseHullTier: 7
+    enemyHullTierSum: 40
+    enemyBaseHullTier: 6
     enemyModulePlacementProbability: 0.9
     enemyModulePerformanceProbability: 0.9
     enemyHullWeightNone: 98
@@ -3849,8 +3849,8 @@ MonoBehaviour:
       col: 6
       type: 3
       eventType: 0
-    enemyHullTierSum: 49
-    enemyBaseHullTier: 7
+    enemyHullTierSum: 41
+    enemyBaseHullTier: 6
     enemyModulePlacementProbability: 1
     enemyModulePerformanceProbability: 1
     enemyHullWeightNone: 98
@@ -3938,8 +3938,8 @@ MonoBehaviour:
       col: 2
       type: 3
       eventType: 0
-    enemyHullTierSum: 50
-    enemyBaseHullTier: 7
+    enemyHullTierSum: 42
+    enemyBaseHullTier: 6
     enemyModulePlacementProbability: 1
     enemyModulePerformanceProbability: 1
     enemyHullWeightNone: 80
@@ -4027,8 +4027,8 @@ MonoBehaviour:
       col: 4
       type: 3
       eventType: 0
-    enemyHullTierSum: 51
-    enemyBaseHullTier: 8
+    enemyHullTierSum: 43
+    enemyBaseHullTier: 7
     enemyModulePlacementProbability: 0.2
     enemyModulePerformanceProbability: 0.2
     enemyHullWeightNone: 80
@@ -4116,8 +4116,8 @@ MonoBehaviour:
       col: 2
       type: 3
       eventType: 0
-    enemyHullTierSum: 52
-    enemyBaseHullTier: 8
+    enemyHullTierSum: 44
+    enemyBaseHullTier: 7
     enemyModulePlacementProbability: 0.3
     enemyModulePerformanceProbability: 0.3
     enemyHullWeightNone: 80
@@ -4205,8 +4205,8 @@ MonoBehaviour:
       col: 5
       type: 3
       eventType: 0
-    enemyHullTierSum: 53
-    enemyBaseHullTier: 8
+    enemyHullTierSum: 45
+    enemyBaseHullTier: 7
     enemyModulePlacementProbability: 0.4
     enemyModulePerformanceProbability: 0.4
     enemyHullWeightNone: 80
@@ -4294,8 +4294,8 @@ MonoBehaviour:
       col: 5
       type: 3
       eventType: 0
-    enemyHullTierSum: 54
-    enemyBaseHullTier: 8
+    enemyHullTierSum: 46
+    enemyBaseHullTier: 7
     enemyModulePlacementProbability: 0.5
     enemyModulePerformanceProbability: 0.5
     enemyHullWeightNone: 80
@@ -4383,8 +4383,8 @@ MonoBehaviour:
       col: 0
       type: 3
       eventType: 0
-    enemyHullTierSum: 55
-    enemyBaseHullTier: 8
+    enemyHullTierSum: 47
+    enemyBaseHullTier: 7
     enemyModulePlacementProbability: 0.6
     enemyModulePerformanceProbability: 0.6
     enemyHullWeightNone: 80
@@ -4472,8 +4472,8 @@ MonoBehaviour:
       col: 4
       type: 3
       eventType: 0
-    enemyHullTierSum: 56
-    enemyBaseHullTier: 8
+    enemyHullTierSum: 48
+    enemyBaseHullTier: 7
     enemyModulePlacementProbability: 0.7
     enemyModulePerformanceProbability: 0.7
     enemyHullWeightNone: 80
@@ -4561,8 +4561,8 @@ MonoBehaviour:
       col: 3
       type: 3
       eventType: 0
-    enemyHullTierSum: 57
-    enemyBaseHullTier: 8
+    enemyHullTierSum: 49
+    enemyBaseHullTier: 7
     enemyModulePlacementProbability: 0.8
     enemyModulePerformanceProbability: 0.8
     enemyHullWeightNone: 80
@@ -4650,8 +4650,8 @@ MonoBehaviour:
       col: 5
       type: 3
       eventType: 0
-    enemyHullTierSum: 58
-    enemyBaseHullTier: 8
+    enemyHullTierSum: 50
+    enemyBaseHullTier: 7
     enemyModulePlacementProbability: 0.9
     enemyModulePerformanceProbability: 0.9
     enemyHullWeightNone: 80
@@ -4739,8 +4739,8 @@ MonoBehaviour:
       col: 4
       type: 3
       eventType: 0
-    enemyHullTierSum: 59
-    enemyBaseHullTier: 8
+    enemyHullTierSum: 51
+    enemyBaseHullTier: 7
     enemyModulePlacementProbability: 1
     enemyModulePerformanceProbability: 1
     enemyHullWeightNone: 80
@@ -4828,8 +4828,8 @@ MonoBehaviour:
       col: 3
       type: 3
       eventType: 0
-    enemyHullTierSum: 60
-    enemyBaseHullTier: 8
+    enemyHullTierSum: 52
+    enemyBaseHullTier: 7
     enemyModulePlacementProbability: 1
     enemyModulePerformanceProbability: 1
     enemyHullWeightNone: 70
@@ -4917,8 +4917,8 @@ MonoBehaviour:
       col: 1
       type: 3
       eventType: 0
-    enemyHullTierSum: 61
-    enemyBaseHullTier: 9
+    enemyHullTierSum: 53
+    enemyBaseHullTier: 8
     enemyModulePlacementProbability: 0.2
     enemyModulePerformanceProbability: 0.2
     enemyHullWeightNone: 70
@@ -5006,8 +5006,8 @@ MonoBehaviour:
       col: 0
       type: 3
       eventType: 0
-    enemyHullTierSum: 62
-    enemyBaseHullTier: 9
+    enemyHullTierSum: 54
+    enemyBaseHullTier: 8
     enemyModulePlacementProbability: 0.3
     enemyModulePerformanceProbability: 0.3
     enemyHullWeightNone: 70
@@ -5095,8 +5095,8 @@ MonoBehaviour:
       col: 5
       type: 3
       eventType: 0
-    enemyHullTierSum: 63
-    enemyBaseHullTier: 9
+    enemyHullTierSum: 55
+    enemyBaseHullTier: 8
     enemyModulePlacementProbability: 0.4
     enemyModulePerformanceProbability: 0.4
     enemyHullWeightNone: 70
@@ -5184,8 +5184,8 @@ MonoBehaviour:
       col: 6
       type: 3
       eventType: 0
-    enemyHullTierSum: 64
-    enemyBaseHullTier: 9
+    enemyHullTierSum: 56
+    enemyBaseHullTier: 8
     enemyModulePlacementProbability: 0.5
     enemyModulePerformanceProbability: 0.5
     enemyHullWeightNone: 70
@@ -5273,8 +5273,8 @@ MonoBehaviour:
       col: 4
       type: 3
       eventType: 0
-    enemyHullTierSum: 65
-    enemyBaseHullTier: 9
+    enemyHullTierSum: 57
+    enemyBaseHullTier: 8
     enemyModulePlacementProbability: 0.6
     enemyModulePerformanceProbability: 0.6
     enemyHullWeightNone: 70
@@ -5362,8 +5362,8 @@ MonoBehaviour:
       col: 6
       type: 3
       eventType: 0
-    enemyHullTierSum: 66
-    enemyBaseHullTier: 9
+    enemyHullTierSum: 58
+    enemyBaseHullTier: 8
     enemyModulePlacementProbability: 0.7
     enemyModulePerformanceProbability: 0.7
     enemyHullWeightNone: 70
@@ -5451,8 +5451,8 @@ MonoBehaviour:
       col: 2
       type: 3
       eventType: 0
-    enemyHullTierSum: 67
-    enemyBaseHullTier: 9
+    enemyHullTierSum: 59
+    enemyBaseHullTier: 8
     enemyModulePlacementProbability: 0.8
     enemyModulePerformanceProbability: 0.8
     enemyHullWeightNone: 70
@@ -5540,8 +5540,8 @@ MonoBehaviour:
       col: 0
       type: 3
       eventType: 0
-    enemyHullTierSum: 68
-    enemyBaseHullTier: 9
+    enemyHullTierSum: 60
+    enemyBaseHullTier: 8
     enemyModulePlacementProbability: 0.9
     enemyModulePerformanceProbability: 0.9
     enemyHullWeightNone: 70
@@ -5629,8 +5629,8 @@ MonoBehaviour:
       col: 0
       type: 3
       eventType: 0
-    enemyHullTierSum: 69
-    enemyBaseHullTier: 9
+    enemyHullTierSum: 61
+    enemyBaseHullTier: 8
     enemyModulePlacementProbability: 1
     enemyModulePerformanceProbability: 1
     enemyHullWeightNone: 70
@@ -5718,8 +5718,8 @@ MonoBehaviour:
       col: 2
       type: 3
       eventType: 0
-    enemyHullTierSum: 70
-    enemyBaseHullTier: 9
+    enemyHullTierSum: 62
+    enemyBaseHullTier: 8
     enemyModulePlacementProbability: 1
     enemyModulePerformanceProbability: 1
     enemyHullWeightNone: 60
@@ -5807,8 +5807,8 @@ MonoBehaviour:
       col: 0
       type: 3
       eventType: 0
-    enemyHullTierSum: 71
-    enemyBaseHullTier: 10
+    enemyHullTierSum: 63
+    enemyBaseHullTier: 9
     enemyModulePlacementProbability: 0.2
     enemyModulePerformanceProbability: 0.2
     enemyHullWeightNone: 60
@@ -5896,8 +5896,8 @@ MonoBehaviour:
       col: 6
       type: 3
       eventType: 0
-    enemyHullTierSum: 72
-    enemyBaseHullTier: 10
+    enemyHullTierSum: 64
+    enemyBaseHullTier: 9
     enemyModulePlacementProbability: 0.3
     enemyModulePerformanceProbability: 0.3
     enemyHullWeightNone: 60
@@ -5985,8 +5985,8 @@ MonoBehaviour:
       col: 2
       type: 3
       eventType: 0
-    enemyHullTierSum: 73
-    enemyBaseHullTier: 10
+    enemyHullTierSum: 65
+    enemyBaseHullTier: 9
     enemyModulePlacementProbability: 0.4
     enemyModulePerformanceProbability: 0.4
     enemyHullWeightNone: 60
@@ -6074,8 +6074,8 @@ MonoBehaviour:
       col: 5
       type: 3
       eventType: 0
-    enemyHullTierSum: 74
-    enemyBaseHullTier: 10
+    enemyHullTierSum: 66
+    enemyBaseHullTier: 9
     enemyModulePlacementProbability: 0.5
     enemyModulePerformanceProbability: 0.5
     enemyHullWeightNone: 60
@@ -6163,8 +6163,8 @@ MonoBehaviour:
       col: 3
       type: 3
       eventType: 0
-    enemyHullTierSum: 75
-    enemyBaseHullTier: 10
+    enemyHullTierSum: 67
+    enemyBaseHullTier: 9
     enemyModulePlacementProbability: 0.6
     enemyModulePerformanceProbability: 0.6
     enemyHullWeightNone: 60
@@ -6252,8 +6252,8 @@ MonoBehaviour:
       col: 5
       type: 3
       eventType: 0
-    enemyHullTierSum: 76
-    enemyBaseHullTier: 10
+    enemyHullTierSum: 68
+    enemyBaseHullTier: 9
     enemyModulePlacementProbability: 0.7
     enemyModulePerformanceProbability: 0.7
     enemyHullWeightNone: 60
@@ -6341,8 +6341,8 @@ MonoBehaviour:
       col: 3
       type: 3
       eventType: 0
-    enemyHullTierSum: 77
-    enemyBaseHullTier: 10
+    enemyHullTierSum: 69
+    enemyBaseHullTier: 9
     enemyModulePlacementProbability: 0.8
     enemyModulePerformanceProbability: 0.8
     enemyHullWeightNone: 60
@@ -6430,8 +6430,8 @@ MonoBehaviour:
       col: 6
       type: 3
       eventType: 0
-    enemyHullTierSum: 78
-    enemyBaseHullTier: 10
+    enemyHullTierSum: 70
+    enemyBaseHullTier: 9
     enemyModulePlacementProbability: 0.9
     enemyModulePerformanceProbability: 0.9
     enemyHullWeightNone: 60
@@ -6519,8 +6519,8 @@ MonoBehaviour:
       col: 2
       type: 3
       eventType: 0
-    enemyHullTierSum: 79
-    enemyBaseHullTier: 10
+    enemyHullTierSum: 71
+    enemyBaseHullTier: 9
     enemyModulePlacementProbability: 1
     enemyModulePerformanceProbability: 1
     enemyHullWeightNone: 60
@@ -6608,8 +6608,8 @@ MonoBehaviour:
       col: 1
       type: 3
       eventType: 0
-    enemyHullTierSum: 80
-    enemyBaseHullTier: 10
+    enemyHullTierSum: 72
+    enemyBaseHullTier: 9
     enemyModulePlacementProbability: 1
     enemyModulePerformanceProbability: 1
     enemyHullWeightNone: 50
@@ -6697,8 +6697,8 @@ MonoBehaviour:
       col: 1
       type: 3
       eventType: 0
-    enemyHullTierSum: 81
-    enemyBaseHullTier: 11
+    enemyHullTierSum: 73
+    enemyBaseHullTier: 10
     enemyModulePlacementProbability: 0.2
     enemyModulePerformanceProbability: 0.2
     enemyHullWeightNone: 50
@@ -6786,8 +6786,8 @@ MonoBehaviour:
       col: 0
       type: 3
       eventType: 0
-    enemyHullTierSum: 82
-    enemyBaseHullTier: 11
+    enemyHullTierSum: 74
+    enemyBaseHullTier: 10
     enemyModulePlacementProbability: 0.3
     enemyModulePerformanceProbability: 0.3
     enemyHullWeightNone: 50
@@ -6875,8 +6875,8 @@ MonoBehaviour:
       col: 4
       type: 3
       eventType: 0
-    enemyHullTierSum: 83
-    enemyBaseHullTier: 11
+    enemyHullTierSum: 75
+    enemyBaseHullTier: 10
     enemyModulePlacementProbability: 0.4
     enemyModulePerformanceProbability: 0.4
     enemyHullWeightNone: 50
@@ -6964,8 +6964,8 @@ MonoBehaviour:
       col: 1
       type: 3
       eventType: 0
-    enemyHullTierSum: 84
-    enemyBaseHullTier: 11
+    enemyHullTierSum: 76
+    enemyBaseHullTier: 10
     enemyModulePlacementProbability: 0.5
     enemyModulePerformanceProbability: 0.5
     enemyHullWeightNone: 50
@@ -7053,8 +7053,8 @@ MonoBehaviour:
       col: 2
       type: 3
       eventType: 0
-    enemyHullTierSum: 85
-    enemyBaseHullTier: 11
+    enemyHullTierSum: 77
+    enemyBaseHullTier: 10
     enemyModulePlacementProbability: 0.6
     enemyModulePerformanceProbability: 0.6
     enemyHullWeightNone: 50
@@ -7142,8 +7142,8 @@ MonoBehaviour:
       col: 5
       type: 3
       eventType: 0
-    enemyHullTierSum: 86
-    enemyBaseHullTier: 11
+    enemyHullTierSum: 78
+    enemyBaseHullTier: 10
     enemyModulePlacementProbability: 0.7
     enemyModulePerformanceProbability: 0.7
     enemyHullWeightNone: 50
@@ -7231,8 +7231,8 @@ MonoBehaviour:
       col: 1
       type: 3
       eventType: 0
-    enemyHullTierSum: 87
-    enemyBaseHullTier: 11
+    enemyHullTierSum: 79
+    enemyBaseHullTier: 10
     enemyModulePlacementProbability: 0.8
     enemyModulePerformanceProbability: 0.8
     enemyHullWeightNone: 50
@@ -7320,8 +7320,8 @@ MonoBehaviour:
       col: 4
       type: 3
       eventType: 0
-    enemyHullTierSum: 88
-    enemyBaseHullTier: 11
+    enemyHullTierSum: 80
+    enemyBaseHullTier: 10
     enemyModulePlacementProbability: 0.9
     enemyModulePerformanceProbability: 0.9
     enemyHullWeightNone: 50
@@ -7409,8 +7409,8 @@ MonoBehaviour:
       col: 0
       type: 3
       eventType: 0
-    enemyHullTierSum: 89
-    enemyBaseHullTier: 11
+    enemyHullTierSum: 81
+    enemyBaseHullTier: 10
     enemyModulePlacementProbability: 1
     enemyModulePerformanceProbability: 1
     enemyHullWeightNone: 50
@@ -7498,8 +7498,8 @@ MonoBehaviour:
       col: 6
       type: 3
       eventType: 0
-    enemyHullTierSum: 90
-    enemyBaseHullTier: 11
+    enemyHullTierSum: 82
+    enemyBaseHullTier: 10
     enemyModulePlacementProbability: 1
     enemyModulePerformanceProbability: 1
     enemyHullWeightNone: 40
@@ -7587,8 +7587,8 @@ MonoBehaviour:
       col: 0
       type: 3
       eventType: 0
-    enemyHullTierSum: 91
-    enemyBaseHullTier: 12
+    enemyHullTierSum: 83
+    enemyBaseHullTier: 11
     enemyModulePlacementProbability: 0.2
     enemyModulePerformanceProbability: 0.2
     enemyHullWeightNone: 40
@@ -7676,8 +7676,8 @@ MonoBehaviour:
       col: 0
       type: 3
       eventType: 0
-    enemyHullTierSum: 92
-    enemyBaseHullTier: 12
+    enemyHullTierSum: 84
+    enemyBaseHullTier: 11
     enemyModulePlacementProbability: 0.3
     enemyModulePerformanceProbability: 0.3
     enemyHullWeightNone: 40
@@ -7765,8 +7765,8 @@ MonoBehaviour:
       col: 6
       type: 3
       eventType: 0
-    enemyHullTierSum: 93
-    enemyBaseHullTier: 12
+    enemyHullTierSum: 85
+    enemyBaseHullTier: 11
     enemyModulePlacementProbability: 0.4
     enemyModulePerformanceProbability: 0.4
     enemyHullWeightNone: 40
@@ -7854,8 +7854,8 @@ MonoBehaviour:
       col: 1
       type: 3
       eventType: 0
-    enemyHullTierSum: 94
-    enemyBaseHullTier: 12
+    enemyHullTierSum: 86
+    enemyBaseHullTier: 11
     enemyModulePlacementProbability: 0.5
     enemyModulePerformanceProbability: 0.5
     enemyHullWeightNone: 40
@@ -7943,8 +7943,8 @@ MonoBehaviour:
       col: 0
       type: 3
       eventType: 0
-    enemyHullTierSum: 95
-    enemyBaseHullTier: 12
+    enemyHullTierSum: 87
+    enemyBaseHullTier: 11
     enemyModulePlacementProbability: 0.6
     enemyModulePerformanceProbability: 0.6
     enemyHullWeightNone: 40
@@ -8032,8 +8032,8 @@ MonoBehaviour:
       col: 2
       type: 3
       eventType: 0
-    enemyHullTierSum: 96
-    enemyBaseHullTier: 12
+    enemyHullTierSum: 88
+    enemyBaseHullTier: 11
     enemyModulePlacementProbability: 0.7
     enemyModulePerformanceProbability: 0.7
     enemyHullWeightNone: 40
@@ -8121,8 +8121,8 @@ MonoBehaviour:
       col: 1
       type: 3
       eventType: 0
-    enemyHullTierSum: 97
-    enemyBaseHullTier: 12
+    enemyHullTierSum: 89
+    enemyBaseHullTier: 11
     enemyModulePlacementProbability: 0.8
     enemyModulePerformanceProbability: 0.8
     enemyHullWeightNone: 40
@@ -8210,8 +8210,8 @@ MonoBehaviour:
       col: 1
       type: 3
       eventType: 0
-    enemyHullTierSum: 98
-    enemyBaseHullTier: 12
+    enemyHullTierSum: 90
+    enemyBaseHullTier: 11
     enemyModulePlacementProbability: 0.9
     enemyModulePerformanceProbability: 0.9
     enemyHullWeightNone: 40
@@ -8299,8 +8299,8 @@ MonoBehaviour:
       col: 0
       type: 3
       eventType: 0
-    enemyHullTierSum: 99
-    enemyBaseHullTier: 12
+    enemyHullTierSum: 91
+    enemyBaseHullTier: 11
     enemyModulePlacementProbability: 1
     enemyModulePerformanceProbability: 1
     enemyHullWeightNone: 40
@@ -8388,8 +8388,8 @@ MonoBehaviour:
       col: 4
       type: 3
       eventType: 0
-    enemyHullTierSum: 100
-    enemyBaseHullTier: 12
+    enemyHullTierSum: 92
+    enemyBaseHullTier: 11
     enemyModulePlacementProbability: 1
     enemyModulePerformanceProbability: 1
     enemyHullWeightNone: 30

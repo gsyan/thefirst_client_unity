@@ -338,7 +338,7 @@ public abstract class AircraftBase : MonoBehaviour
             {
                 float tacticMultiplier = m_carrierShip != null && m_carrierShip.m_ownerFleet != null
                     ? m_carrierShip.m_ownerFleet.GetAircraftTacticAttackMultiplier() : 1f;
-                currentDogfightTarget.TakeDamage(m_aircraftInfo.airAttack * tacticMultiplier);
+                currentDogfightTarget.TakeDamage(m_aircraftInfo.airAttackToFighter * tacticMultiplier);
                 m_lastAttackTime = Time.time;
             }
 
@@ -672,7 +672,7 @@ public abstract class AircraftBase : MonoBehaviour
 
         DamageInfo damageInfo = new DamageInfo
         {
-            baseDamage       = m_aircraftInfo.airAttack,
+            baseDamage       = m_aircraftInfo.airAttackToShip,
             attackMultiplier = m_aircraftInfo.airAttackMultiplier,
             damageType       = EDamageType.Aircraft,
         };

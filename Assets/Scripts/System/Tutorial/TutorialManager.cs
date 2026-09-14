@@ -12,6 +12,9 @@ public class TutorialManager : MonoSingleton<TutorialManager>
     // 모듈 미네랄 강화 모드 언락 — 이 튜토리얼의 완료 여부 자체를 언락 플래그로 사용 (별도 서버 필드 불필요)
     public const string MINERAL_MODE_UNLOCK_TUTORIAL_ID = "Tutorial_MineralModeUnlock";
 
+    // 지휘력 증가 안내 — 존런 종료로 탐험 포인트가 확정된 직후 TryStartCommandPowerIncreaseTutorial()이 시작시킴
+    public const string COMMAND_POWER_INCREASE_TUTORIAL_ID = "Tutorial_CommandPowerIncrease";
+
     // 순서대로 진행되는 온보딩 튜토리얼 — ObjectManager.RunTutorialSequence가 이 순서대로 재생하고,
     // 스킵 버튼 클릭 시(SkipTutorial) 이 목록 전체를 한 번에 완료 처리한 뒤 노말 플레이로 전환함
     public static readonly string[] ONBOARDING_TUTORIAL_SEQUENCE =
@@ -149,6 +152,20 @@ public class TutorialManager : MonoSingleton<TutorialManager>
         StartTutorial(MINERAL_MODE_UNLOCK_TUTORIAL_ID);
     }
 
+    // 존런 종료(탈출/포기)로 탐험 포인트 잔액이 확정된 직후 호출 — 포인트가 있어야 변환을 시연할 수 있으므로 0이면 시작하지 않음(호출부에서 >0 필터링)
+    // 호출 시점이 OnConfirmEscape/OnAbandonRunConfirmed가 자기 몫의 다음 존 전환을 아직 안 끝낸 중간이라, 한 프레임 미뤄서 그 전환이 끝난 뒤 시작(안 그러면 ShowMainPanel의 ExitGalaxyView와 겹쳐 그리드 UI 잔상이 남음)
+    public void TryStartCommandPowerIncreaseTutorial()
+    {
+        if (IsTutorialCompleted("Tutorial_Exploration") == false) return;
+        StartCoroutine(StartCommandPowerIncreaseTutorialDeferred());
+    }
+
+    private IEnumerator StartCommandPowerIncreaseTutorialDeferred()
+    {
+        yield return null;
+        StartTutorial(COMMAND_POWER_INCREASE_TUTORIAL_ID);
+    }
+
     // 현재 진행 중인 튜토리얼이 스킵 버튼을 숨기도록 설정됐는지 — TutorialUI가 스킵 버튼 표시 여부를 결정할 때 사용
     public bool IsSkipButtonHiddenForCurrentTutorial()
     {
@@ -179,6 +196,11 @@ public class TutorialManager : MonoSingleton<TutorialManager>
 
         // 함대편성 패널이 열린 채로 전투 연출이 시작되면 화면을 가리므로, 시작 시점에 미리 닫아둠(기존엔 전투 직전까지 열려있었음)
         if (tutorialId == "Tutorial_FirstPlay_Battle")
+            UIManager.Instance.ShowMainPanel();
+
+        // 존런 종료 직후(그리드 패널이 여전히 top)에 발동될 수 있어, 메인 UI로 복귀시킨 뒤 시작 —
+        // 안 그러면 1스텝이 가리키는 FleetButton이 비활성 상태(메인 패널이 가려진 채)라 대상을 못 찾음
+        if (tutorialId == COMMAND_POWER_INCREASE_TUTORIAL_ID)
             UIManager.Instance.ShowMainPanel();
 
         m_currentStepIndex = 0;

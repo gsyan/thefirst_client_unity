@@ -131,10 +131,15 @@ public static class ShipStatCalculator
 
             ModuleData hangarModuleData = GetModuleData(moduleTable, allocation.hangarModuleSubType[i]);
 
-            shipAttackList.Add(formula.hangar.baseShipAttack + allocation.hangarAttackToShip[i] * formula.hangar.reinforcePerPoint);
-            fighterAttackList.Add(formula.hangar.baseFighterAttack + allocation.hangarAttackToFighter[i] * formula.hangar.reinforcePerPoint);
-            ammoList.Add(formula.hangar.baseAmmo + allocation.hangarAmmoPoints[i] * formula.hangar.reinforcePerPoint);
-            healthList.Add(formula.hangar.baseHealth + allocation.hangarHealthPoints[i] * formula.hangar.reinforcePerPoint);
+            float baseShipAttack = hangarModuleData != null ? hangarModuleData.airAttackToShip : 0f;
+            float baseFighterAttack = hangarModuleData != null ? hangarModuleData.airAttackToFighter : 0f;
+            float baseAmmo = hangarModuleData != null ? hangarModuleData.airAmmo : 0f;
+            float baseHealth = hangarModuleData != null ? hangarModuleData.airHealth : 0f;
+
+            shipAttackList.Add(baseShipAttack + allocation.hangarAttackToShip[i] * formula.hangar.attackPerPoint);
+            fighterAttackList.Add(baseFighterAttack + allocation.hangarAttackToFighter[i] * formula.hangar.attackPerPoint);
+            ammoList.Add(baseAmmo + allocation.hangarAmmoPoints[i] * formula.hangar.reinforcePerPoint);
+            healthList.Add(baseHealth + allocation.hangarHealthPoints[i] * formula.hangar.reinforcePerPoint);
             airDisruptList.Add(hangarModuleData != null ? hangarModuleData.airDisrupt : 0f);
             subTypeList.Add(allocation.hangarModuleSubType[i]);
         }

@@ -8,7 +8,8 @@ public class AircraftInfo
 {
     public float airLaunchDist;
     public float airHealth;
-    public float airAttack;
+    public float airAttackToShip;
+    public float airAttackToFighter;
     public float airAttackRange;
     public float airAttackCool;
     public float airSpeed;
@@ -25,9 +26,9 @@ public class AircraftInfo
     // 출격 시 누적된 공격 배율 (진형·함선수·전술). 귀환 시 UpdateAircraftInfo에서 1f로 원복
     public float airAttackMultiplier;
 
-    public AircraftInfo(ModuleData moduleData)
+    public AircraftInfo(ModuleData moduleData, float attackToShip, float attackToFighter)
     {
-        UpdateAircraftInfo(moduleData);
+        UpdateAircraftInfo(moduleData, attackToShip, attackToFighter);
         this.lastReturnTime = 0f;
         this.isReady = true;
     }
@@ -35,11 +36,14 @@ public class AircraftInfo
     // 함재기 출격 시 초기 직진 거리 — 데이터 테이블 값이 아닌 고정값
     private const float k_airLaunchDist = 1f;
 
-    public void UpdateAircraftInfo(ModuleData moduleData)
+    // attackToShip/attackToFighter: ModuleHangar가 강화 포인트를 반영해 확정해둔 값(ModuleHangar.GetFinalAttackToShip/Fighter) —
+    // 출격마다 원본 moduleData 값으로 되돌아가지 않도록 호출부가 매번 이 확정값을 넘겨야 함
+    public void UpdateAircraftInfo(ModuleData moduleData, float attackToShip, float attackToFighter)
     {
         this.airLaunchDist       = k_airLaunchDist;
         this.airHealth           = moduleData.airHealth;
-        this.airAttack           = moduleData.airAttack;
+        this.airAttackToShip     = attackToShip;
+        this.airAttackToFighter  = attackToFighter;
         this.airAttackRange      = moduleData.airAttackRange;
         this.airAttackCool       = moduleData.airAttackCool;
         this.airSpeed            = moduleData.airSpeed;
@@ -63,6 +67,10 @@ public class ModuleHangar : ModuleBase
     [SerializeField] private int m_airCount;
     [SerializeField] private float m_airMaintenanceTime;
 
+    // 강화 포인트(override) 반영을 마친 확정값 — InitializeModuleHangar에서 한 번만 계산해두고, 매 출격(LauncherAircraft)마다 재사용
+    [SerializeField] private float m_finalAttackToShip;
+    [SerializeField] private float m_finalAttackToFighter;
+
     [SerializeField] private float m_lastLaunchTime;
     [SerializeField] private List<AircraftInfo> m_aircraftPool = new List<AircraftInfo>();
 
@@ -79,7 +87,8 @@ public class ModuleHangar : ModuleBase
         m_parentBody = parentBody;
     }
 
-    public void InitializeModuleHangar(ModuleInfo moduleInfo, ModuleHull parentBody, ModuleSlot moduleSlot)
+    // shipAttackOverride/fighterAttackOverride: 강화 포인트(대함/대전투기 각각 투자한 포인트) 반영값 — null이면 데이터 테이블 티어값 그대로 사용
+    public void InitializeModuleHangar(ModuleInfo moduleInfo, ModuleHull parentBody, ModuleSlot moduleSlot, float? shipAttackOverride = null, float? fighterAttackOverride = null)
     {
         m_moduleInfo = moduleInfo;
         m_parentBody = parentBody;
@@ -105,11 +114,14 @@ public class ModuleHangar : ModuleBase
 
         m_lastLaunchTime = 0f;
 
+        m_finalAttackToShip = shipAttackOverride ?? moduleData.airAttackToShip;
+        m_finalAttackToFighter = fighterAttackOverride ?? moduleData.airAttackToFighter;
+
         // 함재기 데이터 풀 초기화
         int totalAircraftCount = m_airCount;
         for (int i = 0; i < totalAircraftCount; i++)
         {
-            AircraftInfo aircraftInfo = new AircraftInfo(moduleData);
+            AircraftInfo aircraftInfo = new AircraftInfo(moduleData, m_finalAttackToShip, m_finalAttackToFighter);
             m_aircraftPool.Add(aircraftInfo);
         }
 
@@ -125,17 +137,23 @@ public class ModuleHangar : ModuleBase
         {
             m_health    *= m_ownerShip.m_healthMultiplier;
             m_healthMax *= m_ownerShip.m_healthMultiplier;
+            m_finalAttackToShip    *= m_ownerShip.m_attackMultiplier;
+            m_finalAttackToFighter *= m_ownerShip.m_attackMultiplier;
             foreach (var info in m_aircraftPool)
             {
                 info.airHealth      *= m_ownerShip.m_healthMultiplier;
                 info.airHealthMax   *= m_ownerShip.m_healthMultiplier;
-                info.airAttack      *= m_ownerShip.m_attackMultiplier;
+                info.airAttackToShip    *= m_ownerShip.m_attackMultiplier;
+                info.airAttackToFighter *= m_ownerShip.m_attackMultiplier;
             }
         }
 
         if (m_parentBody != null)
             m_parentBody.AddHangar(this);
     }
+
+    public float GetFinalAttackToShip() { return m_finalAttackToShip; }
+    public float GetFinalAttackToFighter() { return m_finalAttackToFighter; }
 
     public override void Start()
     {
@@ -298,7 +316,7 @@ public class ModuleHangar : ModuleBase
         if (moduleData == null) return;
 
         for (int i = 0; i < shortageCount; i++)
-            m_aircraftPool.Add(new AircraftInfo(moduleData));
+            m_aircraftPool.Add(new AircraftInfo(moduleData, m_finalAttackToShip, m_finalAttackToFighter));
     }
 
     public int GetHangarCapability() => m_airCount;
@@ -329,7 +347,7 @@ public class ModuleHangar : ModuleBase
         ModuleData moduleData = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(m_moduleInfo.moduleSubType);
         // airAttack은 함재기 1기당 공격력이라, 이 격납고의 총 화력(1기당 공격력 × 함재기 수)으로 환산
         // — 함선에 격납고가 여러 개면 상위(ModuleHull)에서 단순 합산되므로 여기서 미리 곱해둬야 총 화력 합산이 맞음
-        stats.airAttack = moduleData.airAttack * moduleData.airCount;
+        stats.airAttack = moduleData.airAttackToShip * moduleData.airCount;
         stats.airCount = moduleData.airCount;
 
         return stats;

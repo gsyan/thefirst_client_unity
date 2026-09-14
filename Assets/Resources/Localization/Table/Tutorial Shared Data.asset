@@ -143,6 +143,26 @@ MonoBehaviour:
     m_Key: Tutorial_Exploration_ContinueToEscape
     m_Metadata:
       m_Items: []
+  - m_Id: 26917950338236416
+    m_Key: Tutorial_CommandPowerIncrease_OpenFleet
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26917950392762368
+    m_Key: Tutorial_CommandPowerIncrease_OpenConvert
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26917950392762369
+    m_Key: Tutorial_CommandPowerIncrease_SelectAll
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26917950392762370
+    m_Key: Tutorial_CommandPowerIncrease_Confirm
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26917950392762371
+    m_Key: Tutorial_CommandPowerIncrease_Complete
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

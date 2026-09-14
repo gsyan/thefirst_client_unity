@@ -2576,8 +2576,11 @@ MonoBehaviour:
   m_rowPrefab: {fileID: 7606636990632877931, guid: a43d8232f102a7f478204a7d0aecbe1b, type: 3}
   m_scrollView: {fileID: 7733504666698590707}
   m_commandPowerRow: {fileID: 3054632750355962322}
+  m_titleText: {fileID: 6583000968492254405}
   m_confirmButton: {fileID: 5494789208033690246}
+  m_confirmButtonText: {fileID: 2589715799268570253}
   m_cancelButton: {fileID: 2213394676525611600}
+  m_cancelButtonText: {fileID: 2286378796975698160}
   m_colStatusText: {fileID: 1249119975608980070}
   m_colValueText: {fileID: 139155315320615292}
   m_colInvestedText: {fileID: 7716814652205393773}

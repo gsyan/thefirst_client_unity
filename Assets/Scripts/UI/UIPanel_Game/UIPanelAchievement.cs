@@ -11,6 +11,7 @@ public class UIPanelAchievement : UIPanelBase
 {
     [SerializeField] private InfiniteScrollView m_scrollView;
     [SerializeField] private UIAchievementRow m_rowPrefab;
+    [SerializeField] private TMP_Text m_titleText;
     [SerializeField] private GameObject m_titleRedDot;
     [SerializeField] private RowLabelValue m_achievementPointRow; // 타이틀 아래 보유 업적포인트 상시 표시
     [SerializeField] private Button m_claimAllButton;
@@ -79,6 +80,8 @@ public class UIPanelAchievement : UIPanelBase
         EventManager.Subscribe_AchievementPointChanged(OnAchievementPointChanged);
         RefreshAchievementPointRow();
 
+        if (m_titleText != null)
+            CommonUtility.SetUILocText(m_titleText, "UI_Achievement");
         if (m_claimAllButtonText != null)
             CommonUtility.SetUILocText(m_claimAllButtonText, "UIAchievement_ClaimAllButton");
         if (m_findNextUnclaimedButtonText != null)
@@ -102,7 +105,7 @@ public class UIPanelAchievement : UIPanelBase
 
         Commander commander = DataManager.Instance.m_currentCommander;
         int ownedAchievementPoint = commander != null ? commander.GetAchievementPoint() : 0;
-        m_achievementPointRow.SetRow("UIPanelFleet_AchievementPoint", ownedAchievementPoint.ToString(), rawValue: true);
+        m_achievementPointRow.SetRow("UIPanelFleet_AchievementPoint", $": {ownedAchievementPoint}", rawValue: true);
         LayoutRebuilder.ForceRebuildLayoutImmediate(m_achievementPointRow.transform as RectTransform);
     }
 

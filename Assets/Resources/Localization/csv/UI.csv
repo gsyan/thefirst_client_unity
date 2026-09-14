@@ -11,6 +11,7 @@ UI_Fleet,,FLEET,함대
 UI_Settings,,SETTINGS,설정
 UI_Rank,,RANK,랭크
 UI_Exploration,,EXPLORATION,탐사
+UI_Achievement,,Achievements,업적
 
 UI_CommanderLevel,,Commander Level,지휘관 레벨
 UI_ExpToNextLevel,,EXP to next level : {0},다음 레벨업까지 남은 경험치 : {0}
@@ -19,6 +20,9 @@ UI_ShipCountUnit,,ships,척
 UI_CommandPower,,Command Power,지휘력
 UI_TacticPower,,Tactic Power,전술력
 UI_Tactics,,TACTICS,전술
+
+UI_ModuleReinforce,,Module Reinforce,모듈 강화
+
 
 UI_Account,,ACCOUNT,계정
 UI_Bgm,,BGM,배경음
@@ -34,7 +38,6 @@ UITabSettings_Logout,,LOGOUT,로그아웃
 UITabSettings_General,,GENERAL,일반
 UITabSettings_Language,,LANGUAGE,언어
 UITabSettings_License,,THIRD-PARTY LICENSES,외부 라이센스
-
 
 tab_ship,,Ship,함선
 fleet_ship_count,,Ships,함선 수
@@ -73,9 +76,12 @@ UIPanelExplorationGrid_EscapeConfirmMessage,,Escape Reward,탈출 보상
 UIPanelExplorationGrid_TreasureHealthHeal,,Fleet health restored by {0}%!,함대 체력을 {0}% 회복했습니다!
 UIPanelExplorationGrid_TreasureTacticPowerRestore,,Tactic power restored by {0}%!,전술력을 {0}% 회복했습니다!
 UIPanelExplorationGrid_OtherRunInProgress,,There is another exploration in progress.\nZone {0} / Cell {1} / Banked Exploration Point {2}\nAbandon it and start a new challenge in the selected zone?\n* Only 20% of banked points will be recovered if abandoned,진행 중인 다른 탐험이 있습니다.\n존 {0} / 구역 {1} / 적립된 탐험 포인트 {2}\n포기하고 선택한 존에 새로 도전하시겠습니까?\n* 포기 시 적립된 포인트의 20%만 회수 가능합니다
+UIPanelExplorationGrid_OtherRunInProgressWithAd,,There is another exploration in progress.\nZone {0} / Cell {1} / Banked Exploration Point {2}\nAbandon it and start a new challenge in the selected zone?\n* Watch an ad to recover 100% of banked points. Otherwise only 20% will be recovered,진행 중인 다른 탐험이 있습니다.\n존 {0} / 구역 {1} / 적립된 탐험 포인트 {2}\n포기하고 선택한 존에 새로 도전하시겠습니까?\n* 광고를 시청하면 적립된 포인트의 100%를 회수하고 시청하지 않으면 20%만 회수 가능합니다
 UIPanelExplorationGrid_AbandonAnotherRunConfirm,,There is an exploration in progress in another zone. Abandoning it now only grants 20% of the banked exploration points. Abandon it and start a new challenge?,다른 존에 진행 중인 탐험이 있습니다. 지금 포기하면 쌓인 탐험 포인트의 20%만 획득합니다. 포기하고 새로 도전하시겠습니까?
+UIPanelExplorationGrid_AbandonAnotherRunConfirmWithAd,,There is an exploration in progress in another zone. Watch an ad to receive 100% of the banked exploration points or abandon now for only 20%. Abandon it and start a new challenge?,다른 존에 진행 중인 탐험이 있습니다. 광고를 시청하면 쌓인 탐험 포인트의 100%를 획득하고 시청하지 않고 포기하면 20%만 획득합니다. 포기하고 새로 도전하시겠습니까?
 UIPanelExplorationGrid_AbandonRunConfirm,,Abandon the exploration in progress?\nOnly 20% of the banked exploration points will be granted.,진행 중인 탐험을 포기하시겠습니까?\n지금까지 쌓인 탐험 포인트의 20%만 획득합니다.
-UIPanelExplorationGrid_AbandonConfirmButton,,Abandon,포기
+UIPanelExplorationGrid_AbandonRunConfirmWithAd,,Abandon the exploration in progress?\nWatch an ad to receive 100% of the banked exploration points or abandon now for only 20%.,진행 중인 탐험을 포기하시겠습니까?\n광고를 시청하면 지금까지 쌓인 탐험 포인트의 100%를 획득하고 시청하지 않고 포기하면 20%만 획득합니다.
+UI_Abandon,,ABANDON,포기
 RewardCard_BeamAttack_Name,,Beam Power Up,빔 공격력 강화
 RewardCard_BeamAttack_Desc,,Beam attack +{0:P0},빔 공격력 {0:P0} 증가
 RewardCard_BeamFireRate_Name,,Beam Rate of Fire Up,빔 연사속도 강화
@@ -147,9 +153,9 @@ UIAchievement_Category_ExplorationPointTotal,,Exploration Point (Total),탐사�
 UIAchievement_Category_HullTierCount,,Hull Tier,함체 티어
 UIAchievement_Category_ModuleTierCount,,Module Tier,모듈 티어
 UIAchievement_Category_HullUnlocked,,Hull Unlock,함체 언락
-UIDailyAchievement_Category_CellClear,,Cell Clear,셀 클리어
-UIDailyAchievement_Category_EventCell,,Event Cell Clear,이벤트 셀 클리어
-UIDailyAchievement_Category_ZoneClearTotal,,Zone Clear,존 클리어
+UIDailyAchievement_Category_CellClear,,Daily Cell Clear,일일 셀 클리어
+UIDailyAchievement_Category_EventCell,,Daily Event Cell Clear,일일 이벤트 셀 클리어
+UIDailyAchievement_Category_ZoneClearTotal,,Daily Zone Clear,일일 존 클리어
 UIFleet_EnemyFleetTitle,,Enemy Fleet,적함대
 
 
@@ -178,6 +184,7 @@ module_type_shield,,Shield,실드
 module_type_interceptor,,Interceptor,요격체
 UIFleet_ModuleSlot_Installed,,Installed,장착
 UIFleet_ModuleSlot_NotInstalled,,Not Installed,해제
+
 UIFleet_ModuleReinforce_ColStatus,,Status,상태
 UIFleet_ModuleReinforce_ColValue,,Value,수치
 UIFleet_ModuleReinforce_ColInvested,,Invested,투입 포인트

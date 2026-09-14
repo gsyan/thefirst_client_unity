@@ -63,6 +63,10 @@ MonoBehaviour:
     m_Key: UI_Exploration
     m_Metadata:
       m_Items: []
+  - m_Id: 79336418345615360
+    m_Key: UI_Achievement
+    m_Metadata:
+      m_Items: []
   - m_Id: 78723064602165248
     m_Key: UI_CommanderLevel
     m_Metadata:
@@ -89,6 +93,10 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 79084582279708672
     m_Key: UI_Tactics
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79336418400141312
+    m_Key: UI_ModuleReinforce
     m_Metadata:
       m_Items: []
   - m_Id: 78728054842458112
@@ -275,16 +283,28 @@ MonoBehaviour:
     m_Key: UIPanelExplorationGrid_OtherRunInProgress
     m_Metadata:
       m_Items: []
+  - m_Id: 79356561679319040
+    m_Key: UIPanelExplorationGrid_OtherRunInProgressWithAd
+    m_Metadata:
+      m_Items: []
   - m_Id: 74139633398448128
     m_Key: UIPanelExplorationGrid_AbandonAnotherRunConfirm
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79356561738039296
+    m_Key: UIPanelExplorationGrid_AbandonAnotherRunConfirmWithAd
     m_Metadata:
       m_Items: []
   - m_Id: 74139633398448129
     m_Key: UIPanelExplorationGrid_AbandonRunConfirm
     m_Metadata:
       m_Items: []
-  - m_Id: 78141668900864000
-    m_Key: UIPanelExplorationGrid_AbandonConfirmButton
+  - m_Id: 79356561738039297
+    m_Key: UIPanelExplorationGrid_AbandonRunConfirmWithAd
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79356561738039298
+    m_Key: UI_Abandon
     m_Metadata:
       m_Items: []
   - m_Id: 66832217589809152
@@ -569,6 +589,18 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 78132264847671296
     m_Key: UIAchievement_Category_HullUnlocked
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79331435193696256
+    m_Key: UIDailyAchievement_Category_CellClear
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79331435248222208
+    m_Key: UIDailyAchievement_Category_EventCell
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79331435252416512
+    m_Key: UIDailyAchievement_Category_ZoneClearTotal
     m_Metadata:
       m_Items: []
   - m_Id: 76279911311867904
@@ -929,6 +961,46 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 78447295728582665
     m_Key: UIAchievement_Desc_zone_clear_total
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79331435256610816
+    m_Key: UIDailyAchievement_Name_cell_clear
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79331435256610817
+    m_Key: UIDailyAchievement_Desc_cell_clear
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79331435256610818
+    m_Key: UIDailyAchievement_Name_event_cell_explorationpoint
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79331435256610819
+    m_Key: UIDailyAchievement_Desc_event_cell_explorationpoint
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79331435256610820
+    m_Key: UIDailyAchievement_Name_event_cell_shiphealthheal
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79331435256610821
+    m_Key: UIDailyAchievement_Desc_event_cell_shiphealthheal
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79331435256610822
+    m_Key: UIDailyAchievement_Name_event_cell_tacticpowerrestore
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79331435256610823
+    m_Key: UIDailyAchievement_Desc_event_cell_tacticpowerrestore
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79331435256610824
+    m_Key: UIDailyAchievement_Name_zone_clear_total
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79331435256610825
+    m_Key: UIDailyAchievement_Desc_zone_clear_total
     m_Metadata:
       m_Items: []
   - m_Id: 78447295728582666

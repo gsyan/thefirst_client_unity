@@ -1048,7 +1048,6 @@ public class UIPanelExplorationGrid : UIPanelBase
         else if (card.effectType == ECardEffectType.Instant_HealthHeal)
         {
             SpaceFleet myFleet = ObjectManager.Instance.GetMyFleet();
-            Debug.Log($"[디버그-체력회복] card.effectType={card.effectType} card.value1={card.value1} myFleet={(myFleet != null ? myFleet.name : "null")}");
             if (myFleet != null)
                 myFleet.HealAllShipsByRatio(card.value1);
         }
@@ -1210,6 +1209,10 @@ public class UIPanelExplorationGrid : UIPanelBase
             DataManager.Instance.m_currentCommander.UpdateExplorationPoint(explorationPointRemain);
 
         RefreshOwnedPointText();
+
+        // 존런 종료로 탐험 포인트가 확정된 시점 — 지휘력 증가 튜토리얼 트리거 지점
+        if (explorationPointRemain > 0)
+            TutorialManager.Instance.TryStartCommandPowerIncreaseTutorial();
     }
 
     // 탈출/포기 정산 응답의 hasUnclaimedAchievement를 커맨더 캐시에 반영 — 업적 버튼/패널 레드닷이 존런 정산 즉시 갱신됨
@@ -1293,8 +1296,8 @@ public class UIPanelExplorationGrid : UIPanelBase
         UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig
         {
             message = LocalizationManager.Instance.Get(finalMessageKey, messageArgs),
-            confirmText1 = LocalizationManager.Instance.Get("UIPanelExplorationGrid_AbandonConfirmButton"),
-            extraText1 = adReady ? LocalizationManager.Instance.Get("Simple_WatchAD") : null,
+            confirmText1 = LocalizationManager.Instance.Get("UI_Abandon"),
+            extraText1 = adReady ? LocalizationManager.Instance.Get("UI_WatchAD") : null,
             onConfirm = () => RequestAbandonZoneRun(false, onComplete),
             onExtra = adReady ? () => RequestAbandonZoneRunWithAd(onComplete) : null,
             onCancel = () => { }

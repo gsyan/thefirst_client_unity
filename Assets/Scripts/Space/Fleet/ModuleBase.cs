@@ -34,6 +34,8 @@ public class ModuleBase : MonoBehaviour
 
     public virtual void ApplyShipStateToModule()
     {
+        bool wasBattleState = m_moduleState.IsBattleState();
+
         switch (m_ownerShip.m_shipState)
         {
             case EUnitState.Idle:
@@ -49,6 +51,19 @@ public class ModuleBase : MonoBehaviour
                 m_moduleState = EUnitState.Idle;
                 break;
         }
+
+        // 전투 종료 중 얼어붙은 낡은 쿨다운/무장신호가 다음 전투로 새는 것을 방지 — 새 전투 진입 시 항상 깨끗한 상태로 시작
+        if (m_moduleState.IsBattleState() == true && wasBattleState == false)
+            ResetAttackSignal();
+    }
+
+    // 전투 상태로 새로 진입할 때 호출 — 직전 전투에서 이월된 낡은 무장신호/쿨다운 baseline을 지움
+    protected void ResetAttackSignal()
+    {
+        m_isAttackSignalFired = false;
+        m_attackPhaseOffset = 0f;
+        m_attackSignalArmedTime = 0f;
+        SetLastAttackTime(Time.time);
     }
 
     public virtual void TakeDamage(float damage)

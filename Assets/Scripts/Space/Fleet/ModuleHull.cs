@@ -330,7 +330,9 @@ public class ModuleHull : ModuleBase
                 if (slot != null && !HasRealModule(slot))
                 {
                     DisablePlaceholderIfExists(slot);
-                    InitializeHangar(hangarInfo);
+                    float? shipAttackOverride = GetSlotAttackOverride(statOverride?.hangarShipAttacks, hangarInfo.slotIndex);
+                    float? fighterAttackOverride = GetSlotAttackOverride(statOverride?.hangarFighterAttacks, hangarInfo.slotIndex);
+                    InitializeHangar(hangarInfo, shipAttackOverride, fighterAttackOverride);
                 }
             }
         }
@@ -416,7 +418,7 @@ public class ModuleHull : ModuleBase
         moduleMissile.InitializeModuleMissile(moduleInfo, this, targetSlot, attackOverride);
     }
 
-    public void InitializeHangar(ModuleInfo moduleInfo)
+    public void InitializeHangar(ModuleInfo moduleInfo, float? shipAttackOverride = null, float? fighterAttackOverride = null)
     {
         GameObject modulePrefab = ObjectManager.Instance.LoadShipModulePrefab(moduleInfo.moduleType.ToString(), moduleInfo.moduleSubType);
         if (modulePrefab == null)
@@ -446,7 +448,7 @@ public class ModuleHull : ModuleBase
         if (moduleHangar == null)
             moduleHangar = hangarObj.AddComponent<ModuleHangar>();
 
-        moduleHangar.InitializeModuleHangar(moduleInfo, this, targetSlot);
+        moduleHangar.InitializeModuleHangar(moduleInfo, this, targetSlot, shipAttackOverride, fighterAttackOverride);
     }
 
     public void CollectAndSortModuleSlots()
