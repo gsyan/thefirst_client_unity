@@ -77,10 +77,13 @@ public class UIPanelExplorationGrid : UIPanelBase
     private readonly Dictionary<(int row, int col), GridCell3D> m_activeButtons = new();
     private readonly Dictionary<(int row, int col), List<FleetInfo>> m_cellEnemyWaves = new(); // 셀별 순차 웨이브 — 저장하지 않고 메모리 캐싱만
 
+    private CanvasGroup m_zoneTabScrollCanvasGroup; // 튜토리얼 dim-off 스텝 중 존 탭 스크롤 조작을 막기 위한 캔버스그룹(지연 생성)
+
     public override void InitializeUIPanel()
     {
         EventManager.Subscribe_ZoneStageBattleEnd(OnZoneStageBattleEnd);
         EventManager.Subscribe_RetreatExploration(OnRetreatDuringBattle);
+        EventManager.Subscribe_TutorialGeneralUIBlockedChanged(OnTutorialGeneralUIBlockedChanged);
 
         if (m_abandonRunButton != null)
             m_abandonRunButton.onClick.AddListener(OnAbandonRunButtonClicked);
@@ -93,6 +96,23 @@ public class UIPanelExplorationGrid : UIPanelBase
     {
         EventManager.Unsubscribe_ZoneStageBattleEnd(OnZoneStageBattleEnd);
         EventManager.Unsubscribe_RetreatExploration(OnRetreatDuringBattle);
+        EventManager.Unsubscribe_TutorialGeneralUIBlockedChanged(OnTutorialGeneralUIBlockedChanged);
+    }
+
+    // 튜토리얼이 dim 없이(3D 조작은 열어두고) 일반 UI만 막는 스텝일 때, 화면 하단 존 탭 스크롤뷰도 같이 잠금 —
+    // 이 스텝들에서 다른 존으로 이동/브라우징이 가능하면 튜토리얼이 가정하는 그리드 상태와 어긋날 수 있음
+    private void OnTutorialGeneralUIBlockedChanged(bool isBlocked)
+    {
+        if (m_zoneTabScrollCanvasGroup == null && m_zoneTabScroll != null)
+        {
+            m_zoneTabScrollCanvasGroup = m_zoneTabScroll.GetComponent<CanvasGroup>();
+            if (m_zoneTabScrollCanvasGroup == null)
+                m_zoneTabScrollCanvasGroup = m_zoneTabScroll.gameObject.AddComponent<CanvasGroup>();
+        }
+        if (m_zoneTabScrollCanvasGroup == null) return;
+
+        m_zoneTabScrollCanvasGroup.interactable = isBlocked == false;
+        m_zoneTabScrollCanvasGroup.blocksRaycasts = isBlocked == false;
     }
 
     // 전투 중 후퇴 버튼(UIBattleView) — 확인 후 전투 강제 종료. 레거시 UITabExploration.OnRetreatZoneStage와 동일 패턴/로컬라이즈 키 재사용
@@ -506,6 +526,27 @@ public class UIPanelExplorationGrid : UIPanelBase
     {
         m_cellEnemyWaves.TryGetValue((row, col), out List<FleetInfo> waves);
         return waves;
+    }
+
+    // 튜토리얼 전용 — 지금 위치에서 이동 가능한(인접 + 비차단) 셀 중 하나의 월드 좌표를 반환 (화살표로 가리키기 위함)
+    public bool TryGetAdjacentReachableCellWorldPos(out Vector3 worldPos)
+    {
+        worldPos = Vector3.zero;
+        if (m_gridData == null) return false;
+
+        for (int row = 0; row < m_gridData.height; row++)
+        {
+            for (int col = 0; col < m_gridData.width; col++)
+            {
+                if (m_gridData.IsAdjacent(m_currentRow, m_currentCol, row, col) == false) continue;
+                if (m_gridData.GetCell(row, col).isBlocked == true) continue;
+
+                worldPos = m_gridData.GetCell(row, col).worldPos;
+                return true;
+            }
+        }
+
+        return false;
     }
 
     // 셀마다 ExplorationGridGenerator.Generate()에서 이미 계산해 캐싱해둔 worldPos를 그대로 씀 — 카메라/UI 상태와 무관
@@ -1054,6 +1095,7 @@ public class UIPanelExplorationGrid : UIPanelBase
         }
 
         RefreshAbandonRunButtonState();
+        EventManager.TriggerZoneCellReturnedToGrid();
     }
 
     // 탈출 셀 클리어 직후(ContinueAfterCellClear의 롤링 애니메이션 콜백)에만 호출됨 — 확정 전 실제로 받게 될 보상(경험치/탐험 포인트)을 미리 보여줌
@@ -1355,6 +1397,7 @@ public class UIPanelExplorationGrid : UIPanelBase
         }
 
         ReturnToGridPanel();
+        EventManager.TriggerZoneCellReturnedToGrid();
     }
 
     private void RefreshCellStates()

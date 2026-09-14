@@ -255,7 +255,8 @@ public class ProjectileMissile : ProjectileBase
                 else
                     hitShip.TakeDamage(m_damageInfo, hit.point);
 
-                hitShip.ApplySilenceToRandomModule(m_silenceTime);
+                if (m_missileSource != EMissileSource.Aircraft)
+                    hitShip.ApplySilenceToRandomModule(m_silenceTime);
 
                 EFx hitFx = (m_missileSource == EMissileSource.Aircraft) ? EFx.Explosion_Aircraft_Missile : EFx.Explosion_Missile;
                 SoundManager.Instance.PlayFX(hitFx, hit.point);

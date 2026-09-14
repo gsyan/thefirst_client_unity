@@ -153,21 +153,28 @@ public static class TutorialCinematicController
         return new FleetInfo { fleetName = fleetName, ships = ships };
     }
 
-    // 적 웨이브 함대 1개 스폰
+    // 적 웨이브 함대 1개 스폰 — basePos/forward/up은 이 인카운터 시작 시점에 한 번만 캡처된 고정 기준(호출부 TutorialBattleCinematic이 들고 있음).
+    // 전투 중 내 함대가 적을 조준하며 계속 회전하는데, 매 스폰마다 siegfriedFleet.transform.forward를 새로 읽으면 나중에 스폰되는
+    // 함대일수록 기준 방향이 달라져서 이전에 스폰된 함대와 위치가 겹쳐버림 — 그래서 실시간으로 다시 읽지 않고 고정값을 그대로 받아씀
     // TODO(3단계): 스폰 위치 산출이 임시 배치임 — 삭제된 DataTableZone.GetFleetPosition/FleetPositionPreset을 대체할
-    // 신규 탐사 그리드 기준 위치 산출 로직으로 교체 필요. 지금은 내 함대 정면에 positionIndex만큼 옆으로 벌려 배치.
-    public static SpaceFleet SpawnEnemyWaveFleet(int[] shipGradeLevels, int positionIndex)
+    // 신규 탐사 그리드 기준 위치 산출 로직으로 교체 필요. 지금은 내 함대 정면 반지름 고정 부채꼴로 좌우 번갈아 배치.
+    public static SpaceFleet SpawnEnemyWaveFleet(int[] shipGradeLevels, int positionIndex, Vector3 basePos, Vector3 forward, Vector3 up)
     {
         SpaceFleet siegfriedFleet = ObjectManager.Instance.GetMyFleet();
         if (siegfriedFleet == null) return null;
 
-        const float k_tempDistance = 150f;
-        const float k_tempLateralSpacing = 40f;
+        // UIPanelExplorationGrid.k_enemyEncounterDistance(실제 존 전투 조우 거리, 50f)와 동일 스케일로 맞춤 —
+        // 이전엔 150f라 실제 게임보다 훨씬 멀리 스폰되고 있었음
+        const float k_tempDistance = 50f;
+        const float k_tempAngleStepDeg = 20f; // 자리 하나당 좌우로 벌어지는 각도 — 반지름은 고정이라 옆으로 갈수록 멀어지지 않음. 인접 자리 겹침 방지용 임시값(반지름 50 기준 약 17유닛 간격)
 
-        Vector3 basePos = siegfriedFleet.transform.position;
-        Vector3 forward = siegfriedFleet.transform.forward;
-        Vector3 right = siegfriedFleet.transform.right;
-        Vector3 spawnPos = basePos + forward * k_tempDistance + right * (positionIndex * k_tempLateralSpacing);
+        // positionIndex(0,1,2,3,...) → 중앙 기준 좌우 대칭 각도로 매핑: 0=중앙, 1=+step(우), 2=-step(좌), 3=+2step(우), 4=-2step(좌) ...
+        int sideMagnitude = (positionIndex + 1) / 2;
+        float sign = (positionIndex % 2 == 1) ? 1f : -1f;
+        float angleDeg = positionIndex == 0 ? 0f : sign * sideMagnitude * k_tempAngleStepDeg;
+
+        Vector3 spawnDir = Quaternion.AngleAxis(angleDeg, up) * forward;
+        Vector3 spawnPos = basePos + spawnDir * k_tempDistance;
 
         Vector3 dirToPlayer = basePos - spawnPos;
         Quaternion spawnRot = dirToPlayer != Vector3.zero ? Quaternion.LookRotation(dirToPlayer) : Quaternion.identity;

@@ -19,6 +19,7 @@ public class UIBattleView : MonoBehaviour
     [Header("함대 전술 토글")]
     [SerializeField] private Transform m_tacticsButtonContainer;
     [SerializeField] private Image m_tacticPowerGauge; // 전술 토글 3종이 공유하는 소모 게이지(Filled/Horizontal) — 소모 계산은 UIPanelBattle이 전담, 여기선 표시만
+    [SerializeField] private TextMeshProUGUI m_tacticsLabelText; // "TACTICS" 섹션 헤더 — 프리팹에 박힌 LocalizeStringEvent가 빈 키라 코드로 직접 세팅
     private Button[] m_tacticsButtons;
     private GameObject[] m_tacticsUsingImages; // 버튼 자식의 "사용중" 표시 아이콘 — on/off를 색상 대신 이 오브젝트 활성화로 표현
 
@@ -32,6 +33,9 @@ public class UIBattleView : MonoBehaviour
         EventManager.Subscribe_MyFleetStateChanged(OnFleetStateChanged);
         EventManager.Subscribe_TacticOptionsChanged(OnTacticOptionsChanged);
         EventManager.Subscribe_TacticPowerChanged(OnTacticPowerChanged);
+
+        if (m_tacticsLabelText != null)
+            CommonUtility.SetUILocText(m_tacticsLabelText, "UI_Tactics");
 
         SetupTacticsButtons();
     }
@@ -115,6 +119,28 @@ public class UIBattleView : MonoBehaviour
         SpaceFleet myFleet = ObjectManager.Instance.GetMyFleet();
         if (myFleet != null)
             OnTacticOptionsChanged(myFleet.m_fleetInfo.tacticOptions);
+
+        RefreshTacticsButtonsInteractable(myFleet);
+    }
+
+    // 함대 구성상 아예 해당 모듈이 없는 전술 토글은 버튼 자체를 비활성화 — idx 의미는 OnTacticToggleRequested와 동일
+    // (0=수리, 1=미사일, 2=함재기, 3=실드, 4=요격체). 수리는 모든 함선이 체력(Hull)을 가지므로 항상 해당
+    private void RefreshTacticsButtonsInteractable(SpaceFleet myFleet)
+    {
+        if (m_tacticsButtons == null) return;
+        if (myFleet == null) return;
+
+        CapabilityProfile fleetProfile = myFleet.GetFleetCapabilityProfile();
+        bool hasMissile = fleetProfile.missileAttack > 0f;
+        bool hasAircraft = fleetProfile.airCount > 0;
+        bool hasShield = myFleet.HasAnyShieldEquipped();
+        bool hasInterceptor = myFleet.HasAnyInterceptorEquipped();
+
+        if (m_tacticsButtons.Length > 0) m_tacticsButtons[0].interactable = true;
+        if (m_tacticsButtons.Length > 1) m_tacticsButtons[1].interactable = hasMissile;
+        if (m_tacticsButtons.Length > 2) m_tacticsButtons[2].interactable = hasAircraft;
+        if (m_tacticsButtons.Length > 3) m_tacticsButtons[3].interactable = hasShield;
+        if (m_tacticsButtons.Length > 4) m_tacticsButtons[4].interactable = hasInterceptor;
     }
 
     private void OnFleetStateChanged(EUnitState state)

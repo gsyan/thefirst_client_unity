@@ -152,17 +152,25 @@ public class ModuleBeam : ModuleBase
                 if (m_isAttackSignalFired == false)
                 {
                     if (Time.time >= m_lastAttackTime + m_attackCool + harassDelay)
+                    {
                         ArmAttackSignal();
+                        // bool isMyFleet = m_ownerFleet != null && ObjectManager.Instance.IsEnemyOfMyTeam(m_ownerFleet) == false;
+                        // if (isMyFleet == true)
+                        //     Debug.Log($"[BeamJitter] t={Time.time:F4} slot={m_moduleInfo.slotIndex} offset={m_attackPhaseOffset:F4}");
+                    }
                 }
-                else if (Time.time >= m_lastAttackTime + m_attackCool + harassDelay + m_attackPhaseOffset)
+                else if (Time.time >= m_attackSignalArmedTime + m_attackPhaseOffset)
                 {
+                    // bool isMyFleet = m_ownerFleet != null && ObjectManager.Instance.IsEnemyOfMyTeam(m_ownerFleet) == false;
+                    // if (isMyFleet == true)
+                    //     Debug.Log($"[BeamJitter] t={Time.time:F4} slot={m_moduleInfo.slotIndex}");
                     bool isFacing = true;
                     if (m_ownerShip != null)
                         isFacing = m_ownerShip.IsFacingTarget(m_currentTarget.transform.position, k_beamFireAngle);
                     if (isFacing == true)
                     {
                         ExecuteAttackOnTarget(m_currentTarget);
-                        m_lastAttackTime = Time.time - m_attackPhaseOffset;
+                        m_lastAttackTime = m_attackSignalArmedTime;
                         m_attackPhaseOffset = 0f;
                         m_isAttackSignalFired = false;
                     }
@@ -225,8 +233,10 @@ public class ModuleBeam : ModuleBase
     // 다음 공격까지 남은 시간
     public float GetRemainingCoolTime()
     {
-        float remaining = (m_lastAttackTime + m_attackCool + m_attackPhaseOffset) - Time.time;
-        return Mathf.Max(0f, remaining);
+        float threshold = m_lastAttackTime + m_attackCool;
+        if (m_isAttackSignalFired == true)
+            threshold = m_attackSignalArmedTime + m_attackPhaseOffset;
+        return Mathf.Max(0f, threshold - Time.time);
     }
     
     // 무기 스탯 Getter들

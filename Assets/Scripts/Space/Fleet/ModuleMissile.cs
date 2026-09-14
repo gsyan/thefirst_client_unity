@@ -167,12 +167,21 @@ public class ModuleMissile : ModuleBase
                 if (m_isAttackSignalFired == false)
                 {
                     if (Time.time >= m_lastAttackTime + m_attackCoolTime + missileHarassDelay)
+                    {
                         ArmAttackSignal();
+                        // bool isMyFleet = m_ownerFleet != null && ObjectManager.Instance.IsEnemyOfMyTeam(m_ownerFleet) == false;
+                        // if (isMyFleet == true)
+                        //     Debug.Log($"[BeamJitter] t={Time.time:F4} slot={m_moduleInfo.slotIndex} offset={m_attackPhaseOffset:F4}");
+                    }
                 }
-                else if (Time.time >= m_lastAttackTime + m_attackCoolTime + missileHarassDelay + m_attackPhaseOffset)
+                else if (Time.time >= m_attackSignalArmedTime + m_attackPhaseOffset)
                 {
+                    // bool isMyFleet = m_ownerFleet != null && ObjectManager.Instance.IsEnemyOfMyTeam(m_ownerFleet) == false;
+                    // if (isMyFleet == true)
+                    //     Debug.Log($"[BeamJitter] t={Time.time:F4} slot={m_moduleInfo.slotIndex}");
+
                     ExecuteAttackOnTarget(m_currentTarget);
-                    m_lastAttackTime = Time.time - m_attackPhaseOffset;
+                    m_lastAttackTime = m_attackSignalArmedTime;
                     m_attackPhaseOffset = 0f;
                     m_isAttackSignalFired = false;
                 }
@@ -186,10 +195,11 @@ public class ModuleMissile : ModuleBase
     {
         float shipCountMultiplier = m_ownerFleet != null ? m_ownerFleet.GetShipCountAttackMultiplier() : 1f;
         float formationMultiplier = m_ownerFleet != null ? m_ownerFleet.GetFormationAttackMultiplier() : 1f;
+        float tacticMultiplier    = m_ownerFleet != null ? m_ownerFleet.GetMissileTacticAttackMultiplier() : 1f;
         DamageInfo damageInfo = new DamageInfo
         {
             baseDamage       = m_attack,
-            attackMultiplier = shipCountMultiplier * formationMultiplier,
+            attackMultiplier = shipCountMultiplier * formationMultiplier * tacticMultiplier,
             damageType       = EDamageType.Missile,
         };
 
@@ -229,8 +239,10 @@ public class ModuleMissile : ModuleBase
     // 다음 공격까지 남은 시간
     public float GetRemainingCoolTime()
     {
-        float remaining = (m_lastAttackTime + m_attackCoolTime + m_attackPhaseOffset) - Time.time;
-        return Mathf.Max(0f, remaining);
+        float threshold = m_lastAttackTime + m_attackCoolTime;
+        if (m_isAttackSignalFired == true)
+            threshold = m_attackSignalArmedTime + m_attackPhaseOffset;
+        return Mathf.Max(0f, threshold - Time.time);
     }
     
     // 무기 스탯 Getter들

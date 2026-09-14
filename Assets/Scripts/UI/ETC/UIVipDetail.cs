@@ -169,7 +169,8 @@ public class UIVipDetail : MonoBehaviour
 
             Debug.Log($"[UIPanelVip][에디터] VIP 강제 세팅 완료 expiry={vipResponse.data?.vipExpiry}");
 
-            DailyBonusManager.Instance.ClaimDailyBonus(claimResult =>
+            int todayDay = DailyBonusManager.Instance.GetTodayDay();
+            DailyBonusManager.Instance.ClaimDailyBonus(todayDay, claimResult =>
             {
                 if (m_purchaseButton != null) m_purchaseButton.interactable = true;
 

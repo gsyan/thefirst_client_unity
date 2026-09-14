@@ -37,13 +37,13 @@ MonoBehaviour:
   - stepId: step2
     message: Tutorial_Exploration_CheckResource
     triggerType: 1
-    targetPanelName: 1-1
-    targetUIId: RewardContainer
+    targetPanelName: UIPanelExplorationGrid
+    targetUIId: RowLabelValueContainer
     showArrow: 1
     arrowDirection: 0
     textBoxOffset: {x: 0, y: 100}
     textBoxSize: {x: 0, y: 0}
-    textBoxPosition: {x: 0, y: -500}
+    textBoxPosition: {x: 0, y: 510}
     autoNextDelay: 0
     preActionPanelName: 
     preActionTabName: 
@@ -53,18 +53,18 @@ MonoBehaviour:
     targetModuleType: 0
   - stepId: step3
     message: Tutorial_Exploration_Enter
-    triggerType: 0
-    targetPanelName: 1-1
-    targetUIId: Button
+    triggerType: 3
+    targetPanelName: ExplorationGridCell
+    targetUIId: 
     showArrow: 1
-    arrowDirection: 0
-    textBoxOffset: {x: 0, y: 100}
+    arrowDirection: 1
+    textBoxOffset: {x: 0, y: 0}
     textBoxSize: {x: 0, y: 0}
-    textBoxPosition: {x: 0, y: -500}
+    textBoxPosition: {x: 0, y: 510}
     autoNextDelay: 0
     preActionPanelName: 
     preActionTabName: 
-    conditionType: 0
+    conditionType: 15
     conditionThreshold: 90
     conditionCount: 3
     targetModuleType: 0
@@ -86,6 +86,23 @@ MonoBehaviour:
     conditionCount: 3
     targetModuleType: 0
   - stepId: step5
+    message: Tutorial_Exploration_StartBattle
+    triggerType: 0
+    targetPanelName: UIPanelPrepareBattle
+    targetUIId: StartButton
+    showArrow: 1
+    arrowDirection: 0
+    textBoxOffset: {x: 0, y: 0}
+    textBoxSize: {x: 0, y: 0}
+    textBoxPosition: {x: 0, y: 1}
+    autoNextDelay: 0
+    preActionPanelName: 
+    preActionTabName: 
+    conditionType: 0
+    conditionThreshold: 90
+    conditionCount: 3
+    targetModuleType: 0
+  - stepId: step6
     message: 
     triggerType: 3
     targetPanelName: 
@@ -99,6 +116,40 @@ MonoBehaviour:
     preActionPanelName: 
     preActionTabName: 
     conditionType: 14
+    conditionThreshold: 90
+    conditionCount: 3
+    targetModuleType: 0
+  - stepId: step7
+    message: Tutorial_Exploration_RewardBanked
+    triggerType: 1
+    targetPanelName: UIPanelExplorationGrid
+    targetUIId: RowLabelValue(ExplorationPointBanked)
+    showArrow: 1
+    arrowDirection: 0
+    textBoxOffset: {x: 0, y: 100}
+    textBoxSize: {x: 0, y: 0}
+    textBoxPosition: {x: 0, y: 510}
+    autoNextDelay: 0
+    preActionPanelName: 
+    preActionTabName: 
+    conditionType: 0
+    conditionThreshold: 90
+    conditionCount: 3
+    targetModuleType: 0
+  - stepId: step8
+    message: Tutorial_Exploration_ContinueToEscape
+    triggerType: 1
+    targetPanelName: 
+    targetUIId: 
+    showArrow: 0
+    arrowDirection: 0
+    textBoxOffset: {x: 0, y: 0}
+    textBoxSize: {x: 0, y: 0}
+    textBoxPosition: {x: 0, y: 510}
+    autoNextDelay: 0
+    preActionPanelName: 
+    preActionTabName: 
+    conditionType: 0
     conditionThreshold: 90
     conditionCount: 3
     targetModuleType: 0

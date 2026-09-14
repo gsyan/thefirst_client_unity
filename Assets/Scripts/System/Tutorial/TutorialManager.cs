@@ -39,7 +39,12 @@ public class TutorialManager : MonoSingleton<TutorialManager>
     private float m_lastCameraZoom;
     private SpaceShip m_pendingNewShip; // ShipArrivedAtFormation 조건이 대기할 함선 (UITabFleet에서 함선 생성 직후 등록)
     private TutorialBattleCinematic m_battleCinematic; // Tutorial_FirstPlay_Battle/Complete 전용 전투 연출(웨이브/탈출함선/기함폭발) 상태 및 로직 — OnInitialize에서 생성
-    private System.Action<bool> m_zoneBattleEndHandler; // WaitForZoneBattleEnd 조건용 — StopTutorialCondition에서 해제
+    private System.Action m_zoneBattleEndHandler; // WaitForZoneBattleEnd 조건용(그리드 복귀 시점 대기) — StopTutorialCondition에서 해제
+    // UI 상호작용 잠금 해제 전용 — 스텝 전환(ZoneCellReturnedToGrid, 보상카드 팝업까지 처리된 뒤)보다 먼저, 실제 전투가
+    // 끝나는 즉시(ZoneStageBattleEnd) 풀어야 함. 안 그러면 보상카드 팝업 처리하는 동안 UIPanelBattle이 계속 잠긴 채로
+    // 남아있다가(그 시점엔 이미 안 보여서 못 느끼지만) 다음 실전투 때도 잠긴 채로 다시 나타나는 문제가 있었음
+    private System.Action<bool> m_zoneBattleEndUnlockHandler;
+    private System.Action<GridCell3D> m_gridCellClickedHandler; // WaitForGridCellClicked 조건용 — StopTutorialCondition에서 해제
 
     // 튜토리얼 완료 이벤트 (tutorialId 전달)
     public event System.Action<string> OnTutorialCompleted;
@@ -171,6 +176,10 @@ public class TutorialManager : MonoSingleton<TutorialManager>
             Debug.LogWarning($"[Tutorial] 데이터를 찾을 수 없음: {tutorialId}");
             return;
         }
+
+        // 함대편성 패널이 열린 채로 전투 연출이 시작되면 화면을 가리므로, 시작 시점에 미리 닫아둠(기존엔 전투 직전까지 열려있었음)
+        if (tutorialId == "Tutorial_FirstPlay_Battle")
+            UIManager.Instance.ShowMainPanel();
 
         m_currentStepIndex = 0;
         m_isPlaying = true;
@@ -461,8 +470,16 @@ public class TutorialManager : MonoSingleton<TutorialManager>
                 break;
 
             case ETutorialConditionType.WaitForZoneBattleEnd:
-                m_zoneBattleEndHandler = (isVictory) => RequestNextStep(ownerStepIndex);
-                EventManager.Subscribe_ZoneStageBattleEnd(m_zoneBattleEndHandler);
+                m_zoneBattleEndHandler = () => RequestNextStep(ownerStepIndex);
+                EventManager.Subscribe_ZoneCellReturnedToGrid(m_zoneBattleEndHandler);
+
+                m_zoneBattleEndUnlockHandler = (isVictory) => UIManager.Instance.SetTopPanelInteractable(true);
+                EventManager.Subscribe_ZoneStageBattleEnd(m_zoneBattleEndUnlockHandler);
+                break;
+
+            case ETutorialConditionType.WaitForGridCellClicked:
+                m_gridCellClickedHandler = (cell) => RequestNextStep(ownerStepIndex);
+                EventManager.Subscribe_ExplorationGridCellClicked(m_gridCellClickedHandler);
                 break;
 
             case ETutorialConditionType.EscapeShipDistanceFromFlagship:
@@ -502,8 +519,20 @@ public class TutorialManager : MonoSingleton<TutorialManager>
 
         if (m_zoneBattleEndHandler != null)
         {
-            EventManager.Unsubscribe_ZoneStageBattleEnd(m_zoneBattleEndHandler);
+            EventManager.Unsubscribe_ZoneCellReturnedToGrid(m_zoneBattleEndHandler);
             m_zoneBattleEndHandler = null;
+        }
+
+        if (m_zoneBattleEndUnlockHandler != null)
+        {
+            EventManager.Unsubscribe_ZoneStageBattleEnd(m_zoneBattleEndUnlockHandler);
+            m_zoneBattleEndUnlockHandler = null;
+        }
+
+        if (m_gridCellClickedHandler != null)
+        {
+            EventManager.Unsubscribe_ExplorationGridCellClicked(m_gridCellClickedHandler);
+            m_gridCellClickedHandler = null;
         }
     }
 

@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 // 출석 보상 달력 패널
 // claimedDaysMask: 비트마스크 (bit0=1일, bit5=6일)
-// todayDay: 서버 기준 오늘 날짜 (1~6)
+// todayDay: 출석일수 — 접속한 서로 다른 날짜 수(1~6), 이 값 이하의 미수령 칸은 전부 클레임 가능
 public class UIPanelDailyBonus : UIPanelBase
 {
     private const int CALENDAR_DAYS = 6;
@@ -71,16 +71,16 @@ public class UIPanelDailyBonus : UIPanelBase
         int day = dataIndex + 1;
 
         bool claimed = (m_claimedDaysMask & (1 << (day - 1))) != 0;
-        bool bToday  = day == m_todayDay;
+        bool bClaimable = day <= m_todayDay; // 출석일수(m_todayDay) 이하 칸은 전부 클레임 가능
         DailyBonusRewardEntry[] rewards = (table != null) ? table.GetRewards(day) : null;
 
-        row.SetupDailyBonusDayCell(day, claimed, bToday, rewards, OnDayClaimClicked);
+        row.SetupDailyBonusDayCell(day, claimed, bClaimable, rewards, () => OnDayClaimClicked(day));
     }
 
-    // 오늘 행 Claim 버튼 클릭 — 실제 지급 API 호출은 여기서만 발생
-    private void OnDayClaimClicked()
+    // 열려있는 칸의 Claim 버튼 클릭 — 실제 지급 API 호출은 여기서만 발생
+    private void OnDayClaimClicked(int day)
     {
-        DailyBonusManager.Instance.ClaimDailyBonus(OnClaimResponse);
+        DailyBonusManager.Instance.ClaimDailyBonus(day, OnClaimResponse);
     }
 
     private void OnClaimResponse(DailyClaimResponse response)

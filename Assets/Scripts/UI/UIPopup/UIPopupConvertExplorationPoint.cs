@@ -12,6 +12,7 @@ public enum EExplorationPointConvertTarget
 
 public class UIPopupConvertExplorationPoint : UIPopupBase
 {
+    [SerializeField] private TMP_Text m_titleText;
     [SerializeField] private TMP_Text m_ownedExplorationPointText;
     [SerializeField] private TMP_Text m_currentCommandPowerText;
     [SerializeField] private TMP_Text m_targetLabelText; // "지휘력" / "전술력" — 대상에 따라 라벨 텍스트 교체
@@ -55,6 +56,33 @@ public class UIPopupConvertExplorationPoint : UIPopupBase
         if (m_resetButton != null)     m_resetButton.onClick.AddListener(OnResetClicked);
         if (m_confirmButton != null)   m_confirmButton.onClick.AddListener(OnConfirmClicked);
         if (m_cancelButton != null)    m_cancelButton.onClick.AddListener(OnCancelClicked);
+
+        ApplyStaticLocalization();
+    }
+
+    // 타겟(지휘력/전술력)에 따라 안 바뀌는 고정 텍스트 — 제목 + 하단 버튼 라벨
+    // CommonUtility.SetUILocText가 각 오브젝트에 이미 붙어있는 LocalizeStringEvent의 StringReference를 이 키로 재설정함
+    // (텍스트를 직접 대입하는 대신 LocalizeStringEvent를 그대로 활용 — 언어 변경 시에도 자동 갱신됨)
+    private void ApplyStaticLocalization()
+    {
+        if (m_titleText != null)
+            CommonUtility.SetUILocText(m_titleText, "UIPopupConvertExplorationPoint_Title");
+
+        TMP_Text allButtonText = m_allButton != null ? m_allButton.GetComponentInChildren<TMP_Text>() : null;
+        if (allButtonText != null)
+            CommonUtility.SetUILocText(allButtonText, "UI_All");
+
+        TMP_Text resetButtonText = m_resetButton != null ? m_resetButton.GetComponentInChildren<TMP_Text>() : null;
+        if (resetButtonText != null)
+            CommonUtility.SetUILocText(resetButtonText, "UI_Reset");
+
+        TMP_Text confirmButtonText = m_confirmButton != null ? m_confirmButton.GetComponentInChildren<TMP_Text>() : null;
+        if (confirmButtonText != null)
+            CommonUtility.SetUILocText(confirmButtonText, "UI_Confirm");
+
+        TMP_Text cancelButtonText = m_cancelButton != null ? m_cancelButton.GetComponentInChildren<TMP_Text>() : null;
+        if (cancelButtonText != null)
+            CommonUtility.SetUILocText(cancelButtonText, "UI_Cancel");
     }
 
     public void ShowPopupConvertExplorationPoint(EExplorationPointConvertTarget target, System.Action onClose, System.Action onConfirmed = null)

@@ -25,6 +25,11 @@ public class UIPanelBattle : UIPanelBase
         EventManager.Subscribe_ExplorationTabClosed(OnExplorationTabClosed);
         EventManager.Subscribe_TacticToggleRequested(OnTacticToggleRequested);
         EventManager.Subscribe_ZoneRunEnded(OnZoneRunEnded);
+
+        // RefreshVisibility는 함대상태/탐사탭 이벤트가 발생할 때만 재평가되는데, isTutorialBattle 판정은 그 이벤트들과
+        // 무관하게 튜토리얼 종료 시점에 바뀜 — 종료 계기를 놓치면 다음 실제 전투까지 패널이 계속 숨겨진 채로 남을 수 있어 직접 구독
+        if (TutorialManager.Instance != null)
+            TutorialManager.Instance.OnTutorialCompleted += OnAnyTutorialCompleted;
     }
 
     void OnDestroy()
@@ -34,6 +39,14 @@ public class UIPanelBattle : UIPanelBase
         EventManager.Unsubscribe_ExplorationTabClosed(OnExplorationTabClosed);
         EventManager.Unsubscribe_TacticToggleRequested(OnTacticToggleRequested);
         EventManager.Unsubscribe_ZoneRunEnded(OnZoneRunEnded);
+
+        if (TutorialManager.Instance != null)
+            TutorialManager.Instance.OnTutorialCompleted -= OnAnyTutorialCompleted;
+    }
+
+    private void OnAnyTutorialCompleted(string tutorialId)
+    {
+        RefreshVisibility();
     }
 
     private void OnFleetStateChanged(EUnitState state)
@@ -65,10 +78,15 @@ public class UIPanelBattle : UIPanelBase
 
     private void RefreshVisibility()
     {
-        // Tutorial_FirstPlay_Battle 연출 중에는 이 패널(존 정보/전술 토글 등)을 노출하지 않음
-        bool isTutorialBattle = TutorialActionGate.IsTutorial("Tutorial_FirstPlay_Battle");
+        // Tutorial_FirstPlay_Battle(전투 연출)~Tutorial_FirstPlay_Complete(기함 폭발 후 탈출 연출)까지는 하나로 이어지는
+        // 연출 구간이라 이 패널(존 정보/전술 토글 등)을 노출하지 않음 — 기함 전투 상태가 탈출 단계까지 남아있을 수 있음
+        bool isTutorialBattle = TutorialActionGate.IsTutorial("Tutorial_FirstPlay_Battle")
+            || TutorialActionGate.IsTutorial("Tutorial_FirstPlay_Complete");
+            // || TutorialActionGate.IsTutorial("Tutorial_Exploration");
 
-        if (m_fleetState.IsBattleState() == true && m_isExplorationOpen == false && isTutorialBattle == false)
+        bool shouldShow = m_fleetState.IsBattleState() == true && m_isExplorationOpen == false && isTutorialBattle == false;
+
+        if (shouldShow == true)
             UIManager.Instance.ShowPanel(panelName);
         else
             UIManager.Instance.HidePanel(panelName);

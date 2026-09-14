@@ -1,0 +1,92 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bfb19818c52d6b74186ed76f5a0d127d, type: 3}
+  m_Name: DataTableDailyAchievement
+  m_EditorClassIdentifier: Assembly-CSharp::DataTableDailyAchievement
+  dailyAchievementDataList:
+  - achievementId: daily_cell_clear_5
+    conditionType: 0
+    conditionParam: 
+    threshold: 5
+    achievementPointReward: 5
+    nameKey: UIDailyAchievement_Name_cell_clear
+    descKey: UIDailyAchievement_Desc_cell_clear
+  - achievementId: daily_cell_clear_10
+    conditionType: 0
+    conditionParam: 
+    threshold: 10
+    achievementPointReward: 10
+    nameKey: UIDailyAchievement_Name_cell_clear
+    descKey: UIDailyAchievement_Desc_cell_clear
+  - achievementId: daily_cell_clear_20
+    conditionType: 0
+    conditionParam: 
+    threshold: 20
+    achievementPointReward: 20
+    nameKey: UIDailyAchievement_Name_cell_clear
+    descKey: UIDailyAchievement_Desc_cell_clear
+  - achievementId: daily_event_cell_explorationpoint_3
+    conditionType: 1
+    conditionParam: ExplorationPoint
+    threshold: 3
+    achievementPointReward: 8
+    nameKey: UIDailyAchievement_Name_event_cell_explorationpoint
+    descKey: UIDailyAchievement_Desc_event_cell_explorationpoint
+  - achievementId: daily_event_cell_explorationpoint_6
+    conditionType: 1
+    conditionParam: ExplorationPoint
+    threshold: 6
+    achievementPointReward: 16
+    nameKey: UIDailyAchievement_Name_event_cell_explorationpoint
+    descKey: UIDailyAchievement_Desc_event_cell_explorationpoint
+  - achievementId: daily_event_cell_shiphealthheal_3
+    conditionType: 1
+    conditionParam: ShipHealthHeal
+    threshold: 3
+    achievementPointReward: 8
+    nameKey: UIDailyAchievement_Name_event_cell_shiphealthheal
+    descKey: UIDailyAchievement_Desc_event_cell_shiphealthheal
+  - achievementId: daily_event_cell_shiphealthheal_6
+    conditionType: 1
+    conditionParam: ShipHealthHeal
+    threshold: 6
+    achievementPointReward: 16
+    nameKey: UIDailyAchievement_Name_event_cell_shiphealthheal
+    descKey: UIDailyAchievement_Desc_event_cell_shiphealthheal
+  - achievementId: daily_event_cell_tacticpowerrestore_3
+    conditionType: 1
+    conditionParam: TacticPowerRestore
+    threshold: 3
+    achievementPointReward: 8
+    nameKey: UIDailyAchievement_Name_event_cell_tacticpowerrestore
+    descKey: UIDailyAchievement_Desc_event_cell_tacticpowerrestore
+  - achievementId: daily_event_cell_tacticpowerrestore_6
+    conditionType: 1
+    conditionParam: TacticPowerRestore
+    threshold: 6
+    achievementPointReward: 16
+    nameKey: UIDailyAchievement_Name_event_cell_tacticpowerrestore
+    descKey: UIDailyAchievement_Desc_event_cell_tacticpowerrestore
+  - achievementId: daily_zone_clear_total_3
+    conditionType: 2
+    conditionParam: 
+    threshold: 3
+    achievementPointReward: 15
+    nameKey: UIDailyAchievement_Name_zone_clear_total
+    descKey: UIDailyAchievement_Desc_zone_clear_total
+  - achievementId: daily_zone_clear_total_5
+    conditionType: 2
+    conditionParam: 
+    threshold: 5
+    achievementPointReward: 25
+    nameKey: UIDailyAchievement_Name_zone_clear_total
+    descKey: UIDailyAchievement_Desc_zone_clear_total

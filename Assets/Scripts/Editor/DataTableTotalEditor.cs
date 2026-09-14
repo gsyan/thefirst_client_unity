@@ -15,6 +15,7 @@ public class DataTableTotalEditor : EditorWindow
     private DataTablePvpSeason dataTablePvpSeason;
     private DataTableDailyBonus dataTableDailyBonus;
     private DataTableAchievement dataTableAchievement;
+    private DataTableDailyAchievement dataTableDailyAchievement;
     private Vector2 scrollPosition;
 
     [MenuItem("Tools/DataTable Total Manager")]
@@ -60,6 +61,9 @@ public class DataTableTotalEditor : EditorWindow
 
         dataTableAchievement = (DataTableAchievement)EditorGUILayout.ObjectField(
             "DataTable Achievement", dataTableAchievement, typeof(DataTableAchievement), false);
+
+        dataTableDailyAchievement = (DataTableDailyAchievement)EditorGUILayout.ObjectField(
+            "DataTable DailyAchievement", dataTableDailyAchievement, typeof(DataTableDailyAchievement), false);
 
         EditorGUILayout.EndVertical();
         EditorGUILayout.Space(10);
@@ -129,6 +133,7 @@ public class DataTableTotalEditor : EditorWindow
         TryLoad(ref dataTablePvpSeason,     "t:DataTablePvpSeason");
         TryLoad(ref dataTableDailyBonus,    "t:DataTableDailyBonus");
         TryLoad(ref dataTableAchievement,   "t:DataTableAchievement");
+        TryLoad(ref dataTableDailyAchievement, "t:DataTableDailyAchievement");
     }
 
     private void TryLoad<T>(ref T field, string filter) where T : UnityEngine.Object
@@ -153,6 +158,7 @@ public class DataTableTotalEditor : EditorWindow
         if (dataTablePvpSeason != null) WriteJson(folderPath, "DataTablePvpSeason.json", dataTablePvpSeason.ExportToJson());
         if (dataTableDailyBonus != null) WriteJson(folderPath, "DataTableDailyBonus.json", dataTableDailyBonus.ExportToJson());
         if (dataTableAchievement != null) WriteJson(folderPath, "DataTableAchievement.json", dataTableAchievement.ExportToJson());
+        if (dataTableDailyAchievement != null) WriteJson(folderPath, "DataTableDailyAchievement.json", dataTableDailyAchievement.ExportToJson());
 
         EditorUtility.DisplayDialog("Export Successful", $"Exported to:\n{folderPath}", "OK");
     }
@@ -175,6 +181,7 @@ public class DataTableTotalEditor : EditorWindow
             if (dataTablePvpSeason != null) WriteJson(serverDataPath, "DataTablePvpSeason.json", dataTablePvpSeason.ExportToJson());
             if (dataTableDailyBonus != null) WriteJson(serverDataPath, "DataTableDailyBonus.json", dataTableDailyBonus.ExportToJson());
             if (dataTableAchievement != null) WriteJson(serverDataPath, "DataTableAchievement.json", dataTableAchievement.ExportToJson());
+            if (dataTableDailyAchievement != null) WriteJson(serverDataPath, "DataTableDailyAchievement.json", dataTableDailyAchievement.ExportToJson());
 
             EditorUtility.DisplayDialog("Export Successful", $"Exported to server:\n{serverDataPath}", "OK");
         }

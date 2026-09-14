@@ -24,6 +24,9 @@ public class TutorialUI : UIPopupBase
     private System.Collections.Generic.Dictionary<string, RectTransform> m_uiCache =
         new System.Collections.Generic.Dictionary<string, RectTransform>();
 
+    // targetPanelName에 실제 GameObject 이름 대신 이 값을 쓰면 "RectTransform 없는 3D 그리드 셀을 화살표로 가리킴" 특수 케이스로 처리됨
+    private const string GRID_CELL_HINT_PANEL = "ExplorationGridCell";
+
     protected override void Awake()
     {
         base.Awake();
@@ -47,6 +50,12 @@ public class TutorialUI : UIPopupBase
             StopCoroutine(m_waitTargetCoroutine);
             m_waitTargetCoroutine = null;
         }
+
+        // 이전 스텝의 마스크/화살표/테두리를 즉시 초기화 — 새 스텝 타겟을 아직 못 찾아 대기(WaitForTargetCoroutine)로
+        // 빠지는 경우, 이걸 안 하면 이전 스텝의 강조 박스가 새 스텝 화면 위에 잔상처럼 계속 남아있게 됨
+        if (m_mask != null) m_mask.HideDim();
+        if (m_arrow != null) m_arrow.Hide();
+        if (m_borderFrame != null) m_borderFrame.gameObject.SetActive(false);
 
         // 먼저 팝업 활성화 (자식 코루틴 사용 가능하도록)
         ShowPopup();
@@ -130,13 +139,34 @@ public class TutorialUI : UIPopupBase
         // dim 없는 스텝(m_targetRect == null)에서는 3D 조작은 열어두되 상단 탭 버튼 등 일반 UI는 차단
         EventManager.Trigger_TutorialGeneralUIBlockedChanged(m_targetRect == null);
 
-        // 화살표 표시
+        // 화살표 표시 — targetPanelName이 GRID_CELL_HINT_PANEL이면 RectTransform이 없는 3D 그리드 셀을 가리키는 특수 케이스
+        // (dim/텍스트박스는 m_targetRect==null 그대로 유지되어 관여하지 않음, 화살표만 월드 좌표를 스크린 좌표로 재투영해 표시)
         if (m_arrow != null)
         {
-            if (step.showArrow && m_targetRect != null)
+            if (step.showArrow && step.targetPanelName == GRID_CELL_HINT_PANEL)
+            {
+                UIPanelExplorationGrid gridPanel = UIManager.Instance.GetPanel<UIPanelExplorationGrid>("UIPanelExplorationGrid");
+                Vector3 hintWorldPos;
+                if (gridPanel != null && gridPanel.TryGetAdjacentReachableCellWorldPos(out hintWorldPos))
+                {
+                    // Auto 기본값은 Up(화살표가 셀 위쪽에 떠서 아래로 셀을 가리킴) — 3D 대상은 half-extent를 몰라 자동판정 불가
+                    EArrowDirection direction = step.arrowDirection == EArrowDirection.Auto ? EArrowDirection.Up : step.arrowDirection;
+                    Camera worldCamera = CameraController.Instance != null ? CameraController.Instance.m_targetCamera : Camera.main;
+                    m_arrow.ShowAtWorldPosition(hintWorldPos, worldCamera, direction);
+                }
+                else
+                {
+                    m_arrow.Hide();
+                }
+            }
+            else if (step.showArrow && m_targetRect != null)
+            {
                 m_arrow.Show(m_targetRect, step.arrowDirection);
+            }
             else
+            {
                 m_arrow.Hide();
+            }
         }
 
         // 테두리 표시

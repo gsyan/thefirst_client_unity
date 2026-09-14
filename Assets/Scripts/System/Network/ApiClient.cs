@@ -511,6 +511,24 @@ public class ApiClient
 
     #endregion
 
+    #region Daily Achievement API Methods --------------------------------------------------------------------------
+    public async Task<ApiResponse<GetDailyAchievementListResponse>> GetDailyAchievementListAsync(GetDailyAchievementListRequest request)
+    {
+        return await PostAsync<GetDailyAchievementListResponse>("/achievement-daily/list", request);
+    }
+
+    public async Task<ApiResponse<ClaimDailyAchievementResponse>> ClaimDailyAchievementAsync(ClaimDailyAchievementRequest request)
+    {
+        return await PostAsync<ClaimDailyAchievementResponse>("/achievement-daily/claim", request);
+    }
+
+    public async Task<ApiResponse<ClaimAllDailyAchievementsResponse>> ClaimAllDailyAchievementsAsync(ClaimAllDailyAchievementsRequest request)
+    {
+        return await PostAsync<ClaimAllDailyAchievementsResponse>("/achievement-daily/claim-all", request);
+    }
+
+    #endregion
+
     #region Zone Battle API Methods -------------------------------------------------------------------------------
     public async Task<ApiResponse<PvpClaimSeasonRewardResponse>> PvpClaimSeasonRewardAsync()
     {
@@ -617,9 +635,9 @@ public class ApiClient
         return await GetAsync<VipStatusResponse>("/iap/vip/status");
     }
 
-    public async Task<ApiResponse<DailyClaimResponse>> ClaimVipDailyRewardAsync()
+    public async Task<ApiResponse<DailyClaimResponse>> ClaimVipDailyRewardAsync(int day)
     {
-        return await PostAsync<DailyClaimResponse>("/iap/vip/daily-reward", null);
+        return await PostAsync<DailyClaimResponse>("/iap/vip/daily-reward", new DailyClaimRequest { day = day });
     }
 
     public async Task<ApiResponse<DailyBonusStatusResponse>> GetDailyBonusStatusAsync()

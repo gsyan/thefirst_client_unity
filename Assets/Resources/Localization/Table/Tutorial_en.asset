@@ -65,7 +65,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 1380098988965888
-    m_Localized: Is it fortunate or unfortunate to experience a fleet battle?
+    m_Localized: "All enemy fleets have been dealt with. We gained some combat experience
+      against weak enemies \u2014 is that a stroke of luck?"
     m_Metadata:
       m_Items: []
   - m_Id: 1380098993160192
@@ -110,16 +111,12 @@ MonoBehaviour:
       button.
     m_Metadata:
       m_Items: []
-  - m_Id: 5392725700378624
-    m_Localized: Check the resources you can earn by clearing this stage.
-    m_Metadata:
-      m_Items: []
   - m_Id: 5392725700378625
-    m_Localized: Enter the stage.
+    m_Localized: Move your fleet to an adjacent cell on the grid.
     m_Metadata:
       m_Items: []
   - m_Id: 5392725700378626
-    m_Localized: Confirm your entry.
+    m_Localized: Confirm the move command.
     m_Metadata:
       m_Items: []
   - m_Id: 26288532360134656
@@ -144,6 +141,25 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 26469773495631874
     m_Localized: Press Confirm to apply the changes.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26653119160909825
+    m_Localized: Press the Start Battle button to engage the enemy fleet.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26653119160909826
+    m_Localized: Victory! The resources gained have been added to your Banked total.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26653119160909827
+    m_Localized: Keep moving through the grid to find the cell where you can escape
+      this zone.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26655375268642816
+    m_Localized: "This shows your Exploration Points \u2014 the top number is your
+      confirmed Owned total, and the bottom number is the Banked amount you're accumulating
+      this run (not yet confirmed)."
     m_Metadata:
       m_Items: []
   references:

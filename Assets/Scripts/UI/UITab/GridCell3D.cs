@@ -27,6 +27,7 @@ public class GridCell3D : MonoBehaviour
     [SerializeField] private float m_cellFillRatio = 0.85f; // 셀 간격(ExplorationGridGenerator.k_cellWorldSize) 대비 쿼드가 채우는 비율 — 나머지는 셀 사이 틈
     [SerializeField] private float m_unclearedFaceAlpha = 0.18f; // 시작점이 아니고 클리어 전인 셀의 면 채움 불투명도 — 완전 투명(클리어)과 뚜렷이 구분되는 값
     [SerializeField] private float m_reachableOrbitDuration = 3f; // Reachable 셀 테두리 오빗 강조가 한 바퀴 도는 데 걸리는 시간(초)
+    [SerializeField] private GameObject m_myFleetMarker; // 셀 중앙에 놓일 "내 함대" 표시 오브젝트 — 위치/방향은 프리팹에서 직접 배치
 
     private int m_row;
     private int m_col;
@@ -112,6 +113,9 @@ public class GridCell3D : MonoBehaviour
         float faceAlpha = (m_isStart == true || isCleared == true) ? 0f : m_unclearedFaceAlpha;
 
         ApplyColor(fillColor, faceAlpha);
+
+        if (m_myFleetMarker != null)
+            m_myFleetMarker.SetActive(state == EGridCellVisualState.Current);
 
         // 테두리 발광(블링크) + 오빗 강조는 "지금 이동 가능한 셀(Reachable)"에만 — Current는 고정 강조색만 유지
         if (state == EGridCellVisualState.Reachable)

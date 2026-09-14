@@ -319,6 +319,12 @@ public static class EventManager
     public static void Subscribe_ZoneStageBattleEnd(Action<bool> callback)   { OnZoneStageBattleEnd += callback; }
     public static void Unsubscribe_ZoneStageBattleEnd(Action<bool> callback) { OnZoneStageBattleEnd -= callback; }
 
+    // 전투 승패와 무관하게, 셀 전투 결과가 완전히 반영되고 그리드 패널이 실제로 다시 보이는 시점(보상카드 팝업 등 후속 처리가 전부 끝난 뒤)
+    public static event Action OnZoneCellReturnedToGrid;
+    public static void TriggerZoneCellReturnedToGrid() { OnZoneCellReturnedToGrid?.Invoke(); }
+    public static void Subscribe_ZoneCellReturnedToGrid(Action callback)   { OnZoneCellReturnedToGrid += callback; }
+    public static void Unsubscribe_ZoneCellReturnedToGrid(Action callback) { OnZoneCellReturnedToGrid -= callback; }
+
     public static event Action OnPvpBattleStart;
     public static void TriggerPvpBattleStart() { OnPvpBattleStart?.Invoke(); }
     public static void Subscribe_PvpBattleStart(Action callback)   { OnPvpBattleStart += callback; }

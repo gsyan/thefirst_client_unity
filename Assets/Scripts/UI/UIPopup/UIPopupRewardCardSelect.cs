@@ -15,6 +15,7 @@ public class UIPopupRewardCardSelect : UIPopupBase
     [SerializeField] private RowLabelValue m_rewardExpRow;
     [SerializeField] private GameObject m_rewardCardButtonContainer; // 카드 버튼 3개를 담은 오브젝트 — 카드 후보가 없을 때(탈출 셀 등) 통째로 숨김
     [SerializeField] private Button m_confirmButton;
+    [SerializeField] private TMP_Text m_confirmButtonText;
 
     private RewardCardButton[] m_cardButtons;
     private List<string> m_candidateCardIds;
@@ -26,6 +27,9 @@ public class UIPopupRewardCardSelect : UIPopupBase
         base.Awake();
         m_cardButtons = m_rewardCardButtonContainer.GetComponentsInChildren<RewardCardButton>(true);
         m_confirmButton.onClick.AddListener(OnConfirmClicked);
+
+        if (m_confirmButtonText != null)
+            CommonUtility.SetUILocText(m_confirmButtonText, "UI_Confirm");
     }
 
     public void ShowPopupRewardCardSelect(int explorationPointGained, int expGained, List<string> candidateCardIds, bool isEscapeCell, System.Action<string> onConfirmed)

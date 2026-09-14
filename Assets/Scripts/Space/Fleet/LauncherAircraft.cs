@@ -54,7 +54,8 @@ public class LauncherAircraft : LauncherBase
         SpaceFleet ownerFleet = carrierShip != null ? carrierShip.m_ownerFleet : null;
         float shipCountMultiplier = ownerFleet != null ? ownerFleet.GetShipCountAttackMultiplier() : 1f;
         float formationMultiplier = ownerFleet != null ? ownerFleet.GetFormationAttackMultiplier() : 1f;
-        aircraftInfo.airAttackMultiplier = shipCountMultiplier * formationMultiplier;
+        float tacticMultiplier    = ownerFleet != null ? ownerFleet.GetAircraftTacticAttackMultiplier() : 1f;
+        aircraftInfo.airAttackMultiplier = shipCountMultiplier * formationMultiplier * tacticMultiplier;
 
         SoundManager.Instance.PlayFX(EFx.Aircraft_Launch, transform.position);
 

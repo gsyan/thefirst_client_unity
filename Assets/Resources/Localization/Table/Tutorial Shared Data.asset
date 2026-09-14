@@ -119,7 +119,7 @@ MonoBehaviour:
     m_Key: Tutorial_Exploration_Intro
     m_Metadata:
       m_Items: []
-  - m_Id: 5392725700378624
+  - m_Id: 26655375268642816
     m_Key: Tutorial_Exploration_CheckResource
     m_Metadata:
       m_Items: []
@@ -129,6 +129,18 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 5392725700378626
     m_Key: Tutorial_Exploration_Confirm
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26653119160909825
+    m_Key: Tutorial_Exploration_StartBattle
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26653119160909826
+    m_Key: Tutorial_Exploration_RewardBanked
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26653119160909827
+    m_Key: Tutorial_Exploration_ContinueToEscape
     m_Metadata:
       m_Items: []
   m_Metadata:

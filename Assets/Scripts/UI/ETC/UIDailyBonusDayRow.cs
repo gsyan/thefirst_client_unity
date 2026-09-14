@@ -11,7 +11,7 @@ public class UIDailyBonusDayRow : MonoBehaviour
 {
     [SerializeField] private TMP_Text m_dayText;
     [SerializeField] private RowLabelValue m_rewardRow;
-    [SerializeField] private Button m_claimButton;      // 항상 표시하되 오늘 행 + 미수령 상태일 때만 interactable
+    [SerializeField] private Button m_claimButton;      // 항상 표시하되 클레임 가능(출석일수 이하) + 미수령 상태일 때만 interactable
     [SerializeField] private GameObject m_claimedRoot;  // 오늘 행 수령 완료 표시(체크 아이콘 등)
 
     private Action m_onClaimClick;
@@ -22,7 +22,7 @@ public class UIDailyBonusDayRow : MonoBehaviour
             m_claimButton.onClick.AddListener(OnClaimButtonClicked);
     }
 
-    public void SetupDailyBonusDayCell(int day, bool claimed, bool bToday, DailyBonusRewardEntry[] rewards, Action onClaimClick)
+    public void SetupDailyBonusDayCell(int day, bool claimed, bool bClaimable, DailyBonusRewardEntry[] rewards, Action onClaimClick)
     {
         if (m_dayText != null)
             m_dayText.text = LocalizationManager.Instance.Get("DailyBonus_DayLabel", day);
@@ -31,7 +31,7 @@ public class UIDailyBonusDayRow : MonoBehaviour
         if (m_claimButton != null)
         {
             m_claimButton.gameObject.SetActive(claimed == false);
-            m_claimButton.interactable = bToday && claimed == false;
+            m_claimButton.interactable = bClaimable && claimed == false;
         }
         if (m_claimedRoot != null)
             m_claimedRoot.SetActive(claimed);

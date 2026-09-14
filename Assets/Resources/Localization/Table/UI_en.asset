@@ -983,6 +983,30 @@ MonoBehaviour:
     m_Localized: Rank List
     m_Metadata:
       m_Items: []
+  - m_Id: 79029215587860480
+    m_Localized: RETREAT
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79030304051691520
+    m_Localized: START BATTLE
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79084582279708672
+    m_Localized: TACTICS
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79158737477959680
+    m_Localized: ALL
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79158737540874240
+    m_Localized: RESET
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79158737540874241
+    m_Localized: Convert Exploration Points
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

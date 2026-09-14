@@ -36,7 +36,8 @@ public enum ETutorialConditionType
     FlagshipHealthBelowPercent = 11, // 내 함대 기함 체력 비율이 conditionThreshold(0~1) 이하로 떨어질 때까지 대기
     SiegfriedFlagshipExplosion = 12, // step7 — 카메라를 탈출 함선으로 전환 + 지크프리트 기함 폭발 연출 후 conditionThreshold초 대기, 완료되면 다음 스텝
     CleanupEscapeFleet = 13, // Tutorial_FirstPlay_Complete 마지막 스텝 — 탈출선 연출(워프이펙트/이동) 정리 후 즉시 다음 스텝(=튜토리얼 종료)
-    WaitForZoneBattleEnd = 14, // Tutorial_Exploration — 실제 Zone 전투(EventManager.ZoneStageBattleEnd)가 끝날 때까지 대기, 승패 무관하게 진행
+    WaitForZoneBattleEnd = 14, // Tutorial_Exploration — 셀 전투 결과가 완전히 반영되어 그리드 패널로 복귀할 때까지 대기(EventManager.ZoneCellReturnedToGrid), 승패 무관하게 진행
+    WaitForGridCellClicked = 15, // Tutorial_Exploration step3 — 3D 탐사 그리드 셀을 클릭할 때까지 대기(유효성 검사 이전 원시 클릭 이벤트라 어떤 셀을 눌러도 진행)
 }
 
 // 화살표 방향 — Auto면 TutorialArrow가 화면 여유 공간을 보고 자동 결정, 그 외는 강제 지정

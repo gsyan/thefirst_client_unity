@@ -31,10 +31,10 @@ public class DailyBonusManager : MonoSingleton<DailyBonusManager>
         });
     }
 
-    // 달력 팝업의 오늘 칸 Claim 버튼 클릭 시에만 호출 — 실제 지급이 여기서 발생
-    public void ClaimDailyBonus(Action<DailyClaimResponse> onResult)
+    // 달력 팝업에서 열려있는(출석일수 이하) 미수령 칸의 Claim 버튼 클릭 시 호출 — 실제 지급이 여기서 발생
+    public void ClaimDailyBonus(int day, Action<DailyClaimResponse> onResult)
     {
-        NetworkManager.Instance.ClaimVipDailyReward(response =>
+        NetworkManager.Instance.ClaimVipDailyReward(day, response =>
         {
             if (response == null || response.errorCode != (int)ServerErrorCode.SUCCESS || response.data == null)
             {

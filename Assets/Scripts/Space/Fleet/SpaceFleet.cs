@@ -83,6 +83,36 @@ public class SpaceFleet : MonoBehaviour
         return false;
     }
 
+    // 함대 구성상 실드 모듈이 하나라도 장착돼 있는지 — 게이지 상태와 무관, 전술 토글 버튼 자체를 비활성화할지 판단용
+    public bool HasAnyShieldEquipped()
+    {
+        foreach (SpaceShip ship in m_ships)
+        {
+            if (ship == null) continue;
+            foreach (ModuleHull body in ship.m_moduleHulls)
+            {
+                if (body == null || body.m_shield == null) continue;
+                if (body.m_shield.IsEquipped() == true) return true;
+            }
+        }
+        return false;
+    }
+
+    // 함대 구성상 요격체 모듈이 하나라도 장착돼 있는지 — 게이지 상태와 무관, 전술 토글 버튼 자체를 비활성화할지 판단용
+    public bool HasAnyInterceptorEquipped()
+    {
+        foreach (SpaceShip ship in m_ships)
+        {
+            if (ship == null) continue;
+            foreach (ModuleHull body in ship.m_moduleHulls)
+            {
+                if (body == null || body.m_interceptor == null) continue;
+                if (body.m_interceptor.IsEquipped() == true) return true;
+            }
+        }
+        return false;
+    }
+
     private void Start()
     {
         EventManager.Subscribe_ShipBodyChanged(OnShipBodyChanged);
@@ -1051,6 +1081,23 @@ public class SpaceFleet : MonoBehaviour
         FormationPreset preset = FormationPresetDB.Get(m_currentFormationType);
         if (preset == null || preset.attackMultiplierPerStep == null || preset.attackMultiplierPerStep.Length < step) return 1f;
         return 1f + preset.attackMultiplierPerStep[step - 1];
+    }
+
+    private const int k_missileTacticBit = 1 << 1;
+    private const int k_aircraftTacticBit = 1 << 2;
+
+    // 미사일 전술 토글(idx=1) ON 시 공격력 2배 — 내 함대만 적용(적/PvP상대/시네마틱은 토글 UI가 없어 배율 없음)
+    public float GetMissileTacticAttackMultiplier()
+    {
+        if (m_fleetSource != EFleetSource.fleet_source_player) return 1f;
+        return (m_fleetInfo.tacticOptions & k_missileTacticBit) != 0 ? 2f : 1f;
+    }
+
+    // 함재기 전술 토글(idx=2) ON 시 공격력 2배(함선 공격/공중전 모두) — 내 함대만 적용
+    public float GetAircraftTacticAttackMultiplier()
+    {
+        if (m_fleetSource != EFleetSource.fleet_source_player) return 1f;
+        return (m_fleetInfo.tacticOptions & k_aircraftTacticBit) != 0 ? 2f : 1f;
     }
 
     // 피격 데미지 차감 비율 — 그대로 반환 (0=없음, 0.2~0.5=차감)

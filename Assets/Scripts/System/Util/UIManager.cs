@@ -48,6 +48,8 @@ public class UIManager : MonoSingleton<UIManager>
     protected RectTransform m_generalContainer;
     protected RectTransform m_tutorialContainer;
 
+    private bool m_tutorialGeneralUIBlocked; // TutorialUI가 dim 없이(3D 조작은 열어두고) 일반 UI만 막는 스텝일 때 true
+
     protected override void Awake()
     {
         base.Awake();
@@ -58,17 +60,28 @@ public class UIManager : MonoSingleton<UIManager>
         // 빈 공간 터치 시 현재 열린 오버레이 패널을 닫는 로직 — 특정 패널(UIPanelSpace 등)이 아니라 항상 살아있는
         // UIManager 자신이 구독해야 함. 그 패널 자체가 하이드될 수 있는 상태라 리스너가 같이 끊기면 안 되기 때문
         EventManager.Subscribe_EmptySpaceTapped(OnEmptySpaceTapped);
+        EventManager.Subscribe_TutorialGeneralUIBlockedChanged(OnTutorialGeneralUIBlockedChanged);
     }
 
     protected override void OnDestroy()
     {
         base.OnDestroy();
         EventManager.Unsubscribe_EmptySpaceTapped(OnEmptySpaceTapped);
+        EventManager.Unsubscribe_TutorialGeneralUIBlockedChanged(OnTutorialGeneralUIBlockedChanged);
     }
 
     private void OnEmptySpaceTapped()
     {
+        // 튜토리얼이 dim 없이 진행 중(예: "인접 셀로 이동해보세요")일 때 빈 공간을 잘못 눌러 패널이 닫혀버리면
+        // 튜토리얼 자체가 진행 불가능해짐 — 이 구간에서만 패널 닫힘을 막고, 3D 카메라 드래그/셀 클릭은 이 경로를 타지 않아 영향 없음
+        if (m_tutorialGeneralUIBlocked == true) return;
+
         HideCurrentPanel(); // top이 base(메인 패널)뿐이면 내부에서 안전하게 no-op
+    }
+
+    private void OnTutorialGeneralUIBlockedChanged(bool isBlocked)
+    {
+        m_tutorialGeneralUIBlocked = isBlocked;
     }
 
     public virtual void InitializeUIManager()
@@ -399,13 +412,31 @@ public class UIManager : MonoSingleton<UIManager>
     // 현재 top 패널의 CanvasGroup.interactable만 토글 — blocksRaycasts는 건드리지 않으므로 패널이 화면에서 차지하는
     // 레이캐스트 차단 범위는 그대로 유지됨(그 바깥 3D 뷰 등은 영향 없음). 튜토리얼 Custom 트리거 대기 중처럼
     // 패널 안 버튼만 잠깐 막고 싶을 때 사용
+    // interactable=false로 잠갔던 패널을 기억해뒀다가, 나중에 true로 풀 때 "그 시점의 top"이 아니라 실제로 잠갔던
+    // 그 패널을 정확히 풀어줌 — 잠긴 채로 있는 동안 배틀 종료 등으로 top이 바뀌면(예: UIPanelBattle이 잠긴 채 pop되고
+    // 그리드 패널이 새 top이 됨) 그냥 "지금 top"만 풀어서는 원래 잠갔던 패널이 계속 잠긴 채로 남는 문제가 있었음
+    private UIPanelBase m_interactableLockedPanel;
+
     public void SetTopPanelInteractable(bool interactable)
     {
-        UIPanelBase top = GetTop();
-        if (top == null || top.gameObject == null) return;
+        if (interactable == false)
+        {
+            UIPanelBase top = GetTop();
+            if (top == null || top.gameObject == null) return;
 
-        CanvasGroup canvasGroup = GetOrAddCanvasGroup(top.gameObject);
-        canvasGroup.interactable = interactable;
+            m_interactableLockedPanel = top;
+            GetOrAddCanvasGroup(top.gameObject).interactable = false;
+            return;
+        }
+
+        if (m_interactableLockedPanel != null && m_interactableLockedPanel.gameObject != null)
+            GetOrAddCanvasGroup(m_interactableLockedPanel.gameObject).interactable = true;
+        m_interactableLockedPanel = null;
+
+        // 혹시 모를 안전망으로 현재 top도 같이 원복(위에서 이미 처리됐으면 중복 대입일 뿐 무해함)
+        UIPanelBase currentTop = GetTop();
+        if (currentTop != null && currentTop.gameObject != null)
+            GetOrAddCanvasGroup(currentTop.gameObject).interactable = true;
     }
 
     public bool CanCameraMove()

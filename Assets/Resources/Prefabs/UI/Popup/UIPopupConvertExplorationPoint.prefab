@@ -2108,6 +2108,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80d3e6305ece89f4eb4ddb79ef96ec4a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UIPopupConvertExplorationPoint
+  m_titleText: {fileID: 6583000968492254405}
   m_ownedExplorationPointText: {fileID: 133921577543344781}
   m_currentCommandPowerText: {fileID: 7942734507751088758}
   m_targetLabelText: {fileID: 5516178567416548032}

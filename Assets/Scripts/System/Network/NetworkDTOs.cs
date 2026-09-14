@@ -470,6 +470,49 @@ public class ClaimAllAchievementsResponse
 }
 
 [System.Serializable]
+public class DailyAchievementStatus
+{
+    // 일일 업적 항목 1개의 동적(커맨더별, 오늘 기준) 상태 — 정적 정의(조건/임계값/보상)는 클라가 DataTableDailyAchievement로 이미 보유
+    public string achievementId;
+    public int currentValue; // 서버가 조건 타입별로 "오늘(UTC)" 기준 계산한 현재 진행도
+    public bool isClaimed;   // 오늘 이미 수령했는지
+}
+
+[System.Serializable]
+public class GetDailyAchievementListRequest { }
+
+[System.Serializable]
+public class GetDailyAchievementListResponse
+{
+    public List<DailyAchievementStatus> achievements;
+}
+
+[System.Serializable]
+public class ClaimDailyAchievementRequest
+{
+    public string achievementId;
+}
+
+[System.Serializable]
+public class ClaimDailyAchievementResponse
+{
+    public string achievementId;
+    public int achievementPointReward; // 이번 수령으로 지급된 양
+    public int achievementPointRemain; // 지급 후 보유량
+}
+
+[System.Serializable]
+public class ClaimAllDailyAchievementsRequest { }
+
+[System.Serializable]
+public class ClaimAllDailyAchievementsResponse
+{
+    public List<string> claimedAchievementIds;    // 이번 호출로 수령 처리된 일일 업적 id 목록
+    public int totalAchievementPointGranted;       // 이번 호출로 지급된 총 업적포인트
+    public int achievementPointRemain;             // 지급 후 보유량
+}
+
+[System.Serializable]
 public class IncreaseCommandPowerMaxRequest
 {
     public int amount; // 소모할 탐험 포인트 — 지휘력 최대치도 동일 수치만큼 증가(교환비 1:1)
@@ -692,13 +735,19 @@ public class VipStatusResponse
 [System.Serializable]
 public class DailyBonusStatusResponse
 {
-    // 출석 달력 조회 전용 — 지급 없이 현재 상태만 확인(로그인 시 레드닷 갱신용)
-    public bool available;              // 오늘 수령 가능한 보상이 남아있는지
-    public int todayDay;                // 오늘 날짜 (1~6)
+    // 출석 달력 조회 전용 — 지급 없이 현재 상태만 확인(로그인 시 레드닷 갱신용). 이 호출 자체가 출석 1회로 카운트됨
+    public bool available;              // 열린 칸(1~todayDay) 중 미수령이 남아있는지
+    public int todayDay;                // 출석일수 — 접속한 서로 다른 날짜 수(1~6), 이 값 이하의 미수령 칸은 전부 클레임 가능
     public int claimedDaysMask;         // 이번 주 수령 현황 비트마스크 (bit0=1일, bit5=6일)
     public int vipClaimedDaysMask;      // VIP 보상 수령 현황 비트마스크 (bit0=1일, bit5=6일)
     public string loginRewardWeekStart; // 비트마스크 기준 주(이번 주 월요일, ISO 8601 date, UTC)
     public string nextAvailableAt;      // 다음 지급 가능 시각 (ISO 8601 UTC)
+}
+
+[System.Serializable]
+public class DailyClaimRequest
+{
+    public int day; // 수령할 칸(1~6) — 출석일수(todayDay) 이하이고 아직 미수령인 날짜만 서버에서 허용
 }
 
 [System.Serializable]
@@ -710,7 +759,7 @@ public class DailyClaimResponse
     public int explorationPointRemain;  // 지급 후 현재 탐험 포인트
     public int achievementPointRemain;  // 지급 후 현재 업적 포인트
     public string nextAvailableAt;      // 다음 지급 가능 시각 (ISO 8601 UTC)
-    public int todayDay;                // 오늘 날짜 (1~6)
+    public int todayDay;                // 출석일수 — 접속한 서로 다른 날짜 수(1~6), 이 값 이하의 미수령 칸은 전부 클레임 가능
     public int claimedDaysMask;         // 이번 주 수령 현황 비트마스크 (bit0=1일, bit5=6일)
     public int vipClaimedDaysMask;      // VIP 보상 수령 현황 비트마스크 (bit0=1일, bit5=6일)
     public string loginRewardWeekStart; // 비트마스크 기준 주(이번 주 월요일, ISO 8601 date, UTC)

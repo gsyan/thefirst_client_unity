@@ -656,8 +656,8 @@ public class SpaceShip : MonoBehaviour
     private void SpawnFireEffect(ref EffectBase slot, Vector3 position, EDamageType damageType)
     {
         bool isMyFleet = m_ownerFleet != null && ObjectManager.Instance.IsEnemyOfMyTeam(m_ownerFleet) == false;
-        if (isMyFleet == true)
-            Debug.Log($"[화재LOG] SpawnFireEffect ship={name} position={position} damageType={damageType} healthRatio={m_spaceShipStatsCur.health / m_spaceShipStatsOrg.health}");
+        // if (isMyFleet == true)
+        //     Debug.Log($"[화재LOG] SpawnFireEffect ship={name} position={position} damageType={damageType} healthRatio={m_spaceShipStatsCur.health / m_spaceShipStatsOrg.health}");
         slot = ObjectManager.Instance.m_poolManager.Get<EffectBase>(EPoolName.EFFECT_FIRE_ON_SHIP);
         slot.transform.SetParent(transform, false);
         slot.transform.position = position;

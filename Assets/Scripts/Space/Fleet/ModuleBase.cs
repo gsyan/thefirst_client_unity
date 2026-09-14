@@ -19,10 +19,13 @@ public class ModuleBase : MonoBehaviour
     protected EUnitState m_moduleState;
 
     // 발사 타이밍 지터 — 쿨다운 완료(발사 신호) 후 실제 발사까지의 랜덤 지연(신호 전엔 0)
+    // 지연은 "신호가 켜진 실제 시각"(m_attackSignalArmedTime) 기준으로 재는거지 쿨다운 baseline(m_lastAttackTime) 기준이 아님 —
+    // baseline이 낡은 값이라도(예: 모듈 생성 이후 오래 안 쐈다가 전투 진입) 신호는 항상 "지금" 켜지므로 지연이 매번 실제로 걸림
     protected float m_attackPhaseOffset = 0f;
+    protected float m_attackSignalArmedTime = 0f;
     protected bool m_isAttackSignalFired = false;
     private const float k_attackJitterMin = 0.1f;
-    private const float k_attackJitterMax = 0.5f;
+    private const float k_attackJitterMax = 2f;
 
     public virtual void Start()
     {
@@ -82,6 +85,7 @@ public class ModuleBase : MonoBehaviour
     protected void ArmAttackSignal()
     {
         m_attackPhaseOffset = UnityEngine.Random.Range(k_attackJitterMin, k_attackJitterMax);
+        m_attackSignalArmedTime = Time.time;
         m_isAttackSignalFired = true;
     }
 

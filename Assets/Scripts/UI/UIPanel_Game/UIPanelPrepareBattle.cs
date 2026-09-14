@@ -8,7 +8,9 @@ using UnityEngine.UI;
 public class UIPanelPrepareBattle : UIPanelBase
 {
     [SerializeField] private Button m_startButton;
+    [SerializeField] private TMP_Text m_startButtonText;
     [SerializeField] private Button m_retreatButton;
+    [SerializeField] private TMP_Text m_retreatButtonText;
     [SerializeField] private UIFleetStandoffView m_standoffView; // 좌/우 듀얼 카메라 분할뷰 — 진입 즉시 항상 이 화면부터 시작
     [SerializeField] private TMP_Text m_zoneCellText; // "Zone: N\nCell: N-N" 표기
     [SerializeField] private GameObject m_bottomRoot; // ZoneCellText+버튼들의 공통 부모 — SetupContent 전엔 통째로 숨김
@@ -22,6 +24,11 @@ public class UIPanelPrepareBattle : UIPanelBase
     {
         m_startButton.onClick.AddListener(OnClickStart);
         m_retreatButton.onClick.AddListener(OnClickRetreat);
+
+        if (m_startButtonText != null)
+            CommonUtility.SetUILocText(m_startButtonText, "UI_StartBattle");
+        if (m_retreatButtonText != null)
+            CommonUtility.SetUILocText(m_retreatButtonText, "UI_Retreat");
     }
 
     // 셀 진입이 확정된 즉시(워프인 애니메이션이 끝나기 전) 콘텐츠 없이 패널만 먼저 push — 탐험그리드 패널 위에 이 패널이

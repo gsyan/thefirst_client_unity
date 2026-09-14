@@ -175,10 +175,10 @@ public class ModuleHangar : ModuleBase
                     if (Time.time >= m_lastLaunchTime + m_launchCool + hangarHarassDelay)
                         ArmAttackSignal();
                 }
-                else if (Time.time >= m_lastLaunchTime + m_launchCool + hangarHarassDelay + m_attackPhaseOffset)
+                else if (Time.time >= m_attackSignalArmedTime + m_attackPhaseOffset)
                 {
                     ExecuteLaunchOnTarget(m_currentTarget);
-                    m_lastLaunchTime = Time.time - m_attackPhaseOffset;
+                    m_lastLaunchTime = m_attackSignalArmedTime;
                     m_attackPhaseOffset = 0f;
                     m_isAttackSignalFired = false;
                 }

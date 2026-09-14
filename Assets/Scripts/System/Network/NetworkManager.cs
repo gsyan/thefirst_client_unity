@@ -699,6 +699,24 @@ public class NetworkManager : MonoSingleton<NetworkManager>
         StartCoroutine(RunAsync(() => m_apiClient.ClaimAllAchievementsAsync(request), onComplete));
     }
 
+    public void GetDailyAchievementList(GetDailyAchievementListRequest request, System.Action<ApiResponse<GetDailyAchievementListResponse>> onComplete)
+    {
+        if (m_bConnected == false) return;
+        StartCoroutine(RunAsync(() => m_apiClient.GetDailyAchievementListAsync(request), onComplete));
+    }
+
+    public void ClaimDailyAchievement(ClaimDailyAchievementRequest request, System.Action<ApiResponse<ClaimDailyAchievementResponse>> onComplete)
+    {
+        if (m_bConnected == false) return;
+        StartCoroutine(RunAsync(() => m_apiClient.ClaimDailyAchievementAsync(request), onComplete));
+    }
+
+    public void ClaimAllDailyAchievements(ClaimAllDailyAchievementsRequest request, System.Action<ApiResponse<ClaimAllDailyAchievementsResponse>> onComplete)
+    {
+        if (m_bConnected == false) return;
+        StartCoroutine(RunAsync(() => m_apiClient.ClaimAllDailyAchievementsAsync(request), onComplete));
+    }
+
     // public void GetFleetStats(FleetStatsRequest request, System.Action<ApiResponse<FleetStatsResponse>> onComplete)
     // {
     //     if (m_bConnected == false) return;
@@ -857,9 +875,9 @@ public class NetworkManager : MonoSingleton<NetworkManager>
         StartCoroutine(RunAsync(() => m_apiClient.GetVipStatusAsync(), onComplete));
     }
 
-    public void ClaimVipDailyReward(System.Action<ApiResponse<DailyClaimResponse>> onComplete)
+    public void ClaimVipDailyReward(int day, System.Action<ApiResponse<DailyClaimResponse>> onComplete)
     {
-        StartCoroutine(RunAsync(() => m_apiClient.ClaimVipDailyRewardAsync(), onComplete));
+        StartCoroutine(RunAsync(() => m_apiClient.ClaimVipDailyRewardAsync(day), onComplete));
     }
 
     public void GetDailyBonusStatus(System.Action<ApiResponse<DailyBonusStatusResponse>> onComplete)

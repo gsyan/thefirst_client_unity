@@ -1,6 +1,9 @@
-stepId,message,triggerType,targetPanelName,targetUIId,showArrow,arrowDirection,textBoxOffsetX,textBoxOffsetY,textBoxSizeX,textBoxSizeY,textBoxPositionX,textBoxPositionY,autoNextDelay,preActionPanelName,preActionTabName,conditionType,conditionThreshold,conditionCount,targetModuleType
+﻿stepId,message,triggerType,targetPanelName,targetUIId,showArrow,arrowDirection,textBoxOffsetX,textBoxOffsetY,textBoxSizeX,textBoxSizeY,textBoxPositionX,textBoxPositionY,autoNextDelay,preActionPanelName,preActionTabName,conditionType,conditionThreshold,conditionCount,targetModuleType
 step1,Tutorial_Exploration_Intro,TargetClick,,ExplorationButton,True,Auto,0,0,0,0,0,-500,0,,,None,90,3,none
-step2,Tutorial_Exploration_CheckResource,AnyClick,1-1,RewardContainer,True,Auto,0,100,0,0,0,-500,0,,,None,90,3,none
-step3,Tutorial_Exploration_Enter,TargetClick,1-1,Button,True,Auto,0,100,0,0,0,-500,0,,,None,90,3,none
+step2,Tutorial_Exploration_CheckResource,AnyClick,UIPanelExplorationGrid,RowLabelValueContainer,True,Auto,0,100,0,0,0,510,0,,,None,90,3,none
+step3,Tutorial_Exploration_Enter,Custom,ExplorationGridCell,,True,Up,0,0,0,0,0,510,0,,,WaitForGridCellClicked,90,3,none
 step4,Tutorial_Exploration_Confirm,TargetClick,UIPopupConfirm,ConfirmButton,True,Auto,0,0,0,0,0,-500,0,,,None,90,3,none
-step5,,Custom,,,False,Auto,0,0,800,0,0,-500,0,,,WaitForZoneBattleEnd,90,3,none
+step5,Tutorial_Exploration_StartBattle,TargetClick,UIPanelPrepareBattle,StartButton,True,Auto,0,0,0,0,0,1,0,,,None,90,3,none
+step6,,Custom,,,False,Auto,0,0,800,0,0,-500,0,,,WaitForZoneBattleEnd,90,3,none
+step7,Tutorial_Exploration_RewardBanked,AnyClick,UIPanelExplorationGrid,RowLabelValue(ExplorationPointBanked),True,Auto,0,100,0,0,0,510,0,,,None,90,3,none
+step8,Tutorial_Exploration_ContinueToEscape,AnyClick,,,False,Auto,0,0,0,0,0,-500,0,,,None,90,3,none

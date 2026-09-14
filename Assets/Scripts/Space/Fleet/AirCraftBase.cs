@@ -336,7 +336,9 @@ public abstract class AircraftBase : MonoBehaviour
             float distance = Vector3.Distance(transform.position, currentDogfightTarget.transform.position);
             if (distance <= m_aircraftInfo.airAttackRange && Time.time >= m_lastAttackTime + m_aircraftInfo.airAttackCool)
             {
-                currentDogfightTarget.TakeDamage(m_aircraftInfo.airAttack);
+                float tacticMultiplier = m_carrierShip != null && m_carrierShip.m_ownerFleet != null
+                    ? m_carrierShip.m_ownerFleet.GetAircraftTacticAttackMultiplier() : 1f;
+                currentDogfightTarget.TakeDamage(m_aircraftInfo.airAttack * tacticMultiplier);
                 m_lastAttackTime = Time.time;
             }
 
@@ -490,6 +492,18 @@ public abstract class AircraftBase : MonoBehaviour
         {
             ReturnToPool();
             yield break;
+        }
+
+        // 복귀 시작 직후 바로 WP0을 향해 꺾으면 급선회가 필요해 WP0 포착 반경(1f)을 계속 스쳐 지나가며 도는 경우가 있음 —
+        // 잠깐 지금 방향으로 더 나아가 거리를 벌린 뒤 선회를 시작하면 회전 반경에 여유가 생겨 자연스럽게 정렬됨
+        const float k_overshootDuration = 0.6f;
+        float overshootElapsed = 0f;
+        while (overshootElapsed < k_overshootDuration)
+        {
+            if (IsCarrierFleetDestroyed() == true) { ReturnToPool(); yield break; }
+            transform.position += m_currentDirection * (m_aircraftInfo.airSpeed * Time.deltaTime);
+            overshootElapsed += Time.deltaTime;
+            yield return null;
         }
 
         // WP 리스트 구성

@@ -16,6 +16,12 @@ public class TutorialBattleCinematic
     private const float ESCAPE_SHIP_SPEED = 10f;
     private readonly List<SpaceFleet> m_enemyWaveFleets = new List<SpaceFleet>(); // EnemyWave1/2 조건이 스폰한 적 함대 목록
     private readonly Dictionary<int, SpaceFleet> m_waveIndexOccupancy = new Dictionary<int, SpaceFleet>(); // positionIndex → 그 자리를 차지한 함대 (전멸하면 자리 반납)
+
+    // 웨이브2 무한 보충 스폰의 on/off — 튜토리얼 스텝은 FlagshipHealthBelowPercent 충족 즉시 다음 스텝으로 넘어가지만,
+    // 전투 자체(기존 스폰된 함대들의 교전)는 기함이 체력 플로어라 죽지 않은 채 백그라운드에서 계속 진행됨.
+    // 스텝 인덱스로 스폰을 끊으면 그 사이(중간 대사 스텝 등) 보충이 끊겨 결국 적 함대가 전멸해버려서,
+    // 실제로 전투가 끝나는 시점(SiegfriedFlagshipExplosion 연출 시작)까지 별도 플래그로 관리
+    private bool m_endlessWaveActive;
     private static readonly WaitForSeconds k_cameraTransitionWait = new WaitForSeconds(3f); // 카메라가 탈출 함선으로 넘어갈 시간
 
     public TutorialBattleCinematic(TutorialManager host)
@@ -48,13 +54,15 @@ public class TutorialBattleCinematic
                 if (flagship != null)
                     flagship.m_minHealthRatio = 0.1f;
 
-                m_host.StartCoroutine(SpawnEnemyWaveRoutine(new int[] { 7, 3, 3 }, fleetCount: 5, spawnInterval: 5f, ownerStepIndex: ownerStepIndex));
+                m_host.StartCoroutine(SpawnEnemyWaveRoutine(new int[] { 4, 2, 1 }, fleetCount: 5, spawnInterval: 5f, ownerStepIndex: ownerStepIndex));
                 break;
             }
 
             case ETutorialConditionType.EnemyWave2:
                 // 애초에 전멸이 불가능한 물량 — 스폰 코루틴은 전멸 대기 없이 스폰만 담당하고,
-                // 다음 스텝 전환은 별도로 띄운 FlagshipHealthBelowPercent 코루틴이 담당
+                // 다음 스텝 전환은 별도로 띄운 FlagshipHealthBelowPercent 코루틴이 담당.
+                // m_endlessWaveActive는 이 스텝이 끝나도(스텝 전환) 꺼지지 않음 — SiegfriedFlagshipExplosion이 시작될 때 꺼짐
+                m_endlessWaveActive = true;
                 m_host.StartCoroutine(SpawnEnemyWaveRoutine(new int[] { 7, 4, 4, 3, 3 }, fleetCount: 10, spawnInterval: 5f, waitForFullClear: false, ownerStepIndex: ownerStepIndex));
                 m_host.StartCoroutine(CheckFlagshipHealthBelowPercent(0.1f, ownerStepIndex));
                 break;
@@ -65,6 +73,8 @@ public class TutorialBattleCinematic
                 break;
 
             case ETutorialConditionType.SiegfriedFlagshipExplosion:
+                // 여기서부터 실제로 전투가 끝나는 연출이 시작되므로 웨이브2 보충 스폰을 멈춤
+                m_endlessWaveActive = false;
                 m_host.StartCoroutine(PlaySiegfriedFlagshipExplosion(step.conditionThreshold, ownerStepIndex));
                 break;
 
@@ -78,6 +88,7 @@ public class TutorialBattleCinematic
     // 스킵 등으로 튜토리얼을 도중에 끝낼 때 남아있는 연출용 함대(탈출선/적 웨이브)를 정리
     public void Cleanup()
     {
+        m_endlessWaveActive = false;
         CleanupEscapeFleet();
 
         foreach (SpaceFleet fleet in m_enemyWaveFleets)
@@ -92,15 +103,24 @@ public class TutorialBattleCinematic
         m_escapeFleetSpeedMultiplier = 1f;
     }
 
-    // maxCount 범위 안에서 비어있는(한 번도 안 쓰였거나, 배정된 함대가 전멸한) 가장 낮은 인덱스를 반환 — 자리가 없으면 -1
+    // maxCount 범위 안에서 비어있는(한 번도 안 쓰였거나, 배정된 함대가 전멸한) 가장 낮은 인덱스를 반환 — 자리가 없으면 -1.
+    // 전멸한 함대는 빈 껍데기 오브젝트로 씬에 계속 남지 않도록 자리를 반납하는 시점에 바로 Despawn
     private int GetLowestFreeWaveIndex(int maxCount)
     {
         for (int i = 0; i < maxCount; i++)
         {
             if (m_waveIndexOccupancy.TryGetValue(i, out SpaceFleet fleet) == false)
                 return i;
-            if (fleet == null || fleet.IsFleetAlive() == false)
+
+            if (fleet == null)
                 return i;
+
+            if (fleet.IsFleetAlive() == false)
+            {
+                TutorialCinematicController.DespawnCinematicFleet(fleet);
+                m_waveIndexOccupancy.Remove(i);
+                return i;
+            }
         }
         return -1;
     }
@@ -114,25 +134,34 @@ public class TutorialBattleCinematic
         m_waveIndexOccupancy.Clear();
 
         // TODO(3단계): 삭제된 DataTableZone.GetFleetPositionCount를 대체할 신규 탐사 그리드 기준 자리 수 산출로 교체 필요
-        // 지금은 웨이브2 최대 물량(10)을 넉넉히 수용하는 고정값으로 임시 대체
-        const int k_tempMaxPositions = 12;
+        // 스폰 지점은 5개(부채꼴 정면 1 + 좌우 2씩)로 고정 — 웨이브2도 이 5자리를 계속 재사용(전멸한 자리만 리스폰)하는 방식으로 무한 보충
+        const int k_tempMaxPositions = 5;
         int maxPositions = k_tempMaxPositions;
+
+        // 스폰 기준 방향을 이 인카운터 시작 시점에 한 번만 고정 — 전투 중 내 함대가 조금씩 회전해도 이후 스폰되는
+        // 함대들이 같은 기준으로 부채꼴 자리를 유지하게 함(매 스폰마다 실시간으로 다시 읽으면 자리가 서서히 겹침)
+        SpaceFleet siegfriedFleetForBasis = ObjectManager.Instance.GetMyFleet();
+        Vector3 waveBasePos = siegfriedFleetForBasis != null ? siegfriedFleetForBasis.transform.position : Vector3.zero;
+        Vector3 waveForward = siegfriedFleetForBasis != null ? siegfriedFleetForBasis.transform.forward : Vector3.forward;
+        Vector3 waveUp = siegfriedFleetForBasis != null ? siegfriedFleetForBasis.transform.up : Vector3.up;
 
         for (int i = 0; i < fleetCount; i++)
         {
             int positionIndex = GetLowestFreeWaveIndex(maxPositions);
             while (m_host.IsPlaying && positionIndex < 0)
             {
-                // 자리 대기 중 스텝이 이미 넘어갔으면(스킵/다른 경로 등) 더 이상 스폰을 이어가지 않고 즉시 중단 —
-                // RequestNextStep의 소유권 검증만으론 "스폰 자체를 계속 시도하는" 부작용을 못 막기 때문에 여기서도 확인
-                if (m_host.GetCurrentStepIndex() != ownerStepIndex) yield break;
+                // 자리 대기 중 중단 조건 — waitForFullClear가 true(웨이브1)면 스텝 전환 즉시 중단, false(웨이브2)면
+                // 스텝이 바뀌어도(중간 대사 스텝 등) 계속 스폰하고 m_endlessWaveActive가 꺼질 때만 중단
+                if (waitForFullClear == true && m_host.GetCurrentStepIndex() != ownerStepIndex) yield break;
+                if (waitForFullClear == false && m_endlessWaveActive == false) yield break;
                 yield return null;
                 positionIndex = GetLowestFreeWaveIndex(maxPositions);
             }
             if (!m_host.IsPlaying) yield break;
-            if (m_host.GetCurrentStepIndex() != ownerStepIndex) yield break;
+            if (waitForFullClear == true && m_host.GetCurrentStepIndex() != ownerStepIndex) yield break;
+            if (waitForFullClear == false && m_endlessWaveActive == false) yield break;
 
-            SpaceFleet fleet = TutorialCinematicController.SpawnEnemyWaveFleet(shipGradeLevels, positionIndex);
+            SpaceFleet fleet = TutorialCinematicController.SpawnEnemyWaveFleet(shipGradeLevels, positionIndex, waveBasePos, waveForward, waveUp);
             if (fleet != null)
             {
                 m_enemyWaveFleets.Add(fleet);
@@ -143,7 +172,31 @@ public class TutorialBattleCinematic
                 yield return new WaitForSeconds(spawnInterval);
         }
 
-        if (waitForFullClear == false) yield break;
+        if (waitForFullClear == false)
+        {
+            // "애초에 전멸이 불가능한 물량" 설계 의도 — 초기 fleetCount만 스폰하고 끝내버리면 유저가 그걸 다 잡았을 때
+            // 물량이 고갈돼버림. 격파로 자리가 빌 때마다(GetLowestFreeWaveIndex) 계속 리스폰 — 스텝이 넘어가도(FlagshipHealthBelowPercent
+            // 충족 후 다음 대사 스텝 등) 전투 자체는 백그라운드에서 계속되므로, m_endlessWaveActive가 꺼질 때(SiegfriedFlagshipExplosion 시작)까지 유지
+            while (m_host.IsPlaying && m_endlessWaveActive == true)
+            {
+                int positionIndex = GetLowestFreeWaveIndex(maxPositions);
+                if (positionIndex < 0)
+                {
+                    yield return null;
+                    continue;
+                }
+
+                SpaceFleet fleet = TutorialCinematicController.SpawnEnemyWaveFleet(shipGradeLevels, positionIndex, waveBasePos, waveForward, waveUp);
+                if (fleet != null)
+                {
+                    m_enemyWaveFleets.Add(fleet);
+                    m_waveIndexOccupancy[positionIndex] = fleet;
+                }
+
+                yield return new WaitForSeconds(spawnInterval);
+            }
+            yield break;
+        }
 
         while (m_host.IsPlaying)
         {

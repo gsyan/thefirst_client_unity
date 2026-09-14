@@ -3,6 +3,9 @@ UI_OK,,OK,확인
 UI_WatchAD,,WATCH AD,광고 보기
 UI_Cancel,,CANCEL,취소
 UI_Confirm,,CONFIRM,확인
+UI_All,,ALL,전체
+UI_Reset,,RESET,초기화
+UIPopupConvertExplorationPoint_Title,,Convert Exploration Points,탐사포인트 전환
 UI_Commander,,COMMANDER,지휘관
 UI_Fleet,,FLEET,함대
 UI_Settings,,SETTINGS,설정
@@ -15,6 +18,7 @@ UI_MaxShipSlots,,Max Ship Slots,최대 함선 슬롯
 UI_ShipCountUnit,,ships,척
 UI_CommandPower,,Command Power,지휘력
 UI_TacticPower,,Tactic Power,전술력
+UI_Tactics,,TACTICS,전술
 
 UI_Account,,ACCOUNT,계정
 UI_Bgm,,BGM,배경음
@@ -143,6 +147,9 @@ UIAchievement_Category_ExplorationPointTotal,,Exploration Point (Total),탐사�
 UIAchievement_Category_HullTierCount,,Hull Tier,함체 티어
 UIAchievement_Category_ModuleTierCount,,Module Tier,모듈 티어
 UIAchievement_Category_HullUnlocked,,Hull Unlock,함체 언락
+UIDailyAchievement_Category_CellClear,,Cell Clear,셀 클리어
+UIDailyAchievement_Category_EventCell,,Event Cell Clear,이벤트 셀 클리어
+UIDailyAchievement_Category_ZoneClearTotal,,Zone Clear,존 클리어
 UIFleet_EnemyFleetTitle,,Enemy Fleet,적함대
 
 
@@ -152,6 +159,8 @@ UITabRank_ScoreRank,,Score:{0} (Rank {1}),점수:{0} ({1}위)
 UITabRank_refresh,,REFRESH({0}/{1}),새로고침({0}/{1})
 UITabExploration_RetreatConfirm,,Retreat to the previous zone?,이전 구역으로 퇴각하시겠습니까?
 UITabPvp_RetreatConfirm,,Retreat from the PvP battle?,PvP 전투에서 퇴각하시겠습니까?
+UI_Retreat,,RETREAT,퇴각
+UI_StartBattle,,START BATTLE,전투시작
 require_level_compare,,Lv.{0} (Current Lv.{1}),Lv.{0} (현재 Lv.{1})
 UIPopupConfirm_RequireLevel,,Required Level,필요 레벨
 UIPopupConfirm_PvpPointLabel,,PVP Point,PVP 포인트
@@ -234,6 +243,16 @@ UIAchievement_Name_event_cell_tacticpowerrestore,,Treasure(Tactic Power) x{1},�
 UIAchievement_Desc_event_cell_tacticpowerrestore,,Clear Treasure(Tactic Power) event cells {1} times cumulatively,트레저(전술력 회복) 이벤트 셀을 누적 {1}회 클리어하면 완료
 UIAchievement_Name_zone_clear_total,,Clear {1} Zones,존 {1}개 클리어
 UIAchievement_Desc_zone_clear_total,,Clear {1} different zones cumulatively,서로 다른 존을 누적 {1}개 클리어하면 완료
+UIDailyAchievement_Name_cell_clear,,Clear {1} Cells Today,오늘 셀 클리어 {1}회
+UIDailyAchievement_Desc_cell_clear,,Clear {1} normal (non-event) cells today,오늘 일반(비이벤트) 셀을 {1}회 클리어하면 완료(자정 UTC 리셋)
+UIDailyAchievement_Name_event_cell_explorationpoint,,Treasure(Exploration Point) x{1} Today,오늘 트레저(탐사포인트) {1}회
+UIDailyAchievement_Desc_event_cell_explorationpoint,,Clear Treasure(Exploration Point) event cells {1} times today,오늘 트레저(탐사포인트) 이벤트 셀을 {1}회 클리어하면 완료(자정 UTC 리셋)
+UIDailyAchievement_Name_event_cell_shiphealthheal,,Treasure(Fleet Heal) x{1} Today,오늘 트레저(함대 회복) {1}회
+UIDailyAchievement_Desc_event_cell_shiphealthheal,,Clear Treasure(Fleet Heal) event cells {1} times today,오늘 트레저(함대 회복) 이벤트 셀을 {1}회 클리어하면 완료(자정 UTC 리셋)
+UIDailyAchievement_Name_event_cell_tacticpowerrestore,,Treasure(Tactic Power) x{1} Today,오늘 트레저(전술력 회복) {1}회
+UIDailyAchievement_Desc_event_cell_tacticpowerrestore,,Clear Treasure(Tactic Power) event cells {1} times today,오늘 트레저(전술력 회복) 이벤트 셀을 {1}회 클리어하면 완료(자정 UTC 리셋)
+UIDailyAchievement_Name_zone_clear_total,,Clear {1} Zones Today,오늘 존 {1}개 클리어
+UIDailyAchievement_Desc_zone_clear_total,,Escape {1} zone runs today (revisiting cleared zones counts too),오늘 존을 {1}번 탈출(클리어)하면 완료 — 이미 클리어한 존 재방문도 인정(자정 UTC 리셋)
 UIAchievement_Name_zone_clear,,Clear Zone {0},존 {0} 클리어
 UIAchievement_Desc_zone_clear,,Clear Zone {0} for the first time,존 {0}를 처음 클리어하면 완료
 UIAchievement_Name_commander_level,,Reach Commander Level {1},지휘관 레벨 {1} 달성
