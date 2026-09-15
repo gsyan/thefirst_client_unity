@@ -109,16 +109,6 @@ public class DataTableTotalEditor : EditorWindow
             EditorGUILayout.EndVertical();
         }
 
-        if (dataTableConfig != null)
-        {
-            EditorGUILayout.BeginVertical("box");
-            EditorGUILayout.LabelField("Game Settings Info", EditorStyles.boldLabel);
-            var settings = dataTableConfig.gameSettings;
-            EditorGUILayout.LabelField($"Version: {settings.version}");
-            EditorGUILayout.LabelField($"Add Ships Cost: {settings.addShipCost}");
-            EditorGUILayout.EndVertical();
-        }
-
         EditorGUILayout.EndScrollView();
     }
 

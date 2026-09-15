@@ -920,182 +920,140 @@ MonoBehaviour:
     conditionType: 5
     conditionParam: 
     threshold: 500
-    achievementPointReward: 40
-    nameKey: UIAchievement_Name_command_power
-    descKey: UIAchievement_Desc_command_power
-  - achievementId: command_power_600
-    conditionType: 5
-    conditionParam: 
-    threshold: 600
     achievementPointReward: 50
-    nameKey: UIAchievement_Name_command_power
-    descKey: UIAchievement_Desc_command_power
-  - achievementId: command_power_700
-    conditionType: 5
-    conditionParam: 
-    threshold: 700
-    achievementPointReward: 60
-    nameKey: UIAchievement_Name_command_power
-    descKey: UIAchievement_Desc_command_power
-  - achievementId: command_power_800
-    conditionType: 5
-    conditionParam: 
-    threshold: 800
-    achievementPointReward: 70
-    nameKey: UIAchievement_Name_command_power
-    descKey: UIAchievement_Desc_command_power
-  - achievementId: command_power_900
-    conditionType: 5
-    conditionParam: 
-    threshold: 900
-    achievementPointReward: 80
     nameKey: UIAchievement_Name_command_power
     descKey: UIAchievement_Desc_command_power
   - achievementId: command_power_1000
     conditionType: 5
     conditionParam: 
     threshold: 1000
-    achievementPointReward: 90
-    nameKey: UIAchievement_Name_command_power
-    descKey: UIAchievement_Desc_command_power
-  - achievementId: command_power_1100
-    conditionType: 5
-    conditionParam: 
-    threshold: 1100
     achievementPointReward: 100
-    nameKey: UIAchievement_Name_command_power
-    descKey: UIAchievement_Desc_command_power
-  - achievementId: command_power_1200
-    conditionType: 5
-    conditionParam: 
-    threshold: 1200
-    achievementPointReward: 110
-    nameKey: UIAchievement_Name_command_power
-    descKey: UIAchievement_Desc_command_power
-  - achievementId: command_power_1300
-    conditionType: 5
-    conditionParam: 
-    threshold: 1300
-    achievementPointReward: 120
-    nameKey: UIAchievement_Name_command_power
-    descKey: UIAchievement_Desc_command_power
-  - achievementId: command_power_1400
-    conditionType: 5
-    conditionParam: 
-    threshold: 1400
-    achievementPointReward: 130
     nameKey: UIAchievement_Name_command_power
     descKey: UIAchievement_Desc_command_power
   - achievementId: command_power_1500
     conditionType: 5
     conditionParam: 
     threshold: 1500
-    achievementPointReward: 140
-    nameKey: UIAchievement_Name_command_power
-    descKey: UIAchievement_Desc_command_power
-  - achievementId: command_power_1600
-    conditionType: 5
-    conditionParam: 
-    threshold: 1600
     achievementPointReward: 150
-    nameKey: UIAchievement_Name_command_power
-    descKey: UIAchievement_Desc_command_power
-  - achievementId: command_power_1700
-    conditionType: 5
-    conditionParam: 
-    threshold: 1700
-    achievementPointReward: 160
-    nameKey: UIAchievement_Name_command_power
-    descKey: UIAchievement_Desc_command_power
-  - achievementId: command_power_1800
-    conditionType: 5
-    conditionParam: 
-    threshold: 1800
-    achievementPointReward: 170
-    nameKey: UIAchievement_Name_command_power
-    descKey: UIAchievement_Desc_command_power
-  - achievementId: command_power_1900
-    conditionType: 5
-    conditionParam: 
-    threshold: 1900
-    achievementPointReward: 180
     nameKey: UIAchievement_Name_command_power
     descKey: UIAchievement_Desc_command_power
   - achievementId: command_power_2000
     conditionType: 5
     conditionParam: 
     threshold: 2000
-    achievementPointReward: 190
-    nameKey: UIAchievement_Name_command_power
-    descKey: UIAchievement_Desc_command_power
-  - achievementId: command_power_2100
-    conditionType: 5
-    conditionParam: 
-    threshold: 2100
     achievementPointReward: 200
-    nameKey: UIAchievement_Name_command_power
-    descKey: UIAchievement_Desc_command_power
-  - achievementId: command_power_2200
-    conditionType: 5
-    conditionParam: 
-    threshold: 2200
-    achievementPointReward: 210
-    nameKey: UIAchievement_Name_command_power
-    descKey: UIAchievement_Desc_command_power
-  - achievementId: command_power_2300
-    conditionType: 5
-    conditionParam: 
-    threshold: 2300
-    achievementPointReward: 220
-    nameKey: UIAchievement_Name_command_power
-    descKey: UIAchievement_Desc_command_power
-  - achievementId: command_power_2400
-    conditionType: 5
-    conditionParam: 
-    threshold: 2400
-    achievementPointReward: 230
     nameKey: UIAchievement_Name_command_power
     descKey: UIAchievement_Desc_command_power
   - achievementId: command_power_2500
     conditionType: 5
     conditionParam: 
     threshold: 2500
-    achievementPointReward: 240
-    nameKey: UIAchievement_Name_command_power
-    descKey: UIAchievement_Desc_command_power
-  - achievementId: command_power_2600
-    conditionType: 5
-    conditionParam: 
-    threshold: 2600
     achievementPointReward: 250
-    nameKey: UIAchievement_Name_command_power
-    descKey: UIAchievement_Desc_command_power
-  - achievementId: command_power_2700
-    conditionType: 5
-    conditionParam: 
-    threshold: 2700
-    achievementPointReward: 260
-    nameKey: UIAchievement_Name_command_power
-    descKey: UIAchievement_Desc_command_power
-  - achievementId: command_power_2800
-    conditionType: 5
-    conditionParam: 
-    threshold: 2800
-    achievementPointReward: 270
-    nameKey: UIAchievement_Name_command_power
-    descKey: UIAchievement_Desc_command_power
-  - achievementId: command_power_2900
-    conditionType: 5
-    conditionParam: 
-    threshold: 2900
-    achievementPointReward: 280
     nameKey: UIAchievement_Name_command_power
     descKey: UIAchievement_Desc_command_power
   - achievementId: command_power_3000
     conditionType: 5
     conditionParam: 
     threshold: 3000
-    achievementPointReward: 290
+    achievementPointReward: 300
+    nameKey: UIAchievement_Name_command_power
+    descKey: UIAchievement_Desc_command_power
+  - achievementId: command_power_3500
+    conditionType: 5
+    conditionParam: 
+    threshold: 3500
+    achievementPointReward: 300
+    nameKey: UIAchievement_Name_command_power
+    descKey: UIAchievement_Desc_command_power
+  - achievementId: command_power_4000
+    conditionType: 5
+    conditionParam: 
+    threshold: 4000
+    achievementPointReward: 300
+    nameKey: UIAchievement_Name_command_power
+    descKey: UIAchievement_Desc_command_power
+  - achievementId: command_power_4500
+    conditionType: 5
+    conditionParam: 
+    threshold: 4500
+    achievementPointReward: 300
+    nameKey: UIAchievement_Name_command_power
+    descKey: UIAchievement_Desc_command_power
+  - achievementId: command_power_5000
+    conditionType: 5
+    conditionParam: 
+    threshold: 5000
+    achievementPointReward: 300
+    nameKey: UIAchievement_Name_command_power
+    descKey: UIAchievement_Desc_command_power
+  - achievementId: command_power_5500
+    conditionType: 5
+    conditionParam: 
+    threshold: 5500
+    achievementPointReward: 300
+    nameKey: UIAchievement_Name_command_power
+    descKey: UIAchievement_Desc_command_power
+  - achievementId: command_power_6000
+    conditionType: 5
+    conditionParam: 
+    threshold: 6000
+    achievementPointReward: 300
+    nameKey: UIAchievement_Name_command_power
+    descKey: UIAchievement_Desc_command_power
+  - achievementId: command_power_6500
+    conditionType: 5
+    conditionParam: 
+    threshold: 6500
+    achievementPointReward: 300
+    nameKey: UIAchievement_Name_command_power
+    descKey: UIAchievement_Desc_command_power
+  - achievementId: command_power_7000
+    conditionType: 5
+    conditionParam: 
+    threshold: 7000
+    achievementPointReward: 300
+    nameKey: UIAchievement_Name_command_power
+    descKey: UIAchievement_Desc_command_power
+  - achievementId: command_power_7500
+    conditionType: 5
+    conditionParam: 
+    threshold: 7500
+    achievementPointReward: 300
+    nameKey: UIAchievement_Name_command_power
+    descKey: UIAchievement_Desc_command_power
+  - achievementId: command_power_8000
+    conditionType: 5
+    conditionParam: 
+    threshold: 8000
+    achievementPointReward: 300
+    nameKey: UIAchievement_Name_command_power
+    descKey: UIAchievement_Desc_command_power
+  - achievementId: command_power_8500
+    conditionType: 5
+    conditionParam: 
+    threshold: 8500
+    achievementPointReward: 300
+    nameKey: UIAchievement_Name_command_power
+    descKey: UIAchievement_Desc_command_power
+  - achievementId: command_power_9000
+    conditionType: 5
+    conditionParam: 
+    threshold: 9000
+    achievementPointReward: 300
+    nameKey: UIAchievement_Name_command_power
+    descKey: UIAchievement_Desc_command_power
+  - achievementId: command_power_9500
+    conditionType: 5
+    conditionParam: 
+    threshold: 9500
+    achievementPointReward: 300
+    nameKey: UIAchievement_Name_command_power
+    descKey: UIAchievement_Desc_command_power
+  - achievementId: command_power_10000
+    conditionType: 5
+    conditionParam: 
+    threshold: 10000
+    achievementPointReward: 300
     nameKey: UIAchievement_Name_command_power
     descKey: UIAchievement_Desc_command_power
   - achievementId: tactic_power_100

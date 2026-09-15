@@ -1085,6 +1085,18 @@ MonoBehaviour:
     m_Localized: ABANDON
     m_Metadata:
       m_Items: []
+  - m_Id: 79529385614245888
+    m_Localized: Reroll
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79529385672966144
+    m_Localized: Watch an ad to reroll the reward cards?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79529385672966145
+    m_Localized: You have used all reroll chances for today.
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

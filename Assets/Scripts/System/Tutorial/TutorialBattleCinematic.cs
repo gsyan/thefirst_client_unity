@@ -63,7 +63,7 @@ public class TutorialBattleCinematic
                 // 다음 스텝 전환은 별도로 띄운 FlagshipHealthBelowPercent 코루틴이 담당.
                 // m_endlessWaveActive는 이 스텝이 끝나도(스텝 전환) 꺼지지 않음 — SiegfriedFlagshipExplosion이 시작될 때 꺼짐
                 m_endlessWaveActive = true;
-                m_host.StartCoroutine(SpawnEnemyWaveRoutine(new int[] { 7, 4, 4, 3, 3 }, fleetCount: 10, spawnInterval: 5f, waitForFullClear: false, ownerStepIndex: ownerStepIndex));
+                m_host.StartCoroutine(SpawnEnemyWaveRoutine(new int[] { 9, 6, 5, 4, 3 }, fleetCount: 10, spawnInterval: 5f, waitForFullClear: false, ownerStepIndex: ownerStepIndex));
                 m_host.StartCoroutine(CheckFlagshipHealthBelowPercent(0.1f, ownerStepIndex));
                 break;
 

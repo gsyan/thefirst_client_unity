@@ -789,6 +789,26 @@ public class SpaceFleet : MonoBehaviour
         EventManager.Trigger_ShipUpdateHP();
     }
 
+    // 수리 전술 비용 계산용 — 체력비율(함선 단위 합산)이 1 미만인 함선 수. 상태 변경 없는 순수 카운트
+    public int CountShipsNeedingRepair()
+    {
+        int count = 0;
+        foreach (SpaceShip ship in m_ships)
+        {
+            if (ship == null) continue;
+
+            float shipHealth = 0f, shipHealthMax = 0f;
+            foreach (ModuleHull body in ship.m_moduleHulls)
+            {
+                if (body == null) continue;
+                shipHealth    += body.m_health;
+                shipHealthMax += body.m_healthMax;
+            }
+            if (shipHealthMax > 0f && shipHealth < shipHealthMax) count++;
+        }
+        return count;
+    }
+
     // 전술 토글(수리) ON 상태에서 UIPanelBattle.Co_DrainTacticPower가 1초 간격으로 호출 — 함체별 repair 스탯만큼 체력 회복
     public void ApplyRepairTickToAllShips()
     {
@@ -801,6 +821,25 @@ public class SpaceFleet : MonoBehaviour
         }
         EventManager.Trigger_FleetUpdateHP();
         EventManager.Trigger_ShipUpdateHP();
+    }
+
+    // 실드 전술 비용 계산용 — 실드 장착 함체 중 게이지비율이 1 미만인 게 하나라도 있는 함선 수. 상태 변경 없는 순수 카운트
+    public int CountShipsNeedingShieldRegen()
+    {
+        int count = 0;
+        foreach (SpaceShip ship in m_ships)
+        {
+            if (ship == null) continue;
+
+            bool shipNeedsRegen = false;
+            foreach (ModuleHull body in ship.m_moduleHulls)
+            {
+                if (body == null || body.m_shield == null) continue;
+                if (body.m_shield.GetGaugeRatio() < 1f) { shipNeedsRegen = true; break; }
+            }
+            if (shipNeedsRegen == true) count++;
+        }
+        return count;
     }
 
     // 전술 토글(실드) ON 상태에서 UIPanelBattle.Co_DrainTacticPower가 1초 간격으로 호출 — 함체별 shieldRegenRate만큼 게이지 충전
@@ -848,6 +887,17 @@ public class SpaceFleet : MonoBehaviour
             if (ship == null) continue;
             foreach (ModuleHull body in ship.m_moduleHulls)
                 if (body != null && body.m_interceptor != null) body.m_interceptor.SetTacticOn(on);
+        }
+    }
+
+    // 존런 종료(승리/포기) 시점에 호출 — 토글 OFF와 달리 떠 있는 요격체를 실제로 전부 정리(despawn)함
+    public void ClearAllInterceptorUnits()
+    {
+        foreach (SpaceShip ship in m_ships)
+        {
+            if (ship == null) continue;
+            foreach (ModuleHull body in ship.m_moduleHulls)
+                if (body != null && body.m_interceptor != null) body.m_interceptor.ClearAllSlots();
         }
     }
 
@@ -1081,8 +1131,12 @@ public class SpaceFleet : MonoBehaviour
         return 1f + preset.attackMultiplierPerStep[step - 1];
     }
 
+    // idx: 0=수리, 1=미사일, 2=함재기, 3=실드, 4=요격체 (EventManager.OnTacticOptionsChanged 주석과 동일)
+    private const int k_repairTacticBit = 1 << 0;
     private const int k_missileTacticBit = 1 << 1;
     private const int k_aircraftTacticBit = 1 << 2;
+    private const int k_shieldTacticBit = 1 << 3;
+    private const int k_interceptorTacticBit = 1 << 4;
 
     // 미사일 전술 토글(idx=1) ON 시 공격력 2배 — 내 함대만 적용(적/PvP상대/시네마틱은 토글 UI가 없어 배율 없음)
     public float GetMissileTacticAttackMultiplier()
@@ -1096,6 +1150,55 @@ public class SpaceFleet : MonoBehaviour
     {
         if (m_fleetSource != EFleetSource.fleet_source_player) return 1f;
         return (m_fleetInfo.tacticOptions & k_aircraftTacticBit) != 0 ? 2f : 1f;
+    }
+
+    // cost를 낼 여유가 있으면 차감하고 true. 없으면 해당 전술 토글만 즉시 끄고(서버 동기화 포함) false —
+    // 호출부는 false를 "이번엔 전술 효과 없이 원래대로 진행"하라는 신호로 사용(행동 자체를 막지 않음)
+    private bool TryChargeTacticCost(int tacticBit, int cost)
+    {
+        if (m_fleetSource != EFleetSource.fleet_source_player) return true;
+
+        Commander commander = DataManager.Instance.m_currentCommander;
+        if (commander == null || commander.GetTacticPower() < cost)
+        {
+            ApplyTacticOptions(m_fleetInfo.tacticOptions & ~tacticBit);
+            return false;
+        }
+
+        commander.SpendTacticPower(cost);
+        return true;
+    }
+
+    public bool TryChargeRepairTacticCost(int cost) { return TryChargeTacticCost(k_repairTacticBit, cost); }
+    public bool TryChargeShieldTacticCost(int cost) { return TryChargeTacticCost(k_shieldTacticBit, cost); }
+    public bool TryChargeMissileTacticCost(int cost) { return TryChargeTacticCost(k_missileTacticBit, cost); }
+    public bool TryChargeAircraftTacticCost(int cost) { return TryChargeTacticCost(k_aircraftTacticBit, cost); }
+    public bool TryChargeInterceptorTacticCost(int cost) { return TryChargeTacticCost(k_interceptorTacticBit, cost); }
+
+    // 토글 상태 반영 + 요격체 즉시 전파 + 서버 동기화 — UI 클릭(UIPanelBattle)과 포인트 고갈 자동 OFF(TryChargeTacticCost) 공용 경로
+    public void ApplyTacticOptions(int newOptions)
+    {
+        int oldOptions = m_fleetInfo.tacticOptions;
+        if (oldOptions == newOptions) return;
+        m_fleetInfo.tacticOptions = newOptions;
+        EventManager.Trigger_TacticOptionsChanged(newOptions);
+
+        // 요격체는 실드와 달리 궤도에 실제 오브젝트가 떠 있어야 해서, 토글이 바뀌는 시점에 한 번 명시적으로 전파해야 함
+        bool interceptorWasOn = (oldOptions & k_interceptorTacticBit) != 0;
+        bool interceptorNowOn = (newOptions & k_interceptorTacticBit) != 0;
+        if (interceptorWasOn != interceptorNowOn)
+            SetInterceptorTacticOnForAllShips(interceptorNowOn);
+
+        long fleetId = m_fleetInfo.id;
+        NetworkManager.Instance.ChangeTacticOptions(new ChangeTacticOptionsRequest
+        {
+            fleetId = fleetId,
+            tacticOptions = newOptions,
+        }, response =>
+        {
+            if (response.errorCode != 0)
+                Debug.LogError($"[SpaceFleet] ChangeTacticOptions 실패: {response.errorCode} fleetId={fleetId}");
+        });
     }
 
     // 피격 데미지 차감 비율 — 그대로 반환 (0=없음, 0.2~0.5=차감)

@@ -16,11 +16,16 @@ public class UIPopupRewardCardSelect : UIPopupBase
     [SerializeField] private GameObject m_rewardCardButtonContainer; // 카드 버튼 3개를 담은 오브젝트 — 카드 후보가 없을 때(탈출 셀 등) 통째로 숨김
     [SerializeField] private Button m_confirmButton;
     [SerializeField] private TMP_Text m_confirmButtonText;
+    [SerializeField] private Button m_rerollButton; // 다시 뽑기(광고 시청 리롤) — 카드 후보가 없는 셀은 통째로 숨김
+    [SerializeField] private TMP_Text m_rerollButtonText;
 
     private RewardCardButton[] m_cardButtons;
     private List<string> m_candidateCardIds;
     private int m_selectedIndex;
     private System.Action<string> m_onConfirmed;
+    private int m_zoneNumber;
+    private int m_cellRow;
+    private int m_cellCol;
 
     protected override void Awake()
     {
@@ -30,14 +35,24 @@ public class UIPopupRewardCardSelect : UIPopupBase
 
         if (m_confirmButtonText != null)
             CommonUtility.SetUILocText(m_confirmButtonText, "UI_Confirm");
+
+        if (m_rerollButton != null)
+        {
+            m_rerollButton.onClick.AddListener(OnRerollClicked);
+            if (m_rerollButtonText != null)
+                CommonUtility.SetUILocText(m_rerollButtonText, "UIPopupRewardCardSelect_RerollButton");
+        }
     }
 
-    public void ShowPopupRewardCardSelect(int explorationPointGained, int expGained, List<string> candidateCardIds, bool isEscapeCell, System.Action<string> onConfirmed)
+    public void ShowPopupRewardCardSelect(int explorationPointGained, int expGained, List<string> candidateCardIds, bool isEscapeCell, int zoneNumber, int cellRow, int cellCol, System.Action<string> onConfirmed)
     {
         base.ShowPopup();
         m_candidateCardIds = candidateCardIds;
         m_onConfirmed = onConfirmed;
         m_selectedIndex = -1;
+        m_zoneNumber = zoneNumber;
+        m_cellRow = cellRow;
+        m_cellCol = cellCol;
 
         // 탈출 셀은 "탈출 지점 발견", 카드 후보 없이 포인트만 지급되는 트레저(전투 없는 이벤트 셀에서 탐험 포인트 당첨)는
         // "트레저 보상"으로 구분 — 카드 선택 문구("Choose a Reward Card")는 실제로 고를 카드가 있을 때만 맞는 표현이라
@@ -70,6 +85,10 @@ public class UIPopupRewardCardSelect : UIPopupBase
             int defaultIndex = candidateCardIds.Count / 2;
             OnCardClicked(defaultIndex);
         }
+
+        if (m_rerollButton != null)
+            m_rerollButton.gameObject.SetActive(hasCardCandidates);
+        RefreshRerollButtonState();
 
         RefreshConfirmButtonState();
     }
@@ -115,5 +134,61 @@ public class UIPopupRewardCardSelect : UIPopupBase
         System.Action<string> callback = m_onConfirmed;
         HidePopup();
         callback?.Invoke(selectedCardId);
+    }
+
+    // 리워드 광고가 준비된 경우에만 버튼 활성화 — 광고 로드 실패/소진 상태에서 눌러도 아무 일 없는 상황 방지
+    private void RefreshRerollButtonState()
+    {
+        if (m_rerollButton == null) return;
+        m_rerollButton.interactable = AdManager.Instance.IsRewardedAdReady;
+    }
+
+    private void OnRerollClicked()
+    {
+        if (AdManager.Instance.IsRewardedAdReady == false) return;
+
+        UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig
+        {
+            message = LocalizationManager.Instance.Get("UIPopupRewardCardSelect_RerollConfirm"),
+            confirmText1 = LocalizationManager.Instance.Get("UI_WatchAD"),
+            onConfirm = RequestRerollWithAd,
+            onCancel = () => { }
+        });
+    }
+
+    private void RequestRerollWithAd()
+    {
+        AdManager.Instance.ShowRewardedAd(result =>
+        {
+            if (result != EAdResult.Rewarded) return;
+
+            RerollRewardCardRequest request = new RerollRewardCardRequest
+            {
+                zoneNumber = m_zoneNumber,
+                cellRow = m_cellRow,
+                cellCol = m_cellCol,
+            };
+            NetworkManager.Instance.RerollRewardCard(request, OnRerollResponse);
+        });
+    }
+
+    private void OnRerollResponse(ApiResponse<RerollRewardCardResponse> response)
+    {
+        if (response.errorCode == (int)ServerErrorCode.EXPLORATION_REWARD_CARD_REROLL_LIMIT_EXCEEDED)
+        {
+            UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig
+            {
+                message = LocalizationManager.Instance.Get("UIPopupRewardCardSelect_RerollLimitReached"),
+                onConfirm = () => { },
+            });
+            return;
+        }
+
+        if (response.errorCode != 0 || response.data == null) return;
+
+        m_candidateCardIds = response.data.rewardCardCandidates;
+        BindCardButtons(m_candidateCardIds);
+        OnCardClicked(m_candidateCardIds.Count / 2); // 최초 표시 때와 동일하게 가운데 카드를 기본 선택 상태로
+        RefreshRerollButtonState();
     }
 }

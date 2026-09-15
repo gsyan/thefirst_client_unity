@@ -1,7 +1,9 @@
 // 요격체 모듈 — 슬롯/3D 배치 없이 함체(ModuleHull)에 논리적으로만 붙는 컴포넌트(ModuleShield와 동일 패턴).
 // 실제로 눈에 보이는 요격체 유닛(InterceptorUnit)은 별도로 스폰/풀링해 함선 전방 원형 궤도에 배치한다.
-// 전술 토글(idx=4) ON 상태에서만 빈 자리를 interceptorRegenRate로 순차 보충하고 적 미사일을 탐지/배정함 — UIPanelBattle.Co_DrainTacticPower 참고.
-// 토글 OFF 시 궤도에 떠 있는 유닛은 즉시 전부 제거되고, 다시 ON 하면 빈 상태에서부터 순차적으로 채워짐.
+// 전술 토글(idx=4) ON 상태에서만 빈 자리를 interceptorRegenRate로 순차 보충하고(생성 1기당 tacticInterceptorCost 과금,
+// 여유 없으면 토글이 즉시 꺼짐 — SpaceFleet.TryChargeInterceptorTacticCost 참고) 적 미사일을 탐지/배정함.
+// 토글 OFF 시에는 신규 생성만 멈출 뿐 이미 떠 있는 유닛은 제거되지 않고 계속 요격 임무를 수행함(despawn/환급 없음) —
+// 정리는 존런 종료 시점(SpaceFleet.ClearAllInterceptorUnits)이나 함선 파괴 시에만 일어남.
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -95,20 +97,19 @@ public class ModuleInterceptor : ModuleBase
         if (m_tacticOn == on) return;
         m_tacticOn = on;
 
-        if (on == false)
-        {
-            ClearAllSlots();
-            return;
-        }
+        if (on == false) return; // 신규 생성만 멈춤 — 이미 떠 있는 유닛은 그대로 유지(요격 임무 계속 수행)
 
         StartScanCoroutine();
     }
 
     // 전술 토글(요격체) ON 상태에서 SpaceFleet.ApplyInterceptorRegenTickToAllShips가 1초 간격으로 호출 — m_regenRate는 초당 진행도, 1.0 도달마다 1기 리필
+    // 1기 생성마다 tacticInterceptorCost를 선확인 과금 — 여유가 없으면 그 자리에서 이번 틱의 나머지 생성을 포기(토글은 TryChargeInterceptorTacticCost가 이미 꺼둠)
     public void ApplyRegenTick()
     {
         if (m_tacticOn == false || m_slots == null) return;
         if (HasEmptySlot() == false) return;
+
+        int tacticInterceptorCost = DataManager.Instance.m_dataTableConfig.gameSettings.tactic.tacticInterceptorCost;
 
         m_regenProgress += m_regenRate;
         while (m_regenProgress >= 1f)
@@ -119,6 +120,13 @@ public class ModuleInterceptor : ModuleBase
                 m_regenProgress = 0f;
                 break;
             }
+
+            if (m_ownerFleet == null || m_ownerFleet.TryChargeInterceptorTacticCost(tacticInterceptorCost) == false)
+            {
+                m_regenProgress = 0f;
+                break;
+            }
+
             SpawnInterceptorUnitAt(emptyIndex);
             m_regenProgress -= 1f;
         }
@@ -197,8 +205,7 @@ public class ModuleInterceptor : ModuleBase
         while (true)
         {
             yield return wait;
-            if (m_tacticOn == false) continue;
-
+            // m_tacticOn과 무관하게 계속 스캔 — 토글이 꺼져도 이미 떠 있는 유닛은 계속 요격 임무를 수행해야 함(있는 유닛이 없으면 FindIdleUnit이 그냥 null 반환)
             List<ProjectileMissile> threatMissiles = GetThreatMissileList();
             if (threatMissiles == null || threatMissiles.Count == 0) continue;
 

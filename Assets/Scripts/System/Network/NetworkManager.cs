@@ -835,6 +835,12 @@ public class NetworkManager : MonoSingleton<NetworkManager>
         StartCoroutine(RunAsync(() => m_apiClient.ConfirmRewardCardAsync(request), onComplete));
     }
 
+    public void RerollRewardCard(RerollRewardCardRequest request, System.Action<ApiResponse<RerollRewardCardResponse>> onComplete)
+    {
+        if (m_bConnected == false) return;
+        StartCoroutine(RunAsync(() => m_apiClient.RerollRewardCardAsync(request), onComplete));
+    }
+
     public void GetActiveZoneRunProgress(GetActiveZoneRunProgressRequest request, System.Action<ApiResponse<GetActiveZoneRunProgressResponse>> onComplete)
     {
         if (m_bConnected == false) return;

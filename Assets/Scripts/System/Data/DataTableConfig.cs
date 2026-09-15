@@ -1,4 +1,4 @@
-// 게임 전역 설정 ScriptableObject — 함선 추가 비용(addShipCost), PvP 설정, 모듈 해금 비용 관리
+// 게임 전역 설정 ScriptableObject — PvP 설정, 전술 강화 탐험 포인트 소모량 관리
 // 커맨더 레벨별 최대 함선 수(ship_count)는 DataTableCommander.GetShipCount()에서 조회
 using UnityEngine;
 using Newtonsoft.Json;
@@ -10,58 +10,53 @@ using UnityEditor;
 [System.Serializable]
 public class GameSettings
 {
-    [Header("Game Settings")]
-    public string version = "0.0.1";
+    public GeneralSettings general = new GeneralSettings();
+    public PvpSettings pvp = new PvpSettings();
+    public TacticSettings tactic = new TacticSettings();
+    public ExplorationSettings exploration = new ExplorationSettings();
+    public ShipStatFormulaSettings shipStatFormula = new ShipStatFormulaSettings();
+}
 
-    [Tooltip("함선 추가 시 필요한 ModulePoint 비용")]
-    public int addShipCost = 10;
-
+[System.Serializable]
+public class GeneralSettings
+{
     [Tooltip("신규 지휘관 생성 시 초기 지휘력 최대치")]
-    public int commandPowerMaxInit = 120;
+    public int commandPowerMaxInit = 400;
 
-[Header("Pvp Settings")]
+    [Tooltip("발사 타이밍 지터 상한(초) — 쿨다운 완료(발사 신호) 후 실제 발사까지의 랜덤 지연 최대값. ModuleBase.ArmAttackSignal()에서 사용")]
+    public float attackJitterMax = 1f;
+}
+
+[System.Serializable]
+public class PvpSettings
+{
     public int pvpMinCommanderLevel = 2;
     public int pvpListCount = 3;
     public int pvpListRefreshCount = 5;
     public int pvpRankScoreInit = 1000;
     public int pvpRankScorePenalty = 1;
-    
-    public int moduleUnlockPrice = 1;
+}
 
-    [Header("Tactic - Repair")]
-    [Tooltip("수리 부스트 ON 시 1초당 소모하는 탐험 포인트 (함대 단위)")]
-    public int repairBoostExplorationPointPerSec = 1;
-    [Tooltip("수리 부스트 ON 시 수리 속도 배율")]
-    public float repairBoostMultiplier = 2f;
-    [Tooltip("즉시 수리 비용 기준 시간(초) — 비용 = repairBoostExplorationPointPerSec × instantRepairBaseSecs")]
-    public int instantRepairBaseSecs = 60;
+[System.Serializable]
+public class ExplorationSettings
+{
+    [Tooltip("보상카드 다시 뽑기(광고 시청 리롤) 1일 최대 횟수 — UTC 자정 기준 리셋")]
+    public int rewardCardRerollLimit = 10;
+}
 
-    [Header("Tactic - Missile")]
-    [Tooltip("미사일 전술 강화 ON 시 개방된 슬롯 1개당 1초당 소모하는 탐험 포인트")]
-    public int missileTacticExplorationPointPerSec = 1;
-    [Tooltip("미사일 전술 강화 ON 시 데미지 배율")]
-    public float missileTacticDamageMultiplier = 2f;
-    [Tooltip("미사일 전술 강화 ON 시 폭발 반경 배율")]
-    public float missileTacticExplosionMultiplier = 2f;
-
-    [Header("Tactic - Aircraft")]
-    [Tooltip("함재기 전술 강화 ON 시 개방된 슬롯 1개당 1초당 소모하는 탐험 포인트")]
-    public int aircraftTacticExplorationPointPerSec = 1;
-    [Tooltip("함재기 전술 강화 ON 시 공격력 배율")]
-    public float aircraftTacticDamageMultiplier = 2f;
-    [Tooltip("함재기 전술 강화 ON 시 미사일 장착 개수 배율")]
-    public float aircraftTacticAmmoMultiplier = 2f;
-
-    [Header("Tactic - Shield")]
-    [Tooltip("실드 ON 시 1초당 소모하는 탐험 포인트 — 게이지가 남아 방어가 실제로 발동 중일 때만 소모(풀게이지 대기 상태는 미소모)")]
-    public int shieldTacticExplorationPointPerSec = 1;
-
-    [Header("Tactic - Interceptor")]
-    [Tooltip("요격체 ON 시 1초당 소모하는 탐험 포인트 — 빈 자리가 있어 보충이 실제로 진행 중일 때만 소모(전부 채워진 상태는 미소모)")]
-    public int interceptorTacticExplorationPointPerSec = 1;
-
-    [Header("Exploration - Ship Stat Formula")]
-    public ShipStatFormulaSettings shipStatFormula = new ShipStatFormulaSettings();
+[System.Serializable]
+public class TacticSettings
+{
+    [Tooltip("수리 전술 ON 시 회복 틱마다, 체력이 100%가 아닌 함선 1척당 소모하는 탐험 포인트")]
+    public int tacticRepairCost = 1;
+    [Tooltip("미사일 전술 ON 시 미사일 발사 1건마다 소모하는 탐험 포인트")]
+    public int tacticMissileCost = 1;
+    [Tooltip("함재기 전술 ON 시 함재기 발진 1건마다 소모하는 탐험 포인트")]
+    public int tacticHangerCost = 1;
+    [Tooltip("실드 전술 ON 시 실드 회복 틱마다, 게이지가 가득 차지 않은 함선 1척당 소모하는 탐험 포인트")]
+    public int tacticShieldCost = 1;
+    [Tooltip("요격체 전술 ON 시 요격체 1기 생성마다 소모하는 탐험 포인트")]
+    public int tacticInterceptorCost = 1;
 }
 
 // 성능포인트 1000 배분 → 최종 전투 수치 변환 공식의 기준값/계수
@@ -81,7 +76,6 @@ public class ShipStatFormulaSettings
     public HangarFormula hangar = new HangarFormula();
     public ShieldFormula shield = new ShieldFormula();
     public InterceptorFormula interceptor = new InterceptorFormula();
-    public FlatStatFormula flatStats = new FlatStatFormula();
 }
 
 [System.Serializable]
@@ -133,13 +127,6 @@ public class InterceptorFormula
     public float delayReductionPerPoint = 0.02f;
     public float regenRatePerPoint = 0.1f;
     public float delayFloor = 1f;
-}
-
-[System.Serializable]
-public class FlatStatFormula
-{
-    [Tooltip("체력/선회력/수리능력 — 장착 개념 없는 순수 포인트 배분. 기본값/계수 미확정 — 임시값")]
-    public float perPoint = 0.1f;
 }
 
 [CreateAssetMenu(fileName = "DataTableConfig", menuName = "Custom/DataTableConfig")]

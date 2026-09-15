@@ -55,13 +55,16 @@ public class UIPanelBattle : UIPanelBase
         RefreshVisibility();
     }
 
-    // 존런이 완전히 끝났을 때만(탈출 성공/포기 확정) 전술 토글(요격체 포함)을 전부 끔 — 셀 단위 전투 종료마다
-    // 껐다 켰다 하면 그 사이 전술력 부족 등으로 재활성화가 막힐 수 있어, 런 종료 시점에만 정리하도록 함
+    // 존런이 완전히 끝났을 때만(탈출 성공/포기 확정) 전술 토글(요격체 포함)을 전부 끄고, 떠 있는 요격체도 정리함
+    // — 셀 단위 전투 종료마다 껐다 켰다 하면 그 사이 전술력 부족 등으로 재활성화가 막힐 수 있어, 런 종료 시점에만 정리
     private void OnZoneRunEnded()
     {
         SpaceFleet myFleet = ObjectManager.Instance.GetMyFleet();
-        if (myFleet != null)
-            TurnOffAllTacticToggles(myFleet);
+        if (myFleet == null) return;
+
+        if (myFleet.m_fleetInfo.tacticOptions != 0)
+            myFleet.ApplyTacticOptions(0);
+        myFleet.ClearAllInterceptorUnits();
     }
 
     private void OnExplorationTabOpened()
@@ -123,7 +126,7 @@ public class UIPanelBattle : UIPanelBase
         return DataManager.Instance.m_currentCommander != null ? DataManager.Instance.m_currentCommander.m_commanderInfo : null;
     }
 
-    // 켜진 토글 개수만큼 1초에 한 번씩 소모 — DataTableConfig.gameSettings의 3개 초당 소모 필드를 그대로 합산
+    // 1초마다 수리/실드/요격체 틱을 시도 — 미사일/함재기는 발사/발진 시점(ModuleMissile/LauncherAircraft)에서 개별 과금하므로 여기 관여하지 않음
     private IEnumerator Co_DrainTacticPower()
     {
         while (true)
@@ -138,40 +141,26 @@ public class UIPanelBattle : UIPanelBase
             int tacticOptions = myFleet.m_fleetInfo.tacticOptions;
             GameSettings gameSettings = DataManager.Instance.m_dataTableConfig.gameSettings;
 
-            // 토글이 켜져 있어도 실질 효과가 없는 상태(체력 만땅/미사일·함재기 모듈 없음/실드 충전 여지 없음)면 전술력을 소모하지 않음 — 토글 자체는 유지(조건이 다시 성립하면 재소모)
+            // 토글이 켜져 있어도 실질 효과가 없는 상태(체력 만땅/실드 충전 여지 없음/요격체 빈 자리 없음)면 시도 자체를 스킵 — 토글은 유지(조건이 다시 성립하면 재시도)
             bool repairHasEffect = myFleet.GetFleetHealthRatio() < 1f;
-            CapabilityProfile fleetProfile = myFleet.GetFleetCapabilityProfile();
-            bool missileHasEffect = fleetProfile.missileAttack > 0f;
-            bool aircraftHasEffect = fleetProfile.airCount > 0;
             // 방어 발동 중(게이지 소모 중)이 아니어도 아직 충전할 여지가 있으면 토글이 실질 효과를 가짐 — 게이지 0에서 충전을 시작할 수 있어야 함
             bool shieldHasEffect = myFleet.HasAnyShieldDefending() || myFleet.HasAnyShieldBelowMax();
             bool interceptorHasEffect = myFleet.HasAnyInterceptorBelowMax();
 
-            int drainPerSec = 0;
             if ((tacticOptions & (1 << 0)) != 0 && repairHasEffect == true)
             {
-                drainPerSec += gameSettings.repairBoostExplorationPointPerSec;
-                myFleet.ApplyRepairTickToAllShips();
+                int shipsNeedingRepair = myFleet.CountShipsNeedingRepair();
+                if (shipsNeedingRepair > 0 && myFleet.TryChargeRepairTacticCost(shipsNeedingRepair * gameSettings.tactic.tacticRepairCost) == true)
+                    myFleet.ApplyRepairTickToAllShips();
             }
-            if ((tacticOptions & (1 << 1)) != 0 && missileHasEffect == true) drainPerSec += gameSettings.missileTacticExplorationPointPerSec;
-            if ((tacticOptions & (1 << 2)) != 0 && aircraftHasEffect == true) drainPerSec += gameSettings.aircraftTacticExplorationPointPerSec;
             if ((tacticOptions & (1 << 3)) != 0 && shieldHasEffect == true)
             {
-                drainPerSec += gameSettings.shieldTacticExplorationPointPerSec;
-                myFleet.ApplyShieldRegenTickToAllShips();
+                int shipsNeedingShield = myFleet.CountShipsNeedingShieldRegen();
+                if (shipsNeedingShield > 0 && myFleet.TryChargeShieldTacticCost(shipsNeedingShield * gameSettings.tactic.tacticShieldCost) == true)
+                    myFleet.ApplyShieldRegenTickToAllShips();
             }
             if ((tacticOptions & (1 << 4)) != 0 && interceptorHasEffect == true)
-            {
-                drainPerSec += gameSettings.interceptorTacticExplorationPointPerSec;
-                myFleet.ApplyInterceptorRegenTickToAllShips();
-            }
-            if (drainPerSec <= 0) continue;
-
-            commanderInfo.tacticPower = Mathf.Max(0, commanderInfo.tacticPower - drainPerSec);
-            EventManager.Trigger_TacticPowerChanged(commanderInfo.tacticPower, commanderInfo.tacticPowerMax);
-
-            if (commanderInfo.tacticPower <= 0)
-                TurnOffAllTacticToggles(myFleet);
+                myFleet.ApplyInterceptorRegenTickToAllShips(); // 실제 생성 개수만큼의 과금은 ModuleInterceptor.ApplyRegenTick 내부에서 처리
         }
     }
 
@@ -187,39 +176,6 @@ public class UIPanelBattle : UIPanelBase
         if (turningOn == true && commanderInfo.tacticPower <= 0) return; // 전술력이 없으면 새로 켤 수 없음
 
         int newOptions = turningOn ? (myFleet.m_fleetInfo.tacticOptions | bit) : (myFleet.m_fleetInfo.tacticOptions & ~bit);
-        ApplyTacticOptions(myFleet, newOptions);
-    }
-
-    private void TurnOffAllTacticToggles(SpaceFleet myFleet)
-    {
-        if (myFleet.m_fleetInfo.tacticOptions == 0) return;
-        ApplyTacticOptions(myFleet, 0);
-    }
-
-    private const int k_interceptorTacticBit = 1 << 4;
-
-    private void ApplyTacticOptions(SpaceFleet myFleet, int newOptions)
-    {
-        int oldOptions = myFleet.m_fleetInfo.tacticOptions;
-        myFleet.m_fleetInfo.tacticOptions = newOptions;
-        EventManager.Trigger_TacticOptionsChanged(newOptions);
-
-        // 요격체는 실드와 달리 궤도에 실제 오브젝트가 떠 있어야 해서, 토글이 바뀌는 시점에 한 번 명시적으로 전파해야 함(즉시 전부 제거/보충 시작)
-        bool interceptorWasOn = (oldOptions & k_interceptorTacticBit) != 0;
-        bool interceptorNowOn = (newOptions & k_interceptorTacticBit) != 0;
-        if (interceptorWasOn != interceptorNowOn)
-            myFleet.SetInterceptorTacticOnForAllShips(interceptorNowOn);
-
-        long fleetId = myFleet.m_fleetInfo.id;
-
-        NetworkManager.Instance.ChangeTacticOptions(new ChangeTacticOptionsRequest
-        {
-            fleetId = fleetId,
-            tacticOptions = newOptions,
-        }, response =>
-        {
-            if (response.errorCode != 0)
-                Debug.LogError($"[UIPanelBattle] ChangeTacticOptions 실패: {response.errorCode} fleetId={fleetId}");
-        });
+        myFleet.ApplyTacticOptions(newOptions);
     }
 }

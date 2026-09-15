@@ -154,9 +154,9 @@ public class ModuleBeam : ModuleBase
                     if (Time.time >= m_lastAttackTime + m_attackCool + harassDelay)
                     {
                         ArmAttackSignal();
-                        // bool isMyFleet = m_ownerFleet != null && ObjectManager.Instance.IsEnemyOfMyTeam(m_ownerFleet) == false;
-                        // if (isMyFleet == true)
-                        //     Debug.Log($"[BeamJitter] t={Time.time:F4} slot={m_moduleInfo.slotIndex} offset={m_attackPhaseOffset:F4}");
+                        bool isMyFleet = m_ownerFleet != null && ObjectManager.Instance.IsEnemyOfMyTeam(m_ownerFleet) == false;
+                        if (isMyFleet == true)
+                            Debug.Log($"[BattleTiming] ArmAttackSignal t={Time.time:F4} slot={m_moduleInfo.slotIndex} offset={m_attackPhaseOffset:F4} attackCool={m_attackCool:F4} lastAttackTime={m_lastAttackTime:F4} harassDelay={harassDelay:F4}");
                     }
                 }
                 else if (Time.time >= m_attackSignalArmedTime + m_attackPhaseOffset)
@@ -240,7 +240,7 @@ public class ModuleBeam : ModuleBase
     }
     
     // 무기 스탯 Getter들
-    public float GetAttackCoolTime() { return m_attackCool; }
+    public override float GetAttackCoolTime() { return m_attackCool; }
 
 
     // 파괴 시 정리

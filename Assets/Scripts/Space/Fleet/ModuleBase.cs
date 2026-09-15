@@ -25,7 +25,6 @@ public class ModuleBase : MonoBehaviour
     protected float m_attackSignalArmedTime = 0f;
     protected bool m_isAttackSignalFired = false;
     private const float k_attackJitterMin = 0.1f;
-    private const float k_attackJitterMax = 2f;
 
     public virtual void Start()
     {
@@ -58,12 +57,18 @@ public class ModuleBase : MonoBehaviour
     }
 
     // 전투 상태로 새로 진입할 때 호출 — 직전 전투에서 이월된 낡은 무장신호/쿨다운 baseline을 지움
+    // 쿨다운을 이미 다 채운 것처럼(Time.time - 쿨다운) baseline을 세워 첫 발사가 지터(0.1~2초)만큼만 지연되게 함 —
+    // 그냥 Time.time으로 세우면 무기 쿨다운(예: 2~3초)을 처음부터 다시 다 기다려야 해서 전투 시작 체감이 너무 느려짐
     protected void ResetAttackSignal()
     {
         m_isAttackSignalFired = false;
         m_attackPhaseOffset = 0f;
         m_attackSignalArmedTime = 0f;
-        SetLastAttackTime(Time.time);
+        SetLastAttackTime(Time.time - GetAttackCoolTime());
+
+        bool isMyFleet = m_ownerFleet != null && m_ownerFleet.m_fleetSource == EFleetSource.fleet_source_player;
+        if (isMyFleet == true)
+            Debug.Log($"[BattleTiming] ResetAttackSignal t={Time.time:F4} module={GetModuleType()} slot={GetModuleSlotIndex()} attackCoolTime={GetAttackCoolTime():F4}");
     }
 
     public virtual void TakeDamage(float damage)
@@ -96,10 +101,14 @@ public class ModuleBase : MonoBehaviour
     public virtual float GetLastAttackTime() { return 0f; }
     public virtual void SetLastAttackTime(float t) { }
 
+    // 이 모듈의 공격 쿨다운(초) — 무기 모듈에서 override. 비무기 모듈은 0f(ResetAttackSignal 영향 없음)
+    public virtual float GetAttackCoolTime() { return 0f; }
+
     // 쿨다운 완료(발사 신호) 시점에 호출 — 다음 발사까지의 랜덤 지연(양수)을 굴리고 대기 상태로 전환
     protected void ArmAttackSignal()
     {
-        m_attackPhaseOffset = UnityEngine.Random.Range(k_attackJitterMin, k_attackJitterMax);
+        float attackJitterMax = DataManager.Instance.m_dataTableConfig.gameSettings.general.attackJitterMax;
+        m_attackPhaseOffset = UnityEngine.Random.Range(k_attackJitterMin, attackJitterMax);
         m_attackSignalArmedTime = Time.time;
         m_isAttackSignalFired = true;
     }

@@ -615,6 +615,8 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         if (myFleet == null) return;
         if (enemyFleet == null) return;
 
+        Debug.Log($"[BattleTiming] TryStartCombat t={Time.time:F4} playerDelay={playerDelay:F4} enemyDelay={enemyDelay:F4}");
+
         myFleet.SetFleetState(battleState);
         enemyFleet.SetFleetState(battleState);
         StartCoroutine(DelayedStartCombat(myFleet,    playerDelay));
@@ -623,8 +625,16 @@ public class ObjectManager : MonoSingleton<ObjectManager>
 
     private IEnumerator DelayedStartCombat(SpaceFleet fleet, float delaySec)
     {
+        bool isMyFleet = fleet != null && fleet.m_fleetSource == EFleetSource.fleet_source_player;
+        if (isMyFleet == true)
+            Debug.Log($"[BattleTiming] DelayedStartCombat wait-start t={Time.time:F4} delaySec={delaySec:F4}");
+
         if (delaySec > 0f)
             yield return new WaitForSeconds(delaySec);
+
+        if (isMyFleet == true)
+            Debug.Log($"[BattleTiming] DelayedStartCombat wait-end t={Time.time:F4}");
+
         if (fleet != null)
             fleet.StartCombat();
     }

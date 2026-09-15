@@ -114,11 +114,6 @@ public class DataManager : Singleton<DataManager>
         // 게임 설정 적용 로직
     }
 
-    public string GetGameVersion()
-    {
-        return m_dataTableConfig?.gameSettings?.version ?? "1.0.0";
-    }
-
     #endregion
 
 

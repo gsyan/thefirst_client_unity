@@ -321,6 +321,7 @@ public class ModuleHangar : ModuleBase
 
     public int GetHangarCapability() => m_airCount;
     public float GetLaunchCool() => m_launchCool;
+    public override float GetAttackCoolTime() => m_launchCool;
     public float GetMaintenanceTime() => m_airMaintenanceTime;
 
     public void SetTarget(ModuleHull target)

@@ -553,6 +553,11 @@ public class ApiClient
         return await PostAsync<ConfirmRewardCardResponse>("/exploration/confirm-reward-card", request);
     }
 
+    public async Task<ApiResponse<RerollRewardCardResponse>> RerollRewardCardAsync(RerollRewardCardRequest request)
+    {
+        return await PostAsync<RerollRewardCardResponse>("/exploration/reroll-reward-card", request);
+    }
+
     public async Task<ApiResponse<GetActiveZoneRunProgressResponse>> GetActiveZoneRunProgressAsync(GetActiveZoneRunProgressRequest request)
     {
         return await PostAsync<GetActiveZoneRunProgressResponse>("/exploration/active-run-progress", request);

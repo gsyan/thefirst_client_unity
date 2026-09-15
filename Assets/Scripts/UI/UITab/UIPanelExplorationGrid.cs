@@ -470,7 +470,7 @@ public class UIPanelExplorationGrid : UIPanelBase
         // 마지막 클리어 셀에 아직 선택 확정 안 된 카드 후보가 있으면(팝업이 뜨기 전에 앱이 꺼진 경우) 재접속 시 다시 띄움
         if (response.data.pendingRewardCardCandidates != null && response.data.pendingRewardCardCandidates.Count > 0)
         {
-            UIManager.Instance.ShowRewardCardSelectPopup(0, 0, response.data.pendingRewardCardCandidates, false, selectedCardId =>
+            UIManager.Instance.ShowRewardCardSelectPopup(0, 0, response.data.pendingRewardCardCandidates, false, m_currentZoneNumber, m_currentRow, m_currentCol, selectedCardId =>
             {
                 if (selectedCardId != null)
                     OnRewardCardSelected(selectedCardId);
@@ -740,8 +740,8 @@ public class UIPanelExplorationGrid : UIPanelBase
     {
         if (m_standoffEnemyFleet == null) return;
 
-        // 교전 상태 진입 즉시 발사되면 한방짜리 전투가 너무 순식간에 끝나 보이므로, 양측 사격 개시 전 0.5초 텀을 둠
-        const float BATTLE_START_DELAY_SEC = 0.5f;
+        // 교전 상태 진입 즉시 발사하면 안되는 경우를 대비해 마련해둠
+        const float BATTLE_START_DELAY_SEC = 0.001f;
         ObjectManager.Instance.TryStartCombat(m_standoffEnemyFleet, EUnitState.BattleExploration, BATTLE_START_DELAY_SEC, BATTLE_START_DELAY_SEC);
         m_standoffEnemyFleet = null;
 
@@ -978,7 +978,7 @@ public class UIPanelExplorationGrid : UIPanelBase
         // 탐험 포인트/경험치 안내와 보상카드 3택1을 한 팝업에서 함께 처리 — 카드 후보가 없으면(탈출 셀, Treasure 등) 팝업이 카드 섹션만 숨기고 포인트 안내만 보여줌.
         // 탈출 셀 여부는 카드 후보 유무로 추측하지 않고 그리드 데이터로 직접 판정(Treasure도 카드 후보가 없어서 구분이 안 되므로)
         bool isEscapeCell = m_gridData != null && m_gridData.IsInBounds(m_currentRow, m_currentCol) == true && m_gridData.GetCell(m_currentRow, m_currentCol).isEscape;
-        UIManager.Instance.ShowRewardCardSelectPopup(pointGained, expGained, rewardCardCandidates, isEscapeCell, selectedCardId =>
+        UIManager.Instance.ShowRewardCardSelectPopup(pointGained, expGained, rewardCardCandidates, isEscapeCell, m_currentZoneNumber, m_currentRow, m_currentCol, selectedCardId =>
         {
             if (selectedCardId == null)
             {

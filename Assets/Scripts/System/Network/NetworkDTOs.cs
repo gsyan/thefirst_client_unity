@@ -359,6 +359,21 @@ public class ConfirmRewardCardResponse
 }
 
 [System.Serializable]
+public class RerollRewardCardRequest
+{
+    public int zoneNumber;
+    public int cellRow;
+    public int cellCol;
+}
+
+[System.Serializable]
+public class RerollRewardCardResponse
+{
+    public List<string> rewardCardCandidates; // 서버가 새로 추첨한 후보 3개(cardId)
+    public int rerollRemain; // 이번 리롤 이후 오늘 남은 리롤 가능 횟수
+}
+
+[System.Serializable]
 public class GetActiveZoneRunProgressRequest { } // 진행 중인 탐험 런의 클리어 셀 목록 조회 — 커맨더당 IN_PROGRESS 런은 항상 1개뿐이라 zoneNumber 불필요
 
 [System.Serializable]

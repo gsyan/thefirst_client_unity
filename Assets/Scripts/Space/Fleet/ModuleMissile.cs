@@ -196,6 +196,15 @@ public class ModuleMissile : ModuleBase
         float shipCountMultiplier = m_ownerFleet != null ? m_ownerFleet.GetShipCountAttackMultiplier() : 1f;
         float formationMultiplier = m_ownerFleet != null ? m_ownerFleet.GetFormationAttackMultiplier() : 1f;
         float tacticMultiplier    = m_ownerFleet != null ? m_ownerFleet.GetMissileTacticAttackMultiplier() : 1f;
+
+        // 전술 보너스가 실제로 적용 중일 때만 발사 1건당 과금 — 여유가 없으면 이번 발사부터 보너스 없이(토글은 TryChargeMissileTacticCost가 이미 꺼둠) 그대로 발사
+        if (tacticMultiplier > 1f)
+        {
+            int tacticMissileCost = DataManager.Instance.m_dataTableConfig.gameSettings.tactic.tacticMissileCost;
+            if (m_ownerFleet.TryChargeMissileTacticCost(tacticMissileCost) == false)
+                tacticMultiplier = 1f;
+        }
+
         DamageInfo damageInfo = new DamageInfo
         {
             baseDamage       = m_attack,
@@ -246,7 +255,7 @@ public class ModuleMissile : ModuleBase
     }
     
     // 무기 스탯 Getter들
-    public float GetAttackCoolTime() { return m_attackCoolTime; }
+    public override float GetAttackCoolTime() { return m_attackCoolTime; }
 
     // 파괴 시 정리
     private void OnDestroy()

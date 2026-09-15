@@ -50,13 +50,8 @@ public class LauncherAircraft : LauncherBase
         if (moduleData != null)
             aircraftInfo.UpdateAircraftInfo(moduleData, m_moduleHangar.GetFinalAttackToShip(), m_moduleHangar.GetFinalAttackToFighter());
 
-        // 출격 시 공격 배율 조립 — airAttack은 원본 유지, 배율만 airAttackMultiplier에 저장 (귀환 시 UpdateAircraftInfo로 1f 원복)
         SpaceShip carrierShip = m_moduleHangar.GetSpaceShip();
         SpaceFleet ownerFleet = carrierShip != null ? carrierShip.m_ownerFleet : null;
-        float shipCountMultiplier = ownerFleet != null ? ownerFleet.GetShipCountAttackMultiplier() : 1f;
-        float formationMultiplier = ownerFleet != null ? ownerFleet.GetFormationAttackMultiplier() : 1f;
-        float tacticMultiplier    = ownerFleet != null ? ownerFleet.GetAircraftTacticAttackMultiplier() : 1f;
-        aircraftInfo.airAttackMultiplier = shipCountMultiplier * formationMultiplier * tacticMultiplier;
 
         SoundManager.Instance.PlayFX(EFx.Aircraft_Launch, transform.position);
 
@@ -67,7 +62,20 @@ public class LauncherAircraft : LauncherBase
             m_moduleHangar.ReturnAircraft(aircraftInfo);
             yield break;
         }
-        
+
+        // 실제 발진이 확정된 시점에만 공격 배율 조립 — airAttack은 원본 유지, 배율만 airAttackMultiplier에 저장(귀환 시 UpdateAircraftInfo로 1f 원복)
+        // 전술 보너스가 실제로 적용 중일 때만 발진 1건당 과금 — 여유가 없으면 이번 발진부터 보너스 없이(토글은 TryChargeAircraftTacticCost가 이미 꺼둠) 그대로 발진
+        float shipCountMultiplier = ownerFleet != null ? ownerFleet.GetShipCountAttackMultiplier() : 1f;
+        float formationMultiplier = ownerFleet != null ? ownerFleet.GetFormationAttackMultiplier() : 1f;
+        float tacticMultiplier    = ownerFleet != null ? ownerFleet.GetAircraftTacticAttackMultiplier() : 1f;
+        if (tacticMultiplier > 1f)
+        {
+            int tacticHangerCost = DataManager.Instance.m_dataTableConfig.gameSettings.tactic.tacticHangerCost;
+            if (ownerFleet.TryChargeAircraftTacticCost(tacticHangerCost) == false)
+                tacticMultiplier = 1f;
+        }
+        aircraftInfo.airAttackMultiplier = shipCountMultiplier * formationMultiplier * tacticMultiplier;
+
         aircraft.transform.position = m_firePoint.position;
         aircraft.transform.rotation = m_firePoint.rotation;
         aircraft.InitializeAirCraft(m_firePoint, target, aircraftInfo, m_moduleHangar, Color.black);

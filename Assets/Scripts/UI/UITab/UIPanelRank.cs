@@ -143,7 +143,7 @@ public class UIPanelRank : UIPanelBase
 
         if (m_refreshButtonText != null)
         {
-            int refreshMaxCount = DataManager.Instance.m_dataTableConfig.gameSettings.pvpListRefreshCount;
+            int refreshMaxCount = DataManager.Instance.m_dataTableConfig.gameSettings.pvp.pvpListRefreshCount;
             m_refreshButtonText.text = loc.Get("UITabRank_refresh", m_refreshRemain, refreshMaxCount);
         }
     }
@@ -191,7 +191,7 @@ public class UIPanelRank : UIPanelBase
         var loc = LocalizationManager.Instance;
         // TODO: 테스트 위해 레벨 제한 임시 주석처리 — 원복 필요
         /*
-        int minCommanderLevel = DataManager.Instance.m_dataTableConfig.gameSettings.pvpMinCommanderLevel;
+        int minCommanderLevel = DataManager.Instance.m_dataTableConfig.gameSettings.pvp.pvpMinCommanderLevel;
         int myCommanderLevel = DataManager.Instance.m_currentCommander.m_commanderInfo.commanderLevel;
         if (myCommanderLevel < minCommanderLevel)
         {

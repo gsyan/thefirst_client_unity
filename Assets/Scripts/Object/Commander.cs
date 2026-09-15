@@ -79,6 +79,20 @@ public class Commander
         EventManager.TriggerExplorationPointChanged(explorationPoint);
     }
 
+    public int GetTacticPower()
+    {
+        if (m_commanderInfo == null) return 0;
+        return m_commanderInfo.tacticPower;
+    }
+
+    // 전술 비용 차감 — 여유가 있는지(GetTacticPower() >= cost)는 호출부 책임, 여기선 차감과 이벤트 발생만 담당
+    public void SpendTacticPower(int cost)
+    {
+        if (m_commanderInfo == null) return;
+        m_commanderInfo.tacticPower -= cost;
+        EventManager.Trigger_TacticPowerChanged(m_commanderInfo.tacticPower, m_commanderInfo.tacticPowerMax);
+    }
+
     public int GetAchievementPoint()
     {
         if (m_commanderInfo == null) return 0;

@@ -251,6 +251,10 @@ public class SpaceShip : MonoBehaviour
         m_currentTargetBody = best;
         m_targetShip = m_currentTargetBody.GetShip();
 
+        bool isMyFleet = m_ownerFleet != null && m_ownerFleet.m_fleetSource == EFleetSource.fleet_source_player;
+        if (isMyFleet == true)
+            Debug.Log($"[BattleTiming] FindTargetModuleHull target-set t={Time.time:F4} ship={gameObject.name}");
+
         foreach (ModuleHull body in m_moduleHulls)
         {
             if (body != null && body.m_health > 0)

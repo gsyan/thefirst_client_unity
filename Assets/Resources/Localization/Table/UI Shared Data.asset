@@ -267,6 +267,18 @@ MonoBehaviour:
     m_Key: UIPopupRewardCardSelect_TreasureTitle
     m_Metadata:
       m_Items: []
+  - m_Id: 79529385614245888
+    m_Key: UIPopupRewardCardSelect_RerollButton
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79529385672966144
+    m_Key: UIPopupRewardCardSelect_RerollConfirm
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79529385672966145
+    m_Key: UIPopupRewardCardSelect_RerollLimitReached
+    m_Metadata:
+      m_Items: []
   - m_Id: 72478145331986432
     m_Key: UIPanelExplorationGrid_EscapeConfirmMessage
     m_Metadata:
