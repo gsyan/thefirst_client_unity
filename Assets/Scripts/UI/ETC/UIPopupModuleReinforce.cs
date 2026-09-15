@@ -109,7 +109,7 @@ public class UIPopupModuleReinforce : UIPopupBase
         ModuleData downData = FindAdjacentTierModuleData(-1);
         ModuleData upData = FindAdjacentTierModuleData(+1);
 
-        int remainingExcludingTierCost = m_maxCommandPower - (m_usedByOtherSlots + FleetComposition.k_reinforceCpCostPerPoint * (m_localAttackPoints + m_localAttackToFighterPoints));
+        int remainingExcludingTierCost = m_maxCommandPower - (m_usedByOtherSlots + FleetComposition.GetReinforceCpCostPerPoint() * (m_localAttackPoints + m_localAttackToFighterPoints));
         bool canAffordUp = upData != null && remainingExcludingTierCost - upData.statPoint >= 0;
 
         if (m_tierDownButton != null) m_tierDownButton.interactable = downData != null;
@@ -182,12 +182,12 @@ public class UIPopupModuleReinforce : UIPopupBase
         ReinforceEntry entry = m_entries[dataIndex];
         int maxPerSlot = DataManager.Instance.m_dataTableConfig.gameSettings.shipStatFormula.maxAttackReinforcePointsPerSlot;
         bool isAtSlotCap = entry.currentValue >= maxPerSlot;
-        bool hasRemainingCommandPower = GetRemainingCommandPower() > 0;
+        bool hasRemainingCommandPower = GetRemainingCommandPower() >= FleetComposition.GetReinforceCpCostPerPoint();
         bool canIncrease = isAtSlotCap == false && hasRemainingCommandPower == true;
         bool canDecrease = entry.currentValue > 0;
 
         float actualValue = CalculateActualStatValue(entry);
-        int cpSpent = entry.currentValue * FleetComposition.k_reinforceCpCostPerPoint;
+        int cpSpent = entry.currentValue * FleetComposition.GetReinforceCpCostPerPoint();
         row.Setup(dataIndex, entry.label, actualValue, cpSpent, entry.isEditable, canIncrease, canDecrease, OnRowPointsChanged);
     }
 
@@ -257,7 +257,7 @@ public class UIPopupModuleReinforce : UIPopupBase
     // 잔여 지휘력 = 최대 지휘력 - (다른 슬롯 사용량 + 이 슬롯의 설치비 + 이 슬롯의 강화 포인트 합)
     private int GetRemainingCommandPower()
     {
-        int thisSlotReinforceCost = FleetComposition.k_reinforceCpCostPerPoint * (m_localAttackPoints + m_localAttackToFighterPoints);
+        int thisSlotReinforceCost = FleetComposition.GetReinforceCpCostPerPoint() * (m_localAttackPoints + m_localAttackToFighterPoints);
         int thisSlotCost = m_otherFieldsCostInThisSlot + thisSlotReinforceCost;
         return m_maxCommandPower - (m_usedByOtherSlots + thisSlotCost);
     }

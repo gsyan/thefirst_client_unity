@@ -25,6 +25,9 @@ public class GeneralSettings
 
     [Tooltip("발사 타이밍 지터 상한(초) — 쿨다운 완료(발사 신호) 후 실제 발사까지의 랜덤 지연 최대값. ModuleBase.ArmAttackSignal()에서 사용")]
     public float attackJitterMax = 1f;
+
+    [Tooltip("강화 포인트 1점당 소모하는 지휘력(CP)")]
+    public int reinforceCpCostPerPoint = 10;
 }
 
 [System.Serializable]
