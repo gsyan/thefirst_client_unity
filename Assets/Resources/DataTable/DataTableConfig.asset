@@ -16,6 +16,7 @@ MonoBehaviour:
     general:
       commandPowerMaxInit: 400
       attackJitterMax: 1
+      reinforceCpCostPerPoint: 10
     pvp:
       pvpMinCommanderLevel: 2
       pvpListCount: 3
@@ -55,20 +56,20 @@ MonoBehaviour:
         regenRatePerPoint: 0.1
         delayFloor: 1
   exportedJson: "{\r\n  \"general\": {\r\n    \"commandPowerMaxInit\": 400,\r\n   
-    \"attackJitterMax\": 1.0\r\n  },\r\n  \"pvp\": {\r\n    \"pvpMinCommanderLevel\":
-    2,\r\n    \"pvpListCount\": 3,\r\n    \"pvpListRefreshCount\": 5,\r\n    \"pvpRankScoreInit\":
-    1000,\r\n    \"pvpRankScorePenalty\": 1\r\n  },\r\n  \"tactic\": {\r\n    \"tacticRepairCost\":
-    1,\r\n    \"tacticMissileCost\": 1,\r\n    \"tacticHangerCost\": 1,\r\n    \"tacticShieldCost\":
-    1,\r\n    \"tacticInterceptorCost\": 1\r\n  },\r\n  \"exploration\": {\r\n   
-    \"rewardCardRerollLimit\": 10\r\n  },\r\n  \"shipStatFormula\": {\r\n    \"maxModuleSlots\":
-    6,\r\n    \"maxAttackReinforcePointsPerSlot\": 10,\r\n    \"beam\": {\r\n     
-    \"attackPerPoint\": 1.0,\r\n      \"attackCoolReductionPerPoint\": 0.02,\r\n     
-    \"attackCoolFloor\": 0.5,\r\n      \"projectileSpeedPerPoint\": 1.0\r\n    },\r\n   
-    \"missile\": {\r\n      \"attackPerPoint\": 1.0,\r\n      \"attackCoolReductionPerPoint\":
+    \"attackJitterMax\": 1.0,\r\n    \"reinforceCpCostPerPoint\": 10\r\n  },\r\n 
+    \"pvp\": {\r\n    \"pvpMinCommanderLevel\": 2,\r\n    \"pvpListCount\": 3,\r\n   
+    \"pvpListRefreshCount\": 5,\r\n    \"pvpRankScoreInit\": 1000,\r\n    \"pvpRankScorePenalty\":
+    1\r\n  },\r\n  \"tactic\": {\r\n    \"tacticRepairCost\": 1,\r\n    \"tacticMissileCost\":
+    1,\r\n    \"tacticHangerCost\": 1,\r\n    \"tacticShieldCost\": 1,\r\n    \"tacticInterceptorCost\":
+    1\r\n  },\r\n  \"exploration\": {\r\n    \"rewardCardRerollLimit\": 10\r\n  },\r\n 
+    \"shipStatFormula\": {\r\n    \"maxModuleSlots\": 6,\r\n    \"maxAttackReinforcePointsPerSlot\":
+    10,\r\n    \"beam\": {\r\n      \"attackPerPoint\": 1.0,\r\n      \"attackCoolReductionPerPoint\":
     0.02,\r\n      \"attackCoolFloor\": 0.5,\r\n      \"projectileSpeedPerPoint\":
-    1.0,\r\n      \"silenceTimePerPoint\": 0.1\r\n    },\r\n    \"hangar\": {\r\n     
-    \"attackPerPoint\": 0.1,\r\n      \"reinforcePerPoint\": 1.0\r\n    },\r\n   
-    \"shield\": {\r\n      \"gaugePerPoint\": 0.5,\r\n      \"regenRatePerPoint\":
-    0.1\r\n    },\r\n    \"interceptor\": {\r\n      \"delayReductionPerPoint\":
+    1.0\r\n    },\r\n    \"missile\": {\r\n      \"attackPerPoint\": 1.0,\r\n     
+    \"attackCoolReductionPerPoint\": 0.02,\r\n      \"attackCoolFloor\": 0.5,\r\n     
+    \"projectileSpeedPerPoint\": 1.0,\r\n      \"silenceTimePerPoint\": 0.1\r\n   
+    },\r\n    \"hangar\": {\r\n      \"attackPerPoint\": 0.1,\r\n      \"reinforcePerPoint\":
+    1.0\r\n    },\r\n    \"shield\": {\r\n      \"gaugePerPoint\": 0.5,\r\n     
+    \"regenRatePerPoint\": 0.1\r\n    },\r\n    \"interceptor\": {\r\n      \"delayReductionPerPoint\":
     0.02,\r\n      \"regenRatePerPoint\": 0.1,\r\n      \"delayFloor\": 1.0\r\n   
     }\r\n  }\r\n}"
