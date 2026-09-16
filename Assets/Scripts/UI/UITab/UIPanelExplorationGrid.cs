@@ -3,6 +3,7 @@
 // 이전엔 CanvasGroup 알파로 패널 전체를 가려뒀었으나, 버튼을 미리 비우는 것만으로 충분해 제거함(향후 버튼 순차/랜덤 등장 연출의 선행 작업)
 using System;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class UIPanelExplorationGrid : UIPanelBase
@@ -16,6 +17,7 @@ public class UIPanelExplorationGrid : UIPanelBase
     [SerializeField] private RowLabelValue m_bankedExplorationPointRow; // 진행 중인 런의 적립(미확정) 탐험 포인트 상시 표시
     [SerializeField] private RowLabelValue m_ownedExplorationPointRow; // 확정 지급되어 실제 보유 중인 탐험 포인트(지휘력 증가 등에 소모하는 값) 상시 표시
     [SerializeField] private UnityEngine.UI.Button m_abandonRunButton; // 진행 중인 런을 포기(적립분의 50%만 확정 지급)
+    [SerializeField] private TMP_Text m_abandonRunButtonText;
 
     [Header("존 선택 스크롤")]
     [SerializeField] private InfiniteScrollViewH m_zoneTabScroll;
@@ -87,6 +89,8 @@ public class UIPanelExplorationGrid : UIPanelBase
 
         if (m_abandonRunButton != null)
             m_abandonRunButton.onClick.AddListener(OnAbandonRunButtonClicked);
+        if (m_abandonRunButtonText != null)
+            CommonUtility.SetUILocText(m_abandonRunButtonText, "UI_Abandon");
 
         // 캔버스 계층 밖의 독립 루트 — 3D 셀이 UI Canvas의 스케일/회전에 영향받지 않도록 별도로 생성
         m_cellRoot = new GameObject("ExplorationGridCellRoot").transform;

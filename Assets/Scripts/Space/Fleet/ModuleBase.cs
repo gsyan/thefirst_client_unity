@@ -65,10 +65,6 @@ public class ModuleBase : MonoBehaviour
         m_attackPhaseOffset = 0f;
         m_attackSignalArmedTime = 0f;
         SetLastAttackTime(Time.time - GetAttackCoolTime());
-
-        bool isMyFleet = m_ownerFleet != null && m_ownerFleet.m_fleetSource == EFleetSource.fleet_source_player;
-        if (isMyFleet == true)
-            Debug.Log($"[BattleTiming] ResetAttackSignal t={Time.time:F4} module={GetModuleType()} slot={GetModuleSlotIndex()} attackCoolTime={GetAttackCoolTime():F4}");
     }
 
     public virtual void TakeDamage(float damage)

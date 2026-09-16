@@ -52,6 +52,7 @@ public class UIPanelSettings : UIPanelBase
 
     [SerializeField] private Toggle   m_toggleRemoveAd;
     [SerializeField] private Button   m_devConsoleButton;
+    [SerializeField] private Button   m_orphanGuestButton;
 
     [SerializeField] private Toggle   m_toggleCheckZoneCleared; // 켜짐(기본값) = 정상적으로 존 클리어 진행도 검사, 꺼짐 = 검사 건너뜀(테스트용)
 
@@ -93,6 +94,13 @@ public class UIPanelSettings : UIPanelBase
 
         if (m_expPointButton != null)
             m_expPointButton.onClick.AddListener(OnExpPointButtonClicked);
+
+        if (m_orphanGuestButton != null)
+        {
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+            m_orphanGuestButton.onClick.AddListener(OnOrphanGuestButtonClicked);
+#endif
+        }
 
         if (m_toggleRemoveAd != null)
         {
@@ -412,6 +420,15 @@ public class UIPanelSettings : UIPanelBase
     private void ExecuteGoogleLogout()
     {
         NetworkManager.Instance.LogoutFromServer(DoLocalLogout);
+    }
+
+    // 서버 계정(DeleteAccount)은 건드리지 않고 로컬 재로그인 자격증명만 삭제 —
+    // test.guest-keep-data-on-logout=true 상황(서버 계정은 남는데 로컬엔 재로그인 수단이 없어지는 "고아 게스트 계정")을
+    // 서버 설정 변경 없이 재현하기 위한 개발자 전용 버튼
+    private void OnOrphanGuestButtonClicked()
+    {
+        NetworkManager.Instance.Logout();
+        DoLocalLogout();
     }
 
     private void DoLocalLogout()
