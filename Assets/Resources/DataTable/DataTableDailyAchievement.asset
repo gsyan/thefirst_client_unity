@@ -18,6 +18,7 @@ MonoBehaviour:
     conditionParam: 
     threshold: 5
     achievementPointReward: 5
+    achievementPointRewardVip: 5
     nameKey: UIDailyAchievement_Name_cell_clear
     descKey: UIDailyAchievement_Desc_cell_clear
   - achievementId: daily_cell_clear_10
@@ -25,6 +26,7 @@ MonoBehaviour:
     conditionParam: 
     threshold: 10
     achievementPointReward: 10
+    achievementPointRewardVip: 10
     nameKey: UIDailyAchievement_Name_cell_clear
     descKey: UIDailyAchievement_Desc_cell_clear
   - achievementId: daily_cell_clear_20
@@ -32,6 +34,7 @@ MonoBehaviour:
     conditionParam: 
     threshold: 20
     achievementPointReward: 20
+    achievementPointRewardVip: 20
     nameKey: UIDailyAchievement_Name_cell_clear
     descKey: UIDailyAchievement_Desc_cell_clear
   - achievementId: daily_event_cell_explorationpoint_3
@@ -39,6 +42,7 @@ MonoBehaviour:
     conditionParam: ExplorationPoint
     threshold: 3
     achievementPointReward: 8
+    achievementPointRewardVip: 8
     nameKey: UIDailyAchievement_Name_event_cell_explorationpoint
     descKey: UIDailyAchievement_Desc_event_cell_explorationpoint
   - achievementId: daily_event_cell_explorationpoint_6
@@ -46,6 +50,7 @@ MonoBehaviour:
     conditionParam: ExplorationPoint
     threshold: 6
     achievementPointReward: 16
+    achievementPointRewardVip: 16
     nameKey: UIDailyAchievement_Name_event_cell_explorationpoint
     descKey: UIDailyAchievement_Desc_event_cell_explorationpoint
   - achievementId: daily_event_cell_shiphealthheal_3
@@ -53,6 +58,7 @@ MonoBehaviour:
     conditionParam: ShipHealthHeal
     threshold: 3
     achievementPointReward: 8
+    achievementPointRewardVip: 8
     nameKey: UIDailyAchievement_Name_event_cell_shiphealthheal
     descKey: UIDailyAchievement_Desc_event_cell_shiphealthheal
   - achievementId: daily_event_cell_shiphealthheal_6
@@ -60,6 +66,7 @@ MonoBehaviour:
     conditionParam: ShipHealthHeal
     threshold: 6
     achievementPointReward: 16
+    achievementPointRewardVip: 16
     nameKey: UIDailyAchievement_Name_event_cell_shiphealthheal
     descKey: UIDailyAchievement_Desc_event_cell_shiphealthheal
   - achievementId: daily_event_cell_tacticpowerrestore_3
@@ -67,6 +74,7 @@ MonoBehaviour:
     conditionParam: TacticPowerRestore
     threshold: 3
     achievementPointReward: 8
+    achievementPointRewardVip: 8
     nameKey: UIDailyAchievement_Name_event_cell_tacticpowerrestore
     descKey: UIDailyAchievement_Desc_event_cell_tacticpowerrestore
   - achievementId: daily_event_cell_tacticpowerrestore_6
@@ -74,6 +82,7 @@ MonoBehaviour:
     conditionParam: TacticPowerRestore
     threshold: 6
     achievementPointReward: 16
+    achievementPointRewardVip: 16
     nameKey: UIDailyAchievement_Name_event_cell_tacticpowerrestore
     descKey: UIDailyAchievement_Desc_event_cell_tacticpowerrestore
   - achievementId: daily_zone_clear_total_3
@@ -81,6 +90,7 @@ MonoBehaviour:
     conditionParam: 
     threshold: 3
     achievementPointReward: 15
+    achievementPointRewardVip: 15
     nameKey: UIDailyAchievement_Name_zone_clear_total
     descKey: UIDailyAchievement_Desc_zone_clear_total
   - achievementId: daily_zone_clear_total_5
@@ -88,5 +98,6 @@ MonoBehaviour:
     conditionParam: 
     threshold: 5
     achievementPointReward: 25
+    achievementPointRewardVip: 25
     nameKey: UIDailyAchievement_Name_zone_clear_total
     descKey: UIDailyAchievement_Desc_zone_clear_total

@@ -143,6 +143,7 @@ public class AdManager : MonoSingleton<AdManager>
     {
         _rewardedAd?.Destroy();
         _rewardedAd = null;
+        EventManager.Trigger_RewardedAdReadyChanged(false);
 
         string adUnitId = m_adConfig.GetRewardedAdUnitId();
         if (string.IsNullOrEmpty(adUnitId))
@@ -165,6 +166,7 @@ public class AdManager : MonoSingleton<AdManager>
                 _rewardedAd = ad;
                 RegisterRewardedAdEvents(ad);
                 Debug.Log("[AdManager] 리워드 광고 로드 완료");
+                EventManager.Trigger_RewardedAdReadyChanged(IsRewardedAdReady);
             });
         });
     }

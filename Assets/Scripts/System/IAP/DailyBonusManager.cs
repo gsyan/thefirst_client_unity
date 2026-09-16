@@ -31,10 +31,11 @@ public class DailyBonusManager : MonoSingleton<DailyBonusManager>
         });
     }
 
-    // 달력 팝업에서 열려있는(출석일수 이하) 미수령 칸의 Claim 버튼 클릭 시 호출 — 실제 지급이 여기서 발생
-    public void ClaimDailyBonus(int day, Action<DailyClaimResponse> onResult)
+    // 달력 팝업에서 열려있는(출석일수 이하) 미수령 칸의 Claim 버튼 클릭 시 호출 — 실제 지급이 여기서 발생.
+    // claimVip로 일반/VIP 보상을 완전히 별개로 수령(claimedDaysMask/vipClaimedDaysMask 각자 독립 관리)
+    public void ClaimDailyBonus(int day, bool claimVip, Action<DailyClaimResponse> onResult)
     {
-        NetworkManager.Instance.ClaimVipDailyReward(day, response =>
+        NetworkManager.Instance.ClaimVipDailyReward(day, claimVip, response =>
         {
             if (response == null || response.errorCode != (int)ServerErrorCode.SUCCESS || response.data == null)
             {
@@ -51,7 +52,7 @@ public class DailyBonusManager : MonoSingleton<DailyBonusManager>
                     commander.UpdateExplorationPoint(response.data.explorationPointRemain);
                 if (response.data.grantedAchievementPoint > 0)
                     commander.UpdateAchievementPoint(response.data.achievementPointRemain);
-                commander.UpdateHasUnclaimedDailyBonus(false);
+                commander.UpdateHasUnclaimedDailyBonus(string.IsNullOrEmpty(response.data.nextAvailableAt) == false);
             }
 
             if (onResult != null) onResult(response.data);

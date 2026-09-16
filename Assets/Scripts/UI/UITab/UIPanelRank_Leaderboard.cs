@@ -36,9 +36,15 @@ public class UIPanelRank_Leaderboard : MonoBehaviour
             m_rankingScrollView.onNeedData = OnNeedData;
         }
         if (m_pvpToggle != null)
+        {
+            m_pvpToggle.SetTexts("UI_Pvp", "");
             m_pvpToggle.button.onClick.AddListener(() => OnRankingTabClicked(RankingType.Pvp));
+        }
         if (m_zoneToggle != null)
+        {
+            m_zoneToggle.SetTexts("UI_Exploration", "");
             m_zoneToggle.button.onClick.AddListener(() => OnRankingTabClicked(RankingType.Zone));
+        }
     }
 
     // TabSystem이 이 GameObject를 SetActive(true)로 켤 때마다 호출됨 — 구 UITabBase.OnTabActivated 대응

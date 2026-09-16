@@ -55,6 +55,7 @@ public class UIPanelAchievement : UIPanelBase
         public AchievementData data;
         public int currentValue;
         public bool isClaimed;
+        public bool isVipClaimed;
     }
 
     private readonly List<AchievementListEntry> m_flattenedList = new();
@@ -192,6 +193,7 @@ public class UIPanelAchievement : UIPanelBase
                 dailyStatusById.TryGetValue(data.achievementId, out DailyAchievementStatus status);
                 int currentValue = status != null ? status.currentValue : 0;
                 bool isClaimed = status != null && status.isClaimed;
+                bool isVipClaimed = status != null && status.isVipClaimed;
 
                 m_flattenedList.Add(new AchievementListEntry
                 {
@@ -201,9 +203,10 @@ public class UIPanelAchievement : UIPanelBase
                     data = data,
                     currentValue = currentValue,
                     isClaimed = isClaimed,
+                    isVipClaimed = isVipClaimed,
                 });
 
-                if (isClaimed == false && currentValue >= data.threshold)
+                if (IsEntryUnclaimed(currentValue, data.threshold, isClaimed, isVipClaimed) == true)
                     headerEntry.headerHasUnclaimed = true;
             }
         }
@@ -228,6 +231,7 @@ public class UIPanelAchievement : UIPanelBase
                 permanentStatusById.TryGetValue(data.achievementId, out AchievementStatus status);
                 int currentValue = status != null ? status.currentValue : 0;
                 bool isClaimed = status != null && status.isClaimed;
+                bool isVipClaimed = status != null && status.isVipClaimed;
 
                 m_flattenedList.Add(new AchievementListEntry
                 {
@@ -237,9 +241,10 @@ public class UIPanelAchievement : UIPanelBase
                     data = data,
                     currentValue = currentValue,
                     isClaimed = isClaimed,
+                    isVipClaimed = isVipClaimed,
                 });
 
-                if (isClaimed == false && currentValue >= data.threshold)
+                if (IsEntryUnclaimed(currentValue, data.threshold, isClaimed, isVipClaimed) == true)
                     headerEntry.headerHasUnclaimed = true;
             }
         }
@@ -281,17 +286,17 @@ public class UIPanelAchievement : UIPanelBase
         if (entry.isHeader == true)
             row.SetupHeader(entry.headerLabel, entry.headerHasUnclaimed);
         else
-            row.SetupItem(entry.data, entry.currentValue, entry.isClaimed, OnClaimClicked);
+            row.SetupItem(entry.data, entry.currentValue, entry.isClaimed, entry.isVipClaimed, IAPManager.Instance.IsVipActive(), OnClaimClicked);
     }
 
-    private void OnClaimClicked(string achievementId)
+    private void OnClaimClicked(string achievementId, bool claimVip)
     {
         AchievementListEntry entry = m_flattenedList.Find(e => e.isHeader == false && e.data.achievementId == achievementId);
         if (entry == null) return;
 
         if (entry.isDaily == true)
         {
-            ClaimDailyAchievementRequest request = new ClaimDailyAchievementRequest { achievementId = achievementId };
+            ClaimDailyAchievementRequest request = new ClaimDailyAchievementRequest { achievementId = achievementId, claimVip = claimVip };
             NetworkManager.Instance.ClaimDailyAchievement(request, response =>
             {
                 if (response.errorCode != 0)
@@ -299,12 +304,12 @@ public class UIPanelAchievement : UIPanelBase
                     Debug.LogError($"[UIPanelAchievement] ClaimDailyAchievement 실패: {response.errorCode}");
                     return;
                 }
-                ApplyClaimResult(achievementId, response.data.achievementPointRemain);
+                ApplyClaimResult(achievementId, claimVip, response.data.achievementPointRemain);
             });
         }
         else
         {
-            ClaimAchievementRequest request = new ClaimAchievementRequest { achievementId = achievementId };
+            ClaimAchievementRequest request = new ClaimAchievementRequest { achievementId = achievementId, claimVip = claimVip };
             NetworkManager.Instance.ClaimAchievement(request, response =>
             {
                 if (response.errorCode != 0)
@@ -312,17 +317,22 @@ public class UIPanelAchievement : UIPanelBase
                     Debug.LogError($"[UIPanelAchievement] ClaimAchievement 실패: {response.errorCode}");
                     return;
                 }
-                ApplyClaimResult(achievementId, response.data.achievementPointRemain);
+                ApplyClaimResult(achievementId, claimVip, response.data.achievementPointRemain);
             });
         }
     }
 
     // 일일/영구 수령 응답 처리가 완전히 동일해서 공용화 — achievementId로 엔트리를 다시 찾는 이유는 클로저로 넘긴 entry가 그 사이 리스트 갱신으로 바뀌었을 가능성을 배제하기 위함
-    private void ApplyClaimResult(string achievementId, int achievementPointRemain)
+    private void ApplyClaimResult(string achievementId, bool claimVip, int achievementPointRemain)
     {
         AchievementListEntry entry = m_flattenedList.Find(e => e.isHeader == false && e.data.achievementId == achievementId);
         if (entry != null)
-            entry.isClaimed = true;
+        {
+            if (claimVip == true)
+                entry.isVipClaimed = true;
+            else
+                entry.isClaimed = true;
+        }
 
         RecomputeCategoryHeaderUnclaimed(entry);
         RefreshUnclaimedIndicators();
@@ -346,97 +356,70 @@ public class UIPanelAchievement : UIPanelBase
         headerEntry.headerHasUnclaimed = ComputeCategoryHasUnclaimed(claimedEntry.isDaily, claimedEntry.category);
     }
 
-    // 전체 받기처럼 여러 카테고리가 한 번에 영향받을 수 있는 경우 모든 헤더를 한 번에 재계산
-    private void RecomputeAllCategoryHeaders()
-    {
-        foreach (AchievementListEntry entry in m_flattenedList)
-        {
-            if (entry.isHeader == true)
-                entry.headerHasUnclaimed = ComputeCategoryHasUnclaimed(entry.isDaily, entry.category);
-        }
-    }
-
     private bool ComputeCategoryHasUnclaimed(bool isDaily, EAchievementConditionType category)
     {
         foreach (AchievementListEntry entry in m_flattenedList)
         {
             if (entry.isHeader == true || entry.isDaily != isDaily || entry.category != category) continue;
-            if (entry.isClaimed == false && entry.currentValue >= entry.data.threshold)
+            if (IsEntryUnclaimed(entry.currentValue, entry.data.threshold, entry.isClaimed, entry.isVipClaimed) == true)
                 return true;
         }
         return false;
     }
 
+    // 완료 + (일반 미수령 또는 VIP 활성 상태에서 VIP 미수령) — VIP 보상은 VIP 활성 유저에게만 "미수령"으로 취급(비VIP는 애초에 대상 아님)
+    private bool IsEntryUnclaimed(int currentValue, int threshold, bool isClaimed, bool isVipClaimed)
+    {
+        if (currentValue < threshold) return false;
+
+        bool normalUnclaimed = isClaimed == false;
+        bool vipUnclaimed = IAPManager.Instance.IsVipActive() == true && isVipClaimed == false;
+        return normalUnclaimed || vipUnclaimed;
+    }
+
     // 일일 → 영구 순서로 이어서 호출 — 두 API가 같은 commander.achievementPoint를 각자 트랜잭션으로 갱신하므로
-    // 동시 호출 시 나중에 도착한 응답의 remain 값이 먼저 처리된 쪽의 지급분을 반영 못 할 수 있어 순차 처리로 확정값 보장
+    // 동시 호출 시 나중에 도착한 응답의 remain 값이 먼저 처리된 쪽의 지급분을 반영 못 할 수 있어 순차 처리로 확정값 보장.
+    // VIP 유저는 일반+VIP 보상이 서버에서 한 번에 같이 스윕되는데 응답엔 VIP 수령 id 목록이 없어 로컬 패치 대신 목록을 통째로 재조회해서 정확한 상태로 맞춤
     private void OnClaimAllClicked()
     {
         SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true);
 
         NetworkManager.Instance.ClaimAllDailyAchievements(new ClaimAllDailyAchievementsRequest(), dailyResponse =>
         {
-            List<string> dailyClaimedIds = new List<string>();
             int dailyGranted = 0;
             if (dailyResponse.errorCode == 0)
-            {
-                if (dailyResponse.data.claimedAchievementIds != null)
-                    dailyClaimedIds = dailyResponse.data.claimedAchievementIds;
                 dailyGranted = dailyResponse.data.totalAchievementPointGranted;
-            }
             else
-            {
                 Debug.LogError($"[UIPanelAchievement] ClaimAllDailyAchievements 실패: {dailyResponse.errorCode}");
-            }
 
             NetworkManager.Instance.ClaimAllAchievements(new ClaimAllAchievementsRequest(), permanentResponse =>
             {
-                List<string> permanentClaimedIds = new List<string>();
                 int permanentGranted = 0;
-                int? finalRemain = null;
                 if (permanentResponse.errorCode == 0)
                 {
-                    if (permanentResponse.data.claimedAchievementIds != null)
-                        permanentClaimedIds = permanentResponse.data.claimedAchievementIds;
                     permanentGranted = permanentResponse.data.totalAchievementPointGranted;
-                    finalRemain = permanentResponse.data.achievementPointRemain;
+                    Commander commander = DataManager.Instance.m_currentCommander;
+                    if (commander != null)
+                        commander.UpdateAchievementPoint(permanentResponse.data.achievementPointRemain);
                 }
                 else
                 {
                     Debug.LogError($"[UIPanelAchievement] ClaimAllAchievements 실패: {permanentResponse.errorCode}");
                 }
 
-                if (dailyClaimedIds.Count == 0 && permanentClaimedIds.Count == 0) return;
-
-                HashSet<string> dailyIdSet = new HashSet<string>(dailyClaimedIds);
-                HashSet<string> permanentIdSet = new HashSet<string>(permanentClaimedIds);
-                foreach (AchievementListEntry entry in m_flattenedList)
-                {
-                    if (entry.isHeader == true) continue;
-                    if (entry.isDaily == true && dailyIdSet.Contains(entry.data.achievementId) == true)
-                        entry.isClaimed = true;
-                    else if (entry.isDaily == false && permanentIdSet.Contains(entry.data.achievementId) == true)
-                        entry.isClaimed = true;
-                }
-
-                RecomputeAllCategoryHeaders();
-                RefreshUnclaimedIndicators();
-
-                Commander commander = DataManager.Instance.m_currentCommander;
-                if (commander != null && finalRemain.HasValue == true)
-                    commander.UpdateAchievementPoint(finalRemain.Value);
-
-                if (m_scrollView != null)
-                    m_scrollView.RefreshVisible();
-
                 int totalGranted = dailyGranted + permanentGranted;
-                if (totalGranted > 0)
+                if (totalGranted <= 0) return;
+
+                m_permanentListReceived = false;
+                m_dailyListReceived = false;
+                NetworkManager.Instance.GetAchievementList(new GetAchievementListRequest(), OnGetAchievementListResponse);
+                NetworkManager.Instance.GetDailyAchievementList(new GetDailyAchievementListRequest(), OnGetDailyAchievementListResponse);
+
+                UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig
                 {
-                    UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig
-                    {
-                        message = LocalizationManager.Instance.Get("DailyBonus_DescAchievement", totalGranted),
-                        autoCloseSec = 3f,
-                    });
-                }
+                    message = LocalizationManager.Instance.Get("DailyBonus_DescAchievement", totalGranted),
+                    autoCloseSec = 3f,
+                });
             });
         });
     }
@@ -454,8 +437,7 @@ public class UIPanelAchievement : UIPanelBase
             int index = (startIndex + i) % m_flattenedList.Count;
             AchievementListEntry entry = m_flattenedList[index];
             if (entry.isHeader == true) continue;
-            if (entry.isClaimed == true) continue;
-            if (entry.currentValue < entry.data.threshold) continue;
+            if (IsEntryUnclaimed(entry.currentValue, entry.data.threshold, entry.isClaimed, entry.isVipClaimed) == false) continue;
 
             m_lastFoundUnclaimedIndex = index;
             m_scrollView.JumpToIndex(index);

@@ -1,7 +1,9 @@
+// DataTableDailyBonus 커스텀 에디터 — 출석 보상 Inspector UI 및 CSV Import/Export 툴
+// CSV 경로: Assets/Resources/DataTable/DailyBonus/datatable_daily_bonus.csv
+
 #if UNITY_EDITOR
 using UnityEngine;
 using UnityEditor;
-using System.IO;
 
 [CustomEditor(typeof(DataTableDailyBonus))]
 public class DataTableDailyBonusEditor : Editor
@@ -19,49 +21,7 @@ public class DataTableDailyBonusEditor : Editor
         if (dataTable == null) return;
         serializedObject.Update();
 
-        // CSV Import
-        EditorGUILayout.BeginVertical("box");
-        EditorGUILayout.LabelField("CSV Import", EditorStyles.boldLabel);
-        if (GUILayout.Button("Load from CSV"))
-        {
-            string path = EditorUtility.OpenFilePanel("Import DailyBonus CSV", "Assets/Resources/DataTable/DailyBonus", "csv");
-            if (string.IsNullOrEmpty(path) == false)
-            {
-                string csv = File.ReadAllText(path, System.Text.Encoding.UTF8);
-                dataTable.ImportFromCsv(csv);
-                AssetDatabase.SaveAssets();
-                EditorUtility.DisplayDialog("완료", $"CSV Import 완료\n{dataTable.days.Length}일치 로드됨", "OK");
-            }
-        }
-        EditorGUILayout.EndVertical();
-        EditorGUILayout.Space(5);
-
-        // JSON Export / Import
-        EditorGUILayout.BeginVertical("box");
-        EditorGUILayout.LabelField("JSON Export / Import", EditorStyles.boldLabel);
-        EditorGUILayout.BeginHorizontal();
-        if (GUILayout.Button("Export JSON"))
-        {
-            string path = EditorUtility.SaveFilePanel("Export DataTableDailyBonus", "", "DataTableDailyBonus.json", "json");
-            if (string.IsNullOrEmpty(path) == false)
-            {
-                File.WriteAllText(path, dataTable.ExportToJson(), System.Text.Encoding.UTF8);
-                EditorUtility.DisplayDialog("완료", $"Export 완료:\n{path}", "OK");
-            }
-        }
-        if (GUILayout.Button("Import JSON"))
-        {
-            string path = EditorUtility.OpenFilePanel("Import DataTableDailyBonus", "", "json");
-            if (string.IsNullOrEmpty(path) == false)
-            {
-                string json = File.ReadAllText(path, System.Text.Encoding.UTF8);
-                dataTable.ImportFromJson(json);
-                AssetDatabase.SaveAssets();
-                EditorUtility.DisplayDialog("완료", "JSON Import 완료", "OK");
-            }
-        }
-        EditorGUILayout.EndHorizontal();
-        EditorGUILayout.EndVertical();
+        DrawCsvTools();
         EditorGUILayout.Space(10);
 
         // 테이블 내용 미리보기
@@ -103,6 +63,50 @@ public class DataTableDailyBonusEditor : Editor
             EditorUtility.SetDirty(dataTable);
             serializedObject.ApplyModifiedProperties();
         }
+    }
+
+    private void DrawCsvTools()
+    {
+        EditorGUILayout.BeginVertical("box");
+        EditorGUILayout.LabelField("CSV Import / Export", EditorStyles.boldLabel);
+
+        string csvPath = Application.dataPath + "/Resources/DataTable/DailyBonus/datatable_daily_bonus.csv";
+
+        EditorGUILayout.BeginHorizontal();
+
+        if (GUILayout.Button("Import CSV"))
+        {
+            if (System.IO.File.Exists(csvPath) == false)
+            {
+                EditorUtility.DisplayDialog("Error", $"파일 없음:\n{csvPath}", "OK");
+            }
+            else if (EditorUtility.DisplayDialog("Import DailyBonus CSV",
+                "datatable_daily_bonus.csv 를 읽어 출석 보상 데이터를 갱신합니다.\n기존 데이터는 삭제됩니다.", "Import", "Cancel"))
+            {
+                string csvText = System.IO.File.ReadAllText(csvPath, System.Text.Encoding.UTF8);
+                dataTable.ImportFromCsv(csvText);
+
+                AssetDatabase.SaveAssets();
+                AssetDatabase.Refresh();
+                EditorUtility.DisplayDialog("Complete", $"Import 완료!\n{dataTable.days.Length}일치 로드됨", "OK");
+            }
+        }
+
+        if (GUILayout.Button("Export to CSV"))
+        {
+            if (EditorUtility.DisplayDialog("Export to CSV",
+                $"현재 데이터를 CSV 파일로 덮어씁니다.\n\n{csvPath}\n\n계속하시겠습니까?", "Export", "Cancel"))
+            {
+                string csv = dataTable.ExportCsv();
+                System.IO.File.WriteAllText(csvPath, csv, System.Text.Encoding.UTF8);
+
+                AssetDatabase.Refresh();
+                EditorUtility.DisplayDialog("Complete", "CSV Export가 완료되었습니다.", "OK");
+            }
+        }
+
+        EditorGUILayout.EndHorizontal();
+        EditorGUILayout.EndVertical();
     }
 }
 #endif

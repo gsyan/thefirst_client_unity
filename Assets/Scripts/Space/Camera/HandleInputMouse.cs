@@ -84,7 +84,9 @@ public class HandleInputMouse
 
             // press~release 사이에 새 UI(튜토리얼 등)가 열렸을 수 있어 release 시점도 다시 확인 —
             // 단 press 때 이미 UI 위였다면(버튼 누르고 3D로 끌고 나가는 경우) 여전히 차단
-            if (m_inputBlockedByUI == false && IsPointerOverUIObject(mousePos) == false)
+            bool blockedByUIOnRelease = IsPointerOverUIObject(mousePos);
+            Debug.Log($"[InputDebug] MouseUp pos={mousePos} blockedByUIOnPress={m_inputBlockedByUI} blockedByUIOnRelease={blockedByUIOnRelease} isGalaxyView={m_camera.IsGalaxyView} cameraInputAllowed={cameraInputAllowed}");
+            if (m_inputBlockedByUI == false && blockedByUIOnRelease == false)
             {
                 // 갤럭시뷰(탐사 그리드) 중엔 cameraInputEnabled가 항상 false로 유지되어 위 일반 경로를 타지 않으므로 별도 처리
                 if (m_camera.IsGalaxyView == true)

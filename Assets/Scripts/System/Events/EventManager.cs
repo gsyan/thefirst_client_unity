@@ -458,6 +458,13 @@ public static class EventManager
     public static void Subscribe_TutorialGeneralUIBlockedChanged(Action<bool> callback) { OnTutorialGeneralUIBlockedChanged += callback; }
     public static void Unsubscribe_TutorialGeneralUIBlockedChanged(Action<bool> callback) { OnTutorialGeneralUIBlockedChanged -= callback; }
 
+    // 리워드 광고 준비 상태 변경 — AdManager가 로드 시작/완료 시점에 발행. 팝업이 열려있는 동안 광고 재로딩 완료를 감지해
+    // "광고 보고 리롤" 버튼을 다시 활성화하는 데 사용(리롤 자체는 하루 제한 횟수만 있고 그 외 텀 제한은 없음)
+    public static event Action<bool> OnRewardedAdReadyChanged;
+    public static void Trigger_RewardedAdReadyChanged(bool isReady) { OnRewardedAdReadyChanged?.Invoke(isReady); }
+    public static void Subscribe_RewardedAdReadyChanged(Action<bool> callback) { OnRewardedAdReadyChanged += callback; }
+    public static void Unsubscribe_RewardedAdReadyChanged(Action<bool> callback) { OnRewardedAdReadyChanged -= callback; }
+
     // Tab Selection Changed — 탭 선택 변경 (systemName: TabSystem 고유 이름, tabIndex: -1이면 전체 닫힘)
     public static event Action<string, int> OnTabSelectionChanged;
     public static void Trigger_TabSelectionChanged(string systemName, int tabIndex) { OnTabSelectionChanged?.Invoke(systemName, tabIndex); }

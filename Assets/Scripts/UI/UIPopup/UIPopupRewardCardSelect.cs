@@ -26,6 +26,7 @@ public class UIPopupRewardCardSelect : UIPopupBase
     private int m_zoneNumber;
     private int m_cellRow;
     private int m_cellCol;
+    private int m_rerollRemain; // 오늘 남은 리롤 가능 횟수 — 하루 총량 제한(예: 10회)만 있고 그 외 텀 제한은 없음
 
     protected override void Awake()
     {
@@ -37,14 +38,24 @@ public class UIPopupRewardCardSelect : UIPopupBase
             CommonUtility.SetUILocText(m_confirmButtonText, "UI_Confirm");
 
         if (m_rerollButton != null)
-        {
             m_rerollButton.onClick.AddListener(OnRerollClicked);
-            if (m_rerollButtonText != null)
-                CommonUtility.SetUILocText(m_rerollButtonText, "UIPopupRewardCardSelect_RerollButton");
-        }
+
+        // 광고가 팝업이 열려있는 동안 재로딩 완료되면 리롤 버튼을 다시 켜야 함 — 리롤은 하루 총량 제한만 있어
+        // 광고만 준비되면 연속으로 계속 쓸 수 있어야 하기 때문(풀에 보관되는 동안 비활성 상태에서 호출돼도 안전)
+        EventManager.Subscribe_RewardedAdReadyChanged(OnRewardedAdReadyChanged);
     }
 
-    public void ShowPopupRewardCardSelect(int explorationPointGained, int expGained, List<string> candidateCardIds, bool isEscapeCell, int zoneNumber, int cellRow, int cellCol, System.Action<string> onConfirmed)
+    private void OnDestroy()
+    {
+        EventManager.Unsubscribe_RewardedAdReadyChanged(OnRewardedAdReadyChanged);
+    }
+
+    private void OnRewardedAdReadyChanged(bool isReady)
+    {
+        RefreshRerollButtonState();
+    }
+
+    public void ShowPopupRewardCardSelect(int explorationPointGained, int expGained, List<string> candidateCardIds, bool isEscapeCell, int zoneNumber, int cellRow, int cellCol, int rerollRemain, System.Action<string> onConfirmed)
     {
         base.ShowPopup();
         m_candidateCardIds = candidateCardIds;
@@ -53,6 +64,7 @@ public class UIPopupRewardCardSelect : UIPopupBase
         m_zoneNumber = zoneNumber;
         m_cellRow = cellRow;
         m_cellCol = cellCol;
+        m_rerollRemain = rerollRemain;
 
         // 탈출 셀은 "탈출 지점 발견", 카드 후보 없이 포인트만 지급되는 트레저(전투 없는 이벤트 셀에서 탐험 포인트 당첨)는
         // "트레저 보상"으로 구분 — 카드 선택 문구("Choose a Reward Card")는 실제로 고를 카드가 있을 때만 맞는 표현이라
@@ -86,8 +98,6 @@ public class UIPopupRewardCardSelect : UIPopupBase
             OnCardClicked(defaultIndex);
         }
 
-        if (m_rerollButton != null)
-            m_rerollButton.gameObject.SetActive(hasCardCandidates);
         RefreshRerollButtonState();
 
         RefreshConfirmButtonState();
@@ -128,6 +138,7 @@ public class UIPopupRewardCardSelect : UIPopupBase
 
     private void OnConfirmClicked()
     {
+        Debug.Log("[InputDebug] OnConfirmClicked fired");
         bool hasCardCandidates = m_candidateCardIds != null && m_candidateCardIds.Count > 0;
         string selectedCardId = (hasCardCandidates == true && m_selectedIndex >= 0) ? m_candidateCardIds[m_selectedIndex] : null;
 
@@ -136,24 +147,51 @@ public class UIPopupRewardCardSelect : UIPopupBase
         callback?.Invoke(selectedCardId);
     }
 
-    // 리워드 광고가 준비된 경우에만 버튼 활성화 — 광고 로드 실패/소진 상태에서 눌러도 아무 일 없는 상황 방지
+    // 카드 후보가 없는 셀(탈출/트레저 등)에서만 버튼 자체를 숨김 — 그 외엔 항상 보이고, 남은 횟수/광고 준비 여부는
+    // interactable로만 표현(0/n처럼 소진 상태도 그대로 보여줘야 함). VIP는 광고 없이 항상 가능, 비VIP는 광고 준비 시에만 가능
     private void RefreshRerollButtonState()
     {
         if (m_rerollButton == null) return;
-        m_rerollButton.interactable = AdManager.Instance.IsRewardedAdReady;
+        bool hasCardCandidates = m_candidateCardIds != null && m_candidateCardIds.Count > 0;
+        m_rerollButton.gameObject.SetActive(hasCardCandidates);
+        if (hasCardCandidates == false) return;
+
+        bool hasRerollsLeft = m_rerollRemain > 0;
+        bool canReroll = hasRerollsLeft == true && (IAPManager.Instance.IsVipActive() == true || AdManager.Instance.IsRewardedAdReady == true);
+        m_rerollButton.interactable = canReroll;
+
+        if (m_rerollButtonText != null)
+        {
+            int rerollLimit = DataManager.Instance.m_dataTableConfig.gameSettings.exploration.rewardCardRerollLimit;
+            m_rerollButtonText.text = $"{LocalizationManager.Instance.Get("UIPopupRewardCardSelect_RerollButton")} {m_rerollRemain}/{rerollLimit}";
+        }
     }
 
     private void OnRerollClicked()
     {
-        if (AdManager.Instance.IsRewardedAdReady == false) return;
+        Debug.Log("[InputDebug] OnRerollClicked fired");
+        bool isVip = IAPManager.Instance.IsVipActive();
+        if (m_rerollRemain <= 0) return;
+        if (isVip == false && AdManager.Instance.IsRewardedAdReady == false) return;
 
         UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig
         {
-            message = LocalizationManager.Instance.Get("UIPopupRewardCardSelect_RerollConfirm"),
-            confirmText1 = LocalizationManager.Instance.Get("UI_WatchAD"),
-            onConfirm = RequestRerollWithAd,
+            message = LocalizationManager.Instance.Get(isVip == true ? "UIPopupRewardCardSelect_RerollConfirmVip" : "UIPopupRewardCardSelect_RerollConfirm"),
+            confirmText1 = isVip == true ? LocalizationManager.Instance.Get("UI_Confirm") : LocalizationManager.Instance.Get("UI_WatchAD"),
+            onConfirm = isVip == true ? RequestReroll : RequestRerollWithAd,
             onCancel = () => { }
         });
+    }
+
+    private void RequestReroll()
+    {
+        RerollRewardCardRequest request = new RerollRewardCardRequest
+        {
+            zoneNumber = m_zoneNumber,
+            cellRow = m_cellRow,
+            cellCol = m_cellCol,
+        };
+        NetworkManager.Instance.RerollRewardCard(request, OnRerollResponse);
     }
 
     private void RequestRerollWithAd()
@@ -161,14 +199,7 @@ public class UIPopupRewardCardSelect : UIPopupBase
         AdManager.Instance.ShowRewardedAd(result =>
         {
             if (result != EAdResult.Rewarded) return;
-
-            RerollRewardCardRequest request = new RerollRewardCardRequest
-            {
-                zoneNumber = m_zoneNumber,
-                cellRow = m_cellRow,
-                cellCol = m_cellCol,
-            };
-            NetworkManager.Instance.RerollRewardCard(request, OnRerollResponse);
+            RequestReroll();
         });
     }
 
@@ -187,6 +218,7 @@ public class UIPopupRewardCardSelect : UIPopupBase
         if (response.errorCode != 0 || response.data == null) return;
 
         m_candidateCardIds = response.data.rewardCardCandidates;
+        m_rerollRemain = response.data.rerollRemain;
         BindCardButtons(m_candidateCardIds);
         OnCardClicked(m_candidateCardIds.Count / 2); // 최초 표시 때와 동일하게 가운데 카드를 기본 선택 상태로
         RefreshRerollButtonState();

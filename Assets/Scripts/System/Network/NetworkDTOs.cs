@@ -340,6 +340,7 @@ public class ClearExplorationCellResponse
     public ETreasureRewardType treasureRewardType; // None이면 Treasure 보상 아님(ExplorationPoint면 explorationPointGained에 이미 반영됨)
     public float treasureRewardRatio;              // treasureRewardType이 ShipHealthHeal/TacticPowerRestore일 때만 유효한 회복 비율(0~1)
     public int tacticPower;                        // 이 클리어 확정 후 서버가 확정한 전술력 현재치(권위값) — 항상 채워짐
+    public int rerollRemain;                       // 오늘 남은 보상카드 리롤 가능 횟수(소모 전 조회값) — rewardCardCandidates가 null이면 무의미
 }
 
 [System.Serializable]
@@ -386,6 +387,7 @@ public class GetActiveZoneRunProgressResponse
     public List<ShipHealthRatioInfo> shipHealthRatios; // 마지막 셀 클리어 시점에 저장된 내 함대 체력 스냅샷 — 없으면 null(만피로 스폰된 상태 그대로)
     public List<string> selectedRewardCards; // 이번 런에서 선택 확정한 보상카드(cardId) 전체 목록 — 지속버프 여부는 클라가 DataTableRewardCard로 재판별
     public List<string> pendingRewardCardCandidates; // 마지막 클리어 셀에 후보는 나왔지만 아직 선택 확정 전이면 그 후보 3개 — 카드 선택 팝업이 뜨기 전에 앱이 꺼진 경우 재접속 시 복구용, 없으면 null
+    public int rerollRemain;                          // 오늘 남은 보상카드 리롤 가능 횟수(소모 전 조회값) — pendingRewardCardCandidates가 null이면 무의미
 }
 
 [System.Serializable]
@@ -448,6 +450,7 @@ public class AchievementStatus
     public string achievementId;
     public int currentValue; // 서버가 조건 타입별로 계산한 현재 진행도
     public bool isClaimed;
+    public bool isVipClaimed; // VIP 전용 보상 수령 여부 — 일반 보상과 완전히 별개
 }
 
 [System.Serializable]
@@ -463,6 +466,7 @@ public class GetAchievementListResponse
 public class ClaimAchievementRequest
 {
     public string achievementId;
+    public bool claimVip; // true면 VIP 전용 보상을 수령 — 일반 보상과 같은 엔드포인트를 이 플래그로 구분
 }
 
 [System.Serializable]
@@ -491,6 +495,7 @@ public class DailyAchievementStatus
     public string achievementId;
     public int currentValue; // 서버가 조건 타입별로 "오늘(UTC)" 기준 계산한 현재 진행도
     public bool isClaimed;   // 오늘 이미 수령했는지
+    public bool isVipClaimed; // VIP 전용 보상을 오늘 이미 수령했는지 — 일반 보상과 완전히 별개
 }
 
 [System.Serializable]
@@ -506,6 +511,7 @@ public class GetDailyAchievementListResponse
 public class ClaimDailyAchievementRequest
 {
     public string achievementId;
+    public bool claimVip; // true면 VIP 전용 보상을 수령 — 일반 보상과 같은 엔드포인트를 이 플래그로 구분
 }
 
 [System.Serializable]
@@ -763,6 +769,7 @@ public class DailyBonusStatusResponse
 public class DailyClaimRequest
 {
     public int day; // 수령할 칸(1~6) — 출석일수(todayDay) 이하이고 아직 미수령인 날짜만 서버에서 허용
+    public bool claimVip; // true면 VIP 전용 보상을 수령 — 일반 보상과 완전히 별개(같은 엔드포인트를 이 플래그로 구분)
 }
 
 [System.Serializable]

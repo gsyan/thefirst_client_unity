@@ -470,7 +470,7 @@ public class UIPanelExplorationGrid : UIPanelBase
         // 마지막 클리어 셀에 아직 선택 확정 안 된 카드 후보가 있으면(팝업이 뜨기 전에 앱이 꺼진 경우) 재접속 시 다시 띄움
         if (response.data.pendingRewardCardCandidates != null && response.data.pendingRewardCardCandidates.Count > 0)
         {
-            UIManager.Instance.ShowRewardCardSelectPopup(0, 0, response.data.pendingRewardCardCandidates, false, m_currentZoneNumber, m_currentRow, m_currentCol, selectedCardId =>
+            UIManager.Instance.ShowRewardCardSelectPopup(0, 0, response.data.pendingRewardCardCandidates, false, m_currentZoneNumber, m_currentRow, m_currentCol, response.data.rerollRemain, selectedCardId =>
             {
                 if (selectedCardId != null)
                     OnRewardCardSelected(selectedCardId);
@@ -572,6 +572,7 @@ public class UIPanelExplorationGrid : UIPanelBase
 
     private void OnCellClicked(int row, int col)
     {
+        Debug.Log($"[InputDebug] OnCellClicked fired row={row} col={col}");
         // 브라우징(스크롤/탭 이동)은 잠긴 존도 허용하되, 실제 입장(전투 진입)만 여기서 차단
         if (s_devSkipZoneLockCheck == false && m_currentZoneNumber > GetHighestClearedZoneNumber() + 1)
         {
@@ -943,6 +944,7 @@ public class UIPanelExplorationGrid : UIPanelBase
         List<string> rewardCardCandidates = null;
         ETreasureRewardType treasureRewardType = ETreasureRewardType.None;
         float treasureRewardRatio = 0f;
+        int rerollRemain = 0;
         if (response.errorCode != 0)
             Debug.LogError($"[UIPanelExplorationGrid] ClearExplorationCell 실패: {response.errorCode}");
         else if (response.data != null)
@@ -952,6 +954,7 @@ public class UIPanelExplorationGrid : UIPanelBase
             rewardCardCandidates = response.data.rewardCardCandidates; // 탈출 셀/빈 셀은 null — 카드 선택 단계를 건너뜀
             treasureRewardType = response.data.treasureRewardType;
             treasureRewardRatio = response.data.treasureRewardRatio;
+            rerollRemain = response.data.rerollRemain;
             // 이 시점엔 패널이 비활성 상태(전투 화면에 가려짐) — 값은 버퍼에만 쌓아두고, 화면 반영은 OnShowUIPanel에서 처리
             m_pendingBankedRewardGain.Add(EBankedRewardType.ExplorationPoint, pointGained);
             m_pendingBankedRewardGain.Add(EBankedRewardType.Exp, expGained);
@@ -978,7 +981,7 @@ public class UIPanelExplorationGrid : UIPanelBase
         // 탐험 포인트/경험치 안내와 보상카드 3택1을 한 팝업에서 함께 처리 — 카드 후보가 없으면(탈출 셀, Treasure 등) 팝업이 카드 섹션만 숨기고 포인트 안내만 보여줌.
         // 탈출 셀 여부는 카드 후보 유무로 추측하지 않고 그리드 데이터로 직접 판정(Treasure도 카드 후보가 없어서 구분이 안 되므로)
         bool isEscapeCell = m_gridData != null && m_gridData.IsInBounds(m_currentRow, m_currentCol) == true && m_gridData.GetCell(m_currentRow, m_currentCol).isEscape;
-        UIManager.Instance.ShowRewardCardSelectPopup(pointGained, expGained, rewardCardCandidates, isEscapeCell, m_currentZoneNumber, m_currentRow, m_currentCol, selectedCardId =>
+        UIManager.Instance.ShowRewardCardSelectPopup(pointGained, expGained, rewardCardCandidates, isEscapeCell, m_currentZoneNumber, m_currentRow, m_currentCol, rerollRemain, selectedCardId =>
         {
             if (selectedCardId == null)
             {
@@ -1283,23 +1286,31 @@ public class UIPanelExplorationGrid : UIPanelBase
 
     private void OnAbandonRunButtonClicked()
     {
+        Debug.Log("[InputDebug] OnAbandonRunButtonClicked fired");
         SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true);
         ShowAbandonConfirmPopup("UIPanelExplorationGrid_AbandonRunConfirm", OnAbandonRunConfirmed);
     }
 
-    // 존런 포기 확인 팝업 — 취소/포기(20%) 기본 2버튼 + 광고가 준비된 경우에만 광고시청(100%) 3번째 버튼 추가
+    // 존런 포기 확인 팝업 — VIP면 광고 없이 100% 지급 문구만 노출(취소/포기 2버튼), 아니면 취소/포기(20%) 기본 2버튼 +
+    // 광고가 준비된 경우에만 광고시청(100%) 3번째 버튼 추가
     private void ShowAbandonConfirmPopup(string messageKey, Action<AbandonZoneRunResponse> onComplete, params object[] messageArgs)
     {
+        bool isVip = IAPManager.Instance.IsVipActive();
         bool adReady = AdManager.Instance.IsRewardedAdReady;
-        // 광고가 준비됐을 때만 "광고보면 100%" 문구가 있는 WithAd 버전 키를 씀 — 버튼이 안 뜨는데 문구만 광고를 언급하는 불일치 방지
-        string finalMessageKey = adReady ? messageKey + "WithAd" : messageKey;
+
+        string finalMessageKey = messageKey;
+        if (isVip == true)
+            finalMessageKey = messageKey + "Vip";
+        else if (adReady == true)
+            finalMessageKey = messageKey + "WithAd"; // 광고가 준비됐을 때만 "광고보면 100%" 문구가 있는 WithAd 버전 키를 씀 — 버튼이 안 뜨는데 문구만 광고를 언급하는 불일치 방지
+
         UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig
         {
             message = LocalizationManager.Instance.Get(finalMessageKey, messageArgs),
             confirmText1 = LocalizationManager.Instance.Get("UI_Abandon"),
-            extraText1 = adReady ? LocalizationManager.Instance.Get("UI_WatchAD") : null,
+            extraText1 = (isVip == false && adReady == true) ? LocalizationManager.Instance.Get("UI_WatchAD") : null,
             onConfirm = () => RequestAbandonZoneRun(false, onComplete),
-            onExtra = adReady ? () => RequestAbandonZoneRunWithAd(onComplete) : null,
+            onExtra = (isVip == false && adReady == true) ? () => RequestAbandonZoneRunWithAd(onComplete) : null,
             onCancel = () => { }
         });
     }

@@ -1,4 +1,5 @@
 // 업적 패널(UIPanelAchievement) 리스트의 행 1개 — InfiniteScrollView가 재활용하는 단일 프리팹이 헤더/업적 두 표시 상태를 토글
+// 업적 항목은 일반 보상(Normal)과 VIP 전용 보상(VIP)을 완전히 별개로 수령 — VIP 블록은 비VIP 유저에게도 잠긴 채로 노출해 가입을 유도함
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -16,18 +17,26 @@ public class UIAchievementRow : MonoBehaviour
     [SerializeField] private TMP_Text m_nameText;
     [SerializeField] private TMP_Text m_descText;
     [SerializeField] private RowLabelValue m_progressRow;
+    
+    [Header("일반 보상")]
     [SerializeField] private RowLabelValue m_rewardRow;
-    [SerializeField] private RectTransform m_progressRewardLayoutRoot; // Horizon — HorizontalLayoutGroup+ContentSizeFitter로 Progress/Reward를 나란히 배치, 텍스트 변경 후 강제 리빌드 필요
     [SerializeField] private Button m_claimButton;
     [SerializeField] private GameObject m_claimedRoot; // 수령 완료 시 m_claimButton 대신 표시(체크 아이콘 등)
 
+    [Header("VIP 전용 보상 — 비VIP에게도 잠긴 채로 노출(가입 유도)")]
+    [SerializeField] private RowLabelValue m_vipRewardRow;
+    [SerializeField] private Button m_vipClaimButton;
+    [SerializeField] private GameObject m_vipClaimedRoot;
+
     private string m_achievementId;
-    private System.Action<string> m_onClaimClick;
+    private System.Action<string, bool> m_onClaimClick; // (achievementId, claimVip)
 
     private void Awake()
     {
         if (m_claimButton != null)
             m_claimButton.onClick.AddListener(OnClaimButtonClicked);
+        if (m_vipClaimButton != null)
+            m_vipClaimButton.onClick.AddListener(OnVipClaimButtonClicked);
     }
 
     public void SetupHeader(string headerLabel, bool hasUnclaimed)
@@ -42,7 +51,8 @@ public class UIAchievementRow : MonoBehaviour
             m_headerRedDot.SetActive(hasUnclaimed);
     }
 
-    public void SetupItem(AchievementData data, int currentValue, bool isClaimed, System.Action<string> onClaimClick)
+    public void SetupItem(AchievementData data, int currentValue, bool isClaimed, bool isVipClaimed, bool isVipActive,
+        System.Action<string, bool> onClaimClick)
     {
         gameObject.SetActive(true);
         if (m_headerRoot != null) m_headerRoot.SetActive(false);
@@ -61,8 +71,8 @@ public class UIAchievementRow : MonoBehaviour
             m_progressRow.SetRow("UIAchievement_Progress", $"{Mathf.Min(currentValue, data.threshold)}/{data.threshold}", rawValue: true);
         if (m_rewardRow != null)
             m_rewardRow.SetRow("UIAchievement_Reward", $"+{data.achievementPointReward}", rawValue: true);
-        if (m_progressRewardLayoutRoot != null)
-            LayoutRebuilder.ForceRebuildLayoutImmediate(m_progressRewardLayoutRoot);
+        if (m_vipRewardRow != null)
+            m_vipRewardRow.SetRow("UIAchievement_RewardVip", $"+{data.achievementPointRewardVip}", rawValue: true);
 
         if (m_claimedRoot != null)
             m_claimedRoot.SetActive(isClaimed);
@@ -71,13 +81,31 @@ public class UIAchievementRow : MonoBehaviour
             m_claimButton.gameObject.SetActive(isClaimed == false);
             m_claimButton.interactable = isCompleted;
         }
+
+        // VIP 버튼은 비VIP여도 항상 노출은 하되(가입 유도), 비VIP면 비활성화해 클릭 자체가 안 되게 함
+        if (m_vipClaimedRoot != null)
+            m_vipClaimedRoot.SetActive(isVipClaimed);
+        if (m_vipClaimButton != null)
+        {
+            m_vipClaimButton.gameObject.SetActive(isVipClaimed == false);
+            m_vipClaimButton.interactable = isVipActive == true && isCompleted == true;
+        }
+
+        bool hasUnclaimedNormal = isCompleted == true && isClaimed == false;
+        bool hasUnclaimedVip = isVipActive == true && isCompleted == true && isVipClaimed == false;
         if (m_itemRedDot != null)
-            m_itemRedDot.SetActive(isCompleted && isClaimed == false);
+            m_itemRedDot.SetActive(hasUnclaimedNormal || hasUnclaimedVip);
     }
 
     private void OnClaimButtonClicked()
     {
         SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true);
-        if (m_onClaimClick != null) m_onClaimClick(m_achievementId);
+        if (m_onClaimClick != null) m_onClaimClick(m_achievementId, false);
+    }
+
+    private void OnVipClaimButtonClicked()
+    {
+        SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true);
+        if (m_onClaimClick != null) m_onClaimClick(m_achievementId, true);
     }
 }

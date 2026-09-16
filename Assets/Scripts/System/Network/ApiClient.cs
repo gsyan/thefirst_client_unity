@@ -640,9 +640,9 @@ public class ApiClient
         return await GetAsync<VipStatusResponse>("/iap/vip/status");
     }
 
-    public async Task<ApiResponse<DailyClaimResponse>> ClaimVipDailyRewardAsync(int day)
+    public async Task<ApiResponse<DailyClaimResponse>> ClaimVipDailyRewardAsync(int day, bool claimVip)
     {
-        return await PostAsync<DailyClaimResponse>("/iap/vip/daily-reward", new DailyClaimRequest { day = day });
+        return await PostAsync<DailyClaimResponse>("/iap/vip/daily-reward", new DailyClaimRequest { day = day, claimVip = claimVip });
     }
 
     public async Task<ApiResponse<DailyBonusStatusResponse>> GetDailyBonusStatusAsync()

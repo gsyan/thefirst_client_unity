@@ -74,16 +74,20 @@ UIPopupRewardCardSelect_EscapeTitle,,Escape Point Found,탈출 지점 발견
 UIPopupRewardCardSelect_TreasureTitle,,Treasure Reward,트레저 보상
 UIPopupRewardCardSelect_RerollButton,,Reroll,다시 뽑기
 UIPopupRewardCardSelect_RerollConfirm,,Watch an ad to reroll the reward cards?,광고를 시청하고 보상 카드를 다시 뽑으시겠습니까?
+UIPopupRewardCardSelect_RerollConfirmVip,,Reroll the reward cards?\nAs a VIP privilege, no ad is required.,보상 카드를 다시 뽑으시겠습니까?\nVIP 특혜로 광고 시청 없이 바로 다시 뽑습니다.
 UIPopupRewardCardSelect_RerollLimitReached,,You have used all reroll chances for today.,오늘 사용할 수 있는 다시 뽑기 횟수를 모두 사용했습니다
 UIPanelExplorationGrid_EscapeConfirmMessage,,Escape Reward,탈출 보상
 UIPanelExplorationGrid_TreasureHealthHeal,,Fleet health restored by {0}%!,함대 체력을 {0}% 회복했습니다!
 UIPanelExplorationGrid_TreasureTacticPowerRestore,,Tactic power restored by {0}%!,전술력을 {0}% 회복했습니다!
 UIPanelExplorationGrid_OtherRunInProgress,,There is another exploration in progress.\nZone {0} / Cell {1} / Banked Exploration Point {2}\nAbandon it and start a new challenge in the selected zone?\n* Only 20% of banked points will be recovered if abandoned,진행 중인 다른 탐험이 있습니다.\n존 {0} / 구역 {1} / 적립된 탐험 포인트 {2}\n포기하고 선택한 존에 새로 도전하시겠습니까?\n* 포기 시 적립된 포인트의 20%만 회수 가능합니다
 UIPanelExplorationGrid_OtherRunInProgressWithAd,,There is another exploration in progress.\nZone {0} / Cell {1} / Banked Exploration Point {2}\nAbandon it and start a new challenge in the selected zone?\n* Watch an ad to recover 100% of banked points. Otherwise only 20% will be recovered,진행 중인 다른 탐험이 있습니다.\n존 {0} / 구역 {1} / 적립된 탐험 포인트 {2}\n포기하고 선택한 존에 새로 도전하시겠습니까?\n* 광고를 시청하면 적립된 포인트의 100%를 회수하고 시청하지 않으면 20%만 회수 가능합니다
+UIPanelExplorationGrid_OtherRunInProgressVip,,There is another exploration in progress.\nZone {0} / Cell {1} / Banked Exploration Point {2}\nAbandon it and start a new challenge in the selected zone?\n* As a VIP privilege, you still recover 100% of banked points,진행 중인 다른 탐험이 있습니다.\n존 {0} / 구역 {1} / 적립된 탐험 포인트 {2}\n포기하고 선택한 존에 새로 도전하시겠습니까?\n* VIP 특혜로 포기해도 적립된 포인트의 100%를 회수합니다
 UIPanelExplorationGrid_AbandonAnotherRunConfirm,,There is an exploration in progress in another zone. Abandoning it now only grants 20% of the banked exploration points. Abandon it and start a new challenge?,다른 존에 진행 중인 탐험이 있습니다. 지금 포기하면 쌓인 탐험 포인트의 20%만 획득합니다. 포기하고 새로 도전하시겠습니까?
 UIPanelExplorationGrid_AbandonAnotherRunConfirmWithAd,,There is an exploration in progress in another zone. Watch an ad to receive 100% of the banked exploration points or abandon now for only 20%. Abandon it and start a new challenge?,다른 존에 진행 중인 탐험이 있습니다. 광고를 시청하면 쌓인 탐험 포인트의 100%를 획득하고 시청하지 않고 포기하면 20%만 획득합니다. 포기하고 새로 도전하시겠습니까?
+UIPanelExplorationGrid_AbandonAnotherRunConfirmVip,,There is an exploration in progress in another zone. As a VIP privilege, you still receive 100% of the banked exploration points. Abandon it and start a new challenge?,다른 존에 진행 중인 탐험이 있습니다. VIP 특혜로 포기해도 쌓인 탐험 포인트의 100%를 획득합니다. 포기하고 새로 도전하시겠습니까?
 UIPanelExplorationGrid_AbandonRunConfirm,,Abandon the exploration in progress?\nOnly 20% of the banked exploration points will be granted.,진행 중인 탐험을 포기하시겠습니까?\n지금까지 쌓인 탐험 포인트의 20%만 획득합니다.
 UIPanelExplorationGrid_AbandonRunConfirmWithAd,,Abandon the exploration in progress?\nWatch an ad to receive 100% of the banked exploration points or abandon now for only 20%.,진행 중인 탐험을 포기하시겠습니까?\n광고를 시청하면 지금까지 쌓인 탐험 포인트의 100%를 획득하고 시청하지 않고 포기하면 20%만 획득합니다.
+UIPanelExplorationGrid_AbandonRunConfirmVip,,Abandon the exploration in progress?\nAs a VIP privilege, you still receive 100% of the banked exploration points.,진행 중인 탐험을 포기하시겠습니까?\nVIP 특혜로 포기해도 지금까지 쌓인 탐험 포인트의 100%를 받습니다.
 UI_Abandon,,ABANDON,포기
 RewardCard_BeamAttack_Name,,Beam Power Up,빔 공격력 강화
 RewardCard_BeamAttack_Desc,,Beam attack +{0:P0},빔 공격력 {0:P0} 증가
@@ -143,6 +147,7 @@ UIFleet_HullPicker_Title,,Select Hull,함체 선택
 UIHullPicker_UnlockConfirmMessage,,Unlock {0},{0}을(를) 언락하시겠습니까?
 UIAchievement_Progress,,Progress,진행도
 UIAchievement_Reward,,AP Reward,업적포인트 보상
+UIAchievement_RewardVip,,VIP Reward,VIP 보상
 UIAchievement_ClaimAllButton,,Claim All,전체 받기
 UIAchievement_FindNextButton,,Find Next,다음 찾기
 UIAchievement_Category_CellClear,,Cell Clear,셀 클리어
@@ -205,7 +210,9 @@ UIVipStatus_Expired,,(Expired),(만료)
 UIVipStatus_ExpiryDays,,(D-{0}),(D-{0})
 UIVipStatus_Benefit_NoAds,,No Ads,광고 없음
 UIVipStatus_Benefit_Daily,,Exclusive Daily Rewards,전용 일일 보상
-UIVipStatus_Benefit_InstantFleetRestore,,Instantly Restore Fleet HP After Battle,전투 후 함대 체력 즉시 회복
+UIVipStatus_Benefit_DoubleExploration,,2x Exploration Points & EXP,탐험 포인트·경험치 2배 획득
+UIVipStatus_Benefit_AchievementBonus,,Bonus Achievement Rewards,업적 전용 보너스 보상
+UIVipStatus_Benefit_BattleSpeed,,Adjustable Battle Speed,전투 배속 조절
 UIVipStatus_PurchaseTitle,,BECOME ADMIRAL,제독 승급
 UIVipStatus_PurchasePrice,,{0} ({1} Pass · {2}day(s) Left),{0} ({1} 패스 D-{2})
 UIPopupMessage_Logout,,Are you sure you want to logout?,로그아웃 하시겠습니까?

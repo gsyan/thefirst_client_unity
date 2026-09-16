@@ -881,9 +881,9 @@ public class NetworkManager : MonoSingleton<NetworkManager>
         StartCoroutine(RunAsync(() => m_apiClient.GetVipStatusAsync(), onComplete));
     }
 
-    public void ClaimVipDailyReward(int day, System.Action<ApiResponse<DailyClaimResponse>> onComplete)
+    public void ClaimVipDailyReward(int day, bool claimVip, System.Action<ApiResponse<DailyClaimResponse>> onComplete)
     {
-        StartCoroutine(RunAsync(() => m_apiClient.ClaimVipDailyRewardAsync(day), onComplete));
+        StartCoroutine(RunAsync(() => m_apiClient.ClaimVipDailyRewardAsync(day, claimVip), onComplete));
     }
 
     public void GetDailyBonusStatus(System.Action<ApiResponse<DailyBonusStatusResponse>> onComplete)

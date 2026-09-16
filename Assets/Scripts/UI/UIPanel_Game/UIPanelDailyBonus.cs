@@ -20,6 +20,7 @@ public class UIPanelDailyBonus : UIPanelBase
     [SerializeField] private UIDailyBonusDayRow m_rowPrefab;
 
     private int m_claimedDaysMask;
+    private int m_vipClaimedDaysMask;
     private int m_todayDay;
     private Coroutine m_countdownCoroutine;
 
@@ -43,7 +44,7 @@ public class UIPanelDailyBonus : UIPanelBase
             m_rewardDescText.text = string.Empty;
 
         var mgr = DailyBonusManager.Instance;
-        RefreshCalendar(mgr.GetClaimedDaysMask(), mgr.GetTodayDay());
+        RefreshCalendar(mgr.GetClaimedDaysMask(), mgr.GetVipClaimedDaysMask(), mgr.GetTodayDay());
         StartCountdown();
     }
 
@@ -53,10 +54,11 @@ public class UIPanelDailyBonus : UIPanelBase
         StopCountdown();
     }
 
-    private void RefreshCalendar(int claimedDaysMask, int todayDay)
+    private void RefreshCalendar(int claimedDaysMask, int vipClaimedDaysMask, int todayDay)
     {
-        m_claimedDaysMask = claimedDaysMask;
-        m_todayDay        = todayDay;
+        m_claimedDaysMask    = claimedDaysMask;
+        m_vipClaimedDaysMask = vipClaimedDaysMask;
+        m_todayDay           = todayDay;
 
         if (m_scrollView != null && m_rowPrefab != null)
             m_scrollView.Initialize(CALENDAR_DAYS, m_rowPrefab.gameObject);
@@ -71,16 +73,20 @@ public class UIPanelDailyBonus : UIPanelBase
         int day = dataIndex + 1;
 
         bool claimed = (m_claimedDaysMask & (1 << (day - 1))) != 0;
+        bool vipClaimed = (m_vipClaimedDaysMask & (1 << (day - 1))) != 0;
         bool bClaimable = day <= m_todayDay; // 출석일수(m_todayDay) 이하 칸은 전부 클레임 가능
-        DailyBonusRewardEntry[] rewards = (table != null) ? table.GetRewards(day) : null;
+        bool isVipActive = IAPManager.Instance.IsVipActive();
+        DailyBonusRewardEntry[] normalRewards = (table != null) ? table.GetRewards(day, EDailyBonusTier.Normal) : null;
+        DailyBonusRewardEntry[] vipRewards = (table != null) ? table.GetRewards(day, EDailyBonusTier.VIP) : null;
 
-        row.SetupDailyBonusDayCell(day, claimed, bClaimable, rewards, () => OnDayClaimClicked(day));
+        row.SetupDailyBonusDayCell(day, claimed, vipClaimed, bClaimable, isVipActive, normalRewards, vipRewards,
+            claimVip => OnDayClaimClicked(day, claimVip));
     }
 
     // 열려있는 칸의 Claim 버튼 클릭 — 실제 지급 API 호출은 여기서만 발생
-    private void OnDayClaimClicked(int day)
+    private void OnDayClaimClicked(int day, bool claimVip)
     {
-        DailyBonusManager.Instance.ClaimDailyBonus(day, OnClaimResponse);
+        DailyBonusManager.Instance.ClaimDailyBonus(day, claimVip, OnClaimResponse);
     }
 
     private void OnClaimResponse(DailyClaimResponse response)
@@ -90,8 +96,9 @@ public class UIPanelDailyBonus : UIPanelBase
         if (m_rewardDescText != null)
             m_rewardDescText.text = BuildGrantedDescription(response);
 
-        m_claimedDaysMask = response.claimedDaysMask;
-        m_todayDay        = response.todayDay;
+        m_claimedDaysMask    = response.claimedDaysMask;
+        m_vipClaimedDaysMask = response.vipClaimedDaysMask;
+        m_todayDay           = response.todayDay;
 
         if (m_scrollView != null)
             m_scrollView.RefreshVisible();

@@ -462,6 +462,9 @@ public class UIManager : MonoSingleton<UIManager>
         {
             UIPopupBase cached = pool.Dequeue();
             cached.gameObject.SetActive(true);
+            // 풀에서 꺼낸 인스턴스는 이전 사용 시점의 형제 인덱스에 그대로 남아있어, 그 뒤 다른 팝업이 새로 추가됐다면
+            // 렌더 순서상 뒤(아래)에 깔려 화면에 안 보이고 클릭도 위 팝업에 가로채임 — 항상 최상단으로 올려야 함
+            cached.transform.SetAsLastSibling();
             return cached as T;
         }
 
@@ -534,6 +537,7 @@ public class UIManager : MonoSingleton<UIManager>
     // 확인 팝업 — 이미 표시 중이면 큐에 적재, 닫힐 때 자동으로 다음 팝업 표시
     public void ShowConfirmPopup(ConfirmPopupConfig config)
     {
+        Debug.Log($"[InputDebug] ShowConfirmPopup called isShowing={m_isConfirmPopupShowing} queueCountBeforeEnqueue={m_confirmPopupQueue.Count}");
         m_confirmPopupQueue.Enqueue(config);
         if (m_isConfirmPopupShowing == false)
             ShowNextConfirmPopup();
@@ -549,6 +553,7 @@ public class UIManager : MonoSingleton<UIManager>
 
         m_isConfirmPopupShowing = true;
         ConfirmPopupConfig config = m_confirmPopupQueue.Dequeue();
+        Debug.Log($"[InputDebug] ShowNextConfirmPopup dequeued, remainingQueue={m_confirmPopupQueue.Count} overlayStackCount={m_popupStacks[(int)EPopupLayer.Overlay].Count}");
 
         UIPopupConfirm popup = GetOrCreatePopup<UIPopupConfirm>("UIPopupConfirm", EPopupLayer.Overlay);
         if (popup == null) { ShowNextConfirmPopup(); return; }
@@ -592,7 +597,7 @@ public class UIManager : MonoSingleton<UIManager>
 
     // 셀 클리어 보상(탐험 포인트/경험치 안내 + 보상카드 3택1) 통합 팝업 — 취소 없음
     // onConfirmed(selectedCardId)는 CONFIRM 클릭 시 호출 — 카드 후보가 없었던 셀(탈출 셀, Treasure 등)이면 selectedCardId는 null
-    public void ShowRewardCardSelectPopup(int explorationPointGained, int expGained, System.Collections.Generic.List<string> candidateCardIds, bool isEscapeCell, int zoneNumber, int cellRow, int cellCol, System.Action<string> onConfirmed)
+    public void ShowRewardCardSelectPopup(int explorationPointGained, int expGained, System.Collections.Generic.List<string> candidateCardIds, bool isEscapeCell, int zoneNumber, int cellRow, int cellCol, int rerollRemain, System.Action<string> onConfirmed)
     {
         UIPopupRewardCardSelect popup = GetOrCreatePopup<UIPopupRewardCardSelect>("UIPopupRewardCardSelect", EPopupLayer.Overlay);
         if (popup == null) return;
@@ -600,7 +605,7 @@ public class UIManager : MonoSingleton<UIManager>
         PushPopup(popup, EPopupLayer.Overlay);
 
         System.Action<string> userConfirmed = onConfirmed;
-        popup.ShowPopupRewardCardSelect(explorationPointGained, expGained, candidateCardIds, isEscapeCell, zoneNumber, cellRow, cellCol, selectedCardId =>
+        popup.ShowPopupRewardCardSelect(explorationPointGained, expGained, candidateCardIds, isEscapeCell, zoneNumber, cellRow, cellCol, rerollRemain, selectedCardId =>
         {
             CloseTopPopup(EPopupLayer.Overlay);
             userConfirmed?.Invoke(selectedCardId);

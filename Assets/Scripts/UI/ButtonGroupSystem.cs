@@ -25,6 +25,10 @@ public class ButtonGroupSystem : MonoBehaviour
     // true면 현재 선택된 버튼 재클릭 시 해제 (-1 상태)
     public bool allowDeselect = false;
 
+    // 팔레트 대신 비활성 색상을 직접 지정하고 싶을 때 Start() 전(예: TabSystem.inactiveColorOverride 경유)에 설정 —
+    // 기본값 null이면 기존과 동일하게 팔레트 색을 씀. 다른 사용처(UIBattleView 등)에 영향 없는 opt-in 오버라이드
+    public Color? inactiveColorOverride;
+
     private int currentIndex = -1;
     private bool initialized = false;
 
@@ -37,8 +41,12 @@ public class ButtonGroupSystem : MonoBehaviour
     {
         if (initialized) return;
 
-        Color colorActive   = CommonUtility.PaletteColor("General.Bright1");
-        Color colorInactive = CommonUtility.PaletteColor("General.Dark1");
+        Color colorActive = CommonUtility.PaletteColor("General.Bright1");
+        Color colorInactive;
+        if (inactiveColorOverride.HasValue == true)
+            colorInactive = inactiveColorOverride.Value;
+        else
+            colorInactive = CommonUtility.PaletteColor("General.Dark1");
 
         for (int i = 0; i < items.Count; i++)
         {

@@ -30,14 +30,30 @@ public class UIPanelRank : UIPanelBase
     private string m_currentBattleToken;
     private bool m_isBattleInProgress;
 
+    // TabSystem이 탭 버튼 배경뿐 아니라 라벨 텍스트(childGraphics)까지 같이 틴트하므로, 원래 글자색을 저장해뒀다가
+    // 탭 전환마다 되돌려서 배경색만 바뀌고 글자색은 고정되게 함
+    private Color m_myInfoTabTextOriginalColor;
+    private Color m_rankListTabTextOriginalColor;
+
     public override void InitializeUIPanel()
     {
+        // Start() 이전에 세팅해야 ButtonGroupSystem.Initialize()가 반영함 — MY INFO/Rank List 탭 전용 비활성 색상
+        TabSystem tabSystem = GetComponent<TabSystem>();
+        if (tabSystem != null)
+            tabSystem.inactiveColorOverride = CommonUtility.HexColor("#9696FF");
+
         if (m_titleText != null)
-            CommonUtility.SetUILocText(m_titleText, "UI_Pvp");
+            CommonUtility.SetUILocText(m_titleText, "UI_MyInfo"); // defaultActiveTab=0(MY INFO)과 일치
         if (m_myInfoTabText != null)
+        {
             CommonUtility.SetUILocText(m_myInfoTabText, "UI_MyInfo");
+            m_myInfoTabTextOriginalColor = m_myInfoTabText.color;
+        }
         if (m_rankListTabText != null)
+        {
             CommonUtility.SetUILocText(m_rankListTabText, "UI_RankList");
+            m_rankListTabTextOriginalColor = m_rankListTabText.color;
+        }
 
         if (m_refreshButton != null)
             m_refreshButton.onClick.AddListener(OnRefreshClicked);
@@ -46,12 +62,30 @@ public class UIPanelRank : UIPanelBase
 
         EventManager.Subscribe_RetreatPvp(OnRetreatPvp);
         EventManager.Subscribe_PvpBattleEnd(OnPvpBattleEnd);
+        EventManager.Subscribe_TabSelectionChanged(OnTabSelectionChanged);
     }
 
     private void OnDestroy()
     {
         EventManager.Unsubscribe_RetreatPvp(OnRetreatPvp);
         EventManager.Unsubscribe_PvpBattleEnd(OnPvpBattleEnd);
+        EventManager.Unsubscribe_TabSelectionChanged(OnTabSelectionChanged);
+    }
+
+    // TabSystem의 GameObject 이름("UIPanelRank")으로 시스템을 구분 — tabIndex 0=MY INFO, 1=Rank List
+    private void OnTabSelectionChanged(string systemName, int tabIndex)
+    {
+        if (systemName != "UIPanelRank") return;
+
+        // 이 시점엔 두 탭 버튼 모두 ApplyState()로 이미 재틴트된 뒤라, 글자색만 원래대로 되돌림
+        if (m_myInfoTabText != null) m_myInfoTabText.color = m_myInfoTabTextOriginalColor;
+        if (m_rankListTabText != null) m_rankListTabText.color = m_rankListTabTextOriginalColor;
+
+        if (m_titleText == null) return;
+        if (tabIndex == 0)
+            CommonUtility.SetUILocText(m_titleText, "UI_MyInfo");
+        else if (tabIndex == 1)
+            CommonUtility.SetUILocText(m_titleText, "UI_RankList");
     }
 
     public override void OnShowUIPanel()

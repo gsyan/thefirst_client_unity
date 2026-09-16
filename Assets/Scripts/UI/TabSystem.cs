@@ -38,7 +38,10 @@ public class TabSystem : MonoBehaviour
     public bool useAnimation = true;
     public float animationDuration = 0.3f;
     public AnimationCurve animationCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
-    
+
+    // ButtonGroupSystem.inactiveColorOverride로 그대로 전달 — Start() 전(예: UIPanelBase.InitializeUIPanel)에 설정해야 반영됨
+    public Color? inactiveColorOverride;
+
     private ButtonGroupSystem buttonGroup;
     private int currentActiveTab = -1;
     private readonly Dictionary<GameObject, Coroutine> m_animCoroutines = new Dictionary<GameObject, Coroutine>();
@@ -97,6 +100,7 @@ public class TabSystem : MonoBehaviour
         buttonGroup = gameObject.AddComponent<ButtonGroupSystem>();
         buttonGroup.defaultIndex = defaultActiveTab;
         buttonGroup.allowDeselect = allowDeselect;
+        buttonGroup.inactiveColorOverride = inactiveColorOverride;
 
         for (int i = 0; i < tabs.Count; i++)
         {

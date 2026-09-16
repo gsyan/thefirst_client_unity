@@ -40,7 +40,7 @@ public class ToggleButton : MonoBehaviour
         if (button == null)
             button = GetComponentInChildren<Button>();
 
-        Transform checkmarkTr = button.transform.Find("CheckmarkBorder/Checkmark");
+        Transform checkmarkTr = button.transform.Find("Checkmark");
         if (checkmarkTr != null)
             m_checkmark = checkmarkTr.GetComponent<Image>();
 

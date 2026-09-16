@@ -81,6 +81,29 @@ public class DataTableDailyBonus : ScriptableObject
     }
 
     // CSV 형식: day,tier,rewardType,amount  (같은 day 여러 줄 = 복수 보상)
+    public string ExportCsv()
+    {
+        var sb = new System.Text.StringBuilder();
+        sb.AppendLine("day,tier,rewardType,amount");
+
+        if (days != null)
+        {
+            for (int i = 0; i < days.Length; i++)
+            {
+                DailyBonusDayConfig dayConfig = days[i];
+                if (dayConfig == null || dayConfig.rewards == null) continue;
+
+                for (int r = 0; r < dayConfig.rewards.Length; r++)
+                {
+                    DailyBonusRewardEntry reward = dayConfig.rewards[r];
+                    sb.AppendLine($"{dayConfig.day},{reward.tier},{reward.rewardType},{reward.amount}");
+                }
+            }
+        }
+
+        return sb.ToString();
+    }
+
     public void ImportFromCsv(string csv)
     {
         string[] lines = csv.Split('\n');

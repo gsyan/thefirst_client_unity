@@ -7,6 +7,7 @@ public class AchievementData
     public string conditionParam;                  // 타입별 파라미터(존번호/이벤트종류/티어 등) — EAchievementConditionType 주석 참고
     public int threshold;                          // 이 값 이상이면 완료
     public int achievementPointReward;             // 수령 시 지급되는 업적포인트
+    public int achievementPointRewardVip;          // VIP 전용 추가 보상 — 일반 보상과 별개로 독립 수령
     public string nameKey;                         // 로컬라이즈 키
     public string descKey;                         // 로컬라이즈 키
 }

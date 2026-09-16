@@ -62,14 +62,14 @@ public class DataTableAchievement : ScriptableObject
     {
         var ic = System.Globalization.CultureInfo.InvariantCulture;
         var sb = new System.Text.StringBuilder();
-        sb.AppendLine("achievement_id,condition_type,condition_param,threshold,achievement_point_reward,name_key,desc_key");
+        sb.AppendLine("achievement_id,condition_type,condition_param,threshold,achievement_point_reward,achievement_point_reward_vip,name_key,desc_key");
 
         for (int i = 0; i < achievementDataList.Count; i++)
         {
             AchievementData data = achievementDataList[i];
-            sb.AppendLine(string.Format(ic, "{0},{1},{2},{3},{4},{5},{6}",
+            sb.AppendLine(string.Format(ic, "{0},{1},{2},{3},{4},{5},{6},{7}",
                 data.achievementId, data.conditionType, data.conditionParam,
-                data.threshold, data.achievementPointReward, data.nameKey, data.descKey));
+                data.threshold, data.achievementPointReward, data.achievementPointRewardVip, data.nameKey, data.descKey));
         }
 
         return sb.ToString();
@@ -104,8 +104,9 @@ public class DataTableAchievement : ScriptableObject
                 conditionParam = GetCol(cols, 2),
                 threshold = ParseInt(GetCol(cols, 3)),
                 achievementPointReward = ParseInt(GetCol(cols, 4)),
-                nameKey = GetCol(cols, 5),
-                descKey = GetCol(cols, 6),
+                achievementPointRewardVip = ParseInt(GetCol(cols, 5)),
+                nameKey = GetCol(cols, 6),
+                descKey = GetCol(cols, 7),
             });
         }
 

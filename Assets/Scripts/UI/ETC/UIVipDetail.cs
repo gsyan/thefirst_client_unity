@@ -49,7 +49,7 @@ public class UIVipDetail : MonoBehaviour
 
     private void InitBenefitTexts()
     {
-        if (m_benefits == null || m_benefits.Length < 3) return;
+        if (m_benefits == null || m_benefits.Length < 5) return;
         if (IAPManager.Instance == null) return;
 
         var loc = LocalizationManager.Instance;
@@ -58,7 +58,9 @@ public class UIVipDetail : MonoBehaviour
         {
             loc.Get("UIVipStatus_Benefit_NoAds"),
             loc.Get("UIVipStatus_Benefit_Daily"),
-            loc.Get("UIVipStatus_Benefit_InstantFleetRestore"),
+            loc.Get("UIVipStatus_Benefit_DoubleExploration"),
+            loc.Get("UIVipStatus_Benefit_AchievementBonus"),
+            loc.Get("UIVipStatus_Benefit_BattleSpeed"),
         };
         for (int i = 0; i < texts.Length; i++)
         {
@@ -170,7 +172,7 @@ public class UIVipDetail : MonoBehaviour
             Debug.Log($"[UIPanelVip][에디터] VIP 강제 세팅 완료 expiry={vipResponse.data?.vipExpiry}");
 
             int todayDay = DailyBonusManager.Instance.GetTodayDay();
-            DailyBonusManager.Instance.ClaimDailyBonus(todayDay, claimResult =>
+            DailyBonusManager.Instance.ClaimDailyBonus(todayDay, claimVip: true, claimResult =>
             {
                 if (m_purchaseButton != null) m_purchaseButton.interactable = true;
 

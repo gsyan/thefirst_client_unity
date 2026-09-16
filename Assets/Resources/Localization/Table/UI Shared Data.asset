@@ -275,6 +275,10 @@ MonoBehaviour:
     m_Key: UIPopupRewardCardSelect_RerollConfirm
     m_Metadata:
       m_Items: []
+  - m_Id: 79863397285232640
+    m_Key: UIPopupRewardCardSelect_RerollConfirmVip
+    m_Metadata:
+      m_Items: []
   - m_Id: 79529385672966145
     m_Key: UIPopupRewardCardSelect_RerollLimitReached
     m_Metadata:
@@ -299,6 +303,10 @@ MonoBehaviour:
     m_Key: UIPanelExplorationGrid_OtherRunInProgressWithAd
     m_Metadata:
       m_Items: []
+  - m_Id: 79863397360730112
+    m_Key: UIPanelExplorationGrid_OtherRunInProgressVip
+    m_Metadata:
+      m_Items: []
   - m_Id: 74139633398448128
     m_Key: UIPanelExplorationGrid_AbandonAnotherRunConfirm
     m_Metadata:
@@ -307,12 +315,20 @@ MonoBehaviour:
     m_Key: UIPanelExplorationGrid_AbandonAnotherRunConfirmWithAd
     m_Metadata:
       m_Items: []
+  - m_Id: 79863397364924416
+    m_Key: UIPanelExplorationGrid_AbandonAnotherRunConfirmVip
+    m_Metadata:
+      m_Items: []
   - m_Id: 74139633398448129
     m_Key: UIPanelExplorationGrid_AbandonRunConfirm
     m_Metadata:
       m_Items: []
   - m_Id: 79356561738039297
     m_Key: UIPanelExplorationGrid_AbandonRunConfirmWithAd
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79863397364924417
+    m_Key: UIPanelExplorationGrid_AbandonRunConfirmVip
     m_Metadata:
       m_Items: []
   - m_Id: 79356561738039298
@@ -551,6 +567,10 @@ MonoBehaviour:
     m_Key: UIAchievement_Reward
     m_Metadata:
       m_Items: []
+  - m_Id: 79863397364924418
+    m_Key: UIAchievement_RewardVip
+    m_Metadata:
+      m_Items: []
   - m_Id: 77305147213873152
     m_Key: UIAchievement_ClaimAllButton
     m_Metadata:
@@ -783,8 +803,16 @@ MonoBehaviour:
     m_Key: UIVipStatus_Benefit_Daily
     m_Metadata:
       m_Items: []
-  - m_Id: 45040859153825792
-    m_Key: UIVipStatus_Benefit_InstantFleetRestore
+  - m_Id: 79919752008302592
+    m_Key: UIVipStatus_Benefit_DoubleExploration
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79919752054439936
+    m_Key: UIVipStatus_Benefit_AchievementBonus
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79919752054439937
+    m_Key: UIVipStatus_Benefit_BattleSpeed
     m_Metadata:
       m_Items: []
   - m_Id: 39970930322964487

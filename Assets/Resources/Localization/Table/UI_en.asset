@@ -271,10 +271,6 @@ MonoBehaviour:
     m_Localized: Available now!
     m_Metadata:
       m_Items: []
-  - m_Id: 45040859153825792
-    m_Localized: Instantly Restore Fleet HP After Battle
-    m_Metadata:
-      m_Items: []
   - m_Id: 46124173268746241
     m_Localized: Are you sure you want to logout?
     m_Metadata:
@@ -1095,6 +1091,40 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 79529385672966145
     m_Localized: You have used all reroll chances for today.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79863397285232640
+    m_Localized: Reroll the reward cards?\nAs a VIP privilege
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79863397360730112
+    m_Localized: There is another exploration in progress.\nZone {0} / Cell {1} /
+      Banked Exploration Point {2}\nAbandon it and start a new challenge in the selected
+      zone?\n* As a VIP privilege
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79863397364924416
+    m_Localized: There is an exploration in progress in another zone. As a VIP privilege
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79863397364924417
+    m_Localized: Abandon the exploration in progress?\nAs a VIP privilege
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79863397364924418
+    m_Localized: VIP Reward
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79919752008302592
+    m_Localized: 2x Exploration Points & EXP
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79919752054439936
+    m_Localized: Bonus Achievement Rewards
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79919752054439937
+    m_Localized: Adjustable Battle Speed
     m_Metadata:
       m_Items: []
   references:
