@@ -826,6 +826,12 @@ public class ModuleHull : ModuleBase
         return m_healthMax > 0 ? m_health / m_healthMax : 0f;
     }
 
+    // 초당 수리량 — SpaceFleet.CountShipsNeedingRepair가 수리 능력 없는 함체를 집계에서 제외하기 위해 조회
+    public float GetRepair()
+    {
+        return m_repair;
+    }
+
     // 전술 토글(수리) ON 상태에서 UIPanelBattle.Co_DrainTacticPower가 1초 간격으로 호출 — m_repair는 이미 초당 단위라 deltaTime 계산 불필요
     public void ApplyRepairTick()
     {

@@ -1127,6 +1127,10 @@ MonoBehaviour:
     m_Localized: Adjustable Battle Speed
     m_Metadata:
       m_Items: []
+  - m_Id: 80217713703518208
+    m_Localized: AUTO ENTER
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

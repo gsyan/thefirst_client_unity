@@ -175,6 +175,7 @@ UITabExploration_RetreatConfirm,,Retreat to the previous zone?,이전 구역으�
 UITabPvp_RetreatConfirm,,Retreat from the PvP battle?,PvP 전투에서 퇴각하시겠습니까?
 UI_Retreat,,RETREAT,퇴각
 UI_StartBattle,,START BATTLE,전투시작
+UI_AutoEnterBattle,,AUTO ENTER,자동 진입
 require_level_compare,,Lv.{0} (Current Lv.{1}),Lv.{0} (현재 Lv.{1})
 UIPopupConfirm_RequireLevel,,Required Level,필요 레벨
 UIPopupConfirm_PvpPointLabel,,PVP Point,PVP 포인트

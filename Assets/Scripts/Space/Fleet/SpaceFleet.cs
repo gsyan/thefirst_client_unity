@@ -797,14 +797,17 @@ public class SpaceFleet : MonoBehaviour
         {
             if (ship == null) continue;
 
-            float shipHealth = 0f, shipHealthMax = 0f;
+            float shipHealth = 0f, shipHealthMax = 0f, shipRepair = 0f;
             foreach (ModuleHull body in ship.m_moduleHulls)
             {
                 if (body == null) continue;
                 shipHealth    += body.m_health;
                 shipHealthMax += body.m_healthMax;
+                shipRepair    += body.GetRepair();
             }
-            if (shipHealthMax > 0f && shipHealth < shipHealthMax) count++;
+            // 수리 능력(repair)이 0인 함체는 체력이 덜 찼어도 토글로 회복될 수 없으므로 집계에서 제외 —
+            // 포함시키면 ApplyRepairTick이 실제로는 아무 효과가 없는데도 전술력만 깎임
+            if (shipHealthMax > 0f && shipHealth < shipHealthMax && shipRepair > 0f) count++;
         }
         return count;
     }
