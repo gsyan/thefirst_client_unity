@@ -175,7 +175,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 39970930322964488
-    m_Localized: "{0} ({1} Pass \xB7 {2}day(s) Left)"
+    m_Localized: '{0} (30-Day Pass)'
     m_Metadata:
       m_Items: []
   - m_Id: 40210342046728192
