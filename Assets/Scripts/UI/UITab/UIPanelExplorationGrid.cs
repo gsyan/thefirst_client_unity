@@ -697,7 +697,10 @@ public class UIPanelExplorationGrid : UIPanelBase
         m_pendingCellCol = col;
         m_pendingCellWorldPos = m_gridData.GetCell(row, col).worldPos;
 
-        List<FleetInfo> waves = GetCellEnemyWaves(row, col);
+        // 이번 런에서 이미 클리어한 셀(재방문)은 로컬 적 함대 유무와 무관하게 항상 서버 확인 경로로 보냄 —
+        // 재방문 여부는 서버의 클리어 로그가 기준(GetCellEnemyWaves는 셀 자체의 원래 구성만 알려줄 뿐 클리어 여부는 모름)
+        bool isAlreadyClearedThisRun = m_gridData.GetCell(row, col).isCleared;
+        List<FleetInfo> waves = isAlreadyClearedThisRun == false ? GetCellEnemyWaves(row, col) : null;
         FleetInfo enemyFleetInfo = waves != null && waves.Count > 0 ? waves[0] : null;
         bool hasEnemies = enemyFleetInfo != null && enemyFleetInfo.ships != null && enemyFleetInfo.ships.Count > 0;
 
