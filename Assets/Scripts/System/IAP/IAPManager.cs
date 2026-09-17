@@ -104,20 +104,6 @@ public class IAPManager : MonoSingleton<IAPManager>
         return product.metadata.localizedPriceString;
     }
 
-    public int GetMonthRemainingDays()
-    {
-        var now = DateTime.UtcNow;
-        var endOfMonth = new DateTime(now.Year, now.Month, DateTime.DaysInMonth(now.Year, now.Month), 23, 59, 59, DateTimeKind.Utc);
-        return Mathf.Max(0, (int)(endOfMonth - now).TotalDays);
-    }
-
-    public string GetVipMonthDisplay()
-    {
-        var now = DateTime.UtcNow;
-        string localeCode = LocalizationManager.Instance != null ? LocalizationManager.Instance.GetCurrentLocaleCode() : "ko";
-        return localeCode == "ko" ? $"{now.Month}월" : now.ToString("MMM");
-    }
-
     public void SetVipExpiry(string isoExpiry)
     {
         if (string.IsNullOrEmpty(isoExpiry))

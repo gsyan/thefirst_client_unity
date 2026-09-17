@@ -116,10 +116,8 @@ public class UIVipDetail : MonoBehaviour
 
         if (m_purchaseLabel2 != null)
         {
-            string price        = IAPManager.Instance.GetVipLocalizedPrice();
-            string monthDisplay = IAPManager.Instance.GetVipMonthDisplay();
-            int    remaining    = IAPManager.Instance.GetMonthRemainingDays();
-            m_purchaseLabel2.text = loc.Get("UIVipStatus_PurchasePrice", price, monthDisplay, remaining);
+            string price = IAPManager.Instance.GetVipLocalizedPrice();
+            m_purchaseLabel2.text = loc.Get("UIVipStatus_PurchasePrice", price);
         }
 
         if (m_benefitName != null) LayoutRebuilder.ForceRebuildLayoutImmediate(m_benefitName.rectTransform);

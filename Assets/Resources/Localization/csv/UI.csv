@@ -214,7 +214,7 @@ UIVipStatus_Benefit_DoubleExploration,,2x Exploration Points & EXP,탐험 포인
 UIVipStatus_Benefit_AchievementBonus,,Bonus Achievement Rewards,업적 전용 보너스 보상
 UIVipStatus_Benefit_BattleSpeed,,Adjustable Battle Speed,전투 배속 조절
 UIVipStatus_PurchaseTitle,,BECOME ADMIRAL,제독 승급
-UIVipStatus_PurchasePrice,,{0} ({1} Pass · {2}day(s) Left),{0} ({1} 패스 D-{2})
+UIVipStatus_PurchasePrice,,{0} (30-Day Pass),{0} (30일 이용권)
 UIPopupMessage_Logout,,Are you sure you want to logout?,로그아웃 하시겠습니까?
 UIPopupMessage_LogoutGuest,,Logging out as a guest will permanently delete your account and all data. Continue?,게스트 로그아웃 시 계정과 모든 데이터가 영구 삭제됩니다. 계속하시겠습니까?
 UIPopupMessage_GoogleLink,,Would you like to link your Google account?,구글 계정을 연동하시겠습니까?
