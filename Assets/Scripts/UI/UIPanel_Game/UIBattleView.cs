@@ -124,19 +124,20 @@ public class UIBattleView : MonoBehaviour
     }
 
     // 함대 구성상 아예 해당 모듈이 없는 전술 토글은 버튼 자체를 비활성화 — idx 의미는 OnTacticToggleRequested와 동일
-    // (0=수리, 1=미사일, 2=함재기, 3=실드, 4=요격체). 수리는 모든 함선이 체력(Hull)을 가지므로 항상 해당
+    // (0=수리, 1=미사일, 2=함재기, 3=실드, 4=요격체). 수리는 함체 체력은 항상 있지만 repair 스탯이 0인 함체뿐이면 효과가 없으므로 별도 체크
     private void RefreshTacticsButtonsInteractable(SpaceFleet myFleet)
     {
         if (m_tacticsButtons == null) return;
         if (myFleet == null) return;
 
         CapabilityProfile fleetProfile = myFleet.GetFleetCapabilityProfile();
+        bool hasRepair = myFleet.HasAnyRepairCapability();
         bool hasMissile = fleetProfile.missileAttack > 0f;
         bool hasAircraft = fleetProfile.airCount > 0;
         bool hasShield = myFleet.HasAnyShieldEquipped();
         bool hasInterceptor = myFleet.HasAnyInterceptorEquipped();
 
-        if (m_tacticsButtons.Length > 0) m_tacticsButtons[0].interactable = true;
+        if (m_tacticsButtons.Length > 0) m_tacticsButtons[0].interactable = hasRepair;
         if (m_tacticsButtons.Length > 1) m_tacticsButtons[1].interactable = hasMissile;
         if (m_tacticsButtons.Length > 2) m_tacticsButtons[2].interactable = hasAircraft;
         if (m_tacticsButtons.Length > 3) m_tacticsButtons[3].interactable = hasShield;

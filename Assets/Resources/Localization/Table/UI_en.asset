@@ -793,30 +793,6 @@ MonoBehaviour:
     m_Localized: Clear {1} normal (non-event) cells cumulatively
     m_Metadata:
       m_Items: []
-  - m_Id: 78447295728582658
-    m_Localized: Treasure(Exploration Point) x{1}
-    m_Metadata:
-      m_Items: []
-  - m_Id: 78447295728582659
-    m_Localized: Clear Treasure(Exploration Point) event cells {1} times cumulatively
-    m_Metadata:
-      m_Items: []
-  - m_Id: 78447295728582660
-    m_Localized: Treasure(Fleet Heal) x{1}
-    m_Metadata:
-      m_Items: []
-  - m_Id: 78447295728582661
-    m_Localized: Clear Treasure(Fleet Heal) event cells {1} times cumulatively
-    m_Metadata:
-      m_Items: []
-  - m_Id: 78447295728582662
-    m_Localized: Treasure(Tactic Power) x{1}
-    m_Metadata:
-      m_Items: []
-  - m_Id: 78447295728582663
-    m_Localized: Clear Treasure(Tactic Power) event cells {1} times cumulatively
-    m_Metadata:
-      m_Items: []
   - m_Id: 78447295728582664
     m_Localized: Clear {1} Zones
     m_Metadata:
@@ -1019,30 +995,6 @@ MonoBehaviour:
     m_Localized: Clear {1} normal (non-event) cells today
     m_Metadata:
       m_Items: []
-  - m_Id: 79331435256610818
-    m_Localized: Treasure(Exploration Point) x{1} Today
-    m_Metadata:
-      m_Items: []
-  - m_Id: 79331435256610819
-    m_Localized: Clear Treasure(Exploration Point) event cells {1} times today
-    m_Metadata:
-      m_Items: []
-  - m_Id: 79331435256610820
-    m_Localized: Treasure(Fleet Heal) x{1} Today
-    m_Metadata:
-      m_Items: []
-  - m_Id: 79331435256610821
-    m_Localized: Clear Treasure(Fleet Heal) event cells {1} times today
-    m_Metadata:
-      m_Items: []
-  - m_Id: 79331435256610822
-    m_Localized: Treasure(Tactic Power) x{1} Today
-    m_Metadata:
-      m_Items: []
-  - m_Id: 79331435256610823
-    m_Localized: Clear Treasure(Tactic Power) event cells {1} times today
-    m_Metadata:
-      m_Items: []
   - m_Id: 79331435256610824
     m_Localized: Clear {1} Zones Today
     m_Metadata:
@@ -1129,6 +1081,22 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 80217713703518208
     m_Localized: AUTO ENTER
+    m_Metadata:
+      m_Items: []
+  - m_Id: 80415901903355904
+    m_Localized: Event Cell Visit x{1}
+    m_Metadata:
+      m_Items: []
+  - m_Id: 80415901962076160
+    m_Localized: Clear event cells {1} times cumulatively
+    m_Metadata:
+      m_Items: []
+  - m_Id: 80415901962076161
+    m_Localized: Event Cell Visit x{1} Today
+    m_Metadata:
+      m_Items: []
+  - m_Id: 80415901962076162
+    m_Localized: Clear event cells {1} times today
     m_Metadata:
       m_Items: []
   references:

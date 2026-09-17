@@ -202,7 +202,7 @@ public class AdManager : MonoSingleton<AdManager>
         {
             Dispatch(() =>
             {
-                Debug.LogWarning($"[AdManager] 리워드 광고 표시 실패: {error}");
+                Debug.LogError($"[AdManager] 리워드 광고 표시 실패: {error}");
                 _onRewardedAdClosed?.Invoke(EAdResult.Failed);
                 _onRewardedAdClosed = null;
                 LoadRewardedAd();
@@ -215,7 +215,7 @@ public class AdManager : MonoSingleton<AdManager>
     {
         if (_rewardedAd == null || _rewardedAd.CanShowAd() == false)
         {
-            Debug.LogWarning("[AdManager] 리워드 광고 준비 안 됨");
+            Debug.LogError("[AdManager] 리워드 광고 준비 안 됨");
             callback?.Invoke(EAdResult.Failed);
             LoadRewardedAd();
             return;

@@ -253,22 +253,14 @@ UIFleet_IncreaseCommandPowerButton,,Increase CP,지휘력 증가
 UIFleet_IncreaseTacticPowerButton,,Increase TP,전술력 증가
 UIAchievement_Name_cell_clear,,Clear {1} Cells,셀 클리어 {1}회
 UIAchievement_Desc_cell_clear,,Clear {1} normal (non-event) cells cumulatively,일반(비이벤트) 셀을 누적 {1}회 클리어하면 완료
-UIAchievement_Name_event_cell_explorationpoint,,Treasure(Exploration Point) x{1},트레저(탐사포인트) {1}회
-UIAchievement_Desc_event_cell_explorationpoint,,Clear Treasure(Exploration Point) event cells {1} times cumulatively,트레저(탐사포인트) 이벤트 셀을 누적 {1}회 클리어하면 완료
-UIAchievement_Name_event_cell_shiphealthheal,,Treasure(Fleet Heal) x{1},트레저(함대 회복) {1}회
-UIAchievement_Desc_event_cell_shiphealthheal,,Clear Treasure(Fleet Heal) event cells {1} times cumulatively,트레저(함대 회복) 이벤트 셀을 누적 {1}회 클리어하면 완료
-UIAchievement_Name_event_cell_tacticpowerrestore,,Treasure(Tactic Power) x{1},트레저(전술력 회복) {1}회
-UIAchievement_Desc_event_cell_tacticpowerrestore,,Clear Treasure(Tactic Power) event cells {1} times cumulatively,트레저(전술력 회복) 이벤트 셀을 누적 {1}회 클리어하면 완료
+UIAchievement_Name_event_cell,,Event Cell Visit x{1},이벤트 셀 방문 {1}회
+UIAchievement_Desc_event_cell,,Clear event cells {1} times cumulatively,이벤트 셀을 누적 {1}회 클리어하면 완료
 UIAchievement_Name_zone_clear_total,,Clear {1} Zones,존 {1}개 클리어
 UIAchievement_Desc_zone_clear_total,,Clear {1} different zones cumulatively,서로 다른 존을 누적 {1}개 클리어하면 완료
 UIDailyAchievement_Name_cell_clear,,Clear {1} Cells Today,오늘 셀 클리어 {1}회
 UIDailyAchievement_Desc_cell_clear,,Clear {1} normal (non-event) cells today,오늘 일반(비이벤트) 셀을 {1}회 클리어하면 완료(자정 UTC 리셋)
-UIDailyAchievement_Name_event_cell_explorationpoint,,Treasure(Exploration Point) x{1} Today,오늘 트레저(탐사포인트) {1}회
-UIDailyAchievement_Desc_event_cell_explorationpoint,,Clear Treasure(Exploration Point) event cells {1} times today,오늘 트레저(탐사포인트) 이벤트 셀을 {1}회 클리어하면 완료(자정 UTC 리셋)
-UIDailyAchievement_Name_event_cell_shiphealthheal,,Treasure(Fleet Heal) x{1} Today,오늘 트레저(함대 회복) {1}회
-UIDailyAchievement_Desc_event_cell_shiphealthheal,,Clear Treasure(Fleet Heal) event cells {1} times today,오늘 트레저(함대 회복) 이벤트 셀을 {1}회 클리어하면 완료(자정 UTC 리셋)
-UIDailyAchievement_Name_event_cell_tacticpowerrestore,,Treasure(Tactic Power) x{1} Today,오늘 트레저(전술력 회복) {1}회
-UIDailyAchievement_Desc_event_cell_tacticpowerrestore,,Clear Treasure(Tactic Power) event cells {1} times today,오늘 트레저(전술력 회복) 이벤트 셀을 {1}회 클리어하면 완료(자정 UTC 리셋)
+UIDailyAchievement_Name_event_cell,,Event Cell Visit x{1} Today,오늘 이벤트 셀 방문 {1}회
+UIDailyAchievement_Desc_event_cell,,Clear event cells {1} times today,오늘 이벤트 셀을 {1}회 클리어하면 완료(자정 UTC 리셋)
 UIDailyAchievement_Name_zone_clear_total,,Clear {1} Zones Today,오늘 존 {1}개 클리어
 UIDailyAchievement_Desc_zone_clear_total,,Escape {1} zone runs today (revisiting cleared zones counts too),오늘 존을 {1}번 탈출(클리어)하면 완료 — 이미 클리어한 존 재방문도 인정(자정 UTC 리셋)
 UIAchievement_Name_zone_clear,,Clear Zone {0},존 {0} 클리어

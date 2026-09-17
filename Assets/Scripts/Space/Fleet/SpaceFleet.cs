@@ -113,6 +113,22 @@ public class SpaceFleet : MonoBehaviour
         return false;
     }
 
+    // 함대 구성상 수리 능력(repair > 0)을 가진 함체가 하나라도 있는지 — 체력 게이지 자체는 모든 함선이 갖지만
+    // repair가 0인 함체만으로 이루어진 함대는 토글을 켜도 회복 효과가 전혀 없으므로 전술 토글 버튼 자체를 비활성화할지 판단용
+    public bool HasAnyRepairCapability()
+    {
+        foreach (SpaceShip ship in m_ships)
+        {
+            if (ship == null) continue;
+            foreach (ModuleHull body in ship.m_moduleHulls)
+            {
+                if (body == null) continue;
+                if (body.GetRepair() > 0f) return true;
+            }
+        }
+        return false;
+    }
+
     private void Start()
     {
         EventManager.Subscribe_ShipBodyChanged(OnShipBodyChanged);

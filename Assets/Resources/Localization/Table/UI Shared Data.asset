@@ -975,28 +975,12 @@ MonoBehaviour:
     m_Key: UIAchievement_Desc_cell_clear
     m_Metadata:
       m_Items: []
-  - m_Id: 78447295728582658
-    m_Key: UIAchievement_Name_event_cell_explorationpoint
+  - m_Id: 80415901903355904
+    m_Key: UIAchievement_Name_event_cell
     m_Metadata:
       m_Items: []
-  - m_Id: 78447295728582659
-    m_Key: UIAchievement_Desc_event_cell_explorationpoint
-    m_Metadata:
-      m_Items: []
-  - m_Id: 78447295728582660
-    m_Key: UIAchievement_Name_event_cell_shiphealthheal
-    m_Metadata:
-      m_Items: []
-  - m_Id: 78447295728582661
-    m_Key: UIAchievement_Desc_event_cell_shiphealthheal
-    m_Metadata:
-      m_Items: []
-  - m_Id: 78447295728582662
-    m_Key: UIAchievement_Name_event_cell_tacticpowerrestore
-    m_Metadata:
-      m_Items: []
-  - m_Id: 78447295728582663
-    m_Key: UIAchievement_Desc_event_cell_tacticpowerrestore
+  - m_Id: 80415901962076160
+    m_Key: UIAchievement_Desc_event_cell
     m_Metadata:
       m_Items: []
   - m_Id: 78447295728582664
@@ -1015,28 +999,12 @@ MonoBehaviour:
     m_Key: UIDailyAchievement_Desc_cell_clear
     m_Metadata:
       m_Items: []
-  - m_Id: 79331435256610818
-    m_Key: UIDailyAchievement_Name_event_cell_explorationpoint
+  - m_Id: 80415901962076161
+    m_Key: UIDailyAchievement_Name_event_cell
     m_Metadata:
       m_Items: []
-  - m_Id: 79331435256610819
-    m_Key: UIDailyAchievement_Desc_event_cell_explorationpoint
-    m_Metadata:
-      m_Items: []
-  - m_Id: 79331435256610820
-    m_Key: UIDailyAchievement_Name_event_cell_shiphealthheal
-    m_Metadata:
-      m_Items: []
-  - m_Id: 79331435256610821
-    m_Key: UIDailyAchievement_Desc_event_cell_shiphealthheal
-    m_Metadata:
-      m_Items: []
-  - m_Id: 79331435256610822
-    m_Key: UIDailyAchievement_Name_event_cell_tacticpowerrestore
-    m_Metadata:
-      m_Items: []
-  - m_Id: 79331435256610823
-    m_Key: UIDailyAchievement_Desc_event_cell_tacticpowerrestore
+  - m_Id: 80415901962076162
+    m_Key: UIDailyAchievement_Desc_event_cell
     m_Metadata:
       m_Items: []
   - m_Id: 79331435256610824
