@@ -228,9 +228,15 @@ public class ApiClient
 
         if (request.result != UnityWebRequest.Result.Success)
         {
-            Debug.LogError($"[API Request] URL: {request.url}, Method: {request.method}");
-            string errorText = request.downloadHandler?.text ?? request.error;
-            Debug.LogError($"[API Error] Result: {request.result}, Error: {request.error}, ResponseCode: {request.responseCode}, Response: {errorText}");
+            // 401(액세스 토큰 만료)은 NetworkManager.RunAsync가 자동으로 토큰 갱신 후 재시도하는 정상적인 흐름이라
+            // 에러로 로그하지 않음 — 갱신/재시도까지 실패하면 그쪽에서 별도로 로그함
+            bool isExpectedTokenExpiry = request.responseCode == 401;
+            if (isExpectedTokenExpiry == false)
+            {
+                Debug.LogError($"[API Request] URL: {request.url}, Method: {request.method}");
+                string errorText = request.downloadHandler?.text ?? request.error;
+                Debug.LogError($"[API Error] Result: {request.result}, Error: {request.error}, ResponseCode: {request.responseCode}, Response: {errorText}");
+            }
             ServerErrorCode errorCode = GetHttpErrorCode(request.responseCode);
             throw new CustomException(errorCode);
         }

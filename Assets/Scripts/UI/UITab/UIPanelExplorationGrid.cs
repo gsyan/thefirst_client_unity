@@ -685,16 +685,64 @@ public class UIPanelExplorationGrid : UIPanelBase
         ConfirmEnterCell(row, col);
     }
 
-    // 확인 팝업 승인 — 전투 여부를 아직 모르므로 카메라는 갤럭시뷰에 그대로 둔 채 서버(EnterExplorationCell)부터 물어봄.
-    // 함대뷰 전환(ExitGalaxyView)은 응답이 "전투 있음"으로 확정된 뒤(OnEnterExplorationCellResponse)에만 시작 — 전투 없는
-    // 재방문/빈 셀은 카메라 전환 자체가 불필요하므로 갤럭시뷰에 머문 채 위치만 갱신(MoveToConfirmedCellWithoutBattle)
+    // 확인 팝업 승인 — 적 함대 유무/구성은 서버 응답 없이도 로컬에 이미 결정론적으로 캐싱되어 있으므로(GetCellEnemyWaves),
+    // 전투가 있는 셀은 서버 호출 없이 곧바로 대치 화면(EnterLocalCombatPreview)까지 진행한다. 실제 enter-cell 서버 호출은
+    // "전투시작" 버튼을 눌러 진짜로 싸우기로 확정한 순간(OnConfirmStartBattle)으로 미뤄짐 — 대치 화면만 보고 퇴각하면
+    // 서버에 아무 흔적도 남지 않음. 전투가 없는 셀(재방문/이벤트/블락드/스타트)은 별도의 커밋 단계가 없어 지금처럼
+    // 확인 직후 바로 서버(EnterExplorationCell)부터 물어봄 — 함대뷰 전환(ExitGalaxyView)은 응답이 "전투 있음"으로
+    // 확정된 뒤(OnEnterExplorationCellResponse)에만 시작, 재방문/빈 셀은 카메라 전환 없이 위치만 갱신(MoveToConfirmedCellWithoutBattle)
     private void ConfirmEnterCell(int row, int col)
     {
         m_pendingCellRow = row;
         m_pendingCellCol = col;
         m_pendingCellWorldPos = m_gridData.GetCell(row, col).worldPos;
 
+        List<FleetInfo> waves = GetCellEnemyWaves(row, col);
+        FleetInfo enemyFleetInfo = waves != null && waves.Count > 0 ? waves[0] : null;
+        bool hasEnemies = enemyFleetInfo != null && enemyFleetInfo.ships != null && enemyFleetInfo.ships.Count > 0;
+
+        if (hasEnemies == true)
+        {
+            m_pendingRemainingWaves = waves.Count > 1 ? waves.GetRange(1, waves.Count - 1) : null;
+            EnterLocalCombatPreview(enemyFleetInfo);
+            return;
+        }
+
         RequestEnemyFleetForCurrentCell();
+    }
+
+    // 전투가 있는 셀 — 서버 호출 없이 로컬 함대 데이터만으로 대치 화면까지 진행. 퇴각 복귀용 스냅샷 저장 +
+    // 함대뷰 전환 트리거까지는 서버 응답이 필요 없는 부분(원래 OnEnterExplorationCellResponse의 "전투 있음" 분기와 동일)
+    private void EnterLocalCombatPreview(FleetInfo enemyFleetInfo)
+    {
+        SpaceFleet myFleet = ObjectManager.Instance.GetMyFleet();
+        if (myFleet == null) return;
+
+        // 직전 셀 클리어로 이미 소비된 토큰이 남아있으면 안 되므로 초기화 — OnConfirmStartBattle이 이 값의 null 여부로
+        // "서버 enter-cell 호출이 아직 필요한지"를 판단함(드문 재시도 경로 OnAnotherRunAbandonedAndRetry는 이 메서드를 거치지
+        // 않고 OnEnterExplorationCellResponse에서 직접 토큰을 세팅하므로 구분됨)
+        m_activeChallengeToken = null;
+
+        // 카메라 전환 전(그리드 좌표→월드좌표 역산이 가능한 마지막 시점)에 퇴각 복귀용 스냅샷 저장
+        m_previousRow = m_currentRow;
+        m_previousCol = m_currentCol;
+        m_previousFleetWorldPos = myFleet.transform.position;
+        m_previousShipHealthRatios = myFleet.BuildHealthRatioSnapshot();
+        CommanderInfo snapshotCommanderInfo = DataManager.Instance.m_currentCommander != null ? DataManager.Instance.m_currentCommander.m_commanderInfo : null;
+        m_previousTacticPower = snapshotCommanderInfo != null ? snapshotCommanderInfo.tacticPower : 0;
+
+        m_pendingEnemyFleetInfo = enemyFleetInfo;
+
+        // 함대뷰로 전환 — m_pendingCellEntry를 먼저 세팅해야 바로 아래 OpenEmpty()가 유발하는
+        // OnHideUIPanel(ExitGalaxyView 트리거) 시점에 올바른 분기를 탐. FleetViewRestored 이후 OnFleetViewRestoredForCellEntry에서
+        // 실제 함대 이동/워프인 + 적 함대 스폰(SpawnConfirmedEnemyFleet) 처리
+        m_pendingCellEntry = true;
+
+        // UIPanelPrepareBattle을 콘텐츠 없이 이 패널 위에 곧바로 push — 이 패널은 스택에서 제거되지 않고 그대로 남아있는 채
+        // (push의 자연스러운 부작용으로) OnHideUIPanel만 트리거됨. 실제 내용은 워프인 완료 후 SetupContent가 채움
+        UIPanelPrepareBattle preOpenPanel = UIManager.Instance.GetPanel<UIPanelPrepareBattle>("UIPanelPrepareBattle");
+        if (preOpenPanel != null)
+            preOpenPanel.OpenEmpty();
     }
 
     private void OnFleetViewRestoredForCellEntry()
@@ -740,11 +788,60 @@ public class UIPanelExplorationGrid : UIPanelBase
         panel.SetupContent(myFleet, enemyFleet, m_currentZoneNumber, cellDisplay, OnConfirmStartBattle, OnConfirmRetreat);
     }
 
-    // 전투시작 확정 — 적 함대는 서버 응답으로 이미 스폰돼 있으므로 별도 통신 없이 바로 교전 전환
+    // 전투시작 확정 — 로컬 대치 화면(EnterLocalCombatPreview)을 거쳤다면 아직 서버에 enter-cell을 호출한 적이 없으므로
+    // 여기서 비로소 호출(이 시점부터 서버에 챌린지 토큰이 발급되고 존런 상태가 실질적으로 시작됨).
+    // m_activeChallengeToken이 이미 있으면(드문 재시도 경로 OnAnotherRunAbandonedAndRetry → RequestEnemyFleetForCurrentCell →
+    // OnEnterExplorationCellResponse에서 이미 세팅된 경우) 중복 호출하지 않고 바로 교전 전환
     private void OnConfirmStartBattle()
     {
         if (m_standoffEnemyFleet == null) return;
 
+        if (string.IsNullOrEmpty(m_activeChallengeToken) == false)
+        {
+            StartConfirmedLocalCombat();
+            return;
+        }
+
+        EnterExplorationCellRequest request = new EnterExplorationCellRequest
+        {
+            zoneNumber = m_currentZoneNumber,
+            cellRow = m_pendingCellRow,
+            cellCol = m_pendingCellCol,
+            fleetInfo = DataManager.Instance.m_currentFleetComposition != null
+                ? DataManager.Instance.m_currentFleetComposition.ToNetworkFleetInfo()
+                : null,
+        };
+        NetworkManager.Instance.EnterExplorationCell(request, OnEnterExplorationCellResponseForCombatStart);
+    }
+
+    private void OnEnterExplorationCellResponseForCombatStart(ApiResponse<EnterExplorationCellResponse> response)
+    {
+        if (response.errorCode == (int)ServerErrorCode.EXPLORATION_ANOTHER_ZONE_IN_PROGRESS)
+        {
+            ShowAbandonAnotherRunConfirmPopup();
+            return;
+        }
+
+        if (response.errorCode != 0)
+        {
+            // 전투는 시작하지 않음 — 대치 화면은 그대로 남아있어 유저가 다시 시도하거나 퇴각할 수 있음
+            Debug.LogError($"[UIPanelExplorationGrid] EnterExplorationCell(전투시작) 실패: {response.errorCode}");
+            return;
+        }
+
+        m_activeChallengeToken = response.data.challengeToken;
+
+        // 이 존에 런이 확정 시작됨 — 로컬 캐시도 즉시 갱신해야 이번 세션 안에서 "다른 존 진행중" 판정이 정확함
+        CommanderInfo commanderInfo = DataManager.Instance.m_currentCommander != null ? DataManager.Instance.m_currentCommander.m_commanderInfo : null;
+        if (commanderInfo != null)
+            commanderInfo.explorationZoneNumber = m_currentZoneNumber;
+
+        StartConfirmedLocalCombat();
+    }
+
+    // 적 함대는 이미 로컬에 스폰돼 있으므로 별도 통신 없이 바로 교전 전환
+    private void StartConfirmedLocalCombat()
+    {
         // 교전 상태 진입 즉시 발사하면 안되는 경우를 대비해 마련해둠
         const float BATTLE_START_DELAY_SEC = 0.001f;
         ObjectManager.Instance.TryStartCombat(m_standoffEnemyFleet, EUnitState.BattleExploration, BATTLE_START_DELAY_SEC, BATTLE_START_DELAY_SEC);
@@ -765,6 +862,8 @@ public class UIPanelExplorationGrid : UIPanelBase
         }
     }
 
+    // RequestEnemyFleetForCurrentCell의 응답 처리 — 전투 없는 셀(재방문/이벤트/블락드/스타트)의 정상 경로이자,
+    // OnAnotherRunAbandonedAndRetry(다른 존 런 포기 후 재시도)가 재사용하는 드문 예외 경로에서만 전투 있는 셀도 여전히 여기로 옴
     private void OnEnterExplorationCellResponse(ApiResponse<EnterExplorationCellResponse> response)
     {
         if (response.errorCode == (int)ServerErrorCode.EXPLORATION_ANOTHER_ZONE_IN_PROGRESS)
