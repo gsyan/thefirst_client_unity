@@ -145,6 +145,7 @@ UIFleet_ShipLoadOut_Title,,Ship Loadout,함선 모듈 관리
 UIFleet_EditLoadoutButton,,Edit,함선 수정
 UIFleet_HullPicker_Title,,Select Hull,함체 선택
 UIHullPicker_UnlockConfirmMessage,,Unlock {0},{0}을(를) 언락하시겠습니까?
+UIHullPicker_UnlockPrerequisiteFailMessage,,Unlock the previous hull first.,이전 단계 함체를 먼저 언락해야 합니다.
 UIAchievement_Progress,,Progress,진행도
 UIAchievement_Reward,,AP Reward,업적포인트 보상
 UIAchievement_RewardVip,,VIP Reward,VIP 보상

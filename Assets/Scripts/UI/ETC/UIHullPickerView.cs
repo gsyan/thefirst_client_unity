@@ -172,6 +172,14 @@ public class UIHullPickerView : MonoBehaviour
         {
             if (response.errorCode != 0)
             {
+                if (response.errorCode == (int)ServerErrorCode.UNLOCK_HULL_FAIL_PREREQUISITE_NOT_UNLOCKED)
+                {
+                    UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig
+                    {
+                        message = LocalizationManager.Instance.Get("UIHullPicker_UnlockPrerequisiteFailMessage"),
+                        onConfirm = () => { },
+                    });
+                }
                 Debug.LogError($"[UIHullPickerView] UnlockHull 실패: {response.errorCode}");
                 return;
             }
