@@ -16,8 +16,7 @@ public class UIAchievementRow : MonoBehaviour
     [SerializeField] private GameObject m_itemRedDot; // 이 항목이 완료+미수령 상태일 때만 표시
     [SerializeField] private TMP_Text m_nameText;
     [SerializeField] private TMP_Text m_descText;
-    [SerializeField] private RowLabelValue m_progressRow;
-    
+
     [Header("일반 보상")]
     [SerializeField] private RowLabelValue m_rewardRow;
     [SerializeField] private Button m_claimButton;
@@ -63,12 +62,13 @@ public class UIAchievementRow : MonoBehaviour
 
         bool isCompleted = currentValue >= data.threshold;
 
+        string achievementName = string.Format(LocalizationManager.Instance.Get(data.nameKey), data.conditionParam, data.threshold, data.achievementPointReward);
+        string progressLabel = LocalizationManager.Instance.Get("UIAchievement_Progress");
+        string progressValue = $"{Mathf.Min(currentValue, data.threshold)}/{data.threshold}";
         if (m_nameText != null)
-            m_nameText.text = string.Format(LocalizationManager.Instance.Get(data.nameKey), data.conditionParam, data.threshold, data.achievementPointReward);
+            m_nameText.text = $"{achievementName} ({progressLabel} {progressValue})";
         if (m_descText != null)
             m_descText.text = string.Format(LocalizationManager.Instance.Get(data.descKey), data.conditionParam, data.threshold, data.achievementPointReward);
-        if (m_progressRow != null)
-            m_progressRow.SetRow("UIAchievement_Progress", $"{Mathf.Min(currentValue, data.threshold)}/{data.threshold}", rawValue: true);
         if (m_rewardRow != null)
             m_rewardRow.SetRow("UIAchievement_Reward", $"+{data.achievementPointReward}", rawValue: true);
         if (m_vipRewardRow != null)
