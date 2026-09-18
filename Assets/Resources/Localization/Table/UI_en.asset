@@ -1099,6 +1099,22 @@ MonoBehaviour:
     m_Localized: Clear event cells {1} times today
     m_Metadata:
       m_Items: []
+  - m_Id: 80555228885024768
+    m_Localized: Unlock the previous hull first.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 80555228943745024
+    m_Localized: Fully Clear Zone {0}
+    m_Metadata:
+      m_Items: []
+  - m_Id: 80555228943745025
+    m_Localized: Clear every cell in Zone {0} within a single run
+    m_Metadata:
+      m_Items: []
+  - m_Id: 80557516944965632
+    m_Localized: Zone Full Clear
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

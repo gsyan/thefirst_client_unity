@@ -3701,3 +3701,803 @@ MonoBehaviour:
     achievementPointRewardVip: 50
     nameKey: UIAchievement_Name_hull_unlock
     descKey: UIAchievement_Desc_hull_unlock
+  - achievementId: zone_full_clear_1
+    conditionType: 11
+    conditionParam: 1
+    threshold: 1
+    achievementPointReward: 20
+    achievementPointRewardVip: 20
+    nameKey: UIAchievement_Name_zone_full_clear
+    descKey: UIAchievement_Desc_zone_full_clear
+  - achievementId: zone_full_clear_2
+    conditionType: 11
+    conditionParam: 2
+    threshold: 1
+    achievementPointReward: 20
+    achievementPointRewardVip: 20
+    nameKey: UIAchievement_Name_zone_full_clear
+    descKey: UIAchievement_Desc_zone_full_clear
+  - achievementId: zone_full_clear_3
+    conditionType: 11
+    conditionParam: 3
+    threshold: 1
+    achievementPointReward: 20
+    achievementPointRewardVip: 20
+    nameKey: UIAchievement_Name_zone_full_clear
+    descKey: UIAchievement_Desc_zone_full_clear
+  - achievementId: zone_full_clear_4
+    conditionType: 11
+    conditionParam: 4
+    threshold: 1
+    achievementPointReward: 20
+    achievementPointRewardVip: 20
+    nameKey: UIAchievement_Name_zone_full_clear
+    descKey: UIAchievement_Desc_zone_full_clear
+  - achievementId: zone_full_clear_5
+    conditionType: 11
+    conditionParam: 5
+    threshold: 1
+    achievementPointReward: 20
+    achievementPointRewardVip: 20
+    nameKey: UIAchievement_Name_zone_full_clear
+    descKey: UIAchievement_Desc_zone_full_clear
+  - achievementId: zone_full_clear_6
+    conditionType: 11
+    conditionParam: 6
+    threshold: 1
+    achievementPointReward: 20
+    achievementPointRewardVip: 20
+    nameKey: UIAchievement_Name_zone_full_clear
+    descKey: UIAchievement_Desc_zone_full_clear
+  - achievementId: zone_full_clear_7
+    conditionType: 11
+    conditionParam: 7
+    threshold: 1
+    achievementPointReward: 20
+    achievementPointRewardVip: 20
+    nameKey: UIAchievement_Name_zone_full_clear
+    descKey: UIAchievement_Desc_zone_full_clear
+  - achievementId: zone_full_clear_8
+    conditionType: 11
+    conditionParam: 8
+    threshold: 1
+    achievementPointReward: 20
+    achievementPointRewardVip: 20
+    nameKey: UIAchievement_Name_zone_full_clear
+    descKey: UIAchievement_Desc_zone_full_clear
+  - achievementId: zone_full_clear_9
+    conditionType: 11
+    conditionParam: 9
+    threshold: 1
+    achievementPointReward: 20
+    achievementPointRewardVip: 20
+    nameKey: UIAchievement_Name_zone_full_clear
+    descKey: UIAchievement_Desc_zone_full_clear
+  - achievementId: zone_full_clear_10
+    conditionType: 11
+    conditionParam: 10
+    threshold: 1
+    achievementPointReward: 30
+    achievementPointRewardVip: 30
+    nameKey: UIAchievement_Name_zone_full_clear
+    descKey: UIAchievement_Desc_zone_full_clear
+  - achievementId: zone_full_clear_11
+    conditionType: 11
+    conditionParam: 11
+    threshold: 1
+    achievementPointReward: 30
+    achievementPointRewardVip: 30
+    nameKey: UIAchievement_Name_zone_full_clear
+    descKey: UIAchievement_Desc_zone_full_clear
+  - achievementId: zone_full_clear_12
+    conditionType: 11
+    conditionParam: 12
+    threshold: 1
+    achievementPointReward: 30
+    achievementPointRewardVip: 30
+    nameKey: UIAchievement_Name_zone_full_clear
+    descKey: UIAchievement_Desc_zone_full_clear
+  - achievementId: zone_full_clear_13
+    conditionType: 11
+    conditionParam: 13
+    threshold: 1
+    achievementPointReward: 30
+    achievementPointRewardVip: 30
+    nameKey: UIAchievement_Name_zone_full_clear
+    descKey: UIAchievement_Desc_zone_full_clear
+  - achievementId: zone_full_clear_14
+    conditionType: 11
+    conditionParam: 14
+    threshold: 1
+    achievementPointReward: 30
+    achievementPointRewardVip: 30
+    nameKey: UIAchievement_Name_zone_full_clear
+    descKey: UIAchievement_Desc_zone_full_clear
+  - achievementId: zone_full_clear_15
+    conditionType: 11
+    conditionParam: 15
+    threshold: 1
+    achievementPointReward: 30
+    achievementPointRewardVip: 30
+    nameKey: UIAchievement_Name_zone_full_clear
+    descKey: UIAchievement_Desc_zone_full_clear
+  - achievementId: zone_full_clear_16
+    conditionType: 11
+    conditionParam: 16
+    threshold: 1
+    achievementPointReward: 30
+    achievementPointRewardVip: 30
+    nameKey: UIAchievement_Name_zone_full_clear
+    descKey: UIAchievement_Desc_zone_full_clear
+  - achievementId: zone_full_clear_17
+    conditionType: 11
+    conditionParam: 17
+    threshold: 1
+    achievementPointReward: 30
+    achievementPointRewardVip: 30
+    nameKey: UIAchievement_Name_zone_full_clear
+    descKey: UIAchievement_Desc_zone_full_clear
+  - achievementId: zone_full_clear_18
+    conditionType: 11
+    conditionParam: 18
+    threshold: 1
+    achievementPointReward: 30
+    achievementPointRewardVip: 30
+    nameKey: UIAchievement_Name_zone_full_clear
+    descKey: UIAchievement_Desc_zone_full_clear
+  - achievementId: zone_full_clear_19
+    conditionType: 11
+    conditionParam: 19
+    threshold: 1
+    achievementPointReward: 30
+    achievementPointRewardVip: 30
+    nameKey: UIAchievement_Name_zone_full_clear
+    descKey: UIAchievement_Desc_zone_full_clear
+  - achievementId: zone_full_clear_20
+    conditionType: 11
+    conditionParam: 20
+    threshold: 1
+    achievementPointReward: 40
+    achievementPointRewardVip: 40
+    nameKey: UIAchievement_Name_zone_full_clear
+    descKey: UIAchievement_Desc_zone_full_clear
+  - achievementId: zone_full_clear_21
+    conditionType: 11
+    conditionParam: 21
+    threshold: 1
+    achievementPointReward: 40
+    achievementPointRewardVip: 40
+    nameKey: UIAchievement_Name_zone_full_clear
+    descKey: UIAchievement_Desc_zone_full_clear
+  - achievementId: zone_full_clear_22
+    conditionType: 11
+    conditionParam: 22
+    threshold: 1
+    achievementPointReward: 40
+    achievementPointRewardVip: 40
+    nameKey: UIAchievement_Name_zone_full_clear
+    descKey: UIAchievement_Desc_zone_full_clear
+  - achievementId: zone_full_clear_23
+    conditionType: 11
+    conditionParam: 23
+    threshold: 1
+    achievementPointReward: 40
+    achievementPointRewardVip: 40
+    nameKey: UIAchievement_Name_zone_full_clear
+    descKey: UIAchievement_Desc_zone_full_clear
+  - achievementId: zone_full_clear_24
+    conditionType: 11
+    conditionParam: 24
+    threshold: 1
+    achievementPointReward: 40
+    achievementPointRewardVip: 40
+    nameKey: UIAchievement_Name_zone_full_clear
+    descKey: UIAchievement_Desc_zone_full_clear
+  - achievementId: zone_full_clear_25
+    conditionType: 11
+    conditionParam: 25
+    threshold: 1
+    achievementPointReward: 40
+    achievementPointRewardVip: 40
+    nameKey: UIAchievement_Name_zone_full_clear
+    descKey: UIAchievement_Desc_zone_full_clear
+  - achievementId: zone_full_clear_26
+    conditionType: 11
+    conditionParam: 26
+    threshold: 1
+    achievementPointReward: 40
+    achievementPointRewardVip: 40
+    nameKey: UIAchievement_Name_zone_full_clear
+    descKey: UIAchievement_Desc_zone_full_clear
+  - achievementId: zone_full_clear_27
+    conditionType: 11
+    conditionParam: 27
+    threshold: 1
+    achievementPointReward: 40
+    achievementPointRewardVip: 40
+    nameKey: UIAchievement_Name_zone_full_clear
+    descKey: UIAchievement_Desc_zone_full_clear
+  - achievementId: zone_full_clear_28
+    conditionType: 11
+    conditionParam: 28
+    threshold: 1
+    achievementPointReward: 40
+    achievementPointRewardVip: 40
+    nameKey: UIAchievement_Name_zone_full_clear
+    descKey: UIAchievement_Desc_zone_full_clear
+  - achievementId: zone_full_clear_29
+    conditionType: 11
+    conditionParam: 29
+    threshold: 1
+    achievementPointReward: 40
+    achievementPointRewardVip: 40
+    nameKey: UIAchievement_Name_zone_full_clear
+    descKey: UIAchievement_Desc_zone_full_clear
+  - achievementId: zone_full_clear_30
+    conditionType: 11
+    conditionParam: 30
+    threshold: 1
+    achievementPointReward: 50
+    achievementPointRewardVip: 50
+    nameKey: UIAchievement_Name_zone_full_clear
+    descKey: UIAchievement_Desc_zone_full_clear
+  - achievementId: zone_full_clear_31
+    conditionType: 11
+    conditionParam: 31
+    threshold: 1
+    achievementPointReward: 50
+    achievementPointRewardVip: 50
+    nameKey: UIAchievement_Name_zone_full_clear
+    descKey: UIAchievement_Desc_zone_full_clear
+  - achievementId: zone_full_clear_32
+    conditionType: 11
+    conditionParam: 32
+    threshold: 1
+    achievementPointReward: 50
+    achievementPointRewardVip: 50
+    nameKey: UIAchievement_Name_zone_full_clear
+    descKey: UIAchievement_Desc_zone_full_clear
+  - achievementId: zone_full_clear_33
+    conditionType: 11
+    conditionParam: 33
+    threshold: 1
+    achievementPointReward: 50
+    achievementPointRewardVip: 50
+    nameKey: UIAchievement_Name_zone_full_clear
+    descKey: UIAchievement_Desc_zone_full_clear
+  - achievementId: zone_full_clear_34
+    conditionType: 11
+    conditionParam: 34
+    threshold: 1
+    achievementPointReward: 50
+    achievementPointRewardVip: 50
+    nameKey: UIAchievement_Name_zone_full_clear
+    descKey: UIAchievement_Desc_zone_full_clear
+  - achievementId: zone_full_clear_35
+    conditionType: 11
+    conditionParam: 35
+    threshold: 1
+    achievementPointReward: 50
+    achievementPointRewardVip: 50
+    nameKey: UIAchievement_Name_zone_full_clear
+    descKey: UIAchievement_Desc_zone_full_clear
+  - achievementId: zone_full_clear_36
+    conditionType: 11
+    conditionParam: 36
+    threshold: 1
+    achievementPointReward: 50
+    achievementPointRewardVip: 50
+    nameKey: UIAchievement_Name_zone_full_clear
+    descKey: UIAchievement_Desc_zone_full_clear
+  - achievementId: zone_full_clear_37
+    conditionType: 11
+    conditionParam: 37
+    threshold: 1
+    achievementPointReward: 50
+    achievementPointRewardVip: 50
+    nameKey: UIAchievement_Name_zone_full_clear
+    descKey: UIAchievement_Desc_zone_full_clear
+  - achievementId: zone_full_clear_38
+    conditionType: 11
+    conditionParam: 38
+    threshold: 1
+    achievementPointReward: 50
+    achievementPointRewardVip: 50
+    nameKey: UIAchievement_Name_zone_full_clear
+    descKey: UIAchievement_Desc_zone_full_clear
+  - achievementId: zone_full_clear_39
+    conditionType: 11
+    conditionParam: 39
+    threshold: 1
+    achievementPointReward: 50
+    achievementPointRewardVip: 50
+    nameKey: UIAchievement_Name_zone_full_clear
+    descKey: UIAchievement_Desc_zone_full_clear
+  - achievementId: zone_full_clear_40
+    conditionType: 11
+    conditionParam: 40
+    threshold: 1
+    achievementPointReward: 60
+    achievementPointRewardVip: 60
+    nameKey: UIAchievement_Name_zone_full_clear
+    descKey: UIAchievement_Desc_zone_full_clear
+  - achievementId: zone_full_clear_41
+    conditionType: 11
+    conditionParam: 41
+    threshold: 1
+    achievementPointReward: 60
+    achievementPointRewardVip: 60
+    nameKey: UIAchievement_Name_zone_full_clear
+    descKey: UIAchievement_Desc_zone_full_clear
+  - achievementId: zone_full_clear_42
+    conditionType: 11
+    conditionParam: 42
+    threshold: 1
+    achievementPointReward: 60
+    achievementPointRewardVip: 60
+    nameKey: UIAchievement_Name_zone_full_clear
+    descKey: UIAchievement_Desc_zone_full_clear
+  - achievementId: zone_full_clear_43
+    conditionType: 11
+    conditionParam: 43
+    threshold: 1
+    achievementPointReward: 60
+    achievementPointRewardVip: 60
+    nameKey: UIAchievement_Name_zone_full_clear
+    descKey: UIAchievement_Desc_zone_full_clear
+  - achievementId: zone_full_clear_44
+    conditionType: 11
+    conditionParam: 44
+    threshold: 1
+    achievementPointReward: 60
+    achievementPointRewardVip: 60
+    nameKey: UIAchievement_Name_zone_full_clear
+    descKey: UIAchievement_Desc_zone_full_clear
+  - achievementId: zone_full_clear_45
+    conditionType: 11
+    conditionParam: 45
+    threshold: 1
+    achievementPointReward: 60
+    achievementPointRewardVip: 60
+    nameKey: UIAchievement_Name_zone_full_clear
+    descKey: UIAchievement_Desc_zone_full_clear
+  - achievementId: zone_full_clear_46
+    conditionType: 11
+    conditionParam: 46
+    threshold: 1
+    achievementPointReward: 60
+    achievementPointRewardVip: 60
+    nameKey: UIAchievement_Name_zone_full_clear
+    descKey: UIAchievement_Desc_zone_full_clear
+  - achievementId: zone_full_clear_47
+    conditionType: 11
+    conditionParam: 47
+    threshold: 1
+    achievementPointReward: 60
+    achievementPointRewardVip: 60
+    nameKey: UIAchievement_Name_zone_full_clear
+    descKey: UIAchievement_Desc_zone_full_clear
+  - achievementId: zone_full_clear_48
+    conditionType: 11
+    conditionParam: 48
+    threshold: 1
+    achievementPointReward: 60
+    achievementPointRewardVip: 60
+    nameKey: UIAchievement_Name_zone_full_clear
+    descKey: UIAchievement_Desc_zone_full_clear
+  - achievementId: zone_full_clear_49
+    conditionType: 11
+    conditionParam: 49
+    threshold: 1
+    achievementPointReward: 60
+    achievementPointRewardVip: 60
+    nameKey: UIAchievement_Name_zone_full_clear
+    descKey: UIAchievement_Desc_zone_full_clear
+  - achievementId: zone_full_clear_50
+    conditionType: 11
+    conditionParam: 50
+    threshold: 1
+    achievementPointReward: 70
+    achievementPointRewardVip: 70
+    nameKey: UIAchievement_Name_zone_full_clear
+    descKey: UIAchievement_Desc_zone_full_clear
+  - achievementId: zone_full_clear_51
+    conditionType: 11
+    conditionParam: 51
+    threshold: 1
+    achievementPointReward: 70
+    achievementPointRewardVip: 70
+    nameKey: UIAchievement_Name_zone_full_clear
+    descKey: UIAchievement_Desc_zone_full_clear
+  - achievementId: zone_full_clear_52
+    conditionType: 11
+    conditionParam: 52
+    threshold: 1
+    achievementPointReward: 70
+    achievementPointRewardVip: 70
+    nameKey: UIAchievement_Name_zone_full_clear
+    descKey: UIAchievement_Desc_zone_full_clear
+  - achievementId: zone_full_clear_53
+    conditionType: 11
+    conditionParam: 53
+    threshold: 1
+    achievementPointReward: 70
+    achievementPointRewardVip: 70
+    nameKey: UIAchievement_Name_zone_full_clear
+    descKey: UIAchievement_Desc_zone_full_clear
+  - achievementId: zone_full_clear_54
+    conditionType: 11
+    conditionParam: 54
+    threshold: 1
+    achievementPointReward: 70
+    achievementPointRewardVip: 70
+    nameKey: UIAchievement_Name_zone_full_clear
+    descKey: UIAchievement_Desc_zone_full_clear
+  - achievementId: zone_full_clear_55
+    conditionType: 11
+    conditionParam: 55
+    threshold: 1
+    achievementPointReward: 70
+    achievementPointRewardVip: 70
+    nameKey: UIAchievement_Name_zone_full_clear
+    descKey: UIAchievement_Desc_zone_full_clear
+  - achievementId: zone_full_clear_56
+    conditionType: 11
+    conditionParam: 56
+    threshold: 1
+    achievementPointReward: 70
+    achievementPointRewardVip: 70
+    nameKey: UIAchievement_Name_zone_full_clear
+    descKey: UIAchievement_Desc_zone_full_clear
+  - achievementId: zone_full_clear_57
+    conditionType: 11
+    conditionParam: 57
+    threshold: 1
+    achievementPointReward: 70
+    achievementPointRewardVip: 70
+    nameKey: UIAchievement_Name_zone_full_clear
+    descKey: UIAchievement_Desc_zone_full_clear
+  - achievementId: zone_full_clear_58
+    conditionType: 11
+    conditionParam: 58
+    threshold: 1
+    achievementPointReward: 70
+    achievementPointRewardVip: 70
+    nameKey: UIAchievement_Name_zone_full_clear
+    descKey: UIAchievement_Desc_zone_full_clear
+  - achievementId: zone_full_clear_59
+    conditionType: 11
+    conditionParam: 59
+    threshold: 1
+    achievementPointReward: 70
+    achievementPointRewardVip: 70
+    nameKey: UIAchievement_Name_zone_full_clear
+    descKey: UIAchievement_Desc_zone_full_clear
+  - achievementId: zone_full_clear_60
+    conditionType: 11
+    conditionParam: 60
+    threshold: 1
+    achievementPointReward: 80
+    achievementPointRewardVip: 80
+    nameKey: UIAchievement_Name_zone_full_clear
+    descKey: UIAchievement_Desc_zone_full_clear
+  - achievementId: zone_full_clear_61
+    conditionType: 11
+    conditionParam: 61
+    threshold: 1
+    achievementPointReward: 80
+    achievementPointRewardVip: 80
+    nameKey: UIAchievement_Name_zone_full_clear
+    descKey: UIAchievement_Desc_zone_full_clear
+  - achievementId: zone_full_clear_62
+    conditionType: 11
+    conditionParam: 62
+    threshold: 1
+    achievementPointReward: 80
+    achievementPointRewardVip: 80
+    nameKey: UIAchievement_Name_zone_full_clear
+    descKey: UIAchievement_Desc_zone_full_clear
+  - achievementId: zone_full_clear_63
+    conditionType: 11
+    conditionParam: 63
+    threshold: 1
+    achievementPointReward: 80
+    achievementPointRewardVip: 80
+    nameKey: UIAchievement_Name_zone_full_clear
+    descKey: UIAchievement_Desc_zone_full_clear
+  - achievementId: zone_full_clear_64
+    conditionType: 11
+    conditionParam: 64
+    threshold: 1
+    achievementPointReward: 80
+    achievementPointRewardVip: 80
+    nameKey: UIAchievement_Name_zone_full_clear
+    descKey: UIAchievement_Desc_zone_full_clear
+  - achievementId: zone_full_clear_65
+    conditionType: 11
+    conditionParam: 65
+    threshold: 1
+    achievementPointReward: 80
+    achievementPointRewardVip: 80
+    nameKey: UIAchievement_Name_zone_full_clear
+    descKey: UIAchievement_Desc_zone_full_clear
+  - achievementId: zone_full_clear_66
+    conditionType: 11
+    conditionParam: 66
+    threshold: 1
+    achievementPointReward: 80
+    achievementPointRewardVip: 80
+    nameKey: UIAchievement_Name_zone_full_clear
+    descKey: UIAchievement_Desc_zone_full_clear
+  - achievementId: zone_full_clear_67
+    conditionType: 11
+    conditionParam: 67
+    threshold: 1
+    achievementPointReward: 80
+    achievementPointRewardVip: 80
+    nameKey: UIAchievement_Name_zone_full_clear
+    descKey: UIAchievement_Desc_zone_full_clear
+  - achievementId: zone_full_clear_68
+    conditionType: 11
+    conditionParam: 68
+    threshold: 1
+    achievementPointReward: 80
+    achievementPointRewardVip: 80
+    nameKey: UIAchievement_Name_zone_full_clear
+    descKey: UIAchievement_Desc_zone_full_clear
+  - achievementId: zone_full_clear_69
+    conditionType: 11
+    conditionParam: 69
+    threshold: 1
+    achievementPointReward: 80
+    achievementPointRewardVip: 80
+    nameKey: UIAchievement_Name_zone_full_clear
+    descKey: UIAchievement_Desc_zone_full_clear
+  - achievementId: zone_full_clear_70
+    conditionType: 11
+    conditionParam: 70
+    threshold: 1
+    achievementPointReward: 90
+    achievementPointRewardVip: 90
+    nameKey: UIAchievement_Name_zone_full_clear
+    descKey: UIAchievement_Desc_zone_full_clear
+  - achievementId: zone_full_clear_71
+    conditionType: 11
+    conditionParam: 71
+    threshold: 1
+    achievementPointReward: 90
+    achievementPointRewardVip: 90
+    nameKey: UIAchievement_Name_zone_full_clear
+    descKey: UIAchievement_Desc_zone_full_clear
+  - achievementId: zone_full_clear_72
+    conditionType: 11
+    conditionParam: 72
+    threshold: 1
+    achievementPointReward: 90
+    achievementPointRewardVip: 90
+    nameKey: UIAchievement_Name_zone_full_clear
+    descKey: UIAchievement_Desc_zone_full_clear
+  - achievementId: zone_full_clear_73
+    conditionType: 11
+    conditionParam: 73
+    threshold: 1
+    achievementPointReward: 90
+    achievementPointRewardVip: 90
+    nameKey: UIAchievement_Name_zone_full_clear
+    descKey: UIAchievement_Desc_zone_full_clear
+  - achievementId: zone_full_clear_74
+    conditionType: 11
+    conditionParam: 74
+    threshold: 1
+    achievementPointReward: 90
+    achievementPointRewardVip: 90
+    nameKey: UIAchievement_Name_zone_full_clear
+    descKey: UIAchievement_Desc_zone_full_clear
+  - achievementId: zone_full_clear_75
+    conditionType: 11
+    conditionParam: 75
+    threshold: 1
+    achievementPointReward: 90
+    achievementPointRewardVip: 90
+    nameKey: UIAchievement_Name_zone_full_clear
+    descKey: UIAchievement_Desc_zone_full_clear
+  - achievementId: zone_full_clear_76
+    conditionType: 11
+    conditionParam: 76
+    threshold: 1
+    achievementPointReward: 90
+    achievementPointRewardVip: 90
+    nameKey: UIAchievement_Name_zone_full_clear
+    descKey: UIAchievement_Desc_zone_full_clear
+  - achievementId: zone_full_clear_77
+    conditionType: 11
+    conditionParam: 77
+    threshold: 1
+    achievementPointReward: 90
+    achievementPointRewardVip: 90
+    nameKey: UIAchievement_Name_zone_full_clear
+    descKey: UIAchievement_Desc_zone_full_clear
+  - achievementId: zone_full_clear_78
+    conditionType: 11
+    conditionParam: 78
+    threshold: 1
+    achievementPointReward: 90
+    achievementPointRewardVip: 90
+    nameKey: UIAchievement_Name_zone_full_clear
+    descKey: UIAchievement_Desc_zone_full_clear
+  - achievementId: zone_full_clear_79
+    conditionType: 11
+    conditionParam: 79
+    threshold: 1
+    achievementPointReward: 90
+    achievementPointRewardVip: 90
+    nameKey: UIAchievement_Name_zone_full_clear
+    descKey: UIAchievement_Desc_zone_full_clear
+  - achievementId: zone_full_clear_80
+    conditionType: 11
+    conditionParam: 80
+    threshold: 1
+    achievementPointReward: 100
+    achievementPointRewardVip: 100
+    nameKey: UIAchievement_Name_zone_full_clear
+    descKey: UIAchievement_Desc_zone_full_clear
+  - achievementId: zone_full_clear_81
+    conditionType: 11
+    conditionParam: 81
+    threshold: 1
+    achievementPointReward: 100
+    achievementPointRewardVip: 100
+    nameKey: UIAchievement_Name_zone_full_clear
+    descKey: UIAchievement_Desc_zone_full_clear
+  - achievementId: zone_full_clear_82
+    conditionType: 11
+    conditionParam: 82
+    threshold: 1
+    achievementPointReward: 100
+    achievementPointRewardVip: 100
+    nameKey: UIAchievement_Name_zone_full_clear
+    descKey: UIAchievement_Desc_zone_full_clear
+  - achievementId: zone_full_clear_83
+    conditionType: 11
+    conditionParam: 83
+    threshold: 1
+    achievementPointReward: 100
+    achievementPointRewardVip: 100
+    nameKey: UIAchievement_Name_zone_full_clear
+    descKey: UIAchievement_Desc_zone_full_clear
+  - achievementId: zone_full_clear_84
+    conditionType: 11
+    conditionParam: 84
+    threshold: 1
+    achievementPointReward: 100
+    achievementPointRewardVip: 100
+    nameKey: UIAchievement_Name_zone_full_clear
+    descKey: UIAchievement_Desc_zone_full_clear
+  - achievementId: zone_full_clear_85
+    conditionType: 11
+    conditionParam: 85
+    threshold: 1
+    achievementPointReward: 100
+    achievementPointRewardVip: 100
+    nameKey: UIAchievement_Name_zone_full_clear
+    descKey: UIAchievement_Desc_zone_full_clear
+  - achievementId: zone_full_clear_86
+    conditionType: 11
+    conditionParam: 86
+    threshold: 1
+    achievementPointReward: 100
+    achievementPointRewardVip: 100
+    nameKey: UIAchievement_Name_zone_full_clear
+    descKey: UIAchievement_Desc_zone_full_clear
+  - achievementId: zone_full_clear_87
+    conditionType: 11
+    conditionParam: 87
+    threshold: 1
+    achievementPointReward: 100
+    achievementPointRewardVip: 100
+    nameKey: UIAchievement_Name_zone_full_clear
+    descKey: UIAchievement_Desc_zone_full_clear
+  - achievementId: zone_full_clear_88
+    conditionType: 11
+    conditionParam: 88
+    threshold: 1
+    achievementPointReward: 100
+    achievementPointRewardVip: 100
+    nameKey: UIAchievement_Name_zone_full_clear
+    descKey: UIAchievement_Desc_zone_full_clear
+  - achievementId: zone_full_clear_89
+    conditionType: 11
+    conditionParam: 89
+    threshold: 1
+    achievementPointReward: 100
+    achievementPointRewardVip: 100
+    nameKey: UIAchievement_Name_zone_full_clear
+    descKey: UIAchievement_Desc_zone_full_clear
+  - achievementId: zone_full_clear_90
+    conditionType: 11
+    conditionParam: 90
+    threshold: 1
+    achievementPointReward: 110
+    achievementPointRewardVip: 110
+    nameKey: UIAchievement_Name_zone_full_clear
+    descKey: UIAchievement_Desc_zone_full_clear
+  - achievementId: zone_full_clear_91
+    conditionType: 11
+    conditionParam: 91
+    threshold: 1
+    achievementPointReward: 110
+    achievementPointRewardVip: 110
+    nameKey: UIAchievement_Name_zone_full_clear
+    descKey: UIAchievement_Desc_zone_full_clear
+  - achievementId: zone_full_clear_92
+    conditionType: 11
+    conditionParam: 92
+    threshold: 1
+    achievementPointReward: 110
+    achievementPointRewardVip: 110
+    nameKey: UIAchievement_Name_zone_full_clear
+    descKey: UIAchievement_Desc_zone_full_clear
+  - achievementId: zone_full_clear_93
+    conditionType: 11
+    conditionParam: 93
+    threshold: 1
+    achievementPointReward: 110
+    achievementPointRewardVip: 110
+    nameKey: UIAchievement_Name_zone_full_clear
+    descKey: UIAchievement_Desc_zone_full_clear
+  - achievementId: zone_full_clear_94
+    conditionType: 11
+    conditionParam: 94
+    threshold: 1
+    achievementPointReward: 110
+    achievementPointRewardVip: 110
+    nameKey: UIAchievement_Name_zone_full_clear
+    descKey: UIAchievement_Desc_zone_full_clear
+  - achievementId: zone_full_clear_95
+    conditionType: 11
+    conditionParam: 95
+    threshold: 1
+    achievementPointReward: 110
+    achievementPointRewardVip: 110
+    nameKey: UIAchievement_Name_zone_full_clear
+    descKey: UIAchievement_Desc_zone_full_clear
+  - achievementId: zone_full_clear_96
+    conditionType: 11
+    conditionParam: 96
+    threshold: 1
+    achievementPointReward: 110
+    achievementPointRewardVip: 110
+    nameKey: UIAchievement_Name_zone_full_clear
+    descKey: UIAchievement_Desc_zone_full_clear
+  - achievementId: zone_full_clear_97
+    conditionType: 11
+    conditionParam: 97
+    threshold: 1
+    achievementPointReward: 110
+    achievementPointRewardVip: 110
+    nameKey: UIAchievement_Name_zone_full_clear
+    descKey: UIAchievement_Desc_zone_full_clear
+  - achievementId: zone_full_clear_98
+    conditionType: 11
+    conditionParam: 98
+    threshold: 1
+    achievementPointReward: 110
+    achievementPointRewardVip: 110
+    nameKey: UIAchievement_Name_zone_full_clear
+    descKey: UIAchievement_Desc_zone_full_clear
+  - achievementId: zone_full_clear_99
+    conditionType: 11
+    conditionParam: 99
+    threshold: 1
+    achievementPointReward: 110
+    achievementPointRewardVip: 110
+    nameKey: UIAchievement_Name_zone_full_clear
+    descKey: UIAchievement_Desc_zone_full_clear
+  - achievementId: zone_full_clear_100
+    conditionType: 11
+    conditionParam: 100
+    threshold: 1
+    achievementPointReward: 120
+    achievementPointRewardVip: 120
+    nameKey: UIAchievement_Name_zone_full_clear
+    descKey: UIAchievement_Desc_zone_full_clear

@@ -155,6 +155,7 @@ UIAchievement_Category_CellClear,,Cell Clear,셀 클리어
 UIAchievement_Category_EventCell,,Event Cell Clear,이벤트 셀 클리어
 UIAchievement_Category_ZoneClearTotal,,Zone Clear (Total),존 클리어(누적)
 UIAchievement_Category_ZoneClearSpecific,,Zone Clear,존 클리어
+UIAchievement_Category_ZoneFullClear,,Zone Full Clear,존 완전 클리어
 UIAchievement_Category_CommanderLevel,,Commander Level,지휘관 레벨
 UIAchievement_Category_CommandPower,,Command Power,지휘력
 UIAchievement_Category_TacticPower,,Tactic Power,전술력
@@ -266,6 +267,8 @@ UIDailyAchievement_Name_zone_clear_total,,Clear {1} Zones Today,오늘 존 {1}�
 UIDailyAchievement_Desc_zone_clear_total,,Escape {1} zone runs today (revisiting cleared zones counts too),오늘 존을 {1}번 탈출(클리어)하면 완료 — 이미 클리어한 존 재방문도 인정(자정 UTC 리셋)
 UIAchievement_Name_zone_clear,,Clear Zone {0},존 {0} 클리어
 UIAchievement_Desc_zone_clear,,Clear Zone {0} for the first time,존 {0}를 처음 클리어하면 완료
+UIAchievement_Name_zone_full_clear,,Fully Clear Zone {0},존 {0} 완전 클리어
+UIAchievement_Desc_zone_full_clear,,Clear every cell in Zone {0} within a single run,존 {0}의 모든 셀을 한 런 안에서 전부 클리어하면 완료
 UIAchievement_Name_commander_level,,Reach Commander Level {1},지휘관 레벨 {1} 달성
 UIAchievement_Desc_commander_level,,Reach Commander Level {1},지휘관 레벨 {1}에 도달하면 완료
 UIAchievement_Name_command_power,,Reach {1} Command Power,지휘력 {1} 달성

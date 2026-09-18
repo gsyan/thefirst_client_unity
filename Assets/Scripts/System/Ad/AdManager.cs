@@ -186,12 +186,19 @@ public class AdManager : MonoSingleton<AdManager>
 
     private void RegisterRewardedAdEvents(RewardedAd ad)
     {
+        // 정상/비정상 여부와 무관하게 온디바이스 Development Console(빨간 로그만 표시)에서 단계별로 보이도록 전부 LogError로 남김 — 재현이 어려운 광고 버그 진단용
+        ad.OnAdFullScreenContentOpened += () =>
+        {
+            Dispatch(() => Debug.LogError("[AdManager] 리워드 광고 오픈됨(전체화면 표시 시작)"));
+        };
+
         ad.OnAdFullScreenContentClosed += () =>
         {
             Dispatch(() =>
             {
                 // 보상 없이 닫힌 경우 = 유저가 직접 닫음
                 EAdResult result = _rewardEarned ? EAdResult.Rewarded : EAdResult.UserClosed;
+                Debug.LogError($"[AdManager] 리워드 광고 닫힘: result={result}, rewardEarned={_rewardEarned}");
                 _onRewardedAdClosed?.Invoke(result);
                 _onRewardedAdClosed = null;
                 LoadRewardedAd();
@@ -213,6 +220,8 @@ public class AdManager : MonoSingleton<AdManager>
     /// <summary>리워드 광고 표시. callback: Rewarded=보상완료, UserClosed=유저닫음, Failed=표시실패</summary>
     public void ShowRewardedAd(Action<EAdResult> callback)
     {
+        Debug.LogError($"[AdManager] ShowRewardedAd() 호출됨 — AdLoaded={_rewardedAd != null}, CanShowAd={_rewardedAd != null && _rewardedAd.CanShowAd()}");
+
         if (_rewardedAd == null || _rewardedAd.CanShowAd() == false)
         {
             Debug.LogError("[AdManager] 리워드 광고 준비 안 됨");
@@ -224,11 +233,12 @@ public class AdManager : MonoSingleton<AdManager>
         _rewardEarned = false;
         _onRewardedAdClosed = callback;
 
+        Debug.LogError("[AdManager] 광고 Show() 호출 시도");
         _rewardedAd.Show(reward =>
         {
             Dispatch(() =>
             {
-                Debug.Log($"[AdManager] 보상 지급: {reward.Type} x{reward.Amount}");
+                Debug.LogError($"[AdManager] 보상 지급: {reward.Type} x{reward.Amount}");
                 _rewardEarned = true;
                 _onRewardedAdClosed?.Invoke(EAdResult.Rewarded);
                 _onRewardedAdClosed = null;

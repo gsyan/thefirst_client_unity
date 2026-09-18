@@ -34,6 +34,7 @@ public class UIPanelAchievement : UIPanelBase
         EAchievementConditionType.EventCell,
         EAchievementConditionType.ZoneClearTotal,
         EAchievementConditionType.ZoneClearSpecific,
+        EAchievementConditionType.ZoneFullClear,
         EAchievementConditionType.CommanderLevel,
         EAchievementConditionType.CommandPower,
         EAchievementConditionType.TacticPower,

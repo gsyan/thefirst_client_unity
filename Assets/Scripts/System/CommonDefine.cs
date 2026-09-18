@@ -112,6 +112,7 @@ public enum EAchievementConditionType
     HullTierCount,         // 활성 함대 내 특정 티어 함체 동시보유 개수
     ModuleTierCount,       // 활성 함대 내 특정 카테고리+티어 모듈 동시보유 개수
     HullUnlocked,          // 특정 함체(hullSubType) 언락 여부 — 언락 시 소비한 업적 포인트 일부 환급용
+    ZoneFullClear,         // 특정 존의 모든 셀을 한 런 안에서 전부 클리어 여부(conditionParam=존번호)
 }
 
 // 존 진행(ZoneRun) 상태 — 서버 엔티티 필드용. 클라는 직접 이 값을 받지 않고 EscapeExplorationZoneRequest.isSuccess(bool)로만 결과를 통지하지만,

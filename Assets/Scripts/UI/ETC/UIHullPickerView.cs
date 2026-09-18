@@ -152,10 +152,49 @@ public class UIHullPickerView : MonoBehaviour
         return commander == null || commander.IsHullUnlocked(hull.moduleSubType) == false;
     }
 
-    // 언락 버튼 클릭 — 함체명/비용 확인 팝업 후 확정 시 서버에 업적포인트 소모 요청
+    // 서버 FleetService.validateUnlockPrerequisite와 동일 규칙(값은 서버 ACHIEVEMENT_UNLOCK_MIN_HULL_TIER와 일치시켜야 함) —
+    // gen=1(기본 제공) 함체만 선행조건 적용. 기본형은 이전 티어 기본형이, 실드/요격체 변형은 같은 티어 기본형이 선행 언락돼 있어야 함
+    private const int ACHIEVEMENT_UNLOCK_MIN_HULL_TIER = 4;
+
+    private bool IsUnlockPrerequisiteMet(ModuleData hull)
+    {
+        if (CommonUtility.ParseGen(hull.moduleSubType) != 1) return true;
+
+        int tier = CommonUtility.ParseTier(hull.moduleSubType);
+        int[] slots = CommonUtility.ParseHullSlotComposition(hull.moduleSubType);
+        bool hasShield = slots[3] > 0;
+        bool hasInterceptor = slots[4] > 0;
+        bool isBaseVariant = hasShield == false && hasInterceptor == false;
+        if (isBaseVariant == true && tier <= ACHIEVEMENT_UNLOCK_MIN_HULL_TIER) return true;
+
+        int prerequisiteTier = isBaseVariant == true ? tier - 1 : tier;
+        ModuleData prerequisiteHull = m_hullsCache.Find(p =>
+        {
+            int[] pSlots = CommonUtility.ParseHullSlotComposition(p.moduleSubType);
+            return CommonUtility.ParseGen(p.moduleSubType) == 1
+                && CommonUtility.ParseTier(p.moduleSubType) == prerequisiteTier
+                && pSlots[3] == 0 && pSlots[4] == 0;
+        });
+        if (prerequisiteHull == null) return true;
+
+        Commander commander = DataManager.Instance.m_currentCommander;
+        return commander != null && commander.IsHullUnlocked(prerequisiteHull.moduleSubType) == true;
+    }
+
+    // 언락 버튼 클릭 — 선행조건 먼저 검사(서버 왕복 없이 즉시 차단), 통과 시 함체명/비용 확인 팝업 후 확정 시 서버에 업적포인트 소모 요청
     // cost를 CostStruct로 넘기면 UIPopupConfirm이 부족 시 빨간색 표기 + 확인 버튼 비활성을 알아서 처리함
     private void OnHullUnlockClicked(ModuleData hull)
     {
+        if (IsUnlockPrerequisiteMet(hull) == false)
+        {
+            UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig
+            {
+                message = LocalizationManager.Instance.Get("UIHullPicker_UnlockPrerequisiteFailMessage"),
+                onConfirm = () => { },
+            });
+            return;
+        }
+
         UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig
         {
             message = string.Format(LocalizationManager.Instance.Get("UIHullPicker_UnlockConfirmMessage"), hull.moduleSubType),
