@@ -197,9 +197,12 @@ public class NetworkManager : MonoSingleton<NetworkManager>
             if (serverStatus.working == false)
             {
                 m_checkingInternetAccess = false;
-                string reason      = LocalizationManager.Instance.Get("UIPopupMessage_MaintenanceInProgress");
-                string endTimeText = FormatMaintenanceEndTime(serverStatus.endTime);
-                string body        = string.IsNullOrEmpty(endTimeText) == false ? $"{reason}\n{endTimeText}" : reason;
+                string reason           = LocalizationManager.Instance.Get("UIPopupMessage_MaintenanceInProgress");
+                string remainingText    = FormatMaintenanceRemainingTime(serverStatus.endTime);
+                string remainingLine    = string.IsNullOrEmpty(remainingText) == false
+                    ? LocalizationManager.Instance.Get("UIPopupMessage_MaintenanceRemainingTime", (object)remainingText)
+                    : "";
+                string body = string.IsNullOrEmpty(remainingLine) == false ? $"{reason}\n{remainingLine}" : reason;
                 UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig
                 {
                     message      = body,
@@ -1022,16 +1025,20 @@ public class NetworkManager : MonoSingleton<NetworkManager>
 #endif
     }
 
-    // 서버에서 내려준 UTC ISO8601 문자열을 로컬 시간 표시용으로 변환
-    private string FormatMaintenanceEndTime(string endTimeUtc)
+    // 서버에서 내려준 점검 종료 시각(UTC ISO8601)과 현재 시각의 차이를 "HH:mm" 남은 시간으로 변환
+    private string FormatMaintenanceRemainingTime(string endTimeUtc)
     {
         if (string.IsNullOrEmpty(endTimeUtc) == true) return "";
 
-        DateTime parsedUtc;
-        bool parsed = DateTime.TryParse(endTimeUtc, null, System.Globalization.DateTimeStyles.RoundtripKind, out parsedUtc);
+        DateTime parsedEndUtc;
+        bool parsed = DateTime.TryParse(endTimeUtc, null, System.Globalization.DateTimeStyles.RoundtripKind, out parsedEndUtc);
         if (parsed == false) return "";
 
-        DateTime localTime = parsedUtc.ToLocalTime();
-        return localTime.ToString("yyyy-MM-dd HH:mm");
+        TimeSpan remaining = parsedEndUtc.ToUniversalTime() - DateTime.UtcNow;
+        if (remaining < TimeSpan.Zero) remaining = TimeSpan.Zero;
+
+        int totalHours = (int)remaining.TotalHours;
+        int minutes    = remaining.Minutes;
+        return $"{totalHours:D2}:{minutes:D2}";
     }
 }

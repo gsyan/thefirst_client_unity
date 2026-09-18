@@ -229,6 +229,7 @@ UIPopupMessage_ZoneLocked,,This zone is still locked. Clear the previous zone fi
 UIPopupMessage_VersionUpdateMessage,,An update to version {0} is required.,버전 {0} 이상으로 업데이트가 필요합니다.
 UIPopupMessage_VersionUpdateButton,,Update,업데이트
 UIPopupMessage_MaintenanceInProgress,,The server is currently under maintenance.,서버 점검 중입니다.
+UIPopupMessage_MaintenanceRemainingTime,,Time remaining: {0},서버 점검 남은 시간 : {0}
 UIPopupMessage_PvpSeasonRewardTitle,,PVP Season Reward,PVP 시즌 보상
 UIPopupMessage_PvpSeasonRewardMessage,,Season reward has been granted.,시즌 보상이 지급되었습니다.
 UIPopupMessage_PvpCommanderLevelRequiredMessage,,Commander Level {0} or above is required to enter PVP.,PVP 참가는 지휘 레벨 {0} 이상이 필요합니다.

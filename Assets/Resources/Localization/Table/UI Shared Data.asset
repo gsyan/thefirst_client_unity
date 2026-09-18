@@ -879,6 +879,10 @@ MonoBehaviour:
     m_Key: UIPopupMessage_MaintenanceInProgress
     m_Metadata:
       m_Items: []
+  - m_Id: 80630727850196992
+    m_Key: UIPopupMessage_MaintenanceRemainingTime
+    m_Metadata:
+      m_Items: []
   - m_Id: 49760963871506432
     m_Key: UIPopupMessage_PvpSeasonRewardTitle
     m_Metadata:

@@ -1115,6 +1115,10 @@ MonoBehaviour:
     m_Localized: Zone Full Clear
     m_Metadata:
       m_Items: []
+  - m_Id: 80630727850196992
+    m_Localized: 'Time remaining: {0}'
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []
