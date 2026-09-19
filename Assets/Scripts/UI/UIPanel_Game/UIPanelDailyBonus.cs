@@ -42,7 +42,7 @@ public class UIPanelDailyBonus : UIPanelBase
             m_titleText.text = loc.Get("DailyBonus_Title");
 
         if (m_dailyNameText != null)
-            m_dailyNameText.text = loc.Get("DailyBonus_NextReward");
+            CommonUtility.SetUILocText(m_dailyNameText, "DailyBonus_NextReward");
 
         if (m_rewardDescText != null)
             m_rewardDescText.text = string.Empty;
