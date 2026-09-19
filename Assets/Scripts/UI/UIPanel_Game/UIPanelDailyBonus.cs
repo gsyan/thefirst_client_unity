@@ -14,7 +14,8 @@ public class UIPanelDailyBonus : UIPanelBase
     [Header("Daily Bonus Panel")]
     [SerializeField] private TMP_Text m_titleText;
     [SerializeField] private TMP_Text m_rewardDescText;       // "미네랄 +N 지급!" 텍스트
-    [SerializeField] private TMP_Text m_monthValueText;       // "18일 07:32:11" (코루틴 업데이트)
+    [SerializeField] private GameObject m_dailyCountdownRoot; // 수령할 칸이 없을 때만 표시되는 카운트다운 그룹
+    [SerializeField] private TMP_Text m_dailyNameText;        // "다음 보상까지" 라벨
     [SerializeField] private TMP_Text m_dailyValueText;       // "04:22:09" (코루틴 업데이트)
     [SerializeField] private InfiniteScrollView m_scrollView;
     [SerializeField] private UIDailyBonusDayRow m_rowPrefab;
@@ -39,6 +40,9 @@ public class UIPanelDailyBonus : UIPanelBase
 
         if (m_titleText != null)
             m_titleText.text = loc.Get("DailyBonus_Title");
+
+        if (m_dailyNameText != null)
+            m_dailyNameText.text = loc.Get("DailyBonus_NextReward");
 
         if (m_rewardDescText != null)
             m_rewardDescText.text = string.Empty;
@@ -102,6 +106,8 @@ public class UIPanelDailyBonus : UIPanelBase
 
         if (m_scrollView != null)
             m_scrollView.RefreshVisible();
+
+        UpdateCountdown();
     }
 
     private string BuildGrantedDescription(DailyClaimResponse response)
@@ -138,42 +144,29 @@ public class UIPanelDailyBonus : UIPanelBase
 
     private IEnumerator CountdownCoroutine()
     {
-        bool firstRun = true;
         while (true)
         {
-            var mgr = DailyBonusManager.Instance;
-            var loc = LocalizationManager.Instance;
-
-            // 이번 주 남은 시간 (값만 업데이트)
-            if (m_monthValueText != null)
-            {
-                TimeSpan week = mgr.GetWeekRemaining();
-                int days = (int)week.TotalDays;
-                m_monthValueText.text = days > 0
-                    ? loc.Get("DailyBonus_DaysTime", days, week.Hours, week.Minutes, week.Seconds)
-                    : string.Format("{0:D2}:{1:D2}:{2:D2}", (int)week.TotalHours, week.Minutes, week.Seconds);
-            }
-
-            // 다음 일일보상까지 (값만 업데이트)
-            if (m_dailyValueText != null)
-            {
-                TimeSpan daily = mgr.GetDailyRemaining();
-                m_dailyValueText.text = daily <= TimeSpan.Zero
-                    ? loc.Get("DailyBonus_Available")
-                    : string.Format("{0:D2}:{1:D2}:{2:D2}", (int)daily.TotalHours, daily.Minutes, daily.Seconds);
-            }
-
-            // 첫 프레임 텍스트 세팅 후 부모 레이아웃 1회 강제 갱신
-            if (firstRun == true)
-            {
-                firstRun = false;
-                if (m_monthValueText != null)
-                    LayoutRebuilder.ForceRebuildLayoutImmediate(m_monthValueText.transform.parent as RectTransform);
-                if (m_dailyValueText != null)
-                    LayoutRebuilder.ForceRebuildLayoutImmediate(m_dailyValueText.transform.parent as RectTransform);
-            }
-
+            UpdateCountdown();
             yield return new WaitForSeconds(1f);
         }
+    }
+
+    // 수령할 칸이 남아있으면 그룹을 숨기고, 모두 수령했으면 다음 보상까지 남은 시간을 표시
+    private void UpdateCountdown()
+    {
+        if (m_dailyCountdownRoot == null) return;
+
+        DailyBonusManager mgr = DailyBonusManager.Instance;
+        bool hasClaimable = mgr.HasClaimableDay();
+        bool wasActive = m_dailyCountdownRoot.activeSelf;
+        m_dailyCountdownRoot.SetActive(hasClaimable == false);
+        if (hasClaimable == true) return;
+
+        TimeSpan remaining = mgr.GetNextRewardRemaining();
+        if (m_dailyValueText != null)
+            m_dailyValueText.text = string.Format("{0:D2}:{1:D2}:{2:D2}", (int)remaining.TotalHours, remaining.Minutes, remaining.Seconds);
+
+        if (wasActive == false)
+            LayoutRebuilder.ForceRebuildLayoutImmediate(m_dailyCountdownRoot.transform as RectTransform);
     }
 }

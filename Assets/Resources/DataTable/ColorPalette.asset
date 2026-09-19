@@ -382,6 +382,9 @@ MonoBehaviour:
   - key: Cell.Escape
     primitiveKey: Cyan500
     color: {r: 1, g: 1, b: 1, a: 1}
+  - key: Cell.Event
+    primitiveKey: Purple500
+    color: {r: 1, g: 1, b: 1, a: 1}
   - key: Cell.Normal
     primitiveKey: Slate500
     color: {r: 1, g: 1, b: 1, a: 1}

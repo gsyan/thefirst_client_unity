@@ -1,20 +1,40 @@
 using System;
-using System.Globalization;
 using UnityEngine;
 
 public class DailyBonusManager : MonoSingleton<DailyBonusManager>
 {
+    private const int CALENDAR_DAYS = 6;
+
     private int m_claimedDaysMask;
     private int m_vipClaimedDaysMask;
     private int m_todayDay;
-    private DateTime m_loginRewardWeekStart; // UTC, 이번 주 월요일 00:00, MinValue = 데이터 없음
-    private DateTime m_nextAvailableAt;      // UTC, MinValue = 데이터 없음
 
     public int GetClaimedDaysMask()    { return m_claimedDaysMask; }
     public int GetVipClaimedDaysMask() { return m_vipClaimedDaysMask; }
     public int GetTodayDay()           { return m_todayDay; }
-    public DateTime GetLoginRewardWeekStart() { return m_loginRewardWeekStart; }
-    public DateTime GetNextAvailableAt() { return m_nextAvailableAt; }
+
+    // 열린 칸(1~todayDay) 중 일반 미수령이 있거나, VIP면 VIP 미수령도 있는지 — 서버 hasClaimableDay와 동일 규칙
+    public bool HasClaimableDay()
+    {
+        int unlockedMask = (1 << Mathf.Min(m_todayDay, CALENDAR_DAYS)) - 1;
+        bool normalClaimable = (unlockedMask & ~m_claimedDaysMask) != 0;
+        bool vipClaimable = IAPManager.Instance.IsVipActive() == true && (unlockedMask & ~m_vipClaimedDaysMask) != 0;
+        return normalClaimable || vipClaimable;
+    }
+
+    // 수령할 칸이 없을 때 다음 보상이 열리기까지 남은 시간 — 6칸이 모두 열렸으면 다음 주 월요일 UTC 0시, 아니면 다음 UTC 자정(다음 출석)
+    public TimeSpan GetNextRewardRemaining()
+    {
+        DateTime nowUtc = DateTime.UtcNow;
+        DateTime nextRewardAt = nowUtc.Date.AddDays(1);
+        if (m_todayDay >= CALENDAR_DAYS)
+        {
+            int daysToMonday = ((int)DayOfWeek.Monday - (int)nowUtc.DayOfWeek + 7) % 7;
+            if (daysToMonday == 0) daysToMonday = 7;
+            nextRewardAt = nowUtc.Date.AddDays(daysToMonday);
+        }
+        return nextRewardAt - nowUtc;
+    }
 
     // 로그인(접속) 시점 1회 호출 — 지급 없이 상태만 조회해 레드닷 갱신(업적이 존런 종료 시점에 1회 확인하는 것과 동일한 패턴)
     public void CheckDailyBonusStatus()
@@ -52,7 +72,7 @@ public class DailyBonusManager : MonoSingleton<DailyBonusManager>
                     commander.UpdateExplorationPoint(response.data.explorationPointRemain);
                 if (response.data.grantedAchievementPoint > 0)
                     commander.UpdateAchievementPoint(response.data.achievementPointRemain);
-                commander.UpdateHasUnclaimedDailyBonus(string.IsNullOrEmpty(response.data.nextAvailableAt) == false);
+                commander.UpdateHasUnclaimedDailyBonus(HasClaimableDay());
             }
 
             if (onResult != null) onResult(response.data);
@@ -64,8 +84,6 @@ public class DailyBonusManager : MonoSingleton<DailyBonusManager>
         m_claimedDaysMask      = result.claimedDaysMask;
         m_vipClaimedDaysMask   = result.vipClaimedDaysMask;
         m_todayDay             = result.todayDay;
-        m_loginRewardWeekStart = ParseUtcDate(result.loginRewardWeekStart);
-        m_nextAvailableAt      = ParseUtcDateTime(result.nextAvailableAt);
     }
 
     private void ApplyResponse(DailyClaimResponse result)
@@ -73,41 +91,5 @@ public class DailyBonusManager : MonoSingleton<DailyBonusManager>
         m_claimedDaysMask      = result.claimedDaysMask;
         m_vipClaimedDaysMask   = result.vipClaimedDaysMask;
         m_todayDay             = result.todayDay;
-        m_loginRewardWeekStart = ParseUtcDate(result.loginRewardWeekStart);
-        m_nextAvailableAt      = ParseUtcDateTime(result.nextAvailableAt);
-    }
-
-    private static DateTime ParseUtcDate(string isoDate)
-    {
-        DateTime dt;
-        bool parsed = DateTime.TryParse(isoDate, CultureInfo.InvariantCulture,
-            DateTimeStyles.AssumeUniversal | DateTimeStyles.AdjustToUniversal, out dt);
-        if (parsed == true) return dt;
-        return DateTime.MinValue;
-    }
-
-    private static DateTime ParseUtcDateTime(string isoDateTime)
-    {
-        DateTime dt;
-        bool parsed = DateTime.TryParse(isoDateTime, null, DateTimeStyles.RoundtripKind, out dt);
-        if (parsed == true) return dt.ToUniversalTime();
-        return DateTime.MinValue;
-    }
-
-    // 달력 리셋(다음 주 월요일 UTC 00:00)까지 남은 시간
-    public TimeSpan GetWeekRemaining()
-    {
-        if (m_loginRewardWeekStart == DateTime.MinValue) return TimeSpan.Zero;
-        DateTime weekEnd = m_loginRewardWeekStart.AddDays(7);
-        TimeSpan remaining = weekEnd - DateTime.UtcNow;
-        return remaining > TimeSpan.Zero ? remaining : TimeSpan.Zero;
-    }
-
-    // 다음 일일보상 수령 가능까지 남은 시간
-    public TimeSpan GetDailyRemaining()
-    {
-        if (m_nextAvailableAt == DateTime.MinValue) return TimeSpan.Zero;
-        TimeSpan remaining = m_nextAvailableAt - DateTime.UtcNow;
-        return remaining > TimeSpan.Zero ? remaining : TimeSpan.Zero;
     }
 }

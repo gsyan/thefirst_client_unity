@@ -841,11 +841,6 @@ public class UIPanelExplorationGrid : UIPanelBase
 
         m_activeChallengeToken = response.data.challengeToken;
 
-        // 이 존에 런이 확정 시작됨 — 로컬 캐시도 즉시 갱신해야 이번 세션 안에서 "다른 존 진행중" 판정이 정확함
-        CommanderInfo commanderInfo = DataManager.Instance.m_currentCommander != null ? DataManager.Instance.m_currentCommander.m_commanderInfo : null;
-        if (commanderInfo != null)
-            commanderInfo.explorationZoneNumber = m_currentZoneNumber;
-
         StartConfirmedLocalCombat();
     }
 
@@ -889,11 +884,6 @@ public class UIPanelExplorationGrid : UIPanelBase
         }
 
         m_activeChallengeToken = response.data.challengeToken;
-
-        // 이 존에 런이 확정 시작됨 — 로컬 캐시도 즉시 갱신해야 이번 세션 안에서 "다른 존 진행중" 판정이 정확함
-        CommanderInfo commanderInfo = DataManager.Instance.m_currentCommander != null ? DataManager.Instance.m_currentCommander.m_commanderInfo : null;
-        if (commanderInfo != null)
-            commanderInfo.explorationZoneNumber = m_currentZoneNumber;
 
         // 적함대 데이터는 서버가 내려주지 않음 — 같은 seed로 이미 로컬에 캐싱해둔 것을 그대로 사용(BuildCellEnemyFleets)
         List<FleetInfo> waves = GetCellEnemyWaves(m_pendingCellRow, m_pendingCellCol);
@@ -1072,6 +1062,12 @@ public class UIPanelExplorationGrid : UIPanelBase
             m_pendingBankedRewardGain.Add(EBankedRewardType.ExplorationPoint, pointGained);
             m_pendingBankedRewardGain.Add(EBankedRewardType.Exp, expGained);
             ApplyTacticPowerRecovered(response.data.tacticPower);
+
+            // 서버 ZoneRun은 첫 셀 클리어 시점에 생성됨 — 로컬 캐시도 이때 갱신해야 포기 버튼/"다른 존 진행중" 판정이 서버와 일치함
+            CommanderInfo clearedCommanderInfo = DataManager.Instance.m_currentCommander != null ? DataManager.Instance.m_currentCommander.m_commanderInfo : null;
+            if (clearedCommanderInfo != null)
+                clearedCommanderInfo.explorationZoneNumber = m_currentZoneNumber;
+            RefreshAbandonRunButtonState();
         }
 
         if (m_gridData != null && m_gridData.IsInBounds(m_currentRow, m_currentCol) == true)

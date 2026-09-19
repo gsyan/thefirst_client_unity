@@ -761,8 +761,6 @@ public class DailyBonusStatusResponse
     public int todayDay;                // 출석일수 — 접속한 서로 다른 날짜 수(1~6), 이 값 이하의 미수령 칸은 전부 클레임 가능
     public int claimedDaysMask;         // 이번 주 수령 현황 비트마스크 (bit0=1일, bit5=6일)
     public int vipClaimedDaysMask;      // VIP 보상 수령 현황 비트마스크 (bit0=1일, bit5=6일)
-    public string loginRewardWeekStart; // 비트마스크 기준 주(이번 주 월요일, ISO 8601 date, UTC)
-    public string nextAvailableAt;      // 다음 지급 가능 시각 (ISO 8601 UTC)
 }
 
 [System.Serializable]
@@ -780,11 +778,9 @@ public class DailyClaimResponse
     public int grantedAchievementPoint; // 이번에 지급된 업적 포인트 양
     public int explorationPointRemain;  // 지급 후 현재 탐험 포인트
     public int achievementPointRemain;  // 지급 후 현재 업적 포인트
-    public string nextAvailableAt;      // 다음 지급 가능 시각 (ISO 8601 UTC)
     public int todayDay;                // 출석일수 — 접속한 서로 다른 날짜 수(1~6), 이 값 이하의 미수령 칸은 전부 클레임 가능
     public int claimedDaysMask;         // 이번 주 수령 현황 비트마스크 (bit0=1일, bit5=6일)
     public int vipClaimedDaysMask;      // VIP 보상 수령 현황 비트마스크 (bit0=1일, bit5=6일)
-    public string loginRewardWeekStart; // 비트마스크 기준 주(이번 주 월요일, ISO 8601 date, UTC)
 }
 
 #region Version Data Classes ##################################################################################

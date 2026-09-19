@@ -203,11 +203,10 @@ UIFleet_ModuleReinforce_ColInvested,,Invested,투입 포인트
 DailyBonus_Title,,Daily Login Bonus,일일 출석 보너스
 DailyBonus_Desc,,+{0} Minerals received!,미네랄 +{0} 지급!
 DailyBonus_DescAchievement,,+{0} Achievement Points received!,업적포인트 +{0} 지급!
-DailyBonus_DaysTime,,{0}d {1:D2}:{2:D2}:{3:D2},{0}일 {1:D2}:{2:D2}:{3:D2}
-DailyBonus_Available,,Available now!,지금 수령 가능!
 DailyBonus_RewardLabel,,Reward,보상
 DailyBonus_DayLabel,,Day {0},{0}일차
 DailyBonus_VipPrefix,,[VIP],[VIP]
+DailyBonus_NextReward,,Next reward in,다음 보상까지
 UIVipStatus_BenefitTitle,,ADMIRAL's Benefit,제독 혜택
 UIVipStatus_Expired,,(Expired),(만료)
 UIVipStatus_ExpiryDays,,(D-{0}),(D-{0})

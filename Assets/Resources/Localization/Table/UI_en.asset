@@ -263,14 +263,6 @@ MonoBehaviour:
     m_Localized: +{0} Minerals received!
     m_Metadata:
       m_Items: []
-  - m_Id: 45034403495018497
-    m_Localized: '{0}d {1:D2}:{2:D2}:{3:D2}'
-    m_Metadata:
-      m_Items: []
-  - m_Id: 45034403495018498
-    m_Localized: Available now!
-    m_Metadata:
-      m_Items: []
   - m_Id: 46124173268746241
     m_Localized: Are you sure you want to logout?
     m_Metadata:
@@ -1117,6 +1109,10 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 80630727850196992
     m_Localized: 'Time remaining: {0}'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 81141249343356928
+    m_Localized: Next reward in
     m_Metadata:
       m_Items: []
   references:

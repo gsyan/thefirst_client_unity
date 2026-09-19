@@ -33,6 +33,7 @@ public class GridCell3D : MonoBehaviour
     private int m_col;
     private bool m_isStart;
     private bool m_isEscape;
+    private bool m_isEvent;
     private Coroutine m_blinkCoroutine;
     private Coroutine m_orbitCoroutine;
     private MaterialPropertyBlock m_propertyBlock;
@@ -50,6 +51,7 @@ public class GridCell3D : MonoBehaviour
         m_col = cellData.col;
         m_isStart = cellData.isStart;
         m_isEscape = cellData.isEscape;
+        m_isEvent = cellData.isEvent;
 
         ApplyScale();
     }
@@ -95,6 +97,11 @@ public class GridCell3D : MonoBehaviour
         {
             // 예전에 한 번이라도 탈출 완료한 존이면 탈출 셀을 알아볼 수 있게 별도 톤으로 표시
             fillColor = CommonUtility.PaletteColor("Cell.Escape");
+        }
+        else if (m_isEvent == true && escapedZoneBefore == true)
+        {
+            // 탈출 셀과 동일하게 존을 한 번이라도 탈출한 뒤에만 이벤트 셀을 보라색으로 표시 — Reachable 깜빡임도 이 색 기준으로 밝기만 변함
+            fillColor = CommonUtility.PaletteColor("Cell.Event");
         }
         else
         {
