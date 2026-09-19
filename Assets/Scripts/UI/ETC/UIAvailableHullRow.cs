@@ -68,6 +68,15 @@ public class UIAvailableHullRow : MonoBehaviour
         return $"<color={colorHex}>{sign}{deltaCost}</color>";
     }
 
+    // 잠김 상태로 언락 버튼이 실제로 보이는 경우에만 그 RectTransform 반환 — 튜토리얼 강조 대상용
+    public RectTransform GetVisibleUnlockButtonRect()
+    {
+        if (m_unlockButton == null) return null;
+        if (m_unlockButton.gameObject.activeInHierarchy == false) return null;
+
+        return m_unlockButton.transform as RectTransform;
+    }
+
     public void Hide()
     {
         gameObject.SetActive(false);

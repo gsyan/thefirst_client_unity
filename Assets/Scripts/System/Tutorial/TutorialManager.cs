@@ -15,6 +15,21 @@ public class TutorialManager : MonoSingleton<TutorialManager>
     // 지휘력 증가 안내 — 존런 종료로 탐험 포인트가 확정된 직후 TryStartCommandPowerIncreaseTutorial()이 시작시킴
     public const string COMMAND_POWER_INCREASE_TUTORIAL_ID = "Tutorial_CommandPowerIncrease";
 
+    // Branch 스텝의 targetUIId에 이 값을 쓰면 점프 대신 튜토리얼을 완료 처리
+    public const string BRANCH_JUMP_END = "END";
+
+    // 튜토리얼 스텝의 targetUIId가 '@'로 시작하면 하이라키 경로 대신 이 매니저에 등록된 리졸버가 그때그때 대상을 계산해 돌려줌 —
+    // 데이터(잠금 여부 등)에 따라 대상 행이 달라지는 스텝용. 예: 언락 안 된 최저 티어 함체의 언락 버튼
+    public const string DYNAMIC_TARGET_LOWEST_LOCKED_HULL_UNLOCK_BUTTON = "@LowestLockedHullUnlockButton";
+
+    // 함체 언락 안내 — 업적포인트가 티어4 함체 언락 비용에 도달한 뒤 업적 패널이 닫힐 때 TryStartHullUnlockTutorial()이 대기 등록, TryStartPendingTutorial()이 시작시킴
+    public const string HULL_UNLOCK_TUTORIAL_ID = "Tutorial_HullUnlock";
+    private const int HULL_UNLOCK_TUTORIAL_MIN_ACHIEVEMENT_POINT = 500; // DataTableModule 티어4 함체의 unlockAchievementPointCost
+
+    // 함선 슬롯 증가 안내 — 지휘관 레벨업으로 최대 함선 수가 1에서 2 이상이 되면 RequestShipSlotIncreaseTutorial()로 대기 등록,
+    // 레벨업 팝업이 닫히고 메인 UI가 top이며 다른 튜토리얼이 재생 중이 아닐 때 TryStartPendingTutorial()이 시작시킴
+    public const string SHIP_SLOT_INCREASE_TUTORIAL_ID = "Tutorial_ShipSlotIncrease";
+
     // 순서대로 진행되는 온보딩 튜토리얼 — ObjectManager.RunTutorialSequence가 이 순서대로 재생하고,
     // 스킵 버튼 클릭 시(SkipTutorial) 이 목록 전체를 한 번에 완료 처리한 뒤 노말 플레이로 전환함
     public static readonly string[] ONBOARDING_TUTORIAL_SEQUENCE =
@@ -49,6 +64,17 @@ public class TutorialManager : MonoSingleton<TutorialManager>
     private System.Action<bool> m_zoneBattleEndUnlockHandler;
     private System.Action<GridCell3D> m_gridCellClickedHandler; // WaitForGridCellClicked 조건용 — StopTutorialCondition에서 해제
 
+    // Branch 스텝 조건 평가자 — 해당 UI 컴포넌트가 Awake에서 등록, OnDestroy에서 해제(로그아웃 초기화 대상 아님)
+    private readonly Dictionary<ETutorialConditionType, System.Func<bool>> m_branchConditionEvaluators = new Dictionary<ETutorialConditionType, System.Func<bool>>();
+
+    // '@' 동적 타겟 리졸버 — 해당 UI 컴포넌트가 Awake에서 등록, OnDestroy에서 해제(로그아웃 초기화 대상 아님)
+    private readonly Dictionary<string, System.Func<RectTransform>> m_dynamicTargetResolvers = new Dictionary<string, System.Func<RectTransform>>();
+
+    // 조건형 튜토리얼(함체 언락/함선 슬롯 증가) 대기 상태 — 시작 조건이 갖춰질 때까지 보류
+    private readonly List<string> m_pendingTutorialIds = new List<string>();
+    private bool m_isLevelupPopupOpen;
+    private bool m_isPendingTutorialStartScheduled;
+
     // 튜토리얼 완료 이벤트 (tutorialId 전달)
     public event System.Action<string> OnTutorialCompleted;
 
@@ -61,6 +87,7 @@ public class TutorialManager : MonoSingleton<TutorialManager>
     protected override void OnInitialize()
     {
         EventManager.Subscribe_ConsumeAnyClick(ConsumeAnyClick);
+        EventManager.Subscribe_CurrentPanelChanged(OnCurrentPanelChanged);
         m_battleCinematic = new TutorialBattleCinematic(this);
     }
 
@@ -88,11 +115,16 @@ public class TutorialManager : MonoSingleton<TutorialManager>
 
         m_completedTutorials.Clear();
         m_isServerLoaded = false;
+        m_pendingTutorialIds.Clear();
+        m_isLevelupPopupOpen = false;
+        m_isPendingTutorialStartScheduled = false;
 
         // EventManager.UnsubscribeAll()로 지워진 이 매니저 자신의 구독 복구 —
         // 먼저 해제 후 재구독해야 호출 시점과 무관하게 항상 구독이 정확히 1개만 남음(중복 구독 방지)
         EventManager.Unsubscribe_ConsumeAnyClick(ConsumeAnyClick);
         EventManager.Subscribe_ConsumeAnyClick(ConsumeAnyClick);
+        EventManager.Unsubscribe_CurrentPanelChanged(OnCurrentPanelChanged);
+        EventManager.Subscribe_CurrentPanelChanged(OnCurrentPanelChanged);
     }
 
     // SelectCommander 응답에 이미 포함된 진행도를 그대로 주입 — SpaceScene 진입 전 미리 확보 가능(별도 네트워크 호출 불필요)
@@ -166,6 +198,179 @@ public class TutorialManager : MonoSingleton<TutorialManager>
         StartTutorial(COMMAND_POWER_INCREASE_TUTORIAL_ID);
     }
 
+    // 해당 조건을 소유한 UI가 Awake에서 등록/OnDestroy에서 해제 — 등록된 평가자가 없으면 거짓으로 처리(직선 진행)
+    public void RegisterBranchCondition(ETutorialConditionType conditionType, System.Func<bool> evaluator)
+    {
+        m_branchConditionEvaluators[conditionType] = evaluator;
+    }
+
+    public void UnregisterBranchCondition(ETutorialConditionType conditionType, System.Func<bool> evaluator)
+    {
+        if (m_branchConditionEvaluators.TryGetValue(conditionType, out System.Func<bool> registered) == false) return;
+        if (registered != evaluator) return;
+
+        m_branchConditionEvaluators.Remove(conditionType);
+    }
+
+    private bool EvaluateBranchCondition(ETutorialConditionType conditionType)
+    {
+        if (conditionType == ETutorialConditionType.Always) return true;
+        if (m_branchConditionEvaluators.TryGetValue(conditionType, out System.Func<bool> evaluator) == false) return false;
+
+        return evaluator();
+    }
+
+    public void RegisterDynamicTarget(string key, System.Func<RectTransform> resolver)
+    {
+        m_dynamicTargetResolvers[key] = resolver;
+    }
+
+    // 등록한 리졸버가 그대로 남아있을 때만 해제 — 새 인스턴스가 이미 같은 키를 덮어썼다면 건드리지 않음
+    public void UnregisterDynamicTarget(string key, System.Func<RectTransform> resolver)
+    {
+        if (m_dynamicTargetResolvers.TryGetValue(key, out System.Func<RectTransform> registered) == false) return;
+        if (registered != resolver) return;
+
+        m_dynamicTargetResolvers.Remove(key);
+    }
+
+    public RectTransform ResolveDynamicTarget(string key)
+    {
+        if (m_dynamicTargetResolvers.TryGetValue(key, out System.Func<RectTransform> resolver) == false) return null;
+        return resolver();
+    }
+
+    // 업적 패널이 닫히는 순간 호출 — 보유 업적포인트가 티어4 함체 언락 비용 이상이고 아직 안 본 경우 대기 등록
+    public void TryStartHullUnlockTutorial(int achievementPoint)
+    {
+        if (achievementPoint < HULL_UNLOCK_TUTORIAL_MIN_ACHIEVEMENT_POINT) return;
+        RequestPendingTutorial(HULL_UNLOCK_TUTORIAL_ID);
+    }
+
+    // 로그인 후 메인 진입 시 호출 — 조건(업적포인트/함선 슬롯)은 만족했지만 튜토리얼을 끝까지 못 본 채 종료·재접속한 경우 다시 대기 등록
+    public void RestoreConditionTutorials()
+    {
+        Commander commander = DataManager.Instance.m_currentCommander;
+        if (commander == null) return;
+
+        int achievementPoint = commander.GetAchievementPoint();
+        if (achievementPoint >= HULL_UNLOCK_TUTORIAL_MIN_ACHIEVEMENT_POINT)
+            RequestPendingTutorial(HULL_UNLOCK_TUTORIAL_ID);
+
+        int shipCount = DataManager.Instance.m_dataTableCommander.GetShipCount(commander.GetCommanderLevel());
+        if (shipCount >= 2)
+            RequestPendingTutorial(SHIP_SLOT_INCREASE_TUTORIAL_ID);
+    }
+
+    // 조건형 튜토리얼이 이미 필요 없어진 상태인지 — 함체 언락은 하나라도 언락했으면, 함선 슬롯은 빈 슬롯이 없으면 안내 대상이 아님
+    private bool IsConditionTutorialObsolete(string tutorialId)
+    {
+        if (tutorialId == HULL_UNLOCK_TUTORIAL_ID)
+        {
+            Commander commander = DataManager.Instance.m_currentCommander;
+            return commander != null && commander.HasAnyUnlockedHull() == true;
+        }
+
+        if (tutorialId == SHIP_SLOT_INCREASE_TUTORIAL_ID)
+            return HasEmptyShipSlot() == false;
+
+        return false;
+    }
+
+    // 현재 레벨에서 열린 함선 슬롯 수보다 배치된 함선이 적은지 — 이미 슬롯을 다 채운 유저에게는 함선 추가 안내가 무의미함
+    private bool HasEmptyShipSlot()
+    {
+        Commander commander = DataManager.Instance.m_currentCommander;
+        FleetComposition composition = DataManager.Instance.m_currentFleetComposition;
+        if (commander == null || composition == null) return false;
+
+        int openSlotCount = DataManager.Instance.m_dataTableCommander.GetShipCount(commander.GetCommanderLevel());
+        int placedShipCount = composition.GetPlacedShips().Count;
+        Debug.Log($"[ShipSlotTutorialLOG] HasEmptyShipSlot level={commander.GetCommanderLevel()} openSlotCount={openSlotCount} placedShipCount={placedShipCount}");
+        return placedShipCount < openSlotCount;
+    }
+
+    // 레벨업으로 최대 함선 수가 늘어난 시점에 호출 — 레벨업 팝업이 닫힐 때까지 시작을 막고 대기 등록
+    public void RequestShipSlotIncreaseTutorial()
+    {
+        bool isCompleted = IsTutorialCompleted(SHIP_SLOT_INCREASE_TUTORIAL_ID);
+        Debug.Log($"[ShipSlotTutorialLOG] RequestShipSlotIncreaseTutorial isCompleted={isCompleted}");
+        if (isCompleted == true) return;
+
+        m_isLevelupPopupOpen = true;
+        RequestPendingTutorial(SHIP_SLOT_INCREASE_TUTORIAL_ID);
+    }
+
+    // 레벨업 알림 팝업이 닫힐 때 호출(확인/자동 닫힘 공통)
+    public void NotifyLevelupPopupClosed()
+    {
+        m_isLevelupPopupOpen = false;
+        Debug.Log($"[ShipSlotTutorialLOG] NotifyLevelupPopupClosed pendingCount={m_pendingTutorialIds.Count} isPlaying={m_isPlaying}");
+        TryStartPendingTutorial();
+    }
+
+    private void OnCurrentPanelChanged(string panelName)
+    {
+        TryStartPendingTutorial();
+    }
+
+    // 시작 조건이 갖춰질 때까지 보류할 튜토리얼 등록 — 이미 완료했거나 이미 등록된 id는 무시
+    private void RequestPendingTutorial(string tutorialId)
+    {
+        bool isCompleted = IsTutorialCompleted(tutorialId);
+        bool isObsolete = IsConditionTutorialObsolete(tutorialId);
+        Debug.Log($"[ShipSlotTutorialLOG] RequestPendingTutorial id={tutorialId} isCompleted={isCompleted} isObsolete={isObsolete}");
+        if (isCompleted == true) return;
+        if (isObsolete == true) return;
+        if (m_pendingTutorialIds.Contains(tutorialId) == false)
+            m_pendingTutorialIds.Add(tutorialId);
+
+        TryStartPendingTutorial();
+    }
+
+    // 대기 중인 튜토리얼의 시작 조건 확인 — 팝업 닫힘 / 패널 변경 / 다른 튜토리얼 종료 시점마다 재확인됨
+    private void TryStartPendingTutorial()
+    {
+        if (CanStartPendingTutorial() == false) return;
+        if (m_isPendingTutorialStartScheduled == true) return;
+
+        m_isPendingTutorialStartScheduled = true;
+        StartCoroutine(StartPendingTutorialDeferred());
+    }
+
+    private bool CanStartPendingTutorial()
+    {
+        if (m_pendingTutorialIds.Count == 0) return false;
+
+        int panelStackDepth = UIManager.Instance.GetPanelStackDepth();
+        bool isMainPanelOnTop = panelStackDepth <= 1;
+        Debug.Log($"[ShipSlotTutorialLOG] CanStartPendingTutorial pendingCount={m_pendingTutorialIds.Count} isLevelupPopupOpen={m_isLevelupPopupOpen} isPlaying={m_isPlaying} panelStackDepth={panelStackDepth}");
+        if (m_isLevelupPopupOpen == true) return false;
+        if (m_isPlaying == true) return false;
+
+        return isMainPanelOnTop;
+    }
+
+    // 패널 전환/팝업 정리가 끝난 뒤 시작하도록 한 프레임 미룬 다음 조건을 다시 확인
+    private IEnumerator StartPendingTutorialDeferred()
+    {
+        yield return null;
+        m_isPendingTutorialStartScheduled = false;
+
+        if (CanStartPendingTutorial() == false) yield break;
+
+        string tutorialId = m_pendingTutorialIds[0];
+        m_pendingTutorialIds.RemoveAt(0);
+        Debug.Log($"[ShipSlotTutorialLOG] StartPendingTutorialDeferred id={tutorialId} isObsolete={IsConditionTutorialObsolete(tutorialId)}");
+
+        // 대기하는 사이 안내할 필요가 없어졌으면(이미 언락/이미 슬롯 채움) 시작하지 않고 폐기
+        if (IsConditionTutorialObsolete(tutorialId) == false)
+            StartTutorial(tutorialId);
+
+        // 완료돼 있던 id라 StartTutorial이 바로 끝났거나 아직 대기열이 남았으면 이어서 확인
+        TryStartPendingTutorial();
+    }
+
     // 현재 진행 중인 튜토리얼이 스킵 버튼을 숨기도록 설정됐는지 — TutorialUI가 스킵 버튼 표시 여부를 결정할 때 사용
     public bool IsSkipButtonHiddenForCurrentTutorial()
     {
@@ -201,6 +406,14 @@ public class TutorialManager : MonoSingleton<TutorialManager>
         // 존런 종료 직후(그리드 패널이 여전히 top)에 발동될 수 있어, 메인 UI로 복귀시킨 뒤 시작 —
         // 안 그러면 1스텝이 가리키는 FleetButton이 비활성 상태(메인 패널이 가려진 채)라 대상을 못 찾음
         if (tutorialId == COMMAND_POWER_INCREASE_TUTORIAL_ID)
+            UIManager.Instance.ShowMainPanel();
+
+        // 업적 패널이 닫힌 직후 발동 — 1스텝이 가리키는 FleetButton이 보이도록 메인 UI로 복귀시킨 뒤 시작
+        if (tutorialId == HULL_UNLOCK_TUTORIAL_ID)
+            UIManager.Instance.ShowMainPanel();
+
+        // 대기 조건에서 이미 메인 UI가 top임을 확인하고 시작하지만, 직접 호출돼도 FleetButton이 보이도록 동일하게 보장
+        if (tutorialId == SHIP_SLOT_INCREASE_TUTORIAL_ID)
             UIManager.Instance.ShowMainPanel();
 
         m_currentStepIndex = 0;
@@ -336,6 +549,14 @@ public class TutorialManager : MonoSingleton<TutorialManager>
 
         TutorialStep step = m_currentTutorial.steps[m_currentStepIndex];
 
+        // Branch 스텝은 UI를 띄우지 않고 조건만 평가해 분기
+        if (step.triggerType == ETutorialTrigger.Branch)
+        {
+            NotifyWaitingForAnyClickChanged();
+            StartCoroutine(ExecuteBranchStepDeferred(m_currentTutorial, m_currentStepIndex));
+            return;
+        }
+
         // 사전 액션 (패널 열기)
         if (!string.IsNullOrEmpty(step.preActionPanelName))
         {
@@ -357,6 +578,41 @@ public class TutorialManager : MonoSingleton<TutorialManager>
         m_tutorialUI?.ShowStep(step);
 
         NotifyWaitingForAnyClickChanged();
+    }
+
+    // 직전 스텝의 클릭이 UI 상태(지휘력 미리보기 등)를 갱신한 뒤 평가하도록 한 프레임 미룸 — 그 사이 튜토리얼이 끝나거나 바뀌었으면 무시
+    private IEnumerator ExecuteBranchStepDeferred(TutorialData tutorial, int stepIndex)
+    {
+        yield return null;
+
+        if (m_isPlaying == false) yield break;
+        if (m_currentTutorial != tutorial || m_currentStepIndex != stepIndex) yield break;
+
+        TutorialStep step = tutorial.steps[stepIndex];
+        bool isConditionMet = EvaluateBranchCondition(step.conditionType);
+        Debug.Log($"[Tutorial] Branch stepId={step.stepId} condition={step.conditionType} met={isConditionMet} jumpTo={step.targetUIId}");
+        if (isConditionMet == false)
+        {
+            NextStep();
+            yield break;
+        }
+
+        if (step.targetUIId == BRANCH_JUMP_END)
+        {
+            CompleteTutorial();
+            yield break;
+        }
+
+        int jumpIndex = tutorial.steps.FindIndex(s => s.stepId == step.targetUIId);
+        if (jumpIndex < 0)
+        {
+            Debug.LogWarning($"[Tutorial] Branch 점프 대상 stepId를 찾을 수 없음: {step.targetUIId} (튜토리얼: {tutorial.tutorialId})");
+            NextStep();
+            yield break;
+        }
+
+        m_currentStepIndex = jumpIndex;
+        ExecuteCurrentStep();
     }
 
     // 튜토리얼 완료
@@ -386,6 +642,9 @@ public class TutorialManager : MonoSingleton<TutorialManager>
 
         // 이벤트 발생
         OnTutorialCompleted?.Invoke(completedId);
+
+        // 다른 튜토리얼이 재생 중이라 보류됐던 조건형 튜토리얼 재확인
+        TryStartPendingTutorial();
     }
 
     // 스킵으로 플레이하지 않고 건너뛴 튜토리얼을 완료 처리 — 다음 실행 시 다시 뜨지 않도록 서버에도 저장

@@ -260,6 +260,10 @@ public class TutorialUI : UIPopupBase
     {
         if (string.IsNullOrEmpty(targetId)) return null;
 
+        // '@'로 시작하는 동적 타겟 — 풀링된 행 등 매번 달라질 수 있어 캐시하지 않고 리졸버가 그때그때 계산
+        if (targetId[0] == '@')
+            return TutorialManager.Instance.ResolveDynamicTarget(targetId);
+
         // 캐시 확인
         string cacheKey = $"{panelName}/{targetId}";
         if (m_uiCache.TryGetValue(cacheKey, out RectTransform cached))

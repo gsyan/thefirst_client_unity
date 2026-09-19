@@ -163,6 +163,46 @@ MonoBehaviour:
     m_Key: Tutorial_CommandPowerIncrease_Complete
     m_Metadata:
       m_Items: []
+  - m_Id: 28403527176814592
+    m_Key: Tutorial_HullUnlock_OpenFleet
+    m_Metadata:
+      m_Items: []
+  - m_Id: 28403527231340544
+    m_Key: Tutorial_HullUnlock_SelectHullType
+    m_Metadata:
+      m_Items: []
+  - m_Id: 28403527231340545
+    m_Key: Tutorial_HullUnlock_Explain
+    m_Metadata:
+      m_Items: []
+  - m_Id: 28403527231340546
+    m_Key: Tutorial_ShipSlotIncrease_OpenFleet
+    m_Metadata:
+      m_Items: []
+  - m_Id: 28403527231340547
+    m_Key: Tutorial_ShipSlotIncrease_SelectSlot
+    m_Metadata:
+      m_Items: []
+  - m_Id: 28403527231340548
+    m_Key: Tutorial_ShipSlotIncrease_SelectHull
+    m_Metadata:
+      m_Items: []
+  - m_Id: 28403527231340549
+    m_Key: Tutorial_ShipSlotIncrease_Confirm
+    m_Metadata:
+      m_Items: []
+  - m_Id: 28403527231340550
+    m_Key: Tutorial_ShipSlotIncrease_Complete
+    m_Metadata:
+      m_Items: []
+  - m_Id: 28414612789395456
+    m_Key: Tutorial_HullUnlock_ConfirmUnlock
+    m_Metadata:
+      m_Items: []
+  - m_Id: 28430607918694400
+    m_Key: Tutorial_ShipSlotIncrease_LowCommandPower
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

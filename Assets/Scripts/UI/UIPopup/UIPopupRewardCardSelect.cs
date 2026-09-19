@@ -138,7 +138,6 @@ public class UIPopupRewardCardSelect : UIPopupBase
 
     private void OnConfirmClicked()
     {
-        Debug.Log("[InputDebug] OnConfirmClicked fired");
         bool hasCardCandidates = m_candidateCardIds != null && m_candidateCardIds.Count > 0;
         string selectedCardId = (hasCardCandidates == true && m_selectedIndex >= 0) ? m_candidateCardIds[m_selectedIndex] : null;
 
@@ -169,7 +168,6 @@ public class UIPopupRewardCardSelect : UIPopupBase
 
     private void OnRerollClicked()
     {
-        Debug.Log("[InputDebug] OnRerollClicked fired");
         bool isVip = IAPManager.Instance.IsVipActive();
         if (m_rerollRemain <= 0) return;
         if (isVip == false && AdManager.Instance.IsRewardedAdReady == false) return;

@@ -537,7 +537,6 @@ public class UIManager : MonoSingleton<UIManager>
     // 확인 팝업 — 이미 표시 중이면 큐에 적재, 닫힐 때 자동으로 다음 팝업 표시
     public void ShowConfirmPopup(ConfirmPopupConfig config)
     {
-        Debug.Log($"[InputDebug] ShowConfirmPopup called isShowing={m_isConfirmPopupShowing} queueCountBeforeEnqueue={m_confirmPopupQueue.Count}");
         m_confirmPopupQueue.Enqueue(config);
         if (m_isConfirmPopupShowing == false)
             ShowNextConfirmPopup();
@@ -553,8 +552,7 @@ public class UIManager : MonoSingleton<UIManager>
 
         m_isConfirmPopupShowing = true;
         ConfirmPopupConfig config = m_confirmPopupQueue.Dequeue();
-        Debug.Log($"[InputDebug] ShowNextConfirmPopup dequeued, remainingQueue={m_confirmPopupQueue.Count} overlayStackCount={m_popupStacks[(int)EPopupLayer.Overlay].Count}");
-
+        
         UIPopupConfirm popup = GetOrCreatePopup<UIPopupConfirm>("UIPopupConfirm", EPopupLayer.Overlay);
         if (popup == null) { ShowNextConfirmPopup(); return; }
 
@@ -575,7 +573,8 @@ public class UIManager : MonoSingleton<UIManager>
     }
 
     // 커맨더 레벨업 알림 팝업 (서버 자동 레벨업 감지 시 호출) — 레벨/배치가능 함선수를 항상 표시
-    public void ShowCommanderLevelupNotify(int newLevel)
+    // onClosed: 팝업이 확인 클릭 또는 자동 닫힘으로 닫힐 때 호출(선택)
+    public void ShowCommanderLevelupNotify(int newLevel, System.Action onClosed = null)
     {
         SoundManager.Instance.PlayFX(EFx.Commander_Level_Up);
         int shipCount = DataManager.Instance.m_dataTableCommander.GetShipCount(newLevel);
@@ -590,7 +589,7 @@ public class UIManager : MonoSingleton<UIManager>
             message            = LocalizationManager.Instance.Get("UIPopupMessage_CommanderLevelupMessage"),
             resultRows         = rows,
             resultRowsVertical = true,
-            onConfirm          = () => { },
+            onConfirm          = () => { if (onClosed != null) onClosed(); },
             autoCloseSec       = 10f,
         });
     }

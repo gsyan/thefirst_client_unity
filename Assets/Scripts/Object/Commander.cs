@@ -138,6 +138,13 @@ public class Commander
         return m_commanderInfo.unlockedHulls.Contains(hullSubType);
     }
 
+    // 업적포인트로 언락한 함체가 하나라도 있는지 — 티어4+ 함체는 선행 언락 순서가 있어 하나라도 있으면 최저 티어(티어4)는 이미 언락된 것
+    public bool HasAnyUnlockedHull()
+    {
+        if (m_commanderInfo == null || m_commanderInfo.unlockedHulls == null) return false;
+        return m_commanderInfo.unlockedHulls.Count > 0;
+    }
+
     // UnlockHull API 성공 응답의 unlockedHulls(권위값)로 갱신 — 호출부(UIHullPickerView)가 직접 화면을 다시 그림
     public void UpdateUnlockedHulls(System.Collections.Generic.List<string> unlockedHulls)
     {

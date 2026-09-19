@@ -1,0 +1,5 @@
+stepId,message,triggerType,targetPanelName,targetUIId,showArrow,arrowDirection,textBoxOffsetX,textBoxOffsetY,textBoxSizeX,textBoxSizeY,textBoxPositionX,textBoxPositionY,autoNextDelay,preActionPanelName,preActionTabName,conditionType,conditionThreshold,conditionCount,targetModuleType
+step1,Tutorial_HullUnlock_OpenFleet,TargetClick,,FleetButton,True,Auto,0,0,0,0,0,-500,0,,,None,90,3,none
+step2,Tutorial_HullUnlock_SelectHullType,TargetClick,UIPanelFleet,ShipSelectButton,True,Auto,0,0,0,0,0,-500,0,,,None,90,3,none
+step3,Tutorial_HullUnlock_Explain,TargetClick,,@LowestLockedHullUnlockButton,True,Auto,0,0,0,0,0,-500,0,,,None,90,3,none
+step4,Tutorial_HullUnlock_ConfirmUnlock,TargetClick,UIPopupConfirm,ConfirmButton,True,Auto,0,0,0,0,0,-500,0,,,None,90,3,none

@@ -12,7 +12,8 @@ public enum ETutorialTrigger
     TargetClick, // targetUIId를 직접 클릭해야 진행
     AnyClick,   // 화면 아무 곳이나 클릭하면 진행
     AutoNext,   // 자동 진행
-    Custom      // 커스텀 조건
+    Custom,     // 커스텀 조건
+    Branch      // UI 없이 conditionType 조건만 평가 — 참이면 targetUIId의 stepId(END면 튜토리얼 완료)로 점프, 거짓이면 다음 스텝
 }
 
 // 커스텀 조건 타입
@@ -38,6 +39,8 @@ public enum ETutorialConditionType
     CleanupEscapeFleet = 13, // Tutorial_FirstPlay_Complete 마지막 스텝 — 탈출선 연출(워프이펙트/이동) 정리 후 즉시 다음 스텝(=튜토리얼 종료)
     WaitForZoneBattleEnd = 14, // Tutorial_Exploration — 셀 전투 결과가 완전히 반영되어 그리드 패널로 복귀할 때까지 대기(EventManager.ZoneCellReturnedToGrid), 승패 무관하게 진행
     WaitForGridCellClicked = 15, // Tutorial_Exploration step3 — 3D 탐사 그리드 셀을 클릭할 때까지 대기(유효성 검사 이전 원시 클릭 이벤트라 어떤 셀을 눌러도 진행)
+    CommandPowerInsufficientForPickedHull = 16, // Branch 전용 — 함체 선택 팝업에서 고른 함체를 배치하면 지휘력이 최대치를 넘는지
+    Always = 17, // Branch 전용 — 항상 참(무조건 점프)
 }
 
 // 화살표 방향 — Auto면 TutorialArrow가 화면 여유 공간을 보고 자동 결정, 그 외는 강제 지정

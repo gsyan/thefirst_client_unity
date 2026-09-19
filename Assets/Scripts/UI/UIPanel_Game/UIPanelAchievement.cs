@@ -111,6 +111,18 @@ public class UIPanelAchievement : UIPanelBase
         LayoutRebuilder.ForceRebuildLayoutImmediate(m_achievementPointRow.transform as RectTransform);
     }
 
+    // 업적 보상 수령으로 업적포인트가 티어4 함체 언락 비용에 도달했으면, 패널을 닫는 순간 함체 언락 안내 튜토리얼 시작(최초 1회, 판정은 TutorialManager)
+    public override void OnHideUIPanel()
+    {
+        base.OnHideUIPanel();
+
+        Commander commander = DataManager.Instance.m_currentCommander;
+        if (commander == null) return;
+
+        int ownedAchievementPoint = commander.GetAchievementPoint();
+        TutorialManager.Instance.TryStartHullUnlockTutorial(ownedAchievementPoint);
+    }
+
     public override void OnShowUIPanel()
     {
         base.OnShowUIPanel();

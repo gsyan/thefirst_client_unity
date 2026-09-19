@@ -35,6 +35,8 @@ public class UIHullPickerView : MonoBehaviour
     private int m_maxCommandPower;
     private System.Action<string> m_onConfirm; // 확인 시 선택된 hullSubType 전달
     private System.Action m_onCancel;
+    private System.Func<RectTransform> m_lowestLockedHullTargetResolver; // 등록/해제 시 같은 델리게이트 인스턴스를 써야 하므로 보관
+    private System.Func<bool> m_overCommandPowerEvaluator;
 
     private void Awake()
     {
@@ -55,7 +57,57 @@ public class UIHullPickerView : MonoBehaviour
         if (m_cancelButtonText != null)
             CommonUtility.SetUILocText(m_cancelButtonText, "UI_Cancel");
 
+        // 튜토리얼이 "언락 안 된 최저 티어 함체의 언락 버튼"을 강조할 수 있도록 동적 타겟 리졸버 등록
+        m_lowestLockedHullTargetResolver = ResolveLowestLockedHullUnlockButton;
+        TutorialManager.Instance.RegisterDynamicTarget(TutorialManager.DYNAMIC_TARGET_LOWEST_LOCKED_HULL_UNLOCK_BUTTON, m_lowestLockedHullTargetResolver);
+
+        // 튜토리얼 Branch 스텝이 "고른 함체가 지휘력을 초과하는지"를 물어볼 수 있도록 조건 평가자 등록
+        m_overCommandPowerEvaluator = IsSelectedHullOverCommandPower;
+        TutorialManager.Instance.RegisterBranchCondition(ETutorialConditionType.CommandPowerInsufficientForPickedHull, m_overCommandPowerEvaluator);
+
         gameObject.SetActive(false);
+    }
+
+    private void OnDestroy()
+    {
+        TutorialManager tutorialManager = TutorialManager.Instance; // 종료 중이면 null
+        if (tutorialManager != null)
+        {
+            tutorialManager.UnregisterDynamicTarget(TutorialManager.DYNAMIC_TARGET_LOWEST_LOCKED_HULL_UNLOCK_BUTTON, m_lowestLockedHullTargetResolver);
+            tutorialManager.UnregisterBranchCondition(ETutorialConditionType.CommandPowerInsufficientForPickedHull, m_overCommandPowerEvaluator);
+        }
+    }
+
+    // 언락 안 됐고 선행조건이 충족된 함체 중 티어가 가장 낮은(같으면 목록 앞쪽) 행의 언락 버튼 — 그 행이 화면에 바인딩돼 있지 않으면 null
+    private RectTransform ResolveLowestLockedHullUnlockButton()
+    {
+        if (m_scrollView == null) return null;
+
+        int targetDataIndex = -1;
+        int lowestTier = int.MaxValue;
+        for (int i = 0; i < m_hullsCache.Count; i++)
+        {
+            ModuleData hull = m_hullsCache[i];
+            if (IsHullLocked(hull) == false) continue;
+            if (IsUnlockPrerequisiteMet(hull) == false) continue;
+
+            int tier = CommonUtility.ParseTier(hull.moduleSubType);
+            if (tier >= lowestTier) continue;
+
+            lowestTier = tier;
+            targetDataIndex = i;
+        }
+        if (targetDataIndex < 0) return null;
+
+        RectTransform unlockButtonRect = null;
+        m_scrollView.ForEachVisibleItem((dataIndex, rowObject) =>
+        {
+            if (dataIndex != targetDataIndex) return;
+
+            UIAvailableHullRow row = rowObject.GetComponent<UIAvailableHullRow>();
+            if (row != null) unlockButtonRect = row.GetVisibleUnlockButtonRect();
+        });
+        return unlockButtonRect;
     }
 
     // availableHulls: 고를 수 있는 함체 목록, currentHull: 비교 기준이 되는 현재 장착 함체(빈 슬롯이면 null → 비교 없이 수치만 표시)
@@ -235,6 +287,26 @@ public class UIHullPickerView : MonoBehaviour
         });
     }
 
+    // 선택된 함체를 이 슬롯에 적용했다고 가정했을 때의 총 지휘력 사용량
+    private int GetProjectedUsedCommandPower()
+    {
+        FleetComposition composition = DataManager.Instance.m_currentFleetComposition;
+        ModuleHullInfo keptModules = GetKeptModules(m_selectedHullSubType);
+        int selectedCost = composition != null ? composition.ComputeProjectedSlotCommandCost(m_selectedHullSubType, keptModules) : 0;
+        int projectedUsedCommandPower = m_baseUsedCommandPower + selectedCost;
+        return projectedUsedCommandPower;
+    }
+
+    // 튜토리얼 분기 조건(CommandPowerInsufficientForPickedHull) — 팝업이 열려 있고 선택된 함체가 지휘력 최대치를 넘기면 true
+    private bool IsSelectedHullOverCommandPower()
+    {
+        if (gameObject.activeInHierarchy == false) return false;
+
+        int projectedUsedCommandPower = GetProjectedUsedCommandPower();
+        bool isOverCommandPower = projectedUsedCommandPower > m_maxCommandPower;
+        return isOverCommandPower;
+    }
+
     // 선택 후보를 실제로 적용했다고 가정했을 때의 지휘력 사용량을 미리 계산해서 보여줌 — 최대치 초과 시 경고색 + 확인 버튼 비활성화
     // 슬롯이 이미 점유 중이던 모듈(m_currentModules)은 새 함체의 슬롯 범위 안에서 그대로 유지되므로, 정적 statPoint가 아니라
     // 실제 유지될 모듈 구성(GetKeptModules) 기준으로 계산해야 정확함 — 서버 FleetService.placeFleetShip과 동일 규칙
@@ -242,10 +314,7 @@ public class UIHullPickerView : MonoBehaviour
     {
         if (m_commandPowerRow == null) return;
 
-        FleetComposition composition = DataManager.Instance.m_currentFleetComposition;
-        ModuleHullInfo keptModules = GetKeptModules(m_selectedHullSubType);
-        int selectedCost = composition != null ? composition.ComputeProjectedSlotCommandCost(m_selectedHullSubType, keptModules) : 0;
-        int projectedUsedCommandPower = m_baseUsedCommandPower + selectedCost;
+        int projectedUsedCommandPower = GetProjectedUsedCommandPower();
         bool isOverCommandPower = projectedUsedCommandPower > m_maxCommandPower;
 
         m_commandPowerRow.SetRow("UI_CommandPower", $"{projectedUsedCommandPower} / {m_maxCommandPower}", rawValue: true);

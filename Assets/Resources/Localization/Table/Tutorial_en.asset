@@ -184,6 +184,51 @@ MonoBehaviour:
       Points.
     m_Metadata:
       m_Items: []
+  - m_Id: 28403527176814592
+    m_Localized: You earned enough Achievement Points to unlock a new hull! Open
+      the fleet management screen.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 28403527231340544
+    m_Localized: Tap here to open the hull selection list.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 28403527231340545
+    m_Localized: Locked hulls can be unlocked with Achievement Points. Press the
+      Unlock button on a locked hull to use it.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 28403527231340546
+    m_Localized: Your Commander Level rose and you can now deploy another ship! Open
+      the fleet management screen.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 28403527231340547
+    m_Localized: Tap the newly opened empty slot to add a ship.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 28403527231340548
+    m_Localized: Choose the hull you want to deploy.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 28403527231340549
+    m_Localized: Press Confirm to deploy the ship.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 28403527231340550
+    m_Localized: Ship added! The higher your Commander Level, the more ships you
+      can deploy.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 28414612789395456
+    m_Localized: Press Confirm to spend Achievement Points and unlock the hull.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 28430607918694400
+    m_Localized: Not enough Command Power to deploy this ship. Convert Exploration
+      Points into Command Power first, then try again.
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

@@ -840,6 +840,22 @@ public class CameraController : MonoSingleton<CameraController>
         return objMgr.GetEnemySpawnPosition();
     }
 
+    // 두 함대를 잇는 축에 수직인 정측면 rotY 두 후보 중 현재 rotY에서 회전량이 적은 쪽을 목표 회전으로 설정 (X/줌은 유지)
+    private void SetNearestBroadsideRotationY(Vector3 myPos, Vector3 enemyPos)
+    {
+        Vector3 axis = enemyPos - myPos;
+        axis.y = 0f;
+        if (axis.sqrMagnitude < 0.0001f) return;
+
+        float sideRotationA = Mathf.Atan2(-axis.z, axis.x) * Mathf.Rad2Deg;
+        float sideRotationB = Mathf.Atan2(axis.z, -axis.x) * Mathf.Rad2Deg;
+        float deltaA = Mathf.Abs(Mathf.DeltaAngle(m_currentRotationY, sideRotationA));
+        float deltaB = Mathf.Abs(Mathf.DeltaAngle(m_currentRotationY, sideRotationB));
+
+        m_hasTargetRotationY = true;
+        m_targetRotationY = deltaA <= deltaB ? sideRotationA : sideRotationB;
+    }
+
     // 현재 FocusTarget 기준 월드 위치 반환 (상태 변경 없음)
     public Vector3 GetFocusTargetPosition()
     {
@@ -1087,7 +1103,9 @@ public class CameraController : MonoSingleton<CameraController>
                     m_currentTargetBackup = m_currentTarget;
                     m_currentTarget = null;
                 }
-                m_targetPosition = (myFleet.transform.position + GetCenterModeEnemyPosition(objMgr, myFleet)) * 0.5f;
+                Vector3 enemyPos = GetCenterModeEnemyPosition(objMgr, myFleet);
+                m_targetPosition = (myFleet.transform.position + enemyPos) * 0.5f;
+                SetNearestBroadsideRotationY(myFleet.transform.position, enemyPos);
                 EnterCenterMode();
                 break;
             case ECameraFocusTarget.camera_focus_my_fleet:

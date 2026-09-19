@@ -576,7 +576,6 @@ public class UIPanelExplorationGrid : UIPanelBase
 
     private void OnCellClicked(int row, int col)
     {
-        Debug.Log($"[InputDebug] OnCellClicked fired row={row} col={col}");
         // 브라우징(스크롤/탭 이동)은 잠긴 존도 허용하되, 실제 입장(전투 진입)만 여기서 차단
         if (s_devSkipZoneLockCheck == false && m_currentZoneNumber > GetHighestClearedZoneNumber() + 1)
         {
@@ -607,6 +606,14 @@ public class UIPanelExplorationGrid : UIPanelBase
         if (hasAnotherZoneRun == true)
         {
             ShowSwitchZoneAbandonPopup(row, col);
+            return;
+        }
+
+        // 이번 런에서 이미 클리어한 셀로의 이동(재방문)은 전투/보상 없이 위치만 옮기므로 도전 확인 팝업 없이 바로 진행
+        bool isAlreadyClearedTargetCell = m_gridData.GetCell(row, col).isCleared;
+        if (isAlreadyClearedTargetCell == true)
+        {
+            ConfirmEnterCell(row, col);
             return;
         }
 
@@ -1350,8 +1357,21 @@ public class UIPanelExplorationGrid : UIPanelBase
         int prevLevel = commander.GetCommanderLevel();
         commander.UpdateExp(totalExp);
         commander.UpdateCommanderLevel(commanderLevel);
-        if (commanderLevel > prevLevel)
-            UIManager.Instance.ShowCommanderLevelupNotify(commanderLevel);
+        if (commanderLevel <= prevLevel) return;
+
+        // 최대 함선 수가 1에서 2 이상으로 늘었으면 함선 추가 튜토리얼을 대기 등록하고, 레벨업 팝업이 닫힐 때 시작 조건 재확인
+        int prevShipCount = DataManager.Instance.m_dataTableCommander.GetShipCount(prevLevel);
+        int newShipCount = DataManager.Instance.m_dataTableCommander.GetShipCount(commanderLevel);
+        bool isShipSlotIncreasedFromOne = prevShipCount <= 1 && newShipCount >= 2;
+        Debug.Log($"[ShipSlotTutorialLOG] ApplyExpAndLevel prevLevel={prevLevel} newLevel={commanderLevel} prevShipCount={prevShipCount} newShipCount={newShipCount} isShipSlotIncreasedFromOne={isShipSlotIncreasedFromOne}");
+        if (isShipSlotIncreasedFromOne == true)
+        {
+            TutorialManager.Instance.RequestShipSlotIncreaseTutorial();
+            UIManager.Instance.ShowCommanderLevelupNotify(commanderLevel, TutorialManager.Instance.NotifyLevelupPopupClosed);
+            return;
+        }
+
+        UIManager.Instance.ShowCommanderLevelupNotify(commanderLevel);
     }
 
     // 탈출/포기로 런이 종료된 직후 로컬 캐시도 즉시 비워야 "다른 존 진행중" 판정이 이번 세션 내내 정확함
@@ -1392,7 +1412,6 @@ public class UIPanelExplorationGrid : UIPanelBase
 
     private void OnAbandonRunButtonClicked()
     {
-        Debug.Log("[InputDebug] OnAbandonRunButtonClicked fired");
         SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true);
         ShowAbandonConfirmPopup("UIPanelExplorationGrid_AbandonRunConfirm", OnAbandonRunConfirmed);
     }

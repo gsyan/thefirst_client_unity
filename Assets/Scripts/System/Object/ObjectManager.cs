@@ -403,6 +403,9 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         if (DailyBonusManager.Instance != null)
             DailyBonusManager.Instance.CheckDailyBonusStatus();
         TutorialManager.Instance.StartTutorial("Tutorial_Exploration");
+
+        // 조건(업적포인트/함선 슬롯 수)은 이미 만족했는데 튜토리얼을 끝까지 못 본 채 재접속한 경우 이어서 진행 — 재생 중인 튜토리얼이 있으면 끝난 뒤 시작됨
+        TutorialManager.Instance.RestoreConditionTutorials();
     }
 
     // MainScene(UIMain.SelectCommander)에서 SpaceScene 진입 전에 미리 받아둔 진행중 존런 스냅샷(있으면)을

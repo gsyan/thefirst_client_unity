@@ -1,0 +1,9 @@
+stepId,message,triggerType,targetPanelName,targetUIId,showArrow,arrowDirection,textBoxOffsetX,textBoxOffsetY,textBoxSizeX,textBoxSizeY,textBoxPositionX,textBoxPositionY,autoNextDelay,preActionPanelName,preActionTabName,conditionType,conditionThreshold,conditionCount,targetModuleType
+step1,Tutorial_ShipSlotIncrease_OpenFleet,TargetClick,,FleetButton,True,Auto,0,0,0,0,0,-500,0,,,None,90,3,none
+step2,Tutorial_ShipSlotIncrease_SelectSlot,TargetClick,PlacedShipsContent,[1]/ShipSelectButton,True,Auto,0,0,0,0,0,-500,0,,,None,90,3,none
+step3,Tutorial_ShipSlotIncrease_SelectHull,TargetClick,Content(Hulls),[0],True,Auto,0,0,0,0,0,-500,0,,,None,90,3,none
+step4,,Branch,,step_lowcp,False,Auto,0,0,0,0,0,0,0,,,CommandPowerInsufficientForPickedHull,90,3,none
+step5,Tutorial_ShipSlotIncrease_Confirm,TargetClick,UIHullPickerView,ConfirmButton,True,Auto,0,0,0,0,0,-500,0,,,None,90,3,none
+step6,Tutorial_ShipSlotIncrease_Complete,AnyClick,,,False,Auto,0,0,0,0,0,-500,0,,,None,90,3,none
+step7,,Branch,,END,False,Auto,0,0,0,0,0,0,0,,,Always,90,3,none
+step_lowcp,Tutorial_ShipSlotIncrease_LowCommandPower,AnyClick,UIHullPickerView,RowLabelValue(CommandPower),True,Auto,0,0,0,0,0,-500,0,,,None,90,3,none
