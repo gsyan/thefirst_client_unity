@@ -1253,22 +1253,6 @@ MonoBehaviour:
     achievementPointRewardVip: 100
     nameKey: UIAchievement_Name_command_power
     descKey: UIAchievement_Desc_command_power
-  - achievementId: tactic_power_500
-    conditionType: 6
-    conditionParam: 
-    threshold: 500
-    achievementPointReward: 50
-    achievementPointRewardVip: 50
-    nameKey: UIAchievement_Name_tactic_power
-    descKey: UIAchievement_Desc_tactic_power
-  - achievementId: tactic_power_1000
-    conditionType: 6
-    conditionParam: 
-    threshold: 1000
-    achievementPointReward: 100
-    achievementPointRewardVip: 100
-    nameKey: UIAchievement_Name_tactic_power
-    descKey: UIAchievement_Desc_tactic_power
   - achievementId: tactic_power_1500
     conditionType: 6
     conditionParam: 

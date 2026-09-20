@@ -51,15 +51,15 @@ public class ExplorationSettings
 public class TacticSettings
 {
     [Tooltip("수리 전술 ON 시 회복 틱마다, 체력이 100%가 아닌 함선 1척당 소모하는 탐험 포인트")]
-    public int tacticRepairCost = 1;
+    public int tacticRepairCost = 10;
     [Tooltip("미사일 전술 ON 시 미사일 발사 1건마다 소모하는 탐험 포인트")]
     public int tacticMissileCost = 1;
     [Tooltip("함재기 전술 ON 시 함재기 발진 1건마다 소모하는 탐험 포인트")]
     public int tacticHangerCost = 1;
     [Tooltip("실드 전술 ON 시 실드 회복 틱마다, 게이지가 가득 차지 않은 함선 1척당 소모하는 탐험 포인트")]
-    public int tacticShieldCost = 1;
+    public int tacticShieldCost = 10;
     [Tooltip("요격체 전술 ON 시 요격체 1기 생성마다 소모하는 탐험 포인트")]
-    public int tacticInterceptorCost = 1;
+    public int tacticInterceptorCost = 10;
 }
 
 // 성능포인트 1000 배분 → 최종 전투 수치 변환 공식의 기준값/계수

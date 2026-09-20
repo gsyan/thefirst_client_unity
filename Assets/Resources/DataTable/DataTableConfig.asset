@@ -24,11 +24,11 @@ MonoBehaviour:
       pvpRankScoreInit: 1000
       pvpRankScorePenalty: 1
     tactic:
-      tacticRepairCost: 1
+      tacticRepairCost: 10
       tacticMissileCost: 1
       tacticHangerCost: 1
-      tacticShieldCost: 1
-      tacticInterceptorCost: 1
+      tacticShieldCost: 10
+      tacticInterceptorCost: 10
     exploration:
       rewardCardRerollLimit: 10
     shipStatFormula:

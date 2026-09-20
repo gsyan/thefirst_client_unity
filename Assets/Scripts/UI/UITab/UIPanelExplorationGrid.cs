@@ -609,9 +609,12 @@ public class UIPanelExplorationGrid : UIPanelBase
             return;
         }
 
-        // 이번 런에서 이미 클리어한 셀로의 이동(재방문)은 전투/보상 없이 위치만 옮기므로 도전 확인 팝업 없이 바로 진행
-        bool isAlreadyClearedTargetCell = m_gridData.GetCell(row, col).isCleared;
-        if (isAlreadyClearedTargetCell == true)
+        // 이번 런에서 이미 클리어한 셀·시작 셀로의 이동(재방문)은 전투/보상 없이 위치만 옮기므로 도전 확인 팝업 없이 바로 진행
+        GridCellData targetCellData = m_gridData.GetCell(row, col);
+        bool isAlreadyClearedTargetCell = targetCellData.isCleared;
+        bool isStartTargetCell = targetCellData.isStart;
+        bool isRevisitTargetCell = isAlreadyClearedTargetCell == true || isStartTargetCell == true;
+        if (isRevisitTargetCell == true)
         {
             ConfirmEnterCell(row, col);
             return;
