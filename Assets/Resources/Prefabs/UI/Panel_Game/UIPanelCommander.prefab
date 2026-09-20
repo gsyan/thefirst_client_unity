@@ -1969,6 +1969,7 @@ MonoBehaviour:
   m_commandPowerTitleText: {fileID: 4168872777364914028}
   m_commandPowerText: {fileID: 8722212825607966452}
   m_tacticPowerTitleText: {fileID: 6083219005234164191}
+  m_tacticPowerText: {fileID: 5555075963609636739}
   m_expGaugeImage: {fileID: 8558329576918868435}
   m_expGaugeText: {fileID: 5263275308803128058}
 --- !u!222 &4608967571951033814

@@ -15,6 +15,7 @@ public class UIPanelCommander : UIPanelBase
     [SerializeField] private TMP_Text m_commandPowerTitleText;
     [SerializeField] private TMP_Text m_commandPowerText;
     [SerializeField] private TMP_Text m_tacticPowerTitleText;
+    [SerializeField] private TMP_Text m_tacticPowerText;
     [SerializeField] private Image m_expGaugeImage;       // 기술 포인트 게이지 Fill Image
     [SerializeField] private TMP_Text m_expGaugeText;           // 경험치 게이지 위 텍스트
 
@@ -57,6 +58,7 @@ public class UIPanelCommander : UIPanelBase
         EventManager.Subscribe_MyFleetSet(OnMyFleetSet);
         EventManager.Subscribe_CommanderLevelChanged(OnCommanderLevelChanged);
         EventManager.Subscribe_CommanderExpChanged(OnCommanderExpChanged);
+        EventManager.Subscribe_TacticPowerChanged(OnTacticPowerChanged);
 
         // 이미 함대가 존재하면 즉시 갱신
         if (DataManager.Instance.m_currentCommander != null && ObjectManager.Instance.GetMyFleet() != null)
@@ -120,6 +122,9 @@ public class UIPanelCommander : UIPanelBase
             }
         }
 
+        if (m_tacticPowerText != null && commander.m_commanderInfo != null)
+            m_tacticPowerText.text = $"{commander.m_commanderInfo.tacticPowerMax}";
+
         RefreshShipSlots(maxShips);
 
         int currentExp = commander.GetExp();
@@ -173,6 +178,12 @@ public class UIPanelCommander : UIPanelBase
     }
 
     private void OnCommanderExpChanged(int exp)
+    {
+        UpdateCommanderLevelDisplay();
+    }
+
+    // 전술력 최대치는 변환 팝업/존런 진입 등에서 바뀌므로 이벤트로 갱신
+    private void OnTacticPowerChanged(float current, int max)
     {
         UpdateCommanderLevelDisplay();
     }
