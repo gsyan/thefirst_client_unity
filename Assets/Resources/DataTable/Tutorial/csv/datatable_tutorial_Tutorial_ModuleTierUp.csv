@@ -1,0 +1,8 @@
+stepId,message,triggerType,targetPanelName,targetUIId,showArrow,arrowDirection,textBoxOffsetX,textBoxOffsetY,textBoxSizeX,textBoxSizeY,textBoxPositionX,textBoxPositionY,autoNextDelay,preActionPanelName,preActionTabName,conditionType,conditionThreshold,conditionCount,targetModuleType
+step1,Tutorial_ModuleTierUp_OpenFleet,TargetClick,,FleetButton,True,Auto,0,0,0,0,0,-500,0,,,None,90,3,none
+step2,Tutorial_ModuleTierUp_OpenLoadout,TargetClick,,@TierUpShipManageButton,True,Auto,0,0,0,0,0,-500,0,,,None,90,3,none
+step3,Tutorial_ModuleTierUp_SelectModule,TargetClick,,@TierUpModuleManageButton,True,Auto,0,0,0,0,0,-500,0,,,None,90,3,none
+step4,Tutorial_ModuleTierUp_TierUp,TargetClick,,@ModuleTierUpButton,True,Auto,0,0,0,0,0,-500,0,,,None,90,3,none
+step5,Tutorial_ModuleTierUp_ConfirmReinforce,TargetClick,UIPopupModuleReinforce,ConfirmButton,True,Auto,0,0,0,0,0,-500,0,,,None,90,3,none
+step6,Tutorial_ModuleTierUp_ConfirmLoadout,TargetClick,,@LoadoutConfirmButton,True,Auto,0,0,0,0,0,-500,0,,,None,90,3,none
+step7,Tutorial_ModuleTierUp_Complete,AnyClick,,,False,Auto,0,0,0,0,0,-500,0,,,None,90,3,none

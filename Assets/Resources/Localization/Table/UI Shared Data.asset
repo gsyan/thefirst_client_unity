@@ -39,6 +39,10 @@ MonoBehaviour:
     m_Key: UI_Reset
     m_Metadata:
       m_Items: []
+  - m_Id: 81547759680618496
+    m_Key: UI_TierLabel
+    m_Metadata:
+      m_Items: []
   - m_Id: 79158737540874241
     m_Key: UIPopupConvertExplorationPoint_Title
     m_Metadata:
@@ -483,6 +487,10 @@ MonoBehaviour:
     m_Key: UIFleet_StatsTitle
     m_Metadata:
       m_Items: []
+  - m_Id: 81540723202981888
+    m_Key: UIFleet_ModulesTitle
+    m_Metadata:
+      m_Items: []
   - m_Id: 61660888225939456
     m_Key: UIFleet_Stats_Health
     m_Metadata:
@@ -535,12 +543,12 @@ MonoBehaviour:
     m_Key: UIFleet_Stats_ShieldRegenRate
     m_Metadata:
       m_Items: []
-  - m_Id: 61660888284659725
-    m_Key: UIFleet_Stats_InterceptorReloadDelay
+  - m_Id: 81591048798601216
+    m_Key: UIFleet_Stats_InterceptorCount
     m_Metadata:
       m_Items: []
-  - m_Id: 61660888284659726
-    m_Key: UIFleet_Stats_InterceptorRegenRate
+  - m_Id: 81586782134468608
+    m_Key: UIFleet_Stats_InterceptorRegenTime
     m_Metadata:
       m_Items: []
   - m_Id: 65433715576012800
@@ -553,6 +561,10 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 76121706787110912
     m_Key: UIFleet_HullPicker_Title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 81531689204842496
+    m_Key: UIHull_DisplayName
     m_Metadata:
       m_Items: []
   - m_Id: 76574125828472833
@@ -761,6 +773,54 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 78028320939048961
     m_Key: UIFleet_ModuleReinforce_ColInvested
+    m_Metadata:
+      m_Items: []
+  - m_Id: 81546886762070016
+    m_Key: UIModuleReinforce_Attack
+    m_Metadata:
+      m_Items: []
+  - m_Id: 81546886816595968
+    m_Key: UIModuleReinforce_FireRate
+    m_Metadata:
+      m_Items: []
+  - m_Id: 81546886816595970
+    m_Key: UIModuleReinforce_SilenceTime
+    m_Metadata:
+      m_Items: []
+  - m_Id: 81546886816595971
+    m_Key: UIModuleReinforce_AttackToShip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 81546886816595972
+    m_Key: UIModuleReinforce_AttackToFighter
+    m_Metadata:
+      m_Items: []
+  - m_Id: 81546886816595973
+    m_Key: UIModuleReinforce_Ammo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 81546886816595974
+    m_Key: UIModuleReinforce_Health
+    m_Metadata:
+      m_Items: []
+  - m_Id: 81595456236158976
+    m_Key: UIModuleReinforce_Disrupt
+    m_Metadata:
+      m_Items: []
+  - m_Id: 81553074287411200
+    m_Key: UIModuleReinforce_ShieldGauge
+    m_Metadata:
+      m_Items: []
+  - m_Id: 81553074341937152
+    m_Key: UIModuleReinforce_ShieldRegenRate
+    m_Metadata:
+      m_Items: []
+  - m_Id: 81591048857321472
+    m_Key: UIModuleReinforce_InterceptorCount
+    m_Metadata:
+      m_Items: []
+  - m_Id: 81586782193188864
+    m_Key: UIModuleReinforce_InterceptorRegenTime
     m_Metadata:
       m_Items: []
   - m_Id: 44304125210263552

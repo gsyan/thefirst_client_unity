@@ -13,6 +13,7 @@ public class UIPlacedShipRow : MonoBehaviour
     [SerializeField] private TMP_Text m_shipTypeButtonText;
 
     [SerializeField] private UIToggleSlide m_frontToggleSlide; // on = 전방, off = 후방
+    [SerializeField] private Button m_manageButton; // 로드아웃(모듈 on/off) 편집 화면(UIShipLoadoutEditorView)을 바로 여는 행별 버튼
     [SerializeField] private Button m_rowButton; // 행 클릭 — 토글과는 별개 영역
     [SerializeField] private Image m_backgroundImage; // 빈 슬롯 표시 + 드래그 호버 하이라이트용 배경
     // 성능 컬럼에 선택된 행임을 표시 — 드래그 하이라이트(m_backgroundImage)와 별개, 색 변경이 아니라 오브젝트 자체를 켜고 끔
@@ -31,6 +32,7 @@ public class UIPlacedShipRow : MonoBehaviour
     private System.Action<int, bool> m_onFrontToggled;
     private System.Action<int, string> m_onRowClicked;
     private System.Action<int> m_onTypeSelectClicked;
+    private System.Action<int> m_onManageClicked;
 
     private void Awake()
     {
@@ -43,8 +45,17 @@ public class UIPlacedShipRow : MonoBehaviour
             m_rowButton.onClick.AddListener(OnRowClicked);
         if (m_shipTypeSelectButton != null)
             m_shipTypeSelectButton.onClick.AddListener(OnTypeSelectButtonClicked);
+        if (m_manageButton != null)
+            m_manageButton.onClick.AddListener(OnManageButtonClicked);
         if (m_selectedImage != null)
             m_selectedImage.gameObject.SetActive(false);
+    }
+
+    // 튜토리얼 동적 타겟용 — 관리 버튼이 현재 보이는 상태일 때만 RectTransform 반환
+    public RectTransform GetManageButtonRect()
+    {
+        if (m_manageButton == null || m_manageButton.gameObject.activeInHierarchy == false) return null;
+        return m_manageButton.GetComponent<RectTransform>();
     }
 
     // 빈 슬롯 — 배치된 함선 없음. 타입선택 버튼을 눌러 바로 배치 가능
@@ -69,6 +80,8 @@ public class UIPlacedShipRow : MonoBehaviour
             CommonUtility.SetUILocText(m_shipTypeButtonText, "UIFleet_PlaceShip");
         if (m_frontToggleSlide != null)
             m_frontToggleSlide.gameObject.SetActive(false);
+        if (m_manageButton != null)
+            m_manageButton.gameObject.SetActive(false); // 배치된 함선이 없어 편집할 로드아웃이 없음
 
         RebuildTypeSelectButtonLayout();
         SetHighlighted(false);
@@ -92,6 +105,8 @@ public class UIPlacedShipRow : MonoBehaviour
             m_shipTypeSelectButton.gameObject.SetActive(false);
         if (m_frontToggleSlide != null)
             m_frontToggleSlide.gameObject.SetActive(false);
+        if (m_manageButton != null)
+            m_manageButton.gameObject.SetActive(false);
 
         if (m_backgroundImage != null)
             m_backgroundImage.color = m_lockedColor;
@@ -105,7 +120,7 @@ public class UIPlacedShipRow : MonoBehaviour
     }
 
     // showFrontToggle=false면 전방/후방을 편집 불가능한 라벨 텍스트로만 표시하고 타입선택 버튼도 숨김(적 함대 정보 열람 등 읽기전용 목적)
-    public void Setup(int index, string hullSubType, bool isFront, System.Action<int, bool> onFrontToggled, System.Action<int, string> onRowClicked, System.Action<int> onTypeSelectClicked, bool showFrontToggle = true, bool isDestroyedThisRun = false)
+    public void Setup(int index, string hullSubType, bool isFront, System.Action<int, bool> onFrontToggled, System.Action<int, string> onRowClicked, System.Action<int> onTypeSelectClicked, bool showFrontToggle = true, bool isDestroyedThisRun = false, System.Action<int> onManageClicked = null)
     {
         gameObject.SetActive(true);
         m_index = index;
@@ -116,16 +131,17 @@ public class UIPlacedShipRow : MonoBehaviour
         m_onFrontToggled = onFrontToggled;
         m_onRowClicked = onRowClicked;
         m_onTypeSelectClicked = onTypeSelectClicked;
+        m_onManageClicked = onManageClicked;
 
         string positionKey = isFront ? "UIFleet_Front" : "UIFleet_Rear";
 
         if (showFrontToggle == true)
         {
-            // 이름 칸엔 슬롯 인덱스 기반 "Ship1"(1-based) — 함선 이름 로컬라이즈는 아직 미정. 타입선택 버튼엔 현재 함체 코드(hullSubType)를 그대로 표시
+            // 이름 칸엔 슬롯 인덱스 기반 "Ship1"(1-based) — 함선 이름 로컬라이즈는 아직 미정. 타입선택 버튼엔 함체 표시명("티어N 함체 M세대")을 표시
             if (m_shipNameText != null)
                 m_shipNameText.text = $"Ship{index + 1}";
             if (m_shipTypeButtonText != null)
-                m_shipTypeButtonText.text = hullSubType;
+                m_shipTypeButtonText.text = CommonUtility.BuildHullDisplayName(hullSubType);
             if (m_shipTypeSelectButton != null)
             {
                 m_shipTypeSelectButton.gameObject.SetActive(true);
@@ -140,19 +156,26 @@ public class UIPlacedShipRow : MonoBehaviour
                 m_frontToggleSlide.SetOn(isFront == false, OnToggleSlideChanged);
                 m_frontToggleSlide.SetLabelText(positionKey);
             }
+            if (m_manageButton != null)
+            {
+                m_manageButton.gameObject.SetActive(true);
+                m_manageButton.interactable = onManageClicked != null; // 전투 중 등 콜백이 없으면 시각적으로도 비활성화
+            }
 
             RebuildTypeSelectButtonLayout();
         }
         else
         {
-            // 읽기전용 — 이름 칸에 함체 코드, 전/후방은 그대로 텍스트로만 표기, 타입선택 버튼은 숨김
+            // 읽기전용 — 이름 칸에 함체 표시명, 전/후방은 그대로 텍스트로만 표기, 타입선택 버튼은 숨김
             if (m_shipNameText != null)
-                m_shipNameText.text = hullSubType;
+                m_shipNameText.text = CommonUtility.BuildHullDisplayName(hullSubType);
             if (m_shipTypeSelectButton != null)
                 m_shipTypeSelectButton.gameObject.SetActive(false);
 
             if (m_frontToggleSlide != null)
                 m_frontToggleSlide.gameObject.SetActive(false);
+            if (m_manageButton != null)
+                m_manageButton.gameObject.SetActive(false);
         }
 
         SetHighlighted(false);
@@ -163,6 +186,7 @@ public class UIPlacedShipRow : MonoBehaviour
             if (m_backgroundImage != null) m_backgroundImage.color = Color.red;
             if (m_shipTypeSelectButton != null) m_shipTypeSelectButton.interactable = false;
             if (m_frontToggleSlide != null) m_frontToggleSlide.SetInteractable(false);
+            if (m_manageButton != null) m_manageButton.interactable = false;
         }
     }
 
@@ -199,6 +223,8 @@ public class UIPlacedShipRow : MonoBehaviour
             m_shipTypeSelectButton.interactable = interactable;
         if (m_frontToggleSlide != null)
             m_frontToggleSlide.SetInteractable(interactable);
+        if (m_manageButton != null)
+            m_manageButton.interactable = interactable;
     }
 
     // isOn=true는 스위치가 오른쪽(후방)에 있다는 뜻이라 전방 여부로 다시 반전
@@ -227,5 +253,11 @@ public class UIPlacedShipRow : MonoBehaviour
     {
         SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true);
         if (m_onTypeSelectClicked != null) m_onTypeSelectClicked(m_index);
+    }
+
+    private void OnManageButtonClicked()
+    {
+        SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true);
+        if (m_onManageClicked != null) m_onManageClicked(m_index);
     }
 }

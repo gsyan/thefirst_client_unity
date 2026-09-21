@@ -5,6 +5,7 @@ UI_Cancel,,CANCEL,취소
 UI_Confirm,,CONFIRM,확인
 UI_All,,ALL,전체
 UI_Reset,,RESET,초기화
+UI_TierLabel,,Tier {0},티어 {0}
 UIPopupConvertExplorationPoint_Title,,Convert Exploration Points,탐사포인트 전환
 UI_Commander,,COMMANDER,지휘관
 UI_Fleet,,FLEET,함대
@@ -126,24 +127,26 @@ UIFleet_PlaceFailed_NotEnoughCommandPower,,Not enough command power.,지휘력�
 UIFleet_PlaceFailed_HullNotFound,,This hull is unavailable.,사용할 수 없는 함체입니다.
 UIFleet_PlacedShipsTitle,,Fleet,함대구성
 UIFleet_StatsTitle,,Stats,성능
+UIFleet_ModulesTitle,,Modules,모듈
 UIFleet_Stats_Health,,Health,체력
 UIFleet_Stats_TurnRate,,Turn Rate,선회력
 UIFleet_Stats_Repair,,Repair,수리력
-UIFleet_Stats_BeamDps,,Beam DPS,빔 DPS
-UIFleet_Stats_MissileDps,,Missile DPS,미사일 DPS
+UIFleet_Stats_BeamDps,,Beam Attack,빔 공격력
+UIFleet_Stats_MissileDps,,Missile Attack,미사일 공격력
 UIFleet_Stats_MissileSilenceTime,,Missile Silence,미사일 침묵
-UIFleet_Stats_FighterAttackPowerToShip,,Fighter→Ship DPS,공대함 DPS
-UIFleet_Stats_FighterAttackPowerToFighter,,Fighter→Air DPS,공대공 DPS
+UIFleet_Stats_FighterAttackPowerToShip,,Air-Ship Attack,공대함 공격력
+UIFleet_Stats_FighterAttackPowerToFighter,,Air-Air Attack,공대공 공격력
 UIFleet_Stats_FighterAmmo,,Fighter Ammo,함재기 탄약
 UIFleet_Stats_FighterHealth,,Fighter Health,함재기 체력
 UIFleet_Stats_FighterDisrupt,,Fighter Disrupt,함재기 교란
 UIFleet_Stats_ShieldGauge,,Shield Gauge,실드 게이지
-UIFleet_Stats_ShieldRegenRate,,Shield Regen Rate,실드 회복속도
-UIFleet_Stats_InterceptorReloadDelay,,Interceptor Reload Delay,요격체 보충 딜레이
-UIFleet_Stats_InterceptorRegenRate,,Interceptor Regen Rate,요격체 회복속도
+UIFleet_Stats_ShieldRegenRate,,Shield Regen,실드 회복속도
+UIFleet_Stats_InterceptorCount,,Interceptors,요격체 개수
+UIFleet_Stats_InterceptorRegenTime,,Intercept Regen,요격체 회복시간
 UIFleet_ShipLoadOut_Title,,Ship Loadout,함선 모듈 관리
 UIFleet_EditLoadoutButton,,Edit,함선 수정
 UIFleet_HullPicker_Title,,Select Hull,함체 선택
+UIHull_DisplayName,,Tier{0} Hull {1}G{2},티어{0} 함체 {1}세대{2}
 UIHullPicker_UnlockConfirmMessage,,Unlock {0},{0}을(를) 언락하시겠습니까?
 UIHullPicker_UnlockPrerequisiteFailMessage,,Unlock the previous hull first.,이전 단계 함체를 먼저 언락해야 합니다.
 UIAchievement_Progress,,Progress,진행도
@@ -199,6 +202,18 @@ UIFleet_ModuleSlot_NotInstalled,,Not Installed,해제
 UIFleet_ModuleReinforce_ColStatus,,Status,상태
 UIFleet_ModuleReinforce_ColValue,,Value,수치
 UIFleet_ModuleReinforce_ColInvested,,Invested,투입 포인트
+UIModuleReinforce_Attack,,Attack,공격력
+UIModuleReinforce_FireRate,,Fire Rate,연사력
+UIModuleReinforce_SilenceTime,,Silence Time,침묵 시간
+UIModuleReinforce_AttackToShip,,Attack To Ship,대함 공격력
+UIModuleReinforce_AttackToFighter,,Attack To Fighter,대공 공격력
+UIModuleReinforce_Ammo,,Ammo,탄약
+UIModuleReinforce_Health,,Health,체력
+UIModuleReinforce_Disrupt,,Disrupt,교란
+UIModuleReinforce_ShieldGauge,,Shield Gauge,실드 게이지
+UIModuleReinforce_ShieldRegenRate,,Regen Rate,회복 속도
+UIModuleReinforce_InterceptorCount,,Count,개수
+UIModuleReinforce_InterceptorRegenTime,,Regen Time,회복 시간
 
 DailyBonus_Title,,Daily Login Bonus,일일 출석 보너스
 DailyBonus_Desc,,+{0} Minerals received!,미네랄 +{0} 지급!

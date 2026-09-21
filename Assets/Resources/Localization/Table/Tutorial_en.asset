@@ -229,6 +229,37 @@ MonoBehaviour:
       Points into Command Power first, then try again.
     m_Metadata:
       m_Items: []
+  - m_Id: 29210315732156416
+    m_Localized: You have enough Command Power to upgrade a module to a higher tier!
+      Open the fleet management screen.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29210315782488064
+    m_Localized: Tap the manage button of this ship to open its module loadout.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29210315782488065
+    m_Localized: Tap the manage button of this module to upgrade it.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29210315782488066
+    m_Localized: Tap the right arrow to raise the module's tier. Each tier costs
+      more Command Power, and a module's tier cannot exceed its hull's tier.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29210315782488067
+    m_Localized: Press Confirm to apply the tier change.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29210315782488068
+    m_Localized: Press Confirm to save the loadout.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29210315782488069
+    m_Localized: Module upgraded! Higher tiers make your modules stronger, so use
+      spare Command Power to keep upgrading them.
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

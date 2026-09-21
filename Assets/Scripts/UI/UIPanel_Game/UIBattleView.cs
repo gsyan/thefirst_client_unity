@@ -17,11 +17,9 @@ public class UIBattleView : MonoBehaviour
     [SerializeField] private TextMeshProUGUI m_zoneNameText;
 
     [Header("함대 전술 토글")]
-    [SerializeField] private Transform m_tacticsButtonContainer;
+    [SerializeField] private UITacticsToggleRow m_tacticsToggleRow; // 전술 토글 버튼 5종 — 클릭/표시/활성 처리는 이 컴포넌트가 전담(함대관리와 공용)
     [SerializeField] private Image m_tacticPowerGauge; // 전술 토글 3종이 공유하는 소모 게이지(Filled/Horizontal) — 소모 계산은 UIPanelBattle이 전담, 여기선 표시만
     [SerializeField] private TextMeshProUGUI m_tacticsLabelText; // "TACTICS" 섹션 헤더 — 프리팹에 박힌 LocalizeStringEvent가 빈 키라 코드로 직접 세팅
-    private Button[] m_tacticsButtons;
-    private GameObject[] m_tacticsUsingImages; // 버튼 자식의 "사용중" 표시 아이콘 — on/off를 색상 대신 이 오브젝트 활성화로 표현
 
     private EUnitState m_fleetState = EUnitState.Idle;
 
@@ -31,13 +29,10 @@ public class UIBattleView : MonoBehaviour
         EventManager.Subscribe_GameSpeedChanged(OnGameSpeedChanged);
         EventManager.Subscribe_ZoneEntered(OnZoneEntered);
         EventManager.Subscribe_MyFleetStateChanged(OnFleetStateChanged);
-        EventManager.Subscribe_TacticOptionsChanged(OnTacticOptionsChanged);
         EventManager.Subscribe_TacticPowerChanged(OnTacticPowerChanged);
 
         if (m_tacticsLabelText != null)
             CommonUtility.SetUILocText(m_tacticsLabelText, "UI_Tactics");
-
-        SetupTacticsButtons();
     }
 
     void Start()
@@ -74,7 +69,6 @@ public class UIBattleView : MonoBehaviour
         EventManager.Unsubscribe_GameSpeedChanged(OnGameSpeedChanged);
         EventManager.Unsubscribe_ZoneEntered(OnZoneEntered);
         EventManager.Unsubscribe_MyFleetStateChanged(OnFleetStateChanged);
-        EventManager.Unsubscribe_TacticOptionsChanged(OnTacticOptionsChanged);
         EventManager.Unsubscribe_TacticPowerChanged(OnTacticPowerChanged);
     }
 
@@ -84,64 +78,11 @@ public class UIBattleView : MonoBehaviour
         m_tacticPowerGauge.fillAmount = max > 0 ? Mathf.Clamp01(current / max) : 0f;
     }
 
-    private void SetupTacticsButtons()
-    {
-        if (m_tacticsButtonContainer == null) return;
-
-        m_tacticsButtons = m_tacticsButtonContainer.GetComponentsInChildren<Button>();
-        m_tacticsUsingImages = new GameObject[m_tacticsButtons.Length];
-        for (int i = 0; i < m_tacticsButtons.Length; i++)
-        {
-            int idx = i;
-            m_tacticsButtons[idx].onClick.AddListener(() => { SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true); EventManager.Trigger_TacticToggleRequested(idx); });
-
-            Transform usingImage = m_tacticsButtons[idx].transform.Find("UsingImage");
-            m_tacticsUsingImages[idx] = usingImage != null ? usingImage.gameObject : null;
-        }
-    }
-
-    private void OnTacticOptionsChanged(int options)
-    {
-        if (m_tacticsUsingImages == null) return;
-
-        for (int i = 0; i < m_tacticsUsingImages.Length; i++)
-        {
-            if (m_tacticsUsingImages[i] == null) continue;
-            m_tacticsUsingImages[i].SetActive((options & (1 << i)) != 0);
-        }
-    }
-
-    // UIPanelBattle.OnShowUIPanel()이 호출 — OnTacticOptionsChanged는 옵션이 실제로 바뀔 때만 발행되는 이벤트라,
-    // 패널이 처음 뜰 때는 아무도 쏘지 않아 UsingImage가 프리팹 저장값(전부 활성) 그대로 보이는 문제가 있었음 —
-    // 패널이 뜰 때마다 현재 함대 상태로 직접 동기화
+    // UIPanelBattle.OnShowUIPanel()이 호출 — 패널이 뜰 때마다 현재 함대 상태로 전술 토글 표시를 직접 동기화
     public void RefreshTacticsDisplay()
     {
-        SpaceFleet myFleet = ObjectManager.Instance.GetMyFleet();
-        if (myFleet != null)
-            OnTacticOptionsChanged(myFleet.m_fleetInfo.tacticOptions);
-
-        RefreshTacticsButtonsInteractable(myFleet);
-    }
-
-    // 함대 구성상 아예 해당 모듈이 없는 전술 토글은 버튼 자체를 비활성화 — idx 의미는 OnTacticToggleRequested와 동일
-    // (0=수리, 1=미사일, 2=함재기, 3=실드, 4=요격체). 수리는 함체 체력은 항상 있지만 repair 스탯이 0인 함체뿐이면 효과가 없으므로 별도 체크
-    private void RefreshTacticsButtonsInteractable(SpaceFleet myFleet)
-    {
-        if (m_tacticsButtons == null) return;
-        if (myFleet == null) return;
-
-        CapabilityProfile fleetProfile = myFleet.GetFleetCapabilityProfile();
-        bool hasRepair = myFleet.HasAnyRepairCapability();
-        bool hasMissile = fleetProfile.missileAttack > 0f;
-        bool hasAircraft = fleetProfile.airCount > 0;
-        bool hasShield = myFleet.HasAnyShieldEquipped();
-        bool hasInterceptor = myFleet.HasAnyInterceptorEquipped();
-
-        if (m_tacticsButtons.Length > 0) m_tacticsButtons[0].interactable = hasRepair;
-        if (m_tacticsButtons.Length > 1) m_tacticsButtons[1].interactable = hasMissile;
-        if (m_tacticsButtons.Length > 2) m_tacticsButtons[2].interactable = hasAircraft;
-        if (m_tacticsButtons.Length > 3) m_tacticsButtons[3].interactable = hasShield;
-        if (m_tacticsButtons.Length > 4) m_tacticsButtons[4].interactable = hasInterceptor;
+        if (m_tacticsToggleRow != null)
+            m_tacticsToggleRow.Refresh();
     }
 
     private void OnFleetStateChanged(EUnitState state)

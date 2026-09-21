@@ -377,11 +377,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 61660888284659714
-    m_Localized: Beam DPS
+    m_Localized: Beam Attack
     m_Metadata:
       m_Items: []
   - m_Id: 61660888284659715
-    m_Localized: Missile DPS
+    m_Localized: Missile Attack
     m_Metadata:
       m_Items: []
   - m_Id: 61660888284659716
@@ -389,11 +389,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 61660888284659717
-    m_Localized: "Fighter\u2192Ship DPS"
+    m_Localized: Air-Ship Attack
     m_Metadata:
       m_Items: []
   - m_Id: 61660888284659718
-    m_Localized: "Fighter\u2192Air DPS"
+    m_Localized: Air-Air Attack
     m_Metadata:
       m_Items: []
   - m_Id: 61660888284659719
@@ -413,15 +413,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 61660888284659724
-    m_Localized: Shield Regen Rate
-    m_Metadata:
-      m_Items: []
-  - m_Id: 61660888284659725
-    m_Localized: Interceptor Reload Delay
-    m_Metadata:
-      m_Items: []
-  - m_Id: 61660888284659726
-    m_Localized: Interceptor Regen Rate
+    m_Localized: Shield Regen
     m_Metadata:
       m_Items: []
   - m_Id: 61708245596504064
@@ -1113,6 +1105,74 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 81141249343356928
     m_Localized: Next reward in
+    m_Metadata:
+      m_Items: []
+  - m_Id: 81531689204842496
+    m_Localized: Tier{0} Hull {1}G{2}
+    m_Metadata:
+      m_Items: []
+  - m_Id: 81540723202981888
+    m_Localized: Modules
+    m_Metadata:
+      m_Items: []
+  - m_Id: 81546886762070016
+    m_Localized: Attack
+    m_Metadata:
+      m_Items: []
+  - m_Id: 81546886816595968
+    m_Localized: Fire Rate
+    m_Metadata:
+      m_Items: []
+  - m_Id: 81546886816595970
+    m_Localized: Silence Time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 81546886816595971
+    m_Localized: Attack To Ship
+    m_Metadata:
+      m_Items: []
+  - m_Id: 81546886816595972
+    m_Localized: Attack To Fighter
+    m_Metadata:
+      m_Items: []
+  - m_Id: 81546886816595973
+    m_Localized: Ammo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 81546886816595974
+    m_Localized: Health
+    m_Metadata:
+      m_Items: []
+  - m_Id: 81547759680618496
+    m_Localized: Tier {0}
+    m_Metadata:
+      m_Items: []
+  - m_Id: 81553074287411200
+    m_Localized: Shield Gauge
+    m_Metadata:
+      m_Items: []
+  - m_Id: 81553074341937152
+    m_Localized: Regen Rate
+    m_Metadata:
+      m_Items: []
+  - m_Id: 81586782134468608
+    m_Localized: Intercept Regen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 81586782193188864
+    m_Localized: Regen Time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 81591048798601216
+    m_Localized: Interceptors
+    m_Metadata:
+      m_Items: []
+  - m_Id: 81591048857321472
+    m_Localized: Count
+    m_Metadata:
+      m_Items: []
+  - m_Id: 81595456236158976
+    m_Localized: Disrupt
     m_Metadata:
       m_Items: []
   references:

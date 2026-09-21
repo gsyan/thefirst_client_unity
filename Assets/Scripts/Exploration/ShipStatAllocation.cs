@@ -8,17 +8,15 @@ using System.Collections.Generic;
 [System.Serializable]
 public class ShipStatAllocation
 {
-    // Beam — 슬롯당 장착 서브타입(모듈 서브타입 이름 문자열, 예: beam_1_1) + 속성별 강화 포인트(공격력/연사력/발사체속도). 빈 문자열 = 미장착
+    // Beam — 슬롯당 장착 서브타입(모듈 서브타입 이름 문자열, 예: beam_1_1) + 속성별 강화 포인트(공격력/연사력). 빈 문자열 = 미장착
     public string[] beamModuleSubType = new string[0];
     public int[] beamAttackPoints = new int[0];
     public int[] beamFireRatePoints = new int[0];
-    public int[] beamProjectileSpeedPoints = new int[0];
 
     // Missile — 빔과 동일 구조 + 적중 시 대상 무장 침묵 시간 강화(미사일 전용)
     public string[] missileModuleSubType = new string[0];
     public int[] missileAttackPoints = new int[0];
     public int[] missileFireRatePoints = new int[0];
-    public int[] missileProjectileSpeedPoints = new int[0];
     public int[] missileSilencePoints = new int[0];
 
     // Hangar — 슬롯당 장착 서브타입 + 4개 서브스탯
@@ -27,10 +25,10 @@ public class ShipStatAllocation
     public int[] hangarAttackToFighter = new int[0];
     public int[] hangarAmmoPoints = new int[0];
     public int[] hangarHealthPoints = new int[0];
+    public int[] hangarDisruptPoints = new int[0];
 
-    // Interceptor — 슬롯당 장착 서브타입(예: interceptor_t1_m1) + 2개 서브스탯. 빈 문자열 = 미장착. 장착 코스트는 DataTableModule의 해당 subType(level 1) cost_mp
+    // Interceptor — 슬롯당 장착 서브타입(예: interceptor_1_1) + 회복속도 강화 포인트. 빈 문자열 = 미장착. 장착 코스트는 DataTableModule의 해당 subType statPoint
     public string[] interceptorModuleSubType = new string[0];
-    public int[] interceptorDelayPoints = new int[0];
     public int[] interceptorRegenRatePoints = new int[0];
 
     // Shield — 장착 서브타입(예: shield_t1_m1). 빈 문자열 = 미장착. 코스트는 DataTableModule의 해당 subType(level 1) cost_mp. 강화 서브스탯은 게이지/회복속도 중 1p=1선택
@@ -49,25 +47,25 @@ public class ShipStatAllocation
         for (int i = 0; i < beamModuleSubType.Length; i++)
         {
             if (string.IsNullOrEmpty(beamModuleSubType[i]) == false)
-                total += GetInstallCost(moduleTable, beamModuleSubType[i]) + GetAt(beamAttackPoints, i) + GetAt(beamFireRatePoints, i) + GetAt(beamProjectileSpeedPoints, i);
+                total += GetInstallCost(moduleTable, beamModuleSubType[i]) + GetAt(beamAttackPoints, i) + GetAt(beamFireRatePoints, i);
         }
 
         for (int i = 0; i < missileModuleSubType.Length; i++)
         {
             if (string.IsNullOrEmpty(missileModuleSubType[i]) == false)
-                total += GetInstallCost(moduleTable, missileModuleSubType[i]) + GetAt(missileAttackPoints, i) + GetAt(missileFireRatePoints, i) + GetAt(missileProjectileSpeedPoints, i) + GetAt(missileSilencePoints, i);
+                total += GetInstallCost(moduleTable, missileModuleSubType[i]) + GetAt(missileAttackPoints, i) + GetAt(missileFireRatePoints, i) +GetAt(missileSilencePoints, i);
         }
 
         for (int i = 0; i < hangarModuleSubType.Length; i++)
         {
             if (string.IsNullOrEmpty(hangarModuleSubType[i]) == false)
-                total += GetInstallCost(moduleTable, hangarModuleSubType[i]) + hangarAttackToShip[i] + hangarAttackToFighter[i] + hangarAmmoPoints[i] + hangarHealthPoints[i];
+                total += GetInstallCost(moduleTable, hangarModuleSubType[i]) + hangarAttackToShip[i] + hangarAttackToFighter[i] + hangarAmmoPoints[i] + hangarHealthPoints[i] + hangarDisruptPoints[i];
         }
 
         for (int i = 0; i < interceptorModuleSubType.Length; i++)
         {
             if (string.IsNullOrEmpty(interceptorModuleSubType[i]) == false)
-                total += GetInstallCost(moduleTable, interceptorModuleSubType[i]) + interceptorDelayPoints[i] + interceptorRegenRatePoints[i];
+                total += GetInstallCost(moduleTable, interceptorModuleSubType[i]) + interceptorRegenRatePoints[i];
         }
 
         if (string.IsNullOrEmpty(shieldModuleSubType) == false)
@@ -91,7 +89,7 @@ public class ShipStatAllocation
 
     // 실제 장착 로드아웃(ShipInfo.hulls, on/off + 공격력 강화 포인트 지원) → 전투 계산용 ShipStatAllocation 조립
     // maxSlotCount: 카테고리별 슬롯 배열 크기(DataTableConfig.gameSettings.shipStatFormula.maxModuleSlots) — 실제 장착 여부/서브타입/공격력 강화 포인트는 hulls로 채움
-    // 공격력 이외(연사력/발사체속도/침묵시간 등)는 아직 실시간 강화 미지원이라 항상 0. 요격체는 실드와 동일하게 슬롯 없이 서브타입 1개만 장착(인덱스 0), 딜레이/회복속도 강화 포인트는 아직 실시간 강화 미지원이라 항상 0
+    // 침묵시간/탄약/체력은 강화 미지원이라 항상 0. 실드는 게이지/회복속도, 요격체는 회복속도 포인트를 hulls에서 읽음(요격체는 슬롯 없이 서브타입 1개만 장착, 인덱스 0)
     public static ShipStatAllocation BuildFromModuleHullInfo(int maxSlotCount, ModuleHullInfo hulls)
     {
         var result = new ShipStatAllocation();
@@ -99,36 +97,40 @@ public class ShipStatAllocation
         result.beamModuleSubType = new string[maxSlotCount];
         result.beamAttackPoints = new int[maxSlotCount];
         result.beamFireRatePoints = new int[maxSlotCount];
-        result.beamProjectileSpeedPoints = new int[maxSlotCount];
-        ApplyModulesToSlots(result.beamModuleSubType, result.beamAttackPoints, hulls != null ? hulls.beams : null);
+        ApplyModulesToSlots(result.beamModuleSubType, result.beamAttackPoints, result.beamFireRatePoints, hulls != null ? hulls.beams : null);
 
         result.missileModuleSubType = new string[maxSlotCount];
         result.missileAttackPoints = new int[maxSlotCount];
         result.missileFireRatePoints = new int[maxSlotCount];
-        result.missileProjectileSpeedPoints = new int[maxSlotCount];
         result.missileSilencePoints = new int[maxSlotCount];
-        ApplyModulesToSlots(result.missileModuleSubType, result.missileAttackPoints, hulls != null ? hulls.missiles : null);
+        ApplyModulesToSlots(result.missileModuleSubType, result.missileAttackPoints, result.missileFireRatePoints, hulls != null ? hulls.missiles : null, result.missileSilencePoints);
 
         result.hangarModuleSubType = new string[maxSlotCount];
         result.hangarAttackToShip = new int[maxSlotCount];
         result.hangarAttackToFighter = new int[maxSlotCount];
         result.hangarAmmoPoints = new int[maxSlotCount];
         result.hangarHealthPoints = new int[maxSlotCount];
-        ApplyHangarModulesToSlots(result.hangarModuleSubType, result.hangarAttackToShip, result.hangarAttackToFighter, hulls != null ? hulls.hangars : null);
+        result.hangarDisruptPoints = new int[maxSlotCount];
+        ApplyHangarModulesToSlots(result.hangarModuleSubType, result.hangarAttackToShip, result.hangarAttackToFighter, result.hangarAmmoPoints, result.hangarHealthPoints,
+            result.hangarDisruptPoints, hulls != null ? hulls.hangars : null);
 
         result.shieldModuleSubType = hulls != null && string.IsNullOrEmpty(hulls.shieldModuleSubType) == false ? hulls.shieldModuleSubType : "";
+        result.shieldGaugePoints = hulls != null ? hulls.shieldGaugePoints : 0;
+        result.shieldRegenRatePoints = hulls != null ? hulls.shieldRegenRatePoints : 0;
 
         result.interceptorModuleSubType = new string[maxSlotCount];
-        result.interceptorDelayPoints = new int[maxSlotCount];
         result.interceptorRegenRatePoints = new int[maxSlotCount];
         if (hulls != null && string.IsNullOrEmpty(hulls.interceptorModuleSubType) == false && maxSlotCount > 0)
+        {
             result.interceptorModuleSubType[0] = hulls.interceptorModuleSubType;
+            result.interceptorRegenRatePoints[0] = hulls.interceptorRegenRatePoints;
+        }
 
         return result;
     }
 
-    // 빔/미사일 공용 — 공격력 강화 포인트 1개 필드만 반영(연사력/발사체속도/침묵시간은 아직 실시간 강화 미지원이라 배열이 전부 0으로 남음)
-    private static void ApplyModulesToSlots(string[] subTypeArray, int[] attackPointsArray, List<ModuleInfo> modules)
+    // 빔/미사일 공용 — 공격력/연사력 강화 포인트 반영. 침묵 포인트 배열은 미사일만 넘김(빔은 null)
+    private static void ApplyModulesToSlots(string[] subTypeArray, int[] attackPointsArray, int[] fireRatePointsArray, List<ModuleInfo> modules, int[] silencePointsArray = null)
     {
         if (modules == null) return;
         for (int i = 0; i < modules.Count; i++)
@@ -137,11 +139,13 @@ public class ShipStatAllocation
             if (slotIndex < 0 || slotIndex >= subTypeArray.Length) continue;
             subTypeArray[slotIndex] = modules[i].moduleSubType;
             attackPointsArray[slotIndex] = modules[i].attackPoints;
+            fireRatePointsArray[slotIndex] = modules[i].fireRatePoints;
+            if (silencePointsArray != null) silencePointsArray[slotIndex] = modules[i].silencePoints;
         }
     }
 
-    // 격납고 전용 — 대함/대전투기 공격력이 별도 축이라 ModuleInfo의 attackPoints(대함)/attackToFighterPoints(대전투기)를 각각의 배열에 반영
-    private static void ApplyHangarModulesToSlots(string[] subTypeArray, int[] attackToShipArray, int[] attackToFighterArray, List<ModuleInfo> modules)
+    // 격납고 전용 — ModuleInfo의 attackPoints(대함)/attackToFighterPoints(대전투기)/ammoPoints/healthPoints/disruptPoints를 각각의 배열에 반영
+    private static void ApplyHangarModulesToSlots(string[] subTypeArray, int[] attackToShipArray, int[] attackToFighterArray, int[] ammoArray, int[] healthArray, int[] disruptArray, List<ModuleInfo> modules)
     {
         if (modules == null) return;
         for (int i = 0; i < modules.Count; i++)
@@ -151,6 +155,9 @@ public class ShipStatAllocation
             subTypeArray[slotIndex] = modules[i].moduleSubType;
             attackToShipArray[slotIndex] = modules[i].attackPoints;
             attackToFighterArray[slotIndex] = modules[i].attackToFighterPoints;
+            ammoArray[slotIndex] = modules[i].ammoPoints;
+            healthArray[slotIndex] = modules[i].healthPoints;
+            disruptArray[slotIndex] = modules[i].disruptPoints;
         }
     }
 }

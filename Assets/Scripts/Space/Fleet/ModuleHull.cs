@@ -301,7 +301,8 @@ public class ModuleHull : ModuleBase
                 {
                     DisablePlaceholderIfExists(slot);
                     float? attackOverride = GetSlotAttackOverride(statOverride?.beamAttacks, beamInfo.slotIndex);
-                    InitializeBeam(beamInfo, attackOverride);
+                    float? attackCoolOverride = GetSlotAttackOverride(statOverride?.beamAttackCools, beamInfo.slotIndex);
+                    InitializeBeam(beamInfo, attackOverride, attackCoolOverride);
                 }
             }
         }
@@ -316,7 +317,9 @@ public class ModuleHull : ModuleBase
                 {
                     DisablePlaceholderIfExists(slot);
                     float? attackOverride = GetSlotAttackOverride(statOverride?.missileAttacks, missileInfo.slotIndex);
-                    InitializeMissile(missileInfo, attackOverride);
+                    float? attackCoolOverride = GetSlotAttackOverride(statOverride?.missileAttackCools, missileInfo.slotIndex);
+                    float? silenceTimeOverride = GetSlotAttackOverride(statOverride?.missileSilenceTimes, missileInfo.slotIndex);
+                    InitializeMissile(missileInfo, attackOverride, attackCoolOverride, silenceTimeOverride);
                 }
             }
         }
@@ -332,7 +335,10 @@ public class ModuleHull : ModuleBase
                     DisablePlaceholderIfExists(slot);
                     float? shipAttackOverride = GetSlotAttackOverride(statOverride?.hangarShipAttacks, hangarInfo.slotIndex);
                     float? fighterAttackOverride = GetSlotAttackOverride(statOverride?.hangarFighterAttacks, hangarInfo.slotIndex);
-                    InitializeHangar(hangarInfo, shipAttackOverride, fighterAttackOverride);
+                    float? airHealthOverride = GetSlotAttackOverride(statOverride?.hangarHealths, hangarInfo.slotIndex);
+                    float? airAmmoOverride = GetSlotAttackOverride(statOverride?.hangarAmmos, hangarInfo.slotIndex);
+                    float? airDisruptOverride = GetSlotAttackOverride(statOverride?.hangarAirDisrupts, hangarInfo.slotIndex);
+                    InitializeHangar(hangarInfo, shipAttackOverride, fighterAttackOverride, airHealthOverride, airAmmoOverride, airDisruptOverride);
                 }
             }
         }
@@ -341,13 +347,13 @@ public class ModuleHull : ModuleBase
         FillEmptySlotsWithPlaceholders();
 
         // 실드 — 슬롯/3D 배치 없이 논리적으로만 존재하는 자식 컴포넌트
-        InitializeShield(bodyInfo.shieldModuleSubType);
+        InitializeShield(bodyInfo.shieldModuleSubType, bodyInfo.shieldGaugePoints, bodyInfo.shieldRegenRatePoints);
 
         // 요격체 — 슬롯/3D 배치 없이 논리적으로만 존재하는 자식 컴포넌트(실제 요격체 유닛은 ModuleInterceptor가 별도 스폰)
-        InitializeInterceptor(bodyInfo.interceptorModuleSubType);
+        InitializeInterceptor(bodyInfo.interceptorModuleSubType, bodyInfo.interceptorRegenRatePoints);
     }
 
-    public void InitializeShield(string shieldSubTypeName)
+    public void InitializeShield(string shieldSubTypeName, int gaugePoints, int regenRatePoints)
     {
         if (m_shield == null)
         {
@@ -357,10 +363,10 @@ public class ModuleHull : ModuleBase
         }
 
         m_shield.SetFleetInfo(m_ownerFleet, m_ownerShip);
-        m_shield.InitializeModuleShield(shieldSubTypeName);
+        m_shield.InitializeModuleShield(shieldSubTypeName, gaugePoints, regenRatePoints);
     }
 
-    public void InitializeInterceptor(string interceptorSubTypeName)
+    public void InitializeInterceptor(string interceptorSubTypeName, int regenRatePoints)
     {
         if (m_interceptor == null)
         {
@@ -370,7 +376,7 @@ public class ModuleHull : ModuleBase
         }
 
         m_interceptor.SetFleetInfo(m_ownerFleet, m_ownerShip);
-        m_interceptor.InitializeModuleInterceptor(interceptorSubTypeName);
+        m_interceptor.InitializeModuleInterceptor(interceptorSubTypeName, regenRatePoints);
     }
 
     // 프리셋 계산값 배열에서 slotIndex에 해당하는 값을 안전하게 조회 (범위 밖/null이면 override 없음)
@@ -380,7 +386,7 @@ public class ModuleHull : ModuleBase
         return attackArray[slotIndex];
     }
 
-    public void InitializeBeam(ModuleInfo moduleInfo, float? attackOverride = null)
+    public void InitializeBeam(ModuleInfo moduleInfo, float? attackOverride = null, float? attackCoolOverride = null)
     {
         GameObject modulePrefab = ObjectManager.Instance.LoadShipModulePrefab(moduleInfo.moduleType.ToString(), moduleInfo.moduleSubType);
         if (modulePrefab == null) return;
@@ -396,10 +402,10 @@ public class ModuleHull : ModuleBase
         if (moduleBeam == null)
             moduleBeam = beamObj.AddComponent<ModuleBeam>();
 
-        moduleBeam.InitializeModuleBeam(moduleInfo, this, targetSlot, attackOverride);
+        moduleBeam.InitializeModuleBeam(moduleInfo, this, targetSlot, attackOverride, attackCoolOverride);
     }
 
-    public void InitializeMissile(ModuleInfo moduleInfo, float? attackOverride = null)
+    public void InitializeMissile(ModuleInfo moduleInfo, float? attackOverride = null, float? attackCoolOverride = null, float? silenceTimeOverride = null)
     {
         GameObject modulePrefab = ObjectManager.Instance.LoadShipModulePrefab(moduleInfo.moduleType.ToString(), moduleInfo.moduleSubType);
         if (modulePrefab == null) return;
@@ -415,10 +421,10 @@ public class ModuleHull : ModuleBase
         if (moduleMissile == null)
             moduleMissile = missileObj.AddComponent<ModuleMissile>();
 
-        moduleMissile.InitializeModuleMissile(moduleInfo, this, targetSlot, attackOverride);
+        moduleMissile.InitializeModuleMissile(moduleInfo, this, targetSlot, attackOverride, attackCoolOverride, silenceTimeOverride);
     }
 
-    public void InitializeHangar(ModuleInfo moduleInfo, float? shipAttackOverride = null, float? fighterAttackOverride = null)
+    public void InitializeHangar(ModuleInfo moduleInfo, float? shipAttackOverride = null, float? fighterAttackOverride = null, float? airHealthOverride = null, float? airAmmoOverride = null, float? airDisruptOverride = null)
     {
         GameObject modulePrefab = ObjectManager.Instance.LoadShipModulePrefab(moduleInfo.moduleType.ToString(), moduleInfo.moduleSubType);
         if (modulePrefab == null)
@@ -448,7 +454,7 @@ public class ModuleHull : ModuleBase
         if (moduleHangar == null)
             moduleHangar = hangarObj.AddComponent<ModuleHangar>();
 
-        moduleHangar.InitializeModuleHangar(moduleInfo, this, targetSlot, shipAttackOverride, fighterAttackOverride);
+        moduleHangar.InitializeModuleHangar(moduleInfo, this, targetSlot, shipAttackOverride, fighterAttackOverride, airHealthOverride, airAmmoOverride, airDisruptOverride);
     }
 
     public void CollectAndSortModuleSlots()
@@ -508,8 +514,10 @@ public class ModuleHull : ModuleBase
 
     // 슬롯 하나의 최종 상태(설치 여부/서브타입/강화 포인트)를 확정하는 유일한 진입점 — 지금 활성 상태가 뭐든 스스로 조사해서 목표 상태로 전이함.
     // 설치/해제/티어변경을 이 함수 하나로 처리하므로, 몇 번을 어떻게 호출해도 슬롯엔 항상 Placeholder 또는 모듈이 정확히 하나만 활성 상태로 남음
-    public void SetModuleSlotState(EModuleType moduleType, int slotIndex, bool installed, string subType, int attackPoints, int attackToFighterPoints)
+    // info: 편집 상태(서브타입 + 강화 포인트) — 모듈이 이 객체를 보관하므로 복사본을 만들어 사용
+    public void SetModuleSlotState(EModuleType moduleType, int slotIndex, bool installed, ModuleInfo info)
     {
+        string subType = info.moduleSubType;
         ModuleSlot slot = FindModuleSlot(moduleType, slotIndex);
         if (slot == null) return;
 
@@ -529,7 +537,7 @@ public class ModuleHull : ModuleBase
         if (current != null && current.GetModuleSubType() == subType)
         {
             // 이미 원하는 서브타입이 활성 상태 — 파괴/생성 없이 강화 포인트만 갱신
-            ModuleInfo moduleInfo = BuildModuleInfoForSlot(moduleType, slotIndex, subType, attackPoints, attackToFighterPoints);
+            ModuleInfo moduleInfo = CloneSlotModuleInfo(info, moduleType, slotIndex);
             ReinitializeExistingModule(current, moduleInfo, slot);
             return;
         }
@@ -540,7 +548,7 @@ public class ModuleHull : ModuleBase
         {
             // 되돌아온 티어가 원본과 같으면 새로 만들지 않고 원본을 재사용
             DisablePlaceholderIfExists(slot);
-            ModuleInfo moduleInfo = BuildModuleInfoForSlot(moduleType, slotIndex, subType, attackPoints, attackToFighterPoints);
+            ModuleInfo moduleInfo = CloneSlotModuleInfo(info, moduleType, slotIndex);
             ReinitializeExistingModule(original, moduleInfo, slot);
             original.gameObject.SetActive(true);
             return;
@@ -549,7 +557,7 @@ public class ModuleHull : ModuleBase
         // InitializeBeam 등은 Placeholder를 알아서 꺼주지 않으므로(HasRealModule 가드가 Placeholder를 무시해 설치 자체는 막지 않음),
         // CreateMissingModules와 동일하게 설치 직전에 직접 꺼줘야 실제 모듈과 Placeholder가 같은 슬롯에 동시에 남지 않음
         DisablePlaceholderIfExists(slot);
-        ModuleInfo newModuleInfo = BuildModuleInfoForSlot(moduleType, slotIndex, subType, attackPoints, attackToFighterPoints);
+        ModuleInfo newModuleInfo = CloneSlotModuleInfo(info, moduleType, slotIndex);
         if (moduleType == EModuleType.beam)
             InitializeBeam(newModuleInfo);
         else if (moduleType == EModuleType.missile)
@@ -573,16 +581,12 @@ public class ModuleHull : ModuleBase
         Destroy(current.gameObject);
     }
 
-    private ModuleInfo BuildModuleInfoForSlot(EModuleType moduleType, int slotIndex, string subType, int attackPoints, int attackToFighterPoints)
+    private ModuleInfo CloneSlotModuleInfo(ModuleInfo info, EModuleType moduleType, int slotIndex)
     {
-        return new ModuleInfo
-        {
-            moduleType = moduleType,
-            slotIndex = slotIndex,
-            moduleSubType = subType,
-            attackPoints = attackPoints,
-            attackToFighterPoints = attackToFighterPoints,
-        };
+        ModuleInfo moduleInfo = FleetComposition.CloneModuleInfo(info);
+        moduleInfo.moduleType = moduleType;
+        moduleInfo.slotIndex = slotIndex;
+        return moduleInfo;
     }
 
     // 기존 컴포넌트를 파괴하지 않고 그대로 재사용하며 최신 ModuleInfo(강화 포인트 등)로 다시 초기화

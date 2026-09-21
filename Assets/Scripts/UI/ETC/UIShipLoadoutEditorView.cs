@@ -43,9 +43,9 @@ public class UIShipLoadoutEditorView : MonoBehaviour
 
     private readonly List<ModuleSlotEntry> m_moduleSlotEntries = new();
     private readonly List<bool> m_pendingInstalled = new(); // m_moduleSlotEntries와 1:1 대응 — 로컬 편집 상태(Confirm 전까지 서버 미반영)
-    private readonly List<int> m_pendingAttackPoints = new(); // 빔/미사일 공격력, 격납고는 대함 공격력 강화 포인트 — m_moduleSlotEntries와 1:1 대응
-    private readonly List<int> m_pendingAttackToFighterPoints = new(); // 격납고 전용 대전투기 공격력 강화 포인트 — 빔/미사일은 항상 0
-    private readonly List<string> m_pendingModuleSubType = new(); // 무기 모듈의 현재 티어 서브타입(예: beam_1_1) — m_moduleSlotEntries와 1:1 대응, 실드는 항상 기본값 고정
+    // m_moduleSlotEntries와 1:1 대응 — 슬롯의 현재 편집 상태(서브타입 + 모든 강화 포인트). 미장착 슬롯도 기본 서브타입 + 포인트 0으로 유지
+    // 실드/요격체는 ModuleHullInfo 필드가 아니라 이 형태로 편집: 실드 attackPoints=게이지/attackToFighterPoints=회복속도, 요격체 attackPoints=회복속도 (ApplyEditInfoToHull/CreateEditInfoFromHull로 변환)
+    private readonly List<ModuleInfo> m_pendingModules = new();
     private ModuleHullInfo m_originalModules; // Confirm 시 이 값과 비교해 실제로 바뀐 슬롯만 서버로 전송
 
     private List<ShipStatRowEntry> m_statEntries = new();
@@ -77,7 +77,54 @@ public class UIShipLoadoutEditorView : MonoBehaviour
         if (m_cancelButtonText != null)
             CommonUtility.SetUILocText(m_cancelButtonText, "UI_Cancel");
 
+        // 모듈 티어업 튜토리얼이 "후보 모듈 행의 관리 버튼"과 확인 버튼을 가리킬 수 있도록 리졸버 등록
+        m_tierUpModuleManageButtonResolver = ResolveTierUpModuleManageButton;
+        m_confirmButtonResolver = ResolveConfirmButton;
+        TutorialManager.Instance.RegisterDynamicTarget(TutorialManager.DYNAMIC_TARGET_TIER_UP_MODULE_MANAGE_BUTTON, m_tierUpModuleManageButtonResolver);
+        TutorialManager.Instance.RegisterDynamicTarget(TutorialManager.DYNAMIC_TARGET_LOADOUT_CONFIRM_BUTTON, m_confirmButtonResolver);
+
         gameObject.SetActive(false);
+    }
+
+    private System.Func<RectTransform> m_tierUpModuleManageButtonResolver;
+    private System.Func<RectTransform> m_confirmButtonResolver;
+
+    private void OnDestroy()
+    {
+        TutorialManager tutorialManager = TutorialManager.Instance; // 종료 중이면 null
+        if (tutorialManager == null) return;
+
+        tutorialManager.UnregisterDynamicTarget(TutorialManager.DYNAMIC_TARGET_TIER_UP_MODULE_MANAGE_BUTTON, m_tierUpModuleManageButtonResolver);
+        tutorialManager.UnregisterDynamicTarget(TutorialManager.DYNAMIC_TARGET_LOADOUT_CONFIRM_BUTTON, m_confirmButtonResolver);
+    }
+
+    // 지금 열려 있는 함선이 티어업 후보 함선일 때, 후보 모듈 행의 관리 버튼 — 그 행이 보이도록 먼저 스크롤한 뒤 찾음
+    private RectTransform ResolveTierUpModuleManageButton()
+    {
+        if (m_moduleScrollView == null) return null;
+        if (TutorialManager.Instance.TryGetModuleTierUpCandidate(out int shipSlotIndex, out EModuleType moduleType, out int categorySlotIndex) == false) return null;
+        if (shipSlotIndex != m_slotIndex) return null;
+
+        int candidateDataIndex = FindDataIndex(moduleType, categorySlotIndex);
+        if (candidateDataIndex < 0) return null;
+
+        m_moduleScrollView.EnsureVisible(candidateDataIndex);
+
+        RectTransform manageButtonRect = null;
+        m_moduleScrollView.ForEachVisibleItem((dataIndex, rowObject) =>
+        {
+            if (dataIndex != candidateDataIndex) return;
+
+            UIModuleSlotToggleRow row = rowObject.GetComponent<UIModuleSlotToggleRow>();
+            if (row != null) manageButtonRect = row.GetManageButtonRect();
+        });
+        return manageButtonRect;
+    }
+
+    private RectTransform ResolveConfirmButton()
+    {
+        if (m_confirmButton == null || m_confirmButton.gameObject.activeInHierarchy == false) return null;
+        return m_confirmButton.GetComponent<RectTransform>();
     }
 
     public void Open(int slotIndex, System.Action onChanged)
@@ -86,6 +133,40 @@ public class UIShipLoadoutEditorView : MonoBehaviour
         m_onChanged = onChanged;
         gameObject.SetActive(true);
         RefreshRows();
+    }
+
+    // 성능 컬럼 모듈 아이콘 클릭 등 — 편집 화면을 열면서 그 슬롯을 선택하고 스크롤뷰 안에 보이게 함. 슬롯의 dataIndex를 반환(없으면 -1)
+    public int OpenAndSelectSlot(int slotIndex, EModuleType moduleType, int categorySlotIndex, System.Action onChanged)
+    {
+        Open(slotIndex, onChanged);
+
+        int dataIndex = FindDataIndex(moduleType, categorySlotIndex);
+        if (dataIndex < 0) return -1;
+
+        OnRowSelected(dataIndex);
+        if (m_moduleScrollView != null)
+            m_moduleScrollView.EnsureVisible(dataIndex); // 아래쪽 슬롯(실드/요격체 등)도 스크롤뷰 안에 보이도록
+
+        return dataIndex;
+    }
+
+    // 장착된 슬롯의 모듈 아이콘 클릭 — 슬롯을 선택한 뒤 강화 팝업까지 바로 띄움(수동으로 행 선택 후 관리 버튼을 누른 것과 동일 흐름)
+    public void OpenAndManageSlot(int slotIndex, EModuleType moduleType, int categorySlotIndex, System.Action onChanged)
+    {
+        int dataIndex = OpenAndSelectSlot(slotIndex, moduleType, categorySlotIndex, onChanged);
+        if (dataIndex < 0) return;
+
+        OnManageButtonClicked(dataIndex);
+    }
+
+    private int FindDataIndex(EModuleType moduleType, int slotIndex)
+    {
+        for (int i = 0; i < m_moduleSlotEntries.Count; i++)
+        {
+            if (m_moduleSlotEntries[i].moduleType == moduleType && m_moduleSlotEntries[i].slotIndex == slotIndex)
+                return i;
+        }
+        return -1;
     }
 
     public void Close()
@@ -118,9 +199,7 @@ public class UIShipLoadoutEditorView : MonoBehaviour
 
         m_moduleSlotEntries.Clear();
         m_pendingInstalled.Clear();
-        m_pendingAttackPoints.Clear();
-        m_pendingAttackToFighterPoints.Clear();
-        m_pendingModuleSubType.Clear();
+        m_pendingModules.Clear();
         // 슬롯 잠금 없음 — 모든 슬롯이 자유롭게 토글 가능. 공격 모듈 0개 방지는 Confirm 버튼 비활성화(RefreshCommandPowerPreview)로 처리
         AppendCategorySlots(EModuleType.beam, maxSlots[0]);
         AppendCategorySlots(EModuleType.missile, maxSlots[1]);
@@ -128,6 +207,7 @@ public class UIShipLoadoutEditorView : MonoBehaviour
         AppendShieldSlot(maxSlots[3]);
         AppendInterceptorSlot(maxSlots[4]);
 
+        m_selectedDataIndex = 0; // 기본 선택은 항상 최상단 행 — 행 바인딩(Initialize)이 이 값으로 선택 표시를 그리므로 그 전에 초기화
         if (m_moduleScrollView != null && m_rowPrefab != null)
             m_moduleScrollView.Initialize(m_moduleSlotEntries.Count, m_rowPrefab.gameObject);
 
@@ -138,7 +218,6 @@ public class UIShipLoadoutEditorView : MonoBehaviour
         if (editingShip != null)
             editingShip.SetShipSelected(false);
 
-        m_selectedDataIndex = 0; // 기본 선택은 항상 최상단 행
         RefreshStatsDisplay();
         SyncSelectedModuleHighlight();
     }
@@ -152,13 +231,9 @@ public class UIShipLoadoutEditorView : MonoBehaviour
             m_pendingInstalled.Add(IsSlotInstalled(installedList, i));
 
             ModuleInfo installedModule = FindInstalledModule(installedList, i);
-            m_pendingAttackPoints.Add(installedModule != null ? installedModule.attackPoints : 0);
-            m_pendingAttackToFighterPoints.Add(installedModule != null ? installedModule.attackToFighterPoints : 0);
-
-            string installedSubType = installedModule != null && string.IsNullOrEmpty(installedModule.moduleSubType) == false
-                ? installedModule.moduleSubType
-                : GetDefaultSubType(moduleType);
-            m_pendingModuleSubType.Add(installedSubType);
+            ModuleInfo editInfo = installedModule != null ? FleetComposition.CloneModuleInfo(installedModule) : new ModuleInfo { moduleType = moduleType, slotIndex = i };
+            if (string.IsNullOrEmpty(editInfo.moduleSubType) == true) editInfo.moduleSubType = GetDefaultSubType(moduleType);
+            m_pendingModules.Add(editInfo);
         }
     }
 
@@ -170,9 +245,10 @@ public class UIShipLoadoutEditorView : MonoBehaviour
         bool isInstalled = m_originalModules != null && string.IsNullOrEmpty(m_originalModules.shieldModuleSubType) == false;
         m_moduleSlotEntries.Add(new ModuleSlotEntry(EModuleType.shield, 0, isLocked: false));
         m_pendingInstalled.Add(isInstalled);
-        m_pendingAttackPoints.Add(0);
-        m_pendingAttackToFighterPoints.Add(0);
-        m_pendingModuleSubType.Add(GetDefaultSubType(EModuleType.shield));
+        // 이미 장착돼 있으면 실제 티어(예: shield_5_1)로 시드해야 강화 팝업이 그 티어부터 시작함 — 미설치면 기본 티어1
+        ModuleInfo editInfo = CreateEditInfoFromHull(EModuleType.shield, m_originalModules);
+        if (editInfo == null) editInfo = new ModuleInfo { moduleType = EModuleType.shield, slotIndex = 0, moduleSubType = GetDefaultSubType(EModuleType.shield) };
+        m_pendingModules.Add(editInfo);
     }
 
     // 요격체는 슬롯이 없어(문자열 장착 여부만 존재) 리스트 카테고리와 별도 처리 — 함체에 요격체 슬롯이 있을 때만(maxSlotCount>0) 행 1개 추가
@@ -183,9 +259,51 @@ public class UIShipLoadoutEditorView : MonoBehaviour
         bool isInstalled = m_originalModules != null && string.IsNullOrEmpty(m_originalModules.interceptorModuleSubType) == false;
         m_moduleSlotEntries.Add(new ModuleSlotEntry(EModuleType.interceptor, 0, isLocked: false));
         m_pendingInstalled.Add(isInstalled);
-        m_pendingAttackPoints.Add(0);
-        m_pendingAttackToFighterPoints.Add(0);
-        m_pendingModuleSubType.Add(GetDefaultSubType(EModuleType.interceptor));
+        // 이미 장착돼 있으면 실제 티어로 시드해야 강화 팝업이 그 티어부터 시작함 — 미설치면 기본 티어1
+        ModuleInfo editInfo = CreateEditInfoFromHull(EModuleType.interceptor, m_originalModules);
+        if (editInfo == null) editInfo = new ModuleInfo { moduleType = EModuleType.interceptor, slotIndex = 0, moduleSubType = GetDefaultSubType(EModuleType.interceptor) };
+        m_pendingModules.Add(editInfo);
+    }
+
+    // 실드/요격체 ModuleHullInfo 필드 → 편집용 ModuleInfo (미장착이면 null). 실드 attackPoints=게이지/attackToFighterPoints=회복속도, 요격체 attackPoints=회복속도
+    private ModuleInfo CreateEditInfoFromHull(EModuleType moduleType, ModuleHullInfo hull)
+    {
+        if (hull == null) return null;
+
+        if (moduleType == EModuleType.shield && string.IsNullOrEmpty(hull.shieldModuleSubType) == false)
+        {
+            return new ModuleInfo { moduleType = moduleType, slotIndex = 0, moduleSubType = hull.shieldModuleSubType,
+                attackPoints = hull.shieldGaugePoints, attackToFighterPoints = hull.shieldRegenRatePoints };
+        }
+
+        if (moduleType == EModuleType.interceptor && string.IsNullOrEmpty(hull.interceptorModuleSubType) == false)
+        {
+            return new ModuleInfo { moduleType = moduleType, slotIndex = 0, moduleSubType = hull.interceptorModuleSubType,
+                attackPoints = hull.interceptorRegenRatePoints };
+        }
+
+        return null;
+    }
+
+    // 편집용 ModuleInfo → ModuleHullInfo에 반영 (CreateEditInfoFromHull의 역변환) — 빔/미사일/격납고는 해당 리스트에 추가
+    private void ApplyEditInfoToHull(ModuleHullInfo hull, ModuleInfo info)
+    {
+        if (info.moduleType == EModuleType.shield)
+        {
+            hull.shieldModuleSubType = info.moduleSubType;
+            hull.shieldGaugePoints = info.attackPoints;
+            hull.shieldRegenRatePoints = info.attackToFighterPoints;
+            return;
+        }
+
+        if (info.moduleType == EModuleType.interceptor)
+        {
+            hull.interceptorModuleSubType = info.moduleSubType;
+            hull.interceptorRegenRatePoints = info.attackPoints;
+            return;
+        }
+
+        GetModulesListForType(hull, info.moduleType).Add(FleetComposition.CloneModuleInfo(info));
     }
 
     private ModuleInfo FindInstalledModule(List<ModuleInfo> installedModules, int slotIndex)
@@ -208,12 +326,14 @@ public class UIShipLoadoutEditorView : MonoBehaviour
 
         ModuleSlotEntry entry = m_moduleSlotEntries[dataIndex];
         // 강화 포인트뿐 아니라 현재 티어의 설치비(statPoint)도 이 슬롯이 쓰는 지휘력이므로 합산해서 표시
-        int tierCost = GetModuleInstallCostBySubType(DataManager.Instance.m_dataTableModule, m_pendingModuleSubType[dataIndex]);
-        int investedPoints = tierCost + m_pendingAttackPoints[dataIndex] + m_pendingAttackToFighterPoints[dataIndex];
+        ModuleInfo pending = m_pendingModules[dataIndex];
+        int tierCost = GetModuleInstallCostBySubType(DataManager.Instance.m_dataTableModule, pending.moduleSubType);
+        int reinforceCost = FleetComposition.GetReinforceCpCostPerPoint() * FleetComposition.SumReinforcePoints(pending);
+        int investedCommandPower = tierCost + reinforceCost;
         bool isSelected = dataIndex == m_selectedDataIndex;
 
         row.Setup(entry.moduleType, entry.slotIndex, m_pendingInstalled[dataIndex], entry.isLocked,
-            investedPoints, isSelected, m_pendingModuleSubType[dataIndex],
+            investedCommandPower, isSelected, pending.moduleSubType,
             (moduleType, slotIndex, install) => OnLocalToggleChanged(dataIndex, install),
             (moduleType, slotIndex) => OnRowSelected(dataIndex),
             (moduleType, slotIndex) => OnManageButtonClicked(dataIndex));
@@ -277,12 +397,9 @@ public class UIShipLoadoutEditorView : MonoBehaviour
         if (dataIndex < 0 || dataIndex >= m_pendingInstalled.Count) return;
         m_pendingInstalled[dataIndex] = install;
         if (install == false)
-        {
-            m_pendingAttackPoints[dataIndex] = 0;
-            m_pendingAttackToFighterPoints[dataIndex] = 0;
-        }
+            ClearReinforcePoints(m_pendingModules[dataIndex]);
 
-        ApplyModulePreviewToShip(dataIndex, m_pendingModuleSubType[dataIndex], m_pendingAttackPoints[dataIndex], m_pendingAttackToFighterPoints[dataIndex], install);
+        ApplyModulePreviewToShip(dataIndex, m_pendingModules[dataIndex], install);
 
         FleetComposition composition = DataManager.Instance.m_currentFleetComposition;
         if (composition != null)
@@ -297,7 +414,18 @@ public class UIShipLoadoutEditorView : MonoBehaviour
 
     // 편집 대상 함선(FindEditingShip)의 해당 슬롯에 설치/해제/티어변경을 즉시 반영 — Confirm 전 3D 실시간 프리뷰
     // 실드는 3D 비주얼이 없는 논리 컴포넌트라(ModuleShield.cs 주석 참고) 로직 값만 갱신되고 외형 변화는 없음
-    private void ApplyModulePreviewToShip(int dataIndex, string subType, int attackPoints, int attackToFighterPoints, bool installed)
+    private void ClearReinforcePoints(ModuleInfo info)
+    {
+        info.attackPoints = 0;
+        info.attackToFighterPoints = 0;
+        info.fireRatePoints = 0;
+        info.silencePoints = 0;
+        info.ammoPoints = 0;
+        info.healthPoints = 0;
+        info.disruptPoints = 0;
+    }
+
+    private void ApplyModulePreviewToShip(int dataIndex, ModuleInfo info, bool installed)
     {
         if (dataIndex < 0 || dataIndex >= m_moduleSlotEntries.Count) return;
 
@@ -309,17 +437,17 @@ public class UIShipLoadoutEditorView : MonoBehaviour
 
         if (entry.moduleType == EModuleType.shield)
         {
-            body.InitializeShield(installed == true ? subType : "");
+            body.InitializeShield(installed == true ? info.moduleSubType : "", info.attackPoints, info.attackToFighterPoints);
             return;
         }
 
         if (entry.moduleType == EModuleType.interceptor)
         {
-            body.InitializeInterceptor(installed == true ? subType : "");
+            body.InitializeInterceptor(installed == true ? info.moduleSubType : "", info.attackPoints);
             return;
         }
 
-        body.SetModuleSlotState(entry.moduleType, entry.slotIndex, installed, subType, attackPoints, attackToFighterPoints);
+        body.SetModuleSlotState(entry.moduleType, entry.slotIndex, installed, info);
     }
 
     // CANCEL 시 편집한 슬롯 전부를 원본 상태로 복원 — 파괴/재생성 없이 ModuleHull이 보관해둔 원본을 그대로 재사용
@@ -328,7 +456,26 @@ public class UIShipLoadoutEditorView : MonoBehaviour
         SpaceShip ship = FindEditingShip();
         if (ship == null || ship.m_moduleHulls.Count == 0) return;
 
-        ship.m_moduleHulls[0].RevertAllSlotsToOriginal();
+        ModuleHull body = ship.m_moduleHulls[0];
+        body.RevertAllSlotsToOriginal();
+
+        // 실드/요격체는 슬롯 모듈이 아니라 위 복원 대상이 아님 — 편집으로 값이 바뀐 경우에만 원본으로 재초기화(안 바뀌었으면 현재 게이지/재고 유지)
+        for (int i = 0; i < m_moduleSlotEntries.Count; i++)
+        {
+            ModuleSlotEntry entry = m_moduleSlotEntries[i];
+            bool isLogicalModule = entry.moduleType == EModuleType.shield || entry.moduleType == EModuleType.interceptor;
+            if (isLogicalModule == false) continue;
+            if (IsSlotChangedFromOriginal(i) == false) continue;
+
+            ModuleInfo original = TryGetOriginalModuleInfo(entry);
+            string restoreSubType = original != null ? original.moduleSubType : "";
+            int originalAttackPoints = original != null ? original.attackPoints : 0;
+            int originalSecondaryPoints = original != null ? original.attackToFighterPoints : 0;
+            if (entry.moduleType == EModuleType.shield)
+                body.InitializeShield(restoreSubType, originalAttackPoints, originalSecondaryPoints);
+            else
+                body.InitializeInterceptor(restoreSubType, originalAttackPoints);
+        }
     }
 
     // ManageButton 클릭 — 강화 포인트 편집 팝업 오픈. 현재 pending 값을 팝업의 초기 로컬 버퍼로 전달
@@ -336,34 +483,33 @@ public class UIShipLoadoutEditorView : MonoBehaviour
     {
         if (dataIndex < 0 || dataIndex >= m_moduleSlotEntries.Count) return;
 
+        OnRowSelected(dataIndex); // 관리 버튼을 누른 슬롯을 자동으로 선택 상태로 만듦
+
         FleetComposition composition = DataManager.Instance.m_currentFleetComposition;
         if (composition == null) return;
 
         ModuleSlotEntry entry = m_moduleSlotEntries[dataIndex];
         DataTableModule moduleTable = DataManager.Instance.m_dataTableModule;
-        string currentSubType = m_pendingModuleSubType[dataIndex];
-        int installCost = GetModuleInstallCostBySubType(moduleTable, currentSubType);
+        ModuleInfo pending = m_pendingModules[dataIndex];
+        int installCost = GetModuleInstallCostBySubType(moduleTable, pending.moduleSubType);
 
-        int thisSlotReinforceCost = FleetComposition.GetReinforceCpCostPerPoint() * (m_pendingAttackPoints[dataIndex] + m_pendingAttackToFighterPoints[dataIndex]);
+        int thisSlotReinforceCost = FleetComposition.GetReinforceCpCostPerPoint() * FleetComposition.SumReinforcePoints(pending);
         int usedByOtherSlots = composition.GetUsedCommandPower() - composition.GetSlotCommandCost(m_slotIndex)
             + (ComputePendingSlotCost() - installCost - thisSlotReinforceCost);
         int maxCommandPower = composition.GetMaxCommandPower();
 
         int hullTier = CommonUtility.ParseTier(m_hullSubType);
-        UIManager.Instance.ShowModuleReinforcePopup(entry.moduleType, currentSubType,
-            m_pendingAttackPoints[dataIndex], m_pendingAttackToFighterPoints[dataIndex],
+        UIManager.Instance.ShowModuleReinforcePopup(entry.moduleType, pending,
             maxCommandPower, usedByOtherSlots, installCost, hullTier,
-            (confirmedSubType, confirmedAttackPoints, confirmedAttackToFighterPoints) => OnReinforceConfirmed(dataIndex, confirmedSubType, confirmedAttackPoints, confirmedAttackToFighterPoints));
+            confirmedInfo => OnReinforceConfirmed(dataIndex, confirmedInfo));
     }
 
-    private void OnReinforceConfirmed(int dataIndex, string moduleSubType, int attackPoints, int attackToFighterPoints)
+    private void OnReinforceConfirmed(int dataIndex, ModuleInfo confirmedInfo)
     {
-        if (dataIndex < 0 || dataIndex >= m_pendingAttackPoints.Count) return;
-        m_pendingModuleSubType[dataIndex] = moduleSubType;
-        m_pendingAttackPoints[dataIndex] = attackPoints;
-        m_pendingAttackToFighterPoints[dataIndex] = attackToFighterPoints;
+        if (dataIndex < 0 || dataIndex >= m_pendingModules.Count) return;
+        m_pendingModules[dataIndex] = confirmedInfo;
 
-        ApplyModulePreviewToShip(dataIndex, moduleSubType, attackPoints, attackToFighterPoints, installed: true);
+        ApplyModulePreviewToShip(dataIndex, confirmedInfo, installed: true);
 
         FleetComposition composition = DataManager.Instance.m_currentFleetComposition;
         if (composition != null)
@@ -394,8 +540,7 @@ public class UIShipLoadoutEditorView : MonoBehaviour
         }
 
         ModuleSlotEntry entry = m_moduleSlotEntries[m_selectedDataIndex];
-        ModuleHullInfo pendingHull = BuildSingleModuleHullInfo(entry.moduleType, m_pendingModuleSubType[m_selectedDataIndex],
-            m_pendingAttackPoints[m_selectedDataIndex], m_pendingAttackToFighterPoints[m_selectedDataIndex]);
+        ModuleHullInfo pendingHull = BuildSingleModuleHullInfo(m_pendingModules[m_selectedDataIndex]);
         m_statEntries = ShipStatGaugeBuilder.Build(null, pendingHull, includeBodyStats: false);
 
         m_selectedOriginalEntriesByLabel = BuildOriginalEntriesByLabelForSelectedSlot(entry);
@@ -409,10 +554,10 @@ public class UIShipLoadoutEditorView : MonoBehaviour
     {
         Dictionary<string, ShipStatRowEntry> result = new Dictionary<string, ShipStatRowEntry>();
 
-        bool wasInstalled = TryGetOriginalModuleState(entry, out string originalSubType, out int originalAttackPoints, out int originalAttackToFighterPoints);
-        if (wasInstalled == false) return result;
+        ModuleInfo original = TryGetOriginalModuleInfo(entry);
+        if (original == null) return result;
 
-        ModuleHullInfo originalHull = BuildSingleModuleHullInfo(entry.moduleType, originalSubType, originalAttackPoints, originalAttackToFighterPoints);
+        ModuleHullInfo originalHull = BuildSingleModuleHullInfo(original);
         List<ShipStatRowEntry> originalEntries = ShipStatGaugeBuilder.Build(null, originalHull, includeBodyStats: false);
         for (int i = 0; i < originalEntries.Count; i++)
             result[originalEntries[i].label] = originalEntries[i];
@@ -420,35 +565,13 @@ public class UIShipLoadoutEditorView : MonoBehaviour
         return result;
     }
 
-    // 이 슬롯이 편집을 시작한 시점(m_originalModules, 서버 확정 상태)에 실제로 설치돼 있었는지와 그 서브타입/포인트 — 스탯 비교 기준과 CANCEL 롤백 양쪽에서 재사용
-    private bool TryGetOriginalModuleState(ModuleSlotEntry entry, out string subType, out int attackPoints, out int attackToFighterPoints)
+    // 이 슬롯이 편집을 시작한 시점(m_originalModules, 서버 확정 상태)의 편집용 ModuleInfo — 미설치였으면 null. 스탯 비교 기준과 CANCEL 롤백 양쪽에서 재사용
+    private ModuleInfo TryGetOriginalModuleInfo(ModuleSlotEntry entry)
     {
-        subType = null;
-        attackPoints = 0;
-        attackToFighterPoints = 0;
+        if (entry.moduleType == EModuleType.shield || entry.moduleType == EModuleType.interceptor)
+            return CreateEditInfoFromHull(entry.moduleType, m_originalModules);
 
-        if (entry.moduleType == EModuleType.shield)
-        {
-            if (m_originalModules != null && string.IsNullOrEmpty(m_originalModules.shieldModuleSubType) == false)
-                subType = m_originalModules.shieldModuleSubType;
-        }
-        else if (entry.moduleType == EModuleType.interceptor)
-        {
-            if (m_originalModules != null && string.IsNullOrEmpty(m_originalModules.interceptorModuleSubType) == false)
-                subType = m_originalModules.interceptorModuleSubType;
-        }
-        else
-        {
-            ModuleInfo original = FindInstalledModule(GetModulesListForType(m_originalModules, entry.moduleType), entry.slotIndex);
-            if (original != null)
-            {
-                subType = original.moduleSubType;
-                attackPoints = original.attackPoints;
-                attackToFighterPoints = original.attackToFighterPoints;
-            }
-        }
-
-        return subType != null;
+        return FindInstalledModule(GetModulesListForType(m_originalModules, entry.moduleType), entry.slotIndex);
     }
 
     // 지금 pending 상태가 편집 시작 시점(원본)과 하나라도 다른 슬롯이 있는지 — CONFIRM에서 무변경이면 서버 요청/재스폰을 생략하기 위한 가드
@@ -456,45 +579,32 @@ public class UIShipLoadoutEditorView : MonoBehaviour
     {
         for (int i = 0; i < m_moduleSlotEntries.Count; i++)
         {
-            ModuleSlotEntry entry = m_moduleSlotEntries[i];
-            bool wasInstalled = TryGetOriginalModuleState(entry, out string originalSubType, out int originalAttackPoints, out int originalAttackToFighterPoints);
-
-            if (m_pendingInstalled[i] != wasInstalled) return true;
-            if (wasInstalled == false) continue; // 둘 다 미설치면 이 슬롯은 비교할 게 없음
-
-            if (m_pendingModuleSubType[i] != originalSubType) return true;
-            if (m_pendingAttackPoints[i] != originalAttackPoints) return true;
-            if (m_pendingAttackToFighterPoints[i] != originalAttackToFighterPoints) return true;
+            if (IsSlotChangedFromOriginal(i) == true) return true;
         }
         return false;
     }
 
+    // dataIndex번 슬롯의 pending 상태(장착 여부/티어/강화 포인트)가 편집 시작 시점(원본)과 다른지
+    private bool IsSlotChangedFromOriginal(int dataIndex)
+    {
+        ModuleSlotEntry entry = m_moduleSlotEntries[dataIndex];
+        ModuleInfo original = TryGetOriginalModuleInfo(entry);
+        bool wasInstalled = original != null;
+
+        if (m_pendingInstalled[dataIndex] != wasInstalled) return true;
+        if (wasInstalled == false) return false; // 둘 다 미설치면 이 슬롯은 비교할 게 없음
+
+        ModuleInfo pending = m_pendingModules[dataIndex];
+        if (pending.moduleSubType != original.moduleSubType) return true;
+        if (FleetComposition.AreSameReinforcePoints(pending, original) == false) return true;
+        return false;
+    }
+
     // 슬롯 1개짜리 ModuleHullInfo 조립 — BuildPendingModuleHullInfo와 동일 패턴을 단일 모듈에 적용
-    private ModuleHullInfo BuildSingleModuleHullInfo(EModuleType moduleType, string moduleSubType, int attackPoints, int attackToFighterPoints)
+    private ModuleHullInfo BuildSingleModuleHullInfo(ModuleInfo info)
     {
         ModuleHullInfo hull = new ModuleHullInfo { beams = new List<ModuleInfo>(), missiles = new List<ModuleInfo>(), hangars = new List<ModuleInfo>(), shieldModuleSubType = "" };
-
-        if (moduleType == EModuleType.shield)
-        {
-            hull.shieldModuleSubType = moduleSubType;
-            return hull;
-        }
-
-        if (moduleType == EModuleType.interceptor)
-        {
-            hull.interceptorModuleSubType = moduleSubType;
-            return hull;
-        }
-
-        ModuleInfo moduleInfo = new ModuleInfo
-        {
-            moduleType = moduleType,
-            slotIndex = 0,
-            moduleSubType = moduleSubType,
-            attackPoints = attackPoints,
-            attackToFighterPoints = attackToFighterPoints,
-        };
-        GetModulesListForType(hull, moduleType).Add(moduleInfo);
+        ApplyEditInfoToHull(hull, info);
         return hull;
     }
 
@@ -523,29 +633,8 @@ public class UIShipLoadoutEditorView : MonoBehaviour
         {
             if (m_pendingInstalled[i] == false) continue;
 
-            ModuleSlotEntry entry = m_moduleSlotEntries[i];
-
-            if (entry.moduleType == EModuleType.shield)
-            {
-                pending.shieldModuleSubType = GetDefaultSubType(entry.moduleType);
-                continue;
-            }
-
-            if (entry.moduleType == EModuleType.interceptor)
-            {
-                pending.interceptorModuleSubType = GetDefaultSubType(entry.moduleType);
-                continue;
-            }
-
-            ModuleInfo moduleInfo = new ModuleInfo
-            {
-                moduleType = entry.moduleType,
-                slotIndex = entry.slotIndex,
-                moduleSubType = m_pendingModuleSubType[i],
-                attackPoints = m_pendingAttackPoints[i],
-                attackToFighterPoints = m_pendingAttackToFighterPoints[i],
-            };
-            GetModulesListForType(pending, entry.moduleType).Add(moduleInfo);
+            // 강화 팝업에서 티어업/다운된 실제 서브타입과 포인트를 그대로 커밋 — 기본 서브타입 고정값을 쓰면 항상 티어1로 되돌아감
+            ApplyEditInfoToHull(pending, m_pendingModules[i]);
         }
         return pending;
     }
@@ -601,8 +690,8 @@ public class UIShipLoadoutEditorView : MonoBehaviour
         for (int i = 0; i < m_moduleSlotEntries.Count; i++)
         {
             if (m_pendingInstalled[i] == false) continue;
-            int installCost = GetModuleInstallCostBySubType(moduleTable, m_pendingModuleSubType[i]);
-            int reinforceCost = FleetComposition.GetReinforceCpCostPerPoint() * (m_pendingAttackPoints[i] + m_pendingAttackToFighterPoints[i]);
+            int installCost = GetModuleInstallCostBySubType(moduleTable, m_pendingModules[i].moduleSubType);
+            int reinforceCost = FleetComposition.GetReinforceCpCostPerPoint() * FleetComposition.SumReinforcePoints(m_pendingModules[i]);
             modulesCost += installCost + reinforceCost;
         }
 
@@ -610,7 +699,7 @@ public class UIShipLoadoutEditorView : MonoBehaviour
     }
 
     // 새로 장착하는 빈 슬롯(기존 장착 이력 없음)의 초기 서브타입 — 무기 티어는 함체와 독립적인 별도 축이라 기본값은 항상 1티어.
-    // 장착 후에는 UIPopupModuleReinforce의 티어업/다운으로 m_pendingModuleSubType이 바뀌므로 이 값은 시작점일 뿐임(실드는 티어 없이 항상 이 값 고정)
+    // 장착 후에는 UIPopupModuleReinforce의 티어업/다운으로 m_pendingModules의 서브타입이 바뀌므로 이 값은 시작점일 뿐임(실드는 티어 없이 항상 이 값 고정)
     private string GetDefaultSubType(EModuleType moduleType)
     {
         if (moduleType == EModuleType.beam) return "beam_1_1";

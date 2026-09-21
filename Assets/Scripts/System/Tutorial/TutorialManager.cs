@@ -30,6 +30,16 @@ public class TutorialManager : MonoSingleton<TutorialManager>
     // 레벨업 팝업이 닫히고 메인 UI가 top이며 다른 튜토리얼이 재생 중이 아닐 때 TryStartPendingTutorial()이 시작시킴
     public const string SHIP_SLOT_INCREASE_TUTORIAL_ID = "Tutorial_ShipSlotIncrease";
 
+    // 모듈 티어업 안내 — 티어업이 실제로 가능한 상태(티어 2 모듈이 없고, 모듈 티어 < 함체 티어이며, 여유 지휘력이 티어업 비용 이상)가 되면
+    // TryRequestModuleTierUpTutorial()이 대기 등록, TryStartPendingTutorial()이 시작시킴. 조건이 사라지면(IsConditionTutorialObsolete) 폐기
+    public const string MODULE_TIER_UP_TUTORIAL_ID = "Tutorial_ModuleTierUp";
+
+    // 모듈 티어업 튜토리얼 스텝의 동적 타겟 — 조건을 만족한 후보 함선/모듈에 따라 대상이 달라지므로 각 UI가 리졸버를 등록
+    public const string DYNAMIC_TARGET_TIER_UP_SHIP_MANAGE_BUTTON = "@TierUpShipManageButton";     // UIPanelFleet — 후보 함선 행의 관리 버튼
+    public const string DYNAMIC_TARGET_TIER_UP_MODULE_MANAGE_BUTTON = "@TierUpModuleManageButton"; // UIShipLoadoutEditorView — 후보 모듈 행의 관리 버튼
+    public const string DYNAMIC_TARGET_LOADOUT_CONFIRM_BUTTON = "@LoadoutConfirmButton";           // UIShipLoadoutEditorView — 확인 버튼
+    public const string DYNAMIC_TARGET_MODULE_TIER_UP_BUTTON = "@ModuleTierUpButton";              // UIPopupModuleReinforce — 티어업 버튼
+
     // 순서대로 진행되는 온보딩 튜토리얼 — ObjectManager.RunTutorialSequence가 이 순서대로 재생하고,
     // 스킵 버튼 클릭 시(SkipTutorial) 이 목록 전체를 한 번에 완료 처리한 뒤 노말 플레이로 전환함
     public static readonly string[] ONBOARDING_TUTORIAL_SEQUENCE =
@@ -260,6 +270,44 @@ public class TutorialManager : MonoSingleton<TutorialManager>
         int shipCount = DataManager.Instance.m_dataTableCommander.GetShipCount(commander.GetCommanderLevel());
         if (shipCount >= 2)
             RequestPendingTutorial(SHIP_SLOT_INCREASE_TUTORIAL_ID);
+
+        TryRequestModuleTierUpTutorial();
+    }
+
+    // 온보딩을 마친 유저에게만 안내 — 지휘력/함선/로드아웃이 바뀐 뒤 메인 화면으로 돌아올 때(OnCurrentPanelChanged)와 로그인 복구 시 재평가
+    // 조건을 만족하지 않으면 RequestPendingTutorial이 IsConditionTutorialObsolete로 걸러 대기 등록하지 않음
+    private void TryRequestModuleTierUpTutorial()
+    {
+        if (m_isServerLoaded == false) return;
+        if (IsTutorialCompleted("Tutorial_Exploration") == false) return;
+        if (GetCurrentTutorialId() == MODULE_TIER_UP_TUTORIAL_ID) return; // 진행 중 화면 전환마다 중복 대기 등록되지 않도록
+        if (IsTutorialCompleted(MODULE_TIER_UP_TUTORIAL_ID) == true) return;
+        if (IsModuleTierUpTutorialConditionMet() == false) return; // 화면 전환마다 호출되므로 미충족이면 대기 등록 로직까지 가지 않음
+
+        RequestPendingTutorial(MODULE_TIER_UP_TUTORIAL_ID);
+    }
+
+    // 티어2 이상 모듈이 없고(티어업 경험 없음), 지금 티어업 가능한 후보 모듈이 있는지
+    private bool IsModuleTierUpTutorialConditionMet()
+    {
+        FleetComposition composition = DataManager.Instance.m_currentFleetComposition;
+        if (composition == null) return false;
+        if (composition.HasTieredUpModule() == true) return false;
+
+        return composition.TryFindModuleTierUpCandidate(out _, out _, out _);
+    }
+
+    // 지금 조건에 맞는 티어업 후보 — 동적 타겟 리졸버(UIPanelFleet/UIShipLoadoutEditorView)가 대상 행을 찾을 때 사용
+    public bool TryGetModuleTierUpCandidate(out int shipSlotIndex, out EModuleType moduleType, out int categorySlotIndex)
+    {
+        shipSlotIndex = -1;
+        moduleType = EModuleType.beam;
+        categorySlotIndex = 0;
+
+        FleetComposition composition = DataManager.Instance.m_currentFleetComposition;
+        if (composition == null) return false;
+
+        return composition.TryFindModuleTierUpCandidate(out shipSlotIndex, out moduleType, out categorySlotIndex);
     }
 
     // 조건형 튜토리얼이 이미 필요 없어진 상태인지 — 함체 언락은 하나라도 언락했으면, 함선 슬롯은 빈 슬롯이 없으면 안내 대상이 아님
@@ -273,6 +321,9 @@ public class TutorialManager : MonoSingleton<TutorialManager>
 
         if (tutorialId == SHIP_SLOT_INCREASE_TUTORIAL_ID)
             return HasEmptyShipSlot() == false;
+
+        if (tutorialId == MODULE_TIER_UP_TUTORIAL_ID)
+            return IsModuleTierUpTutorialConditionMet() == false;
 
         return false;
     }
@@ -311,6 +362,7 @@ public class TutorialManager : MonoSingleton<TutorialManager>
 
     private void OnCurrentPanelChanged(string panelName)
     {
+        TryRequestModuleTierUpTutorial();
         TryStartPendingTutorial();
     }
 
@@ -414,6 +466,10 @@ public class TutorialManager : MonoSingleton<TutorialManager>
 
         // 대기 조건에서 이미 메인 UI가 top임을 확인하고 시작하지만, 직접 호출돼도 FleetButton이 보이도록 동일하게 보장
         if (tutorialId == SHIP_SLOT_INCREASE_TUTORIAL_ID)
+            UIManager.Instance.ShowMainPanel();
+
+        // 1스텝이 가리키는 FleetButton이 보이도록 메인 UI가 top임을 보장
+        if (tutorialId == MODULE_TIER_UP_TUTORIAL_ID)
             UIManager.Instance.ShowMainPanel();
 
         m_currentStepIndex = 0;

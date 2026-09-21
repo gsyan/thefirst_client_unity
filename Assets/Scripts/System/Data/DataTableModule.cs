@@ -70,8 +70,7 @@ public class ModuleData
     // Interceptor ------------------------------------------------------------------------
     [Header("Interceptor Stats")]
     public int interceptorCount = 0;         // 요격체 재고 수
-    public float interceptorDelay = 0f;      // 소모 후 보충 딜레이(초)
-    public float interceptorRegenRate = 0f;  // 요격체 재고 회복 속도
+    public float interceptorRegenTime = 0f;  // 요격체 1기가 다시 생성되기까지 걸리는 시간(초)
 }
 
 [System.Serializable]
@@ -412,7 +411,7 @@ public class DataTableModule : ScriptableObject
         // 16:air_attack_range, 17:air_attack_cool, 18:air_speed, 19:air_ammo,
         // 20:air_detect_radius, 21:air_avoid_radius, 22:air_disrupt,
         // 23:shield_gauge, 24:shield_regen_rate,
-        // 25:interceptor_count, 26:interceptor_delay, 27:interceptor_regen_rate, 28:description
+        // 25:interceptor_count, 26:interceptor_regen_time, 27:description
         // 발사체 이동속도(빔/미사일)는 별도 컬럼 없이 speed 컬럼을 재사용
         string[] lines = csvText.Split('\n');
         if (lines.Length < 2) return;
@@ -464,9 +463,8 @@ public class DataTableModule : ScriptableObject
                 shieldGauge         = ParseCsvFloat(cols, 23),
                 shieldRegenRate     = ParseCsvFloat(cols, 24),
                 interceptorCount        = ParseCsvInt  (cols, 25),
-                interceptorDelay        = ParseCsvFloat(cols, 26),
-                interceptorRegenRate    = ParseCsvFloat(cols, 27),
-                description         = cols.Length > 28 ? cols[28].Trim() : ""
+                interceptorRegenTime    = ParseCsvFloat(cols, 26),
+                description         = cols.Length > 27 ? cols[27].Trim() : ""
             };
 
             // hull 모듈만 prefab에서 슬롯 정보 추출

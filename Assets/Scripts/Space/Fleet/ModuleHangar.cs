@@ -26,9 +26,9 @@ public class AircraftInfo
     // 출격 시 누적된 공격 배율 (진형·함선수·전술). 귀환 시 UpdateAircraftInfo에서 1f로 원복
     public float airAttackMultiplier;
 
-    public AircraftInfo(ModuleData moduleData, float attackToShip, float attackToFighter)
+    public AircraftInfo(ModuleData moduleData, float attackToShip, float attackToFighter, float health, int ammo, float disrupt)
     {
-        UpdateAircraftInfo(moduleData, attackToShip, attackToFighter);
+        UpdateAircraftInfo(moduleData, attackToShip, attackToFighter, health, ammo, disrupt);
         this.lastReturnTime = 0f;
         this.isReady = true;
     }
@@ -36,24 +36,24 @@ public class AircraftInfo
     // 함재기 출격 시 초기 직진 거리 — 데이터 테이블 값이 아닌 고정값
     private const float k_airLaunchDist = 1f;
 
-    // attackToShip/attackToFighter: ModuleHangar가 강화 포인트를 반영해 확정해둔 값(ModuleHangar.GetFinalAttackToShip/Fighter) —
+    // attackToShip/attackToFighter/health/ammo/disrupt: ModuleHangar가 강화 포인트를 반영해 확정해둔 값(ModuleHangar.GetFinal*) —
     // 출격마다 원본 moduleData 값으로 되돌아가지 않도록 호출부가 매번 이 확정값을 넘겨야 함
-    public void UpdateAircraftInfo(ModuleData moduleData, float attackToShip, float attackToFighter)
+    public void UpdateAircraftInfo(ModuleData moduleData, float attackToShip, float attackToFighter, float health, int ammo, float disrupt)
     {
         this.airLaunchDist       = k_airLaunchDist;
-        this.airHealth           = moduleData.airHealth;
+        this.airHealth           = health;
         this.airAttackToShip     = attackToShip;
         this.airAttackToFighter  = attackToFighter;
         this.airAttackRange      = moduleData.airAttackRange;
         this.airAttackCool       = moduleData.airAttackCool;
         this.airSpeed            = moduleData.airSpeed;
-        this.airAmmo             = moduleData.airAmmo;
+        this.airAmmo             = ammo;
         this.airDetectRadius     = moduleData.airDetectRadius;
         this.airAvoidRadius      = moduleData.airAvoidRadius;
-        this.airDisrupt          = moduleData.airDisrupt;
+        this.airDisrupt          = disrupt;
 
-        this.airHealthMax        = moduleData.airHealth;
-        this.airAmmoMax          = moduleData.airAmmo;
+        this.airHealthMax        = health;
+        this.airAmmoMax          = ammo;
         this.airAttackMultiplier = 1f;
     }
 }
@@ -70,6 +70,9 @@ public class ModuleHangar : ModuleBase
     // 강화 포인트(override) 반영을 마친 확정값 — InitializeModuleHangar에서 한 번만 계산해두고, 매 출격(LauncherAircraft)마다 재사용
     [SerializeField] private float m_finalAttackToShip;
     [SerializeField] private float m_finalAttackToFighter;
+    [SerializeField] private float m_finalAirHealth;
+    [SerializeField] private int m_finalAirAmmo;
+    [SerializeField] private float m_finalAirDisrupt;
 
     [SerializeField] private float m_lastLaunchTime;
     [SerializeField] private List<AircraftInfo> m_aircraftPool = new List<AircraftInfo>();
@@ -87,8 +90,9 @@ public class ModuleHangar : ModuleBase
         m_parentBody = parentBody;
     }
 
-    // shipAttackOverride/fighterAttackOverride: 강화 포인트(대함/대전투기 각각 투자한 포인트) 반영값 — null이면 데이터 테이블 티어값 그대로 사용
-    public void InitializeModuleHangar(ModuleInfo moduleInfo, ModuleHull parentBody, ModuleSlot moduleSlot, float? shipAttackOverride = null, float? fighterAttackOverride = null)
+    // shipAttackOverride/fighterAttackOverride/airHealthOverride/airAmmoOverride/airDisruptOverride: 강화 포인트 반영값 — null이면 데이터 테이블 티어값 그대로 사용
+    public void InitializeModuleHangar(ModuleInfo moduleInfo, ModuleHull parentBody, ModuleSlot moduleSlot, float? shipAttackOverride = null, float? fighterAttackOverride = null,
+        float? airHealthOverride = null, float? airAmmoOverride = null, float? airDisruptOverride = null)
     {
         m_moduleInfo = moduleInfo;
         m_parentBody = parentBody;
@@ -116,12 +120,15 @@ public class ModuleHangar : ModuleBase
 
         m_finalAttackToShip = shipAttackOverride ?? moduleData.airAttackToShip;
         m_finalAttackToFighter = fighterAttackOverride ?? moduleData.airAttackToFighter;
+        m_finalAirHealth = airHealthOverride ?? moduleData.airHealth;
+        m_finalAirAmmo = airAmmoOverride != null ? Mathf.RoundToInt(airAmmoOverride.Value) : moduleData.airAmmo;
+        m_finalAirDisrupt = airDisruptOverride ?? moduleData.airDisrupt;
 
         // 함재기 데이터 풀 초기화
         int totalAircraftCount = m_airCount;
         for (int i = 0; i < totalAircraftCount; i++)
         {
-            AircraftInfo aircraftInfo = new AircraftInfo(moduleData, m_finalAttackToShip, m_finalAttackToFighter);
+            AircraftInfo aircraftInfo = new AircraftInfo(moduleData, m_finalAttackToShip, m_finalAttackToFighter, m_finalAirHealth, m_finalAirAmmo, m_finalAirDisrupt);
             m_aircraftPool.Add(aircraftInfo);
         }
 
@@ -139,6 +146,7 @@ public class ModuleHangar : ModuleBase
             m_healthMax *= m_ownerShip.m_healthMultiplier;
             m_finalAttackToShip    *= m_ownerShip.m_attackMultiplier;
             m_finalAttackToFighter *= m_ownerShip.m_attackMultiplier;
+            m_finalAirHealth       *= m_ownerShip.m_healthMultiplier; // 출격/보충 때 이 확정값으로 다시 세팅되므로 배율을 여기에도 반영
             foreach (var info in m_aircraftPool)
             {
                 info.airHealth      *= m_ownerShip.m_healthMultiplier;
@@ -154,6 +162,9 @@ public class ModuleHangar : ModuleBase
 
     public float GetFinalAttackToShip() { return m_finalAttackToShip; }
     public float GetFinalAttackToFighter() { return m_finalAttackToFighter; }
+    public float GetFinalAirHealth() { return m_finalAirHealth; }
+    public int GetFinalAirAmmo() { return m_finalAirAmmo; }
+    public float GetFinalAirDisrupt() { return m_finalAirDisrupt; }
 
     public override void Start()
     {
@@ -316,7 +327,7 @@ public class ModuleHangar : ModuleBase
         if (moduleData == null) return;
 
         for (int i = 0; i < shortageCount; i++)
-            m_aircraftPool.Add(new AircraftInfo(moduleData, m_finalAttackToShip, m_finalAttackToFighter));
+            m_aircraftPool.Add(new AircraftInfo(moduleData, m_finalAttackToShip, m_finalAttackToFighter, m_finalAirHealth, m_finalAirAmmo, m_finalAirDisrupt));
     }
 
     public int GetHangarCapability() => m_airCount;

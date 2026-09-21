@@ -203,6 +203,34 @@ MonoBehaviour:
     m_Key: Tutorial_ShipSlotIncrease_LowCommandPower
     m_Metadata:
       m_Items: []
+  - m_Id: 29210315732156416
+    m_Key: Tutorial_ModuleTierUp_OpenFleet
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29210315782488064
+    m_Key: Tutorial_ModuleTierUp_OpenLoadout
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29210315782488065
+    m_Key: Tutorial_ModuleTierUp_SelectModule
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29210315782488066
+    m_Key: Tutorial_ModuleTierUp_TierUp
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29210315782488067
+    m_Key: Tutorial_ModuleTierUp_ConfirmReinforce
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29210315782488068
+    m_Key: Tutorial_ModuleTierUp_ConfirmLoadout
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29210315782488069
+    m_Key: Tutorial_ModuleTierUp_Complete
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

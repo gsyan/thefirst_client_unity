@@ -1,0 +1,138 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0cec351f6132315419d794e5ec26a741, type: 3}
+  m_Name: Tutorial_ModuleTierUp
+  m_EditorClassIdentifier: Assembly-CSharp::TutorialData
+  tutorialId: Tutorial_ModuleTierUp
+  tutorialName: "\uBAA8\uB4C8 \uD2F0\uC5B4\uC5C5 \uD29C\uD1A0\uB9AC\uC5BC"
+  priority: 0
+  isHideSkipButton: 0
+  steps:
+  - stepId: step1
+    message: Tutorial_ModuleTierUp_OpenFleet
+    triggerType: 0
+    targetPanelName: 
+    targetUIId: FleetButton
+    showArrow: 1
+    arrowDirection: 0
+    textBoxOffset: {x: 0, y: 0}
+    textBoxSize: {x: 0, y: 0}
+    textBoxPosition: {x: 0, y: -500}
+    autoNextDelay: 0
+    preActionPanelName: 
+    preActionTabName: 
+    conditionType: 0
+    conditionThreshold: 90
+    conditionCount: 3
+    targetModuleType: 0
+  - stepId: step2
+    message: Tutorial_ModuleTierUp_OpenLoadout
+    triggerType: 0
+    targetPanelName: 
+    targetUIId: '@TierUpShipManageButton'
+    showArrow: 1
+    arrowDirection: 0
+    textBoxOffset: {x: 0, y: 0}
+    textBoxSize: {x: 0, y: 0}
+    textBoxPosition: {x: 0, y: -500}
+    autoNextDelay: 0
+    preActionPanelName: 
+    preActionTabName: 
+    conditionType: 0
+    conditionThreshold: 90
+    conditionCount: 3
+    targetModuleType: 0
+  - stepId: step3
+    message: Tutorial_ModuleTierUp_SelectModule
+    triggerType: 0
+    targetPanelName: 
+    targetUIId: '@TierUpModuleManageButton'
+    showArrow: 1
+    arrowDirection: 0
+    textBoxOffset: {x: 0, y: 0}
+    textBoxSize: {x: 0, y: 0}
+    textBoxPosition: {x: 0, y: -500}
+    autoNextDelay: 0
+    preActionPanelName: 
+    preActionTabName: 
+    conditionType: 0
+    conditionThreshold: 90
+    conditionCount: 3
+    targetModuleType: 0
+  - stepId: step4
+    message: Tutorial_ModuleTierUp_TierUp
+    triggerType: 0
+    targetPanelName: 
+    targetUIId: '@ModuleTierUpButton'
+    showArrow: 1
+    arrowDirection: 0
+    textBoxOffset: {x: 0, y: 0}
+    textBoxSize: {x: 0, y: 0}
+    textBoxPosition: {x: 0, y: -500}
+    autoNextDelay: 0
+    preActionPanelName: 
+    preActionTabName: 
+    conditionType: 0
+    conditionThreshold: 90
+    conditionCount: 3
+    targetModuleType: 0
+  - stepId: step5
+    message: Tutorial_ModuleTierUp_ConfirmReinforce
+    triggerType: 0
+    targetPanelName: UIPopupModuleReinforce
+    targetUIId: ConfirmButton
+    showArrow: 1
+    arrowDirection: 0
+    textBoxOffset: {x: 0, y: 0}
+    textBoxSize: {x: 0, y: 0}
+    textBoxPosition: {x: 0, y: -500}
+    autoNextDelay: 0
+    preActionPanelName: 
+    preActionTabName: 
+    conditionType: 0
+    conditionThreshold: 90
+    conditionCount: 3
+    targetModuleType: 0
+  - stepId: step6
+    message: Tutorial_ModuleTierUp_ConfirmLoadout
+    triggerType: 0
+    targetPanelName: 
+    targetUIId: '@LoadoutConfirmButton'
+    showArrow: 1
+    arrowDirection: 0
+    textBoxOffset: {x: 0, y: 0}
+    textBoxSize: {x: 0, y: 0}
+    textBoxPosition: {x: 0, y: -500}
+    autoNextDelay: 0
+    preActionPanelName: 
+    preActionTabName: 
+    conditionType: 0
+    conditionThreshold: 90
+    conditionCount: 3
+    targetModuleType: 0
+  - stepId: step7
+    message: Tutorial_ModuleTierUp_Complete
+    triggerType: 1
+    targetPanelName: 
+    targetUIId: 
+    showArrow: 0
+    arrowDirection: 0
+    textBoxOffset: {x: 0, y: 0}
+    textBoxSize: {x: 0, y: 0}
+    textBoxPosition: {x: 0, y: -500}
+    autoNextDelay: 0
+    preActionPanelName: 
+    preActionTabName: 
+    conditionType: 0
+    conditionThreshold: 90
+    conditionCount: 3
+    targetModuleType: 0

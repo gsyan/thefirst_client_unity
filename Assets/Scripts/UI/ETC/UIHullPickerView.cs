@@ -24,6 +24,13 @@ public class UIHullPickerView : MonoBehaviour
 
     [SerializeField] private RawImage m_previewImage; // 선택된 함체의 3D 바디 미리보기 — ShipPreviewManager가 렌더링한 텍스처
 
+    [Header("모듈 슬롯 개수 표시 — 순수 정보용(Button 비활성)")]
+    [SerializeField] private TMP_Text m_beamSlotCountText;
+    [SerializeField] private TMP_Text m_missileSlotCountText;
+    [SerializeField] private TMP_Text m_hangarSlotCountText;
+    [SerializeField] private TMP_Text m_shieldSlotCountText;
+    [SerializeField] private TMP_Text m_interceptorSlotCountText;
+
     private readonly List<ModuleData> m_hullsCache = new();
     private List<ShipStatRowEntry> m_statEntries = new();
     private Dictionary<string, ShipStatRowEntry> m_currentEntriesByLabel; // 비교 기준(현재 장착 함체) — 라벨로 조회
@@ -144,6 +151,7 @@ public class UIHullPickerView : MonoBehaviour
         RefreshStatsDisplay();
         RefreshCommandPowerPreview();
         RefreshPreview();
+        RefreshModuleSlotCounts();
     }
 
     public void Close()
@@ -166,6 +174,19 @@ public class UIHullPickerView : MonoBehaviour
         ShipPreviewManager.Instance.ShowHull(selectedHull);
     }
 
+    // 선택된 함체 후보의 카테고리별 슬롯 개수를 텍스트로 표시 — [beam, missile, hangar, shield, interceptor]
+    private void RefreshModuleSlotCounts()
+    {
+        ModuleData selectedHull = m_hullsCache.Find(p => p.moduleSubType == m_selectedHullSubType);
+        int[] slots = selectedHull != null ? CommonUtility.ParseHullSlotComposition(selectedHull.moduleSubType) : new int[5];
+
+        if (m_beamSlotCountText != null) m_beamSlotCountText.text = $"{slots[0]}";
+        if (m_missileSlotCountText != null) m_missileSlotCountText.text = $"{slots[1]}";
+        if (m_hangarSlotCountText != null) m_hangarSlotCountText.text = $"{slots[2]}";
+        if (m_shieldSlotCountText != null) m_shieldSlotCountText.text = $"{slots[3]}";
+        if (m_interceptorSlotCountText != null) m_interceptorSlotCountText.text = $"{slots[4]}";
+    }
+
     private void OnItemBind(int dataIndex, GameObject rowObject)
     {
         if (dataIndex < 0 || dataIndex >= m_hullsCache.Count) return;
@@ -182,7 +203,7 @@ public class UIHullPickerView : MonoBehaviour
 
         bool isLocked = IsHullLocked(hull);
         row.Setup(hull, deltaCost, isLocked, OnHullClicked, OnHullUnlockClicked);
-        row.SetSelectedAvailableHullRow(isLocked == false && hullSubType == m_selectedHullSubType);
+        row.SetSelectedAvailableHullRow(hullSubType == m_selectedHullSubType);
 
         LayoutRebuilder.ForceRebuildLayoutImmediate(rowObject.transform as RectTransform);
     }
@@ -194,6 +215,7 @@ public class UIHullPickerView : MonoBehaviour
         RefreshStatsDisplay();
         RefreshCommandPowerPreview();
         RefreshPreview();
+        RefreshModuleSlotCounts();
     }
 
     // unlockAchievementPointCost가 0보다 크면 티어4+ 언락 대상 — 아직 언락 안 됐으면 잠김

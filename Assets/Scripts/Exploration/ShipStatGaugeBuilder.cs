@@ -1,8 +1,8 @@
 // 함체(ModuleData, body) → 스탯 표시 항목 리스트 변환 — 배치가능 함체 클릭 시 뜨는 UIPopupConfirm(stat 섹션)과 함대편성 성능 컬럼(UIPanelFleet)이 공유
 // 게이지 없이 라벨 : 값 텍스트로만 표시(만렙 기준이 임의값이라 게이지로는 의미가 애매함)
 // 빔/미사일/격납고처럼 슬롯이 여러 개인 카테고리는 슬롯 수와 무관하게 항목 수를 고정하기 위해 종합 표시한다
-// - DPS로 흡수 가능한 스탯(공격력+쿨다운)은 슬롯 전체 합산 DPS 1줄로 압축
-// - DPS로 흡수 불가능한 스탯(탄약/체력/침묵시간/교란 등)은 슬롯 간 최소~최대 범위로 압축
+// - 공격력 합산으로 흡수 가능한 스탯(슬롯별 공격력)은 전체 합산 1줄로 압축(쿨다운은 미반영)
+// - 합산으로 흡수 불가능한 스탯(탄약/체력/침묵시간/교란 등)은 슬롯 간 최소~최대 범위로 압축
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -39,8 +39,9 @@ public static class ShipStatGaugeBuilder
 
         // 보상카드 지속버프 배율 — applyBuffs가 null이면 전부 1(버프 없음)
         float healthBuffMult = applyBuffs != null ? applyBuffs.GetMultiplier(ECardEffectType.Buff_ShipHealth) : 1f;
-        float beamDpsBuffMult = applyBuffs != null ? applyBuffs.GetMultiplier(ECardEffectType.Buff_BeamAttack) * applyBuffs.GetMultiplier(ECardEffectType.Buff_BeamFireRate) : 1f;
-        float missileDpsBuffMult = applyBuffs != null ? applyBuffs.GetMultiplier(ECardEffectType.Buff_MissileAttack) * applyBuffs.GetMultiplier(ECardEffectType.Buff_MissileFireRate) : 1f;
+        // 연사속도(FireRate) 버프는 쿨다운만 줄일 뿐 슬롯별 공격력 합산값엔 영향이 없으므로 반영하지 않음
+        float beamDpsBuffMult = applyBuffs != null ? applyBuffs.GetMultiplier(ECardEffectType.Buff_BeamAttack) : 1f;
+        float missileDpsBuffMult = applyBuffs != null ? applyBuffs.GetMultiplier(ECardEffectType.Buff_MissileAttack) : 1f;
         float hangarShipDpsBuffMult = applyBuffs != null ? applyBuffs.GetMultiplier(ECardEffectType.Buff_HangarAttackToShip) : 1f;
         float hangarFighterDpsBuffMult = applyBuffs != null ? applyBuffs.GetMultiplier(ECardEffectType.Buff_HangarAttackToFighter) : 1f;
 
@@ -51,28 +52,26 @@ public static class ShipStatGaugeBuilder
             entries.Add(MakeNumericStat(loc.Get("UIFleet_Stats_Repair"), stats.repair * healthMultiplier));
         }
 
-        if (stats.beamModuleSubType.Length > 0)
+        if (HasInstalledSlot(stats.beamModuleSubType) == true)
         {
-            float beamDps = SumDps(stats.beamAttacks, stats.beamAttackCools) * attackMultiplier;
-            entries.Add(MakeNumericStat(loc.Get("UIFleet_Stats_BeamDps"), beamDps, beamDpsBuffMult));
+            float beamAttackSum = Sum(stats.beamAttacks) * attackMultiplier;
+            entries.Add(MakeNumericStat(loc.Get("UIFleet_Stats_BeamDps"), beamAttackSum, beamDpsBuffMult));
         }
 
-        if (stats.missileModuleSubType.Length > 0)
+        if (HasInstalledSlot(stats.missileModuleSubType) == true)
         {
-            float missileDps = SumDps(stats.missileAttacks, stats.missileAttackCools) * attackMultiplier;
-            entries.Add(MakeNumericStat(loc.Get("UIFleet_Stats_MissileDps"), missileDps, missileDpsBuffMult));
+            float missileAttackSum = Sum(stats.missileAttacks) * attackMultiplier;
+            entries.Add(MakeNumericStat(loc.Get("UIFleet_Stats_MissileDps"), missileAttackSum, missileDpsBuffMult));
+            entries.Add(MakeMinMaxValueOnly(loc.Get("UIFleet_Stats_MissileSilenceTime"), stats.missileSilenceTimes, stats.missileModuleSubType, "F1", "s"));
         }
 
-        if (stats.missileSilenceTimes.Length > 0)
-            entries.Add(MakeMinMaxValueOnly(loc.Get("UIFleet_Stats_MissileSilenceTime"), stats.missileSilenceTimes, "F1", "s"));
-
-        if (stats.hangarModuleSubType.Length > 0)
+        if (HasInstalledSlot(stats.hangarModuleSubType) == true)
         {
             entries.Add(MakeNumericStat(loc.Get("UIFleet_Stats_FighterAttackPowerToShip"), Sum(stats.hangarShipAttacks) * attackMultiplier, hangarShipDpsBuffMult));
             entries.Add(MakeNumericStat(loc.Get("UIFleet_Stats_FighterAttackPowerToFighter"), Sum(stats.hangarFighterAttacks) * attackMultiplier, hangarFighterDpsBuffMult));
-            entries.Add(MakeMinMaxValueOnly(loc.Get("UIFleet_Stats_FighterAmmo"), stats.hangarAmmos, "F0", ""));
-            entries.Add(MakeMinMaxValueOnly(loc.Get("UIFleet_Stats_FighterHealth"), ScaleArray(stats.hangarHealths, healthMultiplier), "F0", ""));
-            entries.Add(MakeMinMaxValueOnly(loc.Get("UIFleet_Stats_FighterDisrupt"), stats.hangarAirDisrupts, "F2", "s"));
+            entries.Add(MakeMinMaxValueOnly(loc.Get("UIFleet_Stats_FighterAmmo"), stats.hangarAmmos, stats.hangarModuleSubType, "F0", ""));
+            entries.Add(MakeMinMaxValueOnly(loc.Get("UIFleet_Stats_FighterHealth"), ScaleArray(stats.hangarHealths, healthMultiplier), stats.hangarModuleSubType, "F0", ""));
+            entries.Add(MakeMinMaxValueOnly(loc.Get("UIFleet_Stats_FighterDisrupt"), stats.hangarAirDisrupts, stats.hangarModuleSubType, "F3", "s"));
         }
 
         if (stats.shieldInstalled == true)
@@ -82,10 +81,11 @@ public static class ShipStatGaugeBuilder
         }
 
         // 요격체는 모듈 1개만 장착 가능(추가 배치 없음) — 슬롯 종합 없이 그대로 표시
-        for (int i = 0; i < stats.interceptorDelays.Length; i++)
+        for (int i = 0; i < stats.interceptorRegenTimes.Length; i++)
         {
-            entries.Add(MakeCompareText(loc.Get("UIFleet_Stats_InterceptorReloadDelay"), stats.interceptorDelays[i], $"{stats.interceptorDelays[i]:F2}s"));
-            entries.Add(MakeNumericStat(loc.Get("UIFleet_Stats_InterceptorRegenRate"), stats.interceptorRegenRates[i]));
+            if (string.IsNullOrEmpty(stats.interceptorModuleSubType[i]) == true) continue;
+            entries.Add(MakeNumericStat(loc.Get("UIFleet_Stats_InterceptorCount"), stats.interceptorCounts[i]));
+            entries.Add(MakeNumericStat(loc.Get("UIFleet_Stats_InterceptorRegenTime"), stats.interceptorRegenTimes[i]));
         }
 
         return entries;
@@ -134,18 +134,6 @@ public static class ShipStatGaugeBuilder
         return total;
     }
 
-    // 슬롯별 공격력/쿨다운을 DPS(초당 피해량)로 환산해 합산 — attackCool이 0이면(비정상 데이터) 해당 슬롯 제외
-    private static float SumDps(float[] attacks, float[] attackCools)
-    {
-        float total = 0f;
-        for (int i = 0; i < attacks.Length; i++)
-        {
-            if (attackCools[i] > 0f)
-                total += attacks[i] / attackCools[i];
-        }
-        return total;
-    }
-
     // buffMultiplier: 보상카드 지속버프 배율(기본 1=버프 없음) — value에 곱해 최종값을 만들고, 늘어난 만큼은 buffDiffText로 별도 표시
     private static ShipStatRowEntry MakeNumericStat(string label, float value, float buffMultiplier = 1f)
     {
@@ -164,24 +152,37 @@ public static class ShipStatGaugeBuilder
         return $"<color=#4CD97B>(+{diff:F1})</color>";
     }
 
-    // 감소형 스탯(쿨다운/딜레이 등) — 이미 포맷된 텍스트로 표시하되, 함체 비교(diff)를 위해 순수 수치는 compareValue로 남김
-    private static ShipStatRowEntry MakeCompareText(string label, float value, string valueText)
-    {
-        return new ShipStatRowEntry { label = label, rawValueText = valueText, isNumericValue = false, compareValue = value, hasCompareValue = true };
-    }
-
     private static ShipStatRowEntry MakeValueOnly(string label, string valueText)
     {
         return new ShipStatRowEntry { label = label, rawValueText = valueText, isNumericValue = false };
     }
 
-    // 슬롯이 여러 개인 비-DPS 스탯(탄약/체력/침묵시간 등)을 최소~최대 범위 텍스트로 압축. 슬롯이 1개거나 값이 동일하면 단일 숫자만 표시
-    private static ShipStatRowEntry MakeMinMaxValueOnly(string label, float[] values, string numberFormat, string suffix)
+    private static bool HasInstalledSlot(string[] slotSubType)
     {
-        float min = values[0];
-        float max = values[0];
-        for (int i = 1; i < values.Length; i++)
+        for (int i = 0; i < slotSubType.Length; i++)
         {
+            if (string.IsNullOrEmpty(slotSubType[i]) == false) return true;
+        }
+        return false;
+    }
+
+    // 슬롯이 여러 개인 비-DPS 스탯(탄약/체력/침묵시간 등)을 최소~최대 범위 텍스트로 압축. 슬롯이 1개거나 값이 동일하면 단일 숫자만 표시
+    // values는 슬롯 인덱스와 1:1 — 미장착 슬롯(slotSubType이 빈 값)은 집계에서 제외
+    private static ShipStatRowEntry MakeMinMaxValueOnly(string label, float[] values, string[] slotSubType, string numberFormat, string suffix)
+    {
+        float min = 0f;
+        float max = 0f;
+        bool hasValue = false;
+        for (int i = 0; i < values.Length; i++)
+        {
+            if (string.IsNullOrEmpty(slotSubType[i]) == true) continue;
+            if (hasValue == false)
+            {
+                min = values[i];
+                max = values[i];
+                hasValue = true;
+                continue;
+            }
             if (values[i] < min) min = values[i];
             if (values[i] > max) max = values[i];
         }

@@ -126,6 +126,30 @@ public class InfiniteScrollView : MonoBehaviour
         RefreshView();
     }
 
+    // dataIndex번 아이템이 viewport 안에 온전히 보이도록 최소한만 스크롤 — 이미 보이면 이동하지 않음
+    public void EnsureVisible(int dataIndex)
+    {
+        if (m_initialized == false || m_totalCount <= 0) return;
+        dataIndex = Mathf.Clamp(dataIndex, 0, m_totalCount - 1);
+
+        float itemStep = m_itemHeight + m_spacing;
+        float itemTop = m_paddingTop + dataIndex * itemStep;
+        float itemBottom = itemTop + m_itemHeight;
+
+        float viewportHeight = m_scrollRect.viewport.rect.height;
+        float viewTop = m_scrollRect.content.anchoredPosition.y;
+        float viewBottom = viewTop + viewportHeight;
+        if (itemTop >= viewTop && itemBottom <= viewBottom) return;
+
+        float targetY = itemTop < viewTop ? itemTop : itemBottom - viewportHeight;
+        float maxScrollY = Mathf.Max(0f, m_scrollRect.content.sizeDelta.y - viewportHeight);
+        targetY = Mathf.Clamp(targetY, 0f, maxScrollY);
+
+        m_scrollRect.content.anchoredPosition = new Vector2(0f, targetY);
+        m_topDataIndex = int.MinValue;
+        RefreshView();
+    }
+
     // 데이터가 새로 들어왔을 때 현재 화면 강제 갱신
     public void RefreshVisible()
     {

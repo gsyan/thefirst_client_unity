@@ -282,7 +282,7 @@ MonoBehaviour:
     shipCount: 4
   - commanderLevel: 90
     requireExp: 31900
-    shipCount: 4
+    shipCount: 5
   - commanderLevel: 91
     requireExp: 32400
     shipCount: 5

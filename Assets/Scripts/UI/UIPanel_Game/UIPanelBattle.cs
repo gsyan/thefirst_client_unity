@@ -16,14 +16,14 @@ public class UIPanelBattle : UIPanelBase
     // 전술력은 전투 중 서버에 실시간 저장하지 않음 — 셀 클리어 성공 시 ClearExplorationCellRequest에 실어 확정 저장,
     // 실패(퇴각/패배)면 UIPanelExplorationGrid가 진입 직전 스냅샷으로 로컬 롤백(서버는 애초에 그 변화를 모름)
     private Coroutine m_tacticPowerDrainCoroutine;
-    private static readonly WaitForSeconds k_oneSecondWait = new WaitForSeconds(1f);
+    private const float k_tacticTickSeconds = 1f;
+    private static readonly WaitForSeconds k_oneSecondWait = new WaitForSeconds(k_tacticTickSeconds);
 
     void Awake()
     {
         EventManager.Subscribe_MyFleetStateChanged(OnFleetStateChanged);
         EventManager.Subscribe_ExplorationTabOpened(OnExplorationTabOpened);
         EventManager.Subscribe_ExplorationTabClosed(OnExplorationTabClosed);
-        EventManager.Subscribe_TacticToggleRequested(OnTacticToggleRequested);
         EventManager.Subscribe_ZoneRunEnded(OnZoneRunEnded);
 
         // RefreshVisibility는 함대상태/탐사탭 이벤트가 발생할 때만 재평가되는데, isTutorialBattle 판정은 그 이벤트들과
@@ -37,7 +37,6 @@ public class UIPanelBattle : UIPanelBase
         EventManager.Unsubscribe_MyFleetStateChanged(OnFleetStateChanged);
         EventManager.Unsubscribe_ExplorationTabOpened(OnExplorationTabOpened);
         EventManager.Unsubscribe_ExplorationTabClosed(OnExplorationTabClosed);
-        EventManager.Unsubscribe_TacticToggleRequested(OnTacticToggleRequested);
         EventManager.Unsubscribe_ZoneRunEnded(OnZoneRunEnded);
 
         if (TutorialManager.Instance != null)
@@ -55,16 +54,13 @@ public class UIPanelBattle : UIPanelBase
         RefreshVisibility();
     }
 
-    // 존런이 완전히 끝났을 때만(탈출 성공/포기 확정) 전술 토글(요격체 포함)을 전부 끄고, 떠 있는 요격체도 정리함
-    // — 셀 단위 전투 종료마다 껐다 켰다 하면 그 사이 전술력 부족 등으로 재활성화가 막힐 수 있어, 런 종료 시점에만 정리
+    // 존런이 완전히 끝났을 때만(탈출 성공/포기 확정) 떠 있는 요격체를 정리함 — 전술 토글 설정은 유지
     private void OnZoneRunEnded()
     {
         SpaceFleet myFleet = ObjectManager.Instance.GetMyFleet();
         if (myFleet == null) return;
 
-        if (myFleet.m_fleetInfo.tacticOptions != 0)
-            myFleet.ApplyTacticOptions(0);
-        myFleet.ClearAllInterceptorUnits();
+        //myFleet.ClearAllInterceptorUnits();
     }
 
     private void OnExplorationTabOpened()
@@ -160,22 +156,7 @@ public class UIPanelBattle : UIPanelBase
                     myFleet.ApplyShieldRegenTickToAllShips();
             }
             if ((tacticOptions & (1 << 4)) != 0 && interceptorHasEffect == true)
-                myFleet.ApplyInterceptorRegenTickToAllShips(); // 실제 생성 개수만큼의 과금은 ModuleInterceptor.ApplyRegenTick 내부에서 처리
+                myFleet.ApplyInterceptorRegenTickToAllShips(k_tacticTickSeconds); // 실제 생성 개수만큼의 과금은 ModuleInterceptor.ApplyRegenTick 내부에서 처리
         }
-    }
-
-    // 전투 중 함선 터치가 막혀 토글 버튼은 UIBattleView 클릭으로만 켜짐 — idx: 0=수리, 1=미사일, 2=함재기, 3=실드, 4=요격체(EventManager.OnTacticOptionsChanged 주석과 동일)
-    private void OnTacticToggleRequested(int idx)
-    {
-        SpaceFleet myFleet = ObjectManager.Instance.GetMyFleet();
-        CommanderInfo commanderInfo = GetCommanderInfo();
-        if (myFleet == null || myFleet.m_fleetInfo == null || commanderInfo == null) return;
-
-        int bit = 1 << idx;
-        bool turningOn = (myFleet.m_fleetInfo.tacticOptions & bit) == 0;
-        if (turningOn == true && commanderInfo.tacticPower <= 0) return; // 전술력이 없으면 새로 켤 수 없음
-
-        int newOptions = turningOn ? (myFleet.m_fleetInfo.tacticOptions | bit) : (myFleet.m_fleetInfo.tacticOptions & ~bit);
-        myFleet.ApplyTacticOptions(newOptions);
     }
 }

@@ -887,14 +887,14 @@ public class SpaceFleet : MonoBehaviour
         return false;
     }
 
-    // 전술 토글(요격체) ON 상태에서 UIPanelBattle.Co_DrainTacticPower가 1초 간격으로 호출 — 함체별 interceptorRegenRate만큼 재고 보충
-    public void ApplyInterceptorRegenTickToAllShips()
+    // 전술 토글(요격체) ON 상태에서 UIPanelBattle.Co_DrainTacticPower가 주기적으로 호출 — tickSeconds(호출 간격)만큼 각 함체의 요격체 회복시간을 누적
+    public void ApplyInterceptorRegenTickToAllShips(float tickSeconds)
     {
         foreach (SpaceShip ship in m_ships)
         {
             if (ship == null) continue;
             foreach (ModuleHull body in ship.m_moduleHulls)
-                if (body != null && body.m_interceptor != null) body.m_interceptor.ApplyRegenTick();
+                if (body != null && body.m_interceptor != null) body.m_interceptor.ApplyRegenTick(tickSeconds);
         }
     }
 
@@ -1218,6 +1218,48 @@ public class SpaceFleet : MonoBehaviour
             if (response.errorCode != 0)
                 Debug.LogError($"[SpaceFleet] ChangeTacticOptions 실패: {response.errorCode} fleetId={fleetId}");
         });
+    }
+
+    // 함대 구성상 사용 가능한 전술 토글 비트마스크(0=수리, 1=미사일, 2=함재기, 3=실드, 4=요격체) — 해당 모듈이 하나도 없으면 그 비트는 0
+    public int GetAvailableTacticMask()
+    {
+        CapabilityProfile fleetProfile = GetFleetCapabilityProfile();
+        bool hasRepair = HasAnyRepairCapability();
+        bool hasMissile = fleetProfile.missileAttack > 0f;
+        bool hasAircraft = fleetProfile.airCount > 0;
+        bool hasShield = HasAnyShieldEquipped();
+        bool hasInterceptor = HasAnyInterceptorEquipped();
+
+        int mask = 0;
+        if (hasRepair == true) mask |= k_repairTacticBit;
+        if (hasMissile == true) mask |= k_missileTacticBit;
+        if (hasAircraft == true) mask |= k_aircraftTacticBit;
+        if (hasShield == true) mask |= k_shieldTacticBit;
+        if (hasInterceptor == true) mask |= k_interceptorTacticBit;
+        return mask;
+    }
+
+    // 함대에 모듈이 없어진 전술 토글은 켜져 있어도 해제(서버 동기화 포함)
+    public void ClearUnavailableTactics()
+    {
+        int availableMask = GetAvailableTacticMask();
+        int newOptions = m_fleetInfo.tacticOptions & availableMask;
+        ApplyTacticOptions(newOptions);
+    }
+
+    // idx 전술 토글을 뒤집음 — 전투 화면/함대관리 화면 공용. 전술력이 없으면 새로 켤 수 없어 false
+    public bool TryToggleTactic(int idx)
+    {
+        Commander commander = DataManager.Instance.m_currentCommander;
+        if (commander == null || m_fleetInfo == null) return false;
+
+        int bit = 1 << idx;
+        bool turningOn = (m_fleetInfo.tacticOptions & bit) == 0;
+        if (turningOn == true && commander.GetTacticPower() <= 0) return false;
+
+        int newOptions = turningOn ? (m_fleetInfo.tacticOptions | bit) : (m_fleetInfo.tacticOptions & ~bit);
+        ApplyTacticOptions(newOptions);
+        return true;
     }
 
     // 피격 데미지 차감 비율 — 그대로 반환 (0=없음, 0.2~0.5=차감)

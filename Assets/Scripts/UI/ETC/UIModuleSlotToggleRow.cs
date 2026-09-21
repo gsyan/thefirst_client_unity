@@ -22,6 +22,13 @@ public class UIModuleSlotToggleRow : MonoBehaviour
     private System.Action<EModuleType, int> m_onRowSelected;
     private System.Action<EModuleType, int> m_onManageClicked;
 
+    // 튜토리얼 동적 타겟용 — 관리 버튼이 현재 보이는 상태(설치된 슬롯)일 때만 RectTransform 반환
+    public RectTransform GetManageButtonRect()
+    {
+        if (m_manageButton == null || m_manageButton.gameObject.activeInHierarchy == false) return null;
+        return m_manageButton.GetComponent<RectTransform>();
+    }
+
     public void Setup(EModuleType moduleType, int slotIndex, bool installed, bool isLocked,
         int investedPoints, bool isSelected, string moduleSubType,
         System.Action<EModuleType, int, bool> onToggle,
@@ -44,8 +51,8 @@ public class UIModuleSlotToggleRow : MonoBehaviour
             SetInstalledLabel(installed);
         }
 
-        // 실드/요격체는 강화 포인트 개념이 없음(on/off만 지원) — Invested CP/ManageButton 노출 대상에서 제외
-        bool showReinforceControls = installed == true && moduleType != EModuleType.shield && moduleType != EModuleType.interceptor;
+        // 실드/요격체도 티어 개념이 생겨(datatable_module 티어1~14) 관리 버튼으로 티어업/다운 가능 — 강화 포인트 축(Attack 등)만 없을 뿐 카테고리 제외 불필요
+        bool showReinforceControls = installed == true;
         if (m_investedPointsText != null)
         {
             m_investedPointsText.gameObject.SetActive(showReinforceControls);
@@ -59,13 +66,11 @@ public class UIModuleSlotToggleRow : MonoBehaviour
             m_manageButton.onClick.AddListener(OnManageButtonClicked);
         }
 
-        // 실드/요격체를 제외한 카테고리는 설치 여부와 무관하게 항상 표시 — 미설치 슬롯도 장착 시 어떤 티어가 될지 알 수 있어야 함
-        bool showTier = moduleType != EModuleType.shield && moduleType != EModuleType.interceptor;
+        // 설치 여부와 무관하게 항상 표시 — 미설치 슬롯도 장착 시 어떤 티어가 될지 알 수 있어야 함(실드/요격체 포함)
         if (m_tierText != null)
         {
-            m_tierText.gameObject.SetActive(showTier);
-            if (showTier == true)
-                m_tierText.text = $"Tier {CommonUtility.ParseTier(moduleSubType)}";
+            m_tierText.gameObject.SetActive(true);
+            m_tierText.text = LocalizationManager.Instance.Get("UI_TierLabel", CommonUtility.ParseTier(moduleSubType));
         }
 
         SetSelected(isSelected);

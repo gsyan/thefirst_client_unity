@@ -1,6 +1,6 @@
 // 요격체 모듈 — 슬롯/3D 배치 없이 함체(ModuleHull)에 논리적으로만 붙는 컴포넌트(ModuleShield와 동일 패턴).
 // 실제로 눈에 보이는 요격체 유닛(InterceptorUnit)은 별도로 스폰/풀링해 함선 전방 원형 궤도에 배치한다.
-// 전술 토글(idx=4) ON 상태에서만 빈 자리를 interceptorRegenRate로 순차 보충하고(생성 1기당 tacticInterceptorCost 과금,
+// 전술 토글(idx=4) ON 상태에서만 빈 자리를 순차 보충하고(interceptorRegenTime초마다 1기, 생성 1기당 tacticInterceptorCost 과금,
 // 여유 없으면 토글이 즉시 꺼짐 — SpaceFleet.TryChargeInterceptorTacticCost 참고) 적 미사일을 탐지/배정함.
 // 토글 OFF 시에는 신규 생성만 멈출 뿐 이미 떠 있는 유닛은 제거되지 않고 계속 요격 임무를 수행함(despawn/환급 없음) —
 // 정리는 존런 종료 시점(SpaceFleet.ClearAllInterceptorUnits)이나 함선 파괴 시에만 일어남.
@@ -17,8 +17,8 @@ public class ModuleInterceptor : ModuleBase
     [SerializeField] private ModuleHull m_parentBody;
 
     private int m_maxCount;
-    private float m_regenRate;
-    private float m_regenProgress;
+    private float m_regenTime;     // 요격체 1기가 다시 생성되기까지 걸리는 시간(초)
+    private float m_regenProgress;  // 현재 빈 자리를 채우기 위해 누적된 시간(초)
     private bool m_tacticOn;
     private InterceptorUnit[] m_slots = new InterceptorUnit[0];
     private Coroutine m_scanCoroutine;
@@ -28,7 +28,8 @@ public class ModuleInterceptor : ModuleBase
         m_parentBody = parentBody;
     }
 
-    public void InitializeModuleInterceptor(string interceptorSubType)
+    // regenTimePoints: 회복시간 강화 투자 포인트 — 성능 표시(ShipStatCalculator)와 같은 공식으로 반영
+    public void InitializeModuleInterceptor(string interceptorSubType, int regenTimePoints)
     {
         m_parentBody = GetComponentInParent<ModuleHull>();
         AutoDetectFleetInfo();
@@ -38,7 +39,7 @@ public class ModuleInterceptor : ModuleBase
         if (string.IsNullOrEmpty(interceptorSubType) == true)
         {
             m_maxCount = 0;
-            m_regenRate = 0f;
+            m_regenTime = 0f;
             m_slots = new InterceptorUnit[0];
             return;
         }
@@ -48,13 +49,14 @@ public class ModuleInterceptor : ModuleBase
         {
             Debug.LogError("Failed to restore module data for ModuleInterceptor");
             m_maxCount = 0;
-            m_regenRate = 0f;
+            m_regenTime = 0f;
             m_slots = new InterceptorUnit[0];
             return;
         }
 
         m_maxCount = moduleData.interceptorCount;
-        m_regenRate = moduleData.interceptorRegenRate;
+        ShipStatFormulaSettings formula = DataManager.Instance.m_dataTableConfig.gameSettings.shipStatFormula;
+        m_regenTime = ShipStatCalculator.ComputeInterceptorRegenTime(moduleData.interceptorRegenTime, regenTimePoints, formula);
         m_slots = new InterceptorUnit[m_maxCount];
         m_regenProgress = 0f;
 
@@ -102,17 +104,21 @@ public class ModuleInterceptor : ModuleBase
         StartScanCoroutine();
     }
 
-    // 전술 토글(요격체) ON 상태에서 SpaceFleet.ApplyInterceptorRegenTickToAllShips가 1초 간격으로 호출 — m_regenRate는 초당 진행도, 1.0 도달마다 1기 리필
+    // 전술 토글(요격체) ON 상태에서 SpaceFleet.ApplyInterceptorRegenTickToAllShips가 주기적으로 호출 — tickSeconds만큼 시간을 누적하고, m_regenTime(초) 도달마다 1기 리필
     // 1기 생성마다 tacticInterceptorCost를 선확인 과금 — 여유가 없으면 그 자리에서 이번 틱의 나머지 생성을 포기(토글은 TryChargeInterceptorTacticCost가 이미 꺼둠)
-    public void ApplyRegenTick()
+    public void ApplyRegenTick(float tickSeconds)
     {
         if (m_tacticOn == false || m_slots == null) return;
-        if (HasEmptySlot() == false) return;
+        if (HasEmptySlot() == false)
+        {
+            m_regenProgress = 0f; // 자리가 비는 순간부터 회복시간을 새로 셈
+            return;
+        }
 
         int tacticInterceptorCost = DataManager.Instance.m_dataTableConfig.gameSettings.tactic.tacticInterceptorCost;
 
-        m_regenProgress += m_regenRate;
-        while (m_regenProgress >= 1f)
+        m_regenProgress += tickSeconds;
+        while (m_regenProgress >= m_regenTime)
         {
             int emptyIndex = FindLowestEmptyIndex();
             if (emptyIndex < 0)
@@ -128,7 +134,7 @@ public class ModuleInterceptor : ModuleBase
             }
 
             SpawnInterceptorUnitAt(emptyIndex);
-            m_regenProgress -= 1f;
+            m_regenProgress -= m_regenTime;
         }
     }
 

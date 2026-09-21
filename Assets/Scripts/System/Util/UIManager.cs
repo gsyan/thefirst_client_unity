@@ -646,14 +646,14 @@ public class UIManager : MonoSingleton<UIManager>
     }
 
     // 함선 로드아웃 슬롯의 공격력 강화 포인트 편집 팝업(UIShipLoadoutEditorView의 ManageButton에서 오픈)
-    public void ShowModuleReinforcePopup(EModuleType moduleType, string initialModuleSubType, int initialAttackPoints, int initialAttackToFighterPoints,
-        int maxCommandPower, int usedByOtherSlots, int installCost, int hullTier, System.Action<string, int, int> onConfirm)
+    public void ShowModuleReinforcePopup(EModuleType moduleType, ModuleInfo initialInfo,
+        int maxCommandPower, int usedByOtherSlots, int installCost, int hullTier, System.Action<ModuleInfo> onConfirm)
     {
         UIPopupModuleReinforce popup = GetOrCreatePopup<UIPopupModuleReinforce>("UIPopupModuleReinforce", EPopupLayer.Normal);
         if (popup == null) return;
 
         ReplacePopup(popup, EPopupLayer.Normal);
-        popup.ShowPopupModuleReinforce(moduleType, initialModuleSubType, initialAttackPoints, initialAttackToFighterPoints,
+        popup.ShowPopupModuleReinforce(moduleType, initialInfo,
             maxCommandPower, usedByOtherSlots, installCost, hullTier,
             onClose: () => CloseTopPopup(EPopupLayer.Normal), onConfirm: onConfirm);
     }

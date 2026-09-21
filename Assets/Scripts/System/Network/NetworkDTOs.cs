@@ -63,7 +63,10 @@ public class ModuleHullInfo
     public List<ModuleInfo> hangars;
     // 실드/요격체 장착 서브타입 — 빈 문자열이면 미장착. 적함대 존 데이터 배관용으로 서버가 채워 보냄(클라 소비 로직은 후속 작업)
     public string shieldModuleSubType = "";
+    public int shieldGaugePoints; // 실드 게이지 강화 투자 포인트 — 1포인트 = 지휘력 reinforceCpCostPerPoint
+    public int shieldRegenRatePoints; // 실드 회복속도 강화 투자 포인트
     public string interceptorModuleSubType = "";
+    public int interceptorRegenRatePoints; // 요격체 회복속도 강화 투자 포인트
     // 현재 체력 (절대값). 0 이하 = 기본값(만피). 서버 저장/복원용
     public float currentHealth;
 }
@@ -78,6 +81,11 @@ public class ModuleInfo
     public int slotIndex;
     public int attackPoints; // 빔/미사일 공격력, 격납고는 대함 공격력 강화 투자 포인트 — 1포인트 = 지휘력 1
     public int attackToFighterPoints; // 격납고 전용 — 대전투기 공격력 강화 투자 포인트. 빔/미사일은 항상 0
+    public int fireRatePoints; // 빔/미사일 전용 — 연사력(쿨다운 감소) 강화 투자 포인트. 그 외 모듈은 항상 0
+    public int silencePoints; // 미사일 전용 — 침묵시간 강화 투자 포인트. 그 외 모듈은 항상 0
+    public int ammoPoints; // 격납고 전용 — 함재기 탄약 강화 투자 포인트. 그 외 모듈은 항상 0
+    public int healthPoints; // 격납고 전용 — 함재기 체력 강화 투자 포인트. 그 외 모듈은 항상 0
+    public int disruptPoints; // 격납고 전용 — 함재기 교란(명중 시 공격 딜레이) 강화 투자 포인트. 그 외 모듈은 항상 0
 }
 
 [System.Serializable]

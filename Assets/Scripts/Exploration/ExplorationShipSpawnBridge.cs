@@ -51,6 +51,11 @@ public static class ExplorationShipSpawnBridge
             ? actualModules.interceptorModuleSubType
             : "";
 
+        // 실드/요격체 강화 포인트도 같이 복사 — 빠지면 스폰된 3D 모듈이 기본값으로 초기화됨
+        hullInfo.shieldGaugePoints = actualModules != null ? actualModules.shieldGaugePoints : 0;
+        hullInfo.shieldRegenRatePoints = actualModules != null ? actualModules.shieldRegenRatePoints : 0;
+        hullInfo.interceptorRegenRatePoints = actualModules != null ? actualModules.interceptorRegenRatePoints : 0;
+
         return new ShipInfo
         {
             id               = id,
@@ -80,6 +85,11 @@ public static class ExplorationShipSpawnBridge
                 slotIndex              = original.slotIndex,
                 attackPoints           = original.attackPoints,
                 attackToFighterPoints  = original.attackToFighterPoints,
+                fireRatePoints         = original.fireRatePoints,
+                silencePoints          = original.silencePoints,
+                ammoPoints             = original.ammoPoints,
+                healthPoints           = original.healthPoints,
+                disruptPoints          = original.disruptPoints,
             });
         }
         return result;

@@ -17,6 +17,10 @@ public class ModuleMissile : ModuleBase
     private float m_baseAttack;
     private float m_baseAttackCoolTime;
 
+    // 강화 포인트 반영을 마친 침묵시간(보상카드 버프 미반영) — ProjectileMissile이 발사 시 기본값으로 사용
+    private float m_finalSilenceTime;
+    public float GetFinalSilenceTime() { return m_finalSilenceTime; }
+
     // 발사대 관련
     [SerializeField] private List<LauncherBase> m_launchers = new List<LauncherBase>();
 
@@ -67,7 +71,7 @@ public class ModuleMissile : ModuleBase
 
 
     // attackOverride: 성능포인트 프리셋 기반 스폰 시 테이블 공격력 대신 사용할 계산값 (null이면 기존처럼 테이블값 그대로 사용)
-    public void InitializeModuleMissile(ModuleInfo moduleInfo, ModuleHull parentBody, ModuleSlot moduleSlot, float? attackOverride = null)
+    public void InitializeModuleMissile(ModuleInfo moduleInfo, ModuleHull parentBody, ModuleSlot moduleSlot, float? attackOverride = null, float? attackCoolOverride = null, float? silenceTimeOverride = null)
     {
         m_moduleInfo = moduleInfo;
         m_parentBody = parentBody;
@@ -81,11 +85,12 @@ public class ModuleMissile : ModuleBase
             return;
         }
 
-        // 복원된 데이터로 스탯 설정 — 발사수/쿨다운/체력은 테이블(티어) 기준, 공격력만 프리셋 계산값 있으면 그걸로 대체
+        // 복원된 데이터로 스탯 설정 — 체력은 테이블(티어) 기준, 공격력/쿨다운은 프리셋 계산값 있으면 그걸로 대체
         m_health = moduleData.health;
         m_healthMax = moduleData.health;
         m_baseAttack = attackOverride ?? moduleData.attack;
-        m_baseAttackCoolTime = moduleData.attackCool;
+        m_baseAttackCoolTime = attackCoolOverride ?? moduleData.attackCool;
+        m_finalSilenceTime = silenceTimeOverride ?? moduleData.silenceTime;
 
         m_lastAttackTime = 0f;
 

@@ -317,6 +317,24 @@ public static class CommonUtility
         return result;
     }
 
+    // hull_{tier}_{gen}_{composition} 코드를 유저 표시용 이름으로 변환 (예: "hull_6_1_22201" -> "티어6 함체 1세대 I")
+    public static string BuildHullDisplayName(string hullSubType)
+    {
+        int tier = ParseTier(hullSubType);
+        int gen = ParseGen(hullSubType);
+        int[] composition = ParseHullSlotComposition(hullSubType);
+
+        bool hasShield = composition[3] > 0;
+        bool hasInterceptor = composition[4] > 0;
+
+        string suffix = "";
+        if (hasShield == true) suffix += "S";
+        if (hasInterceptor == true) suffix += "I";
+        string suffixText = string.IsNullOrEmpty(suffix) == true ? "" : $" {suffix}";
+
+        return LocalizationManager.Instance.Get("UIHull_DisplayName", tier, gen, suffixText);
+    }
+
     // hull tier 강제 규칙 검증: tier == 빔+미사일+격납고 합 (실드/요격체 제외)
     public static bool ValidateHullTier(string hullSubType)
     {

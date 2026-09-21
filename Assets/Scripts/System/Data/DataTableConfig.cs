@@ -84,52 +84,53 @@ public class ShipStatFormulaSettings
 [System.Serializable]
 public class BeamFormula
 {
-    [Tooltip("공격력 강화 1포인트당 가산")]
-    public float attackPerPoint = 1f;
-    [Tooltip("연사력 강화 1포인트당 쿨다운 감소량")]
-    public float attackCoolReductionPerPoint = 0.02f;
+    [Tooltip("공격력 강화를 슬롯 상한(maxAttackReinforcePointsPerSlot)까지 채웠을 때의 기본값 대비 증가 비율(0.5 = +50%) — 최종값 = 기본값 × (1 + 비율 × 투자포인트 / 상한)")]
+    public float maxAttackBonusRatio;
+    [Tooltip("연사력 강화를 슬롯 상한까지 채웠을 때의 쿨다운 감소 비율(0.3 = -30%) — 쿨다운 = max(하한, 기본값 × (1 - 비율 × 투자포인트 / 상한))")]
+    public float maxCoolReductionRatio;
+    [Tooltip("쿨다운 하한(초)")]
     public float attackCoolFloor = 0.5f;
-    [Tooltip("발사체 속도 강화 1포인트당 가산")]
-    public float projectileSpeedPerPoint = 1f;
 }
 
 [System.Serializable]
 public class MissileFormula
 {
-    [Tooltip("공격력 강화 1포인트당 가산")]
-    public float attackPerPoint = 1f;
-    [Tooltip("연사력 강화 1포인트당 쿨다운 감소량")]
-    public float attackCoolReductionPerPoint = 0.02f;
+    [Tooltip("공격력 강화를 슬롯 상한(maxAttackReinforcePointsPerSlot)까지 채웠을 때의 기본값 대비 증가 비율(0.5 = +50%) — 최종값 = 기본값 × (1 + 비율 × 투자포인트 / 상한)")]
+    public float maxAttackBonusRatio;
+    [Tooltip("연사력 강화를 슬롯 상한까지 채웠을 때의 쿨다운 감소 비율(0.3 = -30%) — 쿨다운 = max(하한, 기본값 × (1 - 비율 × 투자포인트 / 상한))")]
+    public float maxCoolReductionRatio;
+    [Tooltip("쿨다운 하한(초)")]
     public float attackCoolFloor = 0.5f;
-    [Tooltip("발사체 속도 강화 1포인트당 가산")]
-    public float projectileSpeedPerPoint = 1f;
-    [Tooltip("침묵 강화 1포인트당 침묵 시간 가산(초)")]
-    public float silenceTimePerPoint = 0.1f;
+    [Tooltip("침묵시간 강화를 슬롯 상한까지 채웠을 때의 기본값 대비 증가 비율(0.5 = +50%) — 최종값 = 기본값 × (1 + 비율 × 투자포인트 / 상한)")]
+    public float maxSilenceBonusRatio;
 }
 
 [System.Serializable]
 public class HangarFormula
 {
-    [Tooltip("대함/대전투기 공격력 강화 1포인트당 가산")]
-    public float attackPerPoint = 0.1f;
-    [Tooltip("탄약/체력 강화 1포인트당 가산")]
-    public float reinforcePerPoint = 1f;
+    [Tooltip("대함/대전투기 공격력 강화를 슬롯 상한까지 채웠을 때의 기본값 대비 증가 비율(0.5 = +50%) — 최종값 = 기본값 × (1 + 비율 × 투자포인트 / 상한)")]
+    public float maxAttackBonusRatio;
+    [Tooltip("탄약 강화 1포인트당 증가 수량(정수)")]
+    public int ammoPerPoint;
+    [Tooltip("체력 강화를 슬롯 상한까지 채웠을 때의 기본값 대비 증가 비율(0.5 = +50%) — 최종값 = 기본값 × (1 + 비율 × 투자포인트 / 상한)")]
+    public float maxHealthBonusRatio;
+    [Tooltip("교란(명중 시 공격 딜레이) 강화를 슬롯 상한까지 채웠을 때의 기본값 대비 증가 비율(0.5 = +50%) — 최종값 = 기본값 × (1 + 비율 × 투자포인트 / 상한)")]
+    public float maxDisruptBonusRatio;
 }
 
 [System.Serializable]
 public class ShieldFormula
 {
-    public float gaugePerPoint = 0.5f;
-    public float regenRatePerPoint = 0.1f;
+    [Tooltip("게이지/회복속도 강화를 슬롯 상한까지 채웠을 때의 기본값 대비 증가 비율(0.5 = +50%) — 최종값 = 기본값 × (1 + 비율 × 투자포인트 / 상한)")]
+    public float maxGaugeBonusRatio;
+    public float maxRegenBonusRatio;
 }
 
 [System.Serializable]
 public class InterceptorFormula
 {
-    [Tooltip("딜레이/회복속도 계수는 실드와 동일하게 임시 적용 — 실측 후 별도 조정 필요 (미확정)")]
-    public float delayReductionPerPoint = 0.02f;
-    public float regenRatePerPoint = 0.1f;
-    public float delayFloor = 1f;
+    [Tooltip("회복시간 강화를 슬롯 상한까지 채웠을 때의 회복시간 감소 비율(0.5 = -50%) — 회복시간 = 기본값 × (1 - 비율 × 투자포인트 / 상한)")]
+    public float maxRegenTimeReductionRatio;
 }
 
 [CreateAssetMenu(fileName = "DataTableConfig", menuName = "Custom/DataTableConfig")]

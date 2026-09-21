@@ -17,7 +17,8 @@ public class ModuleShield : ModuleBase
         m_parentBody = parentBody;
     }
 
-    public void InitializeModuleShield(string shieldSubType)
+    // gaugePoints/regenRatePoints: 강화 투자 포인트 — 성능 표시(ShipStatCalculator)와 같은 공식으로 반영
+    public void InitializeModuleShield(string shieldSubType, int gaugePoints, int regenRatePoints)
     {
         m_parentBody = GetComponentInParent<ModuleHull>();
         AutoDetectFleetInfo();
@@ -40,9 +41,10 @@ public class ModuleShield : ModuleBase
             return;
         }
 
-        m_gaugeMax = moduleData.shieldGauge;
+        ShipStatFormulaSettings formula = DataManager.Instance.m_dataTableConfig.gameSettings.shipStatFormula;
+        m_gaugeMax = ShipStatCalculator.ComputeShieldGauge(moduleData.shieldGauge, gaugePoints, formula);
         m_gauge = m_gaugeMax;
-        m_regenRate = moduleData.shieldRegenRate;
+        m_regenRate = ShipStatCalculator.ComputeShieldRegenRate(moduleData.shieldRegenRate, regenRatePoints, formula);
     }
 
     public bool IsEquipped()

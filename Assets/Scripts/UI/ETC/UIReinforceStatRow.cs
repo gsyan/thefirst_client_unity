@@ -15,14 +15,14 @@ public class UIReinforceStatRow : MonoBehaviour
     private int m_dataIndex;
     private System.Action<int, int> m_onPointsChanged; // (dataIndex, delta) delta=+1 또는 -1
 
-    public void Setup(int dataIndex, string label, float actualValue, int currentValue, bool isEditable, bool canIncrease, bool canDecrease, System.Action<int, int> onPointsChanged)
+    public void Setup(int dataIndex, string label, float actualValue, int currentValue, bool isEditable, bool canIncrease, bool canDecrease, System.Action<int, int> onPointsChanged, int valueDecimals = 1, bool showInvested = true)
     {
         m_dataIndex = dataIndex;
         m_onPointsChanged = onPointsChanged;
 
         if (m_labelText != null) m_labelText.text = label;
-        if (m_statValueText != null) m_statValueText.text = $"{CommonUtility.FloorToDecimals(actualValue, 1):F1}";
-        if (m_valueText != null) m_valueText.text = currentValue.ToString();
+        if (m_statValueText != null) m_statValueText.text = CommonUtility.FloorToDecimals(actualValue, valueDecimals).ToString("F" + valueDecimals);
+        if (m_valueText != null) m_valueText.text = showInvested == true ? currentValue.ToString() : "";
 
         if (m_upButton != null)
         {

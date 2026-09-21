@@ -86,7 +86,8 @@ public class ProjectileMissile : ProjectileBase
 
         m_missileSpeed = moduleData.speed; // 발사체 이동속도는 speed 필드 재사용(미사일 행은 body 이동속도 개념이 없음)
         float silenceBuffMult = sourceModuleBase != null ? sourceModuleBase.GetRewardCardBuffMultiplier(ECardEffectType.Buff_MissileSilence) : 1f;
-        m_silenceTime  = moduleData.silenceTime * silenceBuffMult;
+        float baseSilenceTime = sourceModuleBase is ModuleMissile sourceMissile ? sourceMissile.GetFinalSilenceTime() : moduleData.silenceTime;
+        m_silenceTime  = baseSilenceTime * silenceBuffMult;
         m_splashRadius = moduleData.splashRadius * explosionMultiplier;
         m_ejectSpeed = ejectSpeed;
         m_lifeTime = 0.0f;
