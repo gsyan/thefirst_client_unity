@@ -835,10 +835,6 @@ MonoBehaviour:
     m_Key: DailyBonus_DescAchievement
     m_Metadata:
       m_Items: []
-  - m_Id: 76937344958988288
-    m_Key: DailyBonus_RewardLabel
-    m_Metadata:
-      m_Items: []
   - m_Id: 76938861619314688
     m_Key: DailyBonus_DayLabel
     m_Metadata:

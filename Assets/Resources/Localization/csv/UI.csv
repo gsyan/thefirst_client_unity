@@ -218,7 +218,6 @@ UIModuleReinforce_InterceptorRegenTime,,Regen Time,회복 시간
 DailyBonus_Title,,Daily Login Bonus,일일 출석 보너스
 DailyBonus_Desc,,+{0} Minerals received!,미네랄 +{0} 지급!
 DailyBonus_DescAchievement,,+{0} Achievement Points received!,업적포인트 +{0} 지급!
-DailyBonus_RewardLabel,,Reward,보상
 DailyBonus_DayLabel,,Day {0},{0}일차
 DailyBonus_VipPrefix,,[VIP],[VIP]
 DailyBonus_NextReward,,Next reward in,다음 보상까지
@@ -247,7 +246,7 @@ UIPopupMessage_MaintenanceRemainingTime,,Time remaining: {0},서버 점검 남�
 UIPopupMessage_PvpSeasonRewardTitle,,PVP Season Reward,PVP 시즌 보상
 UIPopupMessage_PvpSeasonRewardMessage,,Season reward has been granted.,시즌 보상이 지급되었습니다.
 UIPopupMessage_PvpCommanderLevelRequiredMessage,,Commander Level {0} or above is required to enter PVP.,PVP 참가는 지휘 레벨 {0} 이상이 필요합니다.
-ExplorationPoint,,Exploration Point,탐사 포인트
+ExplorationPoint,,Exploration Point,탐험 포인트
 CommandPower,,Command Power,지휘력
 TacticPower,,Tactic Power,전술력
 UICOMMON_AdmiralFeature,,Admiral Feature,제독 기능

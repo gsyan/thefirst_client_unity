@@ -11,12 +11,12 @@ public class UIDailyBonusDayRow : MonoBehaviour
     [SerializeField] private TMP_Text m_dayText;
 
     [Header("일반 보상")]
-    [SerializeField] private RowLabelValue m_rewardRow;
-    [SerializeField] private Button m_claimButton;      // 항상 표시하되 클레임 가능(출석일수 이하) + 미수령 상태일 때만 interactable
+    [SerializeField] private TMP_Text m_rewardText;
+    [SerializeField] private Button m_claimButton;     // 항상 표시하되 클레임 가능(출석일수 이하) + 미수령 상태일 때만 interactable
     [SerializeField] private GameObject m_claimedRoot;  // 오늘 행 수령 완료 표시(체크 아이콘 등)
 
     [Header("VIP 전용 보상 — 비VIP에게도 잠긴 채로 노출(가입 유도)")]
-    [SerializeField] private RowLabelValue m_vipRewardRow;
+    [SerializeField] private TMP_Text m_vipRewardText;
     [SerializeField] private Button m_vipClaimButton;
     [SerializeField] private GameObject m_vipClaimedRoot;
 
@@ -45,7 +45,7 @@ public class UIDailyBonusDayRow : MonoBehaviour
         }
         if (m_claimedRoot != null)
             m_claimedRoot.SetActive(claimed);
-        RefreshRewardRow(m_rewardRow, normalRewards);
+        RefreshRewardText(m_rewardText, normalRewards);
 
         // VIP 버튼은 비VIP여도 항상 노출은 하되(가입 유도), 비VIP면 비활성화해 클릭 자체가 안 되게 함
         if (m_vipClaimButton != null)
@@ -55,7 +55,7 @@ public class UIDailyBonusDayRow : MonoBehaviour
         }
         if (m_vipClaimedRoot != null)
             m_vipClaimedRoot.SetActive(vipClaimed);
-        RefreshRewardRow(m_vipRewardRow, vipRewards);
+        RefreshRewardText(m_vipRewardText, vipRewards);
     }
 
     private void OnClaimButtonClicked()
@@ -70,22 +70,22 @@ public class UIDailyBonusDayRow : MonoBehaviour
         if (m_onClaimClick != null) m_onClaimClick(true);
     }
 
-    private void RefreshRewardRow(RowLabelValue row, DailyBonusRewardEntry[] rewards)
+    private void RefreshRewardText(TMP_Text rewardTextComponent, DailyBonusRewardEntry[] rewards)
     {
-        if (row == null) return;
+        if (rewardTextComponent == null) return;
 
         string rewardText = BuildRewardListText(rewards);
         if (string.IsNullOrEmpty(rewardText) == true)
         {
-            row.Hide();
+            rewardTextComponent.gameObject.SetActive(false);
             return;
         }
 
-        row.SetRow("DailyBonus_RewardLabel", rewardText, rawValue: true);
-        LayoutRebuilder.ForceRebuildLayoutImmediate(row.transform.parent as RectTransform);
+        rewardTextComponent.gameObject.SetActive(true);
+        rewardTextComponent.text = rewardText;
     }
 
-    // "탐사 포인트 +100, 업적포인트 +10" 형태로 이어붙임 — amount<=0인 항목은 건너뜀
+    // "탐험 포인트 100, 업적포인트 10" 형태로 이어붙임 — amount<=0인 항목은 건너뜀
     private static string BuildRewardListText(DailyBonusRewardEntry[] rewards)
     {
         if (rewards == null || rewards.Length == 0) return string.Empty;
@@ -100,7 +100,7 @@ public class UIDailyBonusDayRow : MonoBehaviour
                 sb.Append(", ");
 
             sb.Append(loc.Get(GetRewardTypeLocKey(rewards[i].rewardType)));
-            sb.Append(" +");
+            sb.Append(' ');
             sb.Append(rewards[i].amount);
         }
 

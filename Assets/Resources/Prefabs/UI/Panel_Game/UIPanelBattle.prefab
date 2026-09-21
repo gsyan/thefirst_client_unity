@@ -204,6 +204,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3067076430276418863}
+  - component: {fileID: 6877149740860198310}
   m_Layer: 5
   m_Name: FleetTactics
   m_TagString: Untagged
@@ -236,6 +237,18 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 554.54004, y: 80}
   m_Pivot: {x: 0, y: 0.5}
+--- !u!114 &6877149740860198310
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 607583257216428643}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d70a861a1703b8b43a412c81be8d7585, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UITacticsToggleRow
 --- !u!1 &693124547116425797
 GameObject:
   m_ObjectHideFlags: 0
@@ -1163,7 +1176,7 @@ MonoBehaviour:
   m_speedButton: {fileID: 7821471664344138471}
   m_speedLabel: {fileID: 8864979388392195292}
   m_zoneNameText: {fileID: 1188967202632309460}
-  m_tacticsButtonContainer: {fileID: 3067076430276418863}
+  m_tacticsToggleRow: {fileID: 6877149740860198310}
   m_tacticPowerGauge: {fileID: 5144523167930765176}
   m_tacticsLabelText: {fileID: 2527582190880302098}
 --- !u!222 &729213031282023309

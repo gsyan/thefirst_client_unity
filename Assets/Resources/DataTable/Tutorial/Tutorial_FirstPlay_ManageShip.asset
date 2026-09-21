@@ -139,8 +139,8 @@ MonoBehaviour:
   - stepId: step8
     message: Tutorial_FirstPlay_OpenLoadoutEditor
     triggerType: 0
-    targetPanelName: 
-    targetUIId: LoadoutButton
+    targetPanelName: PlacedShipsContent
+    targetUIId: '[4]/ManageButton'
     showArrow: 1
     arrowDirection: 0
     textBoxOffset: {x: 0, y: 100}
