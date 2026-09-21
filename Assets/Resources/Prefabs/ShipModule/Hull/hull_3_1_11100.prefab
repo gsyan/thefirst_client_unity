@@ -245,6 +245,7 @@ MonoBehaviour:
     silencePoints: 0
     ammoPoints: 0
     healthPoints: 0
+    disruptPoints: 0
 --- !u!1 &404189261484971111
 GameObject:
   m_ObjectHideFlags: 0
@@ -2607,6 +2608,7 @@ MonoBehaviour:
     silencePoints: 0
     ammoPoints: 0
     healthPoints: 0
+    disruptPoints: 0
 --- !u!1 &3647880461651980205
 GameObject:
   m_ObjectHideFlags: 0
@@ -5486,6 +5488,7 @@ MonoBehaviour:
     silencePoints: 0
     ammoPoints: 0
     healthPoints: 0
+    disruptPoints: 0
 --- !u!1001 &991964924870538884
 PrefabInstance:
   m_ObjectHideFlags: 0
