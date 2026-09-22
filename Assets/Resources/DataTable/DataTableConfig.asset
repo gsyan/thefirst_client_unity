@@ -64,9 +64,9 @@ MonoBehaviour:
     10,\r\n    \"beam\": {\r\n      \"attackPerPoint\": 1.0,\r\n      \"maxCoolReductionRatio\":
     0.3,\r\n      \"attackCoolFloor\": 0.5\r\n    },\r\n    \"missile\": {\r\n     
     \"attackPerPoint\": 1.0,\r\n      \"maxCoolReductionRatio\": 0.3,\r\n      \"attackCoolFloor\":
-    0.5,\r\n      \"silenceTimePerPoint\": 0.0\r\n    },\r\n    \"hangar\": {\r\n     
+    0.5,\r\n      \"silenceTimePerPoint\": 0.1\r\n    },\r\n    \"hangar\": {\r\n     
     \"attackPerPoint\": 0.1,\r\n      \"ammoPerPoint\": 1,\r\n      \"maxHealthBonusRatio\":
-    0.5,\r\n      \"disruptPerPoint\": 0.0\r\n    },\r\n    \"shield\": {\r\n     
+    0.5,\r\n      \"disruptPerPoint\": 0.005\r\n    },\r\n    \"shield\": {\r\n     
     \"gaugePerPoint\": 10.0,\r\n      \"regenRatePerPoint\": 0.1\r\n    },\r\n   
     \"interceptor\": {\r\n      \"maxRegenTimeReductionRatio\": 0.5\r\n    }\r\n 
     }\r\n}"

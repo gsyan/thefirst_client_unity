@@ -75,7 +75,7 @@ MonoBehaviour:
     enemyHullWeightInterceptor: 0
     enemyHullWeightBoth: 0
     enemyHealthMultiplier: 0.25
-    enemyAttackMultiplier: 0.1
+    enemyAttackMultiplier: 0.2
     enemyWaveSpawnTermSec: 5
     explorationPointReward: 10
     commanderExpReward: 10
@@ -141,7 +141,7 @@ MonoBehaviour:
     enemyHullWeightInterceptor: 0
     enemyHullWeightBoth: 0
     enemyHealthMultiplier: 0.45
-    enemyAttackMultiplier: 0.2
+    enemyAttackMultiplier: 0.4
     enemyWaveSpawnTermSec: 5
     explorationPointReward: 11
     commanderExpReward: 11
@@ -197,8 +197,8 @@ MonoBehaviour:
       col: 0
       type: 2
       eventType: 0
-    enemyHullTierSum: 1
-    enemyBaseHullTier: 1
+    enemyHullTierSum: 2
+    enemyBaseHullTier: 2
     enemyMaxShipCount: 1
     enemyModulePlacementProbability: 1
     enemyModulePerformanceProbability: 1
@@ -207,7 +207,7 @@ MonoBehaviour:
     enemyHullWeightInterceptor: 0
     enemyHullWeightBoth: 0
     enemyHealthMultiplier: 0.65
-    enemyAttackMultiplier: 0.3
+    enemyAttackMultiplier: 0.6
     enemyWaveSpawnTermSec: 5
     explorationPointReward: 12
     commanderExpReward: 12
@@ -263,8 +263,8 @@ MonoBehaviour:
       col: 1
       type: 2
       eventType: 0
-    enemyHullTierSum: 1
-    enemyBaseHullTier: 1
+    enemyHullTierSum: 2
+    enemyBaseHullTier: 2
     enemyMaxShipCount: 1
     enemyModulePlacementProbability: 1
     enemyModulePerformanceProbability: 1
@@ -273,7 +273,7 @@ MonoBehaviour:
     enemyHullWeightInterceptor: 1
     enemyHullWeightBoth: 0
     enemyHealthMultiplier: 0.85
-    enemyAttackMultiplier: 0.4
+    enemyAttackMultiplier: 0.8
     enemyWaveSpawnTermSec: 5
     explorationPointReward: 13
     commanderExpReward: 13
@@ -337,8 +337,8 @@ MonoBehaviour:
       col: 4
       type: 3
       eventType: 0
-    enemyHullTierSum: 1
-    enemyBaseHullTier: 1
+    enemyHullTierSum: 2
+    enemyBaseHullTier: 2
     enemyMaxShipCount: 1
     enemyModulePlacementProbability: 1
     enemyModulePerformanceProbability: 1
@@ -347,7 +347,7 @@ MonoBehaviour:
     enemyHullWeightInterceptor: 1
     enemyHullWeightBoth: 0
     enemyHealthMultiplier: 1
-    enemyAttackMultiplier: 0.5
+    enemyAttackMultiplier: 1
     enemyWaveSpawnTermSec: 5
     explorationPointReward: 14
     commanderExpReward: 14
@@ -411,8 +411,8 @@ MonoBehaviour:
       col: 3
       type: 3
       eventType: 0
-    enemyHullTierSum: 2
-    enemyBaseHullTier: 2
+    enemyHullTierSum: 3
+    enemyBaseHullTier: 3
     enemyMaxShipCount: 1
     enemyModulePlacementProbability: 0.6
     enemyModulePerformanceProbability: 0.6
@@ -421,7 +421,7 @@ MonoBehaviour:
     enemyHullWeightInterceptor: 1
     enemyHullWeightBoth: 0
     enemyHealthMultiplier: 1
-    enemyAttackMultiplier: 0.6
+    enemyAttackMultiplier: 1
     enemyWaveSpawnTermSec: 5
     explorationPointReward: 15
     commanderExpReward: 15
@@ -485,8 +485,8 @@ MonoBehaviour:
       col: 4
       type: 3
       eventType: 0
-    enemyHullTierSum: 2
-    enemyBaseHullTier: 2
+    enemyHullTierSum: 3
+    enemyBaseHullTier: 3
     enemyMaxShipCount: 1
     enemyModulePlacementProbability: 0.7
     enemyModulePerformanceProbability: 0.7
@@ -495,7 +495,7 @@ MonoBehaviour:
     enemyHullWeightInterceptor: 1
     enemyHullWeightBoth: 0
     enemyHealthMultiplier: 1
-    enemyAttackMultiplier: 0.7
+    enemyAttackMultiplier: 1
     enemyWaveSpawnTermSec: 5
     explorationPointReward: 16
     commanderExpReward: 16
@@ -559,8 +559,8 @@ MonoBehaviour:
       col: 3
       type: 3
       eventType: 0
-    enemyHullTierSum: 2
-    enemyBaseHullTier: 2
+    enemyHullTierSum: 3
+    enemyBaseHullTier: 3
     enemyMaxShipCount: 1
     enemyModulePlacementProbability: 0.8
     enemyModulePerformanceProbability: 0.8
@@ -569,7 +569,7 @@ MonoBehaviour:
     enemyHullWeightInterceptor: 1
     enemyHullWeightBoth: 0
     enemyHealthMultiplier: 1
-    enemyAttackMultiplier: 0.8
+    enemyAttackMultiplier: 1
     enemyWaveSpawnTermSec: 5
     explorationPointReward: 17
     commanderExpReward: 17
@@ -633,8 +633,8 @@ MonoBehaviour:
       col: 0
       type: 3
       eventType: 0
-    enemyHullTierSum: 2
-    enemyBaseHullTier: 2
+    enemyHullTierSum: 3
+    enemyBaseHullTier: 3
     enemyMaxShipCount: 1
     enemyModulePlacementProbability: 0.9
     enemyModulePerformanceProbability: 0.9
@@ -643,7 +643,7 @@ MonoBehaviour:
     enemyHullWeightInterceptor: 1
     enemyHullWeightBoth: 0
     enemyHealthMultiplier: 1
-    enemyAttackMultiplier: 0.9
+    enemyAttackMultiplier: 1
     enemyWaveSpawnTermSec: 5
     explorationPointReward: 18
     commanderExpReward: 18
@@ -707,9 +707,9 @@ MonoBehaviour:
       col: 1
       type: 3
       eventType: 0
-    enemyHullTierSum: 2
-    enemyBaseHullTier: 2
-    enemyMaxShipCount: 1
+    enemyHullTierSum: 4
+    enemyBaseHullTier: 3
+    enemyMaxShipCount: 2
     enemyModulePlacementProbability: 1
     enemyModulePerformanceProbability: 1
     enemyHullWeightNone: 98
@@ -781,9 +781,9 @@ MonoBehaviour:
       col: 4
       type: 3
       eventType: 0
-    enemyHullTierSum: 3
+    enemyHullTierSum: 5
     enemyBaseHullTier: 3
-    enemyMaxShipCount: 1
+    enemyMaxShipCount: 2
     enemyModulePlacementProbability: 0.6
     enemyModulePerformanceProbability: 0.6
     enemyHullWeightNone: 98
@@ -855,9 +855,9 @@ MonoBehaviour:
       col: 0
       type: 3
       eventType: 0
-    enemyHullTierSum: 3
+    enemyHullTierSum: 6
     enemyBaseHullTier: 3
-    enemyMaxShipCount: 1
+    enemyMaxShipCount: 2
     enemyModulePlacementProbability: 0.7
     enemyModulePerformanceProbability: 0.7
     enemyHullWeightNone: 98
@@ -929,8 +929,8 @@ MonoBehaviour:
       col: 2
       type: 3
       eventType: 0
-    enemyHullTierSum: 3
-    enemyBaseHullTier: 2
+    enemyHullTierSum: 7
+    enemyBaseHullTier: 4
     enemyMaxShipCount: 2
     enemyModulePlacementProbability: 0.8
     enemyModulePerformanceProbability: 0.8
@@ -1003,8 +1003,8 @@ MonoBehaviour:
       col: 0
       type: 3
       eventType: 0
-    enemyHullTierSum: 3
-    enemyBaseHullTier: 2
+    enemyHullTierSum: 8
+    enemyBaseHullTier: 4
     enemyMaxShipCount: 2
     enemyModulePlacementProbability: 0.9
     enemyModulePerformanceProbability: 0.9
@@ -1077,8 +1077,8 @@ MonoBehaviour:
       col: 0
       type: 3
       eventType: 0
-    enemyHullTierSum: 3
-    enemyBaseHullTier: 2
+    enemyHullTierSum: 8
+    enemyBaseHullTier: 4
     enemyMaxShipCount: 2
     enemyModulePlacementProbability: 1
     enemyModulePerformanceProbability: 1
@@ -1151,11 +1151,11 @@ MonoBehaviour:
       col: 3
       type: 3
       eventType: 0
-    enemyHullTierSum: 4
-    enemyBaseHullTier: 3
+    enemyHullTierSum: 8
+    enemyBaseHullTier: 4
     enemyMaxShipCount: 2
-    enemyModulePlacementProbability: 0.6
-    enemyModulePerformanceProbability: 0.6
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
     enemyHullWeightNone: 98
     enemyHullWeightShield: 1
     enemyHullWeightInterceptor: 1
@@ -1225,11 +1225,11 @@ MonoBehaviour:
       col: 3
       type: 3
       eventType: 0
-    enemyHullTierSum: 4
-    enemyBaseHullTier: 3
-    enemyMaxShipCount: 2
-    enemyModulePlacementProbability: 0.7
-    enemyModulePerformanceProbability: 0.7
+    enemyHullTierSum: 9
+    enemyBaseHullTier: 4
+    enemyMaxShipCount: 3
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
     enemyHullWeightNone: 98
     enemyHullWeightShield: 1
     enemyHullWeightInterceptor: 1
@@ -1299,11 +1299,11 @@ MonoBehaviour:
       col: 3
       type: 3
       eventType: 0
-    enemyHullTierSum: 4
-    enemyBaseHullTier: 3
-    enemyMaxShipCount: 2
-    enemyModulePlacementProbability: 0.8
-    enemyModulePerformanceProbability: 0.8
+    enemyHullTierSum: 10
+    enemyBaseHullTier: 4
+    enemyMaxShipCount: 3
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
     enemyHullWeightNone: 98
     enemyHullWeightShield: 1
     enemyHullWeightInterceptor: 1
@@ -1373,11 +1373,11 @@ MonoBehaviour:
       col: 4
       type: 3
       eventType: 0
-    enemyHullTierSum: 4
-    enemyBaseHullTier: 3
-    enemyMaxShipCount: 2
-    enemyModulePlacementProbability: 0.9
-    enemyModulePerformanceProbability: 0.9
+    enemyHullTierSum: 11
+    enemyBaseHullTier: 4
+    enemyMaxShipCount: 3
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
     enemyHullWeightNone: 98
     enemyHullWeightShield: 1
     enemyHullWeightInterceptor: 1
@@ -1447,9 +1447,9 @@ MonoBehaviour:
       col: 3
       type: 3
       eventType: 0
-    enemyHullTierSum: 4
-    enemyBaseHullTier: 3
-    enemyMaxShipCount: 2
+    enemyHullTierSum: 12
+    enemyBaseHullTier: 4
+    enemyMaxShipCount: 3
     enemyModulePlacementProbability: 1
     enemyModulePerformanceProbability: 1
     enemyHullWeightNone: 98
@@ -1521,11 +1521,11 @@ MonoBehaviour:
       col: 1
       type: 3
       eventType: 0
-    enemyHullTierSum: 5
-    enemyBaseHullTier: 4
-    enemyMaxShipCount: 2
-    enemyModulePlacementProbability: 0.6
-    enemyModulePerformanceProbability: 0.6
+    enemyHullTierSum: 13
+    enemyBaseHullTier: 5
+    enemyMaxShipCount: 3
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
     enemyHullWeightNone: 98
     enemyHullWeightShield: 1
     enemyHullWeightInterceptor: 1
@@ -1595,11 +1595,11 @@ MonoBehaviour:
       col: 1
       type: 3
       eventType: 0
-    enemyHullTierSum: 5
-    enemyBaseHullTier: 4
-    enemyMaxShipCount: 2
-    enemyModulePlacementProbability: 0.7
-    enemyModulePerformanceProbability: 0.7
+    enemyHullTierSum: 13
+    enemyBaseHullTier: 5
+    enemyMaxShipCount: 3
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
     enemyHullWeightNone: 98
     enemyHullWeightShield: 1
     enemyHullWeightInterceptor: 1
@@ -1669,11 +1669,11 @@ MonoBehaviour:
       col: 3
       type: 3
       eventType: 0
-    enemyHullTierSum: 5
-    enemyBaseHullTier: 4
-    enemyMaxShipCount: 2
-    enemyModulePlacementProbability: 0.8
-    enemyModulePerformanceProbability: 0.8
+    enemyHullTierSum: 14
+    enemyBaseHullTier: 5
+    enemyMaxShipCount: 3
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
     enemyHullWeightNone: 98
     enemyHullWeightShield: 1
     enemyHullWeightInterceptor: 1
@@ -1743,11 +1743,11 @@ MonoBehaviour:
       col: 1
       type: 3
       eventType: 0
-    enemyHullTierSum: 5
-    enemyBaseHullTier: 4
-    enemyMaxShipCount: 2
-    enemyModulePlacementProbability: 0.9
-    enemyModulePerformanceProbability: 0.9
+    enemyHullTierSum: 14
+    enemyBaseHullTier: 5
+    enemyMaxShipCount: 3
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
     enemyHullWeightNone: 98
     enemyHullWeightShield: 1
     enemyHullWeightInterceptor: 1
@@ -1817,9 +1817,9 @@ MonoBehaviour:
       col: 4
       type: 3
       eventType: 0
-    enemyHullTierSum: 5
-    enemyBaseHullTier: 4
-    enemyMaxShipCount: 2
+    enemyHullTierSum: 15
+    enemyBaseHullTier: 5
+    enemyMaxShipCount: 3
     enemyModulePlacementProbability: 1
     enemyModulePerformanceProbability: 1
     enemyHullWeightNone: 98
@@ -1891,11 +1891,11 @@ MonoBehaviour:
       col: 4
       type: 3
       eventType: 0
-    enemyHullTierSum: 6
-    enemyBaseHullTier: 4
+    enemyHullTierSum: 15
+    enemyBaseHullTier: 5
     enemyMaxShipCount: 3
-    enemyModulePlacementProbability: 0.6
-    enemyModulePerformanceProbability: 0.6
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
     enemyHullWeightNone: 98
     enemyHullWeightShield: 1
     enemyHullWeightInterceptor: 1
@@ -1965,11 +1965,11 @@ MonoBehaviour:
       col: 1
       type: 3
       eventType: 0
-    enemyHullTierSum: 6
-    enemyBaseHullTier: 4
-    enemyMaxShipCount: 3
-    enemyModulePlacementProbability: 0.7
-    enemyModulePerformanceProbability: 0.7
+    enemyHullTierSum: 16
+    enemyBaseHullTier: 5
+    enemyMaxShipCount: 4
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
     enemyHullWeightNone: 98
     enemyHullWeightShield: 1
     enemyHullWeightInterceptor: 1
@@ -2039,11 +2039,11 @@ MonoBehaviour:
       col: 4
       type: 3
       eventType: 0
-    enemyHullTierSum: 6
-    enemyBaseHullTier: 4
-    enemyMaxShipCount: 3
-    enemyModulePlacementProbability: 0.8
-    enemyModulePerformanceProbability: 0.8
+    enemyHullTierSum: 16
+    enemyBaseHullTier: 5
+    enemyMaxShipCount: 4
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
     enemyHullWeightNone: 98
     enemyHullWeightShield: 1
     enemyHullWeightInterceptor: 1
@@ -2113,11 +2113,11 @@ MonoBehaviour:
       col: 1
       type: 3
       eventType: 0
-    enemyHullTierSum: 6
-    enemyBaseHullTier: 4
-    enemyMaxShipCount: 3
-    enemyModulePlacementProbability: 0.9
-    enemyModulePerformanceProbability: 0.9
+    enemyHullTierSum: 17
+    enemyBaseHullTier: 5
+    enemyMaxShipCount: 4
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
     enemyHullWeightNone: 98
     enemyHullWeightShield: 1
     enemyHullWeightInterceptor: 1
@@ -2187,9 +2187,9 @@ MonoBehaviour:
       col: 2
       type: 3
       eventType: 0
-    enemyHullTierSum: 6
-    enemyBaseHullTier: 4
-    enemyMaxShipCount: 3
+    enemyHullTierSum: 17
+    enemyBaseHullTier: 5
+    enemyMaxShipCount: 4
     enemyModulePlacementProbability: 1
     enemyModulePerformanceProbability: 1
     enemyHullWeightNone: 98
@@ -2277,11 +2277,11 @@ MonoBehaviour:
       col: 3
       type: 3
       eventType: 0
-    enemyHullTierSum: 7
-    enemyBaseHullTier: 5
-    enemyMaxShipCount: 3
-    enemyModulePlacementProbability: 0.6
-    enemyModulePerformanceProbability: 0.6
+    enemyHullTierSum: 18
+    enemyBaseHullTier: 6
+    enemyMaxShipCount: 4
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
     enemyHullWeightNone: 98
     enemyHullWeightShield: 1
     enemyHullWeightInterceptor: 1
@@ -2367,11 +2367,11 @@ MonoBehaviour:
       col: 6
       type: 3
       eventType: 0
-    enemyHullTierSum: 7
-    enemyBaseHullTier: 5
-    enemyMaxShipCount: 3
-    enemyModulePlacementProbability: 0.7
-    enemyModulePerformanceProbability: 0.7
+    enemyHullTierSum: 18
+    enemyBaseHullTier: 6
+    enemyMaxShipCount: 4
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
     enemyHullWeightNone: 98
     enemyHullWeightShield: 1
     enemyHullWeightInterceptor: 1
@@ -2457,11 +2457,11 @@ MonoBehaviour:
       col: 1
       type: 3
       eventType: 0
-    enemyHullTierSum: 7
-    enemyBaseHullTier: 5
-    enemyMaxShipCount: 3
-    enemyModulePlacementProbability: 0.8
-    enemyModulePerformanceProbability: 0.8
+    enemyHullTierSum: 18
+    enemyBaseHullTier: 6
+    enemyMaxShipCount: 4
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
     enemyHullWeightNone: 98
     enemyHullWeightShield: 1
     enemyHullWeightInterceptor: 1
@@ -2547,11 +2547,11 @@ MonoBehaviour:
       col: 3
       type: 3
       eventType: 0
-    enemyHullTierSum: 7
-    enemyBaseHullTier: 5
-    enemyMaxShipCount: 3
-    enemyModulePlacementProbability: 0.9
-    enemyModulePerformanceProbability: 0.9
+    enemyHullTierSum: 19
+    enemyBaseHullTier: 6
+    enemyMaxShipCount: 4
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
     enemyHullWeightNone: 98
     enemyHullWeightShield: 1
     enemyHullWeightInterceptor: 1
@@ -2637,9 +2637,9 @@ MonoBehaviour:
       col: 3
       type: 3
       eventType: 0
-    enemyHullTierSum: 7
-    enemyBaseHullTier: 5
-    enemyMaxShipCount: 3
+    enemyHullTierSum: 19
+    enemyBaseHullTier: 6
+    enemyMaxShipCount: 4
     enemyModulePlacementProbability: 1
     enemyModulePerformanceProbability: 1
     enemyHullWeightNone: 98
@@ -2727,11 +2727,11 @@ MonoBehaviour:
       col: 5
       type: 3
       eventType: 0
-    enemyHullTierSum: 8
-    enemyBaseHullTier: 5
-    enemyMaxShipCount: 3
-    enemyModulePlacementProbability: 0.6
-    enemyModulePerformanceProbability: 0.6
+    enemyHullTierSum: 19
+    enemyBaseHullTier: 6
+    enemyMaxShipCount: 4
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
     enemyHullWeightNone: 98
     enemyHullWeightShield: 1
     enemyHullWeightInterceptor: 1
@@ -2817,11 +2817,11 @@ MonoBehaviour:
       col: 2
       type: 3
       eventType: 0
-    enemyHullTierSum: 8
-    enemyBaseHullTier: 5
-    enemyMaxShipCount: 3
-    enemyModulePlacementProbability: 0.7
-    enemyModulePerformanceProbability: 0.7
+    enemyHullTierSum: 20
+    enemyBaseHullTier: 6
+    enemyMaxShipCount: 4
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
     enemyHullWeightNone: 98
     enemyHullWeightShield: 1
     enemyHullWeightInterceptor: 1
@@ -2907,11 +2907,11 @@ MonoBehaviour:
       col: 6
       type: 3
       eventType: 0
-    enemyHullTierSum: 8
-    enemyBaseHullTier: 5
-    enemyMaxShipCount: 3
-    enemyModulePlacementProbability: 0.8
-    enemyModulePerformanceProbability: 0.8
+    enemyHullTierSum: 20
+    enemyBaseHullTier: 6
+    enemyMaxShipCount: 4
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
     enemyHullWeightNone: 98
     enemyHullWeightShield: 1
     enemyHullWeightInterceptor: 1
@@ -2997,11 +2997,11 @@ MonoBehaviour:
       col: 6
       type: 3
       eventType: 0
-    enemyHullTierSum: 8
-    enemyBaseHullTier: 5
-    enemyMaxShipCount: 3
-    enemyModulePlacementProbability: 0.9
-    enemyModulePerformanceProbability: 0.9
+    enemyHullTierSum: 20
+    enemyBaseHullTier: 6
+    enemyMaxShipCount: 4
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
     enemyHullWeightNone: 98
     enemyHullWeightShield: 1
     enemyHullWeightInterceptor: 1
@@ -3087,9 +3087,9 @@ MonoBehaviour:
       col: 2
       type: 3
       eventType: 0
-    enemyHullTierSum: 8
-    enemyBaseHullTier: 5
-    enemyMaxShipCount: 3
+    enemyHullTierSum: 21
+    enemyBaseHullTier: 6
+    enemyMaxShipCount: 4
     enemyModulePlacementProbability: 1
     enemyModulePerformanceProbability: 1
     enemyHullWeightNone: 98
@@ -3177,11 +3177,11 @@ MonoBehaviour:
       col: 1
       type: 3
       eventType: 0
-    enemyHullTierSum: 9
-    enemyBaseHullTier: 6
-    enemyMaxShipCount: 3
-    enemyModulePlacementProbability: 0.6
-    enemyModulePerformanceProbability: 0.6
+    enemyHullTierSum: 21
+    enemyBaseHullTier: 7
+    enemyMaxShipCount: 4
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
     enemyHullWeightNone: 98
     enemyHullWeightShield: 1
     enemyHullWeightInterceptor: 1
@@ -3267,11 +3267,11 @@ MonoBehaviour:
       col: 1
       type: 3
       eventType: 0
-    enemyHullTierSum: 9
-    enemyBaseHullTier: 6
-    enemyMaxShipCount: 3
-    enemyModulePlacementProbability: 0.7
-    enemyModulePerformanceProbability: 0.7
+    enemyHullTierSum: 21
+    enemyBaseHullTier: 7
+    enemyMaxShipCount: 4
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
     enemyHullWeightNone: 98
     enemyHullWeightShield: 1
     enemyHullWeightInterceptor: 1
@@ -3357,11 +3357,11 @@ MonoBehaviour:
       col: 2
       type: 3
       eventType: 0
-    enemyHullTierSum: 9
-    enemyBaseHullTier: 6
-    enemyMaxShipCount: 3
-    enemyModulePlacementProbability: 0.8
-    enemyModulePerformanceProbability: 0.8
+    enemyHullTierSum: 22
+    enemyBaseHullTier: 7
+    enemyMaxShipCount: 4
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
     enemyHullWeightNone: 98
     enemyHullWeightShield: 1
     enemyHullWeightInterceptor: 1
@@ -3447,11 +3447,11 @@ MonoBehaviour:
       col: 3
       type: 3
       eventType: 0
-    enemyHullTierSum: 9
-    enemyBaseHullTier: 6
-    enemyMaxShipCount: 3
-    enemyModulePlacementProbability: 0.9
-    enemyModulePerformanceProbability: 0.9
+    enemyHullTierSum: 22
+    enemyBaseHullTier: 7
+    enemyMaxShipCount: 4
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
     enemyHullWeightNone: 98
     enemyHullWeightShield: 1
     enemyHullWeightInterceptor: 1
@@ -3537,9 +3537,9 @@ MonoBehaviour:
       col: 5
       type: 3
       eventType: 0
-    enemyHullTierSum: 9
-    enemyBaseHullTier: 6
-    enemyMaxShipCount: 3
+    enemyHullTierSum: 22
+    enemyBaseHullTier: 7
+    enemyMaxShipCount: 4
     enemyModulePlacementProbability: 1
     enemyModulePerformanceProbability: 1
     enemyHullWeightNone: 98
@@ -3627,11 +3627,11 @@ MonoBehaviour:
       col: 2
       type: 3
       eventType: 0
-    enemyHullTierSum: 10
-    enemyBaseHullTier: 6
-    enemyMaxShipCount: 3
-    enemyModulePlacementProbability: 0.6
-    enemyModulePerformanceProbability: 0.6
+    enemyHullTierSum: 23
+    enemyBaseHullTier: 7
+    enemyMaxShipCount: 4
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
     enemyHullWeightNone: 98
     enemyHullWeightShield: 1
     enemyHullWeightInterceptor: 1
@@ -3717,11 +3717,11 @@ MonoBehaviour:
       col: 1
       type: 3
       eventType: 0
-    enemyHullTierSum: 10
-    enemyBaseHullTier: 6
-    enemyMaxShipCount: 3
-    enemyModulePlacementProbability: 0.7
-    enemyModulePerformanceProbability: 0.7
+    enemyHullTierSum: 23
+    enemyBaseHullTier: 7
+    enemyMaxShipCount: 4
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
     enemyHullWeightNone: 98
     enemyHullWeightShield: 1
     enemyHullWeightInterceptor: 1
@@ -3807,11 +3807,11 @@ MonoBehaviour:
       col: 4
       type: 3
       eventType: 0
-    enemyHullTierSum: 10
-    enemyBaseHullTier: 6
-    enemyMaxShipCount: 3
-    enemyModulePlacementProbability: 0.8
-    enemyModulePerformanceProbability: 0.8
+    enemyHullTierSum: 23
+    enemyBaseHullTier: 7
+    enemyMaxShipCount: 4
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
     enemyHullWeightNone: 98
     enemyHullWeightShield: 1
     enemyHullWeightInterceptor: 1
@@ -3897,11 +3897,11 @@ MonoBehaviour:
       col: 6
       type: 3
       eventType: 0
-    enemyHullTierSum: 10
-    enemyBaseHullTier: 6
-    enemyMaxShipCount: 3
-    enemyModulePlacementProbability: 0.9
-    enemyModulePerformanceProbability: 0.9
+    enemyHullTierSum: 24
+    enemyBaseHullTier: 7
+    enemyMaxShipCount: 4
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
     enemyHullWeightNone: 98
     enemyHullWeightShield: 1
     enemyHullWeightInterceptor: 1
@@ -3987,9 +3987,9 @@ MonoBehaviour:
       col: 2
       type: 3
       eventType: 0
-    enemyHullTierSum: 10
-    enemyBaseHullTier: 6
-    enemyMaxShipCount: 3
+    enemyHullTierSum: 24
+    enemyBaseHullTier: 7
+    enemyMaxShipCount: 4
     enemyModulePlacementProbability: 1
     enemyModulePerformanceProbability: 1
     enemyHullWeightNone: 80
@@ -4077,11 +4077,11 @@ MonoBehaviour:
       col: 4
       type: 3
       eventType: 0
-    enemyHullTierSum: 11
-    enemyBaseHullTier: 6
-    enemyMaxShipCount: 3
-    enemyModulePlacementProbability: 0.6
-    enemyModulePerformanceProbability: 0.6
+    enemyHullTierSum: 24
+    enemyBaseHullTier: 8
+    enemyMaxShipCount: 4
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
     enemyHullWeightNone: 80
     enemyHullWeightShield: 10
     enemyHullWeightInterceptor: 10
@@ -4167,11 +4167,11 @@ MonoBehaviour:
       col: 2
       type: 3
       eventType: 0
-    enemyHullTierSum: 11
-    enemyBaseHullTier: 6
-    enemyMaxShipCount: 3
-    enemyModulePlacementProbability: 0.7
-    enemyModulePerformanceProbability: 0.7
+    enemyHullTierSum: 25
+    enemyBaseHullTier: 8
+    enemyMaxShipCount: 4
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
     enemyHullWeightNone: 80
     enemyHullWeightShield: 10
     enemyHullWeightInterceptor: 10
@@ -4257,11 +4257,11 @@ MonoBehaviour:
       col: 5
       type: 3
       eventType: 0
-    enemyHullTierSum: 11
-    enemyBaseHullTier: 6
-    enemyMaxShipCount: 3
-    enemyModulePlacementProbability: 0.8
-    enemyModulePerformanceProbability: 0.8
+    enemyHullTierSum: 26
+    enemyBaseHullTier: 8
+    enemyMaxShipCount: 4
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
     enemyHullWeightNone: 80
     enemyHullWeightShield: 10
     enemyHullWeightInterceptor: 10
@@ -4347,11 +4347,11 @@ MonoBehaviour:
       col: 5
       type: 3
       eventType: 0
-    enemyHullTierSum: 11
-    enemyBaseHullTier: 6
-    enemyMaxShipCount: 3
-    enemyModulePlacementProbability: 0.9
-    enemyModulePerformanceProbability: 0.9
+    enemyHullTierSum: 27
+    enemyBaseHullTier: 8
+    enemyMaxShipCount: 4
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
     enemyHullWeightNone: 80
     enemyHullWeightShield: 10
     enemyHullWeightInterceptor: 10
@@ -4437,9 +4437,9 @@ MonoBehaviour:
       col: 0
       type: 3
       eventType: 0
-    enemyHullTierSum: 11
-    enemyBaseHullTier: 6
-    enemyMaxShipCount: 3
+    enemyHullTierSum: 28
+    enemyBaseHullTier: 8
+    enemyMaxShipCount: 4
     enemyModulePlacementProbability: 1
     enemyModulePerformanceProbability: 1
     enemyHullWeightNone: 80
@@ -4527,11 +4527,11 @@ MonoBehaviour:
       col: 4
       type: 3
       eventType: 0
-    enemyHullTierSum: 12
-    enemyBaseHullTier: 6
-    enemyMaxShipCount: 3
-    enemyModulePlacementProbability: 0.6
-    enemyModulePerformanceProbability: 0.6
+    enemyHullTierSum: 29
+    enemyBaseHullTier: 8
+    enemyMaxShipCount: 4
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
     enemyHullWeightNone: 80
     enemyHullWeightShield: 10
     enemyHullWeightInterceptor: 10
@@ -4617,11 +4617,11 @@ MonoBehaviour:
       col: 3
       type: 3
       eventType: 0
-    enemyHullTierSum: 12
-    enemyBaseHullTier: 6
-    enemyMaxShipCount: 3
-    enemyModulePlacementProbability: 0.7
-    enemyModulePerformanceProbability: 0.7
+    enemyHullTierSum: 30
+    enemyBaseHullTier: 8
+    enemyMaxShipCount: 4
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
     enemyHullWeightNone: 80
     enemyHullWeightShield: 10
     enemyHullWeightInterceptor: 10
@@ -4707,11 +4707,11 @@ MonoBehaviour:
       col: 5
       type: 3
       eventType: 0
-    enemyHullTierSum: 12
-    enemyBaseHullTier: 6
-    enemyMaxShipCount: 3
-    enemyModulePlacementProbability: 0.8
-    enemyModulePerformanceProbability: 0.8
+    enemyHullTierSum: 31
+    enemyBaseHullTier: 8
+    enemyMaxShipCount: 4
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
     enemyHullWeightNone: 80
     enemyHullWeightShield: 10
     enemyHullWeightInterceptor: 10
@@ -4797,11 +4797,11 @@ MonoBehaviour:
       col: 4
       type: 3
       eventType: 0
-    enemyHullTierSum: 12
-    enemyBaseHullTier: 6
-    enemyMaxShipCount: 3
-    enemyModulePlacementProbability: 0.9
-    enemyModulePerformanceProbability: 0.9
+    enemyHullTierSum: 32
+    enemyBaseHullTier: 8
+    enemyMaxShipCount: 4
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
     enemyHullWeightNone: 80
     enemyHullWeightShield: 10
     enemyHullWeightInterceptor: 10
@@ -4887,8 +4887,8 @@ MonoBehaviour:
       col: 3
       type: 3
       eventType: 0
-    enemyHullTierSum: 12
-    enemyBaseHullTier: 6
+    enemyHullTierSum: 33
+    enemyBaseHullTier: 9
     enemyMaxShipCount: 4
     enemyModulePlacementProbability: 1
     enemyModulePerformanceProbability: 1
@@ -4977,11 +4977,11 @@ MonoBehaviour:
       col: 1
       type: 3
       eventType: 0
-    enemyHullTierSum: 13
-    enemyBaseHullTier: 7
+    enemyHullTierSum: 34
+    enemyBaseHullTier: 9
     enemyMaxShipCount: 4
-    enemyModulePlacementProbability: 0.6
-    enemyModulePerformanceProbability: 0.6
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
     enemyHullWeightNone: 70
     enemyHullWeightShield: 15
     enemyHullWeightInterceptor: 15
@@ -5067,11 +5067,11 @@ MonoBehaviour:
       col: 0
       type: 3
       eventType: 0
-    enemyHullTierSum: 13
-    enemyBaseHullTier: 7
+    enemyHullTierSum: 35
+    enemyBaseHullTier: 9
     enemyMaxShipCount: 4
-    enemyModulePlacementProbability: 0.7
-    enemyModulePerformanceProbability: 0.7
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
     enemyHullWeightNone: 70
     enemyHullWeightShield: 15
     enemyHullWeightInterceptor: 15
@@ -5157,11 +5157,11 @@ MonoBehaviour:
       col: 5
       type: 3
       eventType: 0
-    enemyHullTierSum: 13
-    enemyBaseHullTier: 7
+    enemyHullTierSum: 36
+    enemyBaseHullTier: 9
     enemyMaxShipCount: 4
-    enemyModulePlacementProbability: 0.8
-    enemyModulePerformanceProbability: 0.8
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
     enemyHullWeightNone: 70
     enemyHullWeightShield: 15
     enemyHullWeightInterceptor: 15
@@ -5247,11 +5247,11 @@ MonoBehaviour:
       col: 6
       type: 3
       eventType: 0
-    enemyHullTierSum: 13
-    enemyBaseHullTier: 7
-    enemyMaxShipCount: 4
-    enemyModulePlacementProbability: 0.9
-    enemyModulePerformanceProbability: 0.9
+    enemyHullTierSum: 37
+    enemyBaseHullTier: 9
+    enemyMaxShipCount: 5
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
     enemyHullWeightNone: 70
     enemyHullWeightShield: 15
     enemyHullWeightInterceptor: 15
@@ -5337,9 +5337,9 @@ MonoBehaviour:
       col: 4
       type: 3
       eventType: 0
-    enemyHullTierSum: 13
-    enemyBaseHullTier: 7
-    enemyMaxShipCount: 4
+    enemyHullTierSum: 38
+    enemyBaseHullTier: 9
+    enemyMaxShipCount: 5
     enemyModulePlacementProbability: 1
     enemyModulePerformanceProbability: 1
     enemyHullWeightNone: 70
@@ -5427,11 +5427,11 @@ MonoBehaviour:
       col: 6
       type: 3
       eventType: 0
-    enemyHullTierSum: 14
-    enemyBaseHullTier: 7
-    enemyMaxShipCount: 4
-    enemyModulePlacementProbability: 0.6
-    enemyModulePerformanceProbability: 0.6
+    enemyHullTierSum: 39
+    enemyBaseHullTier: 9
+    enemyMaxShipCount: 5
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
     enemyHullWeightNone: 70
     enemyHullWeightShield: 15
     enemyHullWeightInterceptor: 15
@@ -5517,11 +5517,11 @@ MonoBehaviour:
       col: 2
       type: 3
       eventType: 0
-    enemyHullTierSum: 14
-    enemyBaseHullTier: 7
-    enemyMaxShipCount: 4
-    enemyModulePlacementProbability: 0.7
-    enemyModulePerformanceProbability: 0.7
+    enemyHullTierSum: 40
+    enemyBaseHullTier: 9
+    enemyMaxShipCount: 5
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
     enemyHullWeightNone: 70
     enemyHullWeightShield: 15
     enemyHullWeightInterceptor: 15
@@ -5607,11 +5607,11 @@ MonoBehaviour:
       col: 0
       type: 3
       eventType: 0
-    enemyHullTierSum: 14
-    enemyBaseHullTier: 7
-    enemyMaxShipCount: 4
-    enemyModulePlacementProbability: 0.8
-    enemyModulePerformanceProbability: 0.8
+    enemyHullTierSum: 41
+    enemyBaseHullTier: 9
+    enemyMaxShipCount: 5
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
     enemyHullWeightNone: 70
     enemyHullWeightShield: 15
     enemyHullWeightInterceptor: 15
@@ -5697,11 +5697,11 @@ MonoBehaviour:
       col: 0
       type: 3
       eventType: 0
-    enemyHullTierSum: 14
-    enemyBaseHullTier: 7
-    enemyMaxShipCount: 4
-    enemyModulePlacementProbability: 0.9
-    enemyModulePerformanceProbability: 0.9
+    enemyHullTierSum: 42
+    enemyBaseHullTier: 9
+    enemyMaxShipCount: 5
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
     enemyHullWeightNone: 70
     enemyHullWeightShield: 15
     enemyHullWeightInterceptor: 15
@@ -5787,9 +5787,9 @@ MonoBehaviour:
       col: 2
       type: 3
       eventType: 0
-    enemyHullTierSum: 14
-    enemyBaseHullTier: 7
-    enemyMaxShipCount: 4
+    enemyHullTierSum: 43
+    enemyBaseHullTier: 9
+    enemyMaxShipCount: 5
     enemyModulePlacementProbability: 1
     enemyModulePerformanceProbability: 1
     enemyHullWeightNone: 60
@@ -5877,11 +5877,11 @@ MonoBehaviour:
       col: 0
       type: 3
       eventType: 0
-    enemyHullTierSum: 15
-    enemyBaseHullTier: 7
-    enemyMaxShipCount: 4
-    enemyModulePlacementProbability: 0.6
-    enemyModulePerformanceProbability: 0.6
+    enemyHullTierSum: 44
+    enemyBaseHullTier: 10
+    enemyMaxShipCount: 5
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
     enemyHullWeightNone: 60
     enemyHullWeightShield: 20
     enemyHullWeightInterceptor: 20
@@ -5967,11 +5967,11 @@ MonoBehaviour:
       col: 6
       type: 3
       eventType: 0
-    enemyHullTierSum: 15
-    enemyBaseHullTier: 7
-    enemyMaxShipCount: 4
-    enemyModulePlacementProbability: 0.7
-    enemyModulePerformanceProbability: 0.7
+    enemyHullTierSum: 44
+    enemyBaseHullTier: 10
+    enemyMaxShipCount: 5
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
     enemyHullWeightNone: 60
     enemyHullWeightShield: 20
     enemyHullWeightInterceptor: 20
@@ -6057,11 +6057,11 @@ MonoBehaviour:
       col: 2
       type: 3
       eventType: 0
-    enemyHullTierSum: 15
-    enemyBaseHullTier: 7
-    enemyMaxShipCount: 4
-    enemyModulePlacementProbability: 0.8
-    enemyModulePerformanceProbability: 0.8
+    enemyHullTierSum: 45
+    enemyBaseHullTier: 10
+    enemyMaxShipCount: 5
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
     enemyHullWeightNone: 60
     enemyHullWeightShield: 20
     enemyHullWeightInterceptor: 20
@@ -6147,11 +6147,11 @@ MonoBehaviour:
       col: 5
       type: 3
       eventType: 0
-    enemyHullTierSum: 15
-    enemyBaseHullTier: 7
-    enemyMaxShipCount: 4
-    enemyModulePlacementProbability: 0.9
-    enemyModulePerformanceProbability: 0.9
+    enemyHullTierSum: 45
+    enemyBaseHullTier: 10
+    enemyMaxShipCount: 5
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
     enemyHullWeightNone: 60
     enemyHullWeightShield: 20
     enemyHullWeightInterceptor: 20
@@ -6237,9 +6237,9 @@ MonoBehaviour:
       col: 3
       type: 3
       eventType: 0
-    enemyHullTierSum: 15
-    enemyBaseHullTier: 7
-    enemyMaxShipCount: 4
+    enemyHullTierSum: 46
+    enemyBaseHullTier: 10
+    enemyMaxShipCount: 5
     enemyModulePlacementProbability: 1
     enemyModulePerformanceProbability: 1
     enemyHullWeightNone: 60
@@ -6327,11 +6327,11 @@ MonoBehaviour:
       col: 5
       type: 3
       eventType: 0
-    enemyHullTierSum: 16
-    enemyBaseHullTier: 7
-    enemyMaxShipCount: 4
-    enemyModulePlacementProbability: 0.6
-    enemyModulePerformanceProbability: 0.6
+    enemyHullTierSum: 46
+    enemyBaseHullTier: 10
+    enemyMaxShipCount: 5
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
     enemyHullWeightNone: 60
     enemyHullWeightShield: 20
     enemyHullWeightInterceptor: 20
@@ -6417,11 +6417,11 @@ MonoBehaviour:
       col: 3
       type: 3
       eventType: 0
-    enemyHullTierSum: 16
-    enemyBaseHullTier: 7
-    enemyMaxShipCount: 4
-    enemyModulePlacementProbability: 0.7
-    enemyModulePerformanceProbability: 0.7
+    enemyHullTierSum: 47
+    enemyBaseHullTier: 10
+    enemyMaxShipCount: 5
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
     enemyHullWeightNone: 60
     enemyHullWeightShield: 20
     enemyHullWeightInterceptor: 20
@@ -6507,11 +6507,11 @@ MonoBehaviour:
       col: 6
       type: 3
       eventType: 0
-    enemyHullTierSum: 16
-    enemyBaseHullTier: 7
-    enemyMaxShipCount: 4
-    enemyModulePlacementProbability: 0.8
-    enemyModulePerformanceProbability: 0.8
+    enemyHullTierSum: 47
+    enemyBaseHullTier: 10
+    enemyMaxShipCount: 5
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
     enemyHullWeightNone: 60
     enemyHullWeightShield: 20
     enemyHullWeightInterceptor: 20
@@ -6597,11 +6597,11 @@ MonoBehaviour:
       col: 2
       type: 3
       eventType: 0
-    enemyHullTierSum: 16
-    enemyBaseHullTier: 7
-    enemyMaxShipCount: 4
-    enemyModulePlacementProbability: 0.9
-    enemyModulePerformanceProbability: 0.9
+    enemyHullTierSum: 48
+    enemyBaseHullTier: 10
+    enemyMaxShipCount: 5
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
     enemyHullWeightNone: 60
     enemyHullWeightShield: 20
     enemyHullWeightInterceptor: 20
@@ -6687,9 +6687,9 @@ MonoBehaviour:
       col: 1
       type: 3
       eventType: 0
-    enemyHullTierSum: 16
-    enemyBaseHullTier: 7
-    enemyMaxShipCount: 4
+    enemyHullTierSum: 48
+    enemyBaseHullTier: 10
+    enemyMaxShipCount: 5
     enemyModulePlacementProbability: 1
     enemyModulePerformanceProbability: 1
     enemyHullWeightNone: 50
@@ -6777,11 +6777,11 @@ MonoBehaviour:
       col: 1
       type: 3
       eventType: 0
-    enemyHullTierSum: 17
-    enemyBaseHullTier: 8
-    enemyMaxShipCount: 4
-    enemyModulePlacementProbability: 0.6
-    enemyModulePerformanceProbability: 0.6
+    enemyHullTierSum: 49
+    enemyBaseHullTier: 11
+    enemyMaxShipCount: 5
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
     enemyHullWeightNone: 50
     enemyHullWeightShield: 25
     enemyHullWeightInterceptor: 25
@@ -6867,11 +6867,11 @@ MonoBehaviour:
       col: 0
       type: 3
       eventType: 0
-    enemyHullTierSum: 17
-    enemyBaseHullTier: 8
-    enemyMaxShipCount: 4
-    enemyModulePlacementProbability: 0.7
-    enemyModulePerformanceProbability: 0.7
+    enemyHullTierSum: 49
+    enemyBaseHullTier: 11
+    enemyMaxShipCount: 5
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
     enemyHullWeightNone: 50
     enemyHullWeightShield: 25
     enemyHullWeightInterceptor: 25
@@ -6957,11 +6957,11 @@ MonoBehaviour:
       col: 4
       type: 3
       eventType: 0
-    enemyHullTierSum: 17
-    enemyBaseHullTier: 8
-    enemyMaxShipCount: 4
-    enemyModulePlacementProbability: 0.8
-    enemyModulePerformanceProbability: 0.8
+    enemyHullTierSum: 50
+    enemyBaseHullTier: 11
+    enemyMaxShipCount: 5
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
     enemyHullWeightNone: 50
     enemyHullWeightShield: 25
     enemyHullWeightInterceptor: 25
@@ -7047,11 +7047,11 @@ MonoBehaviour:
       col: 1
       type: 3
       eventType: 0
-    enemyHullTierSum: 17
-    enemyBaseHullTier: 8
-    enemyMaxShipCount: 4
-    enemyModulePlacementProbability: 0.9
-    enemyModulePerformanceProbability: 0.9
+    enemyHullTierSum: 50
+    enemyBaseHullTier: 11
+    enemyMaxShipCount: 5
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
     enemyHullWeightNone: 50
     enemyHullWeightShield: 25
     enemyHullWeightInterceptor: 25
@@ -7137,9 +7137,9 @@ MonoBehaviour:
       col: 2
       type: 3
       eventType: 0
-    enemyHullTierSum: 17
-    enemyBaseHullTier: 8
-    enemyMaxShipCount: 4
+    enemyHullTierSum: 51
+    enemyBaseHullTier: 11
+    enemyMaxShipCount: 5
     enemyModulePlacementProbability: 1
     enemyModulePerformanceProbability: 1
     enemyHullWeightNone: 50
@@ -7227,11 +7227,11 @@ MonoBehaviour:
       col: 5
       type: 3
       eventType: 0
-    enemyHullTierSum: 18
-    enemyBaseHullTier: 8
-    enemyMaxShipCount: 4
-    enemyModulePlacementProbability: 0.6
-    enemyModulePerformanceProbability: 0.6
+    enemyHullTierSum: 51
+    enemyBaseHullTier: 11
+    enemyMaxShipCount: 5
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
     enemyHullWeightNone: 50
     enemyHullWeightShield: 25
     enemyHullWeightInterceptor: 25
@@ -7317,11 +7317,11 @@ MonoBehaviour:
       col: 1
       type: 3
       eventType: 0
-    enemyHullTierSum: 18
-    enemyBaseHullTier: 8
-    enemyMaxShipCount: 4
-    enemyModulePlacementProbability: 0.7
-    enemyModulePerformanceProbability: 0.7
+    enemyHullTierSum: 52
+    enemyBaseHullTier: 11
+    enemyMaxShipCount: 5
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
     enemyHullWeightNone: 50
     enemyHullWeightShield: 25
     enemyHullWeightInterceptor: 25
@@ -7407,11 +7407,11 @@ MonoBehaviour:
       col: 4
       type: 3
       eventType: 0
-    enemyHullTierSum: 18
-    enemyBaseHullTier: 8
-    enemyMaxShipCount: 4
-    enemyModulePlacementProbability: 0.8
-    enemyModulePerformanceProbability: 0.8
+    enemyHullTierSum: 52
+    enemyBaseHullTier: 11
+    enemyMaxShipCount: 5
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
     enemyHullWeightNone: 50
     enemyHullWeightShield: 25
     enemyHullWeightInterceptor: 25
@@ -7497,11 +7497,11 @@ MonoBehaviour:
       col: 0
       type: 3
       eventType: 0
-    enemyHullTierSum: 18
-    enemyBaseHullTier: 8
-    enemyMaxShipCount: 4
-    enemyModulePlacementProbability: 0.9
-    enemyModulePerformanceProbability: 0.9
+    enemyHullTierSum: 53
+    enemyBaseHullTier: 11
+    enemyMaxShipCount: 5
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
     enemyHullWeightNone: 50
     enemyHullWeightShield: 25
     enemyHullWeightInterceptor: 25
@@ -7587,8 +7587,8 @@ MonoBehaviour:
       col: 6
       type: 3
       eventType: 0
-    enemyHullTierSum: 18
-    enemyBaseHullTier: 8
+    enemyHullTierSum: 53
+    enemyBaseHullTier: 11
     enemyMaxShipCount: 5
     enemyModulePlacementProbability: 1
     enemyModulePerformanceProbability: 1
@@ -7677,11 +7677,11 @@ MonoBehaviour:
       col: 0
       type: 3
       eventType: 0
-    enemyHullTierSum: 19
-    enemyBaseHullTier: 8
+    enemyHullTierSum: 54
+    enemyBaseHullTier: 12
     enemyMaxShipCount: 5
-    enemyModulePlacementProbability: 0.6
-    enemyModulePerformanceProbability: 0.6
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
     enemyHullWeightNone: 40
     enemyHullWeightShield: 25
     enemyHullWeightInterceptor: 25
@@ -7767,11 +7767,11 @@ MonoBehaviour:
       col: 0
       type: 3
       eventType: 0
-    enemyHullTierSum: 19
-    enemyBaseHullTier: 8
+    enemyHullTierSum: 54
+    enemyBaseHullTier: 12
     enemyMaxShipCount: 5
-    enemyModulePlacementProbability: 0.7
-    enemyModulePerformanceProbability: 0.7
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
     enemyHullWeightNone: 40
     enemyHullWeightShield: 25
     enemyHullWeightInterceptor: 25
@@ -7857,11 +7857,11 @@ MonoBehaviour:
       col: 6
       type: 3
       eventType: 0
-    enemyHullTierSum: 19
-    enemyBaseHullTier: 8
+    enemyHullTierSum: 55
+    enemyBaseHullTier: 12
     enemyMaxShipCount: 5
-    enemyModulePlacementProbability: 0.8
-    enemyModulePerformanceProbability: 0.8
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
     enemyHullWeightNone: 40
     enemyHullWeightShield: 25
     enemyHullWeightInterceptor: 25
@@ -7947,11 +7947,11 @@ MonoBehaviour:
       col: 1
       type: 3
       eventType: 0
-    enemyHullTierSum: 19
-    enemyBaseHullTier: 8
+    enemyHullTierSum: 55
+    enemyBaseHullTier: 12
     enemyMaxShipCount: 5
-    enemyModulePlacementProbability: 0.9
-    enemyModulePerformanceProbability: 0.9
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
     enemyHullWeightNone: 40
     enemyHullWeightShield: 25
     enemyHullWeightInterceptor: 25
@@ -8037,8 +8037,8 @@ MonoBehaviour:
       col: 0
       type: 3
       eventType: 0
-    enemyHullTierSum: 19
-    enemyBaseHullTier: 8
+    enemyHullTierSum: 56
+    enemyBaseHullTier: 12
     enemyMaxShipCount: 5
     enemyModulePlacementProbability: 1
     enemyModulePerformanceProbability: 1
@@ -8127,11 +8127,11 @@ MonoBehaviour:
       col: 2
       type: 3
       eventType: 0
-    enemyHullTierSum: 20
-    enemyBaseHullTier: 8
+    enemyHullTierSum: 56
+    enemyBaseHullTier: 12
     enemyMaxShipCount: 5
-    enemyModulePlacementProbability: 0.6
-    enemyModulePerformanceProbability: 0.6
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
     enemyHullWeightNone: 40
     enemyHullWeightShield: 25
     enemyHullWeightInterceptor: 25
@@ -8217,11 +8217,11 @@ MonoBehaviour:
       col: 1
       type: 3
       eventType: 0
-    enemyHullTierSum: 20
-    enemyBaseHullTier: 8
+    enemyHullTierSum: 57
+    enemyBaseHullTier: 12
     enemyMaxShipCount: 5
-    enemyModulePlacementProbability: 0.7
-    enemyModulePerformanceProbability: 0.7
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
     enemyHullWeightNone: 40
     enemyHullWeightShield: 25
     enemyHullWeightInterceptor: 25
@@ -8307,11 +8307,11 @@ MonoBehaviour:
       col: 1
       type: 3
       eventType: 0
-    enemyHullTierSum: 20
-    enemyBaseHullTier: 8
+    enemyHullTierSum: 57
+    enemyBaseHullTier: 12
     enemyMaxShipCount: 5
-    enemyModulePlacementProbability: 0.8
-    enemyModulePerformanceProbability: 0.8
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
     enemyHullWeightNone: 40
     enemyHullWeightShield: 25
     enemyHullWeightInterceptor: 25
@@ -8397,11 +8397,11 @@ MonoBehaviour:
       col: 0
       type: 3
       eventType: 0
-    enemyHullTierSum: 20
-    enemyBaseHullTier: 8
+    enemyHullTierSum: 58
+    enemyBaseHullTier: 12
     enemyMaxShipCount: 5
-    enemyModulePlacementProbability: 0.9
-    enemyModulePerformanceProbability: 0.9
+    enemyModulePlacementProbability: 1
+    enemyModulePerformanceProbability: 1
     enemyHullWeightNone: 40
     enemyHullWeightShield: 25
     enemyHullWeightInterceptor: 25
@@ -8487,8 +8487,8 @@ MonoBehaviour:
       col: 4
       type: 3
       eventType: 0
-    enemyHullTierSum: 20
-    enemyBaseHullTier: 8
+    enemyHullTierSum: 58
+    enemyBaseHullTier: 12
     enemyMaxShipCount: 5
     enemyModulePlacementProbability: 1
     enemyModulePerformanceProbability: 1
