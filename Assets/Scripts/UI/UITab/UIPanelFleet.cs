@@ -686,22 +686,33 @@ public class UIPanelFleet : UIPanelBase
         bool isInBattle = m_targetFleet != null && m_targetFleet.m_fleetState.IsBattleState();
         bool clickable = m_isReadOnlyMode == false && isInBattle == false;
 
+        List<ModuleInfo> beamList = actualModules != null ? actualModules.beams : null;
+        List<ModuleInfo> missileList = actualModules != null ? actualModules.missiles : null;
+        List<ModuleInfo> hangarList = actualModules != null ? actualModules.hangars : null;
+
         if (m_beamModuleIcons != null)
-            m_beamModuleIcons.SetStatus(BuildSupportedFlags(maxModuleSlots, maxSlots[0]), BuildInstalledFlags(maxModuleSlots, actualModules != null ? actualModules.beams : null), clickable);
+            m_beamModuleIcons.SetStatus(BuildSupportedFlags(maxModuleSlots, maxSlots[0]), BuildInstalledFlags(maxModuleSlots, beamList), BuildTierValues(maxModuleSlots, beamList), clickable);
         if (m_missileModuleIcons != null)
-            m_missileModuleIcons.SetStatus(BuildSupportedFlags(maxModuleSlots, maxSlots[1]), BuildInstalledFlags(maxModuleSlots, actualModules != null ? actualModules.missiles : null), clickable);
+            m_missileModuleIcons.SetStatus(BuildSupportedFlags(maxModuleSlots, maxSlots[1]), BuildInstalledFlags(maxModuleSlots, missileList), BuildTierValues(maxModuleSlots, missileList), clickable);
         if (m_hangarModuleIcons != null)
-            m_hangarModuleIcons.SetStatus(BuildSupportedFlags(maxModuleSlots, maxSlots[2]), BuildInstalledFlags(maxModuleSlots, actualModules != null ? actualModules.hangars : null), clickable);
+            m_hangarModuleIcons.SetStatus(BuildSupportedFlags(maxModuleSlots, maxSlots[2]), BuildInstalledFlags(maxModuleSlots, hangarList), BuildTierValues(maxModuleSlots, hangarList), clickable);
 
         if (m_etcModuleIcons != null)
         {
+            string shieldSubType = actualModules != null ? actualModules.shieldModuleSubType : null;
+            string interceptorSubType = actualModules != null ? actualModules.interceptorModuleSubType : null;
             bool[] etcSupported = { maxSlots[3] > 0, maxSlots[4] > 0 };
             bool[] etcInstalled =
             {
-                actualModules != null && string.IsNullOrEmpty(actualModules.shieldModuleSubType) == false,
-                actualModules != null && string.IsNullOrEmpty(actualModules.interceptorModuleSubType) == false,
+                string.IsNullOrEmpty(shieldSubType) == false,
+                string.IsNullOrEmpty(interceptorSubType) == false,
             };
-            m_etcModuleIcons.SetStatus(etcSupported, etcInstalled, clickable);
+            int[] etcTiers =
+            {
+                string.IsNullOrEmpty(shieldSubType) == false ? CommonUtility.ParseTier(shieldSubType) : 0,
+                string.IsNullOrEmpty(interceptorSubType) == false ? CommonUtility.ParseTier(interceptorSubType) : 0,
+            };
+            m_etcModuleIcons.SetStatus(etcSupported, etcInstalled, etcTiers, clickable);
         }
     }
 
@@ -769,6 +780,21 @@ public class UIPanelFleet : UIPanelBase
             int slotIndex = modules[i].slotIndex;
             if (slotIndex >= 0 && slotIndex < length)
                 result[slotIndex] = true;
+        }
+        return result;
+    }
+
+    // ModuleHullInfo의 슬롯별 엔트리 리스트를 슬롯 인덱스 기준 티어 배열로 변환 — 미장착 슬롯은 0
+    private static int[] BuildTierValues(int length, List<ModuleInfo> modules)
+    {
+        int[] result = new int[length];
+        if (modules == null) return result;
+
+        for (int i = 0; i < modules.Count; i++)
+        {
+            int slotIndex = modules[i].slotIndex;
+            if (slotIndex >= 0 && slotIndex < length)
+                result[slotIndex] = CommonUtility.ParseTier(modules[i].moduleSubType);
         }
         return result;
     }

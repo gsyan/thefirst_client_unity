@@ -137,6 +137,11 @@ MonoBehaviour:
     slotIndex: 0
     attackPoints: 0
     attackToFighterPoints: 0
+    fireRatePoints: 0
+    silencePoints: 0
+    ammoPoints: 0
+    healthPoints: 0
+    disruptPoints: 0
 --- !u!1 &394433234835611144
 GameObject:
   m_ObjectHideFlags: 0
@@ -740,7 +745,10 @@ MonoBehaviour:
     missiles: []
     hangars: []
     shieldModuleSubType: 
+    shieldGaugePoints: 0
+    shieldRegenRatePoints: 0
     interceptorModuleSubType: 
+    interceptorRegenRatePoints: 0
     currentHealth: 0
   m_moduleSlots: []
   m_beams: []
@@ -2544,6 +2552,11 @@ MonoBehaviour:
     slotIndex: 0
     attackPoints: 0
     attackToFighterPoints: 0
+    fireRatePoints: 0
+    silencePoints: 0
+    ammoPoints: 0
+    healthPoints: 0
+    disruptPoints: 0
 --- !u!1 &3745031840641328377
 GameObject:
   m_ObjectHideFlags: 0
@@ -3114,6 +3127,11 @@ MonoBehaviour:
     slotIndex: 0
     attackPoints: 0
     attackToFighterPoints: 0
+    fireRatePoints: 0
+    silencePoints: 0
+    ammoPoints: 0
+    healthPoints: 0
+    disruptPoints: 0
 --- !u!1 &4647764296463459644
 GameObject:
   m_ObjectHideFlags: 0
@@ -5585,6 +5603,11 @@ MonoBehaviour:
     slotIndex: 0
     attackPoints: 0
     attackToFighterPoints: 0
+    fireRatePoints: 0
+    silencePoints: 0
+    ammoPoints: 0
+    healthPoints: 0
+    disruptPoints: 0
 --- !u!1001 &1113413027590789095
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -45,7 +45,6 @@ public class UITacticsToggleRow : MonoBehaviour
         {
             if (m_usingImages[i] != null) foundUsingImageCount++;
         }
-        Debug.Log($"[TacticsRow] EnsureInitialized buttons={m_buttons.Length} usingImageFound={foundUsingImageCount} obj={name}");
     }
 
     private void OnButtonClicked(int idx)
@@ -53,18 +52,13 @@ public class UITacticsToggleRow : MonoBehaviour
         SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true);
 
         SpaceFleet myFleet = ObjectManager.Instance.GetMyFleet();
-        if (myFleet == null)
-        {
-            Debug.Log($"[TacticsRow] Click idx={idx} myFleet=null → 무시");
-            return;
-        }
-
+        if (myFleet == null) return;
+        
         int optionsBefore = myFleet.m_fleetInfo.tacticOptions;
         bool toggled = myFleet.TryToggleTactic(idx);
         int optionsAfter = myFleet.m_fleetInfo.tacticOptions;
         Commander commander = DataManager.Instance.m_currentCommander;
         string tacticPowerText = commander != null ? commander.GetTacticPower().ToString() : "commander=null";
-        Debug.Log($"[TacticsRow] Click idx={idx} toggled={toggled} options {optionsBefore}→{optionsAfter} tacticPower={tacticPowerText}");
     }
 
     private void OnTacticOptionsChanged(int options)
@@ -79,7 +73,6 @@ public class UITacticsToggleRow : MonoBehaviour
             }
             m_usingImages[i].SetActive((options & (1 << i)) != 0);
         }
-        Debug.Log($"[TacticsRow] OnTacticOptionsChanged options={options} nullUsingImage={nullUsingImageCount}");
     }
 
     // 패널이 뜰 때마다 호출 — 이벤트는 옵션이 실제로 바뀔 때만 발행되므로 현재 함대 상태로 직접 동기화
@@ -88,12 +81,8 @@ public class UITacticsToggleRow : MonoBehaviour
         EnsureInitialized();
 
         SpaceFleet myFleet = ObjectManager.Instance.GetMyFleet();
-        if (myFleet == null)
-        {
-            Debug.Log($"[TacticsRow] Refresh myFleet=null → 동기화 없이 return (프레임={Time.frameCount})");
-            return;
-        }
-
+        if (myFleet == null) return;
+        
         int shipCount = myFleet.m_ships.Count;
         int optionsBeforeClear = myFleet.m_fleetInfo.tacticOptions;
         CapabilityProfile fleetProfile = myFleet.GetFleetCapabilityProfile();
@@ -101,8 +90,7 @@ public class UITacticsToggleRow : MonoBehaviour
         bool hasShield = myFleet.HasAnyShieldEquipped();
         bool hasInterceptor = myFleet.HasAnyInterceptorEquipped();
         int availableMask = myFleet.GetAvailableTacticMask();
-        Debug.Log($"[TacticsRow] Refresh source={myFleet.m_fleetSource} ships={shipCount} options={optionsBeforeClear} availableMask={availableMask} repair={hasRepair} missileAttack={fleetProfile.missileAttack} airCount={fleetProfile.airCount} shield={hasShield} interceptor={hasInterceptor} (프레임={Time.frameCount})");
-
+        
         // 모듈이 없어진 전술 토글은 여기서 해제 — 해제 시 이벤트로 표시도 갱신되지만 변화가 없을 때를 위해 아래에서 직접 동기화
         myFleet.ClearUnavailableTactics();
         OnTacticOptionsChanged(myFleet.m_fleetInfo.tacticOptions);
