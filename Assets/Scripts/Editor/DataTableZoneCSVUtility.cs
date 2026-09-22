@@ -29,12 +29,12 @@ public static class DataTableZoneCSVUtility
     {
         const string path = "Assets/Resources/DataTable/Zone/datatable_zone_grid.csv";
         var sb = new StringBuilder();
-        sb.AppendLine("zone_index,grid_width,grid_height,enemy_hull_tier_sum,enemy_base_hull_tier,enemy_module_placement_probability,enemy_module_performance_probability,enemy_hull_weight_none,enemy_hull_weight_shield,enemy_hull_weight_interceptor,enemy_hull_weight_both,enemy_health_multiplier,enemy_attack_multiplier,enemy_wave_spawn_term_sec,exploration_point_reward,commander_exp_reward");
+        sb.AppendLine("zone_index,grid_width,grid_height,enemy_hull_tier_sum,enemy_base_hull_tier,enemy_max_ship_count,enemy_module_placement_probability,enemy_module_performance_probability,enemy_hull_weight_none,enemy_hull_weight_shield,enemy_hull_weight_interceptor,enemy_hull_weight_both,enemy_health_multiplier,enemy_attack_multiplier,enemy_wave_spawn_term_sec,exploration_point_reward,commander_exp_reward");
         foreach (ZoneConfig z in table.zoneList)
         {
             sb.AppendLine(
                 $"{z.zoneIndex},{z.gridWidth},{z.gridHeight}," +
-                $"{z.enemyHullTierSum},{z.enemyBaseHullTier}," +
+                $"{z.enemyHullTierSum},{z.enemyBaseHullTier},{z.enemyMaxShipCount}," +
                 $"{z.enemyModulePlacementProbability},{z.enemyModulePerformanceProbability}," +
                 $"{z.enemyHullWeightNone},{z.enemyHullWeightShield},{z.enemyHullWeightInterceptor},{z.enemyHullWeightBoth}," +
                 $"{z.enemyHealthMultiplier},{z.enemyAttackMultiplier},{z.enemyWaveSpawnTermSec}," +

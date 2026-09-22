@@ -3,7 +3,7 @@
 // 클라 전용 — 서버는 이 데이터를 쓰지 않음(셀 타입 기반 hasCombatCell 판정만 서버에 별도로 있음, ExplorationService.java)
 //
 // 티어합 분배: 이 셀 전체가 함체티어합(enemyHullTierSum) 하나의 예산을 공유하며, 이 예산을 다 쓸 때까지 함선이 계속 생성됨
-// (종료 조건은 오직 "예산 소진"뿐 — 특정 함선의 티어가 낮다고 멈추지 않음). 함대는 포메이션 슬롯 수(k_maxShipsPerFleet)마다 자동으로 나뉘고,
+// (종료 조건은 "예산 소진" 또는 "척수 상한(enemyMaxShipCount) 도달" 중 먼저 오는 쪽 — 특정 함선의 티어가 낮다고 멈추지 않음). 함대는 포메이션 슬롯 수(k_maxShipsPerFleet)마다 자동으로 나뉘고,
 // 새 함대가 시작될 때마다 그 함대의 1번 함선(기함)은 다시 enemyBaseHullTier를 목표로 삼음(남은 예산이 그보다 적으면 남은 예산 전부를 씀 —
 // 이 경우 그 함대는 그 한 척으로 끝남). 그 함대의 2번 함선부터는 남은 예산에서 랜덤(1~min(남은예산,데이터 최대치,그 함대 자신의 기함 티어))
 // 만큼 나눠 가짐 — "그 함대 자신의 기함 티어"로 캡을 거는 이유는, 예산 부족으로 기함이 enemyBaseHullTier보다 낮게 확정된 함대에서도
@@ -63,7 +63,7 @@ public static class ExplorationEnemyFleetGenerator
         int shipsInCurrentFleet = 0;
         int currentFleetFlagshipTier = 0;
 
-        while (remainingHullSum > 0)
+        while (remainingHullSum > 0 && ships.Count < zoneConfig.enemyMaxShipCount)
         {
             int hullTier;
             if (shipsInCurrentFleet == 0)

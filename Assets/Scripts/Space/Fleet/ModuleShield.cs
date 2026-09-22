@@ -90,6 +90,13 @@ public class ModuleShield : ModuleBase
         m_gauge = Mathf.Min(m_gaugeMax, m_gauge + m_regenRate);
     }
 
+    // 즉시효과 보상카드용 — 현재 게이지에 gaugeMax*healRatio만큼 가산(ApplyRegenTick과 달리 고정량이 아닌 비율)
+    public void HealGaugeByRatio(float healRatio)
+    {
+        if (healRatio <= 0f) return;
+        m_gauge = Mathf.Min(m_gaugeMax, m_gauge + m_gaugeMax * healRatio);
+    }
+
     // 함체 교체(SpaceShip.ApplyHealthRatio)/존런 퇴각·포기 롤백 시 호출 — 두 경우 모두 "진입 직전" 또는 "갓 생성된 새 함체" 기준이라 항상 풀게이지가 맞음
     public void ResetGaugeToFull()
     {

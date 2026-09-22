@@ -805,6 +805,22 @@ public class SpaceFleet : MonoBehaviour
         EventManager.Trigger_ShipUpdateHP();
     }
 
+    // 최대 게이지 대비 healRatio만큼 가산 회복(즉시효과 보상카드용) — 실드 미장착 함체는 스킵
+    public void HealShieldAllShipsByRatio(float healRatio)
+    {
+        if (healRatio <= 0f) return;
+        foreach (SpaceShip ship in m_ships)
+        {
+            if (ship == null) continue;
+            foreach (ModuleHull body in ship.m_moduleHulls)
+            {
+                if (body == null || body.m_shield == null) continue;
+                if (body.m_shield.IsEquipped() == false) continue;
+                body.m_shield.HealGaugeByRatio(healRatio);
+            }
+        }
+    }
+
     // 수리 전술 비용 계산용 — 체력비율(함선 단위 합산)이 1 미만인 함선 수. 상태 변경 없는 순수 카운트
     public int CountShipsNeedingRepair()
     {

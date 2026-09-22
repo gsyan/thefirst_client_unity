@@ -39,12 +39,6 @@ public class UITacticsToggleRow : MonoBehaviour
             Transform usingImage = m_buttons[idx].transform.Find("UsingImage");
             m_usingImages[idx] = usingImage != null ? usingImage.gameObject : null;
         }
-
-        int foundUsingImageCount = 0;
-        for (int i = 0; i < m_usingImages.Length; i++)
-        {
-            if (m_usingImages[i] != null) foundUsingImageCount++;
-        }
     }
 
     private void OnButtonClicked(int idx)
@@ -53,24 +47,15 @@ public class UITacticsToggleRow : MonoBehaviour
 
         SpaceFleet myFleet = ObjectManager.Instance.GetMyFleet();
         if (myFleet == null) return;
-        
-        int optionsBefore = myFleet.m_fleetInfo.tacticOptions;
-        bool toggled = myFleet.TryToggleTactic(idx);
-        int optionsAfter = myFleet.m_fleetInfo.tacticOptions;
-        Commander commander = DataManager.Instance.m_currentCommander;
-        string tacticPowerText = commander != null ? commander.GetTacticPower().ToString() : "commander=null";
+
+        myFleet.TryToggleTactic(idx);
     }
 
     private void OnTacticOptionsChanged(int options)
     {
-        int nullUsingImageCount = 0;
         for (int i = 0; i < m_usingImages.Length; i++)
         {
-            if (m_usingImages[i] == null)
-            {
-                nullUsingImageCount++;
-                continue;
-            }
+            if (m_usingImages[i] == null) continue;
             m_usingImages[i].SetActive((options & (1 << i)) != 0);
         }
     }
@@ -82,15 +67,7 @@ public class UITacticsToggleRow : MonoBehaviour
 
         SpaceFleet myFleet = ObjectManager.Instance.GetMyFleet();
         if (myFleet == null) return;
-        
-        int shipCount = myFleet.m_ships.Count;
-        int optionsBeforeClear = myFleet.m_fleetInfo.tacticOptions;
-        CapabilityProfile fleetProfile = myFleet.GetFleetCapabilityProfile();
-        bool hasRepair = myFleet.HasAnyRepairCapability();
-        bool hasShield = myFleet.HasAnyShieldEquipped();
-        bool hasInterceptor = myFleet.HasAnyInterceptorEquipped();
-        int availableMask = myFleet.GetAvailableTacticMask();
-        
+
         // 모듈이 없어진 전술 토글은 여기서 해제 — 해제 시 이벤트로 표시도 갱신되지만 변화가 없을 때를 위해 아래에서 직접 동기화
         myFleet.ClearUnavailableTactics();
         OnTacticOptionsChanged(myFleet.m_fleetInfo.tacticOptions);

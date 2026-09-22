@@ -131,6 +131,7 @@ public class DataTableZoneEditor : Editor
                 cellOverrides         = oldZone != null ? oldZone.cellOverrides         : new List<GridCellOverride>(),
                 enemyHullTierSum                 = oldZone != null ? oldZone.enemyHullTierSum                 : 6,
                 enemyBaseHullTier                = oldZone != null ? oldZone.enemyBaseHullTier                : 3,
+                enemyMaxShipCount                = oldZone != null ? oldZone.enemyMaxShipCount                : 9,
                 enemyModulePlacementProbability   = oldZone != null ? oldZone.enemyModulePlacementProbability   : 1f,
                 enemyModulePerformanceProbability = oldZone != null ? oldZone.enemyModulePerformanceProbability : 1f,
                 enemyHullWeightNone = oldZone != null ? oldZone.enemyHullWeightNone : 9f,
@@ -213,17 +214,18 @@ public class DataTableZoneEditor : Editor
             int.TryParse(col[2], out zc.gridHeight);
             int.TryParse(col[3], out zc.enemyHullTierSum);
             int.TryParse(col[4], out zc.enemyBaseHullTier);
-            float.TryParse(col[5], out zc.enemyModulePlacementProbability);
-            float.TryParse(col[6], out zc.enemyModulePerformanceProbability);
-            float.TryParse(col[7], out zc.enemyHullWeightNone);
-            float.TryParse(col[8], out zc.enemyHullWeightShield);
-            float.TryParse(col[9], out zc.enemyHullWeightInterceptor);
-            float.TryParse(col[10], out zc.enemyHullWeightBoth);
-            float.TryParse(col[11], out zc.enemyHealthMultiplier);
-            float.TryParse(col[12], out zc.enemyAttackMultiplier);
-            float.TryParse(col[13], out zc.enemyWaveSpawnTermSec);
-            int.TryParse(col[14], out zc.explorationPointReward);
-            int.TryParse(col[15], out zc.commanderExpReward);
+            int.TryParse(col[5], out zc.enemyMaxShipCount);
+            float.TryParse(col[6], out zc.enemyModulePlacementProbability);
+            float.TryParse(col[7], out zc.enemyModulePerformanceProbability);
+            float.TryParse(col[8], out zc.enemyHullWeightNone);
+            float.TryParse(col[9], out zc.enemyHullWeightShield);
+            float.TryParse(col[10], out zc.enemyHullWeightInterceptor);
+            float.TryParse(col[11], out zc.enemyHullWeightBoth);
+            float.TryParse(col[12], out zc.enemyHealthMultiplier);
+            float.TryParse(col[13], out zc.enemyAttackMultiplier);
+            float.TryParse(col[14], out zc.enemyWaveSpawnTermSec);
+            int.TryParse(col[15], out zc.explorationPointReward);
+            int.TryParse(col[16], out zc.commanderExpReward);
         }
         EditorUtility.SetDirty(m_dataTableZone);
         AssetDatabase.Refresh();
@@ -555,7 +557,7 @@ public class DataTableZoneEditor : Editor
             int startCol = rng.Next(0, width);
 
             ReachabilityResult reachability = PlaceObstacles(zoneConfig, width, height, startRow, startCol, rng);
-            (int escapeRow, int escapeCol) = PickEscapeCell(reachability, startRow, startCol, width, height, rng);
+            (int escapeRow, int escapeCol) = PickEscapeCell(zoneConfig, reachability, startRow, startCol, width, height, rng);
 
             zoneConfig.cellOverrides.Add(new GridCellOverride { row = startRow, col = startCol, type = EGridCellType.Start });
             zoneConfig.cellOverrides.Add(new GridCellOverride { row = escapeRow, col = escapeCol, type = EGridCellType.Escape });
@@ -641,7 +643,8 @@ public class DataTableZoneEditor : Editor
     }
 
     // Start 기준 BFS — 도달 가능한 Normal(비Blocked) 셀과 각 hop 거리를 반환
-    private ReachabilityResult ComputeReachability(ZoneConfig zoneConfig, int width, int height, int startRow, int startCol)
+    // absorbingCell을 지정하면 그 셀에서는 더 이상 인접 셀로 확장하지 않음 — 탈출 지점처럼 "도달하는 순간 진행이 끝나는" 흡수 상태를 모델링
+    private ReachabilityResult ComputeReachability(ZoneConfig zoneConfig, int width, int height, int startRow, int startCol, (int row, int col)? absorbingCell = null)
     {
         var result = new ReachabilityResult();
         var queue = new Queue<(int row, int col)>();
@@ -654,6 +657,8 @@ public class DataTableZoneEditor : Editor
         while (queue.Count > 0)
         {
             (int row, int col) current = queue.Dequeue();
+            if (absorbingCell.HasValue == true && current.Equals(absorbingCell.Value) == true) continue; // 흡수 셀 — 여기서 더 진행하지 않음
+
             int currentDist = result.distanceByCell[current];
 
             for (int i = 0; i < 4; i++)
@@ -675,8 +680,8 @@ public class DataTableZoneEditor : Editor
     }
 
     // 그리드 크기에 비례한 최소거리(minDist) ~ 실제 도달 가능 최대거리(maxDist) 사이에서 목표 거리를 랜덤으로 뽑고,
-    // 그 거리 이상인 도달 가능 셀 중 하나를 랜덤 선정 (항상 최장거리로 고정하면 예측 가능해져서 지양)
-    private (int row, int col) PickEscapeCell(ReachabilityResult reachability, int startRow, int startCol, int width, int height, System.Random rng)
+    // 그 거리 이상이면서 "안전한"(다른 셀을 고립시키지 않는) 도달 가능 셀 중 하나를 랜덤 선정 (항상 최장거리로 고정하면 예측 가능해져서 지양)
+    private (int row, int col) PickEscapeCell(ZoneConfig zoneConfig, ReachabilityResult reachability, int startRow, int startCol, int width, int height, System.Random rng)
     {
         int maxDist = 0;
         foreach (int dist in reachability.distanceByCell.Values)
@@ -688,17 +693,37 @@ public class DataTableZoneEditor : Editor
 
         int targetDist = rng.Next(minDist, maxDist + 1);
 
-        var eligibleCells = new List<(int row, int col)>();
+        // 탈출 지점은 도달하는 순간 런이 끝나는 흡수 상태 — 다른 셀이 이 지점을 거쳐야만 갈 수 있게 되면(고립) 안 되므로 안전한 후보만 남김
+        var safeCells = new List<(int row, int col)>();
         foreach (KeyValuePair<(int row, int col), int> entry in reachability.distanceByCell)
-            if (entry.Value >= targetDist && entry.Value > 0) // Start(거리 0) 자신은 Escape 후보에서 제외
-                eligibleCells.Add(entry.Key);
+        {
+            if (entry.Value <= 0) continue; // Start(거리 0) 자신은 Escape 후보에서 제외
+            if (IsSafeEscapeCandidate(zoneConfig, width, height, startRow, startCol, reachability, entry.Key) == false) continue;
+            safeCells.Add(entry.Key);
+        }
 
         // 그리드가 극단적으로 작아 Start 외 도달 가능한 셀이 없는 경우(1x1 등)의 안전장치
-        if (eligibleCells.Count == 0)
+        if (safeCells.Count == 0)
             return (startRow, startCol);
+
+        var eligibleCells = safeCells.FindAll(cell => reachability.distanceByCell[cell] >= targetDist);
+        if (eligibleCells.Count == 0)
+            eligibleCells = safeCells; // 목표 거리 이상인 안전 후보가 없으면 거리 제약을 풀고 안전 후보 전체에서 선정
 
         (int row, int col) picked = eligibleCells[rng.Next(0, eligibleCells.Count)];
         return picked;
+    }
+
+    // candidate를 Escape(흡수 상태)로 뒀을 때, 원래 도달 가능했던 다른 셀이 candidate를 거치지 않고는 갈 수 없게 되면(고립되면) false
+    private bool IsSafeEscapeCandidate(ZoneConfig zoneConfig, int width, int height, int startRow, int startCol, ReachabilityResult fullReachability, (int row, int col) candidate)
+    {
+        ReachabilityResult restricted = ComputeReachability(zoneConfig, width, height, startRow, startCol, candidate);
+        foreach ((int row, int col) cell in fullReachability.distanceByCell.Keys)
+        {
+            if (cell.Equals(candidate) == true) continue; // candidate 자신은 고립 판정 대상이 아님(그 자리에서 런이 끝나는 게 정상)
+            if (restricted.distanceByCell.ContainsKey(cell) == false) return false;
+        }
+        return true;
     }
 
     private static void ShuffleInPlace<T>(List<T> list, System.Random rng)
@@ -810,6 +835,7 @@ public class DataTableZoneEditor : Editor
         EditorGUILayout.LabelField("셀 적함대 절차적 생성 (티어합 분배)", EditorStyles.miniBoldLabel);
         zoneConfig.enemyHullTierSum = EditorGUILayout.IntField(new GUIContent("Hull Tier Sum", "이 셀 전체 함선들의 함체티어 총합 — 다 쓸 때까지 함선이 계속 생성되고, 9척마다 자동으로 새 함대(웨이브)로 나뉨"), zoneConfig.enemyHullTierSum);
         zoneConfig.enemyBaseHullTier = EditorGUILayout.IntField(new GUIContent("Base Hull Tier", "각 함대 1번 함선(기함)의 함체 티어 — 남은 예산이 이보다 적으면 남은 만큼만 씀"), zoneConfig.enemyBaseHullTier);
+        zoneConfig.enemyMaxShipCount = EditorGUILayout.IntField(new GUIContent("Enemy Max Ship Count", "이 셀 전체 적 함선 총 척수 상한 — 티어합 예산이 남아있어도 이 척수에 도달하면 생성 중단"), zoneConfig.enemyMaxShipCount);
         zoneConfig.enemyModulePlacementProbability = EditorGUILayout.Slider(new GUIContent("Module Placement Probability", "함체가 가진 모듈 슬롯 하나하나마다 이 확률로 장착/미장착 결정(0~1)"), zoneConfig.enemyModulePlacementProbability, 0f, 1f);
         zoneConfig.enemyModulePerformanceProbability = EditorGUILayout.Slider(new GUIContent("Module Performance Probability", "장착된 슬롯의 모듈 티어 정규분포 정점 위치 — [1,함체티어] 구간에서 이 값이 가리키는 지점에 확률이 몰림(1이면 정점이 함체티어 자체, 편차로 낮은 티어도 섞일 수 있음)"), zoneConfig.enemyModulePerformanceProbability, 0f, 1f);
         zoneConfig.enemyHullWeightNone = EditorGUILayout.FloatField(new GUIContent("Hull Weight - None", "실드/요격체 둘 다 없는 변형을 고를 상대 가중치 — 같은 티어에 실제 존재하는 변형들끼리 합을 정규화해서 적용(절대 확률 아님)"), zoneConfig.enemyHullWeightNone);
@@ -1077,7 +1103,39 @@ public class DataTableZoneEditor : Editor
         }
 
         if (IsPathConnected(zoneConfig, start.row, start.col, escape.row, escape.col) == false)
+        {
             EditorGUILayout.HelpBox("시작점에서 탈출점까지 갈 수 있는 경로가 없습니다 (Blocked 셀을 확인하세요).", MessageType.Error);
+            return;
+        }
+
+        // 탈출점은 도달하는 순간 런이 끝나는 흡수 상태 — 다른 셀이 탈출점을 거쳐야만 갈 수 있으면 그 셀은 영원히 클리어 불가능
+        List<(int row, int col)> orphanedCells = FindCellsOrphanedByEscape(zoneConfig, start.row, start.col, escape.row, escape.col);
+        if (orphanedCells.Count > 0)
+        {
+            string cellList = string.Join(", ", orphanedCells.ConvertAll(cell => $"{cell.row}-{cell.col}"));
+            EditorGUILayout.HelpBox(
+                $"탈출점({escape.row}-{escape.col})을 거치지 않고는 도달할 수 없는 셀이 있습니다: {cellList}\n" +
+                "탈출점은 도달 즉시 런이 끝나는 흡수 상태라 이 셀들은 어떤 런에서도 클리어할 수 없습니다.", MessageType.Error);
+        }
+    }
+
+    // escape를 흡수 상태로 뒀을 때, 원래 도달 가능했던 다른 셀 중 escape를 거치지 않고는 갈 수 없는 셀 목록
+    private List<(int row, int col)> FindCellsOrphanedByEscape(ZoneConfig zoneConfig, int startRow, int startCol, int escapeRow, int escapeCol)
+    {
+        int width = Mathf.Max(1, zoneConfig.gridWidth);
+        int height = Mathf.Max(1, zoneConfig.gridHeight);
+
+        ReachabilityResult full = ComputeReachability(zoneConfig, width, height, startRow, startCol);
+        ReachabilityResult restricted = ComputeReachability(zoneConfig, width, height, startRow, startCol, (escapeRow, escapeCol));
+
+        var orphaned = new List<(int row, int col)>();
+        foreach ((int row, int col) cell in full.distanceByCell.Keys)
+        {
+            if (cell.row == escapeRow && cell.col == escapeCol) continue;
+            if (restricted.distanceByCell.ContainsKey(cell) == false)
+                orphaned.Add(cell);
+        }
+        return orphaned;
     }
 
     private static bool IsPathConnected(ZoneConfig zoneConfig, int startRow, int startCol, int escapeRow, int escapeCol)

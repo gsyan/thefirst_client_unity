@@ -83,6 +83,7 @@ public class ZoneConfig
     [Header("셀 적함대 절차적 생성 (티어합 분배)")]
     public int enemyHullTierSum = 6;      // 이 셀 전체 함선들의 함체티어 총합 — 다 소진될 때까지 함선이 계속 생성됨(웨이브 개수는 9척마다 자동으로 나뉨)
     public int enemyBaseHullTier = 3;     // 1번 함선의 함체 티어(고정) — 이후 함선들은 enemyHullTierSum에서 이 값을 뺀 나머지를 나눠 가짐
+    public int enemyMaxShipCount = 9;     // 이 셀 전체 적 함선 총 척수 상한 — 티어합 예산이 남아있어도 이 척수에 도달하면 생성 중단
     public float enemyModulePlacementProbability = 1f;  // 함체가 가진 모듈 슬롯 하나하나마다 이 확률로 장착/미장착을 결정(0~1)
     public float enemyModulePerformanceProbability = 1f; // 장착이 확정된 슬롯의 모듈 티어 정규분포 정점 위치(0~1) — [1, 함체티어] 구간에서 이 값이 가리키는 지점에 확률이 몰림(1이면 정점이 함체티어 자체, 편차로 낮은 티어도 섞일 수 있음)
     public float enemyHullWeightNone = 9f;          // 실드/요격체 둘 다 없는 변형을 고를 상대 가중치

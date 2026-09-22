@@ -1166,7 +1166,13 @@ public class UIPanelExplorationGrid : UIPanelBase
             if (myFleet != null)
                 myFleet.HealAllShipsByRatio(card.value1);
         }
-        // Instant_ShieldHeal / Instant_InterceptorHeal — 실드/요격체 시스템이 아직 없어 향후 연결 예정(TODO)
+        else if (card.effectType == ECardEffectType.Instant_ShieldHeal)
+        {
+            SpaceFleet myFleet = ObjectManager.Instance.GetMyFleet();
+            if (myFleet != null)
+                myFleet.HealShieldAllShipsByRatio(card.value1);
+        }
+        // Instant_InterceptorHeal — 요격체 시스템이 아직 없어 향후 연결 예정(TODO)
 
         m_pendingBankedRewardGain.Add(EBankedRewardType.ExplorationPoint, explorationPointGainedFromCard);
     }
