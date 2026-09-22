@@ -65,7 +65,7 @@ public class DataTableRewardCardEditor : Editor
                 $"현재 데이터를 CSV 파일로 덮어씁니다.\n\n{csvPath}\n\n계속하시겠습니까?", "Export", "Cancel"))
             {
                 string csv = dataTable.ExportCsv();
-                System.IO.File.WriteAllText(csvPath, csv, System.Text.Encoding.UTF8);
+                System.IO.File.WriteAllText(csvPath, csv, new System.Text.UTF8Encoding(false)); // BOM 없이 저장 — 서버 Jackson 파서가 BOM을 문자로 오인해 파싱 실패함
 
                 AssetDatabase.Refresh();
                 EditorUtility.DisplayDialog("Complete", "CSV Export가 완료되었습니다.", "OK");
@@ -77,7 +77,7 @@ public class DataTableRewardCardEditor : Editor
         if (GUILayout.Button("Export 서버용 JSON"))
         {
             string serverJson = dataTable.ExportToServerJson();
-            System.IO.File.WriteAllText(serverJsonPath, serverJson, System.Text.Encoding.UTF8);
+            System.IO.File.WriteAllText(serverJsonPath, serverJson, new System.Text.UTF8Encoding(false)); // BOM 없이 저장 — 서버 Jackson 파서가 BOM을 문자로 오인해 파싱 실패함
             AssetDatabase.Refresh();
             EditorUtility.DisplayDialog("Complete", $"서버용 JSON Export가 완료되었습니다.\n{serverJsonPath}\n\n이 파일을 서버 src/main/resources/gamedata/ 폴더에 수동 배치해야 합니다.", "OK");
         }

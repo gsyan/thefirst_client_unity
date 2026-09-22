@@ -1171,6 +1171,14 @@ MonoBehaviour:
     m_Localized: Disrupt
     m_Metadata:
       m_Items: []
+  - m_Id: 82007686480003072
+    m_Localized: Tactic Power Recharge
+    m_Metadata:
+      m_Items: []
+  - m_Id: 82007686542917632
+    m_Localized: Restore {0:P0} of tactic power
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

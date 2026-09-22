@@ -435,6 +435,14 @@ MonoBehaviour:
     m_Key: RewardCard_InterceptorHeal_Desc
     m_Metadata:
       m_Items: []
+  - m_Id: 82007686480003072
+    m_Key: RewardCard_TacticPowerHeal_Name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 82007686542917632
+    m_Key: RewardCard_TacticPowerHeal_Desc
+    m_Metadata:
+      m_Items: []
   - m_Id: 66832217644335105
     m_Key: RewardCard_PointFlat_Name
     m_Metadata:
