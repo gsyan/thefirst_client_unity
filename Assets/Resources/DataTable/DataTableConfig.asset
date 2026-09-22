@@ -35,22 +35,22 @@ MonoBehaviour:
       maxModuleSlots: 6
       maxAttackReinforcePointsPerSlot: 10
       beam:
-        maxAttackBonusRatio: 0.5
+        attackPerPoint: 1
         maxCoolReductionRatio: 0.3
         attackCoolFloor: 0.5
       missile:
-        maxAttackBonusRatio: 0.5
+        attackPerPoint: 1
         maxCoolReductionRatio: 0.3
         attackCoolFloor: 0.5
-        maxSilenceBonusRatio: 0.5
+        silenceTimePerPoint: 0
       hangar:
-        maxAttackBonusRatio: 0.5
+        attackPerPoint: 0.1
         ammoPerPoint: 1
         maxHealthBonusRatio: 0.5
-        maxDisruptBonusRatio: 0.5
+        disruptPerPoint: 0
       shield:
-        maxGaugeBonusRatio: 0.5
-        maxRegenBonusRatio: 0.5
+        gaugePerPoint: 10
+        regenRatePerPoint: 0.1
       interceptor:
         maxRegenTimeReductionRatio: 0.5
   exportedJson: "{\r\n  \"general\": {\r\n    \"commandPowerMaxInit\": 400,\r\n   
@@ -61,12 +61,12 @@ MonoBehaviour:
     1,\r\n    \"tacticHangerCost\": 1,\r\n    \"tacticShieldCost\": 10,\r\n    \"tacticInterceptorCost\":
     10\r\n  },\r\n  \"exploration\": {\r\n    \"rewardCardRerollLimit\": 10\r\n 
     },\r\n  \"shipStatFormula\": {\r\n    \"maxModuleSlots\": 6,\r\n    \"maxAttackReinforcePointsPerSlot\":
-    10,\r\n    \"beam\": {\r\n      \"maxAttackBonusRatio\": 0.5,\r\n      \"maxCoolReductionRatio\":
+    10,\r\n    \"beam\": {\r\n      \"attackPerPoint\": 1.0,\r\n      \"maxCoolReductionRatio\":
     0.3,\r\n      \"attackCoolFloor\": 0.5\r\n    },\r\n    \"missile\": {\r\n     
-    \"maxAttackBonusRatio\": 0.5,\r\n      \"maxCoolReductionRatio\": 0.3,\r\n     
-    \"attackCoolFloor\": 0.5,\r\n      \"maxSilenceBonusRatio\": 0.5\r\n    },\r\n   
-    \"hangar\": {\r\n      \"maxAttackBonusRatio\": 0.5,\r\n      \"ammoPerPoint\":
-    1,\r\n      \"maxHealthBonusRatio\": 0.5,\r\n      \"maxDisruptBonusRatio\":
-    0.5\r\n    },\r\n    \"shield\": {\r\n      \"maxGaugeBonusRatio\": 0.5,\r\n     
-    \"maxRegenBonusRatio\": 0.5\r\n    },\r\n    \"interceptor\": {\r\n      \"maxRegenTimeReductionRatio\":
-    0.5\r\n    }\r\n  }\r\n}"
+    \"attackPerPoint\": 1.0,\r\n      \"maxCoolReductionRatio\": 0.3,\r\n      \"attackCoolFloor\":
+    0.5,\r\n      \"silenceTimePerPoint\": 0.0\r\n    },\r\n    \"hangar\": {\r\n     
+    \"attackPerPoint\": 0.1,\r\n      \"ammoPerPoint\": 1,\r\n      \"maxHealthBonusRatio\":
+    0.5,\r\n      \"disruptPerPoint\": 0.0\r\n    },\r\n    \"shield\": {\r\n     
+    \"gaugePerPoint\": 10.0,\r\n      \"regenRatePerPoint\": 0.1\r\n    },\r\n   
+    \"interceptor\": {\r\n      \"maxRegenTimeReductionRatio\": 0.5\r\n    }\r\n 
+    }\r\n}"
