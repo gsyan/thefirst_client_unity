@@ -42,12 +42,12 @@ MonoBehaviour:
         attackPerPoint: 1
         maxCoolReductionRatio: 0.3
         attackCoolFloor: 0.5
-        silenceTimePerPoint: 0
+        silenceTimePerPoint: 0.1
       hangar:
         attackPerPoint: 0.1
         ammoPerPoint: 1
         maxHealthBonusRatio: 0.5
-        disruptPerPoint: 0
+        disruptPerPoint: 0.005
       shield:
         gaugePerPoint: 10
         regenRatePerPoint: 0.1
