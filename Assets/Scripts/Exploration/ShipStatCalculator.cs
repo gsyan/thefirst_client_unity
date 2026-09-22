@@ -27,10 +27,10 @@ public static class ShipStatCalculator
         stats.repair = baseRepair;
 
         CalculateWeaponSlots(moduleTable, allocation.beamModuleSubType, allocation.beamAttackPoints, allocation.beamFireRatePoints,
-            formula, formula.beam.maxAttackBonusRatio, formula.beam.maxCoolReductionRatio, formula.beam.attackCoolFloor,
+            formula, formula.beam.attackPerPoint, formula.beam.maxCoolReductionRatio, formula.beam.attackCoolFloor,
             out stats.beamAttacks, out stats.beamAttackCools, out stats.beamProjectileSpeeds, out stats.beamModuleSubType);
         CalculateWeaponSlots(moduleTable, allocation.missileModuleSubType, allocation.missileAttackPoints, allocation.missileFireRatePoints,
-            formula, formula.missile.maxAttackBonusRatio, formula.missile.maxCoolReductionRatio, formula.missile.attackCoolFloor,
+            formula, formula.missile.attackPerPoint, formula.missile.maxCoolReductionRatio, formula.missile.attackCoolFloor,
             out stats.missileAttacks, out stats.missileAttackCools, out stats.missileProjectileSpeeds, out stats.missileModuleSubType);
         stats.missileSilenceTimes = CalculateMissileSilenceSlots(moduleTable, allocation.missileModuleSubType, allocation.missileSilencePoints, formula);
 
@@ -52,7 +52,13 @@ public static class ShipStatCalculator
         return stats;
     }
 
-    // 강화 공식 공용 — 최종값 = 기본값 × (1 + 상한 도달 시 증가비율 × 투자포인트 / 슬롯 상한). 성능 표시/강화 팝업/전투 모듈이 모두 이 함수를 사용
+    // 고정 증가 강화 공용 — 최종값 = 기본값 + 투자포인트 × 포인트당 증가량. 기본값이 티어에 따라 달라지는 축(공격력/침묵/교란/실드)에 사용
+    public static float ComputeReinforcedFlat(float baseValue, int points, float perPoint)
+    {
+        return baseValue + points * perPoint;
+    }
+
+    // 비율 강화 공용 — 최종값 = 기본값 × (1 + 상한 도달 시 증가비율 × 투자포인트 / 슬롯 상한). 기본값이 티어와 무관한 축(함재기 체력)에 사용
     public static float ComputeBoostedValue(float baseValue, int points, float maxBonusRatio, ShipStatFormulaSettings formula)
     {
         int maxPoints = formula.maxAttackReinforcePointsPerSlot;
@@ -81,12 +87,12 @@ public static class ShipStatCalculator
 
     public static float ComputeShieldGauge(float baseGauge, int points, ShipStatFormulaSettings formula)
     {
-        return ComputeBoostedValue(baseGauge, points, formula.shield.maxGaugeBonusRatio, formula);
+        return ComputeReinforcedFlat(baseGauge, points, formula.shield.gaugePerPoint);
     }
 
     public static float ComputeShieldRegenRate(float baseRegenRate, int points, ShipStatFormulaSettings formula)
     {
-        return ComputeBoostedValue(baseRegenRate, points, formula.shield.maxRegenBonusRatio, formula);
+        return ComputeReinforcedFlat(baseRegenRate, points, formula.shield.regenRatePerPoint);
     }
 
     // 요격체 회복시간(1기 생성에 걸리는 초) — 강화할수록 짧아짐. 하한 0(감소 비율이 1 미만이면 0에 도달하지 않음)
@@ -105,7 +111,7 @@ public static class ShipStatCalculator
     // 빔/미사일 공용 계산 — 슬롯당 공격력/연사력(쿨다운) 강화. 출력 배열은 슬롯 인덱스와 1:1(빈 슬롯은 0, 서브타입 "")
     // 기본 수치(공격력/쿨다운/발사체속도)는 장착된 서브타입의 DataTableModule 원본값에서 조회 — 발사체속도는 강화 대상 아님
     private static void CalculateWeaponSlots(DataTableModule moduleTable, string[] moduleSubType, int[] attackPoints, int[] fireRatePoints,
-        ShipStatFormulaSettings formula, float maxAttackBonusRatio, float maxCoolReductionRatio, float attackCoolFloor,
+        ShipStatFormulaSettings formula, float attackPerPoint, float maxCoolReductionRatio, float attackCoolFloor,
         out float[] attacks, out float[] attackCools, out float[] projectileSpeeds, out string[] slotSubType)
     {
         int slotCount = moduleSubType.Length;
@@ -124,7 +130,7 @@ public static class ShipStatCalculator
             float baseAttackCool = moduleData != null ? moduleData.attackCool : 0f;
             float baseProjectileSpeed = moduleData != null ? moduleData.speed : 0f;
 
-            attacks[i] = ComputeBoostedValue(baseAttack, GetAt(attackPoints, i), maxAttackBonusRatio, formula);
+            attacks[i] = ComputeReinforcedFlat(baseAttack, GetAt(attackPoints, i), attackPerPoint);
             attackCools[i] = ComputeReducedCooldown(baseAttackCool, GetAt(fireRatePoints, i), maxCoolReductionRatio, attackCoolFloor, formula);
             projectileSpeeds[i] = baseProjectileSpeed;
             slotSubType[i] = moduleSubType[i];
@@ -140,7 +146,7 @@ public static class ShipStatCalculator
             if (string.IsNullOrEmpty(moduleSubType[i])) continue;
             ModuleData moduleData = GetModuleData(moduleTable, moduleSubType[i]);
             float baseSilenceTime = moduleData != null ? moduleData.silenceTime : 0f;
-            result[i] = ComputeBoostedValue(baseSilenceTime, GetAt(silencePoints, i), formula.missile.maxSilenceBonusRatio, formula);
+            result[i] = ComputeReinforcedFlat(baseSilenceTime, GetAt(silencePoints, i), formula.missile.silenceTimePerPoint);
         }
         return result;
     }
@@ -174,12 +180,12 @@ public static class ShipStatCalculator
             float baseAmmo = hangarModuleData != null ? hangarModuleData.airAmmo : 0f;
             float baseHealth = hangarModuleData != null ? hangarModuleData.airHealth : 0f;
 
-            shipAttacks[i] = ComputeBoostedValue(baseShipAttack, allocation.hangarAttackToShip[i], formula.hangar.maxAttackBonusRatio, formula);
-            fighterAttacks[i] = ComputeBoostedValue(baseFighterAttack, allocation.hangarAttackToFighter[i], formula.hangar.maxAttackBonusRatio, formula);
+            shipAttacks[i] = ComputeReinforcedFlat(baseShipAttack, allocation.hangarAttackToShip[i], formula.hangar.attackPerPoint);
+            fighterAttacks[i] = ComputeReinforcedFlat(baseFighterAttack, allocation.hangarAttackToFighter[i], formula.hangar.attackPerPoint);
             ammos[i] = ComputeReinforcedAmmo(baseAmmo, allocation.hangarAmmoPoints[i], formula);
             healths[i] = ComputeBoostedValue(baseHealth, allocation.hangarHealthPoints[i], formula.hangar.maxHealthBonusRatio, formula);
             float baseDisrupt = hangarModuleData != null ? hangarModuleData.airDisrupt : 0f;
-            airDisrupts[i] = ComputeBoostedValue(baseDisrupt, allocation.hangarDisruptPoints[i], formula.hangar.maxDisruptBonusRatio, formula);
+            airDisrupts[i] = ComputeReinforcedFlat(baseDisrupt, allocation.hangarDisruptPoints[i], formula.hangar.disruptPerPoint);
             slotSubType[i] = allocation.hangarModuleSubType[i];
         }
     }

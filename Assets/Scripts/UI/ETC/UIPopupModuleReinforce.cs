@@ -285,16 +285,16 @@ public class UIPopupModuleReinforce : UIPopupBase
         {
             float baseAttack = moduleData != null ? moduleData.attack : 0f;
             float baseAttackCool = moduleData != null ? moduleData.attackCool : 0f;
-            float maxAttackBonusRatio = m_moduleType == EModuleType.beam ? formula.beam.maxAttackBonusRatio : formula.missile.maxAttackBonusRatio;
+            float attackPerPoint = m_moduleType == EModuleType.beam ? formula.beam.attackPerPoint : formula.missile.attackPerPoint;
             float maxCoolReductionRatio = m_moduleType == EModuleType.beam ? formula.beam.maxCoolReductionRatio : formula.missile.maxCoolReductionRatio;
             float attackCoolFloor = m_moduleType == EModuleType.beam ? formula.beam.attackCoolFloor : formula.missile.attackCoolFloor;
 
-            if (label == "Attack") return ShipStatCalculator.ComputeBoostedValue(baseAttack, points, maxAttackBonusRatio, formula);
+            if (label == "Attack") return ShipStatCalculator.ComputeReinforcedFlat(baseAttack, points, attackPerPoint);
             if (label == "Fire Rate") return ShipStatCalculator.ComputeReducedCooldown(baseAttackCool, points, maxCoolReductionRatio, attackCoolFloor, formula);
             if (label == "Silence Time" && m_moduleType == EModuleType.missile)
             {
                 float baseSilenceTime = moduleData != null ? moduleData.silenceTime : 0f;
-                return ShipStatCalculator.ComputeBoostedValue(baseSilenceTime, points, formula.missile.maxSilenceBonusRatio, formula);
+                return ShipStatCalculator.ComputeReinforcedFlat(baseSilenceTime, points, formula.missile.silenceTimePerPoint);
             }
         }
         else if (m_moduleType == EModuleType.hangar)
@@ -305,11 +305,11 @@ public class UIPopupModuleReinforce : UIPopupBase
             float baseHealth = moduleData != null ? moduleData.airHealth : 0f;
             float baseDisrupt = moduleData != null ? moduleData.airDisrupt : 0f;
 
-            if (label == "Attack To Ship") return ShipStatCalculator.ComputeBoostedValue(baseShipAttack, points, formula.hangar.maxAttackBonusRatio, formula);
-            if (label == "Attack To Fighter") return ShipStatCalculator.ComputeBoostedValue(baseFighterAttack, points, formula.hangar.maxAttackBonusRatio, formula);
+            if (label == "Attack To Ship") return ShipStatCalculator.ComputeReinforcedFlat(baseShipAttack, points, formula.hangar.attackPerPoint);
+            if (label == "Attack To Fighter") return ShipStatCalculator.ComputeReinforcedFlat(baseFighterAttack, points, formula.hangar.attackPerPoint);
             if (label == "Ammo") return ShipStatCalculator.ComputeReinforcedAmmo(baseAmmo, points, formula);
             if (label == "Health") return ShipStatCalculator.ComputeBoostedValue(baseHealth, points, formula.hangar.maxHealthBonusRatio, formula);
-            if (label == "Disrupt") return ShipStatCalculator.ComputeBoostedValue(baseDisrupt, points, formula.hangar.maxDisruptBonusRatio, formula);
+            if (label == "Disrupt") return ShipStatCalculator.ComputeReinforcedFlat(baseDisrupt, points, formula.hangar.disruptPerPoint);
         }
         else if (m_moduleType == EModuleType.shield)
         {
