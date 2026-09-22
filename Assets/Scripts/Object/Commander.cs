@@ -93,6 +93,14 @@ public class Commander
         EventManager.Trigger_TacticPowerChanged(m_commanderInfo.tacticPower, m_commanderInfo.tacticPowerMax);
     }
 
+    // 최대 전술력 대비 healRatio만큼 가산 회복(즉시효과 보상카드용)
+    public void HealTacticPowerByRatio(float healRatio)
+    {
+        if (healRatio <= 0f || m_commanderInfo == null) return;
+        m_commanderInfo.tacticPower = UnityEngine.Mathf.Min(m_commanderInfo.tacticPowerMax, m_commanderInfo.tacticPower + UnityEngine.Mathf.RoundToInt(m_commanderInfo.tacticPowerMax * healRatio));
+        EventManager.Trigger_TacticPowerChanged(m_commanderInfo.tacticPower, m_commanderInfo.tacticPowerMax);
+    }
+
     public int GetAchievementPoint()
     {
         if (m_commanderInfo == null) return 0;

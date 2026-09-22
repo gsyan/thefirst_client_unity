@@ -360,12 +360,44 @@
     "weight": 2
   },
   {
-    "cardId": "card_health_heal",
+    "cardId": "card_health_heal_10per",
+    "effectType": "Instant_HealthHeal",
+    "isPersistent": false,
+    "value1": 0.1,
+    "value2": 0.0,
+    "weight": 20
+  },
+  {
+    "cardId": "card_health_heal_20per",
     "effectType": "Instant_HealthHeal",
     "isPersistent": false,
     "value1": 0.2,
     "value2": 0.0,
+    "weight": 15
+  },
+  {
+    "cardId": "card_health_heal_30per",
+    "effectType": "Instant_HealthHeal",
+    "isPersistent": false,
+    "value1": 0.3,
+    "value2": 0.0,
     "weight": 10
+  },
+  {
+    "cardId": "card_health_heal_40per",
+    "effectType": "Instant_HealthHeal",
+    "isPersistent": false,
+    "value1": 0.4,
+    "value2": 0.0,
+    "weight": 5
+  },
+  {
+    "cardId": "card_health_heal_50per",
+    "effectType": "Instant_HealthHeal",
+    "isPersistent": false,
+    "value1": 0.5,
+    "value2": 0.0,
+    "weight": 2
   },
   {
     "cardId": "card_shield_heal",
@@ -382,6 +414,46 @@
     "value1": 1.0,
     "value2": 0.0,
     "weight": 8
+  },
+  {
+    "cardId": "card_tactic_power_heal_10per",
+    "effectType": "Instant_TacticPowerHeal",
+    "isPersistent": false,
+    "value1": 0.1,
+    "value2": 0.0,
+    "weight": 20
+  },
+  {
+    "cardId": "card_tactic_power_heal_20per",
+    "effectType": "Instant_TacticPowerHeal",
+    "isPersistent": false,
+    "value1": 0.2,
+    "value2": 0.0,
+    "weight": 15
+  },
+  {
+    "cardId": "card_tactic_power_heal_30per",
+    "effectType": "Instant_TacticPowerHeal",
+    "isPersistent": false,
+    "value1": 0.3,
+    "value2": 0.0,
+    "weight": 10
+  },
+  {
+    "cardId": "card_tactic_power_heal_40per",
+    "effectType": "Instant_TacticPowerHeal",
+    "isPersistent": false,
+    "value1": 0.4,
+    "value2": 0.0,
+    "weight": 5
+  },
+  {
+    "cardId": "card_tactic_power_heal_50per",
+    "effectType": "Instant_TacticPowerHeal",
+    "isPersistent": false,
+    "value1": 0.5,
+    "value2": 0.0,
+    "weight": 2
   },
   {
     "cardId": "card_point_flat",

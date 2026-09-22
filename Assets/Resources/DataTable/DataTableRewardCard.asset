@@ -463,7 +463,17 @@ MonoBehaviour:
     value1: 0.05
     value2: 0
     weight: 2
-  - cardId: card_health_heal
+  - cardId: card_health_heal_10per
+    nameKey: RewardCard_HealthHeal_Name
+    descKey: RewardCard_HealthHeal_Desc
+    iconName: auto-repair
+    rarity: 1
+    effectType: 9
+    isPersistent: 0
+    value1: 0.1
+    value2: 0
+    weight: 20
+  - cardId: card_health_heal_20per
     nameKey: RewardCard_HealthHeal_Name
     descKey: RewardCard_HealthHeal_Desc
     iconName: auto-repair
@@ -472,7 +482,37 @@ MonoBehaviour:
     isPersistent: 0
     value1: 0.2
     value2: 0
+    weight: 15
+  - cardId: card_health_heal_30per
+    nameKey: RewardCard_HealthHeal_Name
+    descKey: RewardCard_HealthHeal_Desc
+    iconName: auto-repair
+    rarity: 2
+    effectType: 9
+    isPersistent: 0
+    value1: 0.3
+    value2: 0
     weight: 10
+  - cardId: card_health_heal_40per
+    nameKey: RewardCard_HealthHeal_Name
+    descKey: RewardCard_HealthHeal_Desc
+    iconName: auto-repair
+    rarity: 2
+    effectType: 9
+    isPersistent: 0
+    value1: 0.4
+    value2: 0
+    weight: 5
+  - cardId: card_health_heal_50per
+    nameKey: RewardCard_HealthHeal_Name
+    descKey: RewardCard_HealthHeal_Desc
+    iconName: auto-repair
+    rarity: 3
+    effectType: 9
+    isPersistent: 0
+    value1: 0.5
+    value2: 0
+    weight: 2
   - cardId: card_shield_heal
     nameKey: RewardCard_ShieldHeal_Name
     descKey: RewardCard_ShieldHeal_Desc
@@ -493,6 +533,56 @@ MonoBehaviour:
     value1: 1
     value2: 0
     weight: 8
+  - cardId: card_tactic_power_heal_10per
+    nameKey: RewardCard_TacticPowerHeal_Name
+    descKey: RewardCard_TacticPowerHeal_Desc
+    iconName: lightning-spanner
+    rarity: 1
+    effectType: 13
+    isPersistent: 0
+    value1: 0.1
+    value2: 0
+    weight: 20
+  - cardId: card_tactic_power_heal_20per
+    nameKey: RewardCard_TacticPowerHeal_Name
+    descKey: RewardCard_TacticPowerHeal_Desc
+    iconName: lightning-spanner
+    rarity: 1
+    effectType: 13
+    isPersistent: 0
+    value1: 0.2
+    value2: 0
+    weight: 15
+  - cardId: card_tactic_power_heal_30per
+    nameKey: RewardCard_TacticPowerHeal_Name
+    descKey: RewardCard_TacticPowerHeal_Desc
+    iconName: lightning-spanner
+    rarity: 2
+    effectType: 13
+    isPersistent: 0
+    value1: 0.3
+    value2: 0
+    weight: 10
+  - cardId: card_tactic_power_heal_40per
+    nameKey: RewardCard_TacticPowerHeal_Name
+    descKey: RewardCard_TacticPowerHeal_Desc
+    iconName: lightning-spanner
+    rarity: 2
+    effectType: 13
+    isPersistent: 0
+    value1: 0.4
+    value2: 0
+    weight: 5
+  - cardId: card_tactic_power_heal_50per
+    nameKey: RewardCard_TacticPowerHeal_Name
+    descKey: RewardCard_TacticPowerHeal_Desc
+    iconName: lightning-spanner
+    rarity: 3
+    effectType: 13
+    isPersistent: 0
+    value1: 0.5
+    value2: 0
+    weight: 2
   - cardId: card_point_flat
     nameKey: RewardCard_PointFlat_Name
     descKey: RewardCard_PointFlat_Desc

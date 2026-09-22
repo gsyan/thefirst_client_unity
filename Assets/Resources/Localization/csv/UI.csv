@@ -114,6 +114,8 @@ RewardCard_ShieldHeal_Name,,Shield Recharge,실드 회복
 RewardCard_ShieldHeal_Desc,,Restore {0:P0} of shield,실드 {0:P0} 회복
 RewardCard_InterceptorHeal_Name,,Interceptor Resupply,요격체 회복
 RewardCard_InterceptorHeal_Desc,,Restore {0:P0} of interceptors,요격체 {0:P0} 회복
+RewardCard_TacticPowerHeal_Name,,Tactic Power Recharge,전술력 회복
+RewardCard_TacticPowerHeal_Desc,,Restore {0:P0} of tactic power,전술력 {0:P0} 회복
 RewardCard_PointFlat_Name,,Exploration Point Bonus,탐험 포인트 획득
 RewardCard_PointFlat_Desc,,Exploration Point +{0:F0},탐험 포인트 +{0:F0}
 UIAvailableHullRow_Name,,Name:,이름:

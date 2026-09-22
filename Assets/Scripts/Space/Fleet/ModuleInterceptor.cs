@@ -138,6 +138,27 @@ public class ModuleInterceptor : ModuleBase
         }
     }
 
+    // 즉시효과 보상카드(Instant_InterceptorHeal)용 — 최대 슬롯수 대비 healRatio만큼 가산해서 빈 슬롯을 즉시 채움.
+    // 자연 회복(ApplyRegenTick)과 달리 m_tacticOn이 꺼져 있어도 채워짐(다른 Instant_ 카드들과 동일하게 토글 무관 즉시 적용)
+    public void HealSlotsByRatio(float healRatio)
+    {
+        if (healRatio <= 0f || m_slots == null || m_maxCount <= 0) return;
+
+        int currentFilled = 0;
+        for (int i = 0; i < m_slots.Length; i++)
+            if (m_slots[i] != null) currentFilled++;
+
+        int targetFilled = Mathf.Min(m_maxCount, currentFilled + Mathf.RoundToInt(m_maxCount * healRatio));
+        int remainToFill = targetFilled - currentFilled;
+
+        for (int i = 0; i < m_slots.Length && remainToFill > 0; i++)
+        {
+            if (m_slots[i] != null) continue;
+            SpawnInterceptorUnitAt(i);
+            remainToFill--;
+        }
+    }
+
     // 요격 성공 시 InterceptorUnit이 스스로 호출 — 자리를 비움(리필은 다음 ApplyRegenTick에서 처리)
     public void OnUnitConsumed(int index)
     {

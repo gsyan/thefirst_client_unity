@@ -143,5 +143,6 @@ public enum ECardEffectType
     Instant_ShieldHeal,           // 즉시효과: 실드 value1 비율만큼 회복
     Instant_InterceptorHeal,      // 즉시효과: 요격체 value1 비율만큼 회복
     Instant_ExplorationPointFlat, // 즉시효과: 탐험 포인트 +value1 가산(비율 버프보다 먼저 적용)
+    Instant_TacticPowerHeal,      // 즉시효과: 전술력 value1 비율만큼 회복 — 기존 값 뒤에 추가(에셋에 effectType이 정수로 직렬화되어 있어 순서 삽입 금지)
 }
 #endregion
