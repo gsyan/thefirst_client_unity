@@ -96,7 +96,7 @@ public class InfiniteScrollView : MonoBehaviour
         }
     }
 
-    // 전체 개수 변경 시 (서버에서 totalCount 갱신됐을 때)
+    // 전체 개수 변경 시 (서버에서 totalCount 갱신됐을 때) — Initialize와 달리 스크롤 위치는 유지
     public void UpdateTotalCount(int totalCount)
     {
         if (m_initialized == false) return;
@@ -106,6 +106,12 @@ public class InfiniteScrollView : MonoBehaviour
             m_scrollRect.content.sizeDelta.x,
             totalCount * itemStep - m_spacing + m_paddingTop + m_paddingBottom
         );
+
+        // 개수가 줄어 content가 짧아졌을 때 현재 스크롤 위치가 새 끝을 넘지 않도록 보정(위치 자체는 유지)
+        float maxScrollY = Mathf.Max(0f, m_scrollRect.content.sizeDelta.y - m_scrollRect.viewport.rect.height);
+        if (m_scrollRect.content.anchoredPosition.y > maxScrollY)
+            m_scrollRect.content.anchoredPosition = new Vector2(m_scrollRect.content.anchoredPosition.x, maxScrollY);
+
         m_topDataIndex = int.MinValue;
         RefreshView();
     }

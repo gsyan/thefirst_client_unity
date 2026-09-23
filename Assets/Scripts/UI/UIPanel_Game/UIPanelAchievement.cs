@@ -418,10 +418,11 @@ public class UIPanelAchievement : UIPanelBase
         if (commander != null)
             commander.UpdateAchievementPoint(achievementPointRemain);
 
-        // 방금 수령으로 완료 처리된 항목이 숨김 대상이 될 수 있어(개수가 줄 수 있음) RefreshVisible이 아니라 재초기화
+        // 방금 수령으로 완료 처리된 항목이 숨김 대상이 될 수 있어(개수가 줄 수 있음) 개수를 갱신하되,
+        // Initialize(스크롤 최상단 리셋)가 아니라 UpdateTotalCount로 수령 버튼을 누른 그 스크롤 위치를 유지
         RebuildVisibleIndices();
-        if (m_scrollView != null && m_rowPrefab != null)
-            m_scrollView.Initialize(m_visibleIndices.Count, m_rowPrefab.gameObject);
+        if (m_scrollView != null)
+            m_scrollView.UpdateTotalCount(m_visibleIndices.Count);
     }
 
     // claimedEntry가 속한 카테고리의 헤더 엔트리를 찾아 headerHasUnclaimed를 다시 계산 — 수령으로 그 카테고리의 마지막 미수령 항목이 없어졌을 수 있어서 단순 false 대입이 아니라 재순회 필요
