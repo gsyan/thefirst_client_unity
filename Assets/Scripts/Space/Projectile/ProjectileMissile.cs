@@ -108,6 +108,33 @@ public class ProjectileMissile : ProjectileBase
         m_lifeCycleCoroutine = StartCoroutine(MissleLifeCycle());
     }
 
+    // 함재기 전용 즉시타격 — 비행 코루틴 없이 발사 시점에 바로 명중 판정. 함재기는 항상 목표 함선에 근접해 있어
+    // 레이캐스트 대신 목표 모듈 콜라이더의 ClosestPoint로 명중 지점을 구함(물리 쿼리가 아니라 다른 오브젝트에 막히지 않음)
+    public void FireInstantHit(Transform firePointTransform, Transform target, DamageInfo damageInfo, ModuleData moduleData, ModuleBase sourceModuleBase)
+    {
+        SetCommonData(firePointTransform, target, damageInfo, sourceModuleBase);
+        m_missileSource = EMissileSource.Aircraft;
+        m_splashRadius = moduleData.splashRadius;
+
+        SpaceShip hitShip = target != null ? target.GetComponentInParent<SpaceShip>() : null;
+        if (hitShip == null || (m_sourceShip != null && hitShip.m_ownerFleet == m_sourceShip.m_ownerFleet))
+        {
+            ReturnToPool(showHitEffect: false);
+            return;
+        }
+
+        Collider targetCollider = target.GetComponentInChildren<Collider>();
+        Vector3 hitPoint = targetCollider != null ? targetCollider.ClosestPoint(firePointTransform.position) : target.position;
+
+        if (m_splashRadius > 0f)
+            ApplySplashDamage(hitPoint, hitShip);
+        else
+            hitShip.TakeDamage(m_damageInfo, hitPoint);
+
+        SoundManager.Instance.PlayFX(EFx.Explosion_Aircraft_Missile, hitPoint);
+        ReturnToPool(hitPosition: hitPoint);
+    }
+
     private IEnumerator MissleLifeCycle()
     {
         while (true)

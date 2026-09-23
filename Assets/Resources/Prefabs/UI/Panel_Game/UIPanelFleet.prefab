@@ -11778,7 +11778,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InfiniteScrollView
   m_scrollRect: {fileID: 0}
-  m_itemHeight: 160
+  m_itemHeight: 200
   m_bufferCount: 2
   m_paddingTop: 5
   m_paddingBottom: 5
@@ -12160,7 +12160,7 @@ MonoBehaviour:
   m_IgnoreLayout: 0
   m_MinWidth: -1
   m_MinHeight: -1
-  m_PreferredWidth: 700
+  m_PreferredWidth: 600
   m_PreferredHeight: -1
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1

@@ -120,9 +120,6 @@ public class DataTableModule : ScriptableObject
     [Header("Interceptor Modules by SubType")]
     [SerializeField] private List<ModuleSubTypeGroup> interceptorGroups = new();
 
-    [Header("Export/Import")]
-    [SerializeField, TextArea(5, 15)] private string exportedJson = "";
-
     public List<ModuleSubTypeGroup> HullGroups => hullGroups;
     public List<ModuleSubTypeGroup> BeamGroups => beamGroups;
     public List<ModuleSubTypeGroup> MissileGroups => missileGroups;
@@ -277,14 +274,7 @@ public class DataTableModule : ScriptableObject
             Formatting = Formatting.Indented,
             Converters = { new Newtonsoft.Json.Converters.StringEnumConverter() }
         };
-        string json = JsonConvert.SerializeObject(exportData, settings);
-        exportedJson = json;
-
-#if UNITY_EDITOR
-        EditorUtility.SetDirty(this);
-#endif
-
-        return json;
+        return JsonConvert.SerializeObject(exportData, settings);
     }
 
     public void ImportFromJson(string json)

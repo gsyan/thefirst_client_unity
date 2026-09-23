@@ -139,9 +139,6 @@ public class DataTableConfig : ScriptableObject
 {
     public GameSettings gameSettings = new GameSettings();
 
-    [HideInInspector]
-    [SerializeField] private string exportedJson = "";
-
     public bool IsValid()
     {
         return gameSettings != null;
@@ -161,14 +158,7 @@ public class DataTableConfig : ScriptableObject
 
     public string ExportToJson()
     {
-        string json = JsonConvert.SerializeObject(gameSettings, Formatting.Indented);
-        exportedJson = json;
-
-#if UNITY_EDITOR
-        EditorUtility.SetDirty(this);
-#endif
-
-        return json;
+        return JsonConvert.SerializeObject(gameSettings, Formatting.Indented);
     }
 
     public void ImportFromJson(string json)

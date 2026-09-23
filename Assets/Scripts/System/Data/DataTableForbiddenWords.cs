@@ -3,10 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using Newtonsoft.Json;
 
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
-
 [CreateAssetMenu(fileName = "DataTableForbiddenWords", menuName = "Custom/DataTableForbiddenWords")]
 public class DataTableForbiddenWords : ScriptableObject
 {
@@ -31,21 +27,12 @@ public class DataTableForbiddenWords : ScriptableObject
         bannedWords = new List<string>(DefaultBannedWords);
     }
 
-    [SerializeField, TextArea(5, 15)] private string exportedJson = "";
-
     public string GetExportFileName() => "DataTableForbiddenWords";
 
     public string ExportToJson()
     {
         var data = new ForbiddenWordsData { bannedWords = bannedWords };
-        string json = JsonConvert.SerializeObject(data, Formatting.Indented);
-        exportedJson = json;
-
-#if UNITY_EDITOR
-        EditorUtility.SetDirty(this);
-#endif
-
-        return json;
+        return JsonConvert.SerializeObject(data, Formatting.Indented);
     }
 
     // 런타임 클라 측 즉각 체크용

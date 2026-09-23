@@ -93,6 +93,11 @@ public class UIPanelBattle : UIPanelBase
 
     public override void OnShowUIPanel()
     {
+        // 이 패널이 실제로 스택에 push되어 뜨는 시점 = 전투가 진짜로 시작된 시점. 대치 화면(UIPanelPrepareBattle)은
+        // 그 서버 응답을 기다리는 동안 스스로 정리하지 못하고 이 패널 아래 파묻힌 채 남아있으므로 여기서 걷어냄 —
+        // 스택에 없거나 이미 top이면 안전하게 no-op(UIManager.RemoveHiddenPanelFromStack)
+        UIManager.Instance.RemoveHiddenPanelFromStack("UIPanelPrepareBattle");
+
         if (m_battleView != null)
             m_battleView.RefreshTacticsDisplay();
 

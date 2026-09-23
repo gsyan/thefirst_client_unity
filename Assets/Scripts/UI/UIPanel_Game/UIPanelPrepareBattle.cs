@@ -122,9 +122,10 @@ public class UIPanelPrepareBattle : UIPanelBase
         UIManager.Instance.HidePanel(panelName);
     }
 
-    // 전투시작 — Close()(정상 pop)를 쓰면 그 사이 탐사그리드가 잠깐 top으로 드러났다가(OnShowUIPanel 발동) 곧바로
-    // UIPanelBattle push로 다시 덮이는 스퓨리어스한 재진입이 발생함. 그 대신 콜백을 먼저 실행해 UIPanelBattle이
-    // 이 패널 위로 자연스럽게 push되게 한 뒤(탐사그리드는 한 번도 top이 되지 않음), 파묻힌 이 패널만 조용히 제거
+    // 전투시작 — m_onStartBattle은 서버 EnterExplorationCell 응답을 기다린 뒤에야 UIPanelBattle을 push하는
+    // 비동기 흐름이라, 이 패널을 스택에서 정리하는 건 여기서 직접 하지 않고 UIPanelBattle.OnShowUIPanel이
+    // 실제로 뜨는 시점에 맡긴다(UIPanelBattle.cs 참고) — 응답 실패 시엔 UIPanelBattle이 안 뜨므로 이 패널이
+    // 그대로 남아 재시도/퇴각이 가능해야 하는데, 여기서 미리 지워버리면 그 경로가 깨짐
     private void OnClickStart()
     {
         StopAutoStartCoroutine();
@@ -133,8 +134,6 @@ public class UIPanelPrepareBattle : UIPanelBase
         if (m_standoffView != null) m_standoffView.Close();
 
         if (m_onStartBattle != null) m_onStartBattle();
-
-        UIManager.Instance.RemoveHiddenPanelFromStack(panelName);
     }
 
     private void OnClickRetreat()

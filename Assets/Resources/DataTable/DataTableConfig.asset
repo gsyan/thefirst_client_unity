@@ -50,7 +50,7 @@ MonoBehaviour:
         disruptPerPoint: 0.005
       shield:
         gaugePerPoint: 10
-        regenRatePerPoint: 0.1
+        regenRatePerPoint: 1
       interceptor:
         maxRegenTimeReductionRatio: 0.5
   exportedJson: "{\r\n  \"general\": {\r\n    \"commandPowerMaxInit\": 400,\r\n   
