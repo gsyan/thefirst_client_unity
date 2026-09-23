@@ -1179,6 +1179,10 @@ MonoBehaviour:
     m_Localized: Restore {0:P0} of tactic power
     m_Metadata:
       m_Items: []
+  - m_Id: 82465825474084864
+    m_Localized: Hide Completed Achievements
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

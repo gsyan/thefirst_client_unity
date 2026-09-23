@@ -18,6 +18,10 @@ public class UIPanelAchievement : UIPanelBase
     [SerializeField] private TMP_Text m_claimAllButtonText;
     [SerializeField] private Button m_findNextUnclaimedButton;
     [SerializeField] private TMP_Text m_findNextUnclaimedButtonText;
+    [SerializeField] private ToggleButton m_hideCompletedToggle; // 수령까지 완전히 끝난 업적을 목록에서 숨김(미수령 보상은 항상 노출)
+
+    private const string k_hideCompletedPrefKey = "UIPanelAchievement_HideCompleted";
+    private bool m_hideCompleted;
 
     // 일일 업적 카테고리 표시 순서 — 상단에 먼저 표시됨. 일일 업적은 CellClear/EventCell/ZoneClearTotal만 지원(DailyAchievementService 참고)
     private static readonly EAchievementConditionType[] k_dailyCategoryOrder =
@@ -60,6 +64,7 @@ public class UIPanelAchievement : UIPanelBase
     }
 
     private readonly List<AchievementListEntry> m_flattenedList = new();
+    private readonly List<int> m_visibleIndices = new(); // 스크롤뷰 dataIndex → m_flattenedList 인덱스 매핑(완료 숨기기 필터 반영본)
     private int m_lastFoundUnclaimedIndex = -1; // "다음 찾기" 순환 검색 시작점 — 목록을 새로 받을 때마다 리셋
 
     private Dictionary<string, AchievementStatus> m_lastPermanentStatusById;
@@ -88,6 +93,28 @@ public class UIPanelAchievement : UIPanelBase
             CommonUtility.SetUILocText(m_claimAllButtonText, "UIAchievement_ClaimAllButton");
         if (m_findNextUnclaimedButtonText != null)
             CommonUtility.SetUILocText(m_findNextUnclaimedButtonText, "UIAchievement_FindNextButton");
+
+        if (m_hideCompletedToggle != null)
+        {
+            m_hideCompletedToggle.SetTexts("UIAchievement_HideCompletedToggle", "");
+            m_hideCompleted = PlayerPrefs.GetInt(k_hideCompletedPrefKey, 1) == 1; // 기본값 켜짐
+            m_hideCompletedToggle.SetSelected(m_hideCompleted);
+            m_hideCompletedToggle.button.onClick.AddListener(OnHideCompletedToggleClicked);
+        }
+    }
+
+    private void OnHideCompletedToggleClicked()
+    {
+        SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true);
+
+        m_hideCompleted = m_hideCompleted == false;
+        m_hideCompletedToggle.SetSelected(m_hideCompleted);
+        PlayerPrefs.SetInt(k_hideCompletedPrefKey, m_hideCompleted ? 1 : 0);
+        PlayerPrefs.Save();
+
+        RebuildVisibleIndices();
+        if (m_scrollView != null && m_rowPrefab != null)
+            m_scrollView.Initialize(m_visibleIndices.Count, m_rowPrefab.gameObject);
     }
 
     private void OnDestroy()
@@ -176,10 +203,47 @@ public class UIPanelAchievement : UIPanelBase
 
         BuildFlattenedList(m_lastPermanentStatusById, m_lastDailyStatusById);
         RefreshUnclaimedIndicators();
+        RebuildVisibleIndices();
         m_lastFoundUnclaimedIndex = -1;
 
         if (m_scrollView != null && m_rowPrefab != null)
-            m_scrollView.Initialize(m_flattenedList.Count, m_rowPrefab.gameObject);
+            m_scrollView.Initialize(m_visibleIndices.Count, m_rowPrefab.gameObject);
+    }
+
+    // m_hideCompleted가 켜져 있으면 "완료 + 전부 수령됨"(IsEntryUnclaimed == false)인 항목을 걸러냄 —
+    // 미수령 보상(VIP 전용 미수령 포함)은 절대 숨기지 않음. 헤더는 그 카테고리에 보일 항목이 하나도 없으면 같이 숨김
+    private void RebuildVisibleIndices()
+    {
+        m_visibleIndices.Clear();
+
+        int headerIndex = -1;
+        bool headerHasVisibleItem = false;
+
+        for (int i = 0; i < m_flattenedList.Count; i++)
+        {
+            AchievementListEntry entry = m_flattenedList[i];
+            if (entry.isHeader == true)
+            {
+                if (headerIndex >= 0 && headerHasVisibleItem == true)
+                    m_visibleIndices.Add(headerIndex);
+
+                headerIndex = i;
+                headerHasVisibleItem = false;
+                continue;
+            }
+
+            bool isCompleted = entry.currentValue >= entry.data.threshold
+                && IsEntryUnclaimed(entry.currentValue, entry.data.threshold, entry.isClaimed, entry.isVipClaimed) == false;
+            if (m_hideCompleted == true && isCompleted == true) continue;
+
+            headerHasVisibleItem = true;
+            m_visibleIndices.Add(i);
+        }
+
+        if (headerIndex >= 0 && headerHasVisibleItem == true)
+            m_visibleIndices.Add(headerIndex);
+
+        m_visibleIndices.Sort();
     }
 
     private void BuildFlattenedList(Dictionary<string, AchievementStatus> permanentStatusById, Dictionary<string, DailyAchievementStatus> dailyStatusById)
@@ -290,12 +354,12 @@ public class UIPanelAchievement : UIPanelBase
 
     private void OnItemBind(int dataIndex, GameObject rowObject)
     {
-        if (dataIndex < 0 || dataIndex >= m_flattenedList.Count) return;
+        if (dataIndex < 0 || dataIndex >= m_visibleIndices.Count) return;
 
         UIAchievementRow row = rowObject.GetComponent<UIAchievementRow>();
         if (row == null) return;
 
-        AchievementListEntry entry = m_flattenedList[dataIndex];
+        AchievementListEntry entry = m_flattenedList[m_visibleIndices[dataIndex]];
         if (entry.isHeader == true)
             row.SetupHeader(entry.headerLabel, entry.headerHasUnclaimed);
         else
@@ -354,8 +418,10 @@ public class UIPanelAchievement : UIPanelBase
         if (commander != null)
             commander.UpdateAchievementPoint(achievementPointRemain);
 
-        if (m_scrollView != null)
-            m_scrollView.RefreshVisible();
+        // 방금 수령으로 완료 처리된 항목이 숨김 대상이 될 수 있어(개수가 줄 수 있음) RefreshVisible이 아니라 재초기화
+        RebuildVisibleIndices();
+        if (m_scrollView != null && m_rowPrefab != null)
+            m_scrollView.Initialize(m_visibleIndices.Count, m_rowPrefab.gameObject);
     }
 
     // claimedEntry가 속한 카테고리의 헤더 엔트리를 찾아 headerHasUnclaimed를 다시 계산 — 수령으로 그 카테고리의 마지막 미수령 항목이 없어졌을 수 있어서 단순 false 대입이 아니라 재순회 필요
@@ -453,7 +519,11 @@ public class UIPanelAchievement : UIPanelBase
             if (IsEntryUnclaimed(entry.currentValue, entry.data.threshold, entry.isClaimed, entry.isVipClaimed) == false) continue;
 
             m_lastFoundUnclaimedIndex = index;
-            m_scrollView.JumpToIndex(index);
+
+            // 미수령 항목은 필터로 숨겨지지 않으므로 항상 m_visibleIndices 안에 존재 — 스크롤뷰 좌표계로 변환해서 이동
+            int visiblePos = m_visibleIndices.IndexOf(index);
+            if (visiblePos >= 0)
+                m_scrollView.JumpToIndex(visiblePos);
             return;
         }
     }

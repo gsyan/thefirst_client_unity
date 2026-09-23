@@ -202,7 +202,7 @@ public class ModuleMissile : ModuleBase
         float formationMultiplier = m_ownerFleet != null ? m_ownerFleet.GetFormationAttackMultiplier() : 1f;
         float tacticMultiplier    = m_ownerFleet != null ? m_ownerFleet.GetMissileTacticAttackMultiplier() : 1f;
 
-        // 전술 보너스가 실제로 적용 중일 때만 발사 1건당 과금 — 여유가 없으면 이번 발사부터 보너스 없이(토글은 TryChargeMissileTacticCost가 이미 꺼둠) 그대로 발사
+        // 전술 보너스가 실제로 적용 중일 때만 발사 1건당 과금 — 여유가 없으면 이번 발사만 보너스 없이 그대로 발사(토글은 유지)
         if (tacticMultiplier > 1f)
         {
             int tacticMissileCost = DataManager.Instance.m_dataTableConfig.gameSettings.tactic.tacticMissileCost;

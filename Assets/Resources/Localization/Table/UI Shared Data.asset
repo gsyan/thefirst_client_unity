@@ -603,6 +603,10 @@ MonoBehaviour:
     m_Key: UIAchievement_FindNextButton
     m_Metadata:
       m_Items: []
+  - m_Id: 82465825474084864
+    m_Key: UIAchievement_HideCompletedToggle
+    m_Metadata:
+      m_Items: []
   - m_Id: 76604851655409664
     m_Key: UIAchievement_Category_CellClear
     m_Metadata:

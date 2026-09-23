@@ -1203,30 +1203,26 @@ public class SpaceFleet : MonoBehaviour
         return (m_fleetInfo.tacticOptions & k_aircraftTacticBit) != 0 ? 2f : 1f;
     }
 
-    // cost를 낼 여유가 있으면 차감하고 true. 없으면 해당 전술 토글만 즉시 끄고(서버 동기화 포함) false —
+    // cost를 낼 여유가 있으면 차감하고 true. 없으면 토글은 그대로 둔 채 false만 반환 —
     // 호출부는 false를 "이번엔 전술 효과 없이 원래대로 진행"하라는 신호로 사용(행동 자체를 막지 않음)
-    private bool TryChargeTacticCost(int tacticBit, int cost)
+    private bool TryChargeTacticCost(int cost)
     {
         if (m_fleetSource != EFleetSource.fleet_source_player) return true;
 
         Commander commander = DataManager.Instance.m_currentCommander;
-        if (commander == null || commander.GetTacticPower() < cost)
-        {
-            ApplyTacticOptions(m_fleetInfo.tacticOptions & ~tacticBit);
-            return false;
-        }
+        if (commander == null || commander.GetTacticPower() < cost) return false;
 
         commander.SpendTacticPower(cost);
         return true;
     }
 
-    public bool TryChargeRepairTacticCost(int cost) { return TryChargeTacticCost(k_repairTacticBit, cost); }
-    public bool TryChargeShieldTacticCost(int cost) { return TryChargeTacticCost(k_shieldTacticBit, cost); }
-    public bool TryChargeMissileTacticCost(int cost) { return TryChargeTacticCost(k_missileTacticBit, cost); }
-    public bool TryChargeAircraftTacticCost(int cost) { return TryChargeTacticCost(k_aircraftTacticBit, cost); }
-    public bool TryChargeInterceptorTacticCost(int cost) { return TryChargeTacticCost(k_interceptorTacticBit, cost); }
+    public bool TryChargeRepairTacticCost(int cost) { return TryChargeTacticCost(cost); }
+    public bool TryChargeShieldTacticCost(int cost) { return TryChargeTacticCost(cost); }
+    public bool TryChargeMissileTacticCost(int cost) { return TryChargeTacticCost(cost); }
+    public bool TryChargeAircraftTacticCost(int cost) { return TryChargeTacticCost(cost); }
+    public bool TryChargeInterceptorTacticCost(int cost) { return TryChargeTacticCost(cost); }
 
-    // 토글 상태 반영 + 요격체 즉시 전파 + 서버 동기화 — UI 클릭(UIPanelBattle)과 포인트 고갈 자동 OFF(TryChargeTacticCost) 공용 경로
+    // 토글 상태 반영 + 요격체 즉시 전파 + 서버 동기화 — UI 클릭(TryToggleTactic)과 함대 구성 변화(ClearUnavailableTactics) 공용 경로
     public void ApplyTacticOptions(int newOptions)
     {
         int oldOptions = m_fleetInfo.tacticOptions;

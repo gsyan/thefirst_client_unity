@@ -156,6 +156,7 @@ UIAchievement_Reward,,AP Reward,업적포인트 보상
 UIAchievement_RewardVip,,VIP Reward,VIP 보상
 UIAchievement_ClaimAllButton,,Claim All,전체 받기
 UIAchievement_FindNextButton,,Find Next,다음 찾기
+UIAchievement_HideCompletedToggle,,Hide Completed Achievements,완료 업적 숨기기
 UIAchievement_Category_CellClear,,Cell Clear,셀 클리어
 UIAchievement_Category_EventCell,,Event Cell Clear,이벤트 셀 클리어
 UIAchievement_Category_ZoneClearTotal,,Zone Clear (Total),존 클리어(누적)

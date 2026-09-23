@@ -65,7 +65,7 @@ public class LauncherAircraft : LauncherBase
         }
 
         // 실제 발진이 확정된 시점에만 공격 배율 조립 — airAttack은 원본 유지, 배율만 airAttackMultiplier에 저장(귀환 시 UpdateAircraftInfo로 1f 원복)
-        // 전술 보너스가 실제로 적용 중일 때만 발진 1건당 과금 — 여유가 없으면 이번 발진부터 보너스 없이(토글은 TryChargeAircraftTacticCost가 이미 꺼둠) 그대로 발진
+        // 전술 보너스가 실제로 적용 중일 때만 발진 1건당 과금 — 여유가 없으면 이번 발진만 보너스 없이 그대로 발진(토글은 유지)
         float shipCountMultiplier = ownerFleet != null ? ownerFleet.GetShipCountAttackMultiplier() : 1f;
         float formationMultiplier = ownerFleet != null ? ownerFleet.GetFormationAttackMultiplier() : 1f;
         float tacticMultiplier    = ownerFleet != null ? ownerFleet.GetAircraftTacticAttackMultiplier() : 1f;

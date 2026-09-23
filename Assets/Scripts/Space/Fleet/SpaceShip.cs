@@ -58,11 +58,6 @@ public class SpaceShip : MonoBehaviour
     private GaugeBars m_gaugeBars;
     public ShieldGrid m_shieldGrid;
 
-    // 체력 단계별 화재 이펙트 (50% / 30% / 10% 이하 피격 시 각각 생성)
-    private EffectBase m_fireEffect50 = null;
-    private EffectBase m_fireEffect30 = null;
-    private EffectBase m_fireEffect10 = null;
-
     // 피격 스코치 마크 (함선당 최대 개수 제한)
     private const int k_maxScorchMarks = 6;
     private const float k_scorchHoldTime = 1.0f;
@@ -576,10 +571,8 @@ public class SpaceShip : MonoBehaviour
         EventManager.Trigger_FleetUpdateHP();
         EventManager.Trigger_ShipUpdateHP();
 
-        // 화재 이펙트: 체력 비율이 임계값 이하로 떨어진 시점에 하나씩 생성
         if (IsAlive() == true)
         {
-            UpdateFireEffects(hitPosition, damageInfo.damageType);
             // 실드가 완전히 막았으면 함체 표면에 실제로 닿지 않았으므로 피탄 자국(데칼)도 남기지 않음
             if (damageInfo.damageType == EDamageType.Beam && wasFullyShielded == false)
                 SpawnScorchMark(hitPosition);
@@ -592,7 +585,6 @@ public class SpaceShip : MonoBehaviour
     // 전투 피격으로 인한 사망 처리 — playEffects=false면 폭발 이펙트/사운드 없이 슬롯만 조용히 비움(재접속 시 이미 죽었던 슬롯 동기화용)
     private void HandleShipDestroyed(bool playEffects = true)
     {
-        ClearAllFireEffects();
         ClearAllScorchMarks();
         // 코루틴 중지
         StopAllCoroutines();
@@ -633,51 +625,6 @@ public class SpaceShip : MonoBehaviour
     public void DestroySilently()
     {
         HandleShipDestroyed(playEffects: false);
-    }
-
-    private void UpdateFireEffects(Vector3 hitPosition, EDamageType damageType)
-    {
-        if (m_spaceShipStatsOrg.health <= 0f) return;
-        float ratio = m_spaceShipStatsCur.health / m_spaceShipStatsOrg.health;
-        if (ratio < 0.5f && m_fireEffect50 == null) SpawnFireEffect(ref m_fireEffect50, hitPosition, damageType);
-        if (ratio < 0.3f && m_fireEffect30 == null) SpawnFireEffect(ref m_fireEffect30, hitPosition, damageType);
-        if (ratio < 0.1f && m_fireEffect10 == null) SpawnFireEffect(ref m_fireEffect10, hitPosition, damageType);
-    }
-
-    public void CheckFireEffects()
-    {
-        if (m_spaceShipStatsOrg.health <= 0f) return;
-        float ratio = m_spaceShipStatsCur.health / m_spaceShipStatsOrg.health;
-        if (ratio >= 0.5f) ReturnFireEffect(ref m_fireEffect50);
-        if (ratio >= 0.3f) ReturnFireEffect(ref m_fireEffect30);
-        if (ratio >= 0.1f) ReturnFireEffect(ref m_fireEffect10);
-    }
-
-    private void SpawnFireEffect(ref EffectBase slot, Vector3 position, EDamageType damageType)
-    {
-        bool isMyFleet = m_ownerFleet != null && ObjectManager.Instance.IsEnemyOfMyTeam(m_ownerFleet) == false;
-        // if (isMyFleet == true)
-        //     Debug.Log($"[화재LOG] SpawnFireEffect ship={name} position={position} damageType={damageType} healthRatio={m_spaceShipStatsCur.health / m_spaceShipStatsOrg.health}");
-        slot = ObjectManager.Instance.m_poolManager.Get<EffectBase>(EPoolName.EFFECT_FIRE_ON_SHIP);
-        slot.transform.SetParent(transform, false);
-        slot.transform.position = position;
-        slot.PlayEffect();
-    }
-
-    private void ReturnFireEffect(ref EffectBase slot)
-    {
-        if (slot == null) return;
-        // loop=false 자동 반환 후 슬롯이 dangling reference가 된 경우 이중 반환 방지
-        if (slot.gameObject.activeInHierarchy == true)
-            slot.ReturnEffect();
-        slot = null;
-    }
-
-    private void ClearAllFireEffects()
-    {
-        ReturnFireEffect(ref m_fireEffect50);
-        ReturnFireEffect(ref m_fireEffect30);
-        ReturnFireEffect(ref m_fireEffect10);
     }
 
     public void SpawnScorchMark(Vector3 hitPosition)
@@ -795,7 +742,6 @@ public class SpaceShip : MonoBehaviour
                 body.m_shield.ResetGaugeToFull();
         }
         UpdateShipStatCur();
-        CheckFireEffects();
     }
 
     // 앱 재시작 시 서버에 저장된 체력/실드 스냅샷을 그대로 복구하는 용도 — ApplyHealthRatio와 달리 실드를 풀게이지로 리셋하지 않고 저장된 비율을 그대로 적용
@@ -811,7 +757,6 @@ public class SpaceShip : MonoBehaviour
                 body.m_shield.SetGaugeRatio(shieldRatio);
         }
         UpdateShipStatCur();
-        CheckFireEffects();
     }
 
     // 살아있는 바디가 있는지 확인

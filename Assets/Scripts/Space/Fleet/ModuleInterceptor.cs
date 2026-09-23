@@ -1,7 +1,7 @@
 // 요격체 모듈 — 슬롯/3D 배치 없이 함체(ModuleHull)에 논리적으로만 붙는 컴포넌트(ModuleShield와 동일 패턴).
 // 실제로 눈에 보이는 요격체 유닛(InterceptorUnit)은 별도로 스폰/풀링해 함선 전방 원형 궤도에 배치한다.
 // 전술 토글(idx=4) ON 상태에서만 빈 자리를 순차 보충하고(interceptorRegenTime초마다 1기, 생성 1기당 tacticInterceptorCost 과금,
-// 여유 없으면 토글이 즉시 꺼짐 — SpaceFleet.TryChargeInterceptorTacticCost 참고) 적 미사일을 탐지/배정함.
+// 여유 없으면 그 틱의 신규 생성만 건너뜀 — SpaceFleet.TryChargeInterceptorTacticCost 참고) 적 미사일을 탐지/배정함.
 // 토글 OFF 시에는 신규 생성만 멈출 뿐 이미 떠 있는 유닛은 제거되지 않고 계속 요격 임무를 수행함(despawn/환급 없음) —
 // 정리는 존런 종료 시점(SpaceFleet.ClearAllInterceptorUnits)이나 함선 파괴 시에만 일어남.
 using System.Collections;
@@ -105,7 +105,7 @@ public class ModuleInterceptor : ModuleBase
     }
 
     // 전술 토글(요격체) ON 상태에서 SpaceFleet.ApplyInterceptorRegenTickToAllShips가 주기적으로 호출 — tickSeconds만큼 시간을 누적하고, m_regenTime(초) 도달마다 1기 리필
-    // 1기 생성마다 tacticInterceptorCost를 선확인 과금 — 여유가 없으면 그 자리에서 이번 틱의 나머지 생성을 포기(토글은 TryChargeInterceptorTacticCost가 이미 꺼둠)
+    // 1기 생성마다 tacticInterceptorCost를 선확인 과금 — 여유가 없으면 그 자리에서 이번 틱의 나머지 생성을 포기(토글은 유지)
     public void ApplyRegenTick(float tickSeconds)
     {
         if (m_tacticOn == false || m_slots == null) return;
