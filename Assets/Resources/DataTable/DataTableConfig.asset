@@ -50,6 +50,6 @@ MonoBehaviour:
         disruptPerPoint: 0.005
       shield:
         gaugePerPoint: 10
-        regenRatePerPoint: 1
+        regenRatePerPoint: 0.5
       interceptor:
         maxRegenTimeReductionRatio: 0.5
