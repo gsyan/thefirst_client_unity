@@ -96,9 +96,30 @@ public class UIPanelPrepareBattle : UIPanelBase
 
         SetBottomVisible(true);
         Debug.Log($"[StandoffDiag] SetupContent SetBottomVisible done t={Time.realtimeSinceStartup:F3} frame={Time.frameCount}"); // [진단] 원인 확정 후 제거
+        StartCoroutine(Co_DiagFrameTimes()); // [진단] 원인 확정 후 제거
 
         if (m_autoStartEnabled == true)
             m_autoStartCoroutine = StartCoroutine(Co_AutoStartAfterDelay());
+    }
+
+    // [진단] 원인 확정 후 제거 — 대치 화면 완성 직후 프레임 시간 기록(처음 5프레임은 전부, 이후 15초간은 0.1초 이상 걸린 프레임만)
+    private IEnumerator Co_DiagFrameTimes()
+    {
+        const int k_logAllFrameCount = 5;
+        const float k_hitchThresholdSec = 0.1f;
+        const float k_watchDurationSec = 15f;
+
+        float watchStartTime = Time.realtimeSinceStartup;
+        int frameIndex = 0;
+        while (Time.realtimeSinceStartup - watchStartTime < k_watchDurationSec)
+        {
+            yield return null;
+            frameIndex++;
+            float frameDeltaSec = Time.unscaledDeltaTime;
+            bool isHitch = frameDeltaSec >= k_hitchThresholdSec;
+            if (frameIndex <= k_logAllFrameCount || isHitch == true)
+                Debug.Log($"[StandoffDiag] after SetupContent +{frameIndex}f dt={frameDeltaSec:F3} t={Time.realtimeSinceStartup:F3} frame={Time.frameCount} hitch={isHitch}");
+        }
     }
 
     private IEnumerator Co_AutoStartAfterDelay()
