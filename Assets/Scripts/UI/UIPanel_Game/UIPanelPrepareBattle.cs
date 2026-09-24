@@ -70,6 +70,9 @@ public class UIPanelPrepareBattle : UIPanelBase
     public void OpenEmpty()
     {
         SetBottomVisible(false);
+        // 대치 뷰(적 함대 카메라/구분선 포함)는 SetupContent의 Open()이 켤 때까지 숨김 — 프리팹 기본 상태가 활성이라 ShowPanel 시점에 함께 켜지기 때문
+        if (m_standoffView != null)
+            m_standoffView.gameObject.SetActive(false);
         Debug.Log($"[StandoffDiag] OpenEmpty ShowPanel begin t={Time.realtimeSinceStartup:F3} frame={Time.frameCount}"); // [진단] 원인 확정 후 제거
         UIManager.Instance.ShowPanel(panelName);
         Debug.Log($"[StandoffDiag] OpenEmpty ShowPanel end t={Time.realtimeSinceStartup:F3} frame={Time.frameCount}"); // [진단] 원인 확정 후 제거
