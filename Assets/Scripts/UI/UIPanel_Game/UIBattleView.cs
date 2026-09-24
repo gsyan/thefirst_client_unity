@@ -138,10 +138,7 @@ public class UIBattleView : MonoBehaviour
     {
         if (m_speedLabel == null) return;
 
-        bool isVip = IAPManager.Instance.IsVipActive();
-#if UNITY_EDITOR
-        //isVip = true;
-#endif
+        bool isVip = GameSpeedController.IsSpeedChangeAllowed(); // VIP 여부 + 에디터 예외는 GameSpeedController가 판정
         if (m_speedButton != null)
             m_speedButton.interactable = isVip;
         m_speedLabel.text = isVip == true

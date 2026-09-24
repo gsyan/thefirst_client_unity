@@ -44,6 +44,7 @@ public class LauncherBeam : LauncherBase
     public override void Fire(Transform target, DamageInfo damageInfo, ModuleBase sourceModuleBase = null, Vector3 hitPoint = default, float explosionMultiplier = 1f)
     {
         if (m_isInitialized == false) return;
+        ModuleBase.LogIfInactiveBeforeCoroutine(gameObject, "LauncherBeam.Fire"); // [진단] 원인 확정 후 제거
         StartCoroutine(FireBeamCoroutine(target, damageInfo, sourceModuleBase, hitPoint));
     }
 

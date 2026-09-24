@@ -109,7 +109,7 @@ public class ProjectileMissile : ProjectileBase
     }
 
     // 함재기 전용 즉시타격 — 비행 코루틴 없이 발사 시점에 바로 명중 판정. 함재기는 항상 목표 함선에 근접해 있어
-    // 레이캐스트 대신 목표 모듈 콜라이더의 ClosestPoint로 명중 지점을 구함(물리 쿼리가 아니라 다른 오브젝트에 막히지 않음)
+    // 물리 쿼리 대신 목표 함체의 베이킹된 피격 지점 중 가장 가까운 곳을 명중 지점으로 씀(다른 오브젝트에 막히지 않음)
     public void FireInstantHit(Transform firePointTransform, Transform target, DamageInfo damageInfo, ModuleData moduleData, ModuleBase sourceModuleBase)
     {
         SetCommonData(firePointTransform, target, damageInfo, sourceModuleBase);
@@ -123,8 +123,8 @@ public class ProjectileMissile : ProjectileBase
             return;
         }
 
-        Collider targetCollider = target.GetComponentInChildren<Collider>();
-        Vector3 hitPoint = targetCollider != null ? targetCollider.ClosestPoint(firePointTransform.position) : target.position;
+        ModuleHull targetHull = target.GetComponent<ModuleHull>();
+        Vector3 hitPoint = targetHull != null ? targetHull.GetClosestHitPoint(firePointTransform.position) : target.position;
 
         if (m_splashRadius > 0f)
             ApplySplashDamage(hitPoint, hitShip);

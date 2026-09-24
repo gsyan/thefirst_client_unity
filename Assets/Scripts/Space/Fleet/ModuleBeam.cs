@@ -124,11 +124,13 @@ public class ModuleBeam : ModuleBase
 
     public override void Start()
     {
+        LogIfInactiveBeforeCoroutine(gameObject, "ModuleBeam.Start"); // [진단] 원인 확정 후 제거
         m_autoAttackCoroutine = StartCoroutine(AutoAttack());
     }
 
     public override void RestartCoroutines()
     {
+        LogIfInactiveBeforeCoroutine(gameObject, "ModuleBeam.RestartCoroutines"); // [진단] 원인 확정 후 제거
         if (m_autoAttackCoroutine != null)
         {
             StopCoroutine(m_autoAttackCoroutine);

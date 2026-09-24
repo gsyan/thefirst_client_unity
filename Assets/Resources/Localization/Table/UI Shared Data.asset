@@ -1163,6 +1163,30 @@ MonoBehaviour:
     m_Key: UIAchievement_Desc_hull_unlock
     m_Metadata:
       m_Items: []
+  - m_Id: 82671357333995520
+    m_Key: UI_Retry
+    m_Metadata:
+      m_Items: []
+  - m_Id: 82671357388521472
+    m_Key: UIPopupMessage_NetworkWaiting
+    m_Metadata:
+      m_Items: []
+  - m_Id: 82671357388521473
+    m_Key: UIPopupMessage_NetworkNoResponseRead
+    m_Metadata:
+      m_Items: []
+  - m_Id: 82671357388521474
+    m_Key: UIPopupMessage_NetworkNoResponseWrite
+    m_Metadata:
+      m_Items: []
+  - m_Id: 82671357388521475
+    m_Key: UIPopupMessage_NetworkStateMismatch
+    m_Metadata:
+      m_Items: []
+  - m_Id: 82671357388521476
+    m_Key: UIPopupMessage_RequestFailed
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

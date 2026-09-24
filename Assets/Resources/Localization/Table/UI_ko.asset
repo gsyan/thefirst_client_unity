@@ -1223,6 +1223,34 @@ MonoBehaviour:
     m_Localized: "\uC644\uB8CC \uC5C5\uC801 \uC228\uAE30\uAE30"
     m_Metadata:
       m_Items: []
+  - m_Id: 82671357333995520
+    m_Localized: "\uC7AC\uC2DC\uB3C4"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 82671357388521472
+    m_Localized: "\uC11C\uBC84\uC640 \uD1B5\uC2E0 \uC911\uC785\uB2C8\uB2E4..."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 82671357388521473
+    m_Localized: "\uC11C\uBC84 \uC751\uB2F5\uC774 \uC5C6\uC2B5\uB2C8\uB2E4. \uB2E4\uC2DC
+      \uC2DC\uB3C4\uD560\uAE4C\uC694?"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 82671357388521474
+    m_Localized: "\uC11C\uBC84 \uC751\uB2F5\uC774 \uC5C6\uC2B5\uB2C8\uB2E4. \uC7A0\uC2DC
+      \uD6C4 \uB2E4\uC2DC \uC2DC\uB3C4\uD574 \uC8FC\uC138\uC694."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 82671357388521475
+    m_Localized: "\uD0D0\uD5D8 \uC815\uBCF4\uAC00 \uC11C\uBC84\uC640 \uB9DE\uC9C0
+      \uC54A\uC2B5\uB2C8\uB2E4. \uC11C\uBC84 \uC0C1\uD0DC\uB85C \uB2E4\uC2DC \uB9DE\uCDA5\uB2C8\uB2E4."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 82671357388521476
+    m_Localized: "\uC694\uCCAD\uC5D0 \uC2E4\uD328\uD588\uC2B5\uB2C8\uB2E4. (\uCF54\uB4DC:
+      {0})"
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

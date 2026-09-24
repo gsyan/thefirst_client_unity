@@ -41,6 +41,8 @@ public class UIManager : MonoSingleton<UIManager>
     private readonly Dictionary<string, Queue<UIPopupBase>> m_popupPool = new(); // prefabName → free instances
     private readonly Queue<ConfirmPopupConfig> m_confirmPopupQueue = new();  // 팝업 큐: 겹침 방지
     private bool m_isConfirmPopupShowing;
+    private UIPopupNetworkWait m_networkWaitPopup;   // 서버 요청 대기 화면 — 풀/스택 없이 한 인스턴스를 재사용
+    private bool m_networkWaitLoadFailed;            // 프리팹 로드 실패 시 매 요청마다 에러 로그가 반복되지 않게 함
     private Canvas mainCanvas;
 
     // UI 컨테이너
@@ -572,6 +574,33 @@ public class UIManager : MonoSingleton<UIManager>
         popup.ShowPopupConfirm(config);
     }
 
+    // 서버 요청 대기 화면 — 팝업 스택과 무관한 단일 인스턴스. blockInput=투명 입력 차단막, showSpinner=스피너/메시지, 둘 다 false면 숨김
+    public void SetNetworkWaitState(bool blockInput, bool showSpinner)
+    {
+        bool needShow = blockInput == true || showSpinner == true;
+        if (needShow == false)
+        {
+            if (m_networkWaitPopup != null && m_networkWaitPopup.gameObject.activeSelf == true)
+                m_networkWaitPopup.HidePopup();
+            return;
+        }
+
+        if (m_networkWaitPopup == null && m_networkWaitLoadFailed == false)
+        {
+            m_networkWaitPopup = GetOrCreatePopup<UIPopupNetworkWait>("UIPopupNetworkWait", EPopupLayer.Overlay);
+            m_networkWaitLoadFailed = m_networkWaitPopup == null;
+        }
+        if (m_networkWaitPopup == null) return;
+
+        // 숨김 → 표시로 바뀌는 시점에만 최상단으로 올림 — 표시 중 갱신에서 올리면 그 위의 안내 팝업을 가림
+        if (m_networkWaitPopup.gameObject.activeSelf == false)
+        {
+            m_networkWaitPopup.ShowPopup();
+            m_networkWaitPopup.transform.SetAsLastSibling();
+        }
+        m_networkWaitPopup.SetState(blockInput, showSpinner);
+    }
+
     // 커맨더 레벨업 알림 팝업 (서버 자동 레벨업 감지 시 호출) — 레벨/배치가능 함선수를 항상 표시
     // onClosed: 팝업이 확인 클릭 또는 자동 닫힘으로 닫힐 때 호출(선택)
     public void ShowCommanderLevelupNotify(int newLevel, System.Action onClosed = null)
@@ -596,18 +625,30 @@ public class UIManager : MonoSingleton<UIManager>
 
     // 셀 클리어 보상(탐험 포인트/경험치 안내 + 보상카드 3택1) 통합 팝업 — 취소 없음
     // onConfirmed(selectedCardId)는 CONFIRM 클릭 시 호출 — 카드 후보가 없었던 셀(탈출 셀, Treasure 등)이면 selectedCardId는 null
-    public void ShowRewardCardSelectPopup(int explorationPointGained, int expGained, System.Collections.Generic.List<string> candidateCardIds, bool isEscapeCell, int zoneNumber, int cellRow, int cellCol, int rerollRemain, System.Action<string> onConfirmed)
+    // onConfirmed(selectedCardId, onProcessed): 호출부가 서버 응답을 처리한 뒤 onProcessed(true)를 부르면 팝업을 닫고, onProcessed(false)면 팝업을 유지해 재시도하게 함
+    public void ShowRewardCardSelectPopup(int explorationPointGained, int expGained, System.Collections.Generic.List<string> candidateCardIds, bool isEscapeCell, int zoneNumber, int cellRow, int cellCol, int rerollRemain, System.Action<string, System.Action<bool>> onConfirmed)
     {
         UIPopupRewardCardSelect popup = GetOrCreatePopup<UIPopupRewardCardSelect>("UIPopupRewardCardSelect", EPopupLayer.Overlay);
         if (popup == null) return;
 
         PushPopup(popup, EPopupLayer.Overlay);
 
-        System.Action<string> userConfirmed = onConfirmed;
-        popup.ShowPopupRewardCardSelect(explorationPointGained, expGained, candidateCardIds, isEscapeCell, zoneNumber, cellRow, cellCol, rerollRemain, selectedCardId =>
+        System.Action<string, System.Action<bool>> userConfirmed = onConfirmed;
+        popup.ShowPopupRewardCardSelect(explorationPointGained, expGained, candidateCardIds, isEscapeCell, zoneNumber, cellRow, cellCol, rerollRemain, (selectedCardId, onPopupProcessed) =>
         {
-            CloseTopPopup(EPopupLayer.Overlay);
-            userConfirmed?.Invoke(selectedCardId);
+            if (userConfirmed == null)
+            {
+                CloseTopPopup(EPopupLayer.Overlay);
+                onPopupProcessed(true);
+                return;
+            }
+
+            userConfirmed(selectedCardId, closePopup =>
+            {
+                if (closePopup == true)
+                    CloseTopPopup(EPopupLayer.Overlay);
+                onPopupProcessed(closePopup);
+            });
         });
     }
 

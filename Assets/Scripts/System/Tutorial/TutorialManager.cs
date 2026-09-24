@@ -371,7 +371,6 @@ public class TutorialManager : MonoSingleton<TutorialManager>
     {
         bool isCompleted = IsTutorialCompleted(tutorialId);
         bool isObsolete = IsConditionTutorialObsolete(tutorialId);
-        Debug.Log($"[ShipSlotTutorialLOG] RequestPendingTutorial id={tutorialId} isCompleted={isCompleted} isObsolete={isObsolete}");
         if (isCompleted == true) return;
         if (isObsolete == true) return;
         if (m_pendingTutorialIds.Contains(tutorialId) == false)

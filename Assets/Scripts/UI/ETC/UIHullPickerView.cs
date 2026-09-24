@@ -1,6 +1,7 @@
 // 함체 선택 팝업 — UIPanelFleet 프리팹에 내장된 오버레이(별도 UIManager 팝업 스택 대상 아님). 리스트에서 함체를
 // 고르고 확인/취소로 결정만 알려줄 뿐, 실제로 어느 슬롯에 어떻게 적용할지는 모른다(호출부가 콜백에서 처리) — 재사용성을
-// 위해 이 컴포넌트는 "선택기" 역할만 담당한다. 선택된 함체의 스탯을 현재 장착 함체와 비교해서 함께 보여준다
+// 위해 이 컴포넌트는 "선택기" 역할만 담당한다. 선택된 함체의 스탯을 현재 장착 함체와 비교해서 함께 보여준다.
+// 확인 시 팝업은 바로 닫히지 않고, 호출부가 처리 결과를 알려줄 때(성공) 닫힘 — 실패하면 선택을 유지한 채 다시 시도할 수 있다
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -40,7 +41,7 @@ public class UIHullPickerView : MonoBehaviour
     private int m_currentSlotCommandCost; // 이 슬롯이 지금 실제로 쓰고 있는 지휘력 — 각 후보 함체 행의 증감(+/-) 표시 기준
     private int m_baseUsedCommandPower; // 이 슬롯이 점유 중이던 지휘력을 미리 뺀 값 — 후보 함체 비용만 더하면 미리보기 완성
     private int m_maxCommandPower;
-    private System.Action<string> m_onConfirm; // 확인 시 선택된 hullSubType 전달
+    private System.Action<string, System.Action<bool>> m_onConfirm; // 확인 시 (선택된 hullSubType, 호출부가 처리를 마치고 부르는 콜백(true=팝업 닫기)) 전달
     private System.Action m_onCancel;
     private System.Func<RectTransform> m_lowestLockedHullTargetResolver; // 등록/해제 시 같은 델리게이트 인스턴스를 써야 하므로 보관
     private System.Func<bool> m_overCommandPowerEvaluator;
@@ -121,7 +122,7 @@ public class UIHullPickerView : MonoBehaviour
     // currentModules: 그 슬롯에 실제로 장착된 모듈 구성(로드아웃) — null이면 currentHull의 기본 장착 구성으로 비교
     // currentSlotCommandCost: 이 슬롯이 지금 실제로 쓰고 있는 지휘력 — 리스트 각 행의 증감(+/-) 표시 기준
     // baseUsedCommandPower: 이 슬롯이 점유 중이던 몫을 이미 뺀 사용 지휘력(호출부가 계산해서 넘김)
-    public void Open(List<ModuleData> availableHulls, ModuleData currentHull, ModuleHullInfo currentModules, int currentSlotCommandCost, int baseUsedCommandPower, int maxCommandPower, System.Action<string> onConfirm, System.Action onCancel = null)
+    public void Open(List<ModuleData> availableHulls, ModuleData currentHull, ModuleHullInfo currentModules, int currentSlotCommandCost, int baseUsedCommandPower, int maxCommandPower, System.Action<string, System.Action<bool>> onConfirm, System.Action onCancel = null)
     {
         m_hullsCache.Clear();
         m_hullsCache.AddRange(availableHulls);
@@ -427,10 +428,24 @@ public class UIHullPickerView : MonoBehaviour
 
     private void OnConfirmClicked()
     {
-        System.Action<string> onConfirm = m_onConfirm;
-        string selected = m_selectedHullSubType;
-        Close();
-        if (onConfirm != null) onConfirm(selected);
+        if (m_onConfirm == null) return;
+
+        // 서버 응답이 올 때까지 팝업을 열어둠 — 중복 확정을 막기 위해 확인 버튼만 잠근다
+        if (m_confirmButton != null)
+            m_confirmButton.interactable = false;
+        m_onConfirm(m_selectedHullSubType, OnConfirmProcessed);
+    }
+
+    // 호출부가 요청 처리를 마치고 알림 — closePicker=true면 닫고, false(재시도 가능한 실패)면 선택/미리보기를 유지한 채 확인 버튼 상태를 복원
+    private void OnConfirmProcessed(bool closePicker)
+    {
+        if (closePicker == true)
+        {
+            Close();
+            return;
+        }
+
+        RefreshCommandPowerPreview();
     }
 
     private void OnCancelClicked()

@@ -300,3 +300,9 @@ UIAchievement_Name_module_tier_count,,Equip {1} {0} Modules,{0} 모듈 {1}개 �
 UIAchievement_Desc_module_tier_count,,Have {1} {0} modules equipped in your active fleet at the same time,활성 함대에 {0} 모듈을 동시에 {1}개 장착하면 완료
 UIAchievement_Name_hull_unlock,,Unlock {0},{0} 언락
 UIAchievement_Desc_hull_unlock,,Unlock the {0} hull to complete. Refunds 10% of the achievement points spent.,{0} 함체를 언락하면 완료 — 소비한 업적 포인트의 10% 환급
+UI_Retry,,RETRY,재시도
+UIPopupMessage_NetworkWaiting,,Communicating with the server...,서버와 통신 중입니다...
+UIPopupMessage_NetworkNoResponseRead,,No response from the server. Do you want to retry?,서버 응답이 없습니다. 다시 시도할까요?
+UIPopupMessage_NetworkNoResponseWrite,,No response from the server. Please try again in a moment.,서버 응답이 없습니다. 잠시 후 다시 시도해 주세요.
+UIPopupMessage_NetworkStateMismatch,,Your exploration data does not match the server. Syncing with the server.,탐험 정보가 서버와 맞지 않습니다. 서버 상태로 다시 맞춥니다.
+UIPopupMessage_RequestFailed,,The request failed. (Code: {0}),요청에 실패했습니다. (코드: {0})

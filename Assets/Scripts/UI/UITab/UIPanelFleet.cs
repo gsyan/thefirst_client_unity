@@ -994,16 +994,25 @@ public class UIPanelFleet : UIPanelBase
         int usedCommandPowerExcludingThisSlot = composition.GetUsedCommandPower() - currentSlotCommandCost;
         int maxCommandPower = composition.GetMaxCommandPower();
 
-        m_hullPicker.Open(ComputeUnlockedHulls(), currentHull, currentModules, currentSlotCommandCost, usedCommandPowerExcludingThisSlot, maxCommandPower, selectedHullSubType => ApplyHullToSlot(index, selectedHullSubType));
+        m_hullPicker.Open(ComputeUnlockedHulls(), currentHull, currentModules, currentSlotCommandCost, usedCommandPowerExcludingThisSlot, maxCommandPower, (selectedHullSubType, onProcessed) => ApplyHullToSlot(index, selectedHullSubType, onProcessed));
     }
 
-    // 확인 버튼으로 선택된 함체를 해당 슬롯에 배치 — 기존 드래그앤드롭 배치 핵심 로직과 동일, dropIndex 대신 slotIndex 사용
-    private void ApplyHullToSlot(int slotIndex, string hullSubType)
+    // 확인 버튼으로 선택된 함체를 해당 슬롯에 배치 — 기존 드래그앤드롭 배치 핵심 로직과 동일, dropIndex 대신 slotIndex 사용.
+    // 서버 응답이 성공한 뒤에야 로컬 편성/3D 함선을 바꾼다. onProcessed(true)=함체 선택 팝업 닫기, (false)=팝업 유지(선택을 그대로 두고 다시 시도)
+    private void ApplyHullToSlot(int slotIndex, string hullSubType, System.Action<bool> onProcessed)
     {
-        if (string.IsNullOrEmpty(hullSubType) == true) return;
+        if (string.IsNullOrEmpty(hullSubType) == true)
+        {
+            onProcessed(true);
+            return;
+        }
 
         FleetComposition composition = DataManager.Instance.m_currentFleetComposition;
-        if (composition == null) return;
+        if (composition == null)
+        {
+            onProcessed(true);
+            return;
+        }
 
         // 전/후방은 함선이 아니라 슬롯(인덱스)에 종속된 값 — 기존에 함선이 있던 슬롯을 교체할 때는 그 슬롯의 기존 전/후방을 유지,
         // 비어있던 슬롯에 처음 배치할 때만 기본값(전방)을 사용
@@ -1015,25 +1024,55 @@ public class UIPanelFleet : UIPanelBase
         ModuleHullInfo existingModules = slotIndex < placedShipsBeforePlace.Count ? placedShipsBeforePlace[slotIndex].modules : null;
         ModuleHullInfo keptModules = FleetComposition.FilterModulesForNewHull(existingModules, hullSubType);
 
-        EFleetPlaceResult result = composition.TryPlaceShipAt(slotIndex, hullSubType, slotIsFront, keptModules);
+        EFleetPlaceResult result = composition.CheckPlaceShipAt(slotIndex, hullSubType, slotIsFront, keptModules);
         if (result != EFleetPlaceResult.Success)
         {
             string messageKey = result == EFleetPlaceResult.NotEnoughCommandPower
                 ? "UIFleet_PlaceFailed_NotEnoughCommandPower"
                 : "UIFleet_PlaceFailed_HullNotFound";
             ShowPlaceFailedPopup(messageKey);
+            onProcessed(false);
             return;
         }
 
         // 지크프리트 함대(서버 미등록)는 서버가 모르는 슬롯이라 PlaceFleetShip을 호출하면 항상 실패함 — 로컬 반영만으로 끝냄
-        if (ObjectManager.Instance.IsSiegfriedFleetActive() == false)
+        if (ObjectManager.Instance.IsSiegfriedFleetActive() == true)
         {
-            NetworkManager.Instance.PlaceFleetShip(new FleetPlaceShipRequest
+            CommitHullPlacement(slotIndex, hullSubType, slotIsFront, keptModules);
+            onProcessed(true);
+            return;
+        }
+
+        NetworkManager.Instance.PlaceFleetShip(new FleetPlaceShipRequest
+        {
+            slotIndex = slotIndex,
+            hullSubType = hullSubType,
+            isFront = slotIsFront,
+        }, response =>
+        {
+            if (response.errorCode != 0)
             {
-                slotIndex = slotIndex,
-                hullSubType = hullSubType,
-                isFront = slotIsFront,
-            }, OnPlaceFleetShipResponse);
+                OnPlaceFleetShipFailed(response.errorCode);
+                onProcessed(false);
+                return;
+            }
+
+            CommitHullPlacement(slotIndex, hullSubType, slotIsFront, keptModules);
+            onProcessed(true);
+        });
+    }
+
+    // 서버가 배치를 확정한 뒤(서버 미등록 튜토리얼 함대는 즉시) 로컬 편성과 3D 함선을 실제로 바꿈
+    private void CommitHullPlacement(int slotIndex, string hullSubType, bool slotIsFront, ModuleHullInfo keptModules)
+    {
+        FleetComposition composition = DataManager.Instance.m_currentFleetComposition;
+        if (composition == null) return;
+
+        EFleetPlaceResult result = composition.TryPlaceShipAt(slotIndex, hullSubType, slotIsFront, keptModules);
+        if (result != EFleetPlaceResult.Success)
+        {
+            Debug.LogError($"[UIPanelFleet] 배치 확정 후 로컬 편성 반영 실패: {result} slot={slotIndex} hull={hullSubType}");
+            return;
         }
 
         ObjectManager.Instance.ReplaceMyFleetShipAt(slotIndex, hullSubType, slotIsFront, keptModules);
@@ -1051,13 +1090,11 @@ public class UIPanelFleet : UIPanelBase
         }
     }
 
-    // 클라 사전검증(TryPlaceShipAt)과 서버 검증(FleetService.placeFleetShip) 조건은 동일해 정상 플레이에선 실패하지 않음 —
-    // 이 콜백은 조작된 요청 등으로 서버가 거부한 경우를 대비한 방어선. 이미 낙관적으로 반영해둔 상태를 서버 실제값으로 되돌림
-    private void OnPlaceFleetShipResponse(ApiResponse<string> response)
+    // 서버가 배치를 거부했거나 응답이 없을 때 — 로컬 편성/3D 함선은 아직 바꾸지 않았으므로 되돌릴 것 없이 안내만 띄움
+    // 클라 사전검증(CheckPlaceShipAt)과 서버 검증(FleetService.placeFleetShip) 조건은 동일해 정상 플레이에선 거부되지 않음
+    private void OnPlaceFleetShipFailed(int errorCodeValue)
     {
-        if (response.errorCode == 0) return;
-
-        ServerErrorCode errorCode = (ServerErrorCode)response.errorCode;
+        ServerErrorCode errorCode = (ServerErrorCode)errorCodeValue;
         string messageKey = null;
         if (errorCode == ServerErrorCode.PLACE_FLEET_SHIP_FAIL_INSUFFICIENT_COMMANDER_LEVEL || errorCode == ServerErrorCode.PLACE_FLEET_SHIP_FAIL_SLOT_LOCKED)
             messageKey = "UIFleet_PlaceFailed_Locked";
@@ -1066,9 +1103,14 @@ public class UIPanelFleet : UIPanelBase
         else if (errorCode == ServerErrorCode.PLACE_FLEET_SHIP_FAIL_HULL_NOT_FOUND)
             messageKey = "UIFleet_PlaceFailed_HullNotFound";
 
-        string message = messageKey != null ? LocalizationManager.Instance.Get(messageKey) : ErrorCodeMapping.GetMessage(response.errorCode);
-        ShowPlaceFailedPopup(message, isLocalizationKey: false);
-        RefreshFleetComposition();
+        Debug.LogError($"[UIPanelFleet] PlaceFleetShip 실패: {errorCodeValue}");
+        if (messageKey == null)
+        {
+            NetworkManager.Instance.ShowRequestFailedPopup(errorCodeValue); // 무응답은 네트워크 계층이 이미 안내함
+            return;
+        }
+
+        ShowPlaceFailedPopup(messageKey);
     }
 
     private void ShowPlaceFailedPopup(string messageOrKey, bool isLocalizationKey = true)

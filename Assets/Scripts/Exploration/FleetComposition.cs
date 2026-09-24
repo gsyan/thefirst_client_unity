@@ -35,8 +35,9 @@ public class FleetComposition
         return TryPlaceShipAt(m_placedShips.Count, hullSubType, isFront, modules);
     }
 
-    // 드래그로 특정 행 위치에 놓았을 때처럼, 삽입 위치를 지정해야 하는 경우 사용
-    public EFleetPlaceResult TryPlaceShipAt(int index, string hullSubType, bool isFront, ModuleHullInfo modules = null)
+    // 상태를 바꾸지 않는 배치 사전검증 — 함체 존재 + 지휘력 충족만 판정.
+    // 서버 응답이 성공한 뒤에야 로컬 편성을 바꾸는 호출부가 요청을 보내기 전 검증에 사용
+    public EFleetPlaceResult CheckPlaceShipAt(int index, string hullSubType, bool isFront, ModuleHullInfo modules = null)
     {
         ModuleData bodyData = m_moduleTable != null ? m_moduleTable.GetModuleDataFromTable(hullSubType) : null;
         if (bodyData == null)
@@ -62,6 +63,23 @@ public class FleetComposition
         {
             return EFleetPlaceResult.NotEnoughCommandPower;
         }
+
+        return EFleetPlaceResult.Success;
+    }
+
+    // 드래그로 특정 행 위치에 놓았을 때처럼, 삽입 위치를 지정해야 하는 경우 사용
+    public EFleetPlaceResult TryPlaceShipAt(int index, string hullSubType, bool isFront, ModuleHullInfo modules = null)
+    {
+        EFleetPlaceResult checkResult = CheckPlaceShipAt(index, hullSubType, isFront, modules);
+        if (checkResult != EFleetPlaceResult.Success)
+        {
+            return checkResult;
+        }
+
+        ModuleHullInfo resolvedModules = modules != null ? modules : BuildDefaultModules();
+
+        int clampedIndex = index < 0 ? 0 : index > m_placedShips.Count ? m_placedShips.Count : index;
+        bool isReplacingExisting = clampedIndex < m_placedShips.Count;
 
         if (isReplacingExisting == true)
             m_placedShips[clampedIndex] = new FleetSlotEntry(hullSubType, isFront, resolvedModules);

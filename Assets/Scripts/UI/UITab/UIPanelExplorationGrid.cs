@@ -135,9 +135,14 @@ public class UIPanelExplorationGrid : UIPanelBase
         // CameraController.HandleGalaxyGridSelection이 셀 히트 시 발행 — 셀 아닌 빈 곳은 EmptySpaceTapped로 흘러 UIManager가 패널을 닫음
         EventManager.Subscribe_ExplorationGridCellClicked(OnGridCellClicked);
 
-        EnterZone(ObjectManager.Instance.GetInitialZoneIndex());
+        // 셀 전투(대치 포함) 중이면 그 존을 유지 — 서버에 런이 아직 없는 첫 셀에서는 GetInitialZoneIndex()가 highestCleared+1(다른 존)을 돌려주기 때문
+        int targetZoneNumber = m_battleZoneNumber > 0 ? m_battleZoneNumber : ObjectManager.Instance.GetInitialZoneIndex();
+        EnterZone(targetZoneNumber);
         RefreshRewardCardBuffDisplay();
     }
+
+    // 셀 전투(대치 화면 진입 ~ 클리어/퇴각 처리 완료) 동안 전투 중인 존 번호 — 0이면 전투 중 아님
+    private int m_battleZoneNumber;
 
     // 보상카드 지속버프 상태(ObjectManager.m_rewardCardSessionState)가 바뀔 때마다(선택/재접속복구/런종료) 호출해 아이콘 나열을 다시 그림
     private void RefreshRewardCardBuffDisplay()
@@ -151,6 +156,12 @@ public class UIPanelExplorationGrid : UIPanelBase
     // 패널"이면 그냥 리턴해버려(OnShowUIPanel 재호출 안 됨) 그런 경우엔 이 메서드를 직접 불러야 실제로 다시 그려짐
     private void EnterZone(int zoneNumber)
     {
+        CommanderInfo diagCommanderInfo = DataManager.Instance.m_currentCommander != null ? DataManager.Instance.m_currentCommander.m_commanderInfo : null;
+        int diagActiveZone = diagCommanderInfo != null ? diagCommanderInfo.explorationZoneNumber : -1;
+        int diagHighestCleared = diagCommanderInfo != null ? diagCommanderInfo.highestClearedZoneNumber : -1;
+        int diagInitialZoneIndex = ObjectManager.Instance.GetInitialZoneIndex();
+        Debug.Log($"[RewardCardDiag] EnterZone target={zoneNumber} current={m_currentZoneNumber} battleZone={m_battleZoneNumber} initialZoneIndex={diagInitialZoneIndex} activeZone={diagActiveZone} highestCleared={diagHighestCleared}"); // [진단] 원인 확정 후 제거
+
         // 존/그리드가 실제로 정착하기 전(카메라 갤럭시뷰 전환 중)에는 m_currentZoneNumber를 건드리지 않음 —
         // SelectZoneTab의 isSameZoneReentry 판정이 "직전에 로드돼있던 존이 무엇인지"를 정확히 알아야 하므로(조기 대입 시 오판 버그 발생)
         m_pendingZoneNumber = zoneNumber;
@@ -311,6 +322,8 @@ public class UIPanelExplorationGrid : UIPanelBase
         zoneNumber = Mathf.Clamp(zoneNumber, 1, m_zoneGroupCount > 0 ? m_zoneGroupCount : zoneNumber);
         if (zoneNumber == m_currentZoneNumber && m_gridData != null) return;
 
+        Debug.Log($"[RewardCardDiag] NavigateToZone zone={zoneNumber} current={m_currentZoneNumber} recenter={recenterScroll} battleZone={m_battleZoneNumber}"); // [진단] 원인 확정 후 제거
+
         SnapshotActiveZoneStateIfNeeded();
 
         ObjectManager.Instance.ChangeZone(zoneNumber);
@@ -351,6 +364,8 @@ public class UIPanelExplorationGrid : UIPanelBase
 
     public void SelectZoneTab(int zoneNumber, int seed)
     {
+        Debug.Log($"[RewardCardDiag] SelectZoneTab {m_currentZoneNumber}->{zoneNumber} battleZone={m_battleZoneNumber}"); // [진단] 원인 확정 후 제거
+
         ZoneConfig zoneConfig = DataManager.Instance.m_dataTableZone.GetZoneByZoneIndex(zoneNumber);
 
         // 전투 승리 후 그리드 복귀(ShowPanel 재호출)처럼 같은 존 재진입 시에는 시작 좌표로 리셋하지 않고
@@ -474,12 +489,45 @@ public class UIPanelExplorationGrid : UIPanelBase
         // 마지막 클리어 셀에 아직 선택 확정 안 된 카드 후보가 있으면(팝업이 뜨기 전에 앱이 꺼진 경우) 재접속 시 다시 띄움
         if (response.data.pendingRewardCardCandidates != null && response.data.pendingRewardCardCandidates.Count > 0)
         {
-            UIManager.Instance.ShowRewardCardSelectPopup(0, 0, response.data.pendingRewardCardCandidates, false, m_currentZoneNumber, m_currentRow, m_currentCol, response.data.rerollRemain, selectedCardId =>
+            // 미확정 후보는 서버 기준 마지막 클리어 셀의 것 — 패널의 현재 좌표가 아니라 clearedCells의 마지막 셀로 확정 요청을 보내야 함
+            int rewardZoneNumber = response.data.zoneNumber;
+            int rewardCellRow = m_currentRow;
+            int rewardCellCol = m_currentCol;
+            if (clearedCells != null && clearedCells.Length > 0)
             {
-                if (selectedCardId != null)
-                    OnRewardCardSelected(selectedCardId);
+                bool hasLastCell = TryParseClearedCell(clearedCells[clearedCells.Length - 1], out int lastRow, out int lastCol);
+                if (hasLastCell == true)
+                {
+                    rewardCellRow = lastRow;
+                    rewardCellCol = lastCol;
+                }
+            }
+
+            UIManager.Instance.ShowRewardCardSelectPopup(0, 0, response.data.pendingRewardCardCandidates, false, rewardZoneNumber, rewardCellRow, rewardCellCol, response.data.rerollRemain, (selectedCardId, onProcessed) =>
+            {
+                if (selectedCardId == null)
+                {
+                    onProcessed(true);
+                    return;
+                }
+                OnRewardCardSelected(rewardZoneNumber, rewardCellRow, rewardCellCol, selectedCardId, onProcessed);
             });
         }
+    }
+
+    // 서버 clearedCells의 "row-col"(0-indexed) 문자열을 좌표로 변환
+    private bool TryParseClearedCell(string cell, out int row, out int col)
+    {
+        row = 0;
+        col = 0;
+        if (string.IsNullOrEmpty(cell) == true) return false;
+
+        int dashIdx = cell.IndexOf('-');
+        if (dashIdx <= 0) return false;
+
+        bool rowParsed = int.TryParse(cell.Substring(0, dashIdx), out row);
+        bool colParsed = int.TryParse(cell.Substring(dashIdx + 1), out col);
+        return rowParsed == true && colParsed == true;
     }
 
     // 슬롯 포지션 인덱스 기준으로 함대 체력/실드 비율 스냅샷을 적용 — (1) 재접속 시 서버 저장값 복구, (2) 전투 퇴각/패배 시 진입 직전 상태로 롤백, 두 용도에 재사용.
@@ -750,6 +798,7 @@ public class UIPanelExplorationGrid : UIPanelBase
         // OnHideUIPanel(ExitGalaxyView 트리거) 시점에 올바른 분기를 탐. FleetViewRestored 이후 OnFleetViewRestoredForCellEntry에서
         // 실제 함대 이동/워프인 + 적 함대 스폰(SpawnConfirmedEnemyFleet) 처리
         m_pendingCellEntry = true;
+        m_battleZoneNumber = m_currentZoneNumber;
 
         // UIPanelPrepareBattle을 콘텐츠 없이 이 패널 위에 곧바로 push — 이 패널은 스택에서 제거되지 않고 그대로 남아있는 채
         // (push의 자연스러운 부작용으로) OnHideUIPanel만 트리거됨. 실제 내용은 워프인 완료 후 SetupContent가 채움
@@ -839,6 +888,7 @@ public class UIPanelExplorationGrid : UIPanelBase
         {
             // 전투는 시작하지 않음 — 대치 화면은 그대로 남아있어 유저가 다시 시도하거나 퇴각할 수 있음
             Debug.LogError($"[UIPanelExplorationGrid] EnterExplorationCell(전투시작) 실패: {response.errorCode}");
+            NetworkManager.Instance.ShowRequestFailedPopup(response.errorCode);
             return;
         }
 
@@ -883,6 +933,7 @@ public class UIPanelExplorationGrid : UIPanelBase
         if (response.errorCode != 0)
         {
             Debug.LogError($"[UIPanelExplorationGrid] EnterExplorationCell 실패: {response.errorCode}");
+            NetworkManager.Instance.ShowRequestFailedPopup(response.errorCode);
             return;
         }
 
@@ -929,6 +980,7 @@ public class UIPanelExplorationGrid : UIPanelBase
         // OnHideUIPanel(ExitGalaxyView 트리거) 시점에 올바른 분기를 탐. FleetViewRestored 이후 OnFleetViewRestoredForCellEntry에서
         // 실제 함대 이동/워프인 + 적 함대 스폰(SpawnConfirmedEnemyFleet) 처리
         m_pendingCellEntry = true;
+        m_battleZoneNumber = m_currentZoneNumber;
 
         // UIPanelPrepareBattle을 콘텐츠 없이 이 패널 위에 곧바로 push — 이 패널은 스택에서 제거되지 않고 그대로 남아있는 채
         // (push의 자연스러운 부작용으로) OnHideUIPanel만 트리거됨. 실제 내용은 워프인 완료 후 SetupContent가 채움
@@ -964,13 +1016,21 @@ public class UIPanelExplorationGrid : UIPanelBase
         SpaceFleet myFleet = ObjectManager.Instance.GetMyFleet();
         if (myFleet == null) return;
 
+        CommanderInfo commanderInfo = DataManager.Instance.m_currentCommander != null ? DataManager.Instance.m_currentCommander.m_commanderInfo : null;
+
+        // 클리어 요청이 실패하면 RestorePreviousCellAfterRetreat로 되돌릴 수 있도록 이동 전 상태를 저장(전투 셀의 EnterLocalCombatPreview와 같은 항목)
+        m_previousRow = m_currentRow;
+        m_previousCol = m_currentCol;
+        m_previousFleetWorldPos = myFleet.transform.position;
+        m_previousShipHealthRatios = myFleet.BuildHealthRatioSnapshot();
+        m_previousTacticPower = commanderInfo != null ? commanderInfo.tacticPower : 0;
+
         m_currentRow = m_pendingCellRow;
         m_currentCol = m_pendingCellCol;
 
         ObjectManager.Instance.SetMyFleetPosition(m_pendingCellWorldPos, 0f);
         myFleet.StartFleetWarpIn();
 
-        CommanderInfo commanderInfo = DataManager.Instance.m_currentCommander != null ? DataManager.Instance.m_currentCommander.m_commanderInfo : null;
         ClearExplorationCellRequest request = new ClearExplorationCellRequest
         {
             zoneNumber = m_currentZoneNumber,
@@ -980,6 +1040,8 @@ public class UIPanelExplorationGrid : UIPanelBase
             tacticPower = commanderInfo != null ? commanderInfo.tacticPower : 0,
             challengeToken = m_activeChallengeToken,
         };
+        string diagTokenState = string.IsNullOrEmpty(m_activeChallengeToken) == true ? "none" : "set";
+        Debug.Log($"[RewardCardDiag] ClearRequest(event) zone={request.zoneNumber} cell={request.cellRow}-{request.cellCol} token={diagTokenState} battleZone={m_battleZoneNumber}"); // [진단] 원인 확정 후 제거
         NetworkManager.Instance.ClearExplorationCell(request, OnClearExplorationCellResponse);
     }
 
@@ -1040,24 +1102,39 @@ public class UIPanelExplorationGrid : UIPanelBase
             tacticPower = commanderInfo != null ? commanderInfo.tacticPower : 0,
             challengeToken = m_activeChallengeToken,
         };
+        string diagTokenState = string.IsNullOrEmpty(m_activeChallengeToken) == true ? "none" : "set";
+        Debug.Log($"[RewardCardDiag] ClearRequest(battle) zone={request.zoneNumber} cell={request.cellRow}-{request.cellCol} token={diagTokenState} battleZone={m_battleZoneNumber}"); // [진단] 원인 확정 후 제거
         NetworkManager.Instance.ClearExplorationCell(request, OnClearExplorationCellResponse);
+    }
+
+    // 서버가 셀 클리어를 확정하지 못했을 때 — 클리어된 것처럼 진행하지 않고 이전 셀로 되돌려 서버와 위치를 일치시킴(셀은 클리어되지 않은 채 남아 다시 도전 가능)
+    private void OnClearExplorationCellFailed(int errorCode)
+    {
+        Debug.LogError($"[UIPanelExplorationGrid] ClearExplorationCell 실패: {errorCode}");
+        NetworkManager.Instance.ShowRequestFailedPopup(errorCode);
+        RestorePreviousCellAfterRetreat();
     }
 
     private void OnClearExplorationCellResponse(ApiResponse<ClearExplorationCellResponse> response)
     {
+        if (response.errorCode != 0)
+        {
+            OnClearExplorationCellFailed(response.errorCode);
+            return;
+        }
+
         int pointGained = 0;
         int expGained = 0;
         List<string> rewardCardCandidates = null;
         ETreasureRewardType treasureRewardType = ETreasureRewardType.None;
         float treasureRewardRatio = 0f;
         int rerollRemain = 0;
-        if (response.errorCode != 0)
-            Debug.LogError($"[UIPanelExplorationGrid] ClearExplorationCell 실패: {response.errorCode}");
-        else if (response.data != null)
+        if (response.data != null)
         {
             pointGained = response.data.explorationPointGained;
             expGained = response.data.expGained;
             rewardCardCandidates = response.data.rewardCardCandidates; // 탈출 셀/빈 셀은 null — 카드 선택 단계를 건너뜀
+            m_rewardCardResyncAttempted = false;
             treasureRewardType = response.data.treasureRewardType;
             treasureRewardRatio = response.data.treasureRewardRatio;
             rerollRemain = response.data.rerollRemain;
@@ -1093,14 +1170,20 @@ public class UIPanelExplorationGrid : UIPanelBase
         // 탐험 포인트/경험치 안내와 보상카드 3택1을 한 팝업에서 함께 처리 — 카드 후보가 없으면(탈출 셀, Treasure 등) 팝업이 카드 섹션만 숨기고 포인트 안내만 보여줌.
         // 탈출 셀 여부는 카드 후보 유무로 추측하지 않고 그리드 데이터로 직접 판정(Treasure도 카드 후보가 없어서 구분이 안 되므로)
         bool isEscapeCell = m_gridData != null && m_gridData.IsInBounds(m_currentRow, m_currentCol) == true && m_gridData.GetCell(m_currentRow, m_currentCol).isEscape;
-        UIManager.Instance.ShowRewardCardSelectPopup(pointGained, expGained, rewardCardCandidates, isEscapeCell, m_currentZoneNumber, m_currentRow, m_currentCol, rerollRemain, selectedCardId =>
+        int rewardZoneNumber = m_currentZoneNumber;
+        int rewardCellRow = m_currentRow;
+        int rewardCellCol = m_currentCol;
+        int diagCandidateCount = rewardCardCandidates != null ? rewardCardCandidates.Count : 0;
+        Debug.Log($"[RewardCardDiag] ClearResponse current={m_currentZoneNumber} rewardZone={rewardZoneNumber} cell={rewardCellRow}-{rewardCellCol} candidates={diagCandidateCount} battleZone={m_battleZoneNumber}"); // [진단] 원인 확정 후 제거
+        UIManager.Instance.ShowRewardCardSelectPopup(pointGained, expGained, rewardCardCandidates, isEscapeCell, rewardZoneNumber, rewardCellRow, rewardCellCol, rerollRemain, (selectedCardId, onProcessed) =>
         {
             if (selectedCardId == null)
             {
+                onProcessed(true);
                 ContinueAfterCellClear();
                 return;
             }
-            OnRewardCardSelected(selectedCardId);
+            OnRewardCardSelected(rewardZoneNumber, rewardCellRow, rewardCellCol, selectedCardId, onProcessed);
         });
     }
 
@@ -1128,24 +1211,120 @@ public class UIPanelExplorationGrid : UIPanelBase
         });
     }
 
-    private void OnRewardCardSelected(string selectedCardId)
+    private bool m_rewardCardResyncAttempted; // 보상카드 확정 실패 후 재동기화를 한 번 시도했는지 — 같은 실패가 재동기화 직후 또 나면 반복하지 않고 넘어가기 위함
+
+    // onProcessed(true)=보상카드 팝업 닫기, (false)=팝업 유지 — 성공했거나 서버와 상태가 어긋나 재시도가 무의미할 때만 닫고, 그 외 실패는 같은 확인 버튼으로 재시도하게 유지
+    // zoneNumber/cellRow/cellCol은 팝업을 띄운 시점(그 보상이 걸린 셀)의 값 — 팝업이 떠 있는 동안 패널의 m_current*가 바뀔 수 있어 현재 값을 쓰지 않음
+    private void OnRewardCardSelected(int zoneNumber, int cellRow, int cellCol, string selectedCardId, System.Action<bool> onProcessed)
     {
+        Debug.Log($"[RewardCardDiag] ConfirmRequest zone={zoneNumber} cell={cellRow}-{cellCol} card={selectedCardId} current={m_currentZoneNumber} battleZone={m_battleZoneNumber}"); // [진단] 원인 확정 후 제거
         ConfirmRewardCardRequest request = new ConfirmRewardCardRequest
         {
-            zoneNumber = m_currentZoneNumber,
-            cellRow = m_currentRow,
-            cellCol = m_currentCol,
+            zoneNumber = zoneNumber,
+            cellRow = cellRow,
+            cellCol = cellCol,
             selectedCardId = selectedCardId,
         };
         NetworkManager.Instance.ConfirmRewardCard(request, response =>
         {
-            if (response.errorCode != 0)
-                Debug.LogError($"[UIPanelExplorationGrid] ConfirmRewardCard 실패: {response.errorCode}");
-            else if (response.data != null)
-                ApplySelectedRewardCard(selectedCardId, response.data.explorationPointGained);
+            if (response.errorCode == 0)
+            {
+                m_rewardCardResyncAttempted = false;
+                onProcessed(true);
+                if (response.data != null)
+                    ApplySelectedRewardCard(selectedCardId, response.data.explorationPointGained);
 
+                ContinueAfterCellClear();
+                return;
+            }
+
+            Debug.LogError($"[UIPanelExplorationGrid] ConfirmRewardCard 실패: {response.errorCode}");
+            bool isNoActiveRun = response.errorCode == (int)ServerErrorCode.EXPLORATION_NO_ACTIVE_RUN;
+            bool isInvalidSelection = response.errorCode == (int)ServerErrorCode.EXPLORATION_REWARD_CARD_INVALID_SELECTION;
+            bool isStateMismatch = isNoActiveRun == true || isInvalidSelection == true;
+            if (isStateMismatch == false)
+            {
+                onProcessed(false);
+                return;
+            }
+
+            // 재동기화 직후 다시 뜬 팝업에서 같은 실패가 또 나면 서버 기준으로 확정할 수 없는 상태 — 무한 반복 대신 이 셀의 카드 선택은 포기하고 진행
+            if (m_rewardCardResyncAttempted == true)
+            {
+                m_rewardCardResyncAttempted = false;
+                onProcessed(true);
+                ContinueAfterCellClear();
+                return;
+            }
+
+            m_rewardCardResyncAttempted = true;
+            onProcessed(true);
+            UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig
+            {
+                message = LocalizationManager.Instance.Get("UIPopupMessage_NetworkStateMismatch"),
+                onConfirm = () => ResyncRunAfterStateMismatch(),
+            });
+        });
+    }
+
+    // 서버가 런/카드 선택 상태를 클라와 다르게 들고 있을 때 — 서버 값이 권위이므로 진행 상황을 다시 받아 맞춘다.
+    // 서버에 런이 없으면 로컬 런 상태를 종료하고, 있으면 적립/체력/보상카드/미확정 후보를 서버 값으로 복원(재접속 복구와 같은 경로)
+    private void ResyncRunAfterStateMismatch()
+    {
+        m_pendingBankedRewardGain.Clear(); // 로컬 임시 누적은 버리고 서버 적립값을 기준으로 함
+        NetworkManager.Instance.GetActiveZoneRunProgress(new GetActiveZoneRunProgressRequest(), response =>
+        {
+            if (response.errorCode != 0 || response.data == null)
+            {
+                Debug.LogError($"[UIPanelExplorationGrid] 상태 재동기화 실패: {response.errorCode}");
+                ReturnToGridPanel();
+                m_battleZoneNumber = 0;
+                return;
+            }
+
+            bool hasActiveRun = response.data.zoneNumber > 0;
+            if (hasActiveRun == false)
+            {
+                ResetRunStateAfterServerLoss();
+                return;
+            }
+
+            ObjectManager.Instance.m_rewardCardSessionState.Reset();
+            ObjectManager.Instance.m_rewardCardSessionState.ApplyPersistentCardIds(response.data.selectedRewardCards);
+            ObjectManager.Instance.RefreshRewardCardBuffsOnMyFleet();
+            RefreshRewardCardBuffDisplay();
+
+            OnGetActiveZoneRunProgressResponse(response, m_currentZoneNumber);
             ContinueAfterCellClear();
         });
+    }
+
+    // 서버에 진행 중인 런이 없다는 확인을 받았을 때 — 서버 정산값 없이 로컬 런 상태만 종료(OnAbandonRunConfirmed에서 서버 정산 반영을 뺀 것과 같은 정리)
+    private void ResetRunStateAfterServerLoss()
+    {
+        EventManager.Trigger_ZoneRunEnded();
+
+        m_bankedReward.Clear();
+        m_pendingBankedRewardGain.Clear();
+        RefreshBankedPointText();
+        ClearActiveRunZoneCache();
+        RefreshAbandonRunButtonState();
+
+        SpaceFleet myFleet = ObjectManager.Instance.GetMyFleet();
+        if (myFleet != null)
+        {
+            myFleet.RestoreAllDestroyedShips(0.1f);
+            myFleet.FullRepair();
+        }
+
+        ObjectManager.Instance.m_rewardCardSessionState.Reset();
+        ObjectManager.Instance.RefreshRewardCardBuffsOnMyFleet();
+        RefreshRewardCardBuffDisplay();
+
+        ReturnToGridPanel();
+        m_battleZoneNumber = 0;
+        m_gridData = null;
+        SelectZoneTab(m_currentZoneNumber, ComputeZoneSeed(m_currentZoneNumber));
     }
 
     // 지속버프면 세션 상태에 누적, 즉시효과면 그 자리에서 소모(체력 회복 등). 즉시 가산 포인트는 다음 SettleZoneEntry에 반영되도록 버퍼에 더함
@@ -1226,6 +1405,7 @@ public class UIPanelExplorationGrid : UIPanelBase
         }
 
         RefreshAbandonRunButtonState();
+        m_battleZoneNumber = 0; // 셀 클리어 처리 완료 — 이후 패널 재오픈은 서버 기준 목표 존을 따름
         EventManager.TriggerZoneCellReturnedToGrid();
     }
 
@@ -1379,7 +1559,6 @@ public class UIPanelExplorationGrid : UIPanelBase
         int prevShipCount = DataManager.Instance.m_dataTableCommander.GetShipCount(prevLevel);
         int newShipCount = DataManager.Instance.m_dataTableCommander.GetShipCount(commanderLevel);
         bool isShipSlotIncreasedFromOne = prevShipCount <= 1 && newShipCount >= 2;
-        Debug.Log($"[ShipSlotTutorialLOG] ApplyExpAndLevel prevLevel={prevLevel} newLevel={commanderLevel} prevShipCount={prevShipCount} newShipCount={newShipCount} isShipSlotIncreasedFromOne={isShipSlotIncreasedFromOne}");
         if (isShipSlotIncreasedFromOne == true)
         {
             TutorialManager.Instance.RequestShipSlotIncreaseTutorial();
@@ -1524,6 +1703,7 @@ public class UIPanelExplorationGrid : UIPanelBase
         CameraController.Instance.SnapToTarget(); // 함대가 순간이동했으므로 카메라도 즉시 스냅 — 워프인 때는 ExitGalaxyView가 미리 그 위치로 이동해둬서 필요 없었지만, 퇴각은 카메라 이동 없이 함대만 텔레포트되므로 별도 스냅 필요
 
         ReturnToGridPanel(); // 승리/전투 중 퇴각과 동일하게 그리드(갤럭시뷰)로 복귀
+        m_battleZoneNumber = 0; // 대치 화면 퇴각 처리 완료
     }
 
     // 전투 중 퇴각(패배 포함) — OnConfirmRetreat(대치 화면 퇴각)와 동일한 위치 복원. 적 함대 제거는 ForceEndBattle이 이미 처리했으므로 생략.
@@ -1552,6 +1732,7 @@ public class UIPanelExplorationGrid : UIPanelBase
         }
 
         ReturnToGridPanel();
+        m_battleZoneNumber = 0; // 퇴각/패배 복귀 처리 완료
         EventManager.TriggerZoneCellReturnedToGrid();
     }
 

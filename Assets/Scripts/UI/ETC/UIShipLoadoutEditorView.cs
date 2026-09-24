@@ -754,6 +754,7 @@ public class UIShipLoadoutEditorView : MonoBehaviour
             if (response.errorCode != 0)
             {
                 Debug.LogError($"[UIShipLoadoutEditorView] SetModule 실패: {response.errorCode}");
+                NetworkManager.Instance.ShowRequestFailedPopup(response.errorCode); // 화면은 그대로 유지 — 다시 Confirm하거나 Cancel로 원본 복원
                 return;
             }
 

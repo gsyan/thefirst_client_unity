@@ -7,6 +7,15 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
+
+// 서버 요청 정책 — Silent: 대기 UI 없음(하트비트), Read: 조회(0.5초 뒤 스피너, 무응답 시 재시도 팝업), Write: 상태 변경(즉시 입력 차단, 재전송 없음)
+public enum ERequestPolicy
+{
+    Silent,
+    Read,
+    Write,
+}
+
 public class NetworkManager : MonoSingleton<NetworkManager>
 {
     #region MonoSingleton ---------------------------------------------------------------
@@ -24,6 +33,15 @@ public class NetworkManager : MonoSingleton<NetworkManager>
 
     // 동시 401 발생 시 refresh 중복 호출 방지 — 진행 중인 task를 공유
     private Task<ApiResponse<AuthResponse>> m_pendingRefreshTask = null;
+
+    // 요청 대기 UI 상태 — 진행 중 요청 수로 입력 차단막/스피너를 켜고 끔
+    private const float k_waitSpinnerDelaySec = 0.5f;
+    private int m_pendingReadCount = 0;
+    private int m_pendingWriteCount = 0;
+    private bool m_isSpinnerDelayElapsed = false;
+    private Coroutine m_spinnerDelayCoroutine = null;
+    // 씬 전환 후 이전 씬에서 시작된 요청의 완료 처리가 새 씬의 카운트를 건드리지 않도록 구분
+    private int m_sceneGeneration = 0;
 
     private NetworkReachability m_networkStatus;
     private bool m_bConnected = false;
@@ -49,6 +67,8 @@ public class NetworkManager : MonoSingleton<NetworkManager>
 
     public void OnChangeScene()
     {
+        ResetRequestWaitState();
+
         if (SceneManager.GetActiveScene().name == "MainScene")
         {
             GameObject.Find("UICanvas")?.TryGetComponent(out m_uIManager);
@@ -274,7 +294,54 @@ public class NetworkManager : MonoSingleton<NetworkManager>
         }
     }
 
-    private IEnumerator RunAsync<T>(Func<Task<ApiResponse<T>>> taskFunc, System.Action<ApiResponse<T>> onComplete, int maxRetries = 2)
+    // 요청 1회 시도의 결과 전달용 — IEnumerator는 반환값이 없어 홀더로 넘김
+    private class RequestAttemptResult<T>
+    {
+        public ApiResponse<T> response;
+    }
+
+    // 대기 UI(입력 차단막/스피너) 표시 → 요청 → 무응답이면 안내 팝업(Read는 재시도 선택 가능) → 대기 UI 해제 후 콜백
+    private IEnumerator RunAsync<T>(Func<Task<ApiResponse<T>>> taskFunc, System.Action<ApiResponse<T>> onComplete, int maxRetries = 2, ERequestPolicy policy = ERequestPolicy.Write)
+    {
+        int generation = m_sceneGeneration;
+        RequestAttemptResult<T> attemptResult = new RequestAttemptResult<T>();
+
+        BeginRequestWait(policy);
+        bool isWaitActive = true;
+
+        while (true)
+        {
+            attemptResult.response = null;
+            yield return RunAsyncAttempt(taskFunc, attemptResult, maxRetries);
+
+            bool isNoResponse = attemptResult.response != null && attemptResult.response.errorCode == (int)ServerErrorCode.CLIENT_REQUEST_NO_RESPONSE;
+            bool canShowNoResponsePopup = isNoResponse == true && policy != ERequestPolicy.Silent && m_uIManager != null && generation == m_sceneGeneration;
+            if (canShowNoResponsePopup == false) break;
+
+            // 안내 팝업이 입력 차단막에 가려지지 않도록 대기 UI를 먼저 내림
+            EndRequestWait(policy, generation);
+            isWaitActive = false;
+
+            int userChoice = 0; // 0=선택 대기, 1=재시도, 2=닫기
+            ShowNoResponsePopup(policy, () => userChoice = 1, () => userChoice = 2);
+            while (userChoice == 0 && generation == m_sceneGeneration)
+                yield return null;
+
+            bool isRetry = userChoice == 1 && generation == m_sceneGeneration;
+            if (isRetry == false) break;
+
+            BeginRequestWait(policy);
+            isWaitActive = true;
+        }
+
+        if (isWaitActive == true)
+            EndRequestWait(policy, generation);
+
+        onComplete?.Invoke(attemptResult.response);
+    }
+
+    // 401 토큰 갱신 재시도를 포함한 요청 1회 시도
+    private IEnumerator RunAsyncAttempt<T>(Func<Task<ApiResponse<T>>> taskFunc, RequestAttemptResult<T> result, int maxRetries)
     {
         int retryCount = 0;
         Task<ApiResponse<T>> task = null;
@@ -338,8 +405,113 @@ public class NetworkManager : MonoSingleton<NetworkManager>
             }
         }
 
-        // Execute callback
-        onComplete?.Invoke(response);
+        result.response = response;
+    }
+
+    private void ShowNoResponsePopup(ERequestPolicy policy, System.Action onRetry, System.Action onClose)
+    {
+        LocalizationManager loc = LocalizationManager.Instance;
+        if (policy == ERequestPolicy.Read)
+        {
+            m_uIManager.ShowConfirmPopup(new ConfirmPopupConfig
+            {
+                message      = loc.Get("UIPopupMessage_NetworkNoResponseRead"),
+                confirmText1 = loc.Get("UI_Retry"),
+                cancelText1  = loc.Get("UI_Cancel"),
+                onConfirm    = onRetry,
+                onCancel     = onClose,
+            });
+            return;
+        }
+
+        m_uIManager.ShowConfirmPopup(new ConfirmPopupConfig
+        {
+            message   = loc.Get("UIPopupMessage_NetworkNoResponseWrite"),
+            onConfirm = onClose,
+        });
+    }
+
+    // 서버가 요청을 거절했을 때의 공통 실패 안내 — 무응답은 RunAsync가 이미 안내했으므로 건너뜀
+    public void ShowRequestFailedPopup(int errorCode)
+    {
+        if (errorCode == (int)ServerErrorCode.CLIENT_REQUEST_NO_RESPONSE) return;
+        if (m_uIManager == null) return;
+
+        m_uIManager.ShowConfirmPopup(new ConfirmPopupConfig
+        {
+            message = LocalizationManager.Instance.Get("UIPopupMessage_RequestFailed", (object)errorCode),
+        });
+    }
+
+    // Write는 즉시 입력 차단, 스피너는 첫 요청 시작 후 k_waitSpinnerDelaySec가 지나야 표시 — Silent는 대기 UI 대상 아님
+    private void BeginRequestWait(ERequestPolicy policy)
+    {
+        if (policy == ERequestPolicy.Silent) return;
+
+        int totalBefore = m_pendingReadCount + m_pendingWriteCount;
+        if (policy == ERequestPolicy.Write)
+            m_pendingWriteCount++;
+        else
+            m_pendingReadCount++;
+
+        if (totalBefore == 0)
+        {
+            m_isSpinnerDelayElapsed = false;
+            m_spinnerDelayCoroutine = StartCoroutine(Co_SpinnerDelay());
+        }
+        RefreshRequestWaitUI();
+    }
+
+    // generation이 다르면 이전 씬에서 시작된 요청이라 이미 리셋된 카운트를 건드리지 않음
+    private void EndRequestWait(ERequestPolicy policy, int generation)
+    {
+        if (policy == ERequestPolicy.Silent) return;
+        if (generation != m_sceneGeneration) return;
+
+        if (policy == ERequestPolicy.Write)
+            m_pendingWriteCount = Mathf.Max(0, m_pendingWriteCount - 1);
+        else
+            m_pendingReadCount = Mathf.Max(0, m_pendingReadCount - 1);
+
+        int totalAfter = m_pendingReadCount + m_pendingWriteCount;
+        if (totalAfter == 0)
+            StopSpinnerDelay();
+        RefreshRequestWaitUI();
+    }
+
+    private IEnumerator Co_SpinnerDelay()
+    {
+        yield return new WaitForSecondsRealtime(k_waitSpinnerDelaySec);
+        m_isSpinnerDelayElapsed = true;
+        m_spinnerDelayCoroutine = null;
+        RefreshRequestWaitUI();
+    }
+
+    private void StopSpinnerDelay()
+    {
+        if (m_spinnerDelayCoroutine != null)
+            StopCoroutine(m_spinnerDelayCoroutine);
+        m_spinnerDelayCoroutine = null;
+        m_isSpinnerDelayElapsed = false;
+    }
+
+    private void ResetRequestWaitState()
+    {
+        m_sceneGeneration++;
+        m_pendingReadCount = 0;
+        m_pendingWriteCount = 0;
+        StopSpinnerDelay();
+        RefreshRequestWaitUI();
+    }
+
+    private void RefreshRequestWaitUI()
+    {
+        if (m_uIManager == null) return;
+
+        int totalPending = m_pendingReadCount + m_pendingWriteCount;
+        bool blockInput = m_pendingWriteCount > 0;
+        bool showSpinner = m_isSpinnerDelayElapsed == true && totalPending > 0;
+        m_uIManager.SetNetworkWaitState(blockInput, showSpinner);
     }
 
     public void Register(string email, string password, System.Action<ApiResponse<string>> onComplete = null)
@@ -624,7 +796,7 @@ public class NetworkManager : MonoSingleton<NetworkManager>
     public void GetCommanders(System.Action<ApiResponse<System.Collections.Generic.List<CommanderResponse>>> onComplete = null)
     {
         if (m_bConnected == false) return;
-        StartCoroutine(RunAsync(() =>  m_apiClient.GetAllCommandersAsync(), onComplete));
+        StartCoroutine(RunAsync(() =>  m_apiClient.GetAllCommandersAsync(), onComplete, policy: ERequestPolicy.Read));
     }
 
     public void SelectCommander(long commanderId, System.Action<ApiResponse<AuthResponse>> onComplete = null)
@@ -637,7 +809,7 @@ public class NetworkManager : MonoSingleton<NetworkManager>
     public void ValidateCommanderName(string name, Action<ApiResponse<bool>> onComplete)
     {
         if (m_bConnected == false) return;
-        StartCoroutine(RunAsync(() => m_apiClient.ValidateCommanderNameAsync(name), onComplete));
+        StartCoroutine(RunAsync(() => m_apiClient.ValidateCommanderNameAsync(name), onComplete, policy: ERequestPolicy.Read));
     }
 
     public void RenameCommander(CommanderRenameRequest request, Action<ApiResponse<CommanderRenameResponse>> onComplete)
@@ -662,7 +834,13 @@ public class NetworkManager : MonoSingleton<NetworkManager>
 
     public void PlaceFleetShip(FleetPlaceShipRequest request, System.Action<ApiResponse<string>> onComplete = null)
     {
-        if (m_bConnected == false) return;
+        // 호출부가 응답 콜백에서 팝업을 닫고 로컬 편성을 바꾸므로, 연결이 없어도 콜백을 호출해 UI가 멈추지 않게 함
+        if (m_bConnected == false)
+        {
+            if (onComplete != null)
+                onComplete(ApiResponse<string>.error((int)ServerErrorCode.CLIENT_REQUEST_NO_RESPONSE));
+            return;
+        }
         StartCoroutine(RunAsync(() => m_apiClient.PlaceFleetShipAsync(request), onComplete));
     }
 
@@ -687,7 +865,7 @@ public class NetworkManager : MonoSingleton<NetworkManager>
     public void GetAchievementList(GetAchievementListRequest request, System.Action<ApiResponse<GetAchievementListResponse>> onComplete)
     {
         if (m_bConnected == false) return;
-        StartCoroutine(RunAsync(() => m_apiClient.GetAchievementListAsync(request), onComplete));
+        StartCoroutine(RunAsync(() => m_apiClient.GetAchievementListAsync(request), onComplete, policy: ERequestPolicy.Read));
     }
 
     public void ClaimAchievement(ClaimAchievementRequest request, System.Action<ApiResponse<ClaimAchievementResponse>> onComplete)
@@ -705,7 +883,7 @@ public class NetworkManager : MonoSingleton<NetworkManager>
     public void GetDailyAchievementList(GetDailyAchievementListRequest request, System.Action<ApiResponse<GetDailyAchievementListResponse>> onComplete)
     {
         if (m_bConnected == false) return;
-        StartCoroutine(RunAsync(() => m_apiClient.GetDailyAchievementListAsync(request), onComplete));
+        StartCoroutine(RunAsync(() => m_apiClient.GetDailyAchievementListAsync(request), onComplete, policy: ERequestPolicy.Read));
     }
 
     public void ClaimDailyAchievement(ClaimDailyAchievementRequest request, System.Action<ApiResponse<ClaimDailyAchievementResponse>> onComplete)
@@ -847,7 +1025,7 @@ public class NetworkManager : MonoSingleton<NetworkManager>
     public void GetActiveZoneRunProgress(GetActiveZoneRunProgressRequest request, System.Action<ApiResponse<GetActiveZoneRunProgressResponse>> onComplete)
     {
         if (m_bConnected == false) return;
-        StartCoroutine(RunAsync(() => m_apiClient.GetActiveZoneRunProgressAsync(request), onComplete));
+        StartCoroutine(RunAsync(() => m_apiClient.GetActiveZoneRunProgressAsync(request), onComplete, policy: ERequestPolicy.Read));
     }
 
     public void EscapeExplorationZone(EscapeExplorationZoneRequest request, System.Action<ApiResponse<EscapeExplorationZoneResponse>> onComplete)
@@ -881,7 +1059,7 @@ public class NetworkManager : MonoSingleton<NetworkManager>
 
     public void GetVipStatus(System.Action<ApiResponse<VipStatusResponse>> onComplete)
     {
-        StartCoroutine(RunAsync(() => m_apiClient.GetVipStatusAsync(), onComplete));
+        StartCoroutine(RunAsync(() => m_apiClient.GetVipStatusAsync(), onComplete, policy: ERequestPolicy.Read));
     }
 
     public void ClaimVipDailyReward(int day, bool claimVip, System.Action<ApiResponse<DailyClaimResponse>> onComplete)
@@ -891,7 +1069,7 @@ public class NetworkManager : MonoSingleton<NetworkManager>
 
     public void GetDailyBonusStatus(System.Action<ApiResponse<DailyBonusStatusResponse>> onComplete)
     {
-        StartCoroutine(RunAsync(() => m_apiClient.GetDailyBonusStatusAsync(), onComplete));
+        StartCoroutine(RunAsync(() => m_apiClient.GetDailyBonusStatusAsync(), onComplete, policy: ERequestPolicy.Read));
     }
 
 #if UNITY_EDITOR
@@ -904,7 +1082,7 @@ public class NetworkManager : MonoSingleton<NetworkManager>
     public void Heartbeat()
     {
         if (m_bConnected == false) return;
-        StartCoroutine(RunAsync(() => m_apiClient.HeartbeatAsync(), OnHeartbeatResponse));
+        StartCoroutine(RunAsync(() => m_apiClient.HeartbeatAsync(), OnHeartbeatResponse, policy: ERequestPolicy.Silent));
     }
 
     // 앱 복귀 즉시 발송 — OnApplicationPause(false)/OnApplicationFocus(true) 중복 방지 쿨다운 포함
@@ -964,7 +1142,7 @@ public class NetworkManager : MonoSingleton<NetworkManager>
     public void PvpList(PvpListRequest request, System.Action<ApiResponse<PvpListResponse>> onComplete)
     {
         if (m_bConnected == false) return;
-        StartCoroutine(RunAsync(() => m_apiClient.PvpListAsync(request), onComplete));
+        StartCoroutine(RunAsync(() => m_apiClient.PvpListAsync(request), onComplete, policy: ERequestPolicy.Read));
     }
 
     public void PvpRefresh(PvpRefreshRequest request, System.Action<ApiResponse<PvpRefreshResponse>> onComplete)
@@ -988,19 +1166,19 @@ public class NetworkManager : MonoSingleton<NetworkManager>
     public void PvpRanking(PvpRankingRequest request, System.Action<ApiResponse<PvpRankingResponse>> onComplete)
     {
         if (m_bConnected == false) return;
-        StartCoroutine(RunAsync(() => m_apiClient.PvpRankingAsync(request), onComplete));
+        StartCoroutine(RunAsync(() => m_apiClient.PvpRankingAsync(request), onComplete, policy: ERequestPolicy.Read));
     }
 
     public void PvpMyRank(PvpMyRankRequest request, System.Action<ApiResponse<PvpMyRankResponse>> onComplete)
     {
         if (m_bConnected == false) return;
-        StartCoroutine(RunAsync(() => m_apiClient.PvpMyRankAsync(request), onComplete));
+        StartCoroutine(RunAsync(() => m_apiClient.PvpMyRankAsync(request), onComplete, policy: ERequestPolicy.Read));
     }
 
     public void ZoneRanking(ZoneRankingRequest request, System.Action<ApiResponse<ZoneRankingResponse>> onComplete)
     {
         if (m_bConnected == false) return;
-        StartCoroutine(RunAsync(() => m_apiClient.ZoneRankingAsync(request), onComplete));
+        StartCoroutine(RunAsync(() => m_apiClient.ZoneRankingAsync(request), onComplete, policy: ERequestPolicy.Read));
     }
 
     public ApiClient GetApiClient()

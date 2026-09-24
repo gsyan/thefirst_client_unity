@@ -205,6 +205,26 @@ public class ModuleHull : ModuleBase
         return transform.TransformPoint(m_hitPoints[idx]);
     }
 
+    // 베이킹된 피격 지점 중 worldFrom에서 가장 가까운 지점 — 물리 쿼리 없이 함체 표면 근처의 명중 위치를 구함(함재기 즉시타격용)
+    public Vector3 GetClosestHitPoint(Vector3 worldFrom)
+    {
+        if (m_hitPoints.Count == 0) return transform.position;
+
+        Vector3 closestWorld = transform.TransformPoint(m_hitPoints[0]);
+        float closestSqrDist = (closestWorld - worldFrom).sqrMagnitude;
+        for (int i = 1; i < m_hitPoints.Count; i++)
+        {
+            Vector3 candidateWorld = transform.TransformPoint(m_hitPoints[i]);
+            float candidateSqrDist = (candidateWorld - worldFrom).sqrMagnitude;
+            if (candidateSqrDist < closestSqrDist)
+            {
+                closestSqrDist = candidateSqrDist;
+                closestWorld = candidateWorld;
+            }
+        }
+        return closestWorld;
+    }
+
     // 슬롯에 실제 모듈(Beam/Missile/Hangar)이 "활성 상태로" 배치된 경우만 true — 비활성화된 모듈(편집 중 숨겨둔 원본 등)은 미설치로 취급
     private bool HasRealModule(ModuleSlot slot)
     {

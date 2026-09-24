@@ -441,6 +441,11 @@ MonoBehaviour:
     slotIndex: 0
     attackPoints: 0
     attackToFighterPoints: 0
+    fireRatePoints: 0
+    silencePoints: 0
+    ammoPoints: 0
+    healthPoints: 0
+    disruptPoints: 0
 --- !u!1 &678933092976590991
 GameObject:
   m_ObjectHideFlags: 0
@@ -1104,6 +1109,11 @@ MonoBehaviour:
     slotIndex: 0
     attackPoints: 0
     attackToFighterPoints: 0
+    fireRatePoints: 0
+    silencePoints: 0
+    ammoPoints: 0
+    healthPoints: 0
+    disruptPoints: 0
 --- !u!1 &1675892380963470402
 GameObject:
   m_ObjectHideFlags: 0
@@ -1612,6 +1622,11 @@ MonoBehaviour:
     slotIndex: 0
     attackPoints: 0
     attackToFighterPoints: 0
+    fireRatePoints: 0
+    silencePoints: 0
+    ammoPoints: 0
+    healthPoints: 0
+    disruptPoints: 0
 --- !u!1 &2643063533347882997
 GameObject:
   m_ObjectHideFlags: 0
@@ -1868,13 +1883,17 @@ MonoBehaviour:
     missiles: []
     hangars: []
     shieldModuleSubType: 
+    shieldGaugePoints: 0
+    shieldRegenRatePoints: 0
     interceptorModuleSubType: 
+    interceptorRegenRatePoints: 0
     currentHealth: 0
   m_moduleSlots: []
   m_beams: []
   m_missiles: []
   m_hangars: []
   m_shield: {fileID: 0}
+  m_interceptor: {fileID: 0}
   m_hitPoints:
   - {x: -0.72634035, y: 0.73819745, z: 0.66761845}
   - {x: -0.9581519, y: 0.3040115, z: 1.2330834}
@@ -1958,6 +1977,8 @@ MonoBehaviour:
   - {x: 1.0007231, y: 0.31171092, z: 0.1181075}
   m_cameraMinZoom: 5
   m_cameraMaxZoom: 21
+  m_interceptorOrbitRadius: 2
+  m_interceptorOrbitCenter: {fileID: 0}
   bShowHitPointGizmos: 1
 --- !u!114 &5979610674743729259
 MonoBehaviour:
@@ -4381,6 +4402,11 @@ MonoBehaviour:
     slotIndex: 0
     attackPoints: 0
     attackToFighterPoints: 0
+    fireRatePoints: 0
+    silencePoints: 0
+    ammoPoints: 0
+    healthPoints: 0
+    disruptPoints: 0
 --- !u!1 &6484193578933538904
 GameObject:
   m_ObjectHideFlags: 0
@@ -4923,6 +4949,11 @@ MonoBehaviour:
     slotIndex: 0
     attackPoints: 0
     attackToFighterPoints: 0
+    fireRatePoints: 0
+    silencePoints: 0
+    ammoPoints: 0
+    healthPoints: 0
+    disruptPoints: 0
 --- !u!1 &7303000482564616845
 GameObject:
   m_ObjectHideFlags: 0
@@ -5721,6 +5752,11 @@ MonoBehaviour:
     slotIndex: 0
     attackPoints: 0
     attackToFighterPoints: 0
+    fireRatePoints: 0
+    silencePoints: 0
+    ammoPoints: 0
+    healthPoints: 0
+    disruptPoints: 0
 --- !u!1 &8581394811085798358
 GameObject:
   m_ObjectHideFlags: 0

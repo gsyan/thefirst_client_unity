@@ -22,7 +22,7 @@ public class UIPopupRewardCardSelect : UIPopupBase
     private RewardCardButton[] m_cardButtons;
     private List<string> m_candidateCardIds;
     private int m_selectedIndex;
-    private System.Action<string> m_onConfirmed;
+    private System.Action<string, System.Action<bool>> m_onConfirmed; // (선택 카드 ID, 호출부가 처리를 마치고 부르는 콜백(true=팝업 닫기))
     private int m_zoneNumber;
     private int m_cellRow;
     private int m_cellCol;
@@ -55,7 +55,7 @@ public class UIPopupRewardCardSelect : UIPopupBase
         RefreshRerollButtonState();
     }
 
-    public void ShowPopupRewardCardSelect(int explorationPointGained, int expGained, List<string> candidateCardIds, bool isEscapeCell, int zoneNumber, int cellRow, int cellCol, int rerollRemain, System.Action<string> onConfirmed)
+    public void ShowPopupRewardCardSelect(int explorationPointGained, int expGained, List<string> candidateCardIds, bool isEscapeCell, int zoneNumber, int cellRow, int cellCol, int rerollRemain, System.Action<string, System.Action<bool>> onConfirmed)
     {
         base.ShowPopup();
         m_candidateCardIds = candidateCardIds;
@@ -141,9 +141,18 @@ public class UIPopupRewardCardSelect : UIPopupBase
         bool hasCardCandidates = m_candidateCardIds != null && m_candidateCardIds.Count > 0;
         string selectedCardId = (hasCardCandidates == true && m_selectedIndex >= 0) ? m_candidateCardIds[m_selectedIndex] : null;
 
-        System.Action<string> callback = m_onConfirmed;
-        HidePopup();
-        callback?.Invoke(selectedCardId);
+        if (m_onConfirmed == null) return;
+
+        m_confirmButton.interactable = false; // 응답이 올 때까지 중복 확정 방지
+        m_onConfirmed(selectedCardId, OnConfirmProcessed);
+    }
+
+    // 호출부가 서버 응답 처리를 마치고 알림 — closePopup=true면 UIManager가 이미 닫았으므로 아무것도 안 함,
+    // false(재시도 가능한 실패)면 팝업을 유지한 채 확인 버튼을 되살려 같은 버튼으로 다시 시도하게 함
+    private void OnConfirmProcessed(bool closePopup)
+    {
+        if (closePopup == false)
+            RefreshConfirmButtonState();
     }
 
     // 카드 후보가 없는 셀(탈출/트레저 등)에서만 버튼 자체를 숨김 — 그 외엔 항상 보이고, 남은 횟수/광고 준비 여부는

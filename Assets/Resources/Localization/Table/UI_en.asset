@@ -1183,6 +1183,31 @@ MonoBehaviour:
     m_Localized: Hide Completed Achievements
     m_Metadata:
       m_Items: []
+  - m_Id: 82671357333995520
+    m_Localized: RETRY
+    m_Metadata:
+      m_Items: []
+  - m_Id: 82671357388521472
+    m_Localized: Communicating with the server...
+    m_Metadata:
+      m_Items: []
+  - m_Id: 82671357388521473
+    m_Localized: No response from the server. Do you want to retry?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 82671357388521474
+    m_Localized: No response from the server. Please try again in a moment.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 82671357388521475
+    m_Localized: Your exploration data does not match the server. Syncing with the
+      server.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 82671357388521476
+    m_Localized: 'The request failed. (Code: {0})'
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

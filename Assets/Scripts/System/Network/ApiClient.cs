@@ -218,10 +218,14 @@ public class ApiClient
         }
     }
 
+    // 서버 무응답 판정 기준(초) — 이 시간 안에 응답이 없으면 CLIENT_REQUEST_NO_RESPONSE로 실패 처리
+    private const int k_requestTimeoutSec = 10;
+
     private async Task SendRequestAsync(UnityWebRequest request)
     {
         //Debug.Log($"[API Request] URL: {request.url}, Method: {request.method}");
 
+        request.timeout = k_requestTimeoutSec;
         var operation = request.SendWebRequest();
         while (!operation.isDone)
             await Task.Yield();
@@ -237,7 +241,9 @@ public class ApiClient
                 string errorText = request.downloadHandler?.text ?? request.error;
                 Debug.LogError($"[API Error] Result: {request.result}, Error: {request.error}, ResponseCode: {request.responseCode}, Response: {errorText}");
             }
-            ServerErrorCode errorCode = GetHttpErrorCode(request.responseCode);
+            // 연결 실패/타임아웃은 HTTP 응답 자체가 없어 responseCode가 0 — 서버 오류(UNKNOWN_ERROR)와 구분해 무응답으로 통지
+            bool isNoResponse = request.result == UnityWebRequest.Result.ConnectionError && request.responseCode == 0;
+            ServerErrorCode errorCode = isNoResponse == true ? ServerErrorCode.CLIENT_REQUEST_NO_RESPONSE : GetHttpErrorCode(request.responseCode);
             throw new CustomException(errorCode);
         }
 

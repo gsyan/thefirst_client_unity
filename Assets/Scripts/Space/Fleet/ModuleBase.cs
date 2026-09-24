@@ -184,9 +184,49 @@ public class ModuleBase : MonoBehaviour
         // 라스트 어택 시간에 침묵 시간을 더해 침묵 기간만큼 쿨타임 밀림
         SetLastAttackTime(GetLastAttackTime() + duration);
 
+        LogIfInactiveBeforeCoroutine(gameObject, "ApplySilence");
+
         if (m_silenceVisualCoroutine != null)
             StopCoroutine(m_silenceVisualCoroutine);
         m_silenceVisualCoroutine = StartCoroutine(SilenceVisualCoroutine());
+    }
+
+    // [진단] 비활성 오브젝트에서 StartCoroutine이 호출되는 원인 추적용 — 원인 확정 후 제거
+    public static void LogIfInactiveBeforeCoroutine(GameObject go, string caller)
+    {
+        if (go.activeInHierarchy == true) return;
+
+        System.Text.StringBuilder chain = new System.Text.StringBuilder();
+        Transform current = go.transform;
+        while (current != null)
+        {
+            string activeText = current.gameObject.activeSelf == true ? "(on)" : "(OFF)";
+            chain.Append(current.name).Append(activeText).Append(" < ");
+            current = current.parent;
+        }
+
+        ModuleHull hull = go.GetComponentInParent<ModuleHull>(true);
+        SpaceShip ship = go.GetComponentInParent<SpaceShip>(true);
+        ModuleBeam beam = go.GetComponent<ModuleBeam>();
+
+        string hullText = "hull=null";
+        if (hull != null)
+            hullText = $"hullHP={hull.m_health:F1}/{hull.m_healthMax:F1}";
+
+        string beamText = "beamRegistered=n/a";
+        if (hull != null && beam != null)
+            beamText = $"beamRegistered={hull.m_beams.Contains(beam)}";
+
+        string shipText = "ship=null";
+        if (ship != null)
+        {
+            bool isEnemy = ship.m_ownerFleet != null && ObjectManager.Instance.IsEnemyOfMyTeam(ship.m_ownerFleet);
+            shipText = $"ship={ship.name} alive={ship.IsAlive()} shipState={ship.m_shipState} enemy={isEnemy}";
+        }
+
+        bool isBattleEnding = ObjectManager.Instance.m_isBattleEnding;
+        string stack = System.Environment.StackTrace;
+        Debug.LogError($"[InactiveCoroutine] caller={caller} obj={go.name} battleEnding={isBattleEnding} t={Time.time:F2} | {hullText} {beamText} {shipText} | chain: {chain} | stack: {stack}");
     }
 
     private IEnumerator SilenceVisualCoroutine()
