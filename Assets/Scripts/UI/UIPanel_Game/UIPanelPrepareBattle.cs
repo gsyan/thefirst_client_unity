@@ -70,7 +70,9 @@ public class UIPanelPrepareBattle : UIPanelBase
     public void OpenEmpty()
     {
         SetBottomVisible(false);
+        Debug.Log($"[StandoffDiag] OpenEmpty ShowPanel begin t={Time.realtimeSinceStartup:F3} frame={Time.frameCount}"); // [진단] 원인 확정 후 제거
         UIManager.Instance.ShowPanel(panelName);
+        Debug.Log($"[StandoffDiag] OpenEmpty ShowPanel end t={Time.realtimeSinceStartup:F3} frame={Time.frameCount}"); // [진단] 원인 확정 후 제거
     }
 
     // 호출부는 함대 대치 상태를 만든 쪽(UITabExplorationGrid)에서 각 버튼의 실제 처리(콜백)를 넘겨줌 —
@@ -82,8 +84,10 @@ public class UIPanelPrepareBattle : UIPanelBase
         m_onStartBattle = onStartBattle;
         m_onRetreat = onRetreat;
 
+        Debug.Log($"[StandoffDiag] SetupContent begin t={Time.realtimeSinceStartup:F3} frame={Time.frameCount}"); // [진단] 원인 확정 후 제거
         if (m_standoffView != null)
             m_standoffView.Open(m_myFleet, m_enemyFleet);
+        Debug.Log($"[StandoffDiag] SetupContent standoffView.Open done t={Time.realtimeSinceStartup:F3} frame={Time.frameCount}"); // [진단] 원인 확정 후 제거
 
         if (m_zoneCellText != null)
         {
@@ -91,6 +95,7 @@ public class UIPanelPrepareBattle : UIPanelBase
         }
 
         SetBottomVisible(true);
+        Debug.Log($"[StandoffDiag] SetupContent SetBottomVisible done t={Time.realtimeSinceStartup:F3} frame={Time.frameCount}"); // [진단] 원인 확정 후 제거
 
         if (m_autoStartEnabled == true)
             m_autoStartCoroutine = StartCoroutine(Co_AutoStartAfterDelay());

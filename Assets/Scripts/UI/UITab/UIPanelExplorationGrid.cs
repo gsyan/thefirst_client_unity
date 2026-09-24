@@ -156,12 +156,6 @@ public class UIPanelExplorationGrid : UIPanelBase
     // 패널"이면 그냥 리턴해버려(OnShowUIPanel 재호출 안 됨) 그런 경우엔 이 메서드를 직접 불러야 실제로 다시 그려짐
     private void EnterZone(int zoneNumber)
     {
-        CommanderInfo diagCommanderInfo = DataManager.Instance.m_currentCommander != null ? DataManager.Instance.m_currentCommander.m_commanderInfo : null;
-        int diagActiveZone = diagCommanderInfo != null ? diagCommanderInfo.explorationZoneNumber : -1;
-        int diagHighestCleared = diagCommanderInfo != null ? diagCommanderInfo.highestClearedZoneNumber : -1;
-        int diagInitialZoneIndex = ObjectManager.Instance.GetInitialZoneIndex();
-        Debug.Log($"[RewardCardDiag] EnterZone target={zoneNumber} current={m_currentZoneNumber} battleZone={m_battleZoneNumber} initialZoneIndex={diagInitialZoneIndex} activeZone={diagActiveZone} highestCleared={diagHighestCleared}"); // [진단] 원인 확정 후 제거
-
         // 존/그리드가 실제로 정착하기 전(카메라 갤럭시뷰 전환 중)에는 m_currentZoneNumber를 건드리지 않음 —
         // SelectZoneTab의 isSameZoneReentry 판정이 "직전에 로드돼있던 존이 무엇인지"를 정확히 알아야 하므로(조기 대입 시 오판 버그 발생)
         m_pendingZoneNumber = zoneNumber;
@@ -322,8 +316,6 @@ public class UIPanelExplorationGrid : UIPanelBase
         zoneNumber = Mathf.Clamp(zoneNumber, 1, m_zoneGroupCount > 0 ? m_zoneGroupCount : zoneNumber);
         if (zoneNumber == m_currentZoneNumber && m_gridData != null) return;
 
-        Debug.Log($"[RewardCardDiag] NavigateToZone zone={zoneNumber} current={m_currentZoneNumber} recenter={recenterScroll} battleZone={m_battleZoneNumber}"); // [진단] 원인 확정 후 제거
-
         SnapshotActiveZoneStateIfNeeded();
 
         ObjectManager.Instance.ChangeZone(zoneNumber);
@@ -364,8 +356,6 @@ public class UIPanelExplorationGrid : UIPanelBase
 
     public void SelectZoneTab(int zoneNumber, int seed)
     {
-        Debug.Log($"[RewardCardDiag] SelectZoneTab {m_currentZoneNumber}->{zoneNumber} battleZone={m_battleZoneNumber}"); // [진단] 원인 확정 후 제거
-
         ZoneConfig zoneConfig = DataManager.Instance.m_dataTableZone.GetZoneByZoneIndex(zoneNumber);
 
         // 전투 승리 후 그리드 복귀(ShowPanel 재호출)처럼 같은 존 재진입 시에는 시작 좌표로 리셋하지 않고
@@ -776,6 +766,7 @@ public class UIPanelExplorationGrid : UIPanelBase
     // 함대뷰 전환 트리거까지는 서버 응답이 필요 없는 부분(원래 OnEnterExplorationCellResponse의 "전투 있음" 분기와 동일)
     private void EnterLocalCombatPreview(FleetInfo enemyFleetInfo)
     {
+        Debug.Log($"[StandoffDiag] EnterLocalCombatPreview t={Time.realtimeSinceStartup:F3} frame={Time.frameCount}"); // [진단] 원인 확정 후 제거
         SpaceFleet myFleet = ObjectManager.Instance.GetMyFleet();
         if (myFleet == null) return;
 
@@ -809,6 +800,7 @@ public class UIPanelExplorationGrid : UIPanelBase
 
     private void OnFleetViewRestoredForCellEntry()
     {
+        Debug.Log($"[StandoffDiag] OnFleetViewRestoredForCellEntry t={Time.realtimeSinceStartup:F3} frame={Time.frameCount}"); // [진단] 원인 확정 후 제거
         EventManager.Unsubscribe_FleetViewRestored(OnFleetViewRestoredForCellEntry);
         m_pendingCellEntry = false;
 
@@ -1040,8 +1032,6 @@ public class UIPanelExplorationGrid : UIPanelBase
             tacticPower = commanderInfo != null ? commanderInfo.tacticPower : 0,
             challengeToken = m_activeChallengeToken,
         };
-        string diagTokenState = string.IsNullOrEmpty(m_activeChallengeToken) == true ? "none" : "set";
-        Debug.Log($"[RewardCardDiag] ClearRequest(event) zone={request.zoneNumber} cell={request.cellRow}-{request.cellCol} token={diagTokenState} battleZone={m_battleZoneNumber}"); // [진단] 원인 확정 후 제거
         NetworkManager.Instance.ClearExplorationCell(request, OnClearExplorationCellResponse);
     }
 
@@ -1058,7 +1048,9 @@ public class UIPanelExplorationGrid : UIPanelBase
         ETeam enemyTeam = ObjectManager.Instance.GetOpposingTeam(ObjectManager.Instance.m_myTeam);
         // 체력/공격력 배율은 ExplorationEnemyFleetGenerator가 zoneConfig.enemyHealthMultiplier/enemyAttackMultiplier를 실어둔
         // enemyFleetInfo.ships[i].healthMultiplier/attackMultiplier 값을 그대로 씀(SpawnFleetFromPreset 내부에서 처리)
+        Debug.Log($"[StandoffDiag] SpawnEnemyFleet begin t={Time.realtimeSinceStartup:F3} frame={Time.frameCount}"); // [진단] 원인 확정 후 제거
         SpaceFleet enemyFleet = ObjectManager.Instance.SpawnFleetFromPreset(enemyFleetInfo, enemyTeam, EFleetSource.fleet_source_zone_data, enemyPos, enemyRot, "EnemyFleet");
+        Debug.Log($"[StandoffDiag] SpawnEnemyFleet end t={Time.realtimeSinceStartup:F3} frame={Time.frameCount}"); // [진단] 원인 확정 후 제거
         m_standoffEnemyFleet = enemyFleet;
         enemyFleet.StartFleetWarpIn();
 
@@ -1102,8 +1094,6 @@ public class UIPanelExplorationGrid : UIPanelBase
             tacticPower = commanderInfo != null ? commanderInfo.tacticPower : 0,
             challengeToken = m_activeChallengeToken,
         };
-        string diagTokenState = string.IsNullOrEmpty(m_activeChallengeToken) == true ? "none" : "set";
-        Debug.Log($"[RewardCardDiag] ClearRequest(battle) zone={request.zoneNumber} cell={request.cellRow}-{request.cellCol} token={diagTokenState} battleZone={m_battleZoneNumber}"); // [진단] 원인 확정 후 제거
         NetworkManager.Instance.ClearExplorationCell(request, OnClearExplorationCellResponse);
     }
 
@@ -1173,8 +1163,6 @@ public class UIPanelExplorationGrid : UIPanelBase
         int rewardZoneNumber = m_currentZoneNumber;
         int rewardCellRow = m_currentRow;
         int rewardCellCol = m_currentCol;
-        int diagCandidateCount = rewardCardCandidates != null ? rewardCardCandidates.Count : 0;
-        Debug.Log($"[RewardCardDiag] ClearResponse current={m_currentZoneNumber} rewardZone={rewardZoneNumber} cell={rewardCellRow}-{rewardCellCol} candidates={diagCandidateCount} battleZone={m_battleZoneNumber}"); // [진단] 원인 확정 후 제거
         UIManager.Instance.ShowRewardCardSelectPopup(pointGained, expGained, rewardCardCandidates, isEscapeCell, rewardZoneNumber, rewardCellRow, rewardCellCol, rerollRemain, (selectedCardId, onProcessed) =>
         {
             if (selectedCardId == null)
@@ -1217,7 +1205,6 @@ public class UIPanelExplorationGrid : UIPanelBase
     // zoneNumber/cellRow/cellCol은 팝업을 띄운 시점(그 보상이 걸린 셀)의 값 — 팝업이 떠 있는 동안 패널의 m_current*가 바뀔 수 있어 현재 값을 쓰지 않음
     private void OnRewardCardSelected(int zoneNumber, int cellRow, int cellCol, string selectedCardId, System.Action<bool> onProcessed)
     {
-        Debug.Log($"[RewardCardDiag] ConfirmRequest zone={zoneNumber} cell={cellRow}-{cellCol} card={selectedCardId} current={m_currentZoneNumber} battleZone={m_battleZoneNumber}"); // [진단] 원인 확정 후 제거
         ConfirmRewardCardRequest request = new ConfirmRewardCardRequest
         {
             zoneNumber = zoneNumber,
