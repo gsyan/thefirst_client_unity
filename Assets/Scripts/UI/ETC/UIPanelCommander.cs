@@ -114,7 +114,7 @@ public class UIPanelCommander : UIPanelBase
             if (fleetComposition != null)
             {
                 m_commandPowerText.gameObject.SetActive(true);
-                m_commandPowerText.text = $"{fleetComposition.GetMaxCommandPower()}";
+                m_commandPowerText.text = CommonUtility.FormatNumber(fleetComposition.GetMaxCommandPower());
             }
             else
             {
@@ -123,7 +123,7 @@ public class UIPanelCommander : UIPanelBase
         }
 
         if (m_tacticPowerText != null && commander.m_commanderInfo != null)
-            m_tacticPowerText.text = $"{commander.m_commanderInfo.tacticPowerMax}";
+            m_tacticPowerText.text = CommonUtility.FormatNumber(commander.m_commanderInfo.tacticPowerMax);
 
         RefreshShipSlots(maxShips);
 

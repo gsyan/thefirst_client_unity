@@ -134,7 +134,8 @@ public class UIPanelAchievement : UIPanelBase
 
         Commander commander = DataManager.Instance.m_currentCommander;
         int ownedAchievementPoint = commander != null ? commander.GetAchievementPoint() : 0;
-        m_achievementPointRow.SetRow("UIPanelFleet_AchievementPoint", $": {ownedAchievementPoint}", rawValue: true);
+        string ownedAchievementPointText = CommonUtility.FormatNumber(ownedAchievementPoint);
+        m_achievementPointRow.SetRow("UIPanelFleet_AchievementPoint", $": {ownedAchievementPointText}", rawValue: true);
         LayoutRebuilder.ForceRebuildLayoutImmediate(m_achievementPointRow.transform as RectTransform);
     }
 

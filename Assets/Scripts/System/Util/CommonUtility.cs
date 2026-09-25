@@ -362,19 +362,28 @@ public static class CommonUtility
         float absValue = Mathf.Abs(value);
 
         if (absValue >= 1_000_000_000_000f)
-            return $"{value / 1_000_000_000_000f:0.#}T";
+            return FormatScaled(value, 1_000_000_000_000f, "T");
         if (absValue >= 1_000_000_000f)
-            return $"{value / 1_000_000_000f:0.#}B";
+            return FormatScaled(value, 1_000_000_000f, "B");
         if (absValue >= 1_000_000f)
-            return $"{value / 1_000_000f:0.#}M";
+            return FormatScaled(value, 1_000_000f, "M");
         if (absValue >= 1_000f)
-            return $"{value / 1_000f:0.#}K";
+            return FormatScaled(value, 1_000f, "K");
 
         return $"{(int)value}";
     }
     public static string FormatBigNumber(long value)
     {
         return FormatBigNumber((float)value);
+    }
+
+    // 단위로 나눈 값을 소수 첫째 자리까지 버림(0 방향) — 반올림으로 실제 보유/비용보다 부풀려 보이는 것을 방지
+    private static string FormatScaled(float value, float unit, string suffix)
+    {
+        float scaledAbs = Mathf.Abs(value) / unit;
+        float flooredAbs = FloorToDecimals(scaledAbs, 1);
+        float flooredSigned = value < 0f ? -flooredAbs : flooredAbs;
+        return $"{flooredSigned:0.#}{suffix}";
     }
 
     // 세 자리마다 콤마로 구분된 전체 숫자 문자열 (축약 없음) — 자원 UI 등 전체 값을 그대로 보여줘야 할 때 사용

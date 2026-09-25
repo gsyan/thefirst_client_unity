@@ -7,7 +7,7 @@ using Touch = UnityEngine.InputSystem.EnhancedTouch.Touch;
 
 public class HandleInputTouch
 {
-    private static readonly LayerMask s_pickMask = ~(1 << 13);
+    private static readonly LayerMask s_pickMask = ~((1 << 13) | (1 << 14)); // 13 = Shield layer, 14 = Interceptor layer
     private const float k_dragThreshold = 10f; // 탭/드래그 구분 임계값 (픽셀)
 
     private CameraController m_camera;

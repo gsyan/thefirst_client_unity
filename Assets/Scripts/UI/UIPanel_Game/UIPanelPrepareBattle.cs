@@ -73,9 +73,7 @@ public class UIPanelPrepareBattle : UIPanelBase
         // 대치 뷰(적 함대 카메라/구분선 포함)는 SetupContent의 Open()이 켤 때까지 숨김 — 프리팹 기본 상태가 활성이라 ShowPanel 시점에 함께 켜지기 때문
         if (m_standoffView != null)
             m_standoffView.gameObject.SetActive(false);
-        Debug.Log($"[StandoffDiag] OpenEmpty ShowPanel begin t={Time.realtimeSinceStartup:F3} frame={Time.frameCount}"); // [진단] 원인 확정 후 제거
         UIManager.Instance.ShowPanel(panelName);
-        Debug.Log($"[StandoffDiag] OpenEmpty ShowPanel end t={Time.realtimeSinceStartup:F3} frame={Time.frameCount}"); // [진단] 원인 확정 후 제거
     }
 
     // 호출부는 함대 대치 상태를 만든 쪽(UITabExplorationGrid)에서 각 버튼의 실제 처리(콜백)를 넘겨줌 —
@@ -87,10 +85,8 @@ public class UIPanelPrepareBattle : UIPanelBase
         m_onStartBattle = onStartBattle;
         m_onRetreat = onRetreat;
 
-        Debug.Log($"[StandoffDiag] SetupContent begin t={Time.realtimeSinceStartup:F3} frame={Time.frameCount}"); // [진단] 원인 확정 후 제거
         if (m_standoffView != null)
             m_standoffView.Open(m_myFleet, m_enemyFleet);
-        Debug.Log($"[StandoffDiag] SetupContent standoffView.Open done t={Time.realtimeSinceStartup:F3} frame={Time.frameCount}"); // [진단] 원인 확정 후 제거
 
         if (m_zoneCellText != null)
         {
@@ -98,31 +94,9 @@ public class UIPanelPrepareBattle : UIPanelBase
         }
 
         SetBottomVisible(true);
-        Debug.Log($"[StandoffDiag] SetupContent SetBottomVisible done t={Time.realtimeSinceStartup:F3} frame={Time.frameCount}"); // [진단] 원인 확정 후 제거
-        StartCoroutine(Co_DiagFrameTimes()); // [진단] 원인 확정 후 제거
 
         if (m_autoStartEnabled == true)
             m_autoStartCoroutine = StartCoroutine(Co_AutoStartAfterDelay());
-    }
-
-    // [진단] 원인 확정 후 제거 — 대치 화면 완성 직후 프레임 시간 기록(처음 5프레임은 전부, 이후 15초간은 0.1초 이상 걸린 프레임만)
-    private IEnumerator Co_DiagFrameTimes()
-    {
-        const int k_logAllFrameCount = 5;
-        const float k_hitchThresholdSec = 0.1f;
-        const float k_watchDurationSec = 15f;
-
-        float watchStartTime = Time.realtimeSinceStartup;
-        int frameIndex = 0;
-        while (Time.realtimeSinceStartup - watchStartTime < k_watchDurationSec)
-        {
-            yield return null;
-            frameIndex++;
-            float frameDeltaSec = Time.unscaledDeltaTime;
-            bool isHitch = frameDeltaSec >= k_hitchThresholdSec;
-            if (frameIndex <= k_logAllFrameCount || isHitch == true)
-                Debug.Log($"[StandoffDiag] after SetupContent +{frameIndex}f dt={frameDeltaSec:F3} t={Time.realtimeSinceStartup:F3} frame={Time.frameCount} hitch={isHitch}");
-        }
     }
 
     private IEnumerator Co_AutoStartAfterDelay()

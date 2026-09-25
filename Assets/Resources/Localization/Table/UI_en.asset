@@ -823,19 +823,21 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 78447295728582676
-    m_Localized: Deploy {1} Tier {0} Hulls
+    m_Localized: Deploy {1} Tier {0}+ Hulls
     m_Metadata:
       m_Items: []
   - m_Id: 78447295728582677
-    m_Localized: Have {1} Tier {0} hulls in your active fleet at the same time
+    m_Localized: Have {1} hulls of Tier {0} or higher in your active fleet at the
+      same time (stays completed once achieved)
     m_Metadata:
       m_Items: []
   - m_Id: 78447295728582678
-    m_Localized: Equip {1} {0} Modules
+    m_Localized: Equip {1} {0} or higher Modules
     m_Metadata:
       m_Items: []
   - m_Id: 78447295728582679
-    m_Localized: Have {1} {0} modules equipped in your active fleet at the same time
+    m_Localized: Have {1} {0} or higher modules equipped in your active fleet at
+      the same time (stays completed once achieved)
     m_Metadata:
       m_Items: []
   - m_Id: 78447295728582680

@@ -766,7 +766,6 @@ public class UIPanelExplorationGrid : UIPanelBase
     // 함대뷰 전환 트리거까지는 서버 응답이 필요 없는 부분(원래 OnEnterExplorationCellResponse의 "전투 있음" 분기와 동일)
     private void EnterLocalCombatPreview(FleetInfo enemyFleetInfo)
     {
-        Debug.Log($"[StandoffDiag] EnterLocalCombatPreview t={Time.realtimeSinceStartup:F3} frame={Time.frameCount}"); // [진단] 원인 확정 후 제거
         SpaceFleet myFleet = ObjectManager.Instance.GetMyFleet();
         if (myFleet == null) return;
 
@@ -800,7 +799,6 @@ public class UIPanelExplorationGrid : UIPanelBase
 
     private void OnFleetViewRestoredForCellEntry()
     {
-        Debug.Log($"[StandoffDiag] OnFleetViewRestoredForCellEntry t={Time.realtimeSinceStartup:F3} frame={Time.frameCount}"); // [진단] 원인 확정 후 제거
         EventManager.Unsubscribe_FleetViewRestored(OnFleetViewRestoredForCellEntry);
         m_pendingCellEntry = false;
 
@@ -1048,9 +1046,7 @@ public class UIPanelExplorationGrid : UIPanelBase
         ETeam enemyTeam = ObjectManager.Instance.GetOpposingTeam(ObjectManager.Instance.m_myTeam);
         // 체력/공격력 배율은 ExplorationEnemyFleetGenerator가 zoneConfig.enemyHealthMultiplier/enemyAttackMultiplier를 실어둔
         // enemyFleetInfo.ships[i].healthMultiplier/attackMultiplier 값을 그대로 씀(SpawnFleetFromPreset 내부에서 처리)
-        Debug.Log($"[StandoffDiag] SpawnEnemyFleet begin t={Time.realtimeSinceStartup:F3} frame={Time.frameCount}"); // [진단] 원인 확정 후 제거
         SpaceFleet enemyFleet = ObjectManager.Instance.SpawnFleetFromPreset(enemyFleetInfo, enemyTeam, EFleetSource.fleet_source_zone_data, enemyPos, enemyRot, "EnemyFleet");
-        Debug.Log($"[StandoffDiag] SpawnEnemyFleet end t={Time.realtimeSinceStartup:F3} frame={Time.frameCount}"); // [진단] 원인 확정 후 제거
         m_standoffEnemyFleet = enemyFleet;
         enemyFleet.StartFleetWarpIn();
 

@@ -340,7 +340,9 @@ public class UIHullPickerView : MonoBehaviour
         int projectedUsedCommandPower = GetProjectedUsedCommandPower();
         bool isOverCommandPower = projectedUsedCommandPower > m_maxCommandPower;
 
-        m_commandPowerRow.SetRow("UI_CommandPower", $"{projectedUsedCommandPower} / {m_maxCommandPower}", rawValue: true);
+        string projectedUsedText = CommonUtility.FormatNumber(projectedUsedCommandPower);
+        string maxCommandPowerText = CommonUtility.FormatNumber(m_maxCommandPower);
+        m_commandPowerRow.SetRow("UI_CommandPower", $"{projectedUsedText} / {maxCommandPowerText}", rawValue: true);
         m_commandPowerRow.SetValueColor(CommonUtility.PaletteColor(isOverCommandPower == true ? "Text.Warning" : "Text.Dark1"));
         LayoutRebuilder.ForceRebuildLayoutImmediate(m_commandPowerRow.transform as RectTransform);
 

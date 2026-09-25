@@ -337,7 +337,6 @@ public class TutorialManager : MonoSingleton<TutorialManager>
 
         int openSlotCount = DataManager.Instance.m_dataTableCommander.GetShipCount(commander.GetCommanderLevel());
         int placedShipCount = composition.GetPlacedShips().Count;
-        Debug.Log($"[ShipSlotTutorialLOG] HasEmptyShipSlot level={commander.GetCommanderLevel()} openSlotCount={openSlotCount} placedShipCount={placedShipCount}");
         return placedShipCount < openSlotCount;
     }
 
@@ -345,7 +344,6 @@ public class TutorialManager : MonoSingleton<TutorialManager>
     public void RequestShipSlotIncreaseTutorial()
     {
         bool isCompleted = IsTutorialCompleted(SHIP_SLOT_INCREASE_TUTORIAL_ID);
-        Debug.Log($"[ShipSlotTutorialLOG] RequestShipSlotIncreaseTutorial isCompleted={isCompleted}");
         if (isCompleted == true) return;
 
         m_isLevelupPopupOpen = true;
@@ -356,7 +354,6 @@ public class TutorialManager : MonoSingleton<TutorialManager>
     public void NotifyLevelupPopupClosed()
     {
         m_isLevelupPopupOpen = false;
-        Debug.Log($"[ShipSlotTutorialLOG] NotifyLevelupPopupClosed pendingCount={m_pendingTutorialIds.Count} isPlaying={m_isPlaying}");
         TryStartPendingTutorial();
     }
 
@@ -395,7 +392,6 @@ public class TutorialManager : MonoSingleton<TutorialManager>
 
         int panelStackDepth = UIManager.Instance.GetPanelStackDepth();
         bool isMainPanelOnTop = panelStackDepth <= 1;
-        Debug.Log($"[ShipSlotTutorialLOG] CanStartPendingTutorial pendingCount={m_pendingTutorialIds.Count} isLevelupPopupOpen={m_isLevelupPopupOpen} isPlaying={m_isPlaying} panelStackDepth={panelStackDepth}");
         if (m_isLevelupPopupOpen == true) return false;
         if (m_isPlaying == true) return false;
 
@@ -412,7 +408,6 @@ public class TutorialManager : MonoSingleton<TutorialManager>
 
         string tutorialId = m_pendingTutorialIds[0];
         m_pendingTutorialIds.RemoveAt(0);
-        Debug.Log($"[ShipSlotTutorialLOG] StartPendingTutorialDeferred id={tutorialId} isObsolete={IsConditionTutorialObsolete(tutorialId)}");
 
         // 대기하는 사이 안내할 필요가 없어졌으면(이미 언락/이미 슬롯 채움) 시작하지 않고 폐기
         if (IsConditionTutorialObsolete(tutorialId) == false)

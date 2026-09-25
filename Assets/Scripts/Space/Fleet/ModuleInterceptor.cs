@@ -1,18 +1,12 @@
 // 요격체 모듈 — 슬롯/3D 배치 없이 함체(ModuleHull)에 논리적으로만 붙는 컴포넌트(ModuleShield와 동일 패턴).
-// 실제로 눈에 보이는 요격체 유닛(InterceptorUnit)은 별도로 스폰/풀링해 함선 전방 원형 궤도에 배치한다.
-// 전술 토글(idx=4) ON 상태에서만 빈 자리를 순차 보충하고(interceptorRegenTime초마다 1기, 생성 1기당 tacticInterceptorCost 과금,
-// 여유 없으면 그 틱의 신규 생성만 건너뜀 — SpaceFleet.TryChargeInterceptorTacticCost 참고) 적 미사일을 탐지/배정함.
-// 토글 OFF 시에는 신규 생성만 멈출 뿐 이미 떠 있는 유닛은 제거되지 않고 계속 요격 임무를 수행함(despawn/환급 없음) —
-// 정리는 존런 종료 시점(SpaceFleet.ClearAllInterceptorUnits)이나 함선 파괴 시에만 일어남.
-using System.Collections;
-using System.Collections.Generic;
+// 실제로 눈에 보이는 요격체 유닛(InterceptorUnit)은 별도로 스폰/풀링하며, 슬롯 번호가 가장 낮은 1기만 함선 전방 가드로 서고 나머지는 궤도를 돎(가드가 사라지면 다음 슬롯이 이어받음).
+// 전술 토글(idx=4) ON 상태에서만 빈 자리를 순차 보충하고(interceptorRegenTime초마다 1기, 생성 1기당 tacticInterceptorCost 과금, 여유 없으면 그 틱의 신규 생성만 건너뜀 — SpaceFleet.TryChargeInterceptorTacticCost 참고),
+// 토글 OFF 시에는 신규 생성만 멈출 뿐 이미 떠 있는 유닛은 제거되지 않고 계속 요격 임무를 수행함(despawn/환급 없음) — 정리는 존런 종료 시점(SpaceFleet.ClearAllInterceptorUnits)이나 함선 파괴 시에만 일어남.
 using UnityEngine;
 
 public class ModuleInterceptor : ModuleBase
 {
     private const int k_interceptorTacticBit = 1 << 4;
-    private const float SCAN_INTERVAL = 0.2f;
-    private const float DETECTION_RADIUS = 30f;
 
     [SerializeField] private ModuleHull m_parentBody;
 
@@ -21,7 +15,6 @@ public class ModuleInterceptor : ModuleBase
     private float m_regenProgress;  // 현재 빈 자리를 채우기 위해 누적된 시간(초)
     private bool m_tacticOn;
     private InterceptorUnit[] m_slots = new InterceptorUnit[0];
-    private Coroutine m_scanCoroutine;
 
     public void SetParentBody(ModuleHull parentBody)
     {
@@ -70,7 +63,6 @@ public class ModuleInterceptor : ModuleBase
         {
             // 적/시네마틱 함대는 전술 토글 UI가 없어 상시 ON으로 취급(실드와 동일 규칙) — 매초 리필 틱은 플레이어 함대만 받으므로 스폰 시점에 즉시 완전 무장
             m_tacticOn = true;
-            StartScanCoroutine();
             ForceFillAllSlots();
         }
     }
@@ -96,12 +88,7 @@ public class ModuleInterceptor : ModuleBase
 
     public void SetTacticOn(bool on)
     {
-        if (m_tacticOn == on) return;
-        m_tacticOn = on;
-
-        if (on == false) return; // 신규 생성만 멈춤 — 이미 떠 있는 유닛은 그대로 유지(요격 임무 계속 수행)
-
-        StartScanCoroutine();
+        m_tacticOn = on; // OFF는 신규 생성만 멈춤 — 이미 떠 있는 유닛은 그대로 유지(요격 임무 계속 수행)
     }
 
     // 전술 토글(요격체) ON 상태에서 SpaceFleet.ApplyInterceptorRegenTickToAllShips가 주기적으로 호출 — tickSeconds만큼 시간을 누적하고, m_regenTime(초) 도달마다 1기 리필
@@ -159,18 +146,18 @@ public class ModuleInterceptor : ModuleBase
         }
     }
 
-    // 요격 성공 시 InterceptorUnit이 스스로 호출 — 자리를 비움(리필은 다음 ApplyRegenTick에서 처리)
+    // 요격 성공 시 InterceptorUnit이 스스로 호출 — 자리를 비우고 다음 슬롯에 가드를 넘김(리필은 다음 ApplyRegenTick에서 처리)
     public void OnUnitConsumed(int index)
     {
         if (m_slots == null || index < 0 || index >= m_slots.Length) return;
         m_slots[index] = null;
+        RefreshGuard();
     }
 
     // 함선이 곧 Destroy될 때도(SpaceFleet.RemoveShip) 미리 호출됨 — 파괴된 뒤엔 요격체가 같은 Destroy() 호출에
     // 자식으로 걸려 풀 반납(SetParent)이 막히므로, 반드시 파괴 전에 불러야 함
     public void ClearAllSlots()
     {
-        StopScanCoroutine();
         if (m_slots != null)
         {
             for (int i = 0; i < m_slots.Length; i++)
@@ -195,12 +182,27 @@ public class ModuleInterceptor : ModuleBase
         return -1;
     }
 
-    private InterceptorUnit FindIdleUnit()
+    private int FindLowestOccupiedIndex()
     {
-        if (m_slots == null) return null;
         for (int i = 0; i < m_slots.Length; i++)
-            if (m_slots[i] != null && m_slots[i].IsIdle() == true) return m_slots[i];
-        return null;
+            if (m_slots[i] != null) return i;
+        return -1;
+    }
+
+    // 살아 있는 유닛 중 슬롯 번호가 가장 낮은 1기만 가드로 지정하고 나머지는 궤도로 둠
+    private void RefreshGuard()
+    {
+        int guardIndex = FindLowestOccupiedIndex();
+        for (int i = 0; i < m_slots.Length; i++)
+        {
+            InterceptorUnit unit = m_slots[i];
+            if (unit == null) continue;
+
+            if (i == guardIndex)
+                unit.EnterGuard();
+            else
+                unit.LeaveGuard();
+        }
     }
 
     private void SpawnInterceptorUnitAt(int index)
@@ -211,56 +213,7 @@ public class ModuleInterceptor : ModuleBase
         InterceptorUnit unit = ObjectManager.Instance.m_poolManager.Get<InterceptorUnit>(EPoolName.PROJECTILE_INTERCEPTOR);
         unit.Initialize(this, index, shipTransform, orbitCenter, orbitRadius, m_maxCount);
         m_slots[index] = unit;
-    }
-
-    private void StartScanCoroutine()
-    {
-        if (m_scanCoroutine != null) return;
-        m_scanCoroutine = StartCoroutine(Co_ScanForTargets());
-    }
-
-    private void StopScanCoroutine()
-    {
-        if (m_scanCoroutine == null) return;
-        StopCoroutine(m_scanCoroutine);
-        m_scanCoroutine = null;
-    }
-
-    private IEnumerator Co_ScanForTargets()
-    {
-        WaitForSeconds wait = new WaitForSeconds(SCAN_INTERVAL);
-        while (true)
-        {
-            yield return wait;
-            // m_tacticOn과 무관하게 계속 스캔 — 토글이 꺼져도 이미 떠 있는 유닛은 계속 요격 임무를 수행해야 함(있는 유닛이 없으면 FindIdleUnit이 그냥 null 반환)
-            List<ProjectileMissile> threatMissiles = GetThreatMissileList();
-            if (threatMissiles == null || threatMissiles.Count == 0) continue;
-
-            Vector3 myPos = transform.position;
-            float sqrRadius = DETECTION_RADIUS * DETECTION_RADIUS;
-
-            for (int i = 0; i < threatMissiles.Count; i++)
-            {
-                ProjectileMissile missile = threatMissiles[i];
-                if (missile == null || missile.gameObject.activeInHierarchy == false) continue;
-                if (missile.m_claimedBy != null) continue;
-
-                float sqrDist = (missile.transform.position - myPos).sqrMagnitude;
-                if (sqrDist > sqrRadius) continue;
-
-                InterceptorUnit idleUnit = FindIdleUnit();
-                if (idleUnit == null) break;
-                idleUnit.AssignTarget(missile);
-            }
-        }
-    }
-
-    // 내 함대 기준 적 미사일 리스트 — ProjectileMissile.CheckCollision의 아군/적 판정과 동일한 방식(ObjectManager.IsEnemyOfMyTeam)
-    private List<ProjectileMissile> GetThreatMissileList()
-    {
-        if (m_ownerFleet == null) return null;
-        bool isPlayerSide = ObjectManager.Instance.IsEnemyOfMyTeam(m_ownerFleet) == false;
-        return isPlayerSide ? ObjectManager.Instance.m_enemyMissiles : ObjectManager.Instance.m_friendlyMissiles;
+        RefreshGuard();
     }
 
     private void OnDestroy()

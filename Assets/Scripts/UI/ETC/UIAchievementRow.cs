@@ -70,9 +70,15 @@ public class UIAchievementRow : MonoBehaviour
         if (m_descText != null)
             m_descText.text = string.Format(LocalizationManager.Instance.Get(data.descKey), data.conditionParam, data.threshold, data.achievementPointReward);
         if (m_rewardRow != null)
-            m_rewardRow.SetRow("UIAchievement_Reward", $"+{data.achievementPointReward}", rawValue: true);
+        {
+            string rewardText = CommonUtility.FormatNumber(data.achievementPointReward);
+            m_rewardRow.SetRow("UIAchievement_Reward", $"+{rewardText}", rawValue: true);
+        }
         if (m_vipRewardRow != null)
-            m_vipRewardRow.SetRow("UIAchievement_RewardVip", $"+{data.achievementPointRewardVip}", rawValue: true);
+        {
+            string vipRewardText = CommonUtility.FormatNumber(data.achievementPointRewardVip);
+            m_vipRewardRow.SetRow("UIAchievement_RewardVip", $"+{vipRewardText}", rawValue: true);
+        }
 
         if (m_claimedRoot != null)
             m_claimedRoot.SetActive(isClaimed);

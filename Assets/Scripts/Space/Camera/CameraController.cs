@@ -89,7 +89,9 @@ public class CameraController : MonoSingleton<CameraController>
 
     // LayerMask
     private const int m_layerShield = 13;
+    private const int m_layerInterceptor = 14;
     private LayerMask m_layerMaskShield = 1 << m_layerShield;
+    private LayerMask m_layerMaskInterceptor = 1 << m_layerInterceptor;
 
     // 현재 줌 범위를 적용한 대상 함선
     private SpaceShip m_zoomRangeSourceShip = null;
@@ -535,7 +537,7 @@ public class CameraController : MonoSingleton<CameraController>
         SpaceFleet myFleet = ObjectManager.Instance.GetMyFleet();
         if (myFleet != null && myFleet.m_fleetState.IsBattleState() == true) return;
 
-        LayerMask pickMask = ~m_layerMaskShield;
+        LayerMask pickMask = ~(m_layerMaskShield | m_layerMaskInterceptor);
         if (!GetCameraRaycast(out RaycastHit hit, pickMask, 3000f, screenPosition))
         {
             if (IsEmptySpaceTapBlocked() == false)

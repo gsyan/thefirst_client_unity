@@ -294,10 +294,10 @@ UIAchievement_Name_tactic_power,,Reach {1} Tactic Power,전술력 {1} 달성
 UIAchievement_Desc_tactic_power,,Reach {1} Tactic Power,전술력 {1}에 도달하면 완료
 UIAchievement_Name_exploration_point_total,,Earn {1} Exploration Points (Total),누적 탐사포인트 {1} 획득
 UIAchievement_Desc_exploration_point_total,,"Earn {1} Exploration Points cumulatively (lifetime, not current balance)",역대 누적 획득 탐사포인트가 {1}에 도달하면 완료(현재 잔액이 아닌 역대 총 획득량 기준)
-UIAchievement_Name_hull_tier_count,,Deploy {1} Tier {0} Hulls,티어{0} 함체 {1}척 동시 보유
-UIAchievement_Desc_hull_tier_count,,Have {1} Tier {0} hulls in your active fleet at the same time,활성 함대에 티어{0} 함체를 동시에 {1}척 보유하면 완료
-UIAchievement_Name_module_tier_count,,Equip {1} {0} Modules,{0} 모듈 {1}개 동시 장착
-UIAchievement_Desc_module_tier_count,,Have {1} {0} modules equipped in your active fleet at the same time,활성 함대에 {0} 모듈을 동시에 {1}개 장착하면 완료
+UIAchievement_Name_hull_tier_count,,Deploy {1} Tier {0}+ Hulls,티어{0} 이상 함체 {1}척 동시 보유
+UIAchievement_Desc_hull_tier_count,,Have {1} hulls of Tier {0} or higher in your active fleet at the same time (stays completed once achieved),활성 함대에 티어{0} 이상 함체를 동시에 {1}척 보유하면 완료 (달성 후 함대를 바꿔도 유지)
+UIAchievement_Name_module_tier_count,,Equip {1} {0} or higher Modules,{0} 이상 모듈 {1}개 동시 장착
+UIAchievement_Desc_module_tier_count,,Have {1} {0} or higher modules equipped in your active fleet at the same time (stays completed once achieved),활성 함대에 {0} 이상 모듈을 동시에 {1}개 장착하면 완료 (달성 후 함대를 바꿔도 유지)
 UIAchievement_Name_hull_unlock,,Unlock {0},{0} 언락
 UIAchievement_Desc_hull_unlock,,Unlock the {0} hull to complete. Refunds 10% of the achievement points spent.,{0} 함체를 언락하면 완료 — 소비한 업적 포인트의 10% 환급
 UI_Retry,,RETRY,재시도

@@ -117,10 +117,12 @@ public class UIPopupConvertExplorationPoint : UIPopupBase
     // 기준값 옆에 델타를 빨간 괄호로 붙임 — 예: "60 <color=#FF5555>(-10)</color>", 델타가 0이면 괄호 생략
     private string BuildValueWithDelta(int baseValue, int delta)
     {
-        if (delta == 0) return baseValue.ToString();
+        string baseText = CommonUtility.FormatNumber(baseValue);
+        if (delta == 0) return baseText;
 
         string sign = delta > 0 ? "+" : "";
-        return $"{baseValue} <color={k_deltaColorHex}>({sign}{delta})</color>";
+        string deltaText = CommonUtility.FormatNumber(delta);
+        return $"{baseText} <color={k_deltaColorHex}>({sign}{deltaText})</color>";
     }
 
     private void OnStepClicked(int step)

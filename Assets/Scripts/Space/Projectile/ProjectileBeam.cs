@@ -127,7 +127,8 @@ public class ProjectileBeam : ProjectileBase
 
         // 빔은 Shield 레이어도 명중 대상에 포함 — 실드가 이번 데미지를 전량 막을 수 있으면 함체 표면보다 먼저 여기서 막힘(SpaceShip.TakeDamage에서 흡수 판정)
         // 콜라이더/레이어는 그대로 두고(ShieldTriggerRelay의 진형 회피 판정이 같은 콜라이더를 쓰므로), 관통이 발생하는 경우만 이 raycast에서 걸러냄
-        LayerMask pickMask = ~0;
+        int interceptorLayer = LayerMask.NameToLayer("Interceptor");
+        LayerMask pickMask = ~(1 << interceptorLayer); // 요격체 가드 콜라이더는 빔 판정 대상이 아님
         int shieldLayer = LayerMask.NameToLayer("Shield");
         float finalDamage = m_damageInfo.GetFinalDamage();
         Vector3 finalHitPoint = targetPosition;

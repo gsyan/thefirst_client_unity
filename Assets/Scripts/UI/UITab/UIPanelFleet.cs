@@ -542,10 +542,15 @@ public class UIPanelFleet : UIPanelBase
         int tacticPower = commanderInfo != null ? commanderInfo.tacticPower : 0;
         int tacticPowerMax = commanderInfo != null ? commanderInfo.tacticPowerMax : 0;
 
+        string usedCommandPowerText = CommonUtility.FormatNumber(usedCommandPower);
+        string maxCommandPowerText = CommonUtility.FormatNumber(maxCommandPower);
+        string tacticPowerText = CommonUtility.FormatNumber(tacticPower);
+        string tacticPowerMaxText = CommonUtility.FormatNumber(tacticPowerMax);
+
         if (m_commandPowerRow != null)
-            m_commandPowerRow.SetRow("UI_CommandPower", $"{usedCommandPower} / {maxCommandPower}", rawValue: true);
+            m_commandPowerRow.SetRow("UI_CommandPower", $"{usedCommandPowerText} / {maxCommandPowerText}", rawValue: true);
         if (m_tacticPowerRow != null)
-            m_tacticPowerRow.SetRow("UI_TacticPower", $"{tacticPower} / {tacticPowerMax}", rawValue: true);
+            m_tacticPowerRow.SetRow("UI_TacticPower", $"{tacticPowerText} / {tacticPowerMaxText}", rawValue: true);
     }
 
     // 소모량 조정 팝업(UIPopupConvertExplorationPoint)을 열어 사용자가 직접 수치를 정하도록 함

@@ -37,10 +37,9 @@ public class ProjectileMissile : ProjectileBase
     private float m_splashRadius;
     private EMissileSource m_missileSource;
 
-    // 인터셉터(요격체) 1:1 배정 락 — 이미 요격을 시도 중인 미사일에 다른 인터셉터가 중복 배정되지 않도록 함(ModuleInterceptor 참고)
-    public InterceptorUnit m_claimedBy;
-    public void MarkClaimedByInterceptor(InterceptorUnit unit) { m_claimedBy = unit; }
-    public void ClearInterceptorClaim() { m_claimedBy = null; }
+    // 발사 시점의 소속 팀 — 발사 함선이 도중에 파괴돼도(m_sourceShip == null) 요격체 판정이 유지되도록 별도 저장
+    private ETeam m_sourceTeam;
+    private bool m_hasSourceTeam;
     public Vector3 GetVelocity() { return m_rb != null ? m_rb.linearVelocity : Vector3.zero; }
 
     [Header("Trail Particles")]
@@ -76,6 +75,10 @@ public class ProjectileMissile : ProjectileBase
     {
         SetCommonData(firePointTransform, target, damageInfo, sourceModuleBase);
         m_missileSource = (sourceModuleBase is ModuleHangar) ? EMissileSource.Aircraft : EMissileSource.Ship;
+
+        m_hasSourceTeam = m_sourceShip != null && m_sourceShip.m_ownerFleet != null;
+        if (m_hasSourceTeam == true)
+            m_sourceTeam = m_sourceShip.m_ownerFleet.m_team;
 
         bool isEnemy = m_sourceShip != null && m_sourceShip.m_ownerFleet != null && ObjectManager.Instance.IsEnemyOfMyTeam(m_sourceShip.m_ownerFleet);
         ApplyEngineFlameColor(isEnemy);
@@ -208,6 +211,22 @@ public class ProjectileMissile : ProjectileBase
 
     private static readonly Collider[]   s_overlapResults = new Collider[32];
     private static readonly RaycastHit[] s_raycastHits    = new RaycastHit[16];
+    private static int s_splashMask = 0;
+
+    // 이 미사일을 쏜 팀과 다른 팀 소속 요격체인지 — 발사 시점에 저장한 팀 기준
+    private bool IsOpposingInterceptor(InterceptorUnit unit)
+    {
+        SpaceFleet interceptorFleet = unit.GetOwnerFleet();
+        return m_hasSourceTeam == true && interceptorFleet != null && interceptorFleet.m_team != m_sourceTeam;
+    }
+
+    // 요격체 위치에서 미사일 위치까지 뻗는 빔 이펙트 — 풀은 EffectBase 타입이라 꺼낸 뒤 빔 컴포넌트를 가져옴
+    private void PlayInterceptEffect(Vector3 interceptorPosition, Vector3 missilePosition)
+    {
+        EffectBase effect = ObjectManager.Instance.m_poolManager.Get<EffectBase>(EPoolName.EFFECT_INTERCEPT);
+        EffectInterceptBeam beamEffect = effect.GetComponent<EffectInterceptBeam>();
+        beamEffect.PlayBeam(interceptorPosition, missilePosition);
+    }
 
     private bool CheckCollision()
     {
@@ -219,8 +238,9 @@ public class ProjectileMissile : ProjectileBase
 
         int hitCount = Physics.RaycastNonAlloc(m_prevPosition, moveVec.normalized, s_raycastHits, moveVec.magnitude, s_raycastMask, QueryTriggerInteraction.Collide);
 
-        // 자기 자신 제외 + 가장 가까운 히트 선택
+        // 자기 자신과 같은 팀 요격체 제외 + 가장 가까운 히트 선택
         RaycastHit bestHit = default;
+        InterceptorUnit bestInterceptor = null;
         float bestDist = float.MaxValue;
         bool hasBestHit = false;
 
@@ -229,10 +249,15 @@ public class ProjectileMissile : ProjectileBase
             RaycastHit h = s_raycastHits[i];
             ProjectileMissile selfCheck = h.collider.GetComponentInParent<ProjectileMissile>();
             if (selfCheck == this) continue;
+
+            InterceptorUnit hitUnit = h.collider.GetComponentInParent<InterceptorUnit>();
+            if (hitUnit != null && IsOpposingInterceptor(hitUnit) == false) continue;
+
             if (h.distance < bestDist)
             {
                 bestDist = h.distance;
                 bestHit = h;
+                bestInterceptor = hitUnit;
                 hasBestHit = true;
             }
         }
@@ -258,21 +283,17 @@ public class ProjectileMissile : ProjectileBase
                 }
             }
 
-            // 요격체 명중 체크 — InterceptorUnit이 매 프레임 거리를 재는 대신, 미사일의 기존 스윕 레이캐스트에
-            // 올라타는 방식(터널링 방지). 소속 함대가 이 미사일을 쏜 함대와 다른 팀이어야 실제 요격으로 인정
-            InterceptorUnit hitInterceptor = hit.collider.GetComponentInParent<InterceptorUnit>();
-            if (hitInterceptor != null)
+            // 요격체 명중 체크 — 미사일의 기존 스윕 레이캐스트에 올라타는 방식(터널링 방지). 같은 팀 요격체는 히트 선정 단계에서 이미 제외됨
+            // 요격 이펙트/사운드는 미사일이 있는 위치(transform.position)에서 냄 — 기본 폭발 이펙트 대신 요격체→미사일 빔(EffectIntercept) 사용
+            if (bestInterceptor != null)
             {
-                SpaceFleet interceptorFleet = hitInterceptor.GetOwnerFleet();
-                bool interceptorIsOpposing = m_sourceShip != null && m_sourceShip.m_ownerFleet != null && interceptorFleet != null
-                    && interceptorFleet.m_team != m_sourceShip.m_ownerFleet.m_team;
-                if (interceptorIsOpposing == true)
-                {
-                    SoundManager.Instance.PlayFX(EFx.Explosion_Missile, hit.point);
-                    hitInterceptor.ConsumeByMissileHit();
-                    ReturnToPool(hitPosition: hit.point);
-                    return true;
-                }
+                Vector3 missilePosition = transform.position;
+                Vector3 interceptorPosition = bestInterceptor.transform.position;
+                SoundManager.Instance.PlayFX(EFx.Explosion_Missile, missilePosition);
+                PlayInterceptEffect(interceptorPosition, missilePosition);
+                bestInterceptor.ConsumeByMissileHit();
+                ReturnToPool(showHitEffect: false);
+                return true;
             }
 
             SpaceShip hitShip = hit.collider.GetComponentInParent<SpaceShip>();
@@ -303,7 +324,10 @@ public class ProjectileMissile : ProjectileBase
         // 직격 함선은 미사일 실제 충돌 지점(center == hit.point)을 그대로 사용
         directHitShip.TakeDamage(m_damageInfo, center);
 
-        int count = Physics.OverlapSphereNonAlloc(center, m_splashRadius, s_overlapResults, s_raycastMask);
+        if (s_splashMask == 0)
+            s_splashMask = ~LayerMask.GetMask("Shield", "Interceptor");
+
+        int count = Physics.OverlapSphereNonAlloc(center, m_splashRadius, s_overlapResults, s_splashMask);
         for (int i = 0; i < count; i++)
         {
             SpaceShip ship = s_overlapResults[i].GetComponentInParent<SpaceShip>();
@@ -440,7 +464,6 @@ public class ProjectileMissile : ProjectileBase
             effect.PlayEffect();
         }
 
-        m_claimedBy = null;
         ObjectManager.Instance.UnregisterMissile(this);
         ObjectManager.Instance.m_poolManager.Return(m_poolName, this);
     }

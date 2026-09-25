@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 public class HandleInputMouse
 {
-    private static readonly LayerMask s_pickMask = ~(1 << 13); // 13 = Shield layer
+    private static readonly LayerMask s_pickMask = ~((1 << 13) | (1 << 14)); // 13 = Shield layer, 14 = Interceptor layer
 
     private CameraController m_camera;
     private bool m_inputBlockedByUI;
