@@ -987,14 +987,11 @@ public class NetworkManager : MonoSingleton<NetworkManager>
         StartCoroutine(RunAsync(() => m_apiClient.DeleteAccountAsync(), onComplete));
     }
 
-    // PvP 주석처리로 임시 비활성화(삭제 아님)
-    /*
     public void PvpClaimSeasonReward(System.Action<ApiResponse<PvpClaimSeasonRewardResponse>> onComplete)
     {
         if (m_bConnected == false) return;
         StartCoroutine(RunAsync(() => m_apiClient.PvpClaimSeasonRewardAsync(), onComplete));
     }
-    */
 
     public void EnterExplorationCell(EnterExplorationCellRequest request, System.Action<ApiResponse<EnterExplorationCellResponse>> onComplete)
     {

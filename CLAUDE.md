@@ -11,7 +11,10 @@
 ## 서버 프로젝트(Java Spring)
 - 루트: D:\BK\thefirst\thefirst_server 또는 C:\bk\thefirst\thefirst_server
 - **[필수] 서버의 모든 DateTime은 반드시 UTC(`Instant.now()`)로 저장할 것** — `LocalDateTime.now()`, `LocalDate.now()` 사용 금지. 날짜 비교가 필요한 경우 `LocalDate.now(ZoneOffset.UTC)` 명시
-- **[금지] 당분간 Flyway V2 이상 마이그레이션 파일 생성 금지** — 개발 중 DB를 계속 초기화하며 작업하는 단계라, 스키마 변경은 새 버전 파일을 추가하지 말고 `V1__init_schema.sql`에 직접 반영할 것
+- **[필수] DB는 초기화(DROP/재생성)하지 않고 유지** — 스키마 변경은 새 Flyway 마이그레이션 파일 `src/main/resources/db/migration/V{n}__snake_case_설명.sql`(V2, V3, V4… 다음 번호)로만 반영할 것. `db_create.bat`, `db_sync_v1_migration.bat`(V2+ 파일을 삭제함), Jenkins `DB_CREATE` 같은 DB 초기화 도구는 남겨두되 사용 여부는 개발자가 판단하며 Claude는 실행/권유하지 않음
+- **[금지] 이미 만든 마이그레이션 파일(V1 포함) 수정/삭제 금지, `sql/schema.sql` 수정·실행 금지** — schema.sql은 DROP을 포함한 V1 스냅샷이며 Flyway checksum 불일치를 막아야 함
+- 마이그레이션 작성 규칙: 기존 데이터가 있으므로 NOT NULL 컬럼 추가 시 DEFAULT 지정, 엔티티(`ddl-auto=validate`)와 컬럼/타입이 일치해야 서버가 기동됨
+- **[예외: PVP 시즌 보상 수정 1회 한정]** 이 수정에 한해 `sql/schema.sql`과 `V1__init_schema.sql`을 동일하게 수정하고, 사용자가 DB를 초기화(`db_create.bat`/Jenkins `DB_CREATE`)함. 초기화 완료 후 이 예외 줄을 삭제할 것
 
 ## 코드 생성 도구
 - Python generator 경로: 서버경로\tools\generator

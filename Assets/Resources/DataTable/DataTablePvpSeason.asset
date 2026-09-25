@@ -16,7 +16,7 @@ MonoBehaviour:
     tiers:
     - tierName: Bronze
       minScore: 0
-      resetScore: 800
+      resetScore: 1000
       seasonReward: 2
     - tierName: Silver
       minScore: 1200

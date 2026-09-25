@@ -51,7 +51,7 @@ public class UIPanelSettings : UIPanelBase
     [SerializeField] private Button   m_expPointButton;
 
     [SerializeField] private Toggle   m_toggleRemoveAd;
-    [SerializeField] private Button   m_devConsoleButton;
+    [SerializeField] private Button   m_pvpSeasonEndButton; // 서버 dev 명령 pvpseason end 호출
     [SerializeField] private Button   m_orphanGuestButton;
 
     [SerializeField] private Toggle   m_toggleCheckZoneCleared; // 켜짐(기본값) = 정상적으로 존 클리어 진행도 검사, 꺼짐 = 검사 건너뜀(테스트용)
@@ -81,14 +81,10 @@ public class UIPanelSettings : UIPanelBase
         if (m_licenseButton != null)
             m_licenseButton.onClick.AddListener(() => UIManager.Instance.ShowLicensePopup());
 
-        if (m_devConsoleButton != null)
+        if (m_pvpSeasonEndButton != null)
         {
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
-            m_devConsoleButton.onClick.AddListener(() =>
-            {
-                if (DeveloperConsole.Instance != null)
-                    DeveloperConsole.Instance.ToggleConsole();
-            });
+            m_pvpSeasonEndButton.onClick.AddListener(OnPvpSeasonEndButtonClicked);
 #endif
         }
 
@@ -259,9 +255,75 @@ public class UIPanelSettings : UIPanelBase
         string achievementPoint = (m_toggleAchievementPoint != null && m_toggleAchievementPoint.isOn == true) ? "10000" : "0";
 
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
-        DeveloperConsole.ExecuteCommandStatic($"adddevresources {levelUp} {exploPoint} {pvpPoint} {achievementPoint}");
+        NetworkManager.Instance.ExecuteDevCommand("adddevresources", new string[] { levelUp, exploPoint, pvpPoint, achievementPoint }, OnDevResourcesResponse);
 #endif
     }
+
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+    // 서버 응답("설명|key:value|key:value...")의 각 항목을 로컬 Commander에 반영
+    private void OnDevResourcesResponse(ApiResponse<string> response)
+    {
+        if (response == null || response.errorCode != 0)
+        {
+            Debug.LogWarning($"adddevresources failed: errorCode={(response != null ? response.errorCode : -1)}");
+            return;
+        }
+
+        string[] parts = response.data.Split('|');
+        for (int i = 1; i < parts.Length; i++)
+            ApplyDevResourceValue(parts[i]);
+    }
+
+    private void ApplyDevResourceValue(string data)
+    {
+        Commander commander = DataManager.Instance.m_currentCommander;
+        if (commander == null) return;
+
+        string[] keyValue = data.Split(':');
+        if (keyValue.Length != 2) return;
+
+        string key = keyValue[0].Trim();
+        string value = keyValue[1].Trim();
+
+        switch (key.ToLower())
+        {
+            case "commanderlevel":
+                if (int.TryParse(value, out int commanderLevel))
+                    commander.UpdateCommanderLevel(commanderLevel);
+                break;
+            case "exp":
+                if (int.TryParse(value, out int exp))
+                    commander.UpdateExp(exp);
+                break;
+            case "explorationpoint":
+                if (int.TryParse(value, out int exploPoint))
+                    commander.UpdateExplorationPoint(exploPoint);
+                break;
+            case "pvppointmaxgot":
+                if (int.TryParse(value, out int pvpMaxGot))
+                    commander.UpdatePvpPointMaxGot(pvpMaxGot);
+                break;
+            case "pvppoint":
+                if (int.TryParse(value, out int pvpPoint))
+                    commander.UpdatePvpPoint(pvpPoint);
+                break;
+            case "achievementpoint":
+                if (int.TryParse(value, out int achievementPoint))
+                    commander.UpdateAchievementPoint(achievementPoint);
+                break;
+        }
+    }
+
+    private void OnPvpSeasonEndButtonClicked()
+    {
+        SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true);
+        NetworkManager.Instance.ExecuteDevCommand("pvpseason", new string[] { "end" }, response =>
+        {
+            if (response == null) return;
+            Debug.Log($"[Dev] pvpseason end: errorCode={response.errorCode} {response.data}");
+        });
+    }
+#endif
 
     private void InitializeLanguageDropdown()
     {

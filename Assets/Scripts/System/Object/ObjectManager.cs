@@ -30,10 +30,6 @@ public class ObjectManager : MonoSingleton<ObjectManager>
     {
         DataManager.Instance.ApplyGameSettings();
 
-#if UNITY_EDITOR || DEVELOPMENT_BUILD
-        var console = DeveloperConsole.Instance;
-#endif
-
         InitializePools();
     }
 

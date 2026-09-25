@@ -3,6 +3,7 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Localization.Components;
 using UnityEngine.UI;
 
 public class UIPanelRank : UIPanelBase
@@ -35,6 +36,9 @@ public class UIPanelRank : UIPanelBase
     private Color m_myInfoTabTextOriginalColor;
     private Color m_rankListTabTextOriginalColor;
 
+    private LocalizeStringEvent m_titleLocalize;
+    private int m_currentTabIndex; // 0 = 내 정보, 1 = 순위표
+
     public override void InitializeUIPanel()
     {
         // Start() 이전에 세팅해야 ButtonGroupSystem.Initialize()가 반영함 — MY INFO/Rank List 탭 전용 비활성 색상
@@ -43,7 +47,12 @@ public class UIPanelRank : UIPanelBase
             tabSystem.inactiveColorOverride = CommonUtility.HexColor("#9696FF");
 
         if (m_titleText != null)
+        {
+            m_titleLocalize = m_titleText.GetComponent<LocalizeStringEvent>();
+            if (m_titleLocalize != null)
+                m_titleLocalize.OnUpdateString.AddListener(OnTitleLocalized);
             CommonUtility.SetUILocText(m_titleText, "UI_MyInfo"); // defaultActiveTab=0(MY INFO)과 일치
+        }
         if (m_myInfoTabText != null)
         {
             CommonUtility.SetUILocText(m_myInfoTabText, "UI_MyInfo");
@@ -63,6 +72,7 @@ public class UIPanelRank : UIPanelBase
         EventManager.Subscribe_RetreatPvp(OnRetreatPvp);
         EventManager.Subscribe_PvpBattleEnd(OnPvpBattleEnd);
         EventManager.Subscribe_TabSelectionChanged(OnTabSelectionChanged);
+        EventManager.Subscribe_PvpPointChanged(OnPvpPointChanged);
     }
 
     private void OnDestroy()
@@ -70,6 +80,38 @@ public class UIPanelRank : UIPanelBase
         EventManager.Unsubscribe_RetreatPvp(OnRetreatPvp);
         EventManager.Unsubscribe_PvpBattleEnd(OnPvpBattleEnd);
         EventManager.Unsubscribe_TabSelectionChanged(OnTabSelectionChanged);
+        EventManager.Unsubscribe_PvpPointChanged(OnPvpPointChanged);
+    }
+
+    private void OnPvpPointChanged(int pvpPoint)
+    {
+        RefreshTitle();
+    }
+
+    // 탭에 맞는 제목을 다시 세팅 — 로컬라이즈 갱신이 끝나면 OnTitleLocalized가 내 정보 탭에 한해 보유 PVP 포인트를 뒤에 이어 붙임
+    private void RefreshTitle()
+    {
+        if (m_titleText == null) return;
+
+        string titleKey = m_currentTabIndex == 1 ? "UI_RankList" : "UI_MyInfo";
+        CommonUtility.SetUILocText(m_titleText, titleKey);
+    }
+
+    // LocalizeStringEvent가 제목 텍스트를 채운 직후(로케일 변경 포함) 호출 — 기본 반영(SetText) 다음에 실행되어 그 결과를 덮어씀
+    private void OnTitleLocalized(string localizedTitle)
+    {
+        if (m_currentTabIndex != 0) return;
+        m_titleText.text = localizedTitle + BuildPvpPointSuffix();
+    }
+
+    private string BuildPvpPointSuffix()
+    {
+        Commander commander = DataManager.Instance.m_currentCommander;
+        int pvpPoint = commander != null ? commander.GetPvpPoint() : 0;
+        string label = LocalizationManager.Instance.Get("UIPopupConfirm_PvpPointLabel");
+        string value = CommonUtility.FormatBigNumber(pvpPoint);
+        string colorHex = ColorUtility.ToHtmlStringRGB(CommonUtility.PaletteColor("PvpPoint"));
+        return $"<space=1.5em><nobr><size=80%><color=#{colorHex}>{label} : {value}</color></size></nobr>";
     }
 
     // TabSystem의 GameObject 이름("UIPanelRank")으로 시스템을 구분 — tabIndex 0=MY INFO, 1=Rank List
@@ -81,15 +123,13 @@ public class UIPanelRank : UIPanelBase
         if (m_myInfoTabText != null) m_myInfoTabText.color = m_myInfoTabTextOriginalColor;
         if (m_rankListTabText != null) m_rankListTabText.color = m_rankListTabTextOriginalColor;
 
-        if (m_titleText == null) return;
-        if (tabIndex == 0)
-            CommonUtility.SetUILocText(m_titleText, "UI_MyInfo");
-        else if (tabIndex == 1)
-            CommonUtility.SetUILocText(m_titleText, "UI_RankList");
+        m_currentTabIndex = tabIndex;
+        RefreshTitle();
     }
 
     public override void OnShowUIPanel()
     {
+        RefreshTitle();
         RequestPvpMyRank();
         RequestPvpList();
     }
@@ -223,8 +263,6 @@ public class UIPanelRank : UIPanelBase
         if (m_isBattleInProgress == true) return;
 
         var loc = LocalizationManager.Instance;
-        // TODO: 테스트 위해 레벨 제한 임시 주석처리 — 원복 필요
-        /*
         int minCommanderLevel = DataManager.Instance.m_dataTableConfig.gameSettings.pvp.pvpMinCommanderLevel;
         int myCommanderLevel = DataManager.Instance.m_currentCommander.m_commanderInfo.commanderLevel;
         if (myCommanderLevel < minCommanderLevel)
@@ -237,7 +275,6 @@ public class UIPanelRank : UIPanelBase
             });
             return;
         }
-        */
 
         CapabilityProfile stats = CommonUtility.GetFleetCapabilityProfile(opponent.fleetInfo);
         int shipCount = (opponent.fleetInfo != null && opponent.fleetInfo.ships != null) ? opponent.fleetInfo.ships.Count : 0;

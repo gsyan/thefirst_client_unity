@@ -18,6 +18,8 @@ public class UIPanelSpace : UIPanelBase
     [SerializeField] private TMP_Text m_rankLabelText;
     [SerializeField] private TMP_Text m_explorationLabelText;
 
+    private bool m_isPvpSeasonRewardRequested;
+
     public override void InitializeUIPanel()
     {
         if (m_commanderLabelText != null)
@@ -38,7 +40,7 @@ public class UIPanelSpace : UIPanelBase
         EventManager.Subscribe_VipStatusChanged(OnVipStatusChangedForDailyReward);
         EventManager.Subscribe_TutorialGeneralUIBlockedChanged(OnTutorialGeneralUIBlockedChanged);
         EventManager.Subscribe_CurrentPanelChanged(OnPanelStackChanged);
-        // CheckAndClaimPvpSeasonReward(); // PvP 주석처리로 임시 비활성화
+        CheckAndClaimPvpSeasonReward();
 
         RefreshTapButtonsVisibility();
     }
@@ -68,26 +70,39 @@ public class UIPanelSpace : UIPanelBase
 
     // ── 미수령 존 보상 복구 ───────────────────────────────────────────────────
 
-    // PvP 주석처리로 임시 비활성화(삭제 아님)
-    /*
+    // 홈 복귀마다 OnShowUIPanel이 다시 호출되므로 플래그로 게임 씬 진입 후 1회만 요청 — 요청이 실패하면 다음 홈 복귀 때 재시도
     private void CheckAndClaimPvpSeasonReward()
     {
+        if (m_isPvpSeasonRewardRequested == true) return;
+        m_isPvpSeasonRewardRequested = true;
+
         NetworkManager.Instance.PvpClaimSeasonReward(response =>
         {
-            if (response == null || response.errorCode != 0) return;
-            if (response.data.pvpPointGained <= 0) return;
+            if (response == null || response.errorCode != 0)
+            {
+                m_isPvpSeasonRewardRequested = false;
+                return;
+            }
+
+            int gained = response.data.pvpPointGained;
+            if (gained <= 0) return;
+
+            Commander commander = DataManager.Instance.m_currentCommander;
+            if (commander != null)
+            {
+                commander.UpdatePvpPoint(commander.GetPvpPoint() + gained);
+                commander.UpdatePvpPointMaxGot(commander.GetPvpPointMaxGot() + gained);
+            }
 
             var loc = LocalizationManager.Instance;
             UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig
             {
-                title   = loc.Get("UIPopupMessage_PvpSeasonRewardTitle"),
                 message = loc.Get("UIPopupMessage_PvpSeasonRewardMessage"),
-                rewardAmounts = new System.Collections.Generic.List<int> { 0, 0, 0, response.data.pvpPointGained },
+                rewardAmounts = new System.Collections.Generic.List<int> { 0, 0, gained }, // 인덱스 2 = PVP 포인트
                 onConfirm = () => { }
             });
         });
     }
-    */
 
     // ── 출석 보상 상태 갱신 ──────────────────────────────────────────────────
     // 최초 진입 시점 체크는 ObjectManager.StartNormalPlay()에서 담당 — VIP 상태가 바뀌면(구매 등) 여기서 다시 확인해 레드닷 갱신
