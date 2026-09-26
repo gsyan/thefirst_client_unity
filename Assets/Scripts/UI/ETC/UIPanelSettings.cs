@@ -430,10 +430,7 @@ public class UIPanelSettings : UIPanelBase
             {
                 DataManager.Instance.m_isGoogleLinked = false;
                 if (string.IsNullOrEmpty(response.data?.guestId) == false)
-                {
-                    PlayerPrefs.SetString("GuestId", response.data.guestId);
-                    PlayerPrefs.Save();
-                }
+                    NetworkManager.Instance.SetGuestId(response.data.guestId);
                 if (response.data != null && string.IsNullOrEmpty(response.data.guestSecret) == false)
                     NetworkManager.Instance.SetGuestSecret(response.data.guestSecret);
                 RefreshGoogleLinkUI();

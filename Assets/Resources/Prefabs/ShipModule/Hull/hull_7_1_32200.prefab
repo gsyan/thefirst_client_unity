@@ -374,6 +374,7 @@ MonoBehaviour:
     silencePoints: 0
     ammoPoints: 0
     healthPoints: 0
+    disruptPoints: 0
 --- !u!1 &283021307704722354
 GameObject:
   m_ObjectHideFlags: 0
@@ -607,6 +608,7 @@ MonoBehaviour:
     silencePoints: 0
     ammoPoints: 0
     healthPoints: 0
+    disruptPoints: 0
 --- !u!1 &378547953206930241
 GameObject:
   m_ObjectHideFlags: 0
@@ -3194,6 +3196,7 @@ MonoBehaviour:
     silencePoints: 0
     ammoPoints: 0
     healthPoints: 0
+    disruptPoints: 0
 --- !u!1 &3849317829228532306
 GameObject:
   m_ObjectHideFlags: 0
@@ -3627,6 +3630,7 @@ MonoBehaviour:
     silencePoints: 0
     ammoPoints: 0
     healthPoints: 0
+    disruptPoints: 0
 --- !u!1 &4395799374920516313
 GameObject:
   m_ObjectHideFlags: 0
@@ -3891,6 +3895,7 @@ MonoBehaviour:
     silencePoints: 0
     ammoPoints: 0
     healthPoints: 0
+    disruptPoints: 0
 --- !u!1 &4645958957263656244
 GameObject:
   m_ObjectHideFlags: 0
@@ -4228,6 +4233,7 @@ MonoBehaviour:
     silencePoints: 0
     ammoPoints: 0
     healthPoints: 0
+    disruptPoints: 0
 --- !u!1 &5122819355949940367
 GameObject:
   m_ObjectHideFlags: 0
@@ -6399,6 +6405,7 @@ MonoBehaviour:
     silencePoints: 0
     ammoPoints: 0
     healthPoints: 0
+    disruptPoints: 0
 --- !u!1 &9210415038970274186
 GameObject:
   m_ObjectHideFlags: 0

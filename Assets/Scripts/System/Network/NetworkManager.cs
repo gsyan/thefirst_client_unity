@@ -21,7 +21,6 @@ public class NetworkManager : MonoSingleton<NetworkManager>
     #region MonoSingleton ---------------------------------------------------------------
     protected override void OnInitialize()
     {
-        //PlayerPrefs.DeleteAll();
         m_apiClient = new ApiClient();
         m_apiClient.LoadRefreshToken();
         m_apiClient.LoadGuestSecret();
@@ -64,6 +63,11 @@ public class NetworkManager : MonoSingleton<NetworkManager>
     private bool m_checkingInternetAccess = false;
     // Dev 빌드 서버 선택 팝업: 한 번만 표시
     private bool m_serverSelectShown = false;
+
+    // 시작 시 인터넷/서버 확인 — 느린 모바일 환경(이름 조회 지연 등)에서 한 번 실패로 바로 종료하지 않도록 재시도
+    private const int k_connectAttemptCount = 2;
+    private const float k_connectRetryDelaySec = 1f;
+    private const int k_internetCheckTimeoutSec = 5;
 
     public void OnChangeScene()
     {
@@ -139,18 +143,26 @@ public class NetworkManager : MonoSingleton<NetworkManager>
         if (m_checkingInternetAccess == true) yield break;
         m_checkingInternetAccess = true;
 
-        using (UnityEngine.Networking.UnityWebRequest request =
-            UnityEngine.Networking.UnityWebRequest.Get("https://www.google.com"))
+        bool internetReachable = false;
+        for (int attempt = 0; attempt < k_connectAttemptCount && internetReachable == false; attempt++)
         {
-            request.timeout = 3; // 3 second limit
-            yield return request.SendWebRequest();
+            if (attempt > 0)
+                yield return new WaitForSeconds(k_connectRetryDelaySec);
 
-            if (request.result != UnityEngine.Networking.UnityWebRequest.Result.Success)
+            using (UnityEngine.Networking.UnityWebRequest request =
+                UnityEngine.Networking.UnityWebRequest.Get("https://www.google.com"))
             {
-                m_checkingInternetAccess = false;
-                ShowFatalErrorPopup("Please check your internet connection.\nThe app will close.");
-                yield break;
+                request.timeout = k_internetCheckTimeoutSec;
+                yield return request.SendWebRequest();
+                internetReachable = request.result == UnityEngine.Networking.UnityWebRequest.Result.Success;
             }
+        }
+
+        if (internetReachable == false)
+        {
+            m_checkingInternetAccess = false;
+            ShowFatalErrorPopup("Please check your internet connection.\nThe app will close.");
+            yield break;
         }
 
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
@@ -163,14 +175,20 @@ public class NetworkManager : MonoSingleton<NetworkManager>
                 message      = "접속할 서버를 선택하세요.",
                 cancelText1  = "DEV",
                 confirmText1 = "TEST",
+                extraText1   = "REAL",
                 onCancel = () =>
                 {
-                    m_apiClient.SetBaseUrl(ApiServerUrl.Dev);
+                    m_apiClient.SetServer(EServerType.Dev);
                     serverChosen = true;
                 },
                 onConfirm = () =>
                 {
-                    m_apiClient.SetBaseUrl(ApiServerUrl.Test);
+                    m_apiClient.SetServer(EServerType.Test);
+                    serverChosen = true;
+                },
+                onExtra = () =>
+                {
+                    m_apiClient.SetServer(EServerType.Real);
                     serverChosen = true;
                 },
             });
@@ -178,12 +196,20 @@ public class NetworkManager : MonoSingleton<NetworkManager>
         }
 #endif
 
-        // 서버 체크
-        var serverCheckTask = m_apiClient.CheckServerAliveAsync();
-        while (!serverCheckTask.IsCompleted)
-            yield return null;
+        // 서버 체크 — 첫 이름 조회가 느려도 다음 시도는 OS 캐시로 빨라질 수 있어 재시도 후에만 실패로 판정
+        bool serverAlive = false;
+        for (int attempt = 0; attempt < k_connectAttemptCount && serverAlive == false; attempt++)
+        {
+            if (attempt > 0)
+                yield return new WaitForSeconds(k_connectRetryDelaySec);
 
-        if (serverCheckTask.Result == false)
+            var serverCheckTask = m_apiClient.CheckServerAliveAsync();
+            while (!serverCheckTask.IsCompleted)
+                yield return null;
+            serverAlive = serverCheckTask.Result;
+        }
+
+        if (serverAlive == false)
         {
             m_checkingInternetAccess = false;
             ShowFatalErrorPopup("The server is currently unavailable.\nPlease try again later.");
@@ -265,8 +291,7 @@ public class NetworkManager : MonoSingleton<NetworkManager>
                             case ServerErrorCode.REFRESH_TOKEN_FAIL_ACCOUNT_NOT_FOUND:
                             case ServerErrorCode.HTTP_UNAUTHORIZED_401:
                                 // 토큰 삭제 필요
-                                PlayerPrefs.DeleteKey("RefreshToken");
-                                PlayerPrefs.Save();
+                                m_apiClient.DeleteStoredRefreshToken();
                                 UIManager.Instance.ShowPanel("UIPanelLoginType");
                                 break;
                             case ServerErrorCode.HTTP_SERVER_ERROR_500:
@@ -541,13 +566,12 @@ public class NetworkManager : MonoSingleton<NetworkManager>
     {
         if (m_bConnected == false) return;
 
-        // PlayerPrefs에서 guestId 가져오기, 없으면 새로 생성
-        string guestId = PlayerPrefs.GetString("GuestId", "");
+        // 현재 서버의 저장된 guestId 가져오기, 없으면 새로 생성
+        string guestId = m_apiClient.GetGuestId();
         if (string.IsNullOrEmpty(guestId))
         {
             guestId = System.Guid.NewGuid().ToString();
-            PlayerPrefs.SetString("GuestId", guestId);
-            PlayerPrefs.Save();
+            m_apiClient.SetGuestId(guestId);
         }
 
         string guestSecret = m_apiClient.GetGuestSecret();
@@ -560,6 +584,12 @@ public class NetworkManager : MonoSingleton<NetworkManager>
         m_apiClient.SetGuestSecret(secret);
     }
 
+    // UIPanelSettings 등에서 unlink-google 응답으로 받은 guestId를 현재 서버 키로 저장할 때 사용
+    public void SetGuestId(string guestId)
+    {
+        m_apiClient.SetGuestId(guestId);
+    }
+
     // 현재 로그인된 계정에 구글 계정 연동 — 성공 시 서버가 계정의 게스트 자격증명을 지우는 것과 대칭으로 로컬 게스트 정보도 지운다
     public void LinkGoogle(System.Action<ApiResponse<AuthResponse>> onComplete = null)
     {
@@ -568,8 +598,7 @@ public class NetworkManager : MonoSingleton<NetworkManager>
             (response) => {
                 if (response.errorCode == 0)
                 {
-                    PlayerPrefs.DeleteKey("GuestId");
-                    PlayerPrefs.Save();
+                    m_apiClient.ClearGuestId();
                     m_apiClient.ClearGuestSecret();
                 }
                 if (onComplete != null)
@@ -926,9 +955,7 @@ public class NetworkManager : MonoSingleton<NetworkManager>
         m_guestAutoRecoverAttempted = false;
 
         // 게스트 ID 삭제 - 재로그인 시 새 계정으로 시작되도록
-        PlayerPrefs.DeleteKey("GuestId");
-        PlayerPrefs.DeleteKey("DevMineralClickCount");
-        PlayerPrefs.Save();
+        m_apiClient.ClearGuestId();
     }
 
     // 리프레시 토큰 재사용 감지(2106) 시 앱 재시작과 동일한 결과를 자동으로 재현 — 로컬에 게스트 자격증명이 있을 때만 시도
@@ -937,12 +964,11 @@ public class NetworkManager : MonoSingleton<NetworkManager>
         if (m_guestAutoRecoverAttempted == true) return;
         m_guestAutoRecoverAttempted = true;
 
-        string guestId = PlayerPrefs.GetString("GuestId", "");
+        string guestId = m_apiClient.GetGuestId();
         string guestSecret = m_apiClient.GetGuestSecret();
         if (string.IsNullOrEmpty(guestId) == true || string.IsNullOrEmpty(guestSecret) == true)
         {
-            PlayerPrefs.DeleteKey("RefreshToken");
-            PlayerPrefs.Save();
+            m_apiClient.DeleteStoredRefreshToken();
             UIManager.Instance.ShowPanel("UIPanelLoginType");
             return;
         }
@@ -957,8 +983,7 @@ public class NetworkManager : MonoSingleton<NetworkManager>
             }
             else
             {
-                PlayerPrefs.DeleteKey("RefreshToken");
-                PlayerPrefs.Save();
+                m_apiClient.DeleteStoredRefreshToken();
                 UIManager.Instance.ShowPanel("UIPanelLoginType");
             }
         }));

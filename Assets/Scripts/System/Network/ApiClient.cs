@@ -33,17 +33,39 @@ public static class ApiServerUrl
     public const string Release = "https://www.fidforge.com/api";
 }
 
+public enum EServerType
+{
+    Dev,
+    Test,
+    Real,
+}
+
 public class ApiClient
 {
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
+    private EServerType m_serverType = EServerType.Dev;
     private string m_baseUrl = ApiServerUrl.Dev;
 #else
+    private EServerType m_serverType = EServerType.Real;
     private string m_baseUrl = ApiServerUrl.Release;
 #endif
 
-    public void SetBaseUrl(string url)
+    // 서버를 바꾸면 이전 서버의 토큰이 남지 않도록 메모리 값을 비우고, 선택한 서버의 저장값을 다시 읽음
+    public void SetServer(EServerType serverType)
     {
-        m_baseUrl = url;
+        m_serverType = serverType;
+        if (serverType == EServerType.Dev)
+            m_baseUrl = ApiServerUrl.Dev;
+        else if (serverType == EServerType.Test)
+            m_baseUrl = ApiServerUrl.Test;
+        else
+            m_baseUrl = ApiServerUrl.Release;
+
+        accessToken = "";
+        refreshToken = "";
+        guestSecret = "";
+        LoadRefreshToken();
+        LoadGuestSecret();
     }
 
     public string GetBaseUrl()
@@ -55,6 +77,16 @@ public class ApiClient
     private string refreshToken;
     private string guestSecret;
 
+    // 계정 정보 PlayerPrefs 키 — 서버별로 분리 저장(예: RefreshToken_Real)
+    private const string k_refreshTokenKey = "RefreshToken";
+    private const string k_guestSecretKey = "GuestSecret";
+    private const string k_guestIdKey = "GuestId";
+
+    private string GetPrefsKey(string baseKey)
+    {
+        return $"{baseKey}_{m_serverType}";
+    }
+
     #region Core Methods ------------------------------------------------------------------------------------------
     public void SetAccessToken(string token)
     {
@@ -65,7 +97,7 @@ public class ApiClient
     {
         accessToken = access;
         refreshToken = refresh;
-        PlayerPrefs.SetString("RefreshToken", EncryptToken(refreshToken));
+        PlayerPrefs.SetString(GetPrefsKey(k_refreshTokenKey), EncryptToken(refreshToken));
         PlayerPrefs.Save();
     }
 
@@ -76,31 +108,34 @@ public class ApiClient
 
     public void LoadRefreshToken()
     {
-        string storedValue = PlayerPrefs.GetString("RefreshToken", "");
+        string storedValue = PlayerPrefs.GetString(GetPrefsKey(k_refreshTokenKey), "");
         refreshToken = DecryptToken(storedValue);
 
         // 복호화 실패(기기 변경, 구버전 평문 저장 등) — 조용히 폐기하고 재로그인 유도
         bool bDecryptFailed = string.IsNullOrEmpty(storedValue) == false && string.IsNullOrEmpty(refreshToken) == true;
         if (bDecryptFailed == true)
-        {
-            PlayerPrefs.DeleteKey("RefreshToken");
-            PlayerPrefs.Save();
-        }
+            DeleteStoredRefreshToken();
+    }
+
+    // 저장된 리프레시 토큰만 삭제(메모리 값은 유지)
+    public void DeleteStoredRefreshToken()
+    {
+        PlayerPrefs.DeleteKey(GetPrefsKey(k_refreshTokenKey));
+        PlayerPrefs.Save();
     }
 
     public void ClearTokens()
     {
         accessToken = "";
         refreshToken = "";
-        PlayerPrefs.DeleteKey("RefreshToken");
-        PlayerPrefs.Save();
+        DeleteStoredRefreshToken();
     }
 
     // 게스트 로그인 자격증명 — refreshToken과 동일한 기기 바인딩 암호화(EncryptToken/DecryptToken)를 재사용
     public void SetGuestSecret(string secret)
     {
         guestSecret = secret;
-        PlayerPrefs.SetString("GuestSecret", EncryptToken(guestSecret));
+        PlayerPrefs.SetString(GetPrefsKey(k_guestSecretKey), EncryptToken(guestSecret));
         PlayerPrefs.Save();
     }
 
@@ -111,13 +146,13 @@ public class ApiClient
 
     public void LoadGuestSecret()
     {
-        string storedValue = PlayerPrefs.GetString("GuestSecret", "");
+        string storedValue = PlayerPrefs.GetString(GetPrefsKey(k_guestSecretKey), "");
         guestSecret = DecryptToken(storedValue);
 
         bool bDecryptFailed = string.IsNullOrEmpty(storedValue) == false && string.IsNullOrEmpty(guestSecret) == true;
         if (bDecryptFailed == true)
         {
-            PlayerPrefs.DeleteKey("GuestSecret");
+            PlayerPrefs.DeleteKey(GetPrefsKey(k_guestSecretKey));
             PlayerPrefs.Save();
         }
     }
@@ -125,7 +160,25 @@ public class ApiClient
     public void ClearGuestSecret()
     {
         guestSecret = "";
-        PlayerPrefs.DeleteKey("GuestSecret");
+        PlayerPrefs.DeleteKey(GetPrefsKey(k_guestSecretKey));
+        PlayerPrefs.Save();
+    }
+
+    // 게스트 ID — 평문 저장, 서버별 키
+    public string GetGuestId()
+    {
+        return PlayerPrefs.GetString(GetPrefsKey(k_guestIdKey), "");
+    }
+
+    public void SetGuestId(string guestId)
+    {
+        PlayerPrefs.SetString(GetPrefsKey(k_guestIdKey), guestId);
+        PlayerPrefs.Save();
+    }
+
+    public void ClearGuestId()
+    {
+        PlayerPrefs.DeleteKey(GetPrefsKey(k_guestIdKey));
         PlayerPrefs.Save();
     }
 
@@ -191,13 +244,16 @@ public class ApiClient
         }
     }
 
+    private const float k_slowServerCheckLogSec = 2f; // 서버 확인이 이 시간을 넘기면 원인 추적용 로그를 남김
+
     // 서버가 살아있는지 체크 (health check)
     public async Task<bool> CheckServerAliveAsync()
     {
         try
         {
             using var request = UnityWebRequest.Get(m_baseUrl);
-            request.timeout = 3;
+            request.timeout = k_requestTimeoutSec;
+            float startTime = Time.realtimeSinceStartup;
             var operation = request.SendWebRequest();
             while (!operation.isDone)
                 await Task.Yield();
@@ -205,6 +261,9 @@ public class ApiClient
             // 연결 자체가 실패한 경우만 false (ConnectionError)
             // 4xx, 5xx 응답은 서버가 살아있다는 의미
             bool isServerAlive = request.result != UnityWebRequest.Result.ConnectionError;
+            float elapsedSec = Time.realtimeSinceStartup - startTime;
+            if (isServerAlive == false || elapsedSec > k_slowServerCheckLogSec)
+                Debug.LogError($"[ServerCheck] alive={isServerAlive} elapsed={elapsedSec:F1}s result={request.result} code={request.responseCode} error={request.error}");
             // request.result 403은 서버가 "너 인증 없어" 라고 거절한 것이므로 서버가 정상 동작 중
             //Debug.Log($"[ServerCheck] URL: {m_baseUrl}, Result: {request.result}, Code: {request.responseCode}, Alive: {isServerAlive}");
             return isServerAlive;
