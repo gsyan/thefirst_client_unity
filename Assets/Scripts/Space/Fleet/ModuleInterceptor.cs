@@ -1,7 +1,8 @@
 // 요격체 모듈 — 슬롯/3D 배치 없이 함체(ModuleHull)에 논리적으로만 붙는 컴포넌트(ModuleShield와 동일 패턴).
 // 실제로 눈에 보이는 요격체 유닛(InterceptorUnit)은 별도로 스폰/풀링하며, 슬롯 번호가 가장 낮은 1기만 함선 전방 가드로 서고 나머지는 궤도를 돎(가드가 사라지면 다음 슬롯이 이어받음).
-// 전술 토글(idx=4) ON 상태에서만 빈 자리를 순차 보충하고(interceptorRegenTime초마다 1기, 생성 1기당 tacticInterceptorCost 과금, 여유 없으면 그 틱의 신규 생성만 건너뜀 — SpaceFleet.TryChargeInterceptorTacticCost 참고),
-// 토글 OFF 시에는 신규 생성만 멈출 뿐 이미 떠 있는 유닛은 제거되지 않고 계속 요격 임무를 수행함(despawn/환급 없음) — 정리는 존런 종료 시점(SpaceFleet.ClearAllInterceptorUnits)이나 함선 파괴 시에만 일어남.
+// 존런 시작(InitializeModuleInterceptor) 시 무과금으로 전 슬롯을 채워 완전 무장 상태로 시작하고, 전술 토글(idx=4) ON 상태에서만 이후 소모된 자리를 순차 리필함
+// (interceptorRegenTime초마다 1기, 생성 1기당 tacticInterceptorCost 과금, 여유 없으면 그 틱의 신규 생성만 건너뜀 — SpaceFleet.TryChargeInterceptorTacticCost 참고).
+// 토글 OFF 시에는 리필만 멈출 뿐 이미 떠 있는 유닛은 제거되지 않고 계속 요격 임무를 수행함(despawn/환급 없음) — 정리는 존런 종료 시점(SpaceFleet.ClearAllInterceptorUnits)이나 함선 파괴 시에만 일어남.
 using UnityEngine;
 
 public class ModuleInterceptor : ModuleBase
@@ -53,6 +54,9 @@ public class ModuleInterceptor : ModuleBase
         m_slots = new InterceptorUnit[m_maxCount];
         m_regenProgress = 0f;
 
+        // 존런 시작 시 무과금으로 전 슬롯을 채워 완전 무장 — 플레이어/비플레이어 함대 공통
+        ForceFillAllSlots();
+
         bool isPlayerFleet = m_ownerFleet != null && m_ownerFleet.m_fleetSource == EFleetSource.fleet_source_player;
         if (isPlayerFleet == true)
         {
@@ -61,9 +65,8 @@ public class ModuleInterceptor : ModuleBase
         }
         else
         {
-            // 적/시네마틱 함대는 전술 토글 UI가 없어 상시 ON으로 취급(실드와 동일 규칙) — 매초 리필 틱은 플레이어 함대만 받으므로 스폰 시점에 즉시 완전 무장
+            // 적/시네마틱 함대는 전술 토글 UI가 없어 상시 ON으로 취급(실드와 동일 규칙)
             m_tacticOn = true;
-            ForceFillAllSlots();
         }
     }
 

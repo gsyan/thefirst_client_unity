@@ -772,38 +772,24 @@ public class SpaceShip : MonoBehaviour
         return false;
     }
 
-    // 실드 토글 비트 인덱스 — EventManager.OnTacticOptionsChanged/UIPanelBattle 주석과 동일 규칙(0=수리, 1=미사일, 2=함재기, 3=실드)
-    private const int k_shieldTacticBit = 1 << 3;
-
-    // 지금 이 함선의 실드가 incomingDamage를 전량 막아낼 수 있는 상태인지(장착 + 게이지 충분 + 전술 토글 ON) — ProjectileBeam이
+    // 지금 이 함선의 실드가 incomingDamage를 전량 막아낼 수 있는 상태인지(장착 + 게이지 충분) — ProjectileBeam이
     // raycast 단계에서 빔 궤적을 실드 표면에서 끊을지(완전 방어) 함체 표면까지 보낼지(관통) 미리 판단하는 데 사용.
     // 게이지가 있어도 이번 데미지를 다 못 막으면(관통 발생) false를 반환해 빔이 함체 표면까지 도달하게 함
-    // 내가 직접 조작하는 함대(fleet_source_player)만 토글 상태를 따르고, 그 외(적/PvP 상대/시네마틱)는 상시 ON으로 취급
+    // 전술 토글은 게이지 충전(리필) 여부만 결정 — 방어 발동은 게이지가 있으면 토글과 무관하게 항상 일어남
     public bool IsShieldActive(float incomingDamage)
     {
         ModuleHull targetBody = GetRandomAliveBody();
         if (targetBody == null) return false;
 
         ModuleShield shield = targetBody.m_shield;
-        if (shield == null || shield.CanFullyAbsorb(incomingDamage) == false) return false;
-
-        if (m_ownerFleet != null && m_ownerFleet.m_fleetSource == EFleetSource.fleet_source_player)
-            return (m_ownerFleet.m_fleetInfo.tacticOptions & k_shieldTacticBit) != 0;
-
-        return true;
+        return shield != null && shield.CanFullyAbsorb(incomingDamage) == true;
     }
 
-    // 빔 피격 시 실드가 흡수하는 만큼 차감한 나머지 데미지를 반환 — 실드 미장착/게이지 0/토글 OFF면 원본 그대로 반환
+    // 빔 피격 시 실드가 흡수하는 만큼 차감한 나머지 데미지를 반환 — 실드 미장착/게이지 0이면 원본 그대로 반환
     private float ApplyShieldAbsorption(ModuleHull targetBody, float incomingDamage, Vector3 hitPosition)
     {
         ModuleShield shield = targetBody.m_shield;
         if (shield == null || shield.IsEquipped() == false) return incomingDamage;
-
-        bool isShieldOn = true;
-        if (m_ownerFleet != null && m_ownerFleet.m_fleetSource == EFleetSource.fleet_source_player)
-            isShieldOn = (m_ownerFleet.m_fleetInfo.tacticOptions & k_shieldTacticBit) != 0;
-
-        if (isShieldOn == false) return incomingDamage;
 
         float absorbed = shield.AbsorbBeamDamage(incomingDamage);
         if (absorbed > 0f)
