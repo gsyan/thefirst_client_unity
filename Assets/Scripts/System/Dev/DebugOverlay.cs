@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 
 public class DebugOverlay : MonoSingleton<DebugOverlay>
@@ -8,10 +9,10 @@ public class DebugOverlay : MonoSingleton<DebugOverlay>
     private TMP_Text m_fpsText;
     private Canvas m_canvas;
 
-    // FPS 표시 — 평균 갱신 주기, 글자 크기/여백은 화면 짧은 변 대비 비율
+    // 메인 UI 캔버스(UIPanelSpace 등)와 동일한 CanvasScaler 기준 — 좌측 상단 버튼(anchoredPosition 116,0)과 같은 좌표계로 정렬하기 위함
+    private static readonly Vector2 k_referenceResolution = new Vector2(2560, 1440);
+
     private const float k_fpsSampleIntervalSec = 0.5f;
-    private const float k_fpsFontSizeRatio = 0.035f;
-    private const float k_fpsMarginRatio = 0.02f;
     private static readonly WaitForSecondsRealtime s_fpsSampleWait = new WaitForSecondsRealtime(k_fpsSampleIntervalSec);
 
     protected override bool ShouldDontDestroyOnLoad => true;
@@ -42,7 +43,11 @@ public class DebugOverlay : MonoSingleton<DebugOverlay>
         m_canvas.renderMode = RenderMode.ScreenSpaceOverlay;
         m_canvas.sortingOrder = 9999;
 
-        canvasGO.AddComponent<UnityEngine.UI.CanvasScaler>();
+        CanvasScaler scaler = canvasGO.AddComponent<CanvasScaler>();
+        scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
+        scaler.referenceResolution = k_referenceResolution;
+        scaler.screenMatchMode = CanvasScaler.ScreenMatchMode.MatchWidthOrHeight;
+        scaler.matchWidthOrHeight = 0f;
         canvasGO.AddComponent<UnityEngine.UI.GraphicRaycaster>();
 
         GameObject textGO = new GameObject("DebugText");
@@ -62,6 +67,11 @@ public class DebugOverlay : MonoSingleton<DebugOverlay>
         rt.sizeDelta = new Vector2(800, 300);
     }
 
+    // 좌측 상단 버튼 3개(CalandarButton 등, anchoredPosition 116,0 / sizeDelta 100,100) 바로 아래 고정 배치
+    private static readonly Vector2 k_fpsAnchoredPosition = new Vector2(116, -150);
+    private static readonly Vector2 k_fpsSize = new Vector2(700, 80);
+    private const float k_fpsFontSize = 40f;
+
     private void CreateFpsUI()
     {
         GameObject textGO = new GameObject("FpsText");
@@ -69,28 +79,16 @@ public class DebugOverlay : MonoSingleton<DebugOverlay>
 
         m_fpsText = textGO.AddComponent<TextMeshProUGUI>();
         m_fpsText.color = Color.green;
-        m_fpsText.alignment = TextAlignmentOptions.BottomLeft;
+        m_fpsText.alignment = TextAlignmentOptions.TopLeft;
         m_fpsText.raycastTarget = false;
+        m_fpsText.fontSize = k_fpsFontSize;
 
         RectTransform rt = m_fpsText.rectTransform;
-        rt.anchorMin = Vector2.zero;
-        rt.anchorMax = Vector2.zero;
-        rt.pivot = Vector2.zero;
-        ApplyFpsLayout();
-    }
-
-    // 화면 회전/세이프에어리어 변경에 맞춰 좌측 하단 위치와 글자 크기를 갱신
-    private void ApplyFpsLayout()
-    {
-        float shortSide = Mathf.Min(Screen.width, Screen.height);
-        float fontSize = shortSide * k_fpsFontSizeRatio;
-        float margin = shortSide * k_fpsMarginRatio;
-        Rect safeArea = Screen.safeArea;
-
-        m_fpsText.fontSize = fontSize;
-        RectTransform rt = m_fpsText.rectTransform;
-        rt.anchoredPosition = new Vector2(safeArea.xMin + margin, safeArea.yMin + margin);
-        rt.sizeDelta = new Vector2(fontSize * 20f, fontSize * 1.5f);
+        rt.anchorMin = new Vector2(0, 1);
+        rt.anchorMax = new Vector2(0, 1);
+        rt.pivot = new Vector2(0, 1);
+        rt.anchoredPosition = k_fpsAnchoredPosition;
+        rt.sizeDelta = k_fpsSize;
     }
 
     // 주기마다 프레임 수 증가량 / 실시간 경과로 평균 FPS와 프레임 시간(ms) 계산 — timeScale 영향 없음
@@ -112,7 +110,6 @@ public class DebugOverlay : MonoSingleton<DebugOverlay>
             float fps = frameCount / elapsedSec;
             float frameMs = elapsedSec * 1000f / frameCount;
             m_fpsText.SetText("FPS {0:1} ({1:1}ms)", fps, frameMs);
-            ApplyFpsLayout();
         }
     }
 

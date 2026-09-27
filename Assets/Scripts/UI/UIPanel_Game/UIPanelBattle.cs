@@ -97,6 +97,8 @@ public class UIPanelBattle : UIPanelBase
         // 그 서버 응답을 기다리는 동안 스스로 정리하지 못하고 이 패널 아래 파묻힌 채 남아있으므로 여기서 걷어냄 —
         // 스택에 없거나 이미 top이면 안전하게 no-op(UIManager.RemoveHiddenPanelFromStack)
         UIManager.Instance.RemoveHiddenPanelFromStack("UIPanelPrepareBattle");
+        // PVP도 같은 이유로 확인 버튼 클릭 시점엔 UIPanelRank를 pop하지 않고 남겨둠(UIPanelRank.OnBattleStartResponse 참고) — 여기서 정리
+        UIManager.Instance.RemoveHiddenPanelFromStack("UIPanelRank");
 
         if (m_battleView != null)
             m_battleView.RefreshTacticsDisplay();

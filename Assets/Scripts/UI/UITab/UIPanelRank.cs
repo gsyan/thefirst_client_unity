@@ -326,7 +326,13 @@ public class UIPanelRank : UIPanelBase
         }
 
         EventManager.TriggerPvpBattleStart();
-        UIManager.Instance.HideCurrentPanel();
+
+        // 이 패널을 곧바로 pop하지 않고, UIPanelPrepareBattle을 콘텐츠 없이 push해 그 뒤에 묻어둠(UIPanelExplorationGrid와 동일 패턴) —
+        // 이 패널을 top으로 남겨두면 화면을 너무 가려서, 웜프인 동안은 대신 거의 안 보이는 빈 패널로 UIPanelSpace 노출만 막음.
+        // 실제 UIPanelBattle이 뜨는 시점에 이 패널과 PrepareBattle 둘 다 스택에서 정리됨(UIPanelBattle.OnShowUIPanel 참고)
+        UIPanelPrepareBattle preOpenPanel = UIManager.Instance.GetPanel<UIPanelPrepareBattle>("UIPanelPrepareBattle");
+        if (preOpenPanel != null)
+            preOpenPanel.OpenEmpty();
 
         m_currentBattleToken = response.data.battleToken;
         FleetInfo opponentFleetInfo = response.data.opponentFleetInfo;
