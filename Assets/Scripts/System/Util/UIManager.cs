@@ -142,6 +142,12 @@ public class UIManager : MonoSingleton<UIManager>
         return mainCanvas != null ? mainCanvas.transform.Find("SafeAreaRoot") as RectTransform : null;
     }
 
+    // 씬에 Canvas가 여러 개(DebugOverlay 등)여도 항상 실제 UI 캔버스를 가리킴 — FindFirstObjectByType<Canvas>()의 모호성 회피용
+    public Canvas GetMainCanvas()
+    {
+        return mainCanvas;
+    }
+
     public RectTransform GetGaugeBarContainer() => m_gaugeBarContainer;
     public RectTransform GetGeneralContainer()   => m_generalContainer;
     public RectTransform GetTutorialContainer()  => m_tutorialContainer;

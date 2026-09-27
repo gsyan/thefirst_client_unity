@@ -51,11 +51,12 @@ public class TutorialUI : UIPopupBase
             m_waitTargetCoroutine = null;
         }
 
-        // 이전 스텝의 마스크/화살표/테두리를 즉시 초기화 — 새 스텝 타겟을 아직 못 찾아 대기(WaitForTargetCoroutine)로
-        // 빠지는 경우, 이걸 안 하면 이전 스텝의 강조 박스가 새 스텝 화면 위에 잔상처럼 계속 남아있게 됨
+        // 이전 스텝의 마스크/화살표/테두리/텍스트박스를 즉시 초기화 — 새 스텝 타겟을 아직 못 찾아 대기(WaitForTargetCoroutine)로
+        // 빠지는 경우, 이걸 안 하면 이전 스텝의 강조 박스나 프리팹 기본 텍스트가 새 스텝 화면 위에 잔상처럼 남아있게 됨
         if (m_mask != null) m_mask.HideDim();
         if (m_arrow != null) m_arrow.Hide();
         if (m_borderFrame != null) m_borderFrame.gameObject.SetActive(false);
+        if (m_textBox != null) m_textBox.Hide();
 
         // 먼저 팝업 활성화 (자식 코루틴 사용 가능하도록)
         ShowPopup();
@@ -279,10 +280,12 @@ public class TutorialUI : UIPopupBase
 
         Transform searchRoot = panel != null ? panel.transform : null;
 
-        // 전체 Canvas에서 검색
+        // 전체 Canvas에서 검색 — 씬에 Canvas가 여러 개(DebugOverlay 등)여도 항상 실제 UI 캔버스를 검색하도록 UIManager의 것을 우선 사용
         if (searchRoot == null)
         {
-            Canvas canvas = FindFirstObjectByType<Canvas>();
+            Canvas canvas = UIManager.Instance.GetMainCanvas();
+            if (canvas == null)
+                canvas = FindFirstObjectByType<Canvas>();
             if (canvas != null)
                 searchRoot = canvas.transform;
         }
@@ -299,9 +302,26 @@ public class TutorialUI : UIPopupBase
             int closeIdx = remainingPath.IndexOf(']');
             if (closeIdx > 0 && int.TryParse(remainingPath.Substring(1, closeIdx - 1), out int childIndex))
             {
-                if (childIndex < 0 || childIndex >= searchRoot.childCount) return null;
+                // searchRoot가 가상 스크롤(InfiniteScrollView) 안이면 자식 순서가 데이터 인덱스와 무관(풀링 재사용)하므로
+                // N번째 자식을 그대로 쓰면 안 됨 — 먼저 그 인덱스가 보이도록 스크롤한 뒤, 실제 그 데이터를 들고 있는 행을 찾음
+                InfiniteScrollView scrollView = searchRoot.GetComponentInParent<InfiniteScrollView>();
+                if (scrollView != null)
+                {
+                    scrollView.EnsureVisible(childIndex);
+                    Transform foundRow = null;
+                    scrollView.ForEachVisibleItem((dataIndex, rowObject) =>
+                    {
+                        if (dataIndex == childIndex) foundRow = rowObject.transform;
+                    });
+                    if (foundRow == null) return null;
+                    searchRoot = foundRow;
+                }
+                else
+                {
+                    if (childIndex < 0 || childIndex >= searchRoot.childCount) return null;
+                    searchRoot = searchRoot.GetChild(childIndex);
+                }
 
-                searchRoot = searchRoot.GetChild(childIndex);
                 remainingPath = closeIdx + 1 < remainingPath.Length ? remainingPath.Substring(closeIdx + 2) : "";
             }
         }

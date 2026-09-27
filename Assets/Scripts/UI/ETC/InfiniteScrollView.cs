@@ -128,6 +128,7 @@ public class InfiniteScrollView : MonoBehaviour
         float targetY = Mathf.Clamp(m_paddingTop + dataIndex * (m_itemHeight + m_spacing), 0f, maxScrollY);
 
         m_scrollRect.content.anchoredPosition = new Vector2(0f, targetY);
+        m_scrollRect.StopMovement(); // 잔여 관성 속도를 지워서, 다음 프레임 ScrollRect 자체 LateUpdate가 방금 옮긴 위치를 다시 흘려보내지 않게 함
         m_topDataIndex = int.MinValue;
         RefreshView();
     }
@@ -152,6 +153,7 @@ public class InfiniteScrollView : MonoBehaviour
         targetY = Mathf.Clamp(targetY, 0f, maxScrollY);
 
         m_scrollRect.content.anchoredPosition = new Vector2(0f, targetY);
+        m_scrollRect.StopMovement(); // 잔여 관성 속도를 지워서, 다음 프레임 ScrollRect 자체 LateUpdate가 방금 옮긴 위치를 다시 흘려보내지 않게 함
         m_topDataIndex = int.MinValue;
         RefreshView();
     }

@@ -287,6 +287,10 @@ public class UIPanelFleet : UIPanelBase
 
     private void SwitchTargetFleet(SpaceFleet fleet, bool isReadOnly)
     {
+        // 함대/모드가 실제로는 안 바뀌는 호출(OnShipSelectedWhileOpen이 SpaceShipSelected 이벤트로 되먹임되는 경우 등)까지
+        // 매번 RefreshFleetComposition을 다시 돌리면 스크롤 위치가 리셋되고 행이 움찔거림 — 실제 전환일 때만 재구성
+        bool isSameTarget = m_targetFleet == fleet && m_isReadOnlyMode == isReadOnly;
+
         m_targetFleet = fleet;
         m_isReadOnlyMode = isReadOnly;
 
@@ -294,6 +298,8 @@ public class UIPanelFleet : UIPanelBase
         // 편집 -> 읽기전용 전환은 이미 확장돼 있던 카메라를 그대로 둬도 무방해 별도 축소 처리는 하지 않음
         if (isReadOnly == false)
             StartViewportAnimation(open: true);
+
+        if (isSameTarget == true) return;
 
         RefreshFleetComposition();
     }
