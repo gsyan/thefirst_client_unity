@@ -2,7 +2,7 @@
 // "슬롯별 모듈 on/off 편집"을 담당한다. 토글은 전부 로컬에서만 미리보기 상태로 바뀌고, Confirm을 눌러야 서버에 실제로 반영됨
 // (UIHullPickerView와 동일 패턴 — 예산 초과 상태에선 Confirm 버튼 비활성화)
 // 카테고리별 최대 슬롯 수는 FleetComposition.ParseMaxSlotsFromHullSubType으로 hullSubType에서 파싱(빔/미사일/격납고/실드/요격체 —
-// 실드는 2세대(gen=2) 함체부터 1개 지원, 요격체는 현재 어떤 함체 데이터에도 슬롯이 없어 항상 0)
+// 티어6+ 함체는 실드/요격체 슬롯을 항상 보유하되, 슬롯별로 언락 전이면 토글 대신 언락 버튼을 노출(Commander.IsShieldUnlocked/IsInterceptorUnlocked))
 // 빔/미사일/격납고 슬롯을 하나의 InfiniteScrollView에 순서대로(빔 전부 → 미사일 전부 → 격납고 전부) 나열
 using System.Collections.Generic;
 using TMPro;
@@ -33,11 +33,13 @@ public class UIShipLoadoutEditorView : MonoBehaviour
         public readonly EModuleType moduleType;
         public readonly int slotIndex;
         public readonly bool isLocked;
-        public ModuleSlotEntry(EModuleType moduleType, int slotIndex, bool isLocked)
+        public readonly bool needsUnlock; // 실드/요격체 전용 — 슬롯은 있지만 이 함체에서 아직 언락 안 됐으면 토글 대신 언락 버튼 노출
+        public ModuleSlotEntry(EModuleType moduleType, int slotIndex, bool isLocked, bool needsUnlock)
         {
             this.moduleType = moduleType;
             this.slotIndex = slotIndex;
             this.isLocked = isLocked;
+            this.needsUnlock = needsUnlock;
         }
     }
 
@@ -227,7 +229,7 @@ public class UIShipLoadoutEditorView : MonoBehaviour
         List<ModuleInfo> installedList = GetModulesListForType(m_originalModules, moduleType);
         for (int i = 0; i < maxSlotCount; i++)
         {
-            m_moduleSlotEntries.Add(new ModuleSlotEntry(moduleType, i, isLocked: false));
+            m_moduleSlotEntries.Add(new ModuleSlotEntry(moduleType, i, isLocked: false, needsUnlock: false));
             m_pendingInstalled.Add(IsSlotInstalled(installedList, i));
 
             ModuleInfo installedModule = FindInstalledModule(installedList, i);
@@ -238,12 +240,16 @@ public class UIShipLoadoutEditorView : MonoBehaviour
     }
 
     // 실드는 슬롯이 없어(문자열 장착 여부만 존재) 리스트 카테고리와 별도 처리 — 함체에 실드 슬롯이 있을 때만(maxSlotCount>0) 행 1개 추가
+    // 슬롯이 있어도 이 함체에서 실드가 언락 전이면(Commander.IsShieldUnlocked==false) 토글 대신 언락 버튼을 보여줌
     private void AppendShieldSlot(int maxSlotCount)
     {
         if (maxSlotCount <= 0) return;
 
+        Commander commander = DataManager.Instance.m_currentCommander;
+        bool needsUnlock = commander == null || commander.IsShieldUnlocked(m_hullSubType) == false;
+
         bool isInstalled = m_originalModules != null && string.IsNullOrEmpty(m_originalModules.shieldModuleSubType) == false;
-        m_moduleSlotEntries.Add(new ModuleSlotEntry(EModuleType.shield, 0, isLocked: false));
+        m_moduleSlotEntries.Add(new ModuleSlotEntry(EModuleType.shield, 0, isLocked: false, needsUnlock: needsUnlock));
         m_pendingInstalled.Add(isInstalled);
         // 이미 장착돼 있으면 실제 티어(예: shield_5_1)로 시드해야 강화 팝업이 그 티어부터 시작함 — 미설치면 기본 티어1
         ModuleInfo editInfo = CreateEditInfoFromHull(EModuleType.shield, m_originalModules);
@@ -252,12 +258,16 @@ public class UIShipLoadoutEditorView : MonoBehaviour
     }
 
     // 요격체는 슬롯이 없어(문자열 장착 여부만 존재) 리스트 카테고리와 별도 처리 — 함체에 요격체 슬롯이 있을 때만(maxSlotCount>0) 행 1개 추가
+    // 슬롯이 있어도 이 함체에서 요격체가 언락 전이면(Commander.IsInterceptorUnlocked==false) 토글 대신 언락 버튼을 보여줌
     private void AppendInterceptorSlot(int maxSlotCount)
     {
         if (maxSlotCount <= 0) return;
 
+        Commander commander = DataManager.Instance.m_currentCommander;
+        bool needsUnlock = commander == null || commander.IsInterceptorUnlocked(m_hullSubType) == false;
+
         bool isInstalled = m_originalModules != null && string.IsNullOrEmpty(m_originalModules.interceptorModuleSubType) == false;
-        m_moduleSlotEntries.Add(new ModuleSlotEntry(EModuleType.interceptor, 0, isLocked: false));
+        m_moduleSlotEntries.Add(new ModuleSlotEntry(EModuleType.interceptor, 0, isLocked: false, needsUnlock: needsUnlock));
         m_pendingInstalled.Add(isInstalled);
         // 이미 장착돼 있으면 실제 티어로 시드해야 강화 팝업이 그 티어부터 시작함 — 미설치면 기본 티어1
         ModuleInfo editInfo = CreateEditInfoFromHull(EModuleType.interceptor, m_originalModules);
@@ -334,9 +344,68 @@ public class UIShipLoadoutEditorView : MonoBehaviour
 
         row.Setup(entry.moduleType, entry.slotIndex, m_pendingInstalled[dataIndex], entry.isLocked,
             investedCommandPower, isSelected, pending.moduleSubType,
+            entry.needsUnlock,
             (moduleType, slotIndex, install) => OnLocalToggleChanged(dataIndex, install),
             (moduleType, slotIndex) => OnRowSelected(dataIndex),
-            (moduleType, slotIndex) => OnManageButtonClicked(dataIndex));
+            (moduleType, slotIndex) => OnManageButtonClicked(dataIndex),
+            () => OnUnlockButtonClicked(entry.moduleType));
+    }
+
+    // 실드/요격체 슬롯 언락 버튼 클릭 — 비용 확인 팝업 후 확정 시 서버에 업적포인트 소모 요청
+    private void OnUnlockButtonClicked(EModuleType moduleType)
+    {
+        ModuleData hullData = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(m_hullSubType);
+        int unlockCost = moduleType == EModuleType.shield
+            ? (hullData != null ? hullData.shieldUnlockAchievementPointCost : 0)
+            : (hullData != null ? hullData.interceptorUnlockAchievementPointCost : 0);
+
+        UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig
+        {
+            message = LocalizationManager.Instance.Get(moduleType == EModuleType.shield
+                ? "UIShipLoadout_UnlockShieldConfirmMessage"
+                : "UIShipLoadout_UnlockInterceptorConfirmMessage"),
+            cost = new CostStruct(ECostType.AchievementPoint, unlockCost),
+            onConfirm = () => RequestUnlockModule(moduleType),
+            onCancel = () => { },
+        });
+    }
+
+    private void RequestUnlockModule(EModuleType moduleType)
+    {
+        Commander commander = DataManager.Instance.m_currentCommander;
+        if (commander == null) return;
+
+        if (moduleType == EModuleType.shield)
+        {
+            UnlockShieldModuleRequest request = new UnlockShieldModuleRequest { hullSubType = m_hullSubType };
+            NetworkManager.Instance.UnlockShieldModule(request, response =>
+            {
+                if (response.errorCode != 0)
+                {
+                    Debug.LogError($"[UIShipLoadoutEditorView] UnlockShieldModule 실패: {response.errorCode}");
+                    return;
+                }
+
+                commander.UpdateUnlockedShieldHulls(response.data.unlockedShieldHulls);
+                commander.UpdateAchievementPoint(response.data.achievementPointRemain);
+                RefreshRows();
+            });
+            return;
+        }
+
+        UnlockInterceptorModuleRequest interceptorRequest = new UnlockInterceptorModuleRequest { hullSubType = m_hullSubType };
+        NetworkManager.Instance.UnlockInterceptorModule(interceptorRequest, response =>
+        {
+            if (response.errorCode != 0)
+            {
+                Debug.LogError($"[UIShipLoadoutEditorView] UnlockInterceptorModule 실패: {response.errorCode}");
+                return;
+            }
+
+            commander.UpdateUnlockedInterceptorHulls(response.data.unlockedInterceptorHulls);
+            commander.UpdateAchievementPoint(response.data.achievementPointRemain);
+            RefreshRows();
+        });
     }
 
     // 좌측 행 클릭 — 선택 상태만 바뀜(장착 여부와 무관). SelectedImage 갱신을 위해 보이는 행 전체를 다시 bind

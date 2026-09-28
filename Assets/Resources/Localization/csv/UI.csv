@@ -151,6 +151,8 @@ UIFleet_HullPicker_Title,,Select Hull,함체 선택
 UIHull_DisplayName,,Tier{0} Hull {1}G{2},티어{0} 함체 {1}세대{2}
 UIHullPicker_UnlockConfirmMessage,,Unlock {0},{0}을(를) 언락하시겠습니까?
 UIHullPicker_UnlockPrerequisiteFailMessage,,Unlock the previous hull first.,이전 단계 함체를 먼저 언락해야 합니다.
+UIShipLoadout_UnlockShieldConfirmMessage,,Unlock the shield slot?,실드 슬롯을 언락하시겠습니까?
+UIShipLoadout_UnlockInterceptorConfirmMessage,,Unlock the interceptor slot?,요격체 슬롯을 언락하시겠습니까?
 UIAchievement_Progress,,Progress,진행도
 UIAchievement_Reward,,AP Reward,업적포인트 보상
 UIAchievement_RewardVip,,VIP Reward,VIP 보상

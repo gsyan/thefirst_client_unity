@@ -1210,6 +1210,14 @@ MonoBehaviour:
     m_Localized: 'The request failed. (Code: {0})'
     m_Metadata:
       m_Items: []
+  - m_Id: 84121888019578880
+    m_Localized: Unlock the shield slot?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 84121888078299136
+    m_Localized: Unlock the interceptor slot?
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

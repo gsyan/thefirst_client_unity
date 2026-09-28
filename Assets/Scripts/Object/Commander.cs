@@ -160,6 +160,32 @@ public class Commander
         m_commanderInfo.unlockedHulls = unlockedHulls;
     }
 
+    public bool IsShieldUnlocked(string hullSubType)
+    {
+        if (m_commanderInfo == null || m_commanderInfo.unlockedShieldHulls == null) return false;
+        return m_commanderInfo.unlockedShieldHulls.Contains(hullSubType);
+    }
+
+    public bool IsInterceptorUnlocked(string hullSubType)
+    {
+        if (m_commanderInfo == null || m_commanderInfo.unlockedInterceptorHulls == null) return false;
+        return m_commanderInfo.unlockedInterceptorHulls.Contains(hullSubType);
+    }
+
+    // UnlockShieldModule API 성공 응답의 unlockedShieldHulls(권위값)로 갱신 — 호출부가 직접 화면을 다시 그림
+    public void UpdateUnlockedShieldHulls(System.Collections.Generic.List<string> unlockedShieldHulls)
+    {
+        if (m_commanderInfo == null) return;
+        m_commanderInfo.unlockedShieldHulls = unlockedShieldHulls;
+    }
+
+    // UnlockInterceptorModule API 성공 응답의 unlockedInterceptorHulls(권위값)로 갱신 — 호출부가 직접 화면을 다시 그림
+    public void UpdateUnlockedInterceptorHulls(System.Collections.Generic.List<string> unlockedInterceptorHulls)
+    {
+        if (m_commanderInfo == null) return;
+        m_commanderInfo.unlockedInterceptorHulls = unlockedInterceptorHulls;
+    }
+
     public int GetCommanderLevel()
     {
         if (m_commanderInfo == null) return 1;

@@ -119,6 +119,8 @@ public class CommanderInfo
     public int explorationPoint;    // 보유(확정 지급된) 탐험 포인트 — 적립(ZoneRun.explorationPointBanked)과 별개
     public int achievementPoint;    // 보유 업적포인트 — 티어4+ 함체 언락(소모형)에 사용, 존 탈출/포기 정산 시 지급
     public List<string> unlockedHulls;  // 업적포인트로 언락 완료한 hullSubType 목록(티어1~3은 언락 불필요라 여기 없어도 사용 가능)
+    public List<string> unlockedShieldHulls;  // 실드 슬롯 사용 가능(언락 완료)한 hullSubType 목록
+    public List<string> unlockedInterceptorHulls;  // 요격체 슬롯 사용 가능(언락 완료)한 hullSubType 목록
     public int explorationZoneNumber;  // 진행 중인 탐험 런의 존 번호, 없으면 0
     public string explorationCell;  // 진행 중인 탐험 런의 마지막 클리어 셀 "row-col"(0-indexed, ZoneRun.currentCell과 동일 포맷), 없으면 빈 문자열
     public int highestClearedZoneNumber;  // 존 탈출(ESCAPED)로 확정된 존 번호 중 최댓값, 없으면 0
@@ -449,6 +451,34 @@ public class UnlockHullResponse
     public string hullSubType;          // 언락 완료된 함체
     public int achievementPointRemain;  // 소모 후 보유량
     public List<string> unlockedHulls;  // 갱신된 전체 언락 목록(권위값) — 클라 로컬 캐시 갱신용
+}
+
+[System.Serializable]
+public class UnlockShieldModuleRequest
+{
+    public string hullSubType; // 실드 슬롯을 언락할 함체(이미 함체 자체는 언락돼 있어야 함)
+}
+
+[System.Serializable]
+public class UnlockShieldModuleResponse
+{
+    public string hullSubType;                  // 실드 언락 완료된 함체
+    public int achievementPointRemain;           // 소모 후 보유량
+    public List<string> unlockedShieldHulls;     // 갱신된 전체 실드 언락 목록(권위값) — 클라 로컬 캐시 갱신용
+}
+
+[System.Serializable]
+public class UnlockInterceptorModuleRequest
+{
+    public string hullSubType; // 요격체 슬롯을 언락할 함체(이미 함체 자체는 언락돼 있어야 함)
+}
+
+[System.Serializable]
+public class UnlockInterceptorModuleResponse
+{
+    public string hullSubType;                    // 요격체 언락 완료된 함체
+    public int achievementPointRemain;             // 소모 후 보유량
+    public List<string> unlockedInterceptorHulls;  // 갱신된 전체 요격체 언락 목록(권위값) — 클라 로컬 캐시 갱신용
 }
 
 [System.Serializable]

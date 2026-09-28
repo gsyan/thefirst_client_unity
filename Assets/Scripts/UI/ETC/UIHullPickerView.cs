@@ -228,7 +228,7 @@ public class UIHullPickerView : MonoBehaviour
     }
 
     // 서버 FleetService.validateUnlockPrerequisite와 동일 규칙(값은 서버 ACHIEVEMENT_UNLOCK_MIN_HULL_TIER와 일치시켜야 함) —
-    // gen=1(기본 제공) 함체만 선행조건 적용. 기본형은 이전 티어 기본형이, 실드/요격체 변형은 같은 티어 기본형이 선행 언락돼 있어야 함
+    // gen=1(기본 제공) 함체만 선행조건 적용. 티어당 함체가 하나뿐이라 이전 티어 함체가 선행 언락돼 있어야 하는 단순 선형 체인
     private const int ACHIEVEMENT_UNLOCK_MIN_HULL_TIER = 4;
 
     private bool IsUnlockPrerequisiteMet(ModuleData hull)
@@ -236,20 +236,12 @@ public class UIHullPickerView : MonoBehaviour
         if (CommonUtility.ParseGen(hull.moduleSubType) != 1) return true;
 
         int tier = CommonUtility.ParseTier(hull.moduleSubType);
-        int[] slots = CommonUtility.ParseHullSlotComposition(hull.moduleSubType);
-        bool hasShield = slots[3] > 0;
-        bool hasInterceptor = slots[4] > 0;
-        bool isBaseVariant = hasShield == false && hasInterceptor == false;
-        if (isBaseVariant == true && tier <= ACHIEVEMENT_UNLOCK_MIN_HULL_TIER) return true;
+        if (tier <= ACHIEVEMENT_UNLOCK_MIN_HULL_TIER) return true;
 
-        int prerequisiteTier = isBaseVariant == true ? tier - 1 : tier;
+        int prerequisiteTier = tier - 1;
         ModuleData prerequisiteHull = m_hullsCache.Find(p =>
-        {
-            int[] pSlots = CommonUtility.ParseHullSlotComposition(p.moduleSubType);
-            return CommonUtility.ParseGen(p.moduleSubType) == 1
-                && CommonUtility.ParseTier(p.moduleSubType) == prerequisiteTier
-                && pSlots[3] == 0 && pSlots[4] == 0;
-        });
+            CommonUtility.ParseGen(p.moduleSubType) == 1
+            && CommonUtility.ParseTier(p.moduleSubType) == prerequisiteTier);
         if (prerequisiteHull == null) return true;
 
         Commander commander = DataManager.Instance.m_currentCommander;
@@ -272,7 +264,7 @@ public class UIHullPickerView : MonoBehaviour
 
         UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig
         {
-            message = string.Format(LocalizationManager.Instance.Get("UIHullPicker_UnlockConfirmMessage"), hull.moduleSubType),
+            message = string.Format(LocalizationManager.Instance.Get("UIHullPicker_UnlockConfirmMessage"), CommonUtility.BuildHullDisplayName(hull.moduleSubType)),
             cost = new CostStruct(ECostType.AchievementPoint, hull.unlockAchievementPointCost),
             onConfirm = () => RequestUnlockHull(hull.moduleSubType),
             onCancel = () => { },

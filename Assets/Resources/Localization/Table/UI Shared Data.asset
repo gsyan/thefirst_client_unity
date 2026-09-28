@@ -583,6 +583,14 @@ MonoBehaviour:
     m_Key: UIHullPicker_UnlockPrerequisiteFailMessage
     m_Metadata:
       m_Items: []
+  - m_Id: 84121888019578880
+    m_Key: UIShipLoadout_UnlockShieldConfirmMessage
+    m_Metadata:
+      m_Items: []
+  - m_Id: 84121888078299136
+    m_Key: UIShipLoadout_UnlockInterceptorConfirmMessage
+    m_Metadata:
+      m_Items: []
   - m_Id: 76604851600883712
     m_Key: UIAchievement_Progress
     m_Metadata:

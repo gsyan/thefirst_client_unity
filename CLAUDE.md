@@ -15,6 +15,7 @@
 - **[금지] 이미 만든 마이그레이션 파일(V1 포함) 수정/삭제 금지, `sql/schema.sql` 수정·실행 금지** — schema.sql은 DROP을 포함한 V1 스냅샷이며 Flyway checksum 불일치를 막아야 함
 - 마이그레이션 작성 규칙: 기존 데이터가 있으므로 NOT NULL 컬럼 추가 시 DEFAULT 지정, 엔티티(`ddl-auto=validate`)와 컬럼/타입이 일치해야 서버가 기동됨
 - **[예외: PVP 시즌 보상 수정 1회 한정]** 이 수정에 한해 `sql/schema.sql`과 `V1__init_schema.sql`을 동일하게 수정하고, 사용자가 DB를 초기화(`db_create.bat`/Jenkins `DB_CREATE`)함. 초기화 완료 후 이 예외 줄을 삭제할 것
+- **[예외: 실드/요격체 언락 컬럼 추가 1회 한정]** `commander_unlocked_hull` 테이블에 `shield_unlocked`/`interceptor_unlocked` 컬럼 추가에 한해 `sql/schema.sql`과 `V1__init_schema.sql`을 동일하게 수정하고, 사용자가 DB를 초기화함. 초기화 완료 후 이 예외 줄을 삭제할 것
 
 ## 코드 생성 도구
 - Python generator 경로: 서버경로\tools\generator

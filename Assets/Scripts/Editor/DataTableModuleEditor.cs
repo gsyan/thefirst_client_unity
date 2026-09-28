@@ -125,6 +125,8 @@ public class DataTableModuleEditor : Editor
         }
 
         module.unlockAchievementPointCost = EditorGUILayout.IntField(new GUIContent("Unlock Achievement Point Cost", "0이면 즉시 사용 가능(티어1~3). 0보다 크면 업적포인트를 이만큼 소모해야 언락(티어4+)"), module.unlockAchievementPointCost);
+        module.shieldUnlockAchievementPointCost = EditorGUILayout.IntField(new GUIContent("Shield Unlock Achievement Point Cost", "이 함체의 실드 슬롯을 사용하려면 소모해야 하는 업적포인트. 실드 슬롯 없는 함체(티어1~5)는 0"), module.shieldUnlockAchievementPointCost);
+        module.interceptorUnlockAchievementPointCost = EditorGUILayout.IntField(new GUIContent("Interceptor Unlock Achievement Point Cost", "이 함체의 요격체 슬롯을 사용하려면 소모해야 하는 업적포인트. 요격체 슬롯 없는 함체(티어1~5)는 0"), module.interceptorUnlockAchievementPointCost);
 
         EditorGUILayout.LabelField("Stats", EditorStyles.boldLabel);
         module.health = EditorGUILayout.FloatField("Health", module.health);
@@ -389,7 +391,7 @@ public class DataTableModuleEditor : Editor
     {
         var ic = System.Globalization.CultureInfo.InvariantCulture;
         var sb = new System.Text.StringBuilder();
-        sb.AppendLine("sub_type,unlock_achievement_point_cost,stat_point,health,repair,speed,turn_rate,attack,splash_radius,attack_cool,silence_time,air_count,air_maintenance_time,air_health,air_attack,air_attack_to_fighter,air_attack_range,air_attack_cool,air_speed,air_ammo,air_detect_radius,air_avoid_radius,air_disrupt,shield_gauge,shield_regen_rate,interceptor_count,interceptor_regen_time,description");
+        sb.AppendLine("sub_type,unlock_achievement_point_cost,shield_unlock_achievement_point_cost,interceptor_unlock_achievement_point_cost,stat_point,health,repair,speed,turn_rate,attack,splash_radius,attack_cool,silence_time,air_count,air_maintenance_time,air_health,air_attack,air_attack_to_fighter,air_attack_range,air_attack_cool,air_speed,air_ammo,air_detect_radius,air_avoid_radius,air_disrupt,shield_gauge,shield_regen_rate,interceptor_count,interceptor_regen_time,description");
 
         var allGroups = new List<ModuleSubTypeGroup>();
         allGroups.AddRange(dataTableModule.HullGroups);
@@ -404,9 +406,11 @@ public class DataTableModuleEditor : Editor
             foreach (var d in group.modules)
             {
                 sb.AppendLine(string.Format(ic,
-                    "{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16},{17},{18},{19},{20},{21},{22},{23},{24},{25},{26},{27}",
+                    "{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16},{17},{18},{19},{20},{21},{22},{23},{24},{25},{26},{27},{28},{29}",
                     d.moduleSubType,
                     d.unlockAchievementPointCost,
+                    d.shieldUnlockAchievementPointCost,
+                    d.interceptorUnlockAchievementPointCost,
                     d.statPoint,
                     d.health, d.repair, d.speed, d.turnRate,
                     d.attack, d.splashRadius, d.attackCool,

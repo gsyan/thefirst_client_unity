@@ -17,55 +17,55 @@ MonoBehaviour:
     conditionType: 0
     conditionParam: 
     threshold: 5
-    achievementPointReward: 5
-    achievementPointRewardVip: 5
+    achievementPointReward: 50
+    achievementPointRewardVip: 50
     nameKey: UIDailyAchievement_Name_cell_clear
     descKey: UIDailyAchievement_Desc_cell_clear
   - achievementId: daily_cell_clear_10
     conditionType: 0
     conditionParam: 
     threshold: 10
-    achievementPointReward: 10
-    achievementPointRewardVip: 10
+    achievementPointReward: 100
+    achievementPointRewardVip: 100
     nameKey: UIDailyAchievement_Name_cell_clear
     descKey: UIDailyAchievement_Desc_cell_clear
   - achievementId: daily_cell_clear_20
     conditionType: 0
     conditionParam: 
     threshold: 20
-    achievementPointReward: 20
-    achievementPointRewardVip: 20
+    achievementPointReward: 200
+    achievementPointRewardVip: 200
     nameKey: UIDailyAchievement_Name_cell_clear
     descKey: UIDailyAchievement_Desc_cell_clear
   - achievementId: daily_event_cell_3
     conditionType: 1
     conditionParam: 
     threshold: 3
-    achievementPointReward: 8
-    achievementPointRewardVip: 8
+    achievementPointReward: 50
+    achievementPointRewardVip: 50
     nameKey: UIDailyAchievement_Name_event_cell
     descKey: UIDailyAchievement_Desc_event_cell
   - achievementId: daily_event_cell_6
     conditionType: 1
     conditionParam: 
     threshold: 6
-    achievementPointReward: 16
-    achievementPointRewardVip: 16
+    achievementPointReward: 100
+    achievementPointRewardVip: 100
     nameKey: UIDailyAchievement_Name_event_cell
     descKey: UIDailyAchievement_Desc_event_cell
   - achievementId: daily_zone_clear_total_3
     conditionType: 2
     conditionParam: 
     threshold: 3
-    achievementPointReward: 15
-    achievementPointRewardVip: 15
+    achievementPointReward: 50
+    achievementPointRewardVip: 50
     nameKey: UIDailyAchievement_Name_zone_clear_total
     descKey: UIDailyAchievement_Desc_zone_clear_total
   - achievementId: daily_zone_clear_total_5
     conditionType: 2
     conditionParam: 
     threshold: 5
-    achievementPointReward: 25
-    achievementPointRewardVip: 25
+    achievementPointReward: 100
+    achievementPointRewardVip: 100
     nameKey: UIDailyAchievement_Name_zone_clear_total
     descKey: UIDailyAchievement_Desc_zone_clear_total

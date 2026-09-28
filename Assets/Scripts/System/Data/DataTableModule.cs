@@ -22,6 +22,8 @@ public class ModuleData
     // common ---------------------------------------------------------------------------
     public int statPoint; // 이 서브타입(티어)을 슬롯에 설치할 때 드는 성능포인트 비용 — 티어가 오를수록 가파르게 증가
     public int unlockAchievementPointCost; // hull 전용 — 0이면 즉시 사용 가능(티어1~3), 0보다 크면 이 값만큼 업적포인트를 소모해야 언락(티어4+). hull 외 카테고리는 0(미사용)
+    public int shieldUnlockAchievementPointCost; // hull 전용 — 이 함체의 실드 슬롯을 사용하려면 소모해야 하는 업적포인트. 실드 슬롯 없는 함체(티어1~5)는 0
+    public int interceptorUnlockAchievementPointCost; // hull 전용 — 이 함체의 요격체 슬롯을 사용하려면 소모해야 하는 업적포인트. 요격체 슬롯 없는 함체(티어1~5)는 0
 
     [Header("Description")]
     [TextArea(2, 4)]
@@ -395,13 +397,14 @@ public class DataTableModule : ScriptableObject
         interceptorGroups.Clear();
 
         // 컬럼 순서 (datatable_module.csv 헤더 기준 고정 인덱스) — 서브타입(티어)당 1행
-        // 0:sub_type, 1:unlock_commander_level(hull 전용), 2:stat_point, 3:health, 4:repair, 5:speed, 6:turn_rate,
-        // 7:attack, 8:splash_radius, 9:attack_cool, 10:silence_time,
-        // 11:air_count, 12:air_maintenance_time, 13:air_health, 14:air_attack, 15:air_attack_to_fighter,
-        // 16:air_attack_range, 17:air_attack_cool, 18:air_speed, 19:air_ammo,
-        // 20:air_detect_radius, 21:air_avoid_radius, 22:air_disrupt,
-        // 23:shield_gauge, 24:shield_regen_rate,
-        // 25:interceptor_count, 26:interceptor_regen_time, 27:description
+        // 0:sub_type, 1:unlock_achievement_point_cost(hull 전용), 2:shield_unlock_achievement_point_cost(hull 전용), 3:interceptor_unlock_achievement_point_cost(hull 전용),
+        // 4:stat_point, 5:health, 6:repair, 7:speed, 8:turn_rate,
+        // 9:attack, 10:splash_radius, 11:attack_cool, 12:silence_time,
+        // 13:air_count, 14:air_maintenance_time, 15:air_health, 16:air_attack, 17:air_attack_to_fighter,
+        // 18:air_attack_range, 19:air_attack_cool, 20:air_speed, 21:air_ammo,
+        // 22:air_detect_radius, 23:air_avoid_radius, 24:air_disrupt,
+        // 25:shield_gauge, 26:shield_regen_rate,
+        // 27:interceptor_count, 28:interceptor_regen_time, 29:description
         // 발사체 이동속도(빔/미사일)는 별도 컬럼 없이 speed 컬럼을 재사용
         string[] lines = csvText.Split('\n');
         if (lines.Length < 2) return;
@@ -429,32 +432,34 @@ public class DataTableModule : ScriptableObject
                 moduleName      = $"{moduleSubType}",
                 moduleSubType   = moduleSubType,
                 unlockAchievementPointCost = ParseCsvInt(cols, 1),
-                statPoint           = ParseCsvInt  (cols, 2),
-                health              = ParseCsvFloat(cols, 3),
-                repair              = ParseCsvFloat(cols, 4),
-                speed               = ParseCsvFloat(cols, 5),
-                turnRate            = ParseCsvFloat(cols, 6),
-                attack              = ParseCsvFloat(cols, 7),
-                splashRadius        = ParseCsvFloat(cols, 8),
-                attackCool          = ParseCsvFloat(cols, 9),
-                silenceTime         = ParseCsvFloat(cols, 10),
-                airCount            = ParseCsvInt  (cols, 11),
-                airMaintenanceTime  = ParseCsvFloat(cols, 12),
-                airHealth           = ParseCsvFloat(cols, 13),
-                airAttackToShip     = ParseCsvFloat(cols, 14),
-                airAttackToFighter  = ParseCsvFloat(cols, 15),
-                airAttackRange      = ParseCsvFloat(cols, 16),
-                airAttackCool       = ParseCsvFloat(cols, 17),
-                airSpeed            = ParseCsvFloat(cols, 18),
-                airAmmo             = ParseCsvInt  (cols, 19),
-                airDetectRadius     = ParseCsvFloat(cols, 20),
-                airAvoidRadius      = ParseCsvFloat(cols, 21),
-                airDisrupt          = ParseCsvFloat(cols, 22),
-                shieldGauge         = ParseCsvFloat(cols, 23),
-                shieldRegenRate     = ParseCsvFloat(cols, 24),
-                interceptorCount        = ParseCsvInt  (cols, 25),
-                interceptorRegenTime    = ParseCsvFloat(cols, 26),
-                description         = cols.Length > 27 ? cols[27].Trim() : ""
+                shieldUnlockAchievementPointCost = ParseCsvInt(cols, 2),
+                interceptorUnlockAchievementPointCost = ParseCsvInt(cols, 3),
+                statPoint           = ParseCsvInt  (cols, 4),
+                health              = ParseCsvFloat(cols, 5),
+                repair              = ParseCsvFloat(cols, 6),
+                speed               = ParseCsvFloat(cols, 7),
+                turnRate            = ParseCsvFloat(cols, 8),
+                attack              = ParseCsvFloat(cols, 9),
+                splashRadius        = ParseCsvFloat(cols, 10),
+                attackCool          = ParseCsvFloat(cols, 11),
+                silenceTime         = ParseCsvFloat(cols, 12),
+                airCount            = ParseCsvInt  (cols, 13),
+                airMaintenanceTime  = ParseCsvFloat(cols, 14),
+                airHealth           = ParseCsvFloat(cols, 15),
+                airAttackToShip     = ParseCsvFloat(cols, 16),
+                airAttackToFighter  = ParseCsvFloat(cols, 17),
+                airAttackRange      = ParseCsvFloat(cols, 18),
+                airAttackCool       = ParseCsvFloat(cols, 19),
+                airSpeed            = ParseCsvFloat(cols, 20),
+                airAmmo             = ParseCsvInt  (cols, 21),
+                airDetectRadius     = ParseCsvFloat(cols, 22),
+                airAvoidRadius      = ParseCsvFloat(cols, 23),
+                airDisrupt          = ParseCsvFloat(cols, 24),
+                shieldGauge         = ParseCsvFloat(cols, 25),
+                shieldRegenRate     = ParseCsvFloat(cols, 26),
+                interceptorCount        = ParseCsvInt  (cols, 27),
+                interceptorRegenTime    = ParseCsvFloat(cols, 28),
+                description         = cols.Length > 29 ? cols[29].Trim() : ""
             };
 
             // hull 모듈만 prefab에서 슬롯 정보 추출

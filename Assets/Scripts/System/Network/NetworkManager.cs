@@ -889,6 +889,18 @@ public class NetworkManager : MonoSingleton<NetworkManager>
         StartCoroutine(RunAsync(() => m_apiClient.UnlockHullAsync(request), onComplete));
     }
 
+    public void UnlockShieldModule(UnlockShieldModuleRequest request, System.Action<ApiResponse<UnlockShieldModuleResponse>> onComplete)
+    {
+        if (m_bConnected == false) return;
+        StartCoroutine(RunAsync(() => m_apiClient.UnlockShieldModuleAsync(request), onComplete));
+    }
+
+    public void UnlockInterceptorModule(UnlockInterceptorModuleRequest request, System.Action<ApiResponse<UnlockInterceptorModuleResponse>> onComplete)
+    {
+        if (m_bConnected == false) return;
+        StartCoroutine(RunAsync(() => m_apiClient.UnlockInterceptorModuleAsync(request), onComplete));
+    }
+
     public void GetAchievementList(GetAchievementListRequest request, System.Action<ApiResponse<GetAchievementListResponse>> onComplete)
     {
         if (m_bConnected == false) return;

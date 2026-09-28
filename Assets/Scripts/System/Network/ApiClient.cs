@@ -541,6 +541,16 @@ public class ApiClient
         return await PostAsync<UnlockHullResponse>("/fleet/unlock-hull", request);
     }
 
+    public async Task<ApiResponse<UnlockShieldModuleResponse>> UnlockShieldModuleAsync(UnlockShieldModuleRequest request)
+    {
+        return await PostAsync<UnlockShieldModuleResponse>("/fleet/unlock-shield-module", request);
+    }
+
+    public async Task<ApiResponse<UnlockInterceptorModuleResponse>> UnlockInterceptorModuleAsync(UnlockInterceptorModuleRequest request)
+    {
+        return await PostAsync<UnlockInterceptorModuleResponse>("/fleet/unlock-interceptor-module", request);
+    }
+
     #endregion
 
     #region Achievement API Methods -------------------------------------------------------------------------------

@@ -15,12 +15,14 @@ public class UIModuleSlotToggleRow : MonoBehaviour
     [SerializeField] private Button m_manageButton; // 강화 관리 팝업(UIPopupModuleReinforce) 오픈 — 미설치 슬롯이면 숨김
     [SerializeField] private Button m_selectButton; // 행 선택(하이라이트) 클릭 영역 — 토글/매니지 버튼과 별개
     [SerializeField] private GameObject m_selectedImage; // 선택된 행 강조 이미지
+    [SerializeField] private Button m_unlockButton; // 실드/요격체 슬롯 미언락 상태 전용 — 토글 대신 노출(비용은 확인 팝업에서 표시)
 
     private EModuleType m_moduleType;
     private int m_slotIndex;
     private System.Action<EModuleType, int, bool> m_onToggle; // (moduleType, slotIndex, 요청할 install 목표값)
     private System.Action<EModuleType, int> m_onRowSelected;
     private System.Action<EModuleType, int> m_onManageClicked;
+    private System.Action m_onUnlockClicked;
 
     // 튜토리얼 동적 타겟용 — 관리 버튼이 현재 보이는 상태(설치된 슬롯)일 때만 RectTransform 반환
     public RectTransform GetManageButtonRect()
@@ -31,28 +33,42 @@ public class UIModuleSlotToggleRow : MonoBehaviour
 
     public void Setup(EModuleType moduleType, int slotIndex, bool installed, bool isLocked,
         int investedPoints, bool isSelected, string moduleSubType,
+        bool needsUnlock,
         System.Action<EModuleType, int, bool> onToggle,
         System.Action<EModuleType, int> onRowSelected,
-        System.Action<EModuleType, int> onManageClicked)
+        System.Action<EModuleType, int> onManageClicked,
+        System.Action onUnlockClicked)
     {
         m_moduleType = moduleType;
         m_slotIndex = slotIndex;
         m_onToggle = onToggle;
         m_onRowSelected = onRowSelected;
         m_onManageClicked = onManageClicked;
+        m_onUnlockClicked = onUnlockClicked;
 
         if (m_nameText != null)
             m_nameText.text = $"{LocalizationManager.Instance.Get(GetModuleTypeLabelKey(moduleType))} {slotIndex + 1}";
 
         if (m_toggleSlide != null)
         {
-            m_toggleSlide.SetOn(installed, OnToggleChanged);
-            m_toggleSlide.SetInteractable(isLocked == false);
-            SetInstalledLabel(installed);
+            m_toggleSlide.gameObject.SetActive(needsUnlock == false);
+            if (needsUnlock == false)
+            {
+                m_toggleSlide.SetOn(installed, OnToggleChanged);
+                m_toggleSlide.SetInteractable(isLocked == false);
+                SetInstalledLabel(installed);
+            }
+        }
+
+        if (m_unlockButton != null)
+        {
+            m_unlockButton.gameObject.SetActive(needsUnlock == true);
+            m_unlockButton.onClick.RemoveAllListeners();
+            m_unlockButton.onClick.AddListener(OnUnlockButtonClicked);
         }
 
         // 실드/요격체도 티어 개념이 생겨(datatable_module 티어1~14) 관리 버튼으로 티어업/다운 가능 — 강화 포인트 축(Attack 등)만 없을 뿐 카테고리 제외 불필요
-        bool showReinforceControls = installed == true;
+        bool showReinforceControls = installed == true && needsUnlock == false;
         if (m_investedPointsText != null)
         {
             m_investedPointsText.gameObject.SetActive(showReinforceControls);
@@ -102,6 +118,11 @@ public class UIModuleSlotToggleRow : MonoBehaviour
     private void OnManageButtonClicked()
     {
         if (m_onManageClicked != null) m_onManageClicked(m_moduleType, m_slotIndex);
+    }
+
+    private void OnUnlockButtonClicked()
+    {
+        if (m_onUnlockClicked != null) m_onUnlockClicked();
     }
 
     private void SetInstalledLabel(bool installed)

@@ -19,6 +19,8 @@ MonoBehaviour:
       moduleSubType: hull_1_1_10000
       statPoint: 100
       unlockAchievementPointCost: 0
+      shieldUnlockAchievementPointCost: 0
+      interceptorUnlockAchievementPointCost: 0
       description: 
       moduleSlots:
       - moduleType: 2
@@ -53,6 +55,8 @@ MonoBehaviour:
       moduleSubType: hull_2_1_11000
       statPoint: 200
       unlockAchievementPointCost: 0
+      shieldUnlockAchievementPointCost: 0
+      interceptorUnlockAchievementPointCost: 0
       description: 
       moduleSlots:
       - moduleType: 2
@@ -89,6 +93,8 @@ MonoBehaviour:
       moduleSubType: hull_3_1_11100
       statPoint: 300
       unlockAchievementPointCost: 0
+      shieldUnlockAchievementPointCost: 0
+      interceptorUnlockAchievementPointCost: 0
       description: 
       moduleSlots:
       - moduleType: 2
@@ -127,6 +133,8 @@ MonoBehaviour:
       moduleSubType: hull_4_1_21100
       statPoint: 400
       unlockAchievementPointCost: 500
+      shieldUnlockAchievementPointCost: 0
+      interceptorUnlockAchievementPointCost: 0
       description: 
       moduleSlots:
       - moduleType: 2
@@ -165,8 +173,10 @@ MonoBehaviour:
     modules:
     - moduleName: hull_5_1_22100
       moduleSubType: hull_5_1_22100
-      statPoint: 500
-      unlockAchievementPointCost: 1000
+      statPoint: 1000
+      unlockAchievementPointCost: 2000
+      shieldUnlockAchievementPointCost: 0
+      interceptorUnlockAchievementPointCost: 0
       description: 
       moduleSlots:
       - moduleType: 2
@@ -203,144 +213,14 @@ MonoBehaviour:
       shieldRegenRate: 0
       interceptorCount: 0
       interceptorRegenTime: 0
-  - subType: hull_6_1_22200
-    modules:
-    - moduleName: hull_6_1_22200
-      moduleSubType: hull_6_1_22200
-      statPoint: 600
-      unlockAchievementPointCost: 2000
-      description: 
-      moduleSlots:
-      - moduleType: 2
-        slotIndex: 0
-      - moduleType: 2
-        slotIndex: 1
-      - moduleType: 3
-        slotIndex: 0
-      - moduleType: 3
-        slotIndex: 1
-      - moduleType: 4
-        slotIndex: 0
-      - moduleType: 4
-        slotIndex: 1
-      health: 600
-      repair: 0
-      speed: 1
-      turnRate: 1
-      attack: 0
-      splashRadius: 0
-      attackCool: 0
-      silenceTime: 0
-      airCount: 0
-      airMaintenanceTime: 0
-      airHealth: 0
-      airAttackToShip: 0
-      airAttackToFighter: 0
-      airAttackRange: 0
-      airAttackCool: 0
-      airSpeed: 0
-      airAmmo: 0
-      airDetectRadius: 0
-      airAvoidRadius: 0
-      airDisrupt: 0
-      shieldGauge: 0
-      shieldRegenRate: 0
-      interceptorCount: 0
-      interceptorRegenTime: 0
-  - subType: hull_6_1_22201
-    modules:
-    - moduleName: hull_6_1_22201
-      moduleSubType: hull_6_1_22201
-      statPoint: 1200
-      unlockAchievementPointCost: 2500
-      description: 
-      moduleSlots:
-      - moduleType: 2
-        slotIndex: 0
-      - moduleType: 2
-        slotIndex: 1
-      - moduleType: 3
-        slotIndex: 0
-      - moduleType: 3
-        slotIndex: 1
-      - moduleType: 4
-        slotIndex: 0
-      - moduleType: 4
-        slotIndex: 1
-      health: 600
-      repair: 0
-      speed: 1
-      turnRate: 1
-      attack: 0
-      splashRadius: 0
-      attackCool: 0
-      silenceTime: 0
-      airCount: 0
-      airMaintenanceTime: 0
-      airHealth: 0
-      airAttackToShip: 0
-      airAttackToFighter: 0
-      airAttackRange: 0
-      airAttackCool: 0
-      airSpeed: 0
-      airAmmo: 0
-      airDetectRadius: 0
-      airAvoidRadius: 0
-      airDisrupt: 0
-      shieldGauge: 0
-      shieldRegenRate: 0
-      interceptorCount: 0
-      interceptorRegenTime: 0
-  - subType: hull_6_1_22210
-    modules:
-    - moduleName: hull_6_1_22210
-      moduleSubType: hull_6_1_22210
-      statPoint: 1200
-      unlockAchievementPointCost: 2500
-      description: 
-      moduleSlots:
-      - moduleType: 2
-        slotIndex: 0
-      - moduleType: 2
-        slotIndex: 1
-      - moduleType: 3
-        slotIndex: 0
-      - moduleType: 3
-        slotIndex: 1
-      - moduleType: 4
-        slotIndex: 0
-      - moduleType: 4
-        slotIndex: 1
-      health: 600
-      repair: 0
-      speed: 1
-      turnRate: 1
-      attack: 0
-      splashRadius: 0
-      attackCool: 0
-      silenceTime: 0
-      airCount: 0
-      airMaintenanceTime: 0
-      airHealth: 0
-      airAttackToShip: 0
-      airAttackToFighter: 0
-      airAttackRange: 0
-      airAttackCool: 0
-      airSpeed: 0
-      airAmmo: 0
-      airDetectRadius: 0
-      airAvoidRadius: 0
-      airDisrupt: 0
-      shieldGauge: 0
-      shieldRegenRate: 0
-      interceptorCount: 0
-      interceptorRegenTime: 0
   - subType: hull_6_1_22211
     modules:
     - moduleName: hull_6_1_22211
       moduleSubType: hull_6_1_22211
-      statPoint: 1800
-      unlockAchievementPointCost: 3000
+      statPoint: 2000
+      unlockAchievementPointCost: 4000
+      shieldUnlockAchievementPointCost: 500
+      interceptorUnlockAchievementPointCost: 500
       description: 
       moduleSlots:
       - moduleType: 2
@@ -356,144 +236,6 @@ MonoBehaviour:
       - moduleType: 4
         slotIndex: 1
       health: 600
-      repair: 0
-      speed: 1
-      turnRate: 1
-      attack: 0
-      splashRadius: 0
-      attackCool: 0
-      silenceTime: 0
-      airCount: 0
-      airMaintenanceTime: 0
-      airHealth: 0
-      airAttackToShip: 0
-      airAttackToFighter: 0
-      airAttackRange: 0
-      airAttackCool: 0
-      airSpeed: 0
-      airAmmo: 0
-      airDetectRadius: 0
-      airAvoidRadius: 0
-      airDisrupt: 0
-      shieldGauge: 0
-      shieldRegenRate: 0
-      interceptorCount: 0
-      interceptorRegenTime: 0
-  - subType: hull_7_1_32200
-    modules:
-    - moduleName: hull_7_1_32200
-      moduleSubType: hull_7_1_32200
-      statPoint: 700
-      unlockAchievementPointCost: 3000
-      description: 
-      moduleSlots:
-      - moduleType: 2
-        slotIndex: 0
-      - moduleType: 2
-        slotIndex: 1
-      - moduleType: 2
-        slotIndex: 2
-      - moduleType: 3
-        slotIndex: 0
-      - moduleType: 3
-        slotIndex: 1
-      - moduleType: 4
-        slotIndex: 0
-      - moduleType: 4
-        slotIndex: 1
-      health: 700
-      repair: 0
-      speed: 1
-      turnRate: 1
-      attack: 0
-      splashRadius: 0
-      attackCool: 0
-      silenceTime: 0
-      airCount: 0
-      airMaintenanceTime: 0
-      airHealth: 0
-      airAttackToShip: 0
-      airAttackToFighter: 0
-      airAttackRange: 0
-      airAttackCool: 0
-      airSpeed: 0
-      airAmmo: 0
-      airDetectRadius: 0
-      airAvoidRadius: 0
-      airDisrupt: 0
-      shieldGauge: 0
-      shieldRegenRate: 0
-      interceptorCount: 0
-      interceptorRegenTime: 0
-  - subType: hull_7_1_32201
-    modules:
-    - moduleName: hull_7_1_32201
-      moduleSubType: hull_7_1_32201
-      statPoint: 1400
-      unlockAchievementPointCost: 3500
-      description: 
-      moduleSlots:
-      - moduleType: 2
-        slotIndex: 0
-      - moduleType: 2
-        slotIndex: 1
-      - moduleType: 2
-        slotIndex: 2
-      - moduleType: 3
-        slotIndex: 0
-      - moduleType: 3
-        slotIndex: 1
-      - moduleType: 4
-        slotIndex: 0
-      - moduleType: 4
-        slotIndex: 1
-      health: 700
-      repair: 0
-      speed: 1
-      turnRate: 1
-      attack: 0
-      splashRadius: 0
-      attackCool: 0
-      silenceTime: 0
-      airCount: 0
-      airMaintenanceTime: 0
-      airHealth: 0
-      airAttackToShip: 0
-      airAttackToFighter: 0
-      airAttackRange: 0
-      airAttackCool: 0
-      airSpeed: 0
-      airAmmo: 0
-      airDetectRadius: 0
-      airAvoidRadius: 0
-      airDisrupt: 0
-      shieldGauge: 0
-      shieldRegenRate: 0
-      interceptorCount: 0
-      interceptorRegenTime: 0
-  - subType: hull_7_1_32210
-    modules:
-    - moduleName: hull_7_1_32210
-      moduleSubType: hull_7_1_32210
-      statPoint: 1400
-      unlockAchievementPointCost: 3500
-      description: 
-      moduleSlots:
-      - moduleType: 2
-        slotIndex: 0
-      - moduleType: 2
-        slotIndex: 1
-      - moduleType: 2
-        slotIndex: 2
-      - moduleType: 3
-        slotIndex: 0
-      - moduleType: 3
-        slotIndex: 1
-      - moduleType: 4
-        slotIndex: 0
-      - moduleType: 4
-        slotIndex: 1
-      health: 700
       repair: 0
       speed: 1
       turnRate: 1
@@ -521,8 +263,10 @@ MonoBehaviour:
     modules:
     - moduleName: hull_7_1_32211
       moduleSubType: hull_7_1_32211
-      statPoint: 2100
-      unlockAchievementPointCost: 4000
+      statPoint: 4000
+      unlockAchievementPointCost: 8000
+      shieldUnlockAchievementPointCost: 1000
+      interceptorUnlockAchievementPointCost: 1000
       description: 
       moduleSlots:
       - moduleType: 2
@@ -563,156 +307,14 @@ MonoBehaviour:
       shieldRegenRate: 0
       interceptorCount: 0
       interceptorRegenTime: 0
-  - subType: hull_8_1_33200
-    modules:
-    - moduleName: hull_8_1_33200
-      moduleSubType: hull_8_1_33200
-      statPoint: 800
-      unlockAchievementPointCost: 4000
-      description: 
-      moduleSlots:
-      - moduleType: 2
-        slotIndex: 0
-      - moduleType: 2
-        slotIndex: 1
-      - moduleType: 2
-        slotIndex: 2
-      - moduleType: 3
-        slotIndex: 0
-      - moduleType: 3
-        slotIndex: 1
-      - moduleType: 3
-        slotIndex: 2
-      - moduleType: 4
-        slotIndex: 0
-      - moduleType: 4
-        slotIndex: 1
-      health: 800
-      repair: 0
-      speed: 1
-      turnRate: 1
-      attack: 0
-      splashRadius: 0
-      attackCool: 0
-      silenceTime: 0
-      airCount: 0
-      airMaintenanceTime: 0
-      airHealth: 0
-      airAttackToShip: 0
-      airAttackToFighter: 0
-      airAttackRange: 0
-      airAttackCool: 0
-      airSpeed: 0
-      airAmmo: 0
-      airDetectRadius: 0
-      airAvoidRadius: 0
-      airDisrupt: 0
-      shieldGauge: 0
-      shieldRegenRate: 0
-      interceptorCount: 0
-      interceptorRegenTime: 0
-  - subType: hull_8_1_33201
-    modules:
-    - moduleName: hull_8_1_33201
-      moduleSubType: hull_8_1_33201
-      statPoint: 1600
-      unlockAchievementPointCost: 4500
-      description: 
-      moduleSlots:
-      - moduleType: 2
-        slotIndex: 0
-      - moduleType: 2
-        slotIndex: 1
-      - moduleType: 2
-        slotIndex: 2
-      - moduleType: 3
-        slotIndex: 0
-      - moduleType: 3
-        slotIndex: 1
-      - moduleType: 3
-        slotIndex: 2
-      - moduleType: 4
-        slotIndex: 0
-      - moduleType: 4
-        slotIndex: 1
-      health: 800
-      repair: 0
-      speed: 1
-      turnRate: 1
-      attack: 0
-      splashRadius: 0
-      attackCool: 0
-      silenceTime: 0
-      airCount: 0
-      airMaintenanceTime: 0
-      airHealth: 0
-      airAttackToShip: 0
-      airAttackToFighter: 0
-      airAttackRange: 0
-      airAttackCool: 0
-      airSpeed: 0
-      airAmmo: 0
-      airDetectRadius: 0
-      airAvoidRadius: 0
-      airDisrupt: 0
-      shieldGauge: 0
-      shieldRegenRate: 0
-      interceptorCount: 0
-      interceptorRegenTime: 0
-  - subType: hull_8_1_33210
-    modules:
-    - moduleName: hull_8_1_33210
-      moduleSubType: hull_8_1_33210
-      statPoint: 1600
-      unlockAchievementPointCost: 4500
-      description: 
-      moduleSlots:
-      - moduleType: 2
-        slotIndex: 0
-      - moduleType: 2
-        slotIndex: 1
-      - moduleType: 2
-        slotIndex: 2
-      - moduleType: 3
-        slotIndex: 0
-      - moduleType: 3
-        slotIndex: 1
-      - moduleType: 3
-        slotIndex: 2
-      - moduleType: 4
-        slotIndex: 0
-      - moduleType: 4
-        slotIndex: 1
-      health: 800
-      repair: 0
-      speed: 1
-      turnRate: 1
-      attack: 0
-      splashRadius: 0
-      attackCool: 0
-      silenceTime: 0
-      airCount: 0
-      airMaintenanceTime: 0
-      airHealth: 0
-      airAttackToShip: 0
-      airAttackToFighter: 0
-      airAttackRange: 0
-      airAttackCool: 0
-      airSpeed: 0
-      airAmmo: 0
-      airDetectRadius: 0
-      airAvoidRadius: 0
-      airDisrupt: 0
-      shieldGauge: 0
-      shieldRegenRate: 0
-      interceptorCount: 0
-      interceptorRegenTime: 0
   - subType: hull_8_1_33211
     modules:
     - moduleName: hull_8_1_33211
       moduleSubType: hull_8_1_33211
-      statPoint: 2400
-      unlockAchievementPointCost: 5000
+      statPoint: 8000
+      unlockAchievementPointCost: 16000
+      shieldUnlockAchievementPointCost: 2000
+      interceptorUnlockAchievementPointCost: 2000
       description: 
       moduleSlots:
       - moduleType: 2
@@ -732,156 +334,6 @@ MonoBehaviour:
       - moduleType: 4
         slotIndex: 1
       health: 800
-      repair: 0
-      speed: 1
-      turnRate: 1
-      attack: 0
-      splashRadius: 0
-      attackCool: 0
-      silenceTime: 0
-      airCount: 0
-      airMaintenanceTime: 0
-      airHealth: 0
-      airAttackToShip: 0
-      airAttackToFighter: 0
-      airAttackRange: 0
-      airAttackCool: 0
-      airSpeed: 0
-      airAmmo: 0
-      airDetectRadius: 0
-      airAvoidRadius: 0
-      airDisrupt: 0
-      shieldGauge: 0
-      shieldRegenRate: 0
-      interceptorCount: 0
-      interceptorRegenTime: 0
-  - subType: hull_9_1_33300
-    modules:
-    - moduleName: hull_9_1_33300
-      moduleSubType: hull_9_1_33300
-      statPoint: 900
-      unlockAchievementPointCost: 5000
-      description: 
-      moduleSlots:
-      - moduleType: 2
-        slotIndex: 0
-      - moduleType: 2
-        slotIndex: 1
-      - moduleType: 2
-        slotIndex: 2
-      - moduleType: 3
-        slotIndex: 0
-      - moduleType: 3
-        slotIndex: 1
-      - moduleType: 3
-        slotIndex: 2
-      - moduleType: 4
-        slotIndex: 0
-      - moduleType: 4
-        slotIndex: 1
-      - moduleType: 4
-        slotIndex: 2
-      health: 900
-      repair: 0
-      speed: 1
-      turnRate: 1
-      attack: 0
-      splashRadius: 0
-      attackCool: 0
-      silenceTime: 0
-      airCount: 0
-      airMaintenanceTime: 0
-      airHealth: 0
-      airAttackToShip: 0
-      airAttackToFighter: 0
-      airAttackRange: 0
-      airAttackCool: 0
-      airSpeed: 0
-      airAmmo: 0
-      airDetectRadius: 0
-      airAvoidRadius: 0
-      airDisrupt: 0
-      shieldGauge: 0
-      shieldRegenRate: 0
-      interceptorCount: 0
-      interceptorRegenTime: 0
-  - subType: hull_9_1_33301
-    modules:
-    - moduleName: hull_9_1_33301
-      moduleSubType: hull_9_1_33301
-      statPoint: 1800
-      unlockAchievementPointCost: 5500
-      description: 
-      moduleSlots:
-      - moduleType: 2
-        slotIndex: 0
-      - moduleType: 2
-        slotIndex: 1
-      - moduleType: 2
-        slotIndex: 2
-      - moduleType: 3
-        slotIndex: 0
-      - moduleType: 3
-        slotIndex: 1
-      - moduleType: 3
-        slotIndex: 2
-      - moduleType: 4
-        slotIndex: 0
-      - moduleType: 4
-        slotIndex: 1
-      - moduleType: 4
-        slotIndex: 2
-      health: 900
-      repair: 0
-      speed: 1
-      turnRate: 1
-      attack: 0
-      splashRadius: 0
-      attackCool: 0
-      silenceTime: 0
-      airCount: 0
-      airMaintenanceTime: 0
-      airHealth: 0
-      airAttackToShip: 0
-      airAttackToFighter: 0
-      airAttackRange: 0
-      airAttackCool: 0
-      airSpeed: 0
-      airAmmo: 0
-      airDetectRadius: 0
-      airAvoidRadius: 0
-      airDisrupt: 0
-      shieldGauge: 0
-      shieldRegenRate: 0
-      interceptorCount: 0
-      interceptorRegenTime: 0
-  - subType: hull_9_1_33310
-    modules:
-    - moduleName: hull_9_1_33310
-      moduleSubType: hull_9_1_33310
-      statPoint: 1800
-      unlockAchievementPointCost: 5500
-      description: 
-      moduleSlots:
-      - moduleType: 2
-        slotIndex: 0
-      - moduleType: 2
-        slotIndex: 1
-      - moduleType: 2
-        slotIndex: 2
-      - moduleType: 3
-        slotIndex: 0
-      - moduleType: 3
-        slotIndex: 1
-      - moduleType: 3
-        slotIndex: 2
-      - moduleType: 4
-        slotIndex: 0
-      - moduleType: 4
-        slotIndex: 1
-      - moduleType: 4
-        slotIndex: 2
-      health: 900
       repair: 0
       speed: 1
       turnRate: 1
@@ -909,8 +361,10 @@ MonoBehaviour:
     modules:
     - moduleName: hull_9_1_33311
       moduleSubType: hull_9_1_33311
-      statPoint: 2700
-      unlockAchievementPointCost: 6000
+      statPoint: 16000
+      unlockAchievementPointCost: 32000
+      shieldUnlockAchievementPointCost: 4000
+      interceptorUnlockAchievementPointCost: 4000
       description: 
       moduleSlots:
       - moduleType: 2
@@ -955,168 +409,14 @@ MonoBehaviour:
       shieldRegenRate: 0
       interceptorCount: 0
       interceptorRegenTime: 0
-  - subType: hull_10_1_43300
-    modules:
-    - moduleName: hull_10_1_43300
-      moduleSubType: hull_10_1_43300
-      statPoint: 1500
-      unlockAchievementPointCost: 6000
-      description: 
-      moduleSlots:
-      - moduleType: 2
-        slotIndex: 0
-      - moduleType: 2
-        slotIndex: 1
-      - moduleType: 2
-        slotIndex: 2
-      - moduleType: 2
-        slotIndex: 3
-      - moduleType: 3
-        slotIndex: 0
-      - moduleType: 3
-        slotIndex: 1
-      - moduleType: 3
-        slotIndex: 2
-      - moduleType: 4
-        slotIndex: 0
-      - moduleType: 4
-        slotIndex: 1
-      - moduleType: 4
-        slotIndex: 2
-      health: 1000
-      repair: 0
-      speed: 1
-      turnRate: 1
-      attack: 0
-      splashRadius: 0
-      attackCool: 0
-      silenceTime: 0
-      airCount: 0
-      airMaintenanceTime: 0
-      airHealth: 0
-      airAttackToShip: 0
-      airAttackToFighter: 0
-      airAttackRange: 0
-      airAttackCool: 0
-      airSpeed: 0
-      airAmmo: 0
-      airDetectRadius: 0
-      airAvoidRadius: 0
-      airDisrupt: 0
-      shieldGauge: 0
-      shieldRegenRate: 0
-      interceptorCount: 0
-      interceptorRegenTime: 0
-  - subType: hull_10_1_43301
-    modules:
-    - moduleName: hull_10_1_43301
-      moduleSubType: hull_10_1_43301
-      statPoint: 3000
-      unlockAchievementPointCost: 6500
-      description: 
-      moduleSlots:
-      - moduleType: 2
-        slotIndex: 0
-      - moduleType: 2
-        slotIndex: 1
-      - moduleType: 2
-        slotIndex: 2
-      - moduleType: 2
-        slotIndex: 3
-      - moduleType: 3
-        slotIndex: 0
-      - moduleType: 3
-        slotIndex: 1
-      - moduleType: 3
-        slotIndex: 2
-      - moduleType: 4
-        slotIndex: 0
-      - moduleType: 4
-        slotIndex: 1
-      - moduleType: 4
-        slotIndex: 2
-      health: 1000
-      repair: 0
-      speed: 1
-      turnRate: 1
-      attack: 0
-      splashRadius: 0
-      attackCool: 0
-      silenceTime: 0
-      airCount: 0
-      airMaintenanceTime: 0
-      airHealth: 0
-      airAttackToShip: 0
-      airAttackToFighter: 0
-      airAttackRange: 0
-      airAttackCool: 0
-      airSpeed: 0
-      airAmmo: 0
-      airDetectRadius: 0
-      airAvoidRadius: 0
-      airDisrupt: 0
-      shieldGauge: 0
-      shieldRegenRate: 0
-      interceptorCount: 0
-      interceptorRegenTime: 0
-  - subType: hull_10_1_43310
-    modules:
-    - moduleName: hull_10_1_43310
-      moduleSubType: hull_10_1_43310
-      statPoint: 3000
-      unlockAchievementPointCost: 6500
-      description: 
-      moduleSlots:
-      - moduleType: 2
-        slotIndex: 0
-      - moduleType: 2
-        slotIndex: 1
-      - moduleType: 2
-        slotIndex: 2
-      - moduleType: 2
-        slotIndex: 3
-      - moduleType: 3
-        slotIndex: 0
-      - moduleType: 3
-        slotIndex: 1
-      - moduleType: 3
-        slotIndex: 2
-      - moduleType: 4
-        slotIndex: 0
-      - moduleType: 4
-        slotIndex: 1
-      - moduleType: 4
-        slotIndex: 2
-      health: 1000
-      repair: 0
-      speed: 1
-      turnRate: 1
-      attack: 0
-      splashRadius: 0
-      attackCool: 0
-      silenceTime: 0
-      airCount: 0
-      airMaintenanceTime: 0
-      airHealth: 0
-      airAttackToShip: 0
-      airAttackToFighter: 0
-      airAttackRange: 0
-      airAttackCool: 0
-      airSpeed: 0
-      airAmmo: 0
-      airDetectRadius: 0
-      airAvoidRadius: 0
-      airDisrupt: 0
-      shieldGauge: 0
-      shieldRegenRate: 0
-      interceptorCount: 0
-      interceptorRegenTime: 0
   - subType: hull_10_1_43311
     modules:
     - moduleName: hull_10_1_43311
       moduleSubType: hull_10_1_43311
-      statPoint: 4500
-      unlockAchievementPointCost: 7000
+      statPoint: 32000
+      unlockAchievementPointCost: 64000
+      shieldUnlockAchievementPointCost: 8000
+      interceptorUnlockAchievementPointCost: 8000
       description: 
       moduleSlots:
       - moduleType: 2
@@ -1140,168 +440,6 @@ MonoBehaviour:
       - moduleType: 4
         slotIndex: 2
       health: 1000
-      repair: 0
-      speed: 1
-      turnRate: 1
-      attack: 0
-      splashRadius: 0
-      attackCool: 0
-      silenceTime: 0
-      airCount: 0
-      airMaintenanceTime: 0
-      airHealth: 0
-      airAttackToShip: 0
-      airAttackToFighter: 0
-      airAttackRange: 0
-      airAttackCool: 0
-      airSpeed: 0
-      airAmmo: 0
-      airDetectRadius: 0
-      airAvoidRadius: 0
-      airDisrupt: 0
-      shieldGauge: 0
-      shieldRegenRate: 0
-      interceptorCount: 0
-      interceptorRegenTime: 0
-  - subType: hull_11_1_44300
-    modules:
-    - moduleName: hull_11_1_44300
-      moduleSubType: hull_11_1_44300
-      statPoint: 2000
-      unlockAchievementPointCost: 7000
-      description: 
-      moduleSlots:
-      - moduleType: 2
-        slotIndex: 0
-      - moduleType: 2
-        slotIndex: 1
-      - moduleType: 2
-        slotIndex: 2
-      - moduleType: 2
-        slotIndex: 3
-      - moduleType: 3
-        slotIndex: 0
-      - moduleType: 3
-        slotIndex: 1
-      - moduleType: 3
-        slotIndex: 2
-      - moduleType: 3
-        slotIndex: 3
-      - moduleType: 4
-        slotIndex: 0
-      - moduleType: 4
-        slotIndex: 1
-      - moduleType: 4
-        slotIndex: 2
-      health: 1100
-      repair: 0
-      speed: 1
-      turnRate: 1
-      attack: 0
-      splashRadius: 0
-      attackCool: 0
-      silenceTime: 0
-      airCount: 0
-      airMaintenanceTime: 0
-      airHealth: 0
-      airAttackToShip: 0
-      airAttackToFighter: 0
-      airAttackRange: 0
-      airAttackCool: 0
-      airSpeed: 0
-      airAmmo: 0
-      airDetectRadius: 0
-      airAvoidRadius: 0
-      airDisrupt: 0
-      shieldGauge: 0
-      shieldRegenRate: 0
-      interceptorCount: 0
-      interceptorRegenTime: 0
-  - subType: hull_11_1_44301
-    modules:
-    - moduleName: hull_11_1_44301
-      moduleSubType: hull_11_1_44301
-      statPoint: 4000
-      unlockAchievementPointCost: 7500
-      description: 
-      moduleSlots:
-      - moduleType: 2
-        slotIndex: 0
-      - moduleType: 2
-        slotIndex: 1
-      - moduleType: 2
-        slotIndex: 2
-      - moduleType: 2
-        slotIndex: 3
-      - moduleType: 3
-        slotIndex: 0
-      - moduleType: 3
-        slotIndex: 1
-      - moduleType: 3
-        slotIndex: 2
-      - moduleType: 3
-        slotIndex: 3
-      - moduleType: 4
-        slotIndex: 0
-      - moduleType: 4
-        slotIndex: 1
-      - moduleType: 4
-        slotIndex: 2
-      health: 1100
-      repair: 0
-      speed: 1
-      turnRate: 1
-      attack: 0
-      splashRadius: 0
-      attackCool: 0
-      silenceTime: 0
-      airCount: 0
-      airMaintenanceTime: 0
-      airHealth: 0
-      airAttackToShip: 0
-      airAttackToFighter: 0
-      airAttackRange: 0
-      airAttackCool: 0
-      airSpeed: 0
-      airAmmo: 0
-      airDetectRadius: 0
-      airAvoidRadius: 0
-      airDisrupt: 0
-      shieldGauge: 0
-      shieldRegenRate: 0
-      interceptorCount: 0
-      interceptorRegenTime: 0
-  - subType: hull_11_1_44310
-    modules:
-    - moduleName: hull_11_1_44310
-      moduleSubType: hull_11_1_44310
-      statPoint: 4000
-      unlockAchievementPointCost: 7500
-      description: 
-      moduleSlots:
-      - moduleType: 2
-        slotIndex: 0
-      - moduleType: 2
-        slotIndex: 1
-      - moduleType: 2
-        slotIndex: 2
-      - moduleType: 2
-        slotIndex: 3
-      - moduleType: 3
-        slotIndex: 0
-      - moduleType: 3
-        slotIndex: 1
-      - moduleType: 3
-        slotIndex: 2
-      - moduleType: 3
-        slotIndex: 3
-      - moduleType: 4
-        slotIndex: 0
-      - moduleType: 4
-        slotIndex: 1
-      - moduleType: 4
-        slotIndex: 2
-      health: 1100
       repair: 0
       speed: 1
       turnRate: 1
@@ -1329,8 +467,10 @@ MonoBehaviour:
     modules:
     - moduleName: hull_11_1_44311
       moduleSubType: hull_11_1_44311
-      statPoint: 6000
-      unlockAchievementPointCost: 8000
+      statPoint: 64000
+      unlockAchievementPointCost: 128000
+      shieldUnlockAchievementPointCost: 16000
+      interceptorUnlockAchievementPointCost: 16000
       description: 
       moduleSlots:
       - moduleType: 2
@@ -1379,180 +519,14 @@ MonoBehaviour:
       shieldRegenRate: 0
       interceptorCount: 0
       interceptorRegenTime: 0
-  - subType: hull_12_1_44400
-    modules:
-    - moduleName: hull_12_1_44400
-      moduleSubType: hull_12_1_44400
-      statPoint: 2500
-      unlockAchievementPointCost: 8000
-      description: 
-      moduleSlots:
-      - moduleType: 2
-        slotIndex: 0
-      - moduleType: 2
-        slotIndex: 1
-      - moduleType: 2
-        slotIndex: 2
-      - moduleType: 2
-        slotIndex: 3
-      - moduleType: 3
-        slotIndex: 0
-      - moduleType: 3
-        slotIndex: 1
-      - moduleType: 3
-        slotIndex: 2
-      - moduleType: 3
-        slotIndex: 3
-      - moduleType: 4
-        slotIndex: 0
-      - moduleType: 4
-        slotIndex: 1
-      - moduleType: 4
-        slotIndex: 2
-      - moduleType: 4
-        slotIndex: 3
-      health: 1200
-      repair: 0
-      speed: 1
-      turnRate: 1
-      attack: 0
-      splashRadius: 0
-      attackCool: 0
-      silenceTime: 0
-      airCount: 0
-      airMaintenanceTime: 0
-      airHealth: 0
-      airAttackToShip: 0
-      airAttackToFighter: 0
-      airAttackRange: 0
-      airAttackCool: 0
-      airSpeed: 0
-      airAmmo: 0
-      airDetectRadius: 0
-      airAvoidRadius: 0
-      airDisrupt: 0
-      shieldGauge: 0
-      shieldRegenRate: 0
-      interceptorCount: 0
-      interceptorRegenTime: 0
-  - subType: hull_12_1_44401
-    modules:
-    - moduleName: hull_12_1_44401
-      moduleSubType: hull_12_1_44401
-      statPoint: 5000
-      unlockAchievementPointCost: 8500
-      description: 
-      moduleSlots:
-      - moduleType: 2
-        slotIndex: 0
-      - moduleType: 2
-        slotIndex: 1
-      - moduleType: 2
-        slotIndex: 2
-      - moduleType: 2
-        slotIndex: 3
-      - moduleType: 3
-        slotIndex: 0
-      - moduleType: 3
-        slotIndex: 1
-      - moduleType: 3
-        slotIndex: 2
-      - moduleType: 3
-        slotIndex: 3
-      - moduleType: 4
-        slotIndex: 0
-      - moduleType: 4
-        slotIndex: 1
-      - moduleType: 4
-        slotIndex: 2
-      - moduleType: 4
-        slotIndex: 3
-      health: 1200
-      repair: 0
-      speed: 1
-      turnRate: 1
-      attack: 0
-      splashRadius: 0
-      attackCool: 0
-      silenceTime: 0
-      airCount: 0
-      airMaintenanceTime: 0
-      airHealth: 0
-      airAttackToShip: 0
-      airAttackToFighter: 0
-      airAttackRange: 0
-      airAttackCool: 0
-      airSpeed: 0
-      airAmmo: 0
-      airDetectRadius: 0
-      airAvoidRadius: 0
-      airDisrupt: 0
-      shieldGauge: 0
-      shieldRegenRate: 0
-      interceptorCount: 0
-      interceptorRegenTime: 0
-  - subType: hull_12_1_44410
-    modules:
-    - moduleName: hull_12_1_44410
-      moduleSubType: hull_12_1_44410
-      statPoint: 5000
-      unlockAchievementPointCost: 8500
-      description: 
-      moduleSlots:
-      - moduleType: 2
-        slotIndex: 0
-      - moduleType: 2
-        slotIndex: 1
-      - moduleType: 2
-        slotIndex: 2
-      - moduleType: 2
-        slotIndex: 3
-      - moduleType: 3
-        slotIndex: 0
-      - moduleType: 3
-        slotIndex: 1
-      - moduleType: 3
-        slotIndex: 2
-      - moduleType: 3
-        slotIndex: 3
-      - moduleType: 4
-        slotIndex: 0
-      - moduleType: 4
-        slotIndex: 1
-      - moduleType: 4
-        slotIndex: 2
-      - moduleType: 4
-        slotIndex: 3
-      health: 1200
-      repair: 0
-      speed: 1
-      turnRate: 1
-      attack: 0
-      splashRadius: 0
-      attackCool: 0
-      silenceTime: 0
-      airCount: 0
-      airMaintenanceTime: 0
-      airHealth: 0
-      airAttackToShip: 0
-      airAttackToFighter: 0
-      airAttackRange: 0
-      airAttackCool: 0
-      airSpeed: 0
-      airAmmo: 0
-      airDetectRadius: 0
-      airAvoidRadius: 0
-      airDisrupt: 0
-      shieldGauge: 0
-      shieldRegenRate: 0
-      interceptorCount: 0
-      interceptorRegenTime: 0
   - subType: hull_12_1_44411
     modules:
     - moduleName: hull_12_1_44411
       moduleSubType: hull_12_1_44411
-      statPoint: 7500
-      unlockAchievementPointCost: 9000
+      statPoint: 128000
+      unlockAchievementPointCost: 256000
+      shieldUnlockAchievementPointCost: 32000
+      interceptorUnlockAchievementPointCost: 32000
       description: 
       moduleSlots:
       - moduleType: 2
@@ -1580,180 +554,6 @@ MonoBehaviour:
       - moduleType: 4
         slotIndex: 3
       health: 1200
-      repair: 0
-      speed: 1
-      turnRate: 1
-      attack: 0
-      splashRadius: 0
-      attackCool: 0
-      silenceTime: 0
-      airCount: 0
-      airMaintenanceTime: 0
-      airHealth: 0
-      airAttackToShip: 0
-      airAttackToFighter: 0
-      airAttackRange: 0
-      airAttackCool: 0
-      airSpeed: 0
-      airAmmo: 0
-      airDetectRadius: 0
-      airAvoidRadius: 0
-      airDisrupt: 0
-      shieldGauge: 0
-      shieldRegenRate: 0
-      interceptorCount: 0
-      interceptorRegenTime: 0
-  - subType: hull_13_1_54400
-    modules:
-    - moduleName: hull_13_1_54400
-      moduleSubType: hull_13_1_54400
-      statPoint: 3000
-      unlockAchievementPointCost: 9000
-      description: 
-      moduleSlots:
-      - moduleType: 2
-        slotIndex: 0
-      - moduleType: 2
-        slotIndex: 1
-      - moduleType: 2
-        slotIndex: 2
-      - moduleType: 2
-        slotIndex: 3
-      - moduleType: 2
-        slotIndex: 4
-      - moduleType: 3
-        slotIndex: 0
-      - moduleType: 3
-        slotIndex: 1
-      - moduleType: 3
-        slotIndex: 2
-      - moduleType: 3
-        slotIndex: 3
-      - moduleType: 4
-        slotIndex: 0
-      - moduleType: 4
-        slotIndex: 1
-      - moduleType: 4
-        slotIndex: 2
-      - moduleType: 4
-        slotIndex: 3
-      health: 1300
-      repair: 0
-      speed: 1
-      turnRate: 1
-      attack: 0
-      splashRadius: 0
-      attackCool: 0
-      silenceTime: 0
-      airCount: 0
-      airMaintenanceTime: 0
-      airHealth: 0
-      airAttackToShip: 0
-      airAttackToFighter: 0
-      airAttackRange: 0
-      airAttackCool: 0
-      airSpeed: 0
-      airAmmo: 0
-      airDetectRadius: 0
-      airAvoidRadius: 0
-      airDisrupt: 0
-      shieldGauge: 0
-      shieldRegenRate: 0
-      interceptorCount: 0
-      interceptorRegenTime: 0
-  - subType: hull_13_1_54401
-    modules:
-    - moduleName: hull_13_1_54401
-      moduleSubType: hull_13_1_54401
-      statPoint: 6000
-      unlockAchievementPointCost: 9500
-      description: 
-      moduleSlots:
-      - moduleType: 2
-        slotIndex: 0
-      - moduleType: 2
-        slotIndex: 1
-      - moduleType: 2
-        slotIndex: 2
-      - moduleType: 2
-        slotIndex: 3
-      - moduleType: 2
-        slotIndex: 4
-      - moduleType: 3
-        slotIndex: 0
-      - moduleType: 3
-        slotIndex: 1
-      - moduleType: 3
-        slotIndex: 2
-      - moduleType: 3
-        slotIndex: 3
-      - moduleType: 4
-        slotIndex: 0
-      - moduleType: 4
-        slotIndex: 1
-      - moduleType: 4
-        slotIndex: 2
-      - moduleType: 4
-        slotIndex: 3
-      health: 1300
-      repair: 0
-      speed: 1
-      turnRate: 1
-      attack: 0
-      splashRadius: 0
-      attackCool: 0
-      silenceTime: 0
-      airCount: 0
-      airMaintenanceTime: 0
-      airHealth: 0
-      airAttackToShip: 0
-      airAttackToFighter: 0
-      airAttackRange: 0
-      airAttackCool: 0
-      airSpeed: 0
-      airAmmo: 0
-      airDetectRadius: 0
-      airAvoidRadius: 0
-      airDisrupt: 0
-      shieldGauge: 0
-      shieldRegenRate: 0
-      interceptorCount: 0
-      interceptorRegenTime: 0
-  - subType: hull_13_1_54410
-    modules:
-    - moduleName: hull_13_1_54410
-      moduleSubType: hull_13_1_54410
-      statPoint: 6000
-      unlockAchievementPointCost: 9500
-      description: 
-      moduleSlots:
-      - moduleType: 2
-        slotIndex: 0
-      - moduleType: 2
-        slotIndex: 1
-      - moduleType: 2
-        slotIndex: 2
-      - moduleType: 2
-        slotIndex: 3
-      - moduleType: 2
-        slotIndex: 4
-      - moduleType: 3
-        slotIndex: 0
-      - moduleType: 3
-        slotIndex: 1
-      - moduleType: 3
-        slotIndex: 2
-      - moduleType: 3
-        slotIndex: 3
-      - moduleType: 4
-        slotIndex: 0
-      - moduleType: 4
-        slotIndex: 1
-      - moduleType: 4
-        slotIndex: 2
-      - moduleType: 4
-        slotIndex: 3
-      health: 1300
       repair: 0
       speed: 1
       turnRate: 1
@@ -1781,8 +581,10 @@ MonoBehaviour:
     modules:
     - moduleName: hull_13_1_54411
       moduleSubType: hull_13_1_54411
-      statPoint: 9000
-      unlockAchievementPointCost: 10000
+      statPoint: 256000
+      unlockAchievementPointCost: 512000
+      shieldUnlockAchievementPointCost: 64000
+      interceptorUnlockAchievementPointCost: 64000
       description: 
       moduleSlots:
       - moduleType: 2
@@ -1835,192 +637,14 @@ MonoBehaviour:
       shieldRegenRate: 0
       interceptorCount: 0
       interceptorRegenTime: 0
-  - subType: hull_14_1_55400
-    modules:
-    - moduleName: hull_14_1_55400
-      moduleSubType: hull_14_1_55400
-      statPoint: 3500
-      unlockAchievementPointCost: 10000
-      description: 
-      moduleSlots:
-      - moduleType: 2
-        slotIndex: 0
-      - moduleType: 2
-        slotIndex: 1
-      - moduleType: 2
-        slotIndex: 2
-      - moduleType: 2
-        slotIndex: 3
-      - moduleType: 2
-        slotIndex: 4
-      - moduleType: 3
-        slotIndex: 0
-      - moduleType: 3
-        slotIndex: 1
-      - moduleType: 3
-        slotIndex: 2
-      - moduleType: 3
-        slotIndex: 3
-      - moduleType: 3
-        slotIndex: 4
-      - moduleType: 4
-        slotIndex: 0
-      - moduleType: 4
-        slotIndex: 1
-      - moduleType: 4
-        slotIndex: 2
-      - moduleType: 4
-        slotIndex: 3
-      health: 1400
-      repair: 0
-      speed: 1
-      turnRate: 1
-      attack: 0
-      splashRadius: 0
-      attackCool: 0
-      silenceTime: 0
-      airCount: 0
-      airMaintenanceTime: 0
-      airHealth: 0
-      airAttackToShip: 0
-      airAttackToFighter: 0
-      airAttackRange: 0
-      airAttackCool: 0
-      airSpeed: 0
-      airAmmo: 0
-      airDetectRadius: 0
-      airAvoidRadius: 0
-      airDisrupt: 0
-      shieldGauge: 0
-      shieldRegenRate: 0
-      interceptorCount: 0
-      interceptorRegenTime: 0
-  - subType: hull_14_1_55401
-    modules:
-    - moduleName: hull_14_1_55401
-      moduleSubType: hull_14_1_55401
-      statPoint: 7000
-      unlockAchievementPointCost: 10500
-      description: 
-      moduleSlots:
-      - moduleType: 2
-        slotIndex: 0
-      - moduleType: 2
-        slotIndex: 1
-      - moduleType: 2
-        slotIndex: 2
-      - moduleType: 2
-        slotIndex: 3
-      - moduleType: 2
-        slotIndex: 4
-      - moduleType: 3
-        slotIndex: 0
-      - moduleType: 3
-        slotIndex: 1
-      - moduleType: 3
-        slotIndex: 2
-      - moduleType: 3
-        slotIndex: 3
-      - moduleType: 3
-        slotIndex: 4
-      - moduleType: 4
-        slotIndex: 0
-      - moduleType: 4
-        slotIndex: 1
-      - moduleType: 4
-        slotIndex: 2
-      - moduleType: 4
-        slotIndex: 3
-      health: 1400
-      repair: 0
-      speed: 1
-      turnRate: 1
-      attack: 0
-      splashRadius: 0
-      attackCool: 0
-      silenceTime: 0
-      airCount: 0
-      airMaintenanceTime: 0
-      airHealth: 0
-      airAttackToShip: 0
-      airAttackToFighter: 0
-      airAttackRange: 0
-      airAttackCool: 0
-      airSpeed: 0
-      airAmmo: 0
-      airDetectRadius: 0
-      airAvoidRadius: 0
-      airDisrupt: 0
-      shieldGauge: 0
-      shieldRegenRate: 0
-      interceptorCount: 0
-      interceptorRegenTime: 0
-  - subType: hull_14_1_55410
-    modules:
-    - moduleName: hull_14_1_55410
-      moduleSubType: hull_14_1_55410
-      statPoint: 7000
-      unlockAchievementPointCost: 10500
-      description: 
-      moduleSlots:
-      - moduleType: 2
-        slotIndex: 0
-      - moduleType: 2
-        slotIndex: 1
-      - moduleType: 2
-        slotIndex: 2
-      - moduleType: 2
-        slotIndex: 3
-      - moduleType: 2
-        slotIndex: 4
-      - moduleType: 3
-        slotIndex: 0
-      - moduleType: 3
-        slotIndex: 1
-      - moduleType: 3
-        slotIndex: 2
-      - moduleType: 3
-        slotIndex: 3
-      - moduleType: 3
-        slotIndex: 4
-      - moduleType: 4
-        slotIndex: 0
-      - moduleType: 4
-        slotIndex: 1
-      - moduleType: 4
-        slotIndex: 2
-      - moduleType: 4
-        slotIndex: 3
-      health: 1400
-      repair: 0
-      speed: 1
-      turnRate: 1
-      attack: 0
-      splashRadius: 0
-      attackCool: 0
-      silenceTime: 0
-      airCount: 0
-      airMaintenanceTime: 0
-      airHealth: 0
-      airAttackToShip: 0
-      airAttackToFighter: 0
-      airAttackRange: 0
-      airAttackCool: 0
-      airSpeed: 0
-      airAmmo: 0
-      airDetectRadius: 0
-      airAvoidRadius: 0
-      airDisrupt: 0
-      shieldGauge: 0
-      shieldRegenRate: 0
-      interceptorCount: 0
-      interceptorRegenTime: 0
   - subType: hull_14_1_55411
     modules:
     - moduleName: hull_14_1_55411
       moduleSubType: hull_14_1_55411
-      statPoint: 10500
-      unlockAchievementPointCost: 11000
+      statPoint: 512000
+      unlockAchievementPointCost: 1024000
+      shieldUnlockAchievementPointCost: 128000
+      interceptorUnlockAchievementPointCost: 128000
       description: 
       moduleSlots:
       - moduleType: 2
@@ -2082,6 +706,8 @@ MonoBehaviour:
       moduleSubType: beam_1_1
       statPoint: 100
       unlockAchievementPointCost: 0
+      shieldUnlockAchievementPointCost: 0
+      interceptorUnlockAchievementPointCost: 0
       description: 
       moduleSlots: []
       health: 0
@@ -2114,6 +740,8 @@ MonoBehaviour:
       moduleSubType: beam_2_1
       statPoint: 200
       unlockAchievementPointCost: 0
+      shieldUnlockAchievementPointCost: 0
+      interceptorUnlockAchievementPointCost: 0
       description: 
       moduleSlots: []
       health: 0
@@ -2146,6 +774,8 @@ MonoBehaviour:
       moduleSubType: beam_3_1
       statPoint: 300
       unlockAchievementPointCost: 0
+      shieldUnlockAchievementPointCost: 0
+      interceptorUnlockAchievementPointCost: 0
       description: 
       moduleSlots: []
       health: 0
@@ -2178,6 +808,8 @@ MonoBehaviour:
       moduleSubType: beam_4_1
       statPoint: 400
       unlockAchievementPointCost: 0
+      shieldUnlockAchievementPointCost: 0
+      interceptorUnlockAchievementPointCost: 0
       description: 
       moduleSlots: []
       health: 0
@@ -2210,6 +842,8 @@ MonoBehaviour:
       moduleSubType: beam_5_1
       statPoint: 500
       unlockAchievementPointCost: 0
+      shieldUnlockAchievementPointCost: 0
+      interceptorUnlockAchievementPointCost: 0
       description: 
       moduleSlots: []
       health: 0
@@ -2242,6 +876,8 @@ MonoBehaviour:
       moduleSubType: beam_6_1
       statPoint: 600
       unlockAchievementPointCost: 0
+      shieldUnlockAchievementPointCost: 0
+      interceptorUnlockAchievementPointCost: 0
       description: 
       moduleSlots: []
       health: 0
@@ -2274,6 +910,8 @@ MonoBehaviour:
       moduleSubType: beam_7_1
       statPoint: 700
       unlockAchievementPointCost: 0
+      shieldUnlockAchievementPointCost: 0
+      interceptorUnlockAchievementPointCost: 0
       description: 
       moduleSlots: []
       health: 0
@@ -2306,6 +944,8 @@ MonoBehaviour:
       moduleSubType: beam_8_1
       statPoint: 800
       unlockAchievementPointCost: 0
+      shieldUnlockAchievementPointCost: 0
+      interceptorUnlockAchievementPointCost: 0
       description: 
       moduleSlots: []
       health: 0
@@ -2338,6 +978,8 @@ MonoBehaviour:
       moduleSubType: beam_9_1
       statPoint: 900
       unlockAchievementPointCost: 0
+      shieldUnlockAchievementPointCost: 0
+      interceptorUnlockAchievementPointCost: 0
       description: 
       moduleSlots: []
       health: 0
@@ -2370,6 +1012,8 @@ MonoBehaviour:
       moduleSubType: beam_10_1
       statPoint: 1000
       unlockAchievementPointCost: 0
+      shieldUnlockAchievementPointCost: 0
+      interceptorUnlockAchievementPointCost: 0
       description: 
       moduleSlots: []
       health: 0
@@ -2402,6 +1046,8 @@ MonoBehaviour:
       moduleSubType: beam_11_1
       statPoint: 1100
       unlockAchievementPointCost: 0
+      shieldUnlockAchievementPointCost: 0
+      interceptorUnlockAchievementPointCost: 0
       description: 
       moduleSlots: []
       health: 0
@@ -2434,6 +1080,8 @@ MonoBehaviour:
       moduleSubType: beam_12_1
       statPoint: 1200
       unlockAchievementPointCost: 0
+      shieldUnlockAchievementPointCost: 0
+      interceptorUnlockAchievementPointCost: 0
       description: 
       moduleSlots: []
       health: 0
@@ -2466,6 +1114,8 @@ MonoBehaviour:
       moduleSubType: beam_13_1
       statPoint: 1300
       unlockAchievementPointCost: 0
+      shieldUnlockAchievementPointCost: 0
+      interceptorUnlockAchievementPointCost: 0
       description: 
       moduleSlots: []
       health: 0
@@ -2498,6 +1148,8 @@ MonoBehaviour:
       moduleSubType: beam_14_1
       statPoint: 1400
       unlockAchievementPointCost: 0
+      shieldUnlockAchievementPointCost: 0
+      interceptorUnlockAchievementPointCost: 0
       description: 
       moduleSlots: []
       health: 0
@@ -2531,6 +1183,8 @@ MonoBehaviour:
       moduleSubType: missile_1_1
       statPoint: 100
       unlockAchievementPointCost: 0
+      shieldUnlockAchievementPointCost: 0
+      interceptorUnlockAchievementPointCost: 0
       description: 
       moduleSlots: []
       health: 0
@@ -2563,6 +1217,8 @@ MonoBehaviour:
       moduleSubType: missile_2_1
       statPoint: 200
       unlockAchievementPointCost: 0
+      shieldUnlockAchievementPointCost: 0
+      interceptorUnlockAchievementPointCost: 0
       description: 
       moduleSlots: []
       health: 0
@@ -2595,6 +1251,8 @@ MonoBehaviour:
       moduleSubType: missile_3_1
       statPoint: 300
       unlockAchievementPointCost: 0
+      shieldUnlockAchievementPointCost: 0
+      interceptorUnlockAchievementPointCost: 0
       description: 
       moduleSlots: []
       health: 0
@@ -2627,6 +1285,8 @@ MonoBehaviour:
       moduleSubType: missile_4_1
       statPoint: 400
       unlockAchievementPointCost: 0
+      shieldUnlockAchievementPointCost: 0
+      interceptorUnlockAchievementPointCost: 0
       description: 
       moduleSlots: []
       health: 0
@@ -2659,6 +1319,8 @@ MonoBehaviour:
       moduleSubType: missile_5_1
       statPoint: 500
       unlockAchievementPointCost: 0
+      shieldUnlockAchievementPointCost: 0
+      interceptorUnlockAchievementPointCost: 0
       description: 
       moduleSlots: []
       health: 0
@@ -2691,6 +1353,8 @@ MonoBehaviour:
       moduleSubType: missile_6_1
       statPoint: 600
       unlockAchievementPointCost: 0
+      shieldUnlockAchievementPointCost: 0
+      interceptorUnlockAchievementPointCost: 0
       description: 
       moduleSlots: []
       health: 0
@@ -2723,6 +1387,8 @@ MonoBehaviour:
       moduleSubType: missile_7_1
       statPoint: 700
       unlockAchievementPointCost: 0
+      shieldUnlockAchievementPointCost: 0
+      interceptorUnlockAchievementPointCost: 0
       description: 
       moduleSlots: []
       health: 0
@@ -2755,6 +1421,8 @@ MonoBehaviour:
       moduleSubType: missile_8_1
       statPoint: 800
       unlockAchievementPointCost: 0
+      shieldUnlockAchievementPointCost: 0
+      interceptorUnlockAchievementPointCost: 0
       description: 
       moduleSlots: []
       health: 0
@@ -2787,6 +1455,8 @@ MonoBehaviour:
       moduleSubType: missile_9_1
       statPoint: 900
       unlockAchievementPointCost: 0
+      shieldUnlockAchievementPointCost: 0
+      interceptorUnlockAchievementPointCost: 0
       description: 
       moduleSlots: []
       health: 0
@@ -2819,6 +1489,8 @@ MonoBehaviour:
       moduleSubType: missile_10_1
       statPoint: 1000
       unlockAchievementPointCost: 0
+      shieldUnlockAchievementPointCost: 0
+      interceptorUnlockAchievementPointCost: 0
       description: 
       moduleSlots: []
       health: 0
@@ -2851,6 +1523,8 @@ MonoBehaviour:
       moduleSubType: missile_11_1
       statPoint: 1100
       unlockAchievementPointCost: 0
+      shieldUnlockAchievementPointCost: 0
+      interceptorUnlockAchievementPointCost: 0
       description: 
       moduleSlots: []
       health: 0
@@ -2883,6 +1557,8 @@ MonoBehaviour:
       moduleSubType: missile_12_1
       statPoint: 1200
       unlockAchievementPointCost: 0
+      shieldUnlockAchievementPointCost: 0
+      interceptorUnlockAchievementPointCost: 0
       description: 
       moduleSlots: []
       health: 0
@@ -2915,6 +1591,8 @@ MonoBehaviour:
       moduleSubType: missile_13_1
       statPoint: 1300
       unlockAchievementPointCost: 0
+      shieldUnlockAchievementPointCost: 0
+      interceptorUnlockAchievementPointCost: 0
       description: 
       moduleSlots: []
       health: 0
@@ -2947,6 +1625,8 @@ MonoBehaviour:
       moduleSubType: missile_14_1
       statPoint: 1400
       unlockAchievementPointCost: 0
+      shieldUnlockAchievementPointCost: 0
+      interceptorUnlockAchievementPointCost: 0
       description: 
       moduleSlots: []
       health: 0
@@ -2980,6 +1660,8 @@ MonoBehaviour:
       moduleSubType: hangar_1_1
       statPoint: 100
       unlockAchievementPointCost: 0
+      shieldUnlockAchievementPointCost: 0
+      interceptorUnlockAchievementPointCost: 0
       description: 
       moduleSlots: []
       health: 0
@@ -3012,6 +1694,8 @@ MonoBehaviour:
       moduleSubType: hangar_2_1
       statPoint: 200
       unlockAchievementPointCost: 0
+      shieldUnlockAchievementPointCost: 0
+      interceptorUnlockAchievementPointCost: 0
       description: 
       moduleSlots: []
       health: 0
@@ -3044,6 +1728,8 @@ MonoBehaviour:
       moduleSubType: hangar_3_1
       statPoint: 300
       unlockAchievementPointCost: 0
+      shieldUnlockAchievementPointCost: 0
+      interceptorUnlockAchievementPointCost: 0
       description: 
       moduleSlots: []
       health: 0
@@ -3076,6 +1762,8 @@ MonoBehaviour:
       moduleSubType: hangar_4_1
       statPoint: 400
       unlockAchievementPointCost: 0
+      shieldUnlockAchievementPointCost: 0
+      interceptorUnlockAchievementPointCost: 0
       description: 
       moduleSlots: []
       health: 0
@@ -3108,6 +1796,8 @@ MonoBehaviour:
       moduleSubType: hangar_5_1
       statPoint: 500
       unlockAchievementPointCost: 0
+      shieldUnlockAchievementPointCost: 0
+      interceptorUnlockAchievementPointCost: 0
       description: 
       moduleSlots: []
       health: 0
@@ -3140,6 +1830,8 @@ MonoBehaviour:
       moduleSubType: hangar_6_1
       statPoint: 600
       unlockAchievementPointCost: 0
+      shieldUnlockAchievementPointCost: 0
+      interceptorUnlockAchievementPointCost: 0
       description: 
       moduleSlots: []
       health: 0
@@ -3172,6 +1864,8 @@ MonoBehaviour:
       moduleSubType: hangar_7_1
       statPoint: 700
       unlockAchievementPointCost: 0
+      shieldUnlockAchievementPointCost: 0
+      interceptorUnlockAchievementPointCost: 0
       description: 
       moduleSlots: []
       health: 0
@@ -3204,6 +1898,8 @@ MonoBehaviour:
       moduleSubType: hangar_8_1
       statPoint: 800
       unlockAchievementPointCost: 0
+      shieldUnlockAchievementPointCost: 0
+      interceptorUnlockAchievementPointCost: 0
       description: 
       moduleSlots: []
       health: 0
@@ -3236,6 +1932,8 @@ MonoBehaviour:
       moduleSubType: hangar_9_1
       statPoint: 900
       unlockAchievementPointCost: 0
+      shieldUnlockAchievementPointCost: 0
+      interceptorUnlockAchievementPointCost: 0
       description: 
       moduleSlots: []
       health: 0
@@ -3268,6 +1966,8 @@ MonoBehaviour:
       moduleSubType: hangar_10_1
       statPoint: 1000
       unlockAchievementPointCost: 0
+      shieldUnlockAchievementPointCost: 0
+      interceptorUnlockAchievementPointCost: 0
       description: 
       moduleSlots: []
       health: 0
@@ -3300,6 +2000,8 @@ MonoBehaviour:
       moduleSubType: hangar_11_1
       statPoint: 1100
       unlockAchievementPointCost: 0
+      shieldUnlockAchievementPointCost: 0
+      interceptorUnlockAchievementPointCost: 0
       description: 
       moduleSlots: []
       health: 0
@@ -3332,6 +2034,8 @@ MonoBehaviour:
       moduleSubType: hangar_12_1
       statPoint: 1200
       unlockAchievementPointCost: 0
+      shieldUnlockAchievementPointCost: 0
+      interceptorUnlockAchievementPointCost: 0
       description: 
       moduleSlots: []
       health: 0
@@ -3364,6 +2068,8 @@ MonoBehaviour:
       moduleSubType: hangar_13_1
       statPoint: 1300
       unlockAchievementPointCost: 0
+      shieldUnlockAchievementPointCost: 0
+      interceptorUnlockAchievementPointCost: 0
       description: 
       moduleSlots: []
       health: 0
@@ -3396,6 +2102,8 @@ MonoBehaviour:
       moduleSubType: hangar_14_1
       statPoint: 1400
       unlockAchievementPointCost: 0
+      shieldUnlockAchievementPointCost: 0
+      interceptorUnlockAchievementPointCost: 0
       description: 
       moduleSlots: []
       health: 0
@@ -3429,6 +2137,8 @@ MonoBehaviour:
       moduleSubType: shield_1_1
       statPoint: 100
       unlockAchievementPointCost: 0
+      shieldUnlockAchievementPointCost: 0
+      interceptorUnlockAchievementPointCost: 0
       description: 
       moduleSlots: []
       health: 0
@@ -3450,9 +2160,9 @@ MonoBehaviour:
       airAmmo: 0
       airDetectRadius: 0
       airAvoidRadius: 0
-      airDisrupt: 0
-      shieldGauge: 100
-      shieldRegenRate: 5
+      airDisrupt: 100
+      shieldGauge: 5
+      shieldRegenRate: 0
       interceptorCount: 0
       interceptorRegenTime: 0
   - subType: shield_2_1
@@ -3461,6 +2171,8 @@ MonoBehaviour:
       moduleSubType: shield_2_1
       statPoint: 200
       unlockAchievementPointCost: 0
+      shieldUnlockAchievementPointCost: 0
+      interceptorUnlockAchievementPointCost: 0
       description: 
       moduleSlots: []
       health: 0
@@ -3482,17 +2194,19 @@ MonoBehaviour:
       airAmmo: 0
       airDetectRadius: 0
       airAvoidRadius: 0
-      airDisrupt: 0
-      shieldGauge: 200
-      shieldRegenRate: 10
+      airDisrupt: 200
+      shieldGauge: 10
+      shieldRegenRate: 0
       interceptorCount: 0
       interceptorRegenTime: 0
   - subType: shield_3_1
     modules:
     - moduleName: shield_3_1
       moduleSubType: shield_3_1
-      statPoint: 300
+      statPoint: 400
       unlockAchievementPointCost: 0
+      shieldUnlockAchievementPointCost: 0
+      interceptorUnlockAchievementPointCost: 0
       description: 
       moduleSlots: []
       health: 0
@@ -3514,17 +2228,19 @@ MonoBehaviour:
       airAmmo: 0
       airDetectRadius: 0
       airAvoidRadius: 0
-      airDisrupt: 0
-      shieldGauge: 300
-      shieldRegenRate: 15
+      airDisrupt: 300
+      shieldGauge: 15
+      shieldRegenRate: 0
       interceptorCount: 0
       interceptorRegenTime: 0
   - subType: shield_4_1
     modules:
     - moduleName: shield_4_1
       moduleSubType: shield_4_1
-      statPoint: 400
+      statPoint: 800
       unlockAchievementPointCost: 0
+      shieldUnlockAchievementPointCost: 0
+      interceptorUnlockAchievementPointCost: 0
       description: 
       moduleSlots: []
       health: 0
@@ -3546,17 +2262,19 @@ MonoBehaviour:
       airAmmo: 0
       airDetectRadius: 0
       airAvoidRadius: 0
-      airDisrupt: 0
-      shieldGauge: 400
-      shieldRegenRate: 20
+      airDisrupt: 400
+      shieldGauge: 20
+      shieldRegenRate: 0
       interceptorCount: 0
       interceptorRegenTime: 0
   - subType: shield_5_1
     modules:
     - moduleName: shield_5_1
       moduleSubType: shield_5_1
-      statPoint: 500
+      statPoint: 1600
       unlockAchievementPointCost: 0
+      shieldUnlockAchievementPointCost: 0
+      interceptorUnlockAchievementPointCost: 0
       description: 
       moduleSlots: []
       health: 0
@@ -3578,17 +2296,19 @@ MonoBehaviour:
       airAmmo: 0
       airDetectRadius: 0
       airAvoidRadius: 0
-      airDisrupt: 0
-      shieldGauge: 500
-      shieldRegenRate: 25
+      airDisrupt: 500
+      shieldGauge: 25
+      shieldRegenRate: 0
       interceptorCount: 0
       interceptorRegenTime: 0
   - subType: shield_6_1
     modules:
     - moduleName: shield_6_1
       moduleSubType: shield_6_1
-      statPoint: 600
+      statPoint: 3200
       unlockAchievementPointCost: 0
+      shieldUnlockAchievementPointCost: 0
+      interceptorUnlockAchievementPointCost: 0
       description: 
       moduleSlots: []
       health: 0
@@ -3610,17 +2330,19 @@ MonoBehaviour:
       airAmmo: 0
       airDetectRadius: 0
       airAvoidRadius: 0
-      airDisrupt: 0
-      shieldGauge: 600
-      shieldRegenRate: 30
+      airDisrupt: 600
+      shieldGauge: 30
+      shieldRegenRate: 0
       interceptorCount: 0
       interceptorRegenTime: 0
   - subType: shield_7_1
     modules:
     - moduleName: shield_7_1
       moduleSubType: shield_7_1
-      statPoint: 700
+      statPoint: 6400
       unlockAchievementPointCost: 0
+      shieldUnlockAchievementPointCost: 0
+      interceptorUnlockAchievementPointCost: 0
       description: 
       moduleSlots: []
       health: 0
@@ -3642,17 +2364,19 @@ MonoBehaviour:
       airAmmo: 0
       airDetectRadius: 0
       airAvoidRadius: 0
-      airDisrupt: 0
-      shieldGauge: 700
-      shieldRegenRate: 35
+      airDisrupt: 700
+      shieldGauge: 35
+      shieldRegenRate: 0
       interceptorCount: 0
       interceptorRegenTime: 0
   - subType: shield_8_1
     modules:
     - moduleName: shield_8_1
       moduleSubType: shield_8_1
-      statPoint: 800
+      statPoint: 12800
       unlockAchievementPointCost: 0
+      shieldUnlockAchievementPointCost: 0
+      interceptorUnlockAchievementPointCost: 0
       description: 
       moduleSlots: []
       health: 0
@@ -3674,17 +2398,19 @@ MonoBehaviour:
       airAmmo: 0
       airDetectRadius: 0
       airAvoidRadius: 0
-      airDisrupt: 0
-      shieldGauge: 800
-      shieldRegenRate: 40
+      airDisrupt: 800
+      shieldGauge: 40
+      shieldRegenRate: 0
       interceptorCount: 0
       interceptorRegenTime: 0
   - subType: shield_9_1
     modules:
     - moduleName: shield_9_1
       moduleSubType: shield_9_1
-      statPoint: 900
+      statPoint: 25600
       unlockAchievementPointCost: 0
+      shieldUnlockAchievementPointCost: 0
+      interceptorUnlockAchievementPointCost: 0
       description: 
       moduleSlots: []
       health: 0
@@ -3706,17 +2432,19 @@ MonoBehaviour:
       airAmmo: 0
       airDetectRadius: 0
       airAvoidRadius: 0
-      airDisrupt: 0
-      shieldGauge: 900
-      shieldRegenRate: 45
+      airDisrupt: 900
+      shieldGauge: 45
+      shieldRegenRate: 0
       interceptorCount: 0
       interceptorRegenTime: 0
   - subType: shield_10_1
     modules:
     - moduleName: shield_10_1
       moduleSubType: shield_10_1
-      statPoint: 1000
+      statPoint: 51200
       unlockAchievementPointCost: 0
+      shieldUnlockAchievementPointCost: 0
+      interceptorUnlockAchievementPointCost: 0
       description: 
       moduleSlots: []
       health: 0
@@ -3738,17 +2466,19 @@ MonoBehaviour:
       airAmmo: 0
       airDetectRadius: 0
       airAvoidRadius: 0
-      airDisrupt: 0
-      shieldGauge: 1000
-      shieldRegenRate: 50
+      airDisrupt: 1000
+      shieldGauge: 50
+      shieldRegenRate: 0
       interceptorCount: 0
       interceptorRegenTime: 0
   - subType: shield_11_1
     modules:
     - moduleName: shield_11_1
       moduleSubType: shield_11_1
-      statPoint: 1100
+      statPoint: 102400
       unlockAchievementPointCost: 0
+      shieldUnlockAchievementPointCost: 0
+      interceptorUnlockAchievementPointCost: 0
       description: 
       moduleSlots: []
       health: 0
@@ -3770,17 +2500,19 @@ MonoBehaviour:
       airAmmo: 0
       airDetectRadius: 0
       airAvoidRadius: 0
-      airDisrupt: 0
-      shieldGauge: 1100
-      shieldRegenRate: 55
+      airDisrupt: 1100
+      shieldGauge: 55
+      shieldRegenRate: 0
       interceptorCount: 0
       interceptorRegenTime: 0
   - subType: shield_12_1
     modules:
     - moduleName: shield_12_1
       moduleSubType: shield_12_1
-      statPoint: 1200
+      statPoint: 204800
       unlockAchievementPointCost: 0
+      shieldUnlockAchievementPointCost: 0
+      interceptorUnlockAchievementPointCost: 0
       description: 
       moduleSlots: []
       health: 0
@@ -3802,17 +2534,19 @@ MonoBehaviour:
       airAmmo: 0
       airDetectRadius: 0
       airAvoidRadius: 0
-      airDisrupt: 0
-      shieldGauge: 1200
-      shieldRegenRate: 60
+      airDisrupt: 1200
+      shieldGauge: 60
+      shieldRegenRate: 0
       interceptorCount: 0
       interceptorRegenTime: 0
   - subType: shield_13_1
     modules:
     - moduleName: shield_13_1
       moduleSubType: shield_13_1
-      statPoint: 1300
+      statPoint: 409600
       unlockAchievementPointCost: 0
+      shieldUnlockAchievementPointCost: 0
+      interceptorUnlockAchievementPointCost: 0
       description: 
       moduleSlots: []
       health: 0
@@ -3834,17 +2568,19 @@ MonoBehaviour:
       airAmmo: 0
       airDetectRadius: 0
       airAvoidRadius: 0
-      airDisrupt: 0
-      shieldGauge: 1300
-      shieldRegenRate: 65
+      airDisrupt: 1300
+      shieldGauge: 65
+      shieldRegenRate: 0
       interceptorCount: 0
       interceptorRegenTime: 0
   - subType: shield_14_1
     modules:
     - moduleName: shield_14_1
       moduleSubType: shield_14_1
-      statPoint: 1400
+      statPoint: 819200
       unlockAchievementPointCost: 0
+      shieldUnlockAchievementPointCost: 0
+      interceptorUnlockAchievementPointCost: 0
       description: 
       moduleSlots: []
       health: 0
@@ -3866,9 +2602,9 @@ MonoBehaviour:
       airAmmo: 0
       airDetectRadius: 0
       airAvoidRadius: 0
-      airDisrupt: 0
-      shieldGauge: 1400
-      shieldRegenRate: 70
+      airDisrupt: 1400
+      shieldGauge: 70
+      shieldRegenRate: 0
       interceptorCount: 0
       interceptorRegenTime: 0
   interceptorGroups:
@@ -3878,6 +2614,8 @@ MonoBehaviour:
       moduleSubType: interceptor_1_1
       statPoint: 100
       unlockAchievementPointCost: 0
+      shieldUnlockAchievementPointCost: 0
+      interceptorUnlockAchievementPointCost: 0
       description: 
       moduleSlots: []
       health: 0
@@ -3901,15 +2639,17 @@ MonoBehaviour:
       airAvoidRadius: 0
       airDisrupt: 0
       shieldGauge: 0
-      shieldRegenRate: 0
-      interceptorCount: 1
-      interceptorRegenTime: 5
+      shieldRegenRate: 1
+      interceptorCount: 5
+      interceptorRegenTime: 0
   - subType: interceptor_2_1
     modules:
     - moduleName: interceptor_2_1
       moduleSubType: interceptor_2_1
       statPoint: 200
       unlockAchievementPointCost: 0
+      shieldUnlockAchievementPointCost: 0
+      interceptorUnlockAchievementPointCost: 0
       description: 
       moduleSlots: []
       health: 0
@@ -3933,15 +2673,17 @@ MonoBehaviour:
       airAvoidRadius: 0
       airDisrupt: 0
       shieldGauge: 0
-      shieldRegenRate: 0
-      interceptorCount: 1
-      interceptorRegenTime: 5
+      shieldRegenRate: 1
+      interceptorCount: 5
+      interceptorRegenTime: 0
   - subType: interceptor_3_1
     modules:
     - moduleName: interceptor_3_1
       moduleSubType: interceptor_3_1
-      statPoint: 300
+      statPoint: 400
       unlockAchievementPointCost: 0
+      shieldUnlockAchievementPointCost: 0
+      interceptorUnlockAchievementPointCost: 0
       description: 
       moduleSlots: []
       health: 0
@@ -3965,15 +2707,17 @@ MonoBehaviour:
       airAvoidRadius: 0
       airDisrupt: 0
       shieldGauge: 0
-      shieldRegenRate: 0
-      interceptorCount: 1
-      interceptorRegenTime: 5
+      shieldRegenRate: 1
+      interceptorCount: 5
+      interceptorRegenTime: 0
   - subType: interceptor_4_1
     modules:
     - moduleName: interceptor_4_1
       moduleSubType: interceptor_4_1
-      statPoint: 400
+      statPoint: 800
       unlockAchievementPointCost: 0
+      shieldUnlockAchievementPointCost: 0
+      interceptorUnlockAchievementPointCost: 0
       description: 
       moduleSlots: []
       health: 0
@@ -3997,15 +2741,17 @@ MonoBehaviour:
       airAvoidRadius: 0
       airDisrupt: 0
       shieldGauge: 0
-      shieldRegenRate: 0
-      interceptorCount: 2
-      interceptorRegenTime: 5
+      shieldRegenRate: 2
+      interceptorCount: 5
+      interceptorRegenTime: 0
   - subType: interceptor_5_1
     modules:
     - moduleName: interceptor_5_1
       moduleSubType: interceptor_5_1
-      statPoint: 500
+      statPoint: 1600
       unlockAchievementPointCost: 0
+      shieldUnlockAchievementPointCost: 0
+      interceptorUnlockAchievementPointCost: 0
       description: 
       moduleSlots: []
       health: 0
@@ -4029,15 +2775,17 @@ MonoBehaviour:
       airAvoidRadius: 0
       airDisrupt: 0
       shieldGauge: 0
-      shieldRegenRate: 0
-      interceptorCount: 2
-      interceptorRegenTime: 5
+      shieldRegenRate: 2
+      interceptorCount: 5
+      interceptorRegenTime: 0
   - subType: interceptor_6_1
     modules:
     - moduleName: interceptor_6_1
       moduleSubType: interceptor_6_1
-      statPoint: 600
+      statPoint: 3200
       unlockAchievementPointCost: 0
+      shieldUnlockAchievementPointCost: 0
+      interceptorUnlockAchievementPointCost: 0
       description: 
       moduleSlots: []
       health: 0
@@ -4061,15 +2809,17 @@ MonoBehaviour:
       airAvoidRadius: 0
       airDisrupt: 0
       shieldGauge: 0
-      shieldRegenRate: 0
-      interceptorCount: 2
-      interceptorRegenTime: 5
+      shieldRegenRate: 2
+      interceptorCount: 5
+      interceptorRegenTime: 0
   - subType: interceptor_7_1
     modules:
     - moduleName: interceptor_7_1
       moduleSubType: interceptor_7_1
-      statPoint: 700
+      statPoint: 6400
       unlockAchievementPointCost: 0
+      shieldUnlockAchievementPointCost: 0
+      interceptorUnlockAchievementPointCost: 0
       description: 
       moduleSlots: []
       health: 0
@@ -4093,15 +2843,17 @@ MonoBehaviour:
       airAvoidRadius: 0
       airDisrupt: 0
       shieldGauge: 0
-      shieldRegenRate: 0
-      interceptorCount: 2
-      interceptorRegenTime: 5
+      shieldRegenRate: 2
+      interceptorCount: 5
+      interceptorRegenTime: 0
   - subType: interceptor_8_1
     modules:
     - moduleName: interceptor_8_1
       moduleSubType: interceptor_8_1
-      statPoint: 800
+      statPoint: 12800
       unlockAchievementPointCost: 0
+      shieldUnlockAchievementPointCost: 0
+      interceptorUnlockAchievementPointCost: 0
       description: 
       moduleSlots: []
       health: 0
@@ -4125,15 +2877,17 @@ MonoBehaviour:
       airAvoidRadius: 0
       airDisrupt: 0
       shieldGauge: 0
-      shieldRegenRate: 0
-      interceptorCount: 3
-      interceptorRegenTime: 5
+      shieldRegenRate: 3
+      interceptorCount: 5
+      interceptorRegenTime: 0
   - subType: interceptor_9_1
     modules:
     - moduleName: interceptor_9_1
       moduleSubType: interceptor_9_1
-      statPoint: 900
+      statPoint: 25600
       unlockAchievementPointCost: 0
+      shieldUnlockAchievementPointCost: 0
+      interceptorUnlockAchievementPointCost: 0
       description: 
       moduleSlots: []
       health: 0
@@ -4157,15 +2911,17 @@ MonoBehaviour:
       airAvoidRadius: 0
       airDisrupt: 0
       shieldGauge: 0
-      shieldRegenRate: 0
-      interceptorCount: 3
-      interceptorRegenTime: 5
+      shieldRegenRate: 3
+      interceptorCount: 5
+      interceptorRegenTime: 0
   - subType: interceptor_10_1
     modules:
     - moduleName: interceptor_10_1
       moduleSubType: interceptor_10_1
-      statPoint: 1000
+      statPoint: 51200
       unlockAchievementPointCost: 0
+      shieldUnlockAchievementPointCost: 0
+      interceptorUnlockAchievementPointCost: 0
       description: 
       moduleSlots: []
       health: 0
@@ -4189,15 +2945,17 @@ MonoBehaviour:
       airAvoidRadius: 0
       airDisrupt: 0
       shieldGauge: 0
-      shieldRegenRate: 0
-      interceptorCount: 3
-      interceptorRegenTime: 5
+      shieldRegenRate: 3
+      interceptorCount: 5
+      interceptorRegenTime: 0
   - subType: interceptor_11_1
     modules:
     - moduleName: interceptor_11_1
       moduleSubType: interceptor_11_1
-      statPoint: 1100
+      statPoint: 102400
       unlockAchievementPointCost: 0
+      shieldUnlockAchievementPointCost: 0
+      interceptorUnlockAchievementPointCost: 0
       description: 
       moduleSlots: []
       health: 0
@@ -4221,15 +2979,17 @@ MonoBehaviour:
       airAvoidRadius: 0
       airDisrupt: 0
       shieldGauge: 0
-      shieldRegenRate: 0
-      interceptorCount: 3
-      interceptorRegenTime: 5
+      shieldRegenRate: 3
+      interceptorCount: 5
+      interceptorRegenTime: 0
   - subType: interceptor_12_1
     modules:
     - moduleName: interceptor_12_1
       moduleSubType: interceptor_12_1
-      statPoint: 1200
+      statPoint: 204800
       unlockAchievementPointCost: 0
+      shieldUnlockAchievementPointCost: 0
+      interceptorUnlockAchievementPointCost: 0
       description: 
       moduleSlots: []
       health: 0
@@ -4253,15 +3013,17 @@ MonoBehaviour:
       airAvoidRadius: 0
       airDisrupt: 0
       shieldGauge: 0
-      shieldRegenRate: 0
-      interceptorCount: 4
-      interceptorRegenTime: 5
+      shieldRegenRate: 4
+      interceptorCount: 5
+      interceptorRegenTime: 0
   - subType: interceptor_13_1
     modules:
     - moduleName: interceptor_13_1
       moduleSubType: interceptor_13_1
-      statPoint: 1300
+      statPoint: 409600
       unlockAchievementPointCost: 0
+      shieldUnlockAchievementPointCost: 0
+      interceptorUnlockAchievementPointCost: 0
       description: 
       moduleSlots: []
       health: 0
@@ -4285,15 +3047,17 @@ MonoBehaviour:
       airAvoidRadius: 0
       airDisrupt: 0
       shieldGauge: 0
-      shieldRegenRate: 0
-      interceptorCount: 4
-      interceptorRegenTime: 5
+      shieldRegenRate: 4
+      interceptorCount: 5
+      interceptorRegenTime: 0
   - subType: interceptor_14_1
     modules:
     - moduleName: interceptor_14_1
       moduleSubType: interceptor_14_1
-      statPoint: 1400
+      statPoint: 819200
       unlockAchievementPointCost: 0
+      shieldUnlockAchievementPointCost: 0
+      interceptorUnlockAchievementPointCost: 0
       description: 
       moduleSlots: []
       health: 0
@@ -4317,6 +3081,6 @@ MonoBehaviour:
       airAvoidRadius: 0
       airDisrupt: 0
       shieldGauge: 0
-      shieldRegenRate: 0
-      interceptorCount: 4
-      interceptorRegenTime: 5
+      shieldRegenRate: 4
+      interceptorCount: 5
+      interceptorRegenTime: 0
