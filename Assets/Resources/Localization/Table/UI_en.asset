@@ -1218,6 +1218,10 @@ MonoBehaviour:
     m_Localized: Unlock the interceptor slot?
     m_Metadata:
       m_Items: []
+  - m_Id: 84129404795355136
+    m_Localized: 'Unlock:'
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

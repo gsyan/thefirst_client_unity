@@ -459,6 +459,10 @@ MonoBehaviour:
     m_Key: UIAvailableHullRow_Cost
     m_Metadata:
       m_Items: []
+  - m_Id: 84129404795355136
+    m_Key: UIAvailableHullRow_UnlockCost
+    m_Metadata:
+      m_Items: []
   - m_Id: 61639704113446912
     m_Key: UIFleet_Front
     m_Metadata:

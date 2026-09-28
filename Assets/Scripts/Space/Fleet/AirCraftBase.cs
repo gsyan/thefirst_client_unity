@@ -336,9 +336,8 @@ public abstract class AircraftBase : MonoBehaviour
             float distance = Vector3.Distance(transform.position, currentDogfightTarget.transform.position);
             if (distance <= m_aircraftInfo.airAttackRange && Time.time >= m_lastAttackTime + m_aircraftInfo.airAttackCool)
             {
-                float tacticMultiplier = m_carrierShip != null && m_carrierShip.m_ownerFleet != null
-                    ? m_carrierShip.m_ownerFleet.GetAircraftTacticAttackMultiplier() : 1f;
-                currentDogfightTarget.TakeDamage(m_aircraftInfo.airAttackToFighter * tacticMultiplier);
+                // PerformAttack(함선 공격)과 동일하게 발진 시점에 저장된 배율(진형·함선수·전술 통합, ModuleHangar.airAttackMultiplier 주석 참고)을 그대로 재사용
+                currentDogfightTarget.TakeDamage(m_aircraftInfo.airAttackToFighter * m_aircraftInfo.airAttackMultiplier);
                 m_lastAttackTime = Time.time;
             }
 

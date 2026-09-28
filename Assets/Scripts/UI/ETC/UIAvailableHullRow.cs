@@ -10,8 +10,9 @@ public class UIAvailableHullRow : MonoBehaviour
     [SerializeField] private Image m_selectedImage; // 이 함체가 현재 선택 상태임을 표시 — 색 변경이 아니라 오브젝트 자체를 켜고 끔
 
     [Header("티어4+ 언락 상태 (미배치 시 null이면 항상 일반 상태로 동작)")]
-    [SerializeField] private GameObject m_lockedRoot; // 잠김 상태에서만 켜지는 오브젝트(언락 버튼을 이 아래 배치) — 구체적 비용은 언락 확인 팝업에 표시
+    [SerializeField] private GameObject m_lockedRoot; // 잠김 상태에서만 켜지는 오브젝트(언락 버튼을 이 아래 배치)
     [SerializeField] private Button m_unlockButton;
+    [SerializeField] private RowLabelValue m_unlockCostRow; // 잠김 상태에서만 언락에 필요한 업적포인트 표시, 언락됐으면 숨김
 
     // 증감 표시 색상 - 지휘력이 늘어나면(더 비싼 함체) 경고색, 줄어들면(여유 확보) 강조색
     private const string k_increaseColorHex = "#FF5555";
@@ -39,8 +40,8 @@ public class UIAvailableHullRow : MonoBehaviour
     }
 
     // deltaCost: 이 함체로 교체했을 때 현재 슬롯 대비 지휘력 증감(유지되는 모듈 반영, 양수=추가 소모/음수=회수) —
-    // 정적 statPoint가 아니라 호출부(UIHullPickerView)가 슬롯 유지 계산 결과로 넘겨줌.
-    // isLocked==true면 선택 불가 + 언락 버튼만 노출(언락 비용은 hull.unlockAchievementPointCost)
+    // 정적 statPoint가 아니라 호출부(UIHullPickerView)가 슬롯 유지 계산 결과로 넘겨줌. 이 값은 설치비(CP)일 뿐 언락 비용과는 별개.
+    // isLocked==true면 선택 불가 + 언락 버튼 노출 + 언락 비용(hull.unlockAchievementPointCost)을 m_unlockCostRow에 같이 표시
     public void Setup(ModuleData hull, int deltaCost, bool isLocked, System.Action<ModuleData> onClick, System.Action<ModuleData> onUnlockClick)
     {
         gameObject.SetActive(true);
@@ -53,6 +54,19 @@ public class UIAvailableHullRow : MonoBehaviour
             m_nameRow.SetRow("UIAvailableHullRow_Name", CommonUtility.BuildHullDisplayName(hull.moduleSubType), rawValue: true);
         if (m_costRow != null)
             m_costRow.SetRow("UIAvailableHullRow_Cost", $"{BuildDeltaText(deltaCost)} CP", rawValue: true);
+
+        if (m_unlockCostRow != null)
+        {
+            if (isLocked == true)
+            {
+                string achievementPointLabel = LocalizationManager.Instance.Get("UIPanelFleet_AchievementPoint");
+                m_unlockCostRow.SetRow("UIAvailableHullRow_UnlockCost", $"{hull.unlockAchievementPointCost} {achievementPointLabel}", rawValue: true);
+            }
+            else
+            {
+                m_unlockCostRow.Hide();
+            }
+        }
 
         // 잠긴 함체도 클릭은 허용(우측 패널에서 프리뷰/스펙 확인 가능) — 실제 확정(Confirm)만 UIHullPickerView가 별도로 막음
         if (m_lockedRoot != null)

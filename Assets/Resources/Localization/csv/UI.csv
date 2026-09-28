@@ -120,6 +120,7 @@ RewardCard_PointFlat_Name,,Exploration Point Bonus,탐험 포인트 획득
 RewardCard_PointFlat_Desc,,Exploration Point +{0:F0},탐험 포인트 +{0:F0}
 UIAvailableHullRow_Name,,Name:,이름:
 UIAvailableHullRow_Cost,,Cost:,비용:
+UIAvailableHullRow_UnlockCost,,Unlock:,언락:
 UIFleet_Front,,Front,전방
 UIFleet_Rear,,Rear,후방
 UIFleet_PlacedShipCount,,Placed Ships,배치 함선 수
