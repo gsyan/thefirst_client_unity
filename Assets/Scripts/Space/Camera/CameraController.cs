@@ -532,15 +532,14 @@ public class CameraController : MonoSingleton<CameraController>
     // 처리할지 말지는 각 리스너(UIPanelSpace/UIPanelFleet 등)가 자기 활성 상태에 맞춰 스스로 판단(구독/해제)
     public void HandleModuleSelection(Vector3? screenPosition = null)
     {
-        // 전투 중엔 함선 클릭 자체를 무시 — 선택(아웃라인)/카메라 추적 전환/함대관리 UI 오픈이 전부 발생하면 안 됨.
-        // 3D 드래그 회전 등 다른 입력은 이 함수와 무관하므로 영향 없음
         SpaceFleet myFleet = ObjectManager.Instance.GetMyFleet();
-        if (myFleet != null && myFleet.m_fleetState.IsBattleState() == true) return;
+        bool isBattle = myFleet != null && myFleet.m_fleetState.IsBattleState() == true;
 
         LayerMask pickMask = ~(m_layerMaskShield | m_layerMaskInterceptor);
         if (!GetCameraRaycast(out RaycastHit hit, pickMask, 3000f, screenPosition))
         {
-            if (IsEmptySpaceTapBlocked() == false)
+            // 전투 중엔 빈공간 탭도 무시 — EmptySpaceTapped가 함대관리 UI를 닫는 등의 부작용을 낼 수 있음
+            if (isBattle == false && IsEmptySpaceTapBlocked() == false)
                 EventManager.Trigger_EmptySpaceTapped();
             return;
         }
@@ -548,8 +547,17 @@ public class CameraController : MonoSingleton<CameraController>
         SpaceShip ship = hit.collider.GetComponentInParent<SpaceShip>();
         if (ship == null || ship.m_ownerFleet == null || ObjectManager.Instance.IsEnemyOfMyTeam(ship.m_ownerFleet))
         {
-            if (IsEmptySpaceTapBlocked() == false)
+            if (isBattle == false && IsEmptySpaceTapBlocked() == false)
                 EventManager.Trigger_EmptySpaceTapped();
+            return;
+        }
+
+        // 전투 중 내 함선 탭 = 전방/후방 토글 컨트롤. 선택(아웃라인)/카메라 추적 전환/함대관리 UI 오픈은 발생하지 않음.
+        // 3D 드래그 회전 등 다른 입력은 이 함수와 무관하므로 영향 없음
+        if (isBattle == true)
+        {
+            if (ship.m_ownerFleet == myFleet)
+                ObjectManager.Instance.SetMyFleetShipFront(ship.m_shipInfo.positionIndex, ship.m_shipInfo.isFront == false);
             return;
         }
 

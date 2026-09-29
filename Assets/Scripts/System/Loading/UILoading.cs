@@ -15,7 +15,10 @@ public class UILoading : UIManager
         "loading_tip_1",
         "loading_tip_2",
         "loading_tip_3",
-        "loading_tip_4"
+        "loading_tip_4",
+        "loading_tip_5",
+        "loading_tip_6",
+        "loading_tip_7"
     };
 
     private void Start()

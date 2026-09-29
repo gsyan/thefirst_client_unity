@@ -1222,6 +1222,19 @@ MonoBehaviour:
     m_Localized: 'Unlock:'
     m_Metadata:
       m_Items: []
+  - m_Id: 84572619860213760
+    m_Localized: 'Tip: If a ship''s health is running low'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 84572619914739712
+    m_Localized: 'Tip: Achievement Points are required to unlock higher-tier hulls.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 84572619914739713
+    m_Localized: 'Tip: It''s best to convert Exploration Points into Command Power
+      or Tactic Power as you go.'
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

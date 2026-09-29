@@ -1007,6 +1007,18 @@ MonoBehaviour:
     m_Key: loading_tip_4
     m_Metadata:
       m_Items: []
+  - m_Id: 84572619860213760
+    m_Key: loading_tip_5
+    m_Metadata:
+      m_Items: []
+  - m_Id: 84572619914739712
+    m_Key: loading_tip_6
+    m_Metadata:
+      m_Items: []
+  - m_Id: 84572619914739713
+    m_Key: loading_tip_7
+    m_Metadata:
+      m_Items: []
   - m_Id: 43683692479905792
     m_Key: ShipName_0
     m_Metadata:

@@ -323,6 +323,7 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         GameSpeedController.Reset(); // timeScale 및 오디오 피치 복원
         if (myFleet != null)
             myFleet.SetFleetState(EUnitState.Idle);
+        SyncBattleFrontRearChangesToServer(myFleet);
         StopEnemySpawning();
         OrderAllAircraftReturn();
         CleanupAllProjectiles();
@@ -332,6 +333,32 @@ public class ObjectManager : MonoSingleton<ObjectManager>
             EventManager.TriggerPvpBattleEnd(isVictory);
         else
             EventManager.TriggerZoneStageBattleEnd(isVictory);
+    }
+
+    // 전투 중 함선 탭으로 토글된 전방/후방(SetMyFleetShipFront, 서버 미전송)을 전투 종료 시점에 한 번에 서버로 반영
+    private void SyncBattleFrontRearChangesToServer(SpaceFleet myFleet)
+    {
+        if (myFleet == null) return;
+
+        FleetComposition composition = DataManager.Instance.m_currentFleetComposition;
+        if (composition == null) return;
+
+        for (int i = 0; i < myFleet.m_ships.Count; i++)
+        {
+            SpaceShip ship = myFleet.m_ships[i];
+            if (ship == null) continue;
+
+            int positionIndex = ship.m_shipInfo.positionIndex;
+            bool isFront = ship.m_shipInfo.isFront;
+            if (composition.GetIsFront(positionIndex) == isFront) continue;
+
+            composition.SetFront(positionIndex, isFront);
+            NetworkManager.Instance.SetFleetShipFront(new FleetSetFrontRequest
+            {
+                slotIndex = positionIndex,
+                isFront = isFront,
+            });
+        }
     }
 
     private IEnumerator StartTutorial()
@@ -946,9 +973,30 @@ public class ObjectManager : MonoSingleton<ObjectManager>
 
         SpaceShip ship = myFleet.m_ships.Find(s => s != null && s.m_shipInfo.positionIndex == positionIndex);
         if (ship == null) return;
+        if (ship.m_shipInfo.isFront == isFront) return;
 
         ship.m_shipInfo.isFront = isFront;
         myFleet.UpdateShipFormation(myFleet.m_currentFormationType, bSmooth: true);
+        RetargetEnemiesAiming(ship);
+    }
+
+    // isFront가 바뀐 ship을 이미 조준 중이던 적 함선들만 찾아 타겟을 재탐색시킴 —
+    // ApplyRearLastRule은 타겟을 새로 뽑는 시점에만 적용되므로, 이미 락온된 적은 이렇게 찔러주지 않으면 후방으로 뺀 함선을 계속 공격함
+    private void RetargetEnemiesAiming(SpaceShip ship)
+    {
+        List<SpaceFleet> enemyFleets = GetEnemyFleets();
+        for (int i = 0; i < enemyFleets.Count; i++)
+        {
+            SpaceFleet enemyFleet = enemyFleets[i];
+            if (enemyFleet == null) continue;
+
+            for (int j = 0; j < enemyFleet.m_ships.Count; j++)
+            {
+                SpaceShip enemyShip = enemyFleet.m_ships[j];
+                if (enemyShip != null && enemyShip.m_targetShip == ship)
+                    enemyShip.StartFindingTargets();
+            }
+        }
     }
 
     // 함대편성 UI(FleetComposition)에서 슬롯 하나에 배치/교체하거나 장착 모듈만 바뀌었을 때 호출 — 그 슬롯의 함선만 파괴/재생성, 나머지 함선은 그대로 유지

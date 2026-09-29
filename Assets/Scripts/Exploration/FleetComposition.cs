@@ -294,6 +294,12 @@ public class FleetComposition
         m_placedShips[index] = entry;
     }
 
+    public bool GetIsFront(int index)
+    {
+        if (index < 0 || index >= m_placedShips.Count) return true;
+        return m_placedShips[index].isFront;
+    }
+
     public int GetUsedCommandPower()
     {
         int used = 0;

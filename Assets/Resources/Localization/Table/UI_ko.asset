@@ -1266,6 +1266,21 @@ MonoBehaviour:
     m_Localized: "\uC5B8\uB77D:"
     m_Metadata:
       m_Items: []
+  - m_Id: 84572619860213760
+    m_Localized: ' try moving it to the rear.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 84572619914739712
+    m_Localized: "\uD301: \uB354 \uB192\uC740 \uD2F0\uC5B4\uC758 \uD568\uCCB4\uB97C
+      \uC5B8\uB77D\uD558\uB824\uBA74 \uC5C5\uC801\uD3EC\uC778\uD2B8\uAC00 \uD544\uC218\uC785\uB2C8\uB2E4."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 84572619914739713
+    m_Localized: "\uD301: \uD0D0\uD5D8 \uD3EC\uC778\uD2B8\uB294 \uADF8\uB54C\uADF8\uB54C
+      \uC9C0\uD718\uB825 \uB610\uB294 \uC804\uC220\uB825\uC73C\uB85C \uBC14\uAFB8\uB294
+      \uAC8C \uC720\uB9AC\uD569\uB2C8\uB2E4."
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []
