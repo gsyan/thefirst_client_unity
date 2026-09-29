@@ -117,7 +117,7 @@ public class UIVipDetail : MonoBehaviour
         if (m_purchaseLabel2 != null)
         {
             string price = IAPManager.Instance.GetVipLocalizedPrice();
-            m_purchaseLabel2.text = loc.Get("UIVipStatus_PurchasePrice", price);
+            m_purchaseLabel2.text = loc.Get("UIVipStatus_PurchasePrice", (object)price);
         }
 
         if (m_benefitName != null) LayoutRebuilder.ForceRebuildLayoutImmediate(m_benefitName.rectTransform);
