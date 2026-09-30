@@ -2160,9 +2160,9 @@ MonoBehaviour:
       airAmmo: 0
       airDetectRadius: 0
       airAvoidRadius: 0
-      airDisrupt: 100
-      shieldGauge: 5
-      shieldRegenRate: 0
+      airDisrupt: 0
+      shieldGauge: 100
+      shieldRegenRate: 5
       interceptorCount: 0
       interceptorRegenTime: 0
   - subType: shield_2_1
@@ -2194,9 +2194,9 @@ MonoBehaviour:
       airAmmo: 0
       airDetectRadius: 0
       airAvoidRadius: 0
-      airDisrupt: 200
-      shieldGauge: 10
-      shieldRegenRate: 0
+      airDisrupt: 0
+      shieldGauge: 200
+      shieldRegenRate: 10
       interceptorCount: 0
       interceptorRegenTime: 0
   - subType: shield_3_1
@@ -2228,9 +2228,9 @@ MonoBehaviour:
       airAmmo: 0
       airDetectRadius: 0
       airAvoidRadius: 0
-      airDisrupt: 300
-      shieldGauge: 15
-      shieldRegenRate: 0
+      airDisrupt: 0
+      shieldGauge: 300
+      shieldRegenRate: 15
       interceptorCount: 0
       interceptorRegenTime: 0
   - subType: shield_4_1
@@ -2262,9 +2262,9 @@ MonoBehaviour:
       airAmmo: 0
       airDetectRadius: 0
       airAvoidRadius: 0
-      airDisrupt: 400
-      shieldGauge: 20
-      shieldRegenRate: 0
+      airDisrupt: 0
+      shieldGauge: 400
+      shieldRegenRate: 20
       interceptorCount: 0
       interceptorRegenTime: 0
   - subType: shield_5_1
@@ -2296,9 +2296,9 @@ MonoBehaviour:
       airAmmo: 0
       airDetectRadius: 0
       airAvoidRadius: 0
-      airDisrupt: 500
-      shieldGauge: 25
-      shieldRegenRate: 0
+      airDisrupt: 0
+      shieldGauge: 500
+      shieldRegenRate: 25
       interceptorCount: 0
       interceptorRegenTime: 0
   - subType: shield_6_1
@@ -2330,9 +2330,9 @@ MonoBehaviour:
       airAmmo: 0
       airDetectRadius: 0
       airAvoidRadius: 0
-      airDisrupt: 600
-      shieldGauge: 30
-      shieldRegenRate: 0
+      airDisrupt: 0
+      shieldGauge: 600
+      shieldRegenRate: 30
       interceptorCount: 0
       interceptorRegenTime: 0
   - subType: shield_7_1
@@ -2364,9 +2364,9 @@ MonoBehaviour:
       airAmmo: 0
       airDetectRadius: 0
       airAvoidRadius: 0
-      airDisrupt: 700
-      shieldGauge: 35
-      shieldRegenRate: 0
+      airDisrupt: 0
+      shieldGauge: 700
+      shieldRegenRate: 35
       interceptorCount: 0
       interceptorRegenTime: 0
   - subType: shield_8_1
@@ -2398,9 +2398,9 @@ MonoBehaviour:
       airAmmo: 0
       airDetectRadius: 0
       airAvoidRadius: 0
-      airDisrupt: 800
-      shieldGauge: 40
-      shieldRegenRate: 0
+      airDisrupt: 0
+      shieldGauge: 800
+      shieldRegenRate: 40
       interceptorCount: 0
       interceptorRegenTime: 0
   - subType: shield_9_1
@@ -2432,9 +2432,9 @@ MonoBehaviour:
       airAmmo: 0
       airDetectRadius: 0
       airAvoidRadius: 0
-      airDisrupt: 900
-      shieldGauge: 45
-      shieldRegenRate: 0
+      airDisrupt: 0
+      shieldGauge: 900
+      shieldRegenRate: 45
       interceptorCount: 0
       interceptorRegenTime: 0
   - subType: shield_10_1
@@ -2466,9 +2466,9 @@ MonoBehaviour:
       airAmmo: 0
       airDetectRadius: 0
       airAvoidRadius: 0
-      airDisrupt: 1000
-      shieldGauge: 50
-      shieldRegenRate: 0
+      airDisrupt: 0
+      shieldGauge: 1000
+      shieldRegenRate: 50
       interceptorCount: 0
       interceptorRegenTime: 0
   - subType: shield_11_1
@@ -2500,9 +2500,9 @@ MonoBehaviour:
       airAmmo: 0
       airDetectRadius: 0
       airAvoidRadius: 0
-      airDisrupt: 1100
-      shieldGauge: 55
-      shieldRegenRate: 0
+      airDisrupt: 0
+      shieldGauge: 1100
+      shieldRegenRate: 55
       interceptorCount: 0
       interceptorRegenTime: 0
   - subType: shield_12_1
@@ -2534,9 +2534,9 @@ MonoBehaviour:
       airAmmo: 0
       airDetectRadius: 0
       airAvoidRadius: 0
-      airDisrupt: 1200
-      shieldGauge: 60
-      shieldRegenRate: 0
+      airDisrupt: 0
+      shieldGauge: 1200
+      shieldRegenRate: 60
       interceptorCount: 0
       interceptorRegenTime: 0
   - subType: shield_13_1
@@ -2568,9 +2568,9 @@ MonoBehaviour:
       airAmmo: 0
       airDetectRadius: 0
       airAvoidRadius: 0
-      airDisrupt: 1300
-      shieldGauge: 65
-      shieldRegenRate: 0
+      airDisrupt: 0
+      shieldGauge: 1300
+      shieldRegenRate: 65
       interceptorCount: 0
       interceptorRegenTime: 0
   - subType: shield_14_1
@@ -2602,9 +2602,9 @@ MonoBehaviour:
       airAmmo: 0
       airDetectRadius: 0
       airAvoidRadius: 0
-      airDisrupt: 1400
-      shieldGauge: 70
-      shieldRegenRate: 0
+      airDisrupt: 0
+      shieldGauge: 1400
+      shieldRegenRate: 70
       interceptorCount: 0
       interceptorRegenTime: 0
   interceptorGroups:
@@ -2639,9 +2639,9 @@ MonoBehaviour:
       airAvoidRadius: 0
       airDisrupt: 0
       shieldGauge: 0
-      shieldRegenRate: 1
-      interceptorCount: 5
-      interceptorRegenTime: 0
+      shieldRegenRate: 0
+      interceptorCount: 1
+      interceptorRegenTime: 5
   - subType: interceptor_2_1
     modules:
     - moduleName: interceptor_2_1
@@ -2673,9 +2673,9 @@ MonoBehaviour:
       airAvoidRadius: 0
       airDisrupt: 0
       shieldGauge: 0
-      shieldRegenRate: 1
-      interceptorCount: 5
-      interceptorRegenTime: 0
+      shieldRegenRate: 0
+      interceptorCount: 1
+      interceptorRegenTime: 5
   - subType: interceptor_3_1
     modules:
     - moduleName: interceptor_3_1
@@ -2707,9 +2707,9 @@ MonoBehaviour:
       airAvoidRadius: 0
       airDisrupt: 0
       shieldGauge: 0
-      shieldRegenRate: 1
-      interceptorCount: 5
-      interceptorRegenTime: 0
+      shieldRegenRate: 0
+      interceptorCount: 1
+      interceptorRegenTime: 5
   - subType: interceptor_4_1
     modules:
     - moduleName: interceptor_4_1
@@ -2741,9 +2741,9 @@ MonoBehaviour:
       airAvoidRadius: 0
       airDisrupt: 0
       shieldGauge: 0
-      shieldRegenRate: 2
-      interceptorCount: 5
-      interceptorRegenTime: 0
+      shieldRegenRate: 0
+      interceptorCount: 2
+      interceptorRegenTime: 5
   - subType: interceptor_5_1
     modules:
     - moduleName: interceptor_5_1
@@ -2775,9 +2775,9 @@ MonoBehaviour:
       airAvoidRadius: 0
       airDisrupt: 0
       shieldGauge: 0
-      shieldRegenRate: 2
-      interceptorCount: 5
-      interceptorRegenTime: 0
+      shieldRegenRate: 0
+      interceptorCount: 2
+      interceptorRegenTime: 5
   - subType: interceptor_6_1
     modules:
     - moduleName: interceptor_6_1
@@ -2809,9 +2809,9 @@ MonoBehaviour:
       airAvoidRadius: 0
       airDisrupt: 0
       shieldGauge: 0
-      shieldRegenRate: 2
-      interceptorCount: 5
-      interceptorRegenTime: 0
+      shieldRegenRate: 0
+      interceptorCount: 2
+      interceptorRegenTime: 5
   - subType: interceptor_7_1
     modules:
     - moduleName: interceptor_7_1
@@ -2843,9 +2843,9 @@ MonoBehaviour:
       airAvoidRadius: 0
       airDisrupt: 0
       shieldGauge: 0
-      shieldRegenRate: 2
-      interceptorCount: 5
-      interceptorRegenTime: 0
+      shieldRegenRate: 0
+      interceptorCount: 2
+      interceptorRegenTime: 5
   - subType: interceptor_8_1
     modules:
     - moduleName: interceptor_8_1
@@ -2877,9 +2877,9 @@ MonoBehaviour:
       airAvoidRadius: 0
       airDisrupt: 0
       shieldGauge: 0
-      shieldRegenRate: 3
-      interceptorCount: 5
-      interceptorRegenTime: 0
+      shieldRegenRate: 0
+      interceptorCount: 3
+      interceptorRegenTime: 5
   - subType: interceptor_9_1
     modules:
     - moduleName: interceptor_9_1
@@ -2911,9 +2911,9 @@ MonoBehaviour:
       airAvoidRadius: 0
       airDisrupt: 0
       shieldGauge: 0
-      shieldRegenRate: 3
-      interceptorCount: 5
-      interceptorRegenTime: 0
+      shieldRegenRate: 0
+      interceptorCount: 3
+      interceptorRegenTime: 5
   - subType: interceptor_10_1
     modules:
     - moduleName: interceptor_10_1
@@ -2945,9 +2945,9 @@ MonoBehaviour:
       airAvoidRadius: 0
       airDisrupt: 0
       shieldGauge: 0
-      shieldRegenRate: 3
-      interceptorCount: 5
-      interceptorRegenTime: 0
+      shieldRegenRate: 0
+      interceptorCount: 3
+      interceptorRegenTime: 5
   - subType: interceptor_11_1
     modules:
     - moduleName: interceptor_11_1
@@ -2979,9 +2979,9 @@ MonoBehaviour:
       airAvoidRadius: 0
       airDisrupt: 0
       shieldGauge: 0
-      shieldRegenRate: 3
-      interceptorCount: 5
-      interceptorRegenTime: 0
+      shieldRegenRate: 0
+      interceptorCount: 3
+      interceptorRegenTime: 5
   - subType: interceptor_12_1
     modules:
     - moduleName: interceptor_12_1
@@ -3013,9 +3013,9 @@ MonoBehaviour:
       airAvoidRadius: 0
       airDisrupt: 0
       shieldGauge: 0
-      shieldRegenRate: 4
-      interceptorCount: 5
-      interceptorRegenTime: 0
+      shieldRegenRate: 0
+      interceptorCount: 4
+      interceptorRegenTime: 5
   - subType: interceptor_13_1
     modules:
     - moduleName: interceptor_13_1
@@ -3047,9 +3047,9 @@ MonoBehaviour:
       airAvoidRadius: 0
       airDisrupt: 0
       shieldGauge: 0
-      shieldRegenRate: 4
-      interceptorCount: 5
-      interceptorRegenTime: 0
+      shieldRegenRate: 0
+      interceptorCount: 4
+      interceptorRegenTime: 5
   - subType: interceptor_14_1
     modules:
     - moduleName: interceptor_14_1
@@ -3081,6 +3081,6 @@ MonoBehaviour:
       airAvoidRadius: 0
       airDisrupt: 0
       shieldGauge: 0
-      shieldRegenRate: 4
-      interceptorCount: 5
-      interceptorRegenTime: 0
+      shieldRegenRate: 0
+      interceptorCount: 4
+      interceptorRegenTime: 5
