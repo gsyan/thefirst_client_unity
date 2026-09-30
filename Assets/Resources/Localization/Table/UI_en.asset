@@ -1238,6 +1238,10 @@ MonoBehaviour:
       or Tactic Power as you go.'
     m_Metadata:
       m_Items: []
+  - m_Id: 84870060622872576
+    m_Localized: Tier{0} {1}
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

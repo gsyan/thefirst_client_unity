@@ -1187,6 +1187,10 @@ MonoBehaviour:
     m_Key: UIAchievement_Desc_hull_unlock
     m_Metadata:
       m_Items: []
+  - m_Id: 84870060622872576
+    m_Key: UIAchievement_ModuleTierName
+    m_Metadata:
+      m_Items: []
   - m_Id: 82671357333995520
     m_Key: UI_Retry
     m_Metadata:
