@@ -47,7 +47,7 @@ public class UIModuleSlotToggleRow : MonoBehaviour
         m_onUnlockClicked = onUnlockClicked;
 
         if (m_nameText != null)
-            m_nameText.text = $"{LocalizationManager.Instance.Get(GetModuleTypeLabelKey(moduleType))} {slotIndex + 1}";
+            m_nameText.text = $"{LocalizationManager.Instance.Get(CommonUtility.GetModuleTypeLabelKey(moduleType))} {slotIndex + 1}";
 
         if (m_toggleSlide != null)
         {
@@ -131,13 +131,4 @@ public class UIModuleSlotToggleRow : MonoBehaviour
         m_toggleSlide.SetLabelText(installed ? "UIFleet_ModuleSlot_Installed" : "UIFleet_ModuleSlot_NotInstalled");
     }
 
-    private string GetModuleTypeLabelKey(EModuleType moduleType)
-    {
-        if (moduleType == EModuleType.beam) return "module_type_beam";
-        if (moduleType == EModuleType.missile) return "module_type_missile";
-        if (moduleType == EModuleType.hangar) return "module_type_hangar";
-        if (moduleType == EModuleType.shield) return "module_type_shield";
-        if (moduleType == EModuleType.interceptor) return "module_type_interceptor";
-        return "";
-    }
 }

@@ -1038,11 +1038,14 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 79863397364924416
-    m_Localized: There is an exploration in progress in another zone. As a VIP privilege
+    m_Localized: There is an exploration in progress in another zone. As a VIP privilege,
+      you still receive 100% of the banked exploration points. Abandon it and start
+      a new challenge?
     m_Metadata:
       m_Items: []
   - m_Id: 79863397364924417
-    m_Localized: Abandon the exploration in progress?\nAs a VIP privilege
+    m_Localized: Abandon the exploration in progress?\nAs a VIP privilege, you still
+      receive 100% of the banked exploration points.
     m_Metadata:
       m_Items: []
   - m_Id: 79863397364924418

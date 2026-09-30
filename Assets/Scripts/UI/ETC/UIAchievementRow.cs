@@ -62,13 +62,20 @@ public class UIAchievementRow : MonoBehaviour
 
         bool isCompleted = currentValue >= data.threshold;
 
-        string achievementName = string.Format(LocalizationManager.Instance.Get(data.nameKey), data.conditionParam, data.threshold, data.achievementPointReward);
+        // HullUnlocked/ModuleTierCount는 conditionParam이 원본 코드(예: hull_7_1_32211, beam_2)라 표시 전 사람이 읽을 이름으로 변환해야 함
+        string conditionParamDisplay = data.conditionParam;
+        if (data.conditionType == EAchievementConditionType.HullUnlocked)
+            conditionParamDisplay = CommonUtility.BuildHullDisplayName(data.conditionParam);
+        else if (data.conditionType == EAchievementConditionType.ModuleTierCount)
+            conditionParamDisplay = CommonUtility.BuildModuleTierDisplayName(data.conditionParam);
+
+        string achievementName = string.Format(LocalizationManager.Instance.Get(data.nameKey), conditionParamDisplay, data.threshold, data.achievementPointReward);
         string progressLabel = LocalizationManager.Instance.Get("UIAchievement_Progress");
         string progressValue = $"{Mathf.Min(currentValue, data.threshold)}/{data.threshold}";
         if (m_nameText != null)
             m_nameText.text = $"{achievementName} ({progressLabel} {progressValue})";
         if (m_descText != null)
-            m_descText.text = string.Format(LocalizationManager.Instance.Get(data.descKey), data.conditionParam, data.threshold, data.achievementPointReward);
+            m_descText.text = string.Format(LocalizationManager.Instance.Get(data.descKey), conditionParamDisplay, data.threshold, data.achievementPointReward);
         if (m_rewardRow != null)
         {
             string rewardText = CommonUtility.FormatNumber(data.achievementPointReward);

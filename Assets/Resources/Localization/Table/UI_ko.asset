@@ -1074,12 +1074,16 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 79863397364924416
-    m_Localized: ' you still receive 100% of the banked exploration points. Abandon
-      it and start a new challenge?'
+    m_Localized: "\uB2E4\uB978 \uC874\uC5D0 \uC9C4\uD589 \uC911\uC778 \uD0D0\uD5D8\uC774
+      \uC788\uC2B5\uB2C8\uB2E4. VIP \uD2B9\uD61C\uB85C \uD3EC\uAE30\uD574\uB3C4 \uC313\uC778
+      \uD0D0\uD5D8 \uD3EC\uC778\uD2B8\uC758 100%\uB97C \uD68D\uB4DD\uD569\uB2C8\uB2E4.
+      \uD3EC\uAE30\uD558\uACE0 \uC0C8\uB85C \uB3C4\uC804\uD558\uC2DC\uACA0\uC2B5\uB2C8\uAE4C?"
     m_Metadata:
       m_Items: []
   - m_Id: 79863397364924417
-    m_Localized: ' you still receive 100% of the banked exploration points.'
+    m_Localized: "\uC9C4\uD589 \uC911\uC778 \uD0D0\uD5D8\uC744 \uD3EC\uAE30\uD558\uC2DC\uACA0\uC2B5\uB2C8\uAE4C?\\nVIP
+      \uD2B9\uD61C\uB85C \uD3EC\uAE30\uD574\uB3C4 \uC9C0\uAE08\uAE4C\uC9C0 \uC313\uC778
+      \uD0D0\uD5D8 \uD3EC\uC778\uD2B8\uC758 100%\uB97C \uBC1B\uC2B5\uB2C8\uB2E4."
     m_Metadata:
       m_Items: []
   - m_Id: 79863397364924418

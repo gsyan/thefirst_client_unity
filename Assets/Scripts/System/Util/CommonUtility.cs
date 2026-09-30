@@ -327,6 +327,27 @@ public static class CommonUtility
         return LocalizationManager.Instance.Get("UIHull_DisplayName", tier, gen, "");
     }
 
+    // EModuleType -> 모듈 타입명 단독 표시용 로컬라이즈 키
+    public static string GetModuleTypeLabelKey(EModuleType moduleType)
+    {
+        if (moduleType == EModuleType.beam) return "module_type_beam";
+        if (moduleType == EModuleType.missile) return "module_type_missile";
+        if (moduleType == EModuleType.hangar) return "module_type_hangar";
+        if (moduleType == EModuleType.shield) return "module_type_shield";
+        if (moduleType == EModuleType.interceptor) return "module_type_interceptor";
+        return "";
+    }
+
+    // "{EModuleType 이름}_{티어}" 코드를 유저 표시용 이름으로 변환 (예: "beam_2" -> "티어2 빔") — 업적 ModuleTierCount conditionParam 표시용
+    public static string BuildModuleTierDisplayName(string moduleTypeAndTier)
+    {
+        EModuleType moduleType = ParseModuleType(moduleTypeAndTier);
+        int tier = ParseTier(moduleTypeAndTier);
+        string moduleTypeName = LocalizationManager.Instance.Get(GetModuleTypeLabelKey(moduleType));
+
+        return LocalizationManager.Instance.Get("UIAchievement_ModuleTierName", tier, moduleTypeName);
+    }
+
     // hull tier 강제 규칙 검증: tier == 빔+미사일+격납고 합 (실드/요격체 제외)
     public static bool ValidateHullTier(string hullSubType)
     {

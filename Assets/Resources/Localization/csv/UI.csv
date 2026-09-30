@@ -85,10 +85,10 @@ UIPanelExplorationGrid_OtherRunInProgressWithAd,,There is another exploration in
 UIPanelExplorationGrid_OtherRunInProgressVip,,There is another exploration in progress.\nZone {0} / Cell {1} / Banked Exploration Point {2}\nAbandon it and start a new challenge in the selected zone?\n* As a VIP privilege, you still recover 100% of banked points,진행 중인 다른 탐험이 있습니다.\n존 {0} / 구역 {1} / 적립된 탐험 포인트 {2}\n포기하고 선택한 존에 새로 도전하시겠습니까?\n* VIP 특혜로 포기해도 적립된 포인트의 100%를 회수합니다
 UIPanelExplorationGrid_AbandonAnotherRunConfirm,,There is an exploration in progress in another zone. Abandoning it now only grants 20% of the banked exploration points. Abandon it and start a new challenge?,다른 존에 진행 중인 탐험이 있습니다. 지금 포기하면 쌓인 탐험 포인트의 20%만 획득합니다. 포기하고 새로 도전하시겠습니까?
 UIPanelExplorationGrid_AbandonAnotherRunConfirmWithAd,,There is an exploration in progress in another zone. Watch an ad to receive 100% of the banked exploration points or abandon now for only 20%. Abandon it and start a new challenge?,다른 존에 진행 중인 탐험이 있습니다. 광고를 시청하면 쌓인 탐험 포인트의 100%를 획득하고 시청하지 않고 포기하면 20%만 획득합니다. 포기하고 새로 도전하시겠습니까?
-UIPanelExplorationGrid_AbandonAnotherRunConfirmVip,,There is an exploration in progress in another zone. As a VIP privilege, you still receive 100% of the banked exploration points. Abandon it and start a new challenge?,다른 존에 진행 중인 탐험이 있습니다. VIP 특혜로 포기해도 쌓인 탐험 포인트의 100%를 획득합니다. 포기하고 새로 도전하시겠습니까?
+UIPanelExplorationGrid_AbandonAnotherRunConfirmVip,,"There is an exploration in progress in another zone. As a VIP privilege, you still receive 100% of the banked exploration points. Abandon it and start a new challenge?",다른 존에 진행 중인 탐험이 있습니다. VIP 특혜로 포기해도 쌓인 탐험 포인트의 100%를 획득합니다. 포기하고 새로 도전하시겠습니까?
 UIPanelExplorationGrid_AbandonRunConfirm,,Abandon the exploration in progress?\nOnly 20% of the banked exploration points will be granted.,진행 중인 탐험을 포기하시겠습니까?\n지금까지 쌓인 탐험 포인트의 20%만 획득합니다.
 UIPanelExplorationGrid_AbandonRunConfirmWithAd,,Abandon the exploration in progress?\nWatch an ad to receive 100% of the banked exploration points or abandon now for only 20%.,진행 중인 탐험을 포기하시겠습니까?\n광고를 시청하면 지금까지 쌓인 탐험 포인트의 100%를 획득하고 시청하지 않고 포기하면 20%만 획득합니다.
-UIPanelExplorationGrid_AbandonRunConfirmVip,,Abandon the exploration in progress?\nAs a VIP privilege, you still receive 100% of the banked exploration points.,진행 중인 탐험을 포기하시겠습니까?\nVIP 특혜로 포기해도 지금까지 쌓인 탐험 포인트의 100%를 받습니다.
+UIPanelExplorationGrid_AbandonRunConfirmVip,,"Abandon the exploration in progress?\nAs a VIP privilege, you still receive 100% of the banked exploration points.",진행 중인 탐험을 포기하시겠습니까?\nVIP 특혜로 포기해도 지금까지 쌓인 탐험 포인트의 100%를 받습니다.
 UI_Abandon,,ABANDON,포기
 RewardCard_BeamAttack_Name,,Beam Power Up,빔 공격력 강화
 RewardCard_BeamAttack_Desc,,Beam attack +{0:P0},빔 공격력 {0:P0} 증가
@@ -306,6 +306,7 @@ UIAchievement_Name_module_tier_count,,Equip {1} {0} or higher Modules,{0} 이상
 UIAchievement_Desc_module_tier_count,,Have {1} {0} or higher modules equipped in your active fleet at the same time (stays completed once achieved),활성 함대에 {0} 이상 모듈을 동시에 {1}개 장착하면 완료 (달성 후 함대를 바꿔도 유지)
 UIAchievement_Name_hull_unlock,,Unlock {0},{0} 언락
 UIAchievement_Desc_hull_unlock,,Unlock the {0} hull to complete. Refunds 10% of the achievement points spent.,{0} 함체를 언락하면 완료 — 소비한 업적 포인트의 10% 환급
+UIAchievement_ModuleTierName,,Tier{0} {1},티어{0} {1}
 UI_Retry,,RETRY,재시도
 UIPopupMessage_NetworkWaiting,,Communicating with the server...,서버와 통신 중입니다...
 UIPopupMessage_NetworkNoResponseRead,,No response from the server. Do you want to retry?,서버 응답이 없습니다. 다시 시도할까요?
