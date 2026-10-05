@@ -1183,7 +1183,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::UIPopupRedeemCode
   m_codeInput: {fileID: 1373412928284982557}
   m_resultText: {fileID: 2544851973035186441}
-  m_confirmButton: {fileID: 0}
+  m_confirmButton: {fileID: 5536381245389902009}
   m_cancelButton: {fileID: 2312237558819746245}
   m_colorSuccess: {r: 0, g: 1, b: 0, a: 1}
   m_colorError: {r: 1, g: 0, b: 0, a: 1}

@@ -57,6 +57,10 @@ public class UIPopupLicense : UIPopupBase
             m_closeButton.onClick.AddListener(OnCloseClicked);
         if (m_backgroundButton != null)
             m_backgroundButton.onClick.AddListener(OnCloseClicked);
+
+        TMP_Text closeButtonText = m_closeButton != null ? m_closeButton.GetComponentInChildren<TMP_Text>() : null;
+        if (closeButtonText != null)
+            CommonUtility.SetUILocText(closeButtonText, "UI_Confirm");
     }
 
     public void ShowPopupLicense(System.Action onClose)

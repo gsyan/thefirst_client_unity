@@ -9,7 +9,7 @@ public class UIPopupRedeemCode : UIPopupBase
     [Header("UI References")]
     [SerializeField] private TMP_InputField m_codeInput;
     [SerializeField] private TMP_Text m_resultText;
-    [SerializeField] private UIButtonHasChildren m_confirmButton;
+    [SerializeField] private Button m_confirmButton;
     [SerializeField] private Button m_cancelButton;
 
     [Header("색상")]
@@ -21,12 +21,22 @@ public class UIPopupRedeemCode : UIPopupBase
     protected override void Awake()
     {
         base.Awake();
-        if (m_confirmButton != null)
-        {
-            m_confirmButton.GetButton().onClick.AddListener(OnConfirmClicked);
-            m_confirmButton.SetActiveColorKey("Action.Primary");
-        }
+        if (m_confirmButton != null) m_confirmButton.onClick.AddListener(OnConfirmClicked);
         if (m_cancelButton != null)  m_cancelButton.onClick.AddListener(OnCancelClicked);
+
+        ApplyStaticLocalization();
+    }
+
+    // 확인/취소 버튼 라벨 로컬라이즈 — CommonUtility.SetUILocText가 각 버튼에 붙어있는 LocalizeStringEvent를 이 키로 재설정함
+    private void ApplyStaticLocalization()
+    {
+        TMP_Text confirmButtonText = m_confirmButton != null ? m_confirmButton.GetComponentInChildren<TMP_Text>() : null;
+        if (confirmButtonText != null)
+            CommonUtility.SetUILocText(confirmButtonText, "UI_Confirm");
+
+        TMP_Text cancelButtonText = m_cancelButton != null ? m_cancelButton.GetComponentInChildren<TMP_Text>() : null;
+        if (cancelButtonText != null)
+            CommonUtility.SetUILocText(cancelButtonText, "UI_Cancel");
     }
 
     public void ShowPopupRedeemCode(Action onClose)
@@ -40,7 +50,7 @@ public class UIPopupRedeemCode : UIPopupBase
         }
 
         SetResultText("", m_colorSuccess);
-        if (m_confirmButton != null) m_confirmButton.SetInteractable(true);
+        if (m_confirmButton != null) m_confirmButton.interactable = true;
         base.ShowPopup();
     }
 
@@ -49,7 +59,7 @@ public class UIPopupRedeemCode : UIPopupBase
         SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true);
         if (m_codeInput == null || string.IsNullOrEmpty(m_codeInput.text) == true) return;
 
-        m_confirmButton.SetInteractable(false);  // 중복 클릭 방지
+        m_confirmButton.interactable = false;  // 중복 클릭 방지
 
         var request = new RedeemCodeRequest { code = m_codeInput.text };
         NetworkManager.Instance.RedeemCode(request, OnRedeemResponse);
@@ -57,7 +67,7 @@ public class UIPopupRedeemCode : UIPopupBase
 
     private void OnRedeemResponse(ApiResponse<RedeemCodeResponse> response)
     {
-        if (m_confirmButton != null) m_confirmButton.SetInteractable(true);
+        if (m_confirmButton != null) m_confirmButton.interactable = true;
 
         if (response == null || response.errorCode != 0)
         {
