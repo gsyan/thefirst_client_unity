@@ -365,7 +365,7 @@ public class UIPanelRank : UIPanelBase
         UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig
         {
             message   = loc.Get("UITabPvp_RetreatConfirm"),
-            onConfirm = () => ObjectManager.Instance.ForceEndBattle(false),
+            onConfirm = () => ObjectManager.Instance.ForceEndBattle(false, 0f),  // 유저가 직접 누른 퇴각은 격추 연출 대기 없이 즉시 처리
             onCancel  = () => { }
         });
     }
@@ -435,6 +435,7 @@ public class UIPanelRank : UIPanelBase
         {
             if (myFleet.IsFleetAlive() == false) myFleet.RebuildFleet(0.1f);
             else myFleet.RestoreDestroyedShips(0.1f);
+            myFleet.FullRepair();  // PvP는 서버가 체력을 추적하지 않으므로 승/패/퇴각 공통으로 전체 회복
 
             RequestPvpList();
             RequestPvpMyRank();
