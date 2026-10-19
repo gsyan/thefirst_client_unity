@@ -115,7 +115,6 @@ public class CommanderInfo
     public int tacticPowerMax;  // 전술 토글(체력회복/미사일/함재기) 공용 소모 게이지 상한 — IncreaseTacticPowerMaxRequest로 영구 증가
     public int tacticPower;  // 진행 중인 탐험 런의 전술력 현재치(ZoneRun.tacticPower와 동일), 진행 중인 런이 없으면 tacticPowerMax와 동일값
     public int explorationSeedBase;  // 서버 월드 시드+커맨더 조합 고정값 — 존별 그리드/적함대 시드는 클라에서 이 값과 zoneNumber를 조합해 결정론적으로 계산
-    public List<string> clearedZones;  // 클리어한 존 이름 목록 (순서 무관, 각 독립)
     public int explorationPoint;    // 보유(확정 지급된) 탐험 포인트 — 적립(ZoneRun.explorationPointBanked)과 별개
     public int achievementPoint;    // 보유 업적포인트 — 티어4+ 함체 언락(소모형)에 사용, 존 탈출/포기 정산 시 지급
     public List<string> unlockedHulls;  // 업적포인트로 언락 완료한 hullSubType 목록(티어1~3은 언락 불필요라 여기 없어도 사용 가능)
@@ -318,6 +317,21 @@ public class EnterExplorationCellResponse
     public int cellRow;
     public int cellCol;
     public string challengeToken; // 이 셀에 대해 발급된 1회용 클리어 챌린지 토큰 — ClearExplorationCellRequest에 그대로 실어 보내야 함
+}
+
+[System.Serializable]
+public class MoveToExplorationCellRequest
+{
+    public int zoneNumber;
+    public int cellRow;
+    public int cellCol;
+}
+
+[System.Serializable]
+public class MoveToExplorationCellResponse
+{
+    public int cellRow;
+    public int cellCol;
 }
 
 [System.Serializable]
@@ -701,6 +715,7 @@ public class RankingEntry
     public float statAttack;   // 총 공격력
     public int statAirCount;   // 함재기 수
     public int statAirAttack;  // 함재기 공격력
+    public bool isPerfectClear;  // Zone 랭킹 전용 - 1존부터 score(=highestClearedZoneNumber)까지 전부 완벽클리어(이탈 없이 전체 셀 클리어)했는지, PVP는 항상 false
     // PVP/Zone/Attack 랭킹 공용 엔트리. score는 항상 string
 }
 

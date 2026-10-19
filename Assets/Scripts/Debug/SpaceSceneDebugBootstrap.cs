@@ -33,7 +33,6 @@ public class SpaceSceneDebugBootstrap : MonoBehaviour
             commanderName = "debug_player",
             exp           = 999999,
             pvpPoint      = 0,
-            clearedZones  = new List<string>(),
             nameChangeCount = 2,
             commandPowerMax = 120, // 서버 Commander.java 기본값(INT DEFAULT 120)과 동일하게 맞춤
         };

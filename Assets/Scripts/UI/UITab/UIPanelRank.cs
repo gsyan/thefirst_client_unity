@@ -437,6 +437,10 @@ public class UIPanelRank : UIPanelBase
             else myFleet.RestoreDestroyedShips(0.1f);
             myFleet.FullRepair();  // PvP는 서버가 체력을 추적하지 않으므로 승/패/퇴각 공통으로 전체 회복
 
+            Commander myCommander = DataManager.Instance.m_currentCommander;
+            if (myCommander != null)
+                myCommander.HealTacticPowerByRatio(1f);  // 전술력도 PvP는 서버가 추적하지 않으므로 체력과 동일하게 전액 회복(ratio=1 → tacticPowerMax로 고정)
+
             RequestPvpList();
             RequestPvpMyRank();
         });

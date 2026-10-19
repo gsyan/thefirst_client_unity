@@ -7,8 +7,8 @@ using UnityEngine;
 
 public enum EGridCellVisualState
 {
-    Unvisited, // 안 가본 곳 — 인접하지 않고 클리어도 안 됨, 클릭 불가
-    Reachable, // 인접함 — 깜빡임 강조 + 테두리 오빗 강조, 클릭 가능
+    Unvisited, // 안 가본 곳 — 클리어된 영역과 인접하지 않아 아직 도달 불가, 클릭 불가
+    Reachable, // 지금 터치하면 이동 확인 팝업이 뜨는 다음 도전 칸(미클리어 전투/이벤트/탈출, 클리어된 영역에 인접) — 깜빡임 강조 + 테두리 오빗 강조, 클릭 가능
     Current,   // 현재 위치
     Cleared,   // 클리어됨 — 재방문 가능
     Blocked,   // 완전 통행불가(절차적 생성 시 막힌 셀) — 오브젝트 자체를 숨김, 자리만 차지

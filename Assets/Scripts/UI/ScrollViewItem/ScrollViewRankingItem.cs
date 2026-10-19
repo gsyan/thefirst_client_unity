@@ -10,6 +10,7 @@ public class ScrollViewRankingItem : MonoBehaviour
     [SerializeField] private TMP_Text m_nameText;
     [SerializeField] private TMP_Text m_scoreText;
     [SerializeField] private GameObject m_myInfoImage;
+    [SerializeField] private GameObject m_perfectClearBadge;
     [SerializeField] private Button m_button;
 
     // tierName → 팔레트 키 (rank 4 이상)
@@ -30,25 +31,28 @@ public class ScrollViewRankingItem : MonoBehaviour
             m_button.onClick.AddListener(OnClicked);
     }
 
-    public void SetData(RankingEntry entry, bool isMyRank)
+    public void SetData(RankingEntry entry, bool isMyRank, bool isZoneRanking)
     {
         m_entry = entry;
 
         if (m_rankText != null)
         {
             m_rankText.text = entry.rank > 0 ? $"#{entry.rank}" : "-";
-            m_rankText.color = GetRankTextColor(entry.rank, entry.score);
+            m_rankText.color = GetRankTextColor(entry.rank, entry.score, isZoneRanking);
         }
         if (m_nameText != null) m_nameText.text = Commander.GetDisplayName(entry.commanderName, entry.commanderId);
         if (m_scoreText != null) m_scoreText.text = entry.score ?? "";
         if (m_myInfoImage != null) m_myInfoImage.SetActive(isMyRank);
+        if (m_perfectClearBadge != null) m_perfectClearBadge.SetActive(isZoneRanking == true && entry.isPerfectClear == true);
     }
 
-    private static Color GetRankTextColor(int rank, string scoreStr)
+    // Zone 점수는 순수 숫자라 int.TryParse가 성공하므로, PVP 티어 색상은 PVP 랭킹에서만 적용
+    private static Color GetRankTextColor(int rank, string scoreStr, bool isZoneRanking)
     {
         if (rank == 1) return CommonUtility.PaletteColor("PvpRank1");
         if (rank == 2) return CommonUtility.PaletteColor("PvpRank2");
         if (rank == 3) return CommonUtility.PaletteColor("PvpRank3");
+        if (isZoneRanking == true) return Color.gray;
 
         var pvpSeason = DataManager.Instance.m_dataTablePvpSeason;
         if (pvpSeason == null == true || int.TryParse(scoreStr, out int score) == false)
@@ -72,6 +76,7 @@ public class ScrollViewRankingItem : MonoBehaviour
         if (m_nameText != null) m_nameText.text = "...";
         if (m_scoreText != null) m_scoreText.text = "...";
         if (m_myInfoImage != null) m_myInfoImage.SetActive(false);
+        if (m_perfectClearBadge != null) m_perfectClearBadge.SetActive(false);
     }
 
     private void OnClicked()

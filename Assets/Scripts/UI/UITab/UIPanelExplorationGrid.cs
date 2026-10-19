@@ -2,6 +2,7 @@
 // 패널 자체(존 탭/포인트 표시 등)는 열리자마자 바로 보임 — 그리드 셀 버튼만 갤럭시뷰 카메라가 실제로 정착한 시점(SettleZoneEntry)에 생성됨.
 // 이전엔 CanvasGroup 알파로 패널 전체를 가려뒀었으나, 버튼을 미리 비우는 것만으로 충분해 제거함(향후 버튼 순차/랜덤 등장 연출의 선행 작업)
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -53,6 +54,7 @@ public class UIPanelExplorationGrid : UIPanelBase
     private int m_activeZoneSnapshotCol;
     private BankedRunReward m_activeZoneSnapshotBankedReward = new();
 
+    private bool m_isAutoMovingAlongPath; // 경로 자동 주행(점프 이동 + 로컬 비주얼 워크) 중 — 추가 터치 무시
     private bool m_pendingCellEntry;
     private int m_pendingCellRow;
     private int m_pendingCellCol;
@@ -169,6 +171,7 @@ public class UIPanelExplorationGrid : UIPanelBase
             m_zoneTabScroll.gameObject.SetActive(false);
 
         m_pendingCellEntry = false;
+        m_isAutoMovingAlongPath = false;
 
         ObjectManager.Instance.ChangeZone(zoneNumber);
 
@@ -192,6 +195,8 @@ public class UIPanelExplorationGrid : UIPanelBase
 
     public override void OnHideUIPanel()
     {
+        m_isAutoMovingAlongPath = false;
+
         EventManager.Unsubscribe_ExplorationGridCellClicked(OnGridCellClicked);
         EventManager.Unsubscribe_GalaxyViewSettled(OnGalaxyViewSettled);
 
@@ -614,6 +619,8 @@ public class UIPanelExplorationGrid : UIPanelBase
 
     private void OnCellClicked(int row, int col)
     {
+        if (m_isAutoMovingAlongPath == true) return;
+
         // 브라우징(스크롤/탭 이동)은 잠긴 존도 허용하되, 실제 입장(전투 진입)만 여기서 차단
         if (s_devSkipZoneLockCheck == false && m_currentZoneNumber > GetHighestClearedZoneNumber() + 1)
         {
@@ -626,14 +633,12 @@ public class UIPanelExplorationGrid : UIPanelBase
         }
 
         bool isCurrentCell = row == m_currentRow && col == m_currentCol;
-        bool isAdjacent = m_gridData.IsAdjacent(m_currentRow, m_currentCol, row, col);
-
-        if (isCurrentCell == false && isAdjacent == false) return;
-        if (isCurrentCell == false && m_gridData.GetCell(row, col).isBlocked) return;
-
         // 현재 서 있는 셀(이미 클리어됨)을 다시 클릭하는 건 아무 동작도 하지 않음 —
         // 탈출 셀도 클리어 즉시 SettleZoneEntry가 자동으로 탈출 확정 팝업을 띄우므로 여기 도달할 일 자체가 없음
         if (isCurrentCell) return;
+
+        List<(int row, int col)> path = m_gridData.FindPath(m_currentRow, m_currentCol, row, col);
+        if (path == null || path.Count < 2) return; // 도달 불가(Blocked 포함)
 
         // 지금 보고 있는 존이 아닌 다른 존에 진행 중인 런이 있으면, 일반 입장 확인 대신
         // 그 런을 포기할지부터 먼저 물어봄(전투 준비 화면까지 갔다가 서버가 거부하는 것보다 먼저 걸러냄)
@@ -647,14 +652,23 @@ public class UIPanelExplorationGrid : UIPanelBase
             return;
         }
 
-        // 이번 런에서 이미 클리어한 셀·시작 셀로의 이동(재방문)은 전투/보상 없이 위치만 옮기므로 도전 확인 팝업 없이 바로 진행
+        // 이번 런에서 이미 클리어한 셀·시작 셀로의 이동(재방문)은 전투/보상 없이 위치만 옮기므로 도전 확인 팝업 없이 바로 진행 —
+        // 거리와 무관하게(인접한 1칸이어도) 항상 점프 이동(MoveToExplorationCell)으로 통일, 경유 칸마다 서버 왕복하지 않음
         GridCellData targetCellData = m_gridData.GetCell(row, col);
         bool isAlreadyClearedTargetCell = targetCellData.isCleared;
         bool isStartTargetCell = targetCellData.isStart;
         bool isRevisitTargetCell = isAlreadyClearedTargetCell == true || isStartTargetCell == true;
         if (isRevisitTargetCell == true)
         {
-            ConfirmEnterCell(row, col);
+            StartJumpMove(path, path.Count - 1, onWalkComplete: null);
+            return;
+        }
+
+        // 목적지가 확인 팝업이 필요한 셀(미클리어 전투/이벤트/탈출) — 이미 인접하면 기존처럼 바로 팝업,
+        // 아니면 직전 칸(이미 클리어된 경유지)까지만 점프한 뒤 완료 시 이 메서드를 재호출해 아래 분기를 그대로 타게 함
+        if (path.Count > 2)
+        {
+            StartJumpMove(path, path.Count - 2, onWalkComplete: () => OnCellClicked(row, col));
             return;
         }
 
@@ -665,6 +679,74 @@ public class UIPanelExplorationGrid : UIPanelBase
             onConfirm = () => ConfirmEnterCell(row, col),
             onCancel = () => { }
         });
+    }
+
+    // 경로(path)의 jumpToIndex번째 칸까지 서버에 위치 점프를 확정(MoveToExplorationCell, 호출 1번)한 뒤,
+    // path[1..jumpToIndex]를 순서대로 로컬 비주얼 연출(PlayLocalWalkAnimation, 서버 호출 없음)로 이동시킴.
+    // m_currentRow/Col·그리드뷰 반영(RefreshCellStates)은 비주얼 이동 루프 안에서 한 칸씩 같이 갱신됨(아래 참고) —
+    // 서버가 경로 전체를 이미 검증했으므로 중간에 끊겨도 안전, 입력도 잠겨있어 그 사이 다른 값으로 바뀔 일 없음
+    // onWalkComplete는 비주얼 이동까지 다 끝난 뒤에만 필요한 후속 동작이 있을 때 사용(팝업 필요 셀로 가기 전 직전 칸까지 점프한 경우 등)
+    private void StartJumpMove(List<(int row, int col)> path, int jumpToIndex, System.Action onWalkComplete)
+    {
+        m_isAutoMovingAlongPath = true;
+
+        (int row, int col) jumpTarget = path[jumpToIndex];
+        var request = new MoveToExplorationCellRequest
+        {
+            zoneNumber = m_currentZoneNumber,
+            cellRow = jumpTarget.row,
+            cellCol = jumpTarget.col,
+        };
+        NetworkManager.Instance.MoveToExplorationCell(request, response =>
+        {
+            if (response == null || response.errorCode != 0 || response.data == null)
+            {
+                m_isAutoMovingAlongPath = false;
+                NetworkManager.Instance.ShowRequestFailedPopup(response != null ? response.errorCode : 0);
+                return;
+            }
+
+            List<(int row, int col)> walkCells = path.GetRange(1, jumpToIndex);
+            PlayLocalWalkAnimation(walkCells, () =>
+            {
+                m_isAutoMovingAlongPath = false;
+                if (onWalkComplete != null)
+                    onWalkComplete.Invoke();
+            });
+        });
+    }
+
+    // 서버 호출 없이 순수 로컬 연출 — 워프 이펙트(뒤로 순간이동 후 서서히 날아오는 연출) 없이 cells를 순서대로
+    // 한 칸씩 즉시 스냅 이동시킴. m_currentRow/Col과 그리드 셀의 "현재 위치" 마커(GridCell3D.m_myFleetMarker,
+    // RefreshCellStates가 EGridCellVisualState.Current 기준으로 켜고 끔)도 이 루프 안에서 한 칸씩 같이 갱신해야
+    // 마커가 함선과 같은 속도로 이동하는 것처럼 보임(루프 밖에서 한 번에 최종 위치로 갱신하면 마커만 먼저 도착해버림)
+    private void PlayLocalWalkAnimation(List<(int row, int col)> cells, System.Action onComplete)
+    {
+        if (cells == null || cells.Count == 0)
+        {
+            if (onComplete != null)
+                onComplete.Invoke();
+            return;
+        }
+
+        StartCoroutine(Co_PlayLocalWalkAnimation(cells, onComplete));
+    }
+
+    private static readonly WaitForSeconds s_walkStepDelay = new WaitForSeconds(0.05f); // 임시 실험값 — 칸칸이 지나가는 느낌 테스트용
+
+    private IEnumerator Co_PlayLocalWalkAnimation(List<(int row, int col)> cells, System.Action onComplete)
+    {
+        for (int i = 0; i < cells.Count; i++)
+        {
+            m_currentRow = cells[i].row;
+            m_currentCol = cells[i].col;
+            ObjectManager.Instance.SetMyFleetPosition(m_gridData.GetCell(cells[i].row, cells[i].col).worldPos, 0f);
+            RefreshCellStates();
+            yield return s_walkStepDelay;
+        }
+
+        if (onComplete != null)
+            onComplete.Invoke();
     }
 
     // 다른 존에 진행 중인 런의 최신 정보(존/셀/적립량)를 서버에서 받아와 포기 여부를 묻는 팝업 표시
@@ -1733,12 +1815,14 @@ public class UIPanelExplorationGrid : UIPanelBase
             GridCellData cellData = m_gridData.GetCell(row, col);
 
             bool isCurrentCell = row == m_currentRow && col == m_currentCol;
-            bool isAdjacent = m_gridData.IsAdjacent(m_currentRow, m_currentCol, row, col);
+            // 경로 이동 도입 후 "인접"은 더 이상 의미가 없음(먼 셀도 한 번에 이동 가능) — 대신 "지금 터치하면 이동 확인
+            // 팝업이 뜨는 다음 도전 칸"(미클리어 또는 탈출 셀 + 클리어된 영역에 인접)을 강조 표시로 사용
+            bool needsMovePopup = (cellData.isCleared == false || cellData.isEscape) && m_gridData.IsAdjacentToPassableCell(row, col);
 
             EGridCellVisualState state;
             if (cellData.isBlocked) state = EGridCellVisualState.Blocked; // 통행불가 셀은 인접해도 항상 숨김
             else if (isCurrentCell) state = EGridCellVisualState.Current;
-            else if (isAdjacent) state = EGridCellVisualState.Reachable;
+            else if (needsMovePopup) state = EGridCellVisualState.Reachable;
             else if (cellData.isCleared) state = EGridCellVisualState.Cleared;
             else state = EGridCellVisualState.Unvisited;
 

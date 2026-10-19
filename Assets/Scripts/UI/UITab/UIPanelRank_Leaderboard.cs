@@ -154,7 +154,7 @@ public class UIPanelRank_Leaderboard : MonoBehaviour
         Dictionary<int, RankingEntry> cache = GetCurrentCache();
 
         if (cache.TryGetValue(dataIndex, out RankingEntry entry) == true)
-            item.SetData(entry, entry.commanderId == myCommanderId);
+            item.SetData(entry, entry.commanderId == myCommanderId, m_currentType == RankingType.Zone);
         else
             item.SetLoading();
     }
@@ -230,7 +230,7 @@ public class UIPanelRank_Leaderboard : MonoBehaviour
     private void ApplyMyInfo(RankingEntry info)
     {
         if (m_myRankInfo == null || info == null) return;
-        m_myRankInfo.SetData(info, true);
+        m_myRankInfo.SetData(info, true, m_currentType == RankingType.Zone);
     }
 
     private bool IsExpired(DateTime? nextUpdatedAt)

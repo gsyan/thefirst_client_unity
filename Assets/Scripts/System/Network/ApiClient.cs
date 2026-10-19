@@ -608,6 +608,11 @@ public class ApiClient
         return await PostAsync<ClearExplorationCellResponse>("/exploration/clear-cell", request);
     }
 
+    public async Task<ApiResponse<MoveToExplorationCellResponse>> MoveToExplorationCellAsync(MoveToExplorationCellRequest request)
+    {
+        return await PostAsync<MoveToExplorationCellResponse>("/exploration/move-to-cell", request);
+    }
+
     public async Task<ApiResponse<ConfirmRewardCardResponse>> ConfirmRewardCardAsync(ConfirmRewardCardRequest request)
     {
         return await PostAsync<ConfirmRewardCardResponse>("/exploration/confirm-reward-card", request);
