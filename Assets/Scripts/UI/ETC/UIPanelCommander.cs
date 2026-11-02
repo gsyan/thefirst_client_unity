@@ -97,7 +97,8 @@ public class UIPanelCommander : UIPanelBase
         if (commander == null) return;
 
         int currentLevel = commander.GetCommanderLevel();
-        int maxShips = DataManager.Instance.m_dataTableCommander.GetShipCount(currentLevel);
+        // 함대 슬롯 칸 수는 더 이상 레벨로 늘어나지 않음 — 고정 상한(GeneralSettings.maxFleetSlotCount)
+        int maxShips = DataManager.Instance.m_dataTableConfig.gameSettings.general.maxFleetSlotCount;
         CommanderData nextNode = GetNextCommanderLevelNode(commander);
 
         // 기술레벨 요약: 레벨 / 자원 보관 캡 / 최대 함선 수

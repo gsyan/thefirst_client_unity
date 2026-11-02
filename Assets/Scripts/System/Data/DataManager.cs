@@ -17,6 +17,7 @@ public class DataManager : Singleton<DataManager>
         LoadDataTableDailyBonus();
         LoadDataTableAchievement();
         LoadDataTableDailyAchievement();
+        LoadDataTableHullArchetypePassive();
         LoadColorPalette();
     }
     #endregion
@@ -139,6 +140,17 @@ public class DataManager : Singleton<DataManager>
             Debug.LogError("DataTableCommander is not exist");
         else
             Debug.Log("DataTableCommander loaded successfully");
+    }
+    #endregion
+
+    #region Data Table Hull Archetype Passive ###############################################################
+    public DataTableHullArchetypePassive m_dataTableHullArchetypePassive;
+
+    private void LoadDataTableHullArchetypePassive()
+    {
+        m_dataTableHullArchetypePassive = ResourceManager.Instance.Load<DataTableHullArchetypePassive>("DataTable/DataTableHullArchetypePassive");
+        if (m_dataTableHullArchetypePassive == null)
+            Debug.LogError("DataTableHullArchetypePassive is not exist");
     }
     #endregion
 

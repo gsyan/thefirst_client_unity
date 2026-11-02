@@ -607,17 +607,15 @@ public class UIManager : MonoSingleton<UIManager>
         m_networkWaitPopup.SetState(blockInput, showSpinner);
     }
 
-    // 커맨더 레벨업 알림 팝업 (서버 자동 레벨업 감지 시 호출) — 레벨/배치가능 함선수를 항상 표시
+    // 커맨더 레벨업 알림 팝업 (서버 자동 레벨업 감지 시 호출) — 레벨을 표시(함선 수는 더 이상 레벨로 늘어나지 않아 표시 제외)
     // onClosed: 팝업이 확인 클릭 또는 자동 닫힘으로 닫힐 때 호출(선택)
     public void ShowCommanderLevelupNotify(int newLevel, System.Action onClosed = null)
     {
         SoundManager.Instance.PlayFX(EFx.Commander_Level_Up);
-        int shipCount = DataManager.Instance.m_dataTableCommander.GetShipCount(newLevel);
         Color defaultColor = CommonUtility.PaletteColor("General.Bright1");
         var rows = new List<(string label, string value, Color? color)>
         {
             ("UI_CommanderLevel", newLevel.ToString(), defaultColor),
-            ("UI_MaxShipSlots", shipCount.ToString(), defaultColor),
         };
         ShowConfirmPopup(new ConfirmPopupConfig
         {
@@ -682,27 +680,25 @@ public class UIManager : MonoSingleton<UIManager>
         popup.ShowPopupRedeemCode(onClose: () => CloseTopPopup(EPopupLayer.Normal));
     }
 
-    // 탐사포인트 -> 지휘력/전술력 최대치 변환 팝업
-    public void ShowConvertExplorationPointPopup(EExplorationPointConvertTarget target, System.Action onConfirmed = null)
+    // 탐사포인트 -> 전술력 최대치 변환 팝업(지휘력은 M13부터 구매 없이 커맨더 레벨로 자동 결정)
+    public void ShowConvertExplorationPointPopup(System.Action onConfirmed = null)
     {
         UIPopupConvertExplorationPoint popup = GetOrCreatePopup<UIPopupConvertExplorationPoint>("UIPopupConvertExplorationPoint", EPopupLayer.Normal);
         if (popup == null) return;
 
         ReplacePopup(popup, EPopupLayer.Normal);
-        popup.ShowPopupConvertExplorationPoint(target, onClose: () => CloseTopPopup(EPopupLayer.Normal), onConfirmed: onConfirmed);
+        popup.ShowPopupConvertExplorationPoint(onClose: () => CloseTopPopup(EPopupLayer.Normal), onConfirmed: onConfirmed);
     }
 
-    // 함선 로드아웃 슬롯의 공격력 강화 포인트 편집 팝업(UIShipLoadoutEditorView의 ManageButton에서 오픈)
-    public void ShowModuleReinforcePopup(EModuleType moduleType, ModuleInfo initialInfo,
-        int maxCommandPower, int usedByOtherSlots, int installCost, int hullTier, System.Action<ModuleInfo> onConfirm)
+    // 함선 로드아웃 슬롯의 모듈 레벨업 팝업(UIShipLoadoutEditorView의 ManageButton에서 오픈) — 업적포인트 기반 아키타입단위 영구강화(M6)
+    public void ShowModuleReinforcePopup(string hullArchetype, EModuleType moduleType, int slotIndex)
     {
         UIPopupModuleReinforce popup = GetOrCreatePopup<UIPopupModuleReinforce>("UIPopupModuleReinforce", EPopupLayer.Normal);
         if (popup == null) return;
 
         ReplacePopup(popup, EPopupLayer.Normal);
-        popup.ShowPopupModuleReinforce(moduleType, initialInfo,
-            maxCommandPower, usedByOtherSlots, installCost, hullTier,
-            onClose: () => CloseTopPopup(EPopupLayer.Normal), onConfirm: onConfirm);
+        popup.ShowPopupModuleReinforce(hullArchetype, moduleType, slotIndex,
+            onClose: () => CloseTopPopup(EPopupLayer.Normal));
     }
 
     // 외부 라이센스 고지 팝업

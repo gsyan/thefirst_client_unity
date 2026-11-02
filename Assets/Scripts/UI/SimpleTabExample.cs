@@ -37,9 +37,7 @@ public class SimpleTabExample : MonoBehaviour
                 {
                     tabButton = simpleTab.button,
                     tabPanel = simpleTab.panel,
-                    tabName = simpleTab.name,
-                    activeColor = Color.cyan,
-                    inactiveColor = Color.gray
+                    tabName = simpleTab.name
                 };
                 
                 tabSystem.AddTab(tabData);

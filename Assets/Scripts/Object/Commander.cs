@@ -101,6 +101,36 @@ public class Commander
         EventManager.Trigger_TacticPowerChanged(m_commanderInfo.tacticPower, m_commanderInfo.tacticPowerMax);
     }
 
+    public int GetMineralAmount()
+    {
+        if (m_commanderInfo == null) return 0;
+        return m_commanderInfo.mineralAmount;
+    }
+
+    // 자원 게이지(전술력) 자동/패시브 회복 없음 — 존런 중 쌓인 광물을 소모해서만 수동 충전 가능.
+    // 광물 1개당 mineralToResourceRatio만큼 자원을 채우며, 자원이 이미 가득 차 있으면(필요량 0) 광물을 소모하지 않고 false 반환
+    public bool ChargeTacticPowerWithMineral()
+    {
+        if (m_commanderInfo == null) return false;
+
+        int neededPoints = m_commanderInfo.tacticPowerMax - m_commanderInfo.tacticPower;
+        if (neededPoints <= 0 || m_commanderInfo.mineralAmount <= 0) return false;
+
+        int ratio = DataManager.Instance.m_dataTableConfig.gameSettings.tactic.mineralToResourceRatio;
+        if (ratio <= 0) return false;
+
+        int affordableMineral = (neededPoints + ratio - 1) / ratio; // 필요 포인트를 다 채우는 데 드는 광물 수(올림)
+        int mineralToSpend = UnityEngine.Mathf.Min(affordableMineral, m_commanderInfo.mineralAmount);
+        int gainedPoints = UnityEngine.Mathf.Min(neededPoints, mineralToSpend * ratio);
+
+        m_commanderInfo.mineralAmount -= mineralToSpend;
+        m_commanderInfo.tacticPower += gainedPoints;
+
+        EventManager.Trigger_TacticPowerChanged(m_commanderInfo.tacticPower, m_commanderInfo.tacticPowerMax);
+        EventManager.Trigger_MineralAmountChanged(m_commanderInfo.mineralAmount);
+        return true;
+    }
+
     public int GetAchievementPoint()
     {
         if (m_commanderInfo == null) return 0;
@@ -146,11 +176,11 @@ public class Commander
         return m_commanderInfo.unlockedHulls.Contains(hullSubType);
     }
 
-    // 업적포인트로 언락한 함체가 하나라도 있는지 — 티어4+ 함체는 선행 언락 순서가 있어 하나라도 있으면 최저 티어(티어4)는 이미 언락된 것
+    // 업적포인트로 "직접" 언락한 함체가 하나라도 있는지 — 티어1은 커맨더 생성 시점에 서버가 기본으로 심어두는 무료 기록이라 카운트에서 제외
     public bool HasAnyUnlockedHull()
     {
         if (m_commanderInfo == null || m_commanderInfo.unlockedHulls == null) return false;
-        return m_commanderInfo.unlockedHulls.Count > 0;
+        return m_commanderInfo.unlockedHulls.Exists(h => CommonUtility.ParseTier(h) > 1);
     }
 
     // UnlockHull API 성공 응답의 unlockedHulls(권위값)로 갱신 — 호출부(UIHullPickerView)가 직접 화면을 다시 그림
@@ -160,32 +190,6 @@ public class Commander
         m_commanderInfo.unlockedHulls = unlockedHulls;
     }
 
-    public bool IsShieldUnlocked(string hullSubType)
-    {
-        if (m_commanderInfo == null || m_commanderInfo.unlockedShieldHulls == null) return false;
-        return m_commanderInfo.unlockedShieldHulls.Contains(hullSubType);
-    }
-
-    public bool IsInterceptorUnlocked(string hullSubType)
-    {
-        if (m_commanderInfo == null || m_commanderInfo.unlockedInterceptorHulls == null) return false;
-        return m_commanderInfo.unlockedInterceptorHulls.Contains(hullSubType);
-    }
-
-    // UnlockShieldModule API 성공 응답의 unlockedShieldHulls(권위값)로 갱신 — 호출부가 직접 화면을 다시 그림
-    public void UpdateUnlockedShieldHulls(System.Collections.Generic.List<string> unlockedShieldHulls)
-    {
-        if (m_commanderInfo == null) return;
-        m_commanderInfo.unlockedShieldHulls = unlockedShieldHulls;
-    }
-
-    // UnlockInterceptorModule API 성공 응답의 unlockedInterceptorHulls(권위값)로 갱신 — 호출부가 직접 화면을 다시 그림
-    public void UpdateUnlockedInterceptorHulls(System.Collections.Generic.List<string> unlockedInterceptorHulls)
-    {
-        if (m_commanderInfo == null) return;
-        m_commanderInfo.unlockedInterceptorHulls = unlockedInterceptorHulls;
-    }
-
     public int GetCommanderLevel()
     {
         if (m_commanderInfo == null) return 1;
@@ -193,11 +197,23 @@ public class Commander
         return level > 0 ? level : 1;
     }
 
-    // 서버 응답 commanderLevel로 갱신 후 이벤트 발생
+    // 서버 응답 commanderLevel로 갱신 후 이벤트 발생 — 지휘력(캐파) 최대치도 레벨에 맞춰 로컬 재계산(M13, 구매 없이 레벨로만 결정)
     public void UpdateCommanderLevel(int newLevel)
     {
         if (m_commanderInfo == null) return;
         m_commanderInfo.commanderLevel = newLevel;
+
+        DataTableCommander dataTableCommander = DataManager.Instance.m_dataTableCommander;
+        if (dataTableCommander != null)
+        {
+            int newCommandPowerMax = dataTableCommander.GetCommandPower(newLevel);
+            m_commanderInfo.commandPowerMax = newCommandPowerMax;
+
+            FleetComposition composition = DataManager.Instance.m_currentFleetComposition;
+            if (composition != null)
+                composition.SetMaxCommandPower(newCommandPowerMax);
+        }
+
         EventManager.TriggerCommanderLevelChange(newLevel);
     }
 
@@ -223,6 +239,54 @@ public class Commander
     {
         if (m_commanderInfo == null) return false;
         return m_commanderInfo.exp >= cost;
+    }
+
+    // 아키타입 단위 영구 모듈강화(M6) 현재 레벨 — 기록이 없으면 0. beam/missile/hangar는 slotIndex별로 독립, hull/shield/interceptor는 항상 slotIndex=0
+    public int GetArchetypeUpgradeLevel(string hullArchetype, EModuleType moduleType, int slotIndex = 0)
+    {
+        if (m_commanderInfo == null || m_commanderInfo.archetypeUpgrades == null) return 0;
+        for (int i = 0; i < m_commanderInfo.archetypeUpgrades.Count; i++)
+        {
+            ArchetypeUpgradeInfo entry = m_commanderInfo.archetypeUpgrades[i];
+            if (entry.hullArchetype == hullArchetype && entry.moduleType == moduleType && entry.slotIndex == slotIndex)
+                return entry.level;
+        }
+        return 0;
+    }
+
+    // UpgradeArchetypeModule API 성공 응답(권위값)으로 로컬 캐시 갱신 — 없으면 새로 추가, 있으면 레벨만 갱신
+    public void UpdateArchetypeUpgradeLevel(string hullArchetype, EModuleType moduleType, int slotIndex, int level)
+    {
+        if (m_commanderInfo == null) return;
+        if (m_commanderInfo.archetypeUpgrades == null)
+            m_commanderInfo.archetypeUpgrades = new System.Collections.Generic.List<ArchetypeUpgradeInfo>();
+
+        for (int i = 0; i < m_commanderInfo.archetypeUpgrades.Count; i++)
+        {
+            if (m_commanderInfo.archetypeUpgrades[i].hullArchetype == hullArchetype && m_commanderInfo.archetypeUpgrades[i].moduleType == moduleType
+                && m_commanderInfo.archetypeUpgrades[i].slotIndex == slotIndex)
+            {
+                ArchetypeUpgradeInfo updated = m_commanderInfo.archetypeUpgrades[i];
+                updated.level = level;
+                m_commanderInfo.archetypeUpgrades[i] = updated;
+                return;
+            }
+        }
+
+        m_commanderInfo.archetypeUpgrades.Add(new ArchetypeUpgradeInfo { hullArchetype = hullArchetype, moduleType = moduleType, slotIndex = slotIndex, level = level });
+    }
+
+    // 아키타입 패시브(1~5성, 4단계) 언락 조건 누적 카운터 — 기록이 없으면 0
+    public long GetHullArchetypePassiveCounterValue(string hullArchetype, string counterType)
+    {
+        if (m_commanderInfo == null || m_commanderInfo.hullArchetypePassiveProgress == null) return 0;
+        for (int i = 0; i < m_commanderInfo.hullArchetypePassiveProgress.Count; i++)
+        {
+            HullArchetypeProgressInfo entry = m_commanderInfo.hullArchetypePassiveProgress[i];
+            if (entry.hullArchetype == hullArchetype && entry.counterType == counterType)
+                return entry.counterValue;
+        }
+        return 0;
     }
 
 }

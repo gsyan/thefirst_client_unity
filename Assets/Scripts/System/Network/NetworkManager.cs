@@ -877,6 +877,18 @@ public class NetworkManager : MonoSingleton<NetworkManager>
         StartCoroutine(RunAsync(() => m_apiClient.SetFleetShipFrontAsync(request), null));
     }
 
+    public void RemoveFleetShip(FleetRemoveShipRequest request, System.Action<ApiResponse<string>> onComplete = null)
+    {
+        // 호출부가 응답 콜백에서 로컬 편성을 비우므로, 연결이 없어도 콜백을 호출해 UI가 멈추지 않게 함
+        if (m_bConnected == false)
+        {
+            if (onComplete != null)
+                onComplete(ApiResponse<string>.error((int)ServerErrorCode.CLIENT_REQUEST_NO_RESPONSE));
+            return;
+        }
+        StartCoroutine(RunAsync(() => m_apiClient.RemoveFleetShipAsync(request), onComplete));
+    }
+
     public void SetModule(SetModuleRequest request, System.Action<ApiResponse<SetModuleResponse>> onComplete)
     {
         if (m_bConnected == false) return;
@@ -889,16 +901,10 @@ public class NetworkManager : MonoSingleton<NetworkManager>
         StartCoroutine(RunAsync(() => m_apiClient.UnlockHullAsync(request), onComplete));
     }
 
-    public void UnlockShieldModule(UnlockShieldModuleRequest request, System.Action<ApiResponse<UnlockShieldModuleResponse>> onComplete)
+    public void UpgradeArchetypeModule(UpgradeArchetypeModuleRequest request, System.Action<ApiResponse<UpgradeArchetypeModuleResponse>> onComplete)
     {
         if (m_bConnected == false) return;
-        StartCoroutine(RunAsync(() => m_apiClient.UnlockShieldModuleAsync(request), onComplete));
-    }
-
-    public void UnlockInterceptorModule(UnlockInterceptorModuleRequest request, System.Action<ApiResponse<UnlockInterceptorModuleResponse>> onComplete)
-    {
-        if (m_bConnected == false) return;
-        StartCoroutine(RunAsync(() => m_apiClient.UnlockInterceptorModuleAsync(request), onComplete));
+        StartCoroutine(RunAsync(() => m_apiClient.UpgradeArchetypeModuleAsync(request), onComplete));
     }
 
     public void GetAchievementList(GetAchievementListRequest request, System.Action<ApiResponse<GetAchievementListResponse>> onComplete)
@@ -1078,12 +1084,6 @@ public class NetworkManager : MonoSingleton<NetworkManager>
         StartCoroutine(RunAsync(() => m_apiClient.AbandonZoneRunAsync(request), onComplete));
     }
 
-    public void IncreaseCommandPowerMax(IncreaseCommandPowerMaxRequest request, System.Action<ApiResponse<IncreaseCommandPowerMaxResponse>> onComplete)
-    {
-        if (m_bConnected == false) return;
-        StartCoroutine(RunAsync(() => m_apiClient.IncreaseCommandPowerMaxAsync(request), onComplete));
-    }
-
     public void IncreaseTacticPowerMax(IncreaseTacticPowerMaxRequest request, System.Action<ApiResponse<IncreaseTacticPowerMaxResponse>> onComplete)
     {
         if (m_bConnected == false) return;
@@ -1108,6 +1108,11 @@ public class NetworkManager : MonoSingleton<NetworkManager>
     public void GetDailyBonusStatus(System.Action<ApiResponse<DailyBonusStatusResponse>> onComplete)
     {
         StartCoroutine(RunAsync(() => m_apiClient.GetDailyBonusStatusAsync(), onComplete, policy: ERequestPolicy.Read));
+    }
+
+    public void GetNotice(System.Action<ApiResponse<NoticeResponse>> onComplete)
+    {
+        StartCoroutine(RunAsync(() => m_apiClient.GetNoticeAsync(), onComplete, policy: ERequestPolicy.Read));
     }
 
 #if UNITY_EDITOR

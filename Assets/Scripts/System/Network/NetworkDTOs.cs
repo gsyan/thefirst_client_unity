@@ -63,10 +63,7 @@ public class ModuleHullInfo
     public List<ModuleInfo> hangars;
     // 실드/요격체 장착 서브타입 — 빈 문자열이면 미장착. 적함대 존 데이터 배관용으로 서버가 채워 보냄(클라 소비 로직은 후속 작업)
     public string shieldModuleSubType = "";
-    public int shieldGaugePoints; // 실드 게이지 강화 투자 포인트 — 1포인트 = 지휘력 reinforceCpCostPerPoint
-    public int shieldRegenRatePoints; // 실드 회복속도 강화 투자 포인트
     public string interceptorModuleSubType = "";
-    public int interceptorRegenRatePoints; // 요격체 회복속도 강화 투자 포인트
     // 현재 체력 (절대값). 0 이하 = 기본값(만피). 서버 저장/복원용
     public float currentHealth;
 }
@@ -79,13 +76,6 @@ public class ModuleInfo
     public int moduleLevel;
     public int hullIndex;
     public int slotIndex;
-    public int attackPoints; // 빔/미사일 공격력, 격납고는 대함 공격력 강화 투자 포인트 — 1포인트 = 지휘력 1
-    public int attackToFighterPoints; // 격납고 전용 — 대전투기 공격력 강화 투자 포인트. 빔/미사일은 항상 0
-    public int fireRatePoints; // 빔/미사일 전용 — 연사력(쿨다운 감소) 강화 투자 포인트. 그 외 모듈은 항상 0
-    public int silencePoints; // 미사일 전용 — 침묵시간 강화 투자 포인트. 그 외 모듈은 항상 0
-    public int ammoPoints; // 격납고 전용 — 함재기 탄약 강화 투자 포인트. 그 외 모듈은 항상 0
-    public int healthPoints; // 격납고 전용 — 함재기 체력 강화 투자 포인트. 그 외 모듈은 항상 0
-    public int disruptPoints; // 격납고 전용 — 함재기 교란(명중 시 공격 딜레이) 강화 투자 포인트. 그 외 모듈은 항상 0
 }
 
 [System.Serializable]
@@ -111,15 +101,14 @@ public class CommanderInfo
     public int nameChangeCount;  // 남은 이름 변경 횟수 (초기값 2)
     public int commanderLevel;
     public int exp;    
-    public int commandPowerMax;  // 탐험 함대 편성 지휘력 최대치 — IncreaseCommandPowerMaxRequest로 영구 증가
+    public int commandPowerMax;  // 지휘력(캐파) 최대치 — 구매 없이 커맨더 레벨에 따라 자동 증가(M13)
     public int tacticPowerMax;  // 전술 토글(체력회복/미사일/함재기) 공용 소모 게이지 상한 — IncreaseTacticPowerMaxRequest로 영구 증가
     public int tacticPower;  // 진행 중인 탐험 런의 전술력 현재치(ZoneRun.tacticPower와 동일), 진행 중인 런이 없으면 tacticPowerMax와 동일값
+    public int mineralAmount;  // 진행 중인 탐험 런의 광물 현재치(ZoneRun.mineralAmount와 동일) — 존런 전용, 영구 자산 아님, 진행 중인 런이 없으면 0
     public int explorationSeedBase;  // 서버 월드 시드+커맨더 조합 고정값 — 존별 그리드/적함대 시드는 클라에서 이 값과 zoneNumber를 조합해 결정론적으로 계산
     public int explorationPoint;    // 보유(확정 지급된) 탐험 포인트 — 적립(ZoneRun.explorationPointBanked)과 별개
     public int achievementPoint;    // 보유 업적포인트 — 티어4+ 함체 언락(소모형)에 사용, 존 탈출/포기 정산 시 지급
     public List<string> unlockedHulls;  // 업적포인트로 언락 완료한 hullSubType 목록(티어1~3은 언락 불필요라 여기 없어도 사용 가능)
-    public List<string> unlockedShieldHulls;  // 실드 슬롯 사용 가능(언락 완료)한 hullSubType 목록
-    public List<string> unlockedInterceptorHulls;  // 요격체 슬롯 사용 가능(언락 완료)한 hullSubType 목록
     public int explorationZoneNumber;  // 진행 중인 탐험 런의 존 번호, 없으면 0
     public string explorationCell;  // 진행 중인 탐험 런의 마지막 클리어 셀 "row-col"(0-indexed, ZoneRun.currentCell과 동일 포맷), 없으면 빈 문자열
     public int highestClearedZoneNumber;  // 존 탈출(ESCAPED)로 확정된 존 번호 중 최댓값, 없으면 0
@@ -127,7 +116,26 @@ public class CommanderInfo
     public int pvpPointMaxGot;
     public string pvpPointExpiry;   // ISO 8601 — PvP 정산 배치 지급, 만료 시 소멸
     public bool hasUnclaimedAchievement;  // 완료했지만 아직 안 받은 업적 존재 여부 — 로그인/재접속 시 레드닷 초기값용
+    public List<ArchetypeUpgradeInfo> archetypeUpgrades;  // 아키타입단위 영구 모듈강화(M6) 현재 레벨 전체 목록 — 기록이 없는 (아키타입,moduleType) 조합은 레벨 0
+    public List<HullArchetypeProgressInfo> hullArchetypePassiveProgress;  // 아키타입 패시브(1~5성, 4단계) 언락 조건 누적 카운터 — 기록이 없는 (아키타입,counterType) 조합은 0
 
+}
+
+[System.Serializable]
+public class ArchetypeUpgradeInfo
+{
+    public string hullArchetype;
+    public EModuleType moduleType;
+    public int slotIndex;  // beam/missile/hangar만 의미 있음(슬롯별 독립 레벨) — hull/shield/interceptor는 항상 0
+    public int level;
+}
+
+[System.Serializable]
+public class HullArchetypeProgressInfo
+{
+    public string hullArchetype;
+    public string counterType;  // 아키타입별로 의미가 다른 자유 문자열(예: "destroyed_ship", "zone_run_cleared")
+    public long counterValue;
 }
 
 
@@ -352,6 +360,7 @@ public class ClearExplorationCellRequest
     public int cellCol;
     public List<ShipHealthRatioInfo> shipHealthRatios; // 셀 클리어 시점의 내 함대 체력 스냅샷 — ZoneRun에 저장돼 재접속 시 복구됨
     public int tacticPower; // 셀 클리어 시점의 전술력 현재치 — ZoneRun.tacticPower에 확정 저장(전투 중엔 서버에 실시간 저장하지 않고 클리어 시에만 확정)
+    public int mineralAmount; // 셀 클리어 시점의 광물 현재치 — ZoneRun.mineralAmount에 확정 저장(존런 전용, 서버 검증 없이 클라 보고값을 그대로 신뢰)
     public string challengeToken; // EnterExplorationCellResponse.challengeToken을 그대로 반환 — enter-cell 없이 clear-cell만 반복 호출하는 것을 막음
 }
 
@@ -364,6 +373,7 @@ public class ClearExplorationCellResponse
     public ETreasureRewardType treasureRewardType; // None이면 Treasure 보상 아님(ExplorationPoint면 explorationPointGained에 이미 반영됨)
     public float treasureRewardRatio;              // treasureRewardType이 ShipHealthHeal/TacticPowerRestore일 때만 유효한 회복 비율(0~1)
     public int tacticPower;                        // 이 클리어 확정 후 서버가 확정한 전술력 현재치(권위값) — 항상 채워짐
+    public int mineralAmount;                       // 이 클리어 확정 후 서버에 저장된 광물 현재치 — 클라 보고값을 그대로 저장한 것(서버 검증 없음)
     public int rerollRemain;                       // 오늘 남은 보상카드 리롤 가능 횟수(소모 전 조회값) — rewardCardCandidates가 null이면 무의미
 }
 
@@ -412,6 +422,7 @@ public class GetActiveZoneRunProgressResponse
     public List<string> selectedRewardCards; // 이번 런에서 선택 확정한 보상카드(cardId) 전체 목록 — 지속버프 여부는 클라가 DataTableRewardCard로 재판별
     public List<string> pendingRewardCardCandidates; // 마지막 클리어 셀에 후보는 나왔지만 아직 선택 확정 전이면 그 후보 3개 — 카드 선택 팝업이 뜨기 전에 앱이 꺼진 경우 재접속 시 복구용, 없으면 null
     public int rerollRemain;                          // 오늘 남은 보상카드 리롤 가능 횟수(소모 전 조회값) — pendingRewardCardCandidates가 null이면 무의미
+    public int mineralAmount;                         // 진행 중인 런의 광물 현재치, 없으면 0
 }
 
 [System.Serializable]
@@ -468,31 +479,21 @@ public class UnlockHullResponse
 }
 
 [System.Serializable]
-public class UnlockShieldModuleRequest
+public class UpgradeArchetypeModuleRequest
 {
-    public string hullSubType; // 실드 슬롯을 언락할 함체(이미 함체 자체는 언락돼 있어야 함)
+    public string hullArchetype;
+    public EModuleType moduleType;
+    public int slotIndex;  // beam/missile/hangar만 의미 있음(슬롯별 독립 레벨) — hull/shield/interceptor는 항상 0
 }
 
 [System.Serializable]
-public class UnlockShieldModuleResponse
+public class UpgradeArchetypeModuleResponse
 {
-    public string hullSubType;                  // 실드 언락 완료된 함체
-    public int achievementPointRemain;           // 소모 후 보유량
-    public List<string> unlockedShieldHulls;     // 갱신된 전체 실드 언락 목록(권위값) — 클라 로컬 캐시 갱신용
-}
-
-[System.Serializable]
-public class UnlockInterceptorModuleRequest
-{
-    public string hullSubType; // 요격체 슬롯을 언락할 함체(이미 함체 자체는 언락돼 있어야 함)
-}
-
-[System.Serializable]
-public class UnlockInterceptorModuleResponse
-{
-    public string hullSubType;                    // 요격체 언락 완료된 함체
-    public int achievementPointRemain;             // 소모 후 보유량
-    public List<string> unlockedInterceptorHulls;  // 갱신된 전체 요격체 언락 목록(권위값) — 클라 로컬 캐시 갱신용
+    public string hullArchetype;
+    public EModuleType moduleType;
+    public int slotIndex;
+    public int level;                   // 레벨업 완료 후 레벨(권위값)
+    public int achievementPointRemain;  // 소모 후 보유량
 }
 
 [System.Serializable]
@@ -585,18 +586,6 @@ public class ClaimAllDailyAchievementsResponse
     public int achievementPointRemain;             // 지급 후 보유량
 }
 
-[System.Serializable]
-public class IncreaseCommandPowerMaxRequest
-{
-    public int amount; // 소모할 탐험 포인트 — 지휘력 최대치도 동일 수치만큼 증가(교환비 1:1)
-}
-
-[System.Serializable]
-public class IncreaseCommandPowerMaxResponse
-{
-    public int commandPowerMax;        // 갱신된 지휘력 최대치
-    public int explorationPointRemain; // 소모 후 은행 잔액
-}
 
 [System.Serializable]
 public class IncreaseTacticPowerMaxRequest
@@ -772,6 +761,13 @@ public class FleetSetFrontRequest
 }
 
 [System.Serializable]
+public class FleetRemoveShipRequest
+{
+    // 함대편성 슬롯의 함선을 배치 해제 — 해당 슬롯의 함선+장착 모듈을 서버에서 완전히 삭제
+    public int slotIndex;
+}
+
+[System.Serializable]
 public class SetModuleRequest
 {
     // 함대편성 슬롯(함선) 하나의 최종 장착 모듈 "전체"를 한 번에 교체 — on/off만 지원(서브타입 선택 없음)
@@ -851,6 +847,21 @@ public class ServerStatusResponse
     public string minVersionName;
     public bool working;
     public string endTime;
+}
+
+[System.Serializable]
+public class NoticeItem
+{
+    public long noticeId;
+    public int version;
+    public string title;
+    public string body;
+}
+
+[System.Serializable]
+public class NoticeResponse
+{
+    public List<NoticeItem> notices; // 로그인 시 안 읽은 활성 공지 목록, display_order 순 — 이 호출 자체가 열람 처리(서버가 commander_notice_seen에 기록)
 }
 #endregion
 #endregion

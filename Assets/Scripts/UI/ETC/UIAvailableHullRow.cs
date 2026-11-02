@@ -5,29 +5,21 @@ using UnityEngine.UI;
 public class UIAvailableHullRow : MonoBehaviour
 {
     [SerializeField] private RowLabelValue m_nameRow;
-    [SerializeField] private RowLabelValue m_costRow; // 라벨은 "비용"만, 단위(지휘력)는 값 쪽에 숫자와 함께 표시(레이아웃 균형용)
+    [SerializeField] private RowLabelValue m_costRow; // 라벨은 "배치 코스트", 값은 이 함체 자신의 코스트(모듈은 지휘력에 영향 없음)
+    [SerializeField] private TMPro.TMP_Text m_starRatingText; // 우측 하단 성급 표시(1~5)
     [SerializeField] private Button m_button; // 클릭(선택) — 눌림 시각 피드백까지 기본 제공
     [SerializeField] private Image m_selectedImage; // 이 함체가 현재 선택 상태임을 표시 — 색 변경이 아니라 오브젝트 자체를 켜고 끔
 
-    [Header("티어4+ 언락 상태 (미배치 시 null이면 항상 일반 상태로 동작)")]
-    [SerializeField] private GameObject m_lockedRoot; // 잠김 상태에서만 켜지는 오브젝트(언락 버튼을 이 아래 배치)
-    [SerializeField] private Button m_unlockButton;
-    [SerializeField] private RowLabelValue m_unlockCostRow; // 잠김 상태에서만 언락에 필요한 업적포인트 표시, 언락됐으면 숨김
-
-    // 증감 표시 색상 - 지휘력이 늘어나면(더 비싼 함체) 경고색, 줄어들면(여유 확보) 강조색
-    private const string k_increaseColorHex = "#FF5555";
-    private const string k_decreaseColorHex = "#4CD97B";
+    [Header("티어4+ 언락 상태 표시 전용(버튼 없음 — 언락 버튼은 UIHullPickerView 패널 공용 버튼으로 이동)")]
+    [SerializeField] private GameObject m_lockedRoot; // 잠김 상태에서만 켜지는 잠금 아이콘 등 시각 표시용
 
     private ModuleData m_hull;
     private System.Action<ModuleData> m_onClick;
-    private System.Action<ModuleData> m_onUnlockClick;
 
     private void Awake()
     {
         if (m_button != null)
             m_button.onClick.AddListener(OnButtonClicked);
-        if (m_unlockButton != null)
-            m_unlockButton.onClick.AddListener(OnUnlockButtonClicked);
         if (m_selectedImage != null)
             m_selectedImage.gameObject.SetActive(false);
     }
@@ -39,56 +31,29 @@ public class UIAvailableHullRow : MonoBehaviour
         m_selectedImage.gameObject.SetActive(selected);
     }
 
-    // deltaCost: 이 함체로 교체했을 때 현재 슬롯 대비 지휘력 증감(유지되는 모듈 반영, 양수=추가 소모/음수=회수) —
-    // 정적 statPoint가 아니라 호출부(UIHullPickerView)가 슬롯 유지 계산 결과로 넘겨줌. 이 값은 설치비(CP)일 뿐 언락 비용과는 별개.
-    // isLocked==true면 선택 불가 + 언락 버튼 노출 + 언락 비용(hull.unlockAchievementPointCost)을 m_unlockCostRow에 같이 표시
-    public void Setup(ModuleData hull, int deltaCost, bool isLocked, System.Action<ModuleData> onClick, System.Action<ModuleData> onUnlockClick)
+    // placementCost: 이 함체를 이 슬롯에 적용했을 때 추가로 점유하는 지휘력(이 함체 자신의 코스트, 모듈은 포함되지 않음)
+    // isOverCommandPowerIfSelected: 이 함체를 선택하면 지휘력 최대치를 넘기게 되는지 — 경고색 표시용
+    // isLocked==true면 선택 불가 상태를 시각적으로만 표시(언락은 UIHullPickerView 패널 공용 버튼이 담당)
+    public void Setup(ModuleData hull, int placementCost, bool isOverCommandPowerIfSelected, bool isLocked, System.Action<ModuleData> onClick)
     {
         gameObject.SetActive(true);
         m_hull = hull;
         m_onClick = onClick;
-        m_onUnlockClick = onUnlockClick;
 
         // 함선 이름은 moduleSubType 이름을 UI.csv 로컬라이즈 키로 그대로 사용(별도 displayNameKey 없음)
         if (m_nameRow != null)
             m_nameRow.SetRow("UIAvailableHullRow_Name", CommonUtility.BuildHullDisplayName(hull.moduleSubType), rawValue: true);
         if (m_costRow != null)
-            m_costRow.SetRow("UIAvailableHullRow_Cost", $"{BuildDeltaText(deltaCost)} CP", rawValue: true);
-
-        if (m_unlockCostRow != null)
         {
-            if (isLocked == true)
-            {
-                string achievementPointLabel = LocalizationManager.Instance.Get("UIPanelFleet_AchievementPoint");
-                m_unlockCostRow.SetRow("UIAvailableHullRow_UnlockCost", $"{hull.unlockAchievementPointCost} {achievementPointLabel}", rawValue: true);
-            }
-            else
-            {
-                m_unlockCostRow.Hide();
-            }
+            m_costRow.SetRow("UIAvailableHullRow_Cost", CommonUtility.FormatNumber(placementCost), rawValue: true);
+            m_costRow.SetValueColor(CommonUtility.PaletteColor(isOverCommandPowerIfSelected == true ? "Text.Warning" : "Text.Dark1"));
         }
+        if (m_starRatingText != null)
+            m_starRatingText.text = new string('★', Mathf.Max(CommonUtility.ParseTier(hull.moduleSubType), 0));
 
         // 잠긴 함체도 클릭은 허용(우측 패널에서 프리뷰/스펙 확인 가능) — 실제 확정(Confirm)만 UIHullPickerView가 별도로 막음
         if (m_lockedRoot != null)
             m_lockedRoot.SetActive(isLocked);
-    }
-
-    // 0이면 부호 없이 "0", 양수면 "+N"(경고색), 음수면 "-N"(강조색) — 부호와 숫자를 리치텍스트 색으로 함께 표시
-    private string BuildDeltaText(int deltaCost)
-    {
-        if (deltaCost == 0) return "0";
-        string sign = deltaCost > 0 ? "+" : "";
-        string colorHex = deltaCost > 0 ? k_increaseColorHex : k_decreaseColorHex;
-        return $"<color={colorHex}>{sign}{deltaCost}</color>";
-    }
-
-    // 잠김 상태로 언락 버튼이 실제로 보이는 경우에만 그 RectTransform 반환 — 튜토리얼 강조 대상용
-    public RectTransform GetVisibleUnlockButtonRect()
-    {
-        if (m_unlockButton == null) return null;
-        if (m_unlockButton.gameObject.activeInHierarchy == false) return null;
-
-        return m_unlockButton.transform as RectTransform;
     }
 
     public void Hide()
@@ -100,11 +65,5 @@ public class UIAvailableHullRow : MonoBehaviour
     {
         SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true);
         if (m_onClick != null) m_onClick(m_hull);
-    }
-
-    private void OnUnlockButtonClicked()
-    {
-        SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true);
-        if (m_onUnlockClick != null) m_onUnlockClick(m_hull);
     }
 }

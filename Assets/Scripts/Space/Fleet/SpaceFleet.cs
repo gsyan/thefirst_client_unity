@@ -1182,12 +1182,20 @@ public class SpaceFleet : MonoBehaviour
         return 1f + preset.attackMultiplierPerStep[step - 1];
     }
 
-    // idx: 0=수리, 1=미사일, 2=함재기, 3=실드, 4=요격체 (EventManager.OnTacticOptionsChanged 주석과 동일)
+    // idx: 0=수리, 1=미사일, 2=함재기, 3=실드, 4=요격체, 5=빔 (EventManager.OnTacticOptionsChanged 주석과 동일)
     private const int k_repairTacticBit = 1 << 0;
     private const int k_missileTacticBit = 1 << 1;
     private const int k_aircraftTacticBit = 1 << 2;
     private const int k_shieldTacticBit = 1 << 3;
     private const int k_interceptorTacticBit = 1 << 4;
+    private const int k_beamTacticBit = 1 << 5;
+
+    // 빔 전술 토글(idx=5) ON 시 공격력 2배 — 내 함대만 적용(적/PvP상대/시네마틱은 토글 UI가 없어 배율 없음)
+    public float GetBeamTacticAttackMultiplier()
+    {
+        if (m_fleetSource != EFleetSource.fleet_source_player) return 1f;
+        return (m_fleetInfo.tacticOptions & k_beamTacticBit) != 0 ? 2f : 1f;
+    }
 
     // 미사일 전술 토글(idx=1) ON 시 공격력 2배 — 내 함대만 적용(적/PvP상대/시네마틱은 토글 UI가 없어 배율 없음)
     public float GetMissileTacticAttackMultiplier()
@@ -1201,6 +1209,14 @@ public class SpaceFleet : MonoBehaviour
     {
         if (m_fleetSource != EFleetSource.fleet_source_player) return 1f;
         return (m_fleetInfo.tacticOptions & k_aircraftTacticBit) != 0 ? 2f : 1f;
+    }
+
+    // 실드 전술 토글(idx=3) ON 여부 — 이제 게이지 회복과는 무관하게 "흡수(피해감소) 효과 작동 여부"만 결정.
+    // 적/시네마틱 함대는 토글 UI가 없어 상시 ON(요격체 토글과 동일 규칙)
+    public bool IsShieldTacticOn()
+    {
+        if (m_fleetSource != EFleetSource.fleet_source_player) return true;
+        return (m_fleetInfo.tacticOptions & k_shieldTacticBit) != 0;
     }
 
     // cost를 낼 여유가 있으면 차감하고 true. 없으면 토글은 그대로 둔 채 false만 반환 —
@@ -1221,6 +1237,7 @@ public class SpaceFleet : MonoBehaviour
     public bool TryChargeMissileTacticCost(int cost) { return TryChargeTacticCost(cost); }
     public bool TryChargeAircraftTacticCost(int cost) { return TryChargeTacticCost(cost); }
     public bool TryChargeInterceptorTacticCost(int cost) { return TryChargeTacticCost(cost); }
+    public bool TryChargeBeamTacticCost(int cost) { return TryChargeTacticCost(cost); }
 
     // 토글 상태 반영 + 요격체 즉시 전파 + 서버 동기화 — UI 클릭(TryToggleTactic)과 함대 구성 변화(ClearUnavailableTactics) 공용 경로
     public void ApplyTacticOptions(int newOptions)
@@ -1248,11 +1265,12 @@ public class SpaceFleet : MonoBehaviour
         });
     }
 
-    // 함대 구성상 사용 가능한 전술 토글 비트마스크(0=수리, 1=미사일, 2=함재기, 3=실드, 4=요격체) — 해당 모듈이 하나도 없으면 그 비트는 0
+    // 함대 구성상 사용 가능한 전술 토글 비트마스크(0=수리, 1=미사일, 2=함재기, 3=실드, 4=요격체, 5=빔) — 해당 모듈이 하나도 없으면 그 비트는 0
     public int GetAvailableTacticMask()
     {
         CapabilityProfile fleetProfile = GetFleetCapabilityProfile();
         bool hasRepair = HasAnyRepairCapability();
+        bool hasBeam = fleetProfile.beamAttack > 0f;
         bool hasMissile = fleetProfile.missileAttack > 0f;
         bool hasAircraft = fleetProfile.airCount > 0;
         bool hasShield = HasAnyShieldEquipped();
@@ -1264,6 +1282,7 @@ public class SpaceFleet : MonoBehaviour
         if (hasAircraft == true) mask |= k_aircraftTacticBit;
         if (hasShield == true) mask |= k_shieldTacticBit;
         if (hasInterceptor == true) mask |= k_interceptorTacticBit;
+        if (hasBeam == true) mask |= k_beamTacticBit;
         return mask;
     }
 

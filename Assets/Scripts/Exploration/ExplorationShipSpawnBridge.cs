@@ -28,7 +28,7 @@ public static class ExplorationShipSpawnBridge
         return spaceShip;
     }
 
-    // actualModules를 그대로 복사해 슬롯 인덱스/서브타입/강화 포인트를 원본 그대로 유지 — 이전엔 ShipFinalStats의 압축된(빈 슬롯 제거) 배열에서
+    // actualModules를 그대로 복사해 슬롯 인덱스/서브타입을 원본 그대로 유지 — 이전엔 ShipFinalStats의 압축된(빈 슬롯 제거) 배열에서
     // 재구성하다 보니 슬롯 인덱스 정보가 손실되어(예: 3번 슬롯만 장착해도 배열 위치 0으로 압축) 엉뚱한 슬롯에 스폰되는 버그가 있었음
     private static ShipInfo BuildShipInfo(string hullSubType, ModuleHullInfo actualModules, int positionIndex, bool isFront, float healthMultiplier, long id)
     {
@@ -50,11 +50,6 @@ public static class ExplorationShipSpawnBridge
         hullInfo.interceptorModuleSubType = actualModules != null && string.IsNullOrEmpty(actualModules.interceptorModuleSubType) == false
             ? actualModules.interceptorModuleSubType
             : "";
-
-        // 실드/요격체 강화 포인트도 같이 복사 — 빠지면 스폰된 3D 모듈이 기본값으로 초기화됨
-        hullInfo.shieldGaugePoints = actualModules != null ? actualModules.shieldGaugePoints : 0;
-        hullInfo.shieldRegenRatePoints = actualModules != null ? actualModules.shieldRegenRatePoints : 0;
-        hullInfo.interceptorRegenRatePoints = actualModules != null ? actualModules.interceptorRegenRatePoints : 0;
 
         return new ShipInfo
         {
@@ -83,13 +78,6 @@ public static class ExplorationShipSpawnBridge
                 moduleLevel            = original.moduleLevel,
                 hullIndex              = original.hullIndex,
                 slotIndex              = original.slotIndex,
-                attackPoints           = original.attackPoints,
-                attackToFighterPoints  = original.attackToFighterPoints,
-                fireRatePoints         = original.fireRatePoints,
-                silencePoints          = original.silencePoints,
-                ammoPoints             = original.ammoPoints,
-                healthPoints           = original.healthPoints,
-                disruptPoints          = original.disruptPoints,
             });
         }
         return result;

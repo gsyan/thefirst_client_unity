@@ -1,0 +1,275 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e6a8a6e71292234fbc3e7dfcc19afaa, type: 3}
+  m_Name: DataTableHullArchetypePassive
+  m_EditorClassIdentifier: Assembly-CSharp::DataTableHullArchetypePassive
+  passiveDataList:
+  - hullArchetype: centurion
+    stage: 1
+    counterType: destroy_enemy_ship
+    threshold: 0
+    descriptionKey: HullArchetypePassive_centurion_1
+  - hullArchetype: centurion
+    stage: 2
+    counterType: destroy_enemy_ship
+    threshold: 10
+    descriptionKey: HullArchetypePassive_centurion_2
+  - hullArchetype: centurion
+    stage: 3
+    counterType: destroy_enemy_ship
+    threshold: 20
+    descriptionKey: HullArchetypePassive_centurion_3
+  - hullArchetype: centurion
+    stage: 4
+    counterType: zone_run_clear
+    threshold: 10
+    descriptionKey: HullArchetypePassive_centurion_4
+  - hullArchetype: talon
+    stage: 1
+    counterType: destroy_enemy_ship
+    threshold: 0
+    descriptionKey: HullArchetypePassive_talon_1
+  - hullArchetype: talon
+    stage: 2
+    counterType: destroy_enemy_ship
+    threshold: 40
+    descriptionKey: HullArchetypePassive_talon_2
+  - hullArchetype: talon
+    stage: 3
+    counterType: destroy_enemy_ship
+    threshold: 400
+    descriptionKey: HullArchetypePassive_talon_3
+  - hullArchetype: talon
+    stage: 4
+    counterType: zone_run_clear
+    threshold: 40
+    descriptionKey: HullArchetypePassive_talon_4
+  - hullArchetype: prism
+    stage: 1
+    counterType: destroy_enemy_ship
+    threshold: 0
+    descriptionKey: HullArchetypePassive_prism_1
+  - hullArchetype: prism
+    stage: 2
+    counterType: destroy_enemy_ship
+    threshold: 40
+    descriptionKey: HullArchetypePassive_prism_2
+  - hullArchetype: prism
+    stage: 3
+    counterType: destroy_enemy_ship
+    threshold: 80
+    descriptionKey: HullArchetypePassive_prism_3
+  - hullArchetype: prism
+    stage: 4
+    counterType: zone_run_clear
+    threshold: 20
+    descriptionKey: HullArchetypePassive_prism_4
+  - hullArchetype: argus
+    stage: 1
+    counterType: scout_success
+    threshold: 0
+    descriptionKey: HullArchetypePassive_argus_1
+  - hullArchetype: argus
+    stage: 2
+    counterType: scout_success
+    threshold: 100
+    descriptionKey: HullArchetypePassive_argus_2
+  - hullArchetype: argus
+    stage: 3
+    counterType: scout_success
+    threshold: 3000
+    descriptionKey: HullArchetypePassive_argus_3
+  - hullArchetype: argus
+    stage: 4
+    counterType: zone_run_clear
+    threshold: 20
+    descriptionKey: HullArchetypePassive_argus_4
+  - hullArchetype: colossus
+    stage: 1
+    counterType: damage_taken_cumulative
+    threshold: 0
+    descriptionKey: HullArchetypePassive_colossus_1
+  - hullArchetype: colossus
+    stage: 2
+    counterType: damage_taken_cumulative
+    threshold: 5000
+    descriptionKey: HullArchetypePassive_colossus_2
+  - hullArchetype: colossus
+    stage: 3
+    counterType: damage_taken_cumulative
+    threshold: 500000
+    descriptionKey: HullArchetypePassive_colossus_3
+  - hullArchetype: colossus
+    stage: 4
+    counterType: zone_run_clear
+    threshold: 30
+    descriptionKey: HullArchetypePassive_colossus_4
+  - hullArchetype: leviathan
+    stage: 1
+    counterType: fleet_resource_charge
+    threshold: 0
+    descriptionKey: HullArchetypePassive_leviathan_1
+  - hullArchetype: leviathan
+    stage: 2
+    counterType: fleet_resource_charge
+    threshold: 100
+    descriptionKey: HullArchetypePassive_leviathan_2
+  - hullArchetype: leviathan
+    stage: 3
+    counterType: fleet_resource_charge
+    threshold: 3000
+    descriptionKey: HullArchetypePassive_leviathan_3
+  - hullArchetype: leviathan
+    stage: 4
+    counterType: zone_run_clear
+    threshold: 30
+    descriptionKey: HullArchetypePassive_leviathan_4
+  - hullArchetype: corsair
+    stage: 1
+    counterType: scavenge_mineral
+    threshold: 0
+    descriptionKey: HullArchetypePassive_corsair_1
+  - hullArchetype: corsair
+    stage: 2
+    counterType: scavenge_mineral
+    threshold: 5000
+    descriptionKey: HullArchetypePassive_corsair_2
+  - hullArchetype: corsair
+    stage: 3
+    counterType: scavenge_mineral
+    threshold: 500000
+    descriptionKey: HullArchetypePassive_corsair_3
+  - hullArchetype: corsair
+    stage: 4
+    counterType: zone_run_clear
+    threshold: 40
+    descriptionKey: HullArchetypePassive_corsair_4
+  - hullArchetype: vulcan
+    stage: 1
+    counterType: destroy_enemy_ship
+    threshold: 0
+    descriptionKey: HullArchetypePassive_vulcan_1
+  - hullArchetype: vulcan
+    stage: 2
+    counterType: destroy_enemy_ship
+    threshold: 40
+    descriptionKey: HullArchetypePassive_vulcan_2
+  - hullArchetype: vulcan
+    stage: 3
+    counterType: destroy_enemy_ship
+    threshold: 400
+    descriptionKey: HullArchetypePassive_vulcan_3
+  - hullArchetype: vulcan
+    stage: 4
+    counterType: zone_run_clear
+    threshold: 40
+    descriptionKey: HullArchetypePassive_vulcan_4
+  - hullArchetype: nemesis
+    stage: 1
+    counterType: destroy_enemy_ship
+    threshold: 0
+    descriptionKey: HullArchetypePassive_nemesis_1
+  - hullArchetype: nemesis
+    stage: 2
+    counterType: destroy_enemy_ship
+    threshold: 50
+    descriptionKey: HullArchetypePassive_nemesis_2
+  - hullArchetype: nemesis
+    stage: 3
+    counterType: destroy_enemy_ship
+    threshold: 500
+    descriptionKey: HullArchetypePassive_nemesis_3
+  - hullArchetype: nemesis
+    stage: 4
+    counterType: zone_run_clear
+    threshold: 50
+    descriptionKey: HullArchetypePassive_nemesis_4
+  - hullArchetype: phoenix
+    stage: 1
+    counterType: ally_repair_amount
+    threshold: 0
+    descriptionKey: HullArchetypePassive_phoenix_1
+  - hullArchetype: phoenix
+    stage: 2
+    counterType: ally_repair_amount
+    threshold: 50000
+    descriptionKey: HullArchetypePassive_phoenix_2
+  - hullArchetype: phoenix
+    stage: 3
+    counterType: ally_repair_amount
+    threshold: 5000000
+    descriptionKey: HullArchetypePassive_phoenix_3
+  - hullArchetype: phoenix
+    stage: 4
+    counterType: zone_run_clear
+    threshold: 50
+    descriptionKey: HullArchetypePassive_phoenix_4
+  - hullArchetype: halcyon
+    stage: 1
+    counterType: ally_shield_charge_amount
+    threshold: 0
+    descriptionKey: HullArchetypePassive_halcyon_1
+  - hullArchetype: halcyon
+    stage: 2
+    counterType: ally_shield_charge_amount
+    threshold: 50000
+    descriptionKey: HullArchetypePassive_halcyon_2
+  - hullArchetype: halcyon
+    stage: 3
+    counterType: ally_shield_charge_amount
+    threshold: 5000000
+    descriptionKey: HullArchetypePassive_halcyon_3
+  - hullArchetype: halcyon
+    stage: 4
+    counterType: zone_run_clear
+    threshold: 50
+    descriptionKey: HullArchetypePassive_halcyon_4
+  - hullArchetype: aegis
+    stage: 1
+    counterType: shield_absorb_amount
+    threshold: 0
+    descriptionKey: HullArchetypePassive_aegis_1
+  - hullArchetype: aegis
+    stage: 2
+    counterType: shield_absorb_amount
+    threshold: 50000
+    descriptionKey: HullArchetypePassive_aegis_2
+  - hullArchetype: aegis
+    stage: 3
+    counterType: shield_absorb_amount
+    threshold: 5000000
+    descriptionKey: HullArchetypePassive_aegis_3
+  - hullArchetype: aegis
+    stage: 4
+    counterType: zone_run_clear
+    threshold: 50
+    descriptionKey: HullArchetypePassive_aegis_4
+  - hullArchetype: sentinel
+    stage: 1
+    counterType: intercept_count
+    threshold: 0
+    descriptionKey: HullArchetypePassive_sentinel_1
+  - hullArchetype: sentinel
+    stage: 2
+    counterType: intercept_count
+    threshold: 1000
+    descriptionKey: HullArchetypePassive_sentinel_2
+  - hullArchetype: sentinel
+    stage: 3
+    counterType: intercept_count
+    threshold: 5000
+    descriptionKey: HullArchetypePassive_sentinel_3
+  - hullArchetype: sentinel
+    stage: 4
+    counterType: zone_run_clear
+    threshold: 50
+    descriptionKey: HullArchetypePassive_sentinel_4

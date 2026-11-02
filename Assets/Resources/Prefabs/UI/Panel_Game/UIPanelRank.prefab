@@ -3497,18 +3497,20 @@ MonoBehaviour:
   - tabButton: {fileID: 1835483584773238086}
     tabPanel: {fileID: 2645609724943443677}
     tabName: 
-    activeColor: {r: 0, g: 1, b: 0.50980395, a: 1}
-    inactiveColor: {r: 0, g: 0.5882353, b: 0.50980395, a: 1}
+    activeColor: {r: 1, g: 1, b: 1, a: 1}
+    inactiveColor: {r: 0.5882353, g: 0.5882353, b: 0.5882353, a: 1}
     childGraphics:
     - {fileID: 4243826560506626765}
+    useDefaultColors: 0
     deferReveal: 0
   - tabButton: {fileID: 3392194659926923003}
     tabPanel: {fileID: 4846599432802895913}
     tabName: 
-    activeColor: {r: 0, g: 1, b: 0.50980395, a: 1}
-    inactiveColor: {r: 0, g: 0.5882353, b: 0.50980395, a: 1}
+    activeColor: {r: 1, g: 1, b: 1, a: 1}
+    inactiveColor: {r: 0.5882353, g: 0.5882353, b: 0.5882353, a: 1}
     childGraphics:
     - {fileID: 9182864378775563354}
+    useDefaultColors: 0
     deferReveal: 0
   defaultActiveTab: 0
   allowDeselect: 0

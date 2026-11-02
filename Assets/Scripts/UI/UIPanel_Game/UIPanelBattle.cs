@@ -129,7 +129,8 @@ public class UIPanelBattle : UIPanelBase
         return DataManager.Instance.m_currentCommander != null ? DataManager.Instance.m_currentCommander.m_commanderInfo : null;
     }
 
-    // 1초마다 수리/실드/요격체 틱을 시도 — 미사일/함재기는 발사/발진 시점(ModuleMissile/LauncherAircraft)에서 개별 과금하므로 여기 관여하지 않음
+    // 1초마다 수리/실드/요격체 틱을 시도 — 빔/미사일/함재기는 발사/발진 시점(ModuleBeam/ModuleMissile/LauncherAircraft)에서 개별 과금하므로 여기 관여하지 않음.
+    // 실드는 수리/요격체와 다르게 토글과 무관하게 항상 회복을 시도함 — 토글(idx=3)은 이제 "흡수 효과 작동 여부"만 결정(SpaceShip.ApplyShieldAbsorption 참고)
     private IEnumerator Co_DrainTacticPower()
     {
         while (true)
@@ -144,9 +145,9 @@ public class UIPanelBattle : UIPanelBase
             int tacticOptions = myFleet.m_fleetInfo.tacticOptions;
             GameSettings gameSettings = DataManager.Instance.m_dataTableConfig.gameSettings;
 
-            // 토글이 켜져 있어도 실질 효과가 없는 상태(체력 만땅/실드 충전 여지 없음/요격체 빈 자리 없음)면 시도 자체를 스킵 — 토글은 유지(조건이 다시 성립하면 재시도)
+            // 토글이 켜져 있어도 실질 효과가 없는 상태(체력 만땅/요격체 빈 자리 없음)면 시도 자체를 스킵 — 토글은 유지(조건이 다시 성립하면 재시도)
             bool repairHasEffect = myFleet.GetFleetHealthRatio() < 1f;
-            // 방어 발동 중(게이지 소모 중)이 아니어도 아직 충전할 여지가 있으면 토글이 실질 효과를 가짐 — 게이지 0에서 충전을 시작할 수 있어야 함
+            // 방어 발동 중(게이지 소모 중)이 아니어도 아직 충전할 여지가 있으면 실질 효과를 가짐 — 게이지 0에서 충전을 시작할 수 있어야 함
             bool shieldHasEffect = myFleet.HasAnyShieldDefending() || myFleet.HasAnyShieldBelowMax();
             bool interceptorHasEffect = myFleet.HasAnyInterceptorBelowMax();
 
@@ -156,7 +157,7 @@ public class UIPanelBattle : UIPanelBase
                 if (shipsNeedingRepair > 0 && myFleet.TryChargeRepairTacticCost(shipsNeedingRepair * gameSettings.tactic.tacticRepairCost) == true)
                     myFleet.ApplyRepairTickToAllShips();
             }
-            if ((tacticOptions & (1 << 3)) != 0 && shieldHasEffect == true)
+            if (shieldHasEffect == true)
             {
                 int shipsNeedingShield = myFleet.CountShipsNeedingShieldRegen();
                 if (shipsNeedingShield > 0 && myFleet.TryChargeShieldTacticCost(shipsNeedingShield * gameSettings.tactic.tacticShieldCost) == true)

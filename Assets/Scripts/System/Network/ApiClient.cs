@@ -531,6 +531,11 @@ public class ApiClient
         return await PostAsync<string>("/fleet/set-front", request);
     }
 
+    public async Task<ApiResponse<string>> RemoveFleetShipAsync(FleetRemoveShipRequest request)
+    {
+        return await PostAsync<string>("/fleet/remove-ship", request);
+    }
+
     public async Task<ApiResponse<SetModuleResponse>> SetModuleAsync(SetModuleRequest request)
     {
         return await PostAsync<SetModuleResponse>("/fleet/set-modules", request);
@@ -541,14 +546,9 @@ public class ApiClient
         return await PostAsync<UnlockHullResponse>("/fleet/unlock-hull", request);
     }
 
-    public async Task<ApiResponse<UnlockShieldModuleResponse>> UnlockShieldModuleAsync(UnlockShieldModuleRequest request)
+    public async Task<ApiResponse<UpgradeArchetypeModuleResponse>> UpgradeArchetypeModuleAsync(UpgradeArchetypeModuleRequest request)
     {
-        return await PostAsync<UnlockShieldModuleResponse>("/fleet/unlock-shield-module", request);
-    }
-
-    public async Task<ApiResponse<UnlockInterceptorModuleResponse>> UnlockInterceptorModuleAsync(UnlockInterceptorModuleRequest request)
-    {
-        return await PostAsync<UnlockInterceptorModuleResponse>("/fleet/unlock-interceptor-module", request);
+        return await PostAsync<UpgradeArchetypeModuleResponse>("/fleet/upgrade-archetype-module", request);
     }
 
     #endregion
@@ -638,11 +638,6 @@ public class ApiClient
         return await PostAsync<AbandonZoneRunResponse>("/exploration/abandon-run", request);
     }
 
-    public async Task<ApiResponse<IncreaseCommandPowerMaxResponse>> IncreaseCommandPowerMaxAsync(IncreaseCommandPowerMaxRequest request)
-    {
-        return await PostAsync<IncreaseCommandPowerMaxResponse>("/exploration/increase-command-power", request);
-    }
-
     public async Task<ApiResponse<IncreaseTacticPowerMaxResponse>> IncreaseTacticPowerMaxAsync(IncreaseTacticPowerMaxRequest request)
     {
         return await PostAsync<IncreaseTacticPowerMaxResponse>("/exploration/increase-tactic-power", request);
@@ -713,6 +708,11 @@ public class ApiClient
     public async Task<ApiResponse<DailyBonusStatusResponse>> GetDailyBonusStatusAsync()
     {
         return await GetAsync<DailyBonusStatusResponse>("/iap/vip/daily-reward/status");
+    }
+
+    public async Task<ApiResponse<NoticeResponse>> GetNoticeAsync()
+    {
+        return await GetAsync<NoticeResponse>("/notice");
     }
 
 #if UNITY_EDITOR

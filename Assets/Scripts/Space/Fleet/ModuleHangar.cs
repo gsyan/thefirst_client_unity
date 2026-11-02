@@ -118,11 +118,26 @@ public class ModuleHangar : ModuleBase
 
         m_lastLaunchTime = 0f;
 
-        m_finalAttackToShip = shipAttackOverride ?? moduleData.airAttackToShip;
-        m_finalAttackToFighter = fighterAttackOverride ?? moduleData.airAttackToFighter;
-        m_finalAirHealth = airHealthOverride ?? moduleData.airHealth;
-        m_finalAirAmmo = airAmmoOverride != null ? Mathf.RoundToInt(airAmmoOverride.Value) : moduleData.airAmmo;
-        m_finalAirDisrupt = airDisruptOverride ?? moduleData.airDisrupt;
+        // 아키타입 단위 영구 모듈강화(M6) — 이 함체의 아키타입+이 격납고 슬롯(slotIndex) 기준 레벨(최소 1)에 해당하는 티어 데이터(hangar_{level}_1)를 함재기 스탯 전반에 그대로 사용
+        int archetypeLevel = parentBody != null ? ArchetypeUpgradeLevelLookup.GetLevel(parentBody.GetHullArchetype(), EModuleType.hangar, m_moduleInfo.slotIndex) : 1;
+        ModuleData levelModuleData = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable($"hangar_{archetypeLevel}_1");
+        float levelAttackToShip = levelModuleData != null ? levelModuleData.airAttackToShip : moduleData.airAttackToShip;
+        float levelAttackToFighter = levelModuleData != null ? levelModuleData.airAttackToFighter : moduleData.airAttackToFighter;
+        float levelAirHealth = levelModuleData != null ? levelModuleData.airHealth : moduleData.airHealth;
+        float levelAirAmmo = levelModuleData != null ? levelModuleData.airAmmo : moduleData.airAmmo;
+        float levelAirDisrupt = levelModuleData != null ? levelModuleData.airDisrupt : moduleData.airDisrupt;
+        float baseAttackToShip = shipAttackOverride ?? levelAttackToShip;
+        float baseAttackToFighter = fighterAttackOverride ?? levelAttackToFighter;
+        float baseAirHealth = airHealthOverride ?? levelAirHealth;
+        float baseAirAmmo = airAmmoOverride ?? levelAirAmmo;
+        float baseAirDisrupt = airDisruptOverride ?? levelAirDisrupt;
+        m_finalAttackToShip = baseAttackToShip;
+        m_finalAttackToFighter = baseAttackToFighter;
+        m_finalAirHealth = baseAirHealth;
+        m_finalAirAmmo = Mathf.RoundToInt(baseAirAmmo);
+        m_finalAirDisrupt = baseAirDisrupt;
+        if (parentBody != null)
+            SetModuleLevel(archetypeLevel);
 
         // 함재기 데이터 풀 초기화
         int totalAircraftCount = m_airCount;

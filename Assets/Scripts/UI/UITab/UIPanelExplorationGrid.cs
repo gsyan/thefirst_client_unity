@@ -462,6 +462,10 @@ public class UIPanelExplorationGrid : UIPanelBase
         RefreshBankedPointText();
         RefreshAbandonRunButtonState();
         ApplyFleetHealthSnapshot(response.data.shipHealthRatios);
+
+        CommanderInfo progressCommanderInfo = DataManager.Instance.m_currentCommander != null ? DataManager.Instance.m_currentCommander.m_commanderInfo : null;
+        if (progressCommanderInfo != null)
+            progressCommanderInfo.mineralAmount = response.data.mineralAmount;
         // 보상카드 지속버프 복원은 ObjectManager.StartNormalPlay()에서 로그인 시점에 이미 끝남(중복 적용 방지) — 여기서는 재적용하지 않음
 
         string[] clearedCells = response.data.clearedCells;
@@ -809,6 +813,7 @@ public class UIPanelExplorationGrid : UIPanelBase
         ApplyOwnedPointRemain(data.explorationPointRemain);
         ApplyExpAndLevel(data.totalExp, data.commanderLevel);
         ApplyTacticPowerRecovered(data.tacticPower);
+        ApplyMineralReset(); // 다른 진행중 런 포기 — 그 런의 광물은 폐기
         ApplyHasUnclaimedAchievement(data.hasUnclaimedAchievement);
         ClearActiveRunZoneCache();
 
@@ -1110,6 +1115,7 @@ public class UIPanelExplorationGrid : UIPanelBase
             cellCol = m_currentCol,
             shipHealthRatios = myFleet.BuildHealthRatioSnapshot(),
             tacticPower = commanderInfo != null ? commanderInfo.tacticPower : 0,
+            mineralAmount = commanderInfo != null ? commanderInfo.mineralAmount : 0,
             challengeToken = m_activeChallengeToken,
         };
         NetworkManager.Instance.ClearExplorationCell(request, OnClearExplorationCellResponse);
@@ -1146,6 +1152,7 @@ public class UIPanelExplorationGrid : UIPanelBase
         ApplyOwnedPointRemain(data.explorationPointRemain);
         ApplyExpAndLevel(data.totalExp, data.commanderLevel);
         ApplyTacticPowerRecovered(data.tacticPower);
+        ApplyMineralReset(); // 다른 진행중 런 포기 — 그 런의 광물은 폐기
         ApplyHasUnclaimedAchievement(data.hasUnclaimedAchievement);
         RequestEnemyFleetForCurrentCell(); // 기존 런 정리 완료 — 원래 셀 도전 요청을 재시도
     }
@@ -1170,6 +1177,7 @@ public class UIPanelExplorationGrid : UIPanelBase
             cellCol = m_currentCol,
             shipHealthRatios = myFleet != null ? myFleet.BuildHealthRatioSnapshot() : null,
             tacticPower = commanderInfo != null ? commanderInfo.tacticPower : 0,
+            mineralAmount = commanderInfo != null ? commanderInfo.mineralAmount : 0,
             challengeToken = m_activeChallengeToken,
         };
         NetworkManager.Instance.ClearExplorationCell(request, OnClearExplorationCellResponse);
@@ -1214,7 +1222,10 @@ public class UIPanelExplorationGrid : UIPanelBase
             // 서버 ZoneRun은 첫 셀 클리어 시점에 생성됨 — 로컬 캐시도 이때 갱신해야 포기 버튼/"다른 존 진행중" 판정이 서버와 일치함
             CommanderInfo clearedCommanderInfo = DataManager.Instance.m_currentCommander != null ? DataManager.Instance.m_currentCommander.m_commanderInfo : null;
             if (clearedCommanderInfo != null)
+            {
                 clearedCommanderInfo.explorationZoneNumber = m_currentZoneNumber;
+                clearedCommanderInfo.mineralAmount = response.data.mineralAmount;
+            }
             RefreshAbandonRunButtonState();
         }
 
@@ -1518,6 +1529,7 @@ public class UIPanelExplorationGrid : UIPanelBase
             ApplyOwnedPointRemain(response.data.explorationPointRemain);
             ApplyExpAndLevel(response.data.totalExp, response.data.commanderLevel);
             ApplyTacticPowerRecovered(response.data.tacticPower);
+            ApplyMineralReset(); // 존런 종료 — 남은 광물은 전부 폐기(Commander 영구 자산으로 전환되지 않음)
             ApplyHasUnclaimedAchievement(response.data.hasUnclaimedAchievement);
             ClearActiveRunZoneCache();
             ApplyHighestClearedZoneNumber(response.data.highestClearedZoneNumber);
@@ -1586,10 +1598,6 @@ public class UIPanelExplorationGrid : UIPanelBase
             DataManager.Instance.m_currentCommander.UpdateExplorationPoint(explorationPointRemain);
 
         RefreshOwnedPointText();
-
-        // 존런 종료로 탐험 포인트가 확정된 시점 — 지휘력 증가 튜토리얼 트리거 지점
-        if (explorationPointRemain > 0)
-            TutorialManager.Instance.TryStartCommandPowerIncreaseTutorial();
     }
 
     // 탈출/포기 정산 응답의 hasUnclaimedAchievement를 커맨더 캐시에 반영 — 업적 버튼/패널 레드닷이 존런 정산 즉시 갱신됨
@@ -1609,6 +1617,15 @@ public class UIPanelExplorationGrid : UIPanelBase
         EventManager.Trigger_TacticPowerChanged(commanderInfo.tacticPower, commanderInfo.tacticPowerMax);
     }
 
+    // 존런 종료(탈출/포기) — 광물은 Commander 영구 자산이 아니라 다음 런은 항상 0부터 시작
+    private void ApplyMineralReset()
+    {
+        CommanderInfo commanderInfo = DataManager.Instance.m_currentCommander != null ? DataManager.Instance.m_currentCommander.m_commanderInfo : null;
+        if (commanderInfo == null) return;
+
+        commanderInfo.mineralAmount = 0;
+    }
+
     // 탈출/포기 정산 응답(totalExp/commanderLevel, 권위값)을 커맨더 정보에 반영 — 레벨업 시 알림 표시
     private void ApplyExpAndLevel(int totalExp, int commanderLevel)
     {
@@ -1619,17 +1636,6 @@ public class UIPanelExplorationGrid : UIPanelBase
         commander.UpdateExp(totalExp);
         commander.UpdateCommanderLevel(commanderLevel);
         if (commanderLevel <= prevLevel) return;
-
-        // 최대 함선 수가 1에서 2 이상으로 늘었으면 함선 추가 튜토리얼을 대기 등록하고, 레벨업 팝업이 닫힐 때 시작 조건 재확인
-        int prevShipCount = DataManager.Instance.m_dataTableCommander.GetShipCount(prevLevel);
-        int newShipCount = DataManager.Instance.m_dataTableCommander.GetShipCount(commanderLevel);
-        bool isShipSlotIncreasedFromOne = prevShipCount <= 1 && newShipCount >= 2;
-        if (isShipSlotIncreasedFromOne == true)
-        {
-            TutorialManager.Instance.RequestShipSlotIncreaseTutorial();
-            UIManager.Instance.ShowCommanderLevelupNotify(commanderLevel, TutorialManager.Instance.NotifyLevelupPopupClosed);
-            return;
-        }
 
         UIManager.Instance.ShowCommanderLevelupNotify(commanderLevel);
     }
@@ -1731,6 +1737,7 @@ public class UIPanelExplorationGrid : UIPanelBase
         ApplyOwnedPointRemain(data.explorationPointRemain);
         ApplyExpAndLevel(data.totalExp, data.commanderLevel);
         ApplyTacticPowerRecovered(data.tacticPower);
+        ApplyMineralReset(); // 존런 종료(포기) — 남은 광물은 전부 폐기
         ApplyHasUnclaimedAchievement(data.hasUnclaimedAchievement);
         ClearActiveRunZoneCache();
 

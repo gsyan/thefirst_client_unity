@@ -1,92 +1,47 @@
-// 함선 로드아웃 편집 화면(UIShipLoadoutEditorView)의 슬롯 1칸 — UIPlacedShipRow의 전/후방 스위치와 동일하게 UIToggleSlide(슬라이드 토글) 사용
-// isLocked면 SetInteractable(false)로 클릭만 막음(항상 on 상태) — 카테고리 slot0 등 공격 모듈 0개 방지용 1차 방어선, 서버가 최종 방어선
-// 역할 분리: 이 행의 이름 텍스트(m_nameText)는 "무슨 카테고리 몇 번 슬롯인지"(예: 빔 1), 토글 자체 라벨은 "장착/해제" 상태를 표기
-// 강화 편집(Up/Down)은 이 행이 아니라 ManageButton으로 여는 UIPopupModuleReinforce에서 처리 — 이 행은 요약(Invested CP/Tier)과 선택 표시만 담당
+// 함선 로드아웃 편집 화면(UIShipLoadoutEditorView)의 슬롯 1칸 — 모듈은 항상 설치된 상태로 취급(설치/해제 토글 없음)
+// 역할 분리: 이 행의 이름 텍스트(m_nameText)는 "무슨 카테고리 몇 번 슬롯인지"(예: 빔 1), m_levelText는 현재/팬딩 레벨 표기
+// 모듈 레벨업(ManageButton)은 업적포인트 기반 아키타입 레벨업(M6) — UIPopupModuleReinforce를 엶
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class UIModuleSlotToggleRow : MonoBehaviour
 {
-    [SerializeField] private UIToggleSlide m_toggleSlide;
     [SerializeField] private TMP_Text m_nameText; // "빔 1", "미사일 2"처럼 카테고리+슬롯번호 표기
-    [SerializeField] private TMP_Text m_investedPointsText; // "Invested CP : N" — 미설치 슬롯이면 숨김
-    [SerializeField] private TMP_Text m_tierText; // 현재/팬딩 티어 — 선택 여부와 무관하게 항상 표시(실드 제외)
-    [SerializeField] private Button m_manageButton; // 강화 관리 팝업(UIPopupModuleReinforce) 오픈 — 미설치 슬롯이면 숨김
-    [SerializeField] private Button m_selectButton; // 행 선택(하이라이트) 클릭 영역 — 토글/매니지 버튼과 별개
+    [SerializeField] private TMP_Text m_levelText; // 현재/팬딩 레벨 — 선택 여부와 무관하게 항상 표시
+    [SerializeField] private Button m_manageButton; // 레벨업 팝업(UIPopupModuleReinforce) 오픈
+    [SerializeField] private Button m_selectButton; // 행 선택(하이라이트) 클릭 영역 — 매니지 버튼과 별개
     [SerializeField] private GameObject m_selectedImage; // 선택된 행 강조 이미지
-    [SerializeField] private Button m_unlockButton; // 실드/요격체 슬롯 미언락 상태 전용 — 토글 대신 노출(비용은 확인 팝업에서 표시)
 
     private EModuleType m_moduleType;
     private int m_slotIndex;
-    private System.Action<EModuleType, int, bool> m_onToggle; // (moduleType, slotIndex, 요청할 install 목표값)
     private System.Action<EModuleType, int> m_onRowSelected;
     private System.Action<EModuleType, int> m_onManageClicked;
-    private System.Action m_onUnlockClicked;
 
-    // 튜토리얼 동적 타겟용 — 관리 버튼이 현재 보이는 상태(설치된 슬롯)일 때만 RectTransform 반환
-    public RectTransform GetManageButtonRect()
-    {
-        if (m_manageButton == null || m_manageButton.gameObject.activeInHierarchy == false) return null;
-        return m_manageButton.GetComponent<RectTransform>();
-    }
-
-    public void Setup(EModuleType moduleType, int slotIndex, bool installed, bool isLocked,
-        int investedPoints, bool isSelected, string moduleSubType,
-        bool needsUnlock,
-        System.Action<EModuleType, int, bool> onToggle,
+    public void Setup(EModuleType moduleType, int slotIndex,
+        bool isSelected, string moduleSubType,
         System.Action<EModuleType, int> onRowSelected,
-        System.Action<EModuleType, int> onManageClicked,
-        System.Action onUnlockClicked)
+        System.Action<EModuleType, int> onManageClicked)
     {
         m_moduleType = moduleType;
         m_slotIndex = slotIndex;
-        m_onToggle = onToggle;
         m_onRowSelected = onRowSelected;
         m_onManageClicked = onManageClicked;
-        m_onUnlockClicked = onUnlockClicked;
 
         if (m_nameText != null)
             m_nameText.text = $"{LocalizationManager.Instance.Get(CommonUtility.GetModuleTypeLabelKey(moduleType))} {slotIndex + 1}";
 
-        if (m_toggleSlide != null)
+        if (m_levelText != null)
         {
-            m_toggleSlide.gameObject.SetActive(needsUnlock == false);
-            if (needsUnlock == false)
-            {
-                m_toggleSlide.SetOn(installed, OnToggleChanged);
-                m_toggleSlide.SetInteractable(isLocked == false);
-                SetInstalledLabel(installed);
-            }
-        }
-
-        if (m_unlockButton != null)
-        {
-            m_unlockButton.gameObject.SetActive(needsUnlock == true);
-            m_unlockButton.onClick.RemoveAllListeners();
-            m_unlockButton.onClick.AddListener(OnUnlockButtonClicked);
-        }
-
-        // 실드/요격체도 티어 개념이 생겨(datatable_module 티어1~14) 관리 버튼으로 티어업/다운 가능 — 강화 포인트 축(Attack 등)만 없을 뿐 카테고리 제외 불필요
-        bool showReinforceControls = installed == true && needsUnlock == false;
-        if (m_investedPointsText != null)
-        {
-            m_investedPointsText.gameObject.SetActive(showReinforceControls);
-            m_investedPointsText.text = $"Invested CP : {investedPoints}";
+            m_levelText.gameObject.SetActive(true);
+            m_levelText.text = LocalizationManager.Instance.Get("UI_TierLabel", CommonUtility.ParseTier(moduleSubType));
         }
 
         if (m_manageButton != null)
         {
-            m_manageButton.gameObject.SetActive(showReinforceControls);
+            m_manageButton.gameObject.SetActive(true);
             m_manageButton.onClick.RemoveAllListeners();
             m_manageButton.onClick.AddListener(OnManageButtonClicked);
-        }
-
-        // 설치 여부와 무관하게 항상 표시 — 미설치 슬롯도 장착 시 어떤 티어가 될지 알 수 있어야 함(실드/요격체 포함)
-        if (m_tierText != null)
-        {
-            m_tierText.gameObject.SetActive(true);
-            m_tierText.text = LocalizationManager.Instance.Get("UI_TierLabel", CommonUtility.ParseTier(moduleSubType));
         }
 
         SetSelected(isSelected);
@@ -104,12 +59,6 @@ public class UIModuleSlotToggleRow : MonoBehaviour
             m_selectedImage.SetActive(isSelected);
     }
 
-    private void OnToggleChanged(bool isOn)
-    {
-        SetInstalledLabel(isOn);
-        if (m_onToggle != null) m_onToggle(m_moduleType, m_slotIndex, isOn);
-    }
-
     private void OnSelectButtonClicked()
     {
         if (m_onRowSelected != null) m_onRowSelected(m_moduleType, m_slotIndex);
@@ -119,16 +68,4 @@ public class UIModuleSlotToggleRow : MonoBehaviour
     {
         if (m_onManageClicked != null) m_onManageClicked(m_moduleType, m_slotIndex);
     }
-
-    private void OnUnlockButtonClicked()
-    {
-        if (m_onUnlockClicked != null) m_onUnlockClicked();
-    }
-
-    private void SetInstalledLabel(bool installed)
-    {
-        if (m_toggleSlide == null) return;
-        m_toggleSlide.SetLabelText(installed ? "UIFleet_ModuleSlot_Installed" : "UIFleet_ModuleSlot_NotInstalled");
-    }
-
 }

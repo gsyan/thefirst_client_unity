@@ -7,9 +7,7 @@ using UnityEngine.UI;
 public class ButtonGroupItem
 {
     public Button button;
-    public Graphic[] childGraphics; // UsingImage가 없을 때만 쓰이는 색상 연동 대상(자식 Image, TMP_Text 등)
-    [System.NonSerialized] public Color activeColor = Color.white;
-    [System.NonSerialized] public Color inactiveColor = Color.gray;
+    [System.NonSerialized] public Color originalNormalColor; // Initialize 시점에 캐시한 버튼 본연의 Normal Color(비선택 상태로 되돌릴 기준값)
     [System.NonSerialized] public System.Action onSelected;
     [System.NonSerialized] public System.Action onDeselected;
 
@@ -25,10 +23,6 @@ public class ButtonGroupSystem : MonoBehaviour
     // true면 현재 선택된 버튼 재클릭 시 해제 (-1 상태)
     public bool allowDeselect = false;
 
-    // 팔레트 대신 비활성 색상을 직접 지정하고 싶을 때 Start() 전(예: TabSystem.inactiveColorOverride 경유)에 설정 —
-    // 기본값 null이면 기존과 동일하게 팔레트 색을 씀. 다른 사용처(UIBattleView 등)에 영향 없는 opt-in 오버라이드
-    public Color? inactiveColorOverride;
-
     private int currentIndex = -1;
     private bool initialized = false;
 
@@ -41,18 +35,8 @@ public class ButtonGroupSystem : MonoBehaviour
     {
         if (initialized) return;
 
-        Color colorActive = CommonUtility.PaletteColor("General.Bright1");
-        Color colorInactive;
-        if (inactiveColorOverride.HasValue == true)
-            colorInactive = inactiveColorOverride.Value;
-        else
-            colorInactive = CommonUtility.PaletteColor("General.Dark1");
-
         for (int i = 0; i < items.Count; i++)
         {
-            items[i].activeColor   = colorActive;
-            items[i].inactiveColor = colorInactive;
-
             if (items[i].button != null)
             {
                 int idx = i;
@@ -60,6 +44,7 @@ public class ButtonGroupSystem : MonoBehaviour
 
                 Transform usingImage = items[i].button.transform.Find("UsingImage");
                 items[i].usingImage = usingImage != null ? usingImage.gameObject : null;
+                items[i].originalNormalColor = items[i].button.colors.normalColor;
             }
         }
 
@@ -113,7 +98,18 @@ public class ButtonGroupSystem : MonoBehaviour
 
     public int GetCurrentIndex() => currentIndex;
 
-    // usingImage가 있으면 색상 대신 그 오브젝트의 활성화로 선택 상태를 표시, 없으면 기존 색상 전환으로 폴백
+    // 현재 선택된 버튼의 색을 다시 한번 덮어씀 — ApplyState가 더 이상 EventSystem 포커스에 기대지 않아 꼭 필요하진 않지만,
+    // 패널 재오픈 시(TabSystem.OnEnable) 안전하게 재확인하는 용도로 유지
+    public void ReapplySelectedVisual()
+    {
+        if (currentIndex < 0 || currentIndex >= items.Count) return;
+        ApplyState(items[currentIndex], true);
+    }
+
+    // usingImage가 있으면 색상 대신 그 오브젝트의 활성화로 선택 상태를 표시.
+    // 없으면 Inspector에 직접 칠해둔 Button.colors(Normal/Selected)를 그대로 쓰되, Unity의 EventSystem.currentSelectedGameObject
+    // 기반 Selected 상태에는 기대지 않음 — 다른 UI를 클릭하면 전역 포커스가 넘어가며 즉시 꺼져버리기 때문.
+    // 대신 선택된 버튼의 Normal Color 자체를 Selected Color로 바꿔치기(평상시 색을 선택색으로 고정) — 포커스와 무관하게 유지됨
     private void ApplyState(ButtonGroupItem item, bool isSelected)
     {
         if (item.usingImage != null)
@@ -122,25 +118,10 @@ public class ButtonGroupSystem : MonoBehaviour
             return;
         }
 
-        Color color = isSelected ? item.activeColor : item.inactiveColor;
+        if (item.button == null) return;
 
-        if (item.button != null)
-        {
-            var colors = item.button.colors;
-            colors.normalColor = color;
-            colors.highlightedColor = color * 1.1f;
-            colors.pressedColor = color * 0.8f;
-            colors.selectedColor = color;
-            item.button.colors = colors;
-        }
-
-        if (item.childGraphics != null)
-        {
-            for (int i = 0; i < item.childGraphics.Length; i++)
-            {
-                if (item.childGraphics[i] != null)
-                    item.childGraphics[i].color = color;
-            }
-        }
+        ColorBlock colors = item.button.colors;
+        colors.normalColor = isSelected == true ? colors.selectedColor : item.originalNormalColor;
+        item.button.colors = colors;
     }
 }

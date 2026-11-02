@@ -142,7 +142,10 @@ public class SpaceShip : MonoBehaviour
    // Body 초기화 (기존 모듈 재사용 가능)
     private ModuleHull InitSpaceShipBody(ModuleHullInfo bodyInfo, List<ModuleBase> savedModules, ShipFinalStats? statOverride = null)
     {
-        GameObject modulePrefab = ObjectManager.Instance.LoadShipModulePrefab(bodyInfo.moduleType.ToString(), bodyInfo.moduleSubType);
+        // 프리팹은 아키타입당 1개뿐이라 moduleSubType(레벨별로 다른 이름)이 아니라 CSV Import 시 캐싱된 실제 파일명을 사용
+        ModuleData bodyData = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(bodyInfo.moduleSubType);
+        string prefabName = bodyData != null && string.IsNullOrEmpty(bodyData.hullPrefabName) == false ? bodyData.hullPrefabName : bodyInfo.moduleSubType;
+        GameObject modulePrefab = ObjectManager.Instance.LoadShipModulePrefab(bodyInfo.moduleType.ToString(), prefabName);
         if (modulePrefab == null)
         {
             Debug.LogError("No prefab");
@@ -772,12 +775,14 @@ public class SpaceShip : MonoBehaviour
         return false;
     }
 
-    // 지금 이 함선의 실드가 incomingDamage를 전량 막아낼 수 있는 상태인지(장착 + 게이지 충분) — ProjectileBeam이
+    // 지금 이 함선의 실드가 incomingDamage를 전량 막아낼 수 있는 상태인지(토글 ON + 장착 + 게이지 충분) — ProjectileBeam이
     // raycast 단계에서 빔 궤적을 실드 표면에서 끊을지(완전 방어) 함체 표면까지 보낼지(관통) 미리 판단하는 데 사용.
     // 게이지가 있어도 이번 데미지를 다 못 막으면(관통 발생) false를 반환해 빔이 함체 표면까지 도달하게 함
-    // 전술 토글은 게이지 충전(리필) 여부만 결정 — 방어 발동은 게이지가 있으면 토글과 무관하게 항상 일어남
+    // 전술 토글(idx=3)은 이제 흡수 효과 작동 여부만 결정 — 게이지 충전(리필)은 토글과 무관하게 항상 일어남
     public bool IsShieldActive(float incomingDamage)
     {
+        if (m_ownerFleet != null && m_ownerFleet.IsShieldTacticOn() == false) return false;
+
         ModuleHull targetBody = GetRandomAliveBody();
         if (targetBody == null) return false;
 
@@ -785,9 +790,12 @@ public class SpaceShip : MonoBehaviour
         return shield != null && shield.CanFullyAbsorb(incomingDamage) == true;
     }
 
-    // 빔 피격 시 실드가 흡수하는 만큼 차감한 나머지 데미지를 반환 — 실드 미장착/게이지 0이면 원본 그대로 반환
+    // 빔 피격 시 실드가 흡수하는 만큼 차감한 나머지 데미지를 반환 — 실드 미장착/게이지 0/토글 OFF면 원본 그대로 반환
+    // 전술 토글(idx=3)은 흡수 효과 작동 여부만 결정 — 게이지 자체 충전은 토글과 무관(Co_DrainTacticPower 참고)
     private float ApplyShieldAbsorption(ModuleHull targetBody, float incomingDamage, Vector3 hitPosition)
     {
+        if (m_ownerFleet != null && m_ownerFleet.IsShieldTacticOn() == false) return incomingDamage;
+
         ModuleShield shield = targetBody.m_shield;
         if (shield == null || shield.IsEquipped() == false) return incomingDamage;
 

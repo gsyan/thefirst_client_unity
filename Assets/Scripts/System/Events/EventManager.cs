@@ -407,6 +407,12 @@ public static class EventManager
     public static void Subscribe_TacticPowerChanged(Action<float, int> callback)   { OnTacticPowerChanged += callback; }
     public static void Unsubscribe_TacticPowerChanged(Action<float, int> callback) { OnTacticPowerChanged -= callback; }
 
+    // 광물(Mineral) 현재치 변경 — 존런 전용 재화, 자원충전 소모/약탈·탐사 획득 등 변경 지점에서 발행
+    public static event Action<int> OnMineralAmountChanged;
+    public static void Trigger_MineralAmountChanged(int amount) { OnMineralAmountChanged?.Invoke(amount); }
+    public static void Subscribe_MineralAmountChanged(Action<int> callback)   { OnMineralAmountChanged += callback; }
+    public static void Unsubscribe_MineralAmountChanged(Action<int> callback) { OnMineralAmountChanged -= callback; }
+
     // Module Replaced (oldModule, newModule)
     public static event Action<ModuleBase, ModuleBase> OnModuleReplaced;
     public static void TriggerModuleReplaced(ModuleBase oldModule, ModuleBase newModule)

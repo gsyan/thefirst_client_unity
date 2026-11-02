@@ -20,18 +20,26 @@ public class ModuleData
     // moduleType은 moduleSubType에서 유추: CommonUtility.ParseModuleType(moduleSubType)
 
     // common ---------------------------------------------------------------------------
-    public int statPoint; // 이 서브타입(티어)을 슬롯에 설치할 때 드는 성능포인트 비용 — 티어가 오를수록 가파르게 증가
-    public int unlockAchievementPointCost; // hull 전용 — 0이면 즉시 사용 가능(티어1~3), 0보다 크면 이 값만큼 업적포인트를 소모해야 언락(티어4+). hull 외 카테고리는 0(미사용)
-    public int shieldUnlockAchievementPointCost; // hull 전용 — 이 함체의 실드 슬롯을 사용하려면 소모해야 하는 업적포인트. 실드 슬롯 없는 함체(티어1~5)는 0
-    public int interceptorUnlockAchievementPointCost; // hull 전용 — 이 함체의 요격체 슬롯을 사용하려면 소모해야 하는 업적포인트. 요격체 슬롯 없는 함체(티어1~5)는 0
+    public int statPoint; // 이 서브타입(티어)을 슬롯에 설치할 때 드는 지휘력(CP) 비용 — 티어가 오를수록 가파르게 증가
+    // 레벨 행(type_level)에 도달하는 데 드는 업적포인트 비용(ap_cost 컬럼). hull의 레벨1 행은 그 아키타입의 선체 언락 비용(M1)과 동일한 값 —
+    // hull 레벨2~10/beam·missile·hangar·shield·interceptor 전 레벨은 M6 레벨업 비용(ArchetypeModuleUpgradeService가 CSV에서 직접 조회)
+    public int unlockAchievementPointCost;
+    public string hullArchetype = ""; // hull 전용 — 13개+ 아키타입 중 하나(예: "전투함", "약탈선"). hull 외 카테고리는 ""(미사용)
+    // hull 전용 — 실제 프리팹 파일명(예: "hull_1_centurion_11100"). 프리팹은 아키타입당 1개뿐이라 moduleSubType(레벨별로 다름, 예: "hull_1_centurion_3")과
+    // 파일명이 다름 — CSV Import 시점(BuildHullPrefabName)에 한 번 찾아서 캐싱, 런타임(Resources.Load)은 이 값만 사용하고 폴더 탐색을 하지 않음
+    public string hullPrefabName = "";
 
     [Header("Description")]
-    [TextArea(2, 4)]
-    public string description = "Ship Module";
+    public string descriptionKey = ""; // UI.csv 로컬라이즈 키 — 원문 텍스트를 직접 담지 않음
 
     // Hull Module Slots (extracted from prefab) ---------------------------------------
     [Header("Hull Slot Info")]
     public ModuleSlotInfo[] moduleSlots;
+
+    // hull 전용 — 실드/요격체는 3D ModuleSlot 마커가 없는 로직 전용 컴포넌트라 moduleSlots 파싱으로는 보유 여부를 알 수 없어 CSV에 직접 플래그로 둠
+    // (실제 전투 중 작동 가능 여부는 이것과 별개로 CommanderHullArchetypeProgress 패시브 해금 진행도가 결정 — 이 플래그는 "설계상 보유하는 아키타입인가"만 의미)
+    public bool hasShield = false;
+    public bool hasInterceptor = false;
 
     // Hull ---------------------------------------------------------------------------
     [Header("Hull Stats")]
@@ -360,15 +368,34 @@ public class DataTableModule : ScriptableObject
     #region Validation & Utility
 
 #if UNITY_EDITOR
+    // hull_{tier}_{archetypeSlug}_{level}(레벨 토큰 포함, 아키타입당 10레벨이 프리팹 1개 공유)와
+    // 레거시 hull_{tier}_{gen}_{5자리슬롯코드}(gen 토큰이 숫자) 두 포맷이 과도기에 공존 — 3번째 토큰이 숫자가 아니면 신규 포맷
+    // 신규 포맷 프리팹 파일명은 "hull_{tier}_{archetypeSlug}_{5자리슬롯코드}"처럼 사람이 보기 좋은 슬롯코드 접미사가 붙을 수 있어
+    // CSV 행에서는 알 수 없는 값이므로 정확히 일치하는 이름 대신 "hull_{tier}_{archetypeSlug}_"로 시작하는 프리팹을 폴더에서 찾는다
+    private static string BuildHullPrefabName(string hullSubType)
+    {
+        string[] parts = hullSubType.Split('_');
+        bool isLegacyFormat = parts.Length != 4 || int.TryParse(parts[2], out _) == true;
+        if (isLegacyFormat == true) return hullSubType;
+
+        string archetypePrefix = $"{parts[0]}_{parts[1]}_{parts[2]}";
+        string hullFolderPath = Application.dataPath + "/Resources/Prefabs/ShipModule/Hull";
+        string[] matchingPrefabPaths = System.IO.Directory.GetFiles(hullFolderPath, $"{archetypePrefix}_*.prefab");
+        if (matchingPrefabPaths.Length == 0) return archetypePrefix;
+
+        return System.IO.Path.GetFileNameWithoutExtension(matchingPrefabPaths[0]);
+    }
+
     private ModuleSlotInfo[] ExtractModuleSlotsFromPrefab(string subType)
     {
-        string prefabPath = $"Prefabs/ShipModule/Hull/{subType}";
+        string prefabName = BuildHullPrefabName(subType);
+        string prefabPath = $"Prefabs/ShipModule/Hull/{prefabName}";
         GameObject prefab = Resources.Load<GameObject>(prefabPath);
         if (prefab == null) return null;
-        
+
         ModuleSlot[] slots = prefab.GetComponentsInChildren<ModuleSlot>(true);
         if (slots == null || slots.Length == 0) return null;
-        
+
         var slotInfos = new List<ModuleSlotInfo>();
         foreach (var slot in slots)
         {
@@ -396,16 +423,18 @@ public class DataTableModule : ScriptableObject
         shieldGroups.Clear();
         interceptorGroups.Clear();
 
-        // 컬럼 순서 (datatable_module.csv 헤더 기준 고정 인덱스) — 서브타입(티어)당 1행
-        // 0:sub_type, 1:unlock_achievement_point_cost(hull 전용), 2:shield_unlock_achievement_point_cost(hull 전용), 3:interceptor_unlock_achievement_point_cost(hull 전용),
-        // 4:stat_point, 5:health, 6:repair, 7:speed, 8:turn_rate,
-        // 9:attack, 10:splash_radius, 11:attack_cool, 12:silence_time,
-        // 13:air_count, 14:air_maintenance_time, 15:air_health, 16:air_attack, 17:air_attack_to_fighter,
-        // 18:air_attack_range, 19:air_attack_cool, 20:air_speed, 21:air_ammo,
-        // 22:air_detect_radius, 23:air_avoid_radius, 24:air_disrupt,
-        // 25:shield_gauge, 26:shield_regen_rate,
-        // 27:interceptor_count, 28:interceptor_regen_time, 29:description
+        // 컬럼 순서 (datatable_module.csv 헤더 기준 고정 인덱스) — type_level(타입_티어_[아키타입]_레벨 또는 티어/세대)당 1행
+        // 0:type_level, 1:unlock_achievement_point_cost(hull 전용),
+        // 2:hull_archetype(hull 전용), 3:stat_point, 4:health, 5:repair, 6:speed, 7:turn_rate,
+        // 8:attack, 9:splash_radius, 10:attack_cool, 11:silence_time,
+        // 12:air_count, 13:air_maintenance_time, 14:air_health, 15:air_attack, 16:air_attack_to_fighter,
+        // 17:air_attack_range, 18:air_attack_cool, 19:air_speed, 20:air_ammo,
+        // 21:air_detect_radius, 22:air_avoid_radius, 23:air_disrupt,
+        // 24:shield_gauge, 25:shield_regen_rate,
+        // 26:interceptor_count, 27:interceptor_regen_time, 28:description_key(로컬라이즈 키, UI.csv),
+        // 29:has_shield(hull 전용, 0/1), 30:has_interceptor(hull 전용, 0/1)
         // 발사체 이동속도(빔/미사일)는 별도 컬럼 없이 speed 컬럼을 재사용
+        // 성급(1~5)은 별도 컬럼 없이 type_level의 "hull_" 다음 숫자(ParseTier)를 그대로 사용 — UIAvailableHullRow가 직접 파싱
         string[] lines = csvText.Split('\n');
         if (lines.Length < 2) return;
 
@@ -421,50 +450,49 @@ public class DataTableModule : ScriptableObject
             if (string.IsNullOrEmpty(moduleSubType) == true) continue;
 
             bool isHull = CommonUtility.ParseModuleType(moduleSubType) == EModuleType.hull;
-            if (isHull == true && CommonUtility.ValidateHullTier(moduleSubType) == false)
-            {
-                Debug.LogError($"[DataTableModule] hull tier 불일치로 임포트 중단: {moduleSubType} (tier는 빔+미사일+격납고 합과 일치해야 함)");
-                continue;
-            }
 
             var module = new ModuleData
             {
                 moduleName      = $"{moduleSubType}",
                 moduleSubType   = moduleSubType,
                 unlockAchievementPointCost = ParseCsvInt(cols, 1),
-                shieldUnlockAchievementPointCost = ParseCsvInt(cols, 2),
-                interceptorUnlockAchievementPointCost = ParseCsvInt(cols, 3),
-                statPoint           = ParseCsvInt  (cols, 4),
-                health              = ParseCsvFloat(cols, 5),
-                repair              = ParseCsvFloat(cols, 6),
-                speed               = ParseCsvFloat(cols, 7),
-                turnRate            = ParseCsvFloat(cols, 8),
-                attack              = ParseCsvFloat(cols, 9),
-                splashRadius        = ParseCsvFloat(cols, 10),
-                attackCool          = ParseCsvFloat(cols, 11),
-                silenceTime         = ParseCsvFloat(cols, 12),
-                airCount            = ParseCsvInt  (cols, 13),
-                airMaintenanceTime  = ParseCsvFloat(cols, 14),
-                airHealth           = ParseCsvFloat(cols, 15),
-                airAttackToShip     = ParseCsvFloat(cols, 16),
-                airAttackToFighter  = ParseCsvFloat(cols, 17),
-                airAttackRange      = ParseCsvFloat(cols, 18),
-                airAttackCool       = ParseCsvFloat(cols, 19),
-                airSpeed            = ParseCsvFloat(cols, 20),
-                airAmmo             = ParseCsvInt  (cols, 21),
-                airDetectRadius     = ParseCsvFloat(cols, 22),
-                airAvoidRadius      = ParseCsvFloat(cols, 23),
-                airDisrupt          = ParseCsvFloat(cols, 24),
-                shieldGauge         = ParseCsvFloat(cols, 25),
-                shieldRegenRate     = ParseCsvFloat(cols, 26),
-                interceptorCount        = ParseCsvInt  (cols, 27),
-                interceptorRegenTime    = ParseCsvFloat(cols, 28),
-                description         = cols.Length > 29 ? cols[29].Trim() : ""
+                hullArchetype       = cols.Length > 2 ? cols[2].Trim() : "",
+                statPoint           = ParseCsvInt  (cols, 3),
+                health              = ParseCsvFloat(cols, 4),
+                repair              = ParseCsvFloat(cols, 5),
+                speed               = ParseCsvFloat(cols, 6),
+                turnRate            = ParseCsvFloat(cols, 7),
+                attack              = ParseCsvFloat(cols, 8),
+                splashRadius        = ParseCsvFloat(cols, 9),
+                attackCool          = ParseCsvFloat(cols, 10),
+                silenceTime         = ParseCsvFloat(cols, 11),
+                airCount            = ParseCsvInt  (cols, 12),
+                airMaintenanceTime  = ParseCsvFloat(cols, 13),
+                airHealth           = ParseCsvFloat(cols, 14),
+                airAttackToShip     = ParseCsvFloat(cols, 15),
+                airAttackToFighter  = ParseCsvFloat(cols, 16),
+                airAttackRange      = ParseCsvFloat(cols, 17),
+                airAttackCool       = ParseCsvFloat(cols, 18),
+                airSpeed            = ParseCsvFloat(cols, 19),
+                airAmmo             = ParseCsvInt  (cols, 20),
+                airDetectRadius     = ParseCsvFloat(cols, 21),
+                airAvoidRadius      = ParseCsvFloat(cols, 22),
+                airDisrupt          = ParseCsvFloat(cols, 23),
+                shieldGauge         = ParseCsvFloat(cols, 24),
+                shieldRegenRate     = ParseCsvFloat(cols, 25),
+                interceptorCount        = ParseCsvInt  (cols, 26),
+                interceptorRegenTime    = ParseCsvFloat(cols, 27),
+                descriptionKey      = cols.Length > 28 ? cols[28].Trim() : "",
+                hasShield           = ParseCsvInt(cols, 29) != 0,
+                hasInterceptor      = ParseCsvInt(cols, 30) != 0
             };
 
-            // hull 모듈만 prefab에서 슬롯 정보 추출
+            // hull 모듈만 prefab에서 슬롯 정보 추출 + 실제 프리팹 파일명 캐싱(런타임 로드용)
             if (isHull == true)
+            {
+                module.hullPrefabName = BuildHullPrefabName(moduleSubType);
                 module.moduleSlots = ExtractModuleSlotsFromPrefab(moduleSubType);
+            }
 
             AddModuleDataToTable(module);
         }

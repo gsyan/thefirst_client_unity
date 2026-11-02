@@ -1,7 +1,7 @@
 //------------------------------------------------------------------------------
 // 실드 모듈 — 슬롯/3D 배치 없이 함체(ModuleHull)에 논리적으로만 붙는 방어막.
-// 게이지는 자동으로 충전되지 않고 전술 토글(idx=3)을 켰을 때만 ApplyRegenTick으로 충전됨 — UIPanelBattle.Co_DrainTacticPower 참고.
-// 같은 토글이 "방어 기능 사용" 스위치도 겸함 — ON 상태에서 게이지가 있을 때 빔 피격을 막아주는 대신 매초 전술력을 소모함
+// 게이지 충전은 전술 토글과 무관하게 항상 시도됨(자원이 있을 때만 ApplyRegenTick으로 충전) — UIPanelBattle.Co_DrainTacticPower 참고.
+// 전술 토글(idx=3)은 "흡수(피해감소) 효과 작동 여부"만 결정 — SpaceShip.ApplyShieldAbsorption/IsShieldActive 참고
 using UnityEngine;
 
 public class ModuleShield : ModuleBase
@@ -17,8 +17,7 @@ public class ModuleShield : ModuleBase
         m_parentBody = parentBody;
     }
 
-    // gaugePoints/regenRatePoints: 강화 투자 포인트 — 성능 표시(ShipStatCalculator)와 같은 공식으로 반영
-    public void InitializeModuleShield(string shieldSubType, int gaugePoints, int regenRatePoints)
+    public void InitializeModuleShield(string shieldSubType)
     {
         m_parentBody = GetComponentInParent<ModuleHull>();
         AutoDetectFleetInfo();
@@ -41,10 +40,9 @@ public class ModuleShield : ModuleBase
             return;
         }
 
-        ShipStatFormulaSettings formula = DataManager.Instance.m_dataTableConfig.gameSettings.shipStatFormula;
-        m_gaugeMax = ShipStatCalculator.ComputeShieldGauge(moduleData.shieldGauge, gaugePoints, formula);
+        m_gaugeMax = moduleData.shieldGauge;
         m_gauge = m_gaugeMax;
-        m_regenRate = ShipStatCalculator.ComputeShieldRegenRate(moduleData.shieldRegenRate, regenRatePoints, formula);
+        m_regenRate = moduleData.shieldRegenRate;
     }
 
     public bool IsEquipped()
@@ -84,7 +82,7 @@ public class ModuleShield : ModuleBase
         return IsEquipped() == true && m_gauge >= incomingDamage;
     }
 
-    // 전술 토글(실드) ON 상태에서 UIPanelBattle.Co_DrainTacticPower가 1초 간격으로 호출 — m_regenRate는 이미 초당 단위라 deltaTime 계산 불필요
+    // 토글과 무관하게 UIPanelBattle.Co_DrainTacticPower가 1초 간격으로 호출(자원이 있을 때만) — m_regenRate는 이미 초당 단위라 deltaTime 계산 불필요
     public void ApplyRegenTick()
     {
         m_gauge = Mathf.Min(m_gaugeMax, m_gauge + m_regenRate);

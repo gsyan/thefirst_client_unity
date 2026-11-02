@@ -989,10 +989,6 @@ MonoBehaviour:
     m_Localized: Achievements
     m_Metadata:
       m_Items: []
-  - m_Id: 79336418400141312
-    m_Localized: Module Reinforce
-    m_Metadata:
-      m_Items: []
   - m_Id: 79356561679319040
     m_Localized: There is another exploration in progress.\nZone {0} / Cell {1} /
       Banked Exploration Point {2}\nAbandon it and start a new challenge in the selected
@@ -1082,10 +1078,6 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 80415901962076162
     m_Localized: Clear event cells {1} times today
-    m_Metadata:
-      m_Items: []
-  - m_Id: 80555228885024768
-    m_Localized: Unlock the previous hull first.
     m_Metadata:
       m_Items: []
   - m_Id: 80555228943745024
@@ -1240,6 +1232,399 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 84870060622872576
     m_Localized: Tier{0} {1}
+    m_Metadata:
+      m_Items: []
+  - m_Id: 95713217811972096
+    m_Localized: Charge
+    m_Metadata:
+      m_Items: []
+  - m_Id: 95912641813151744
+    m_Localized: Centurion
+    m_Metadata:
+      m_Items: []
+  - m_Id: 95912641867677696
+    m_Localized: Argus
+    m_Metadata:
+      m_Items: []
+  - m_Id: 95912641867677697
+    m_Localized: Prism
+    m_Metadata:
+      m_Items: []
+  - m_Id: 95912641867677698
+    m_Localized: Colossus
+    m_Metadata:
+      m_Items: []
+  - m_Id: 95912641867677699
+    m_Localized: Leviathan
+    m_Metadata:
+      m_Items: []
+  - m_Id: 95912641867677700
+    m_Localized: Corsair
+    m_Metadata:
+      m_Items: []
+  - m_Id: 95912641867677701
+    m_Localized: Talon
+    m_Metadata:
+      m_Items: []
+  - m_Id: 95912641867677702
+    m_Localized: Vulcan
+    m_Metadata:
+      m_Items: []
+  - m_Id: 95912641867677703
+    m_Localized: Nemesis
+    m_Metadata:
+      m_Items: []
+  - m_Id: 95912641867677704
+    m_Localized: Phoenix
+    m_Metadata:
+      m_Items: []
+  - m_Id: 95912641867677705
+    m_Localized: Halcyon
+    m_Metadata:
+      m_Items: []
+  - m_Id: 95912641867677706
+    m_Localized: Aegis
+    m_Metadata:
+      m_Items: []
+  - m_Id: 95912641867677707
+    m_Localized: Sentinel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96410851879026688
+    m_Localized: Passive Stage {0}
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96410851941941248
+    m_Localized: Unlocked
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96410851941941249
+    m_Localized: Beam attack power +10%
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96410851941941250
+    m_Localized: Missile attack power +10%
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96410851941941251
+    m_Localized: Ship health +50%
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96410851941941252
+    m_Localized: Fleet-wide beam attack power +10%
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96410851941941253
+    m_Localized: Beam attack power +5% per hit (stacking)
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96410851941941254
+    m_Localized: Missile silence effect +100%
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96410851941941255
+    m_Localized: Hangar attack power +100%
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96410851941941256
+    m_Localized: Fleet-wide beam/missile/hangar attack power +50%
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96410851941941257
+    m_Localized: Beam attack power +10%
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96410851941941258
+    m_Localized: Beam attack power +15%
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96410851941941259
+    m_Localized: Beam attack power +20%
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96410851941941260
+    m_Localized: Fleet-wide beam attack power +20%
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96410851941941261
+    m_Localized: Scouting enabled, 10% success chance
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96410851941941262
+    m_Localized: 2 simultaneous scouting attempts
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96410851941941263
+    m_Localized: 3 simultaneous scouting attempts
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96410851941941264
+    m_Localized: Fleet-wide 10% scouting chance
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96410851941941265
+    m_Localized: Ship health +100%
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96410851941941266
+    m_Localized: Interceptor enabled
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96410851941941267
+    m_Localized: Shield enabled
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96410851941941268
+    m_Localized: Fleet-wide health +50%
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96410851941941269
+    m_Localized: Fleet resource charge efficiency +100%
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96410851941941270
+    m_Localized: Fleet beam/missile/hangar attack power +10%
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96410851941941271
+    m_Localized: Fleet health regen +50%, shield gauge regen +50%, interceptor cooldown
+      -50%
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96410851941941272
+    m_Localized: 'Fleet tactic: Berserker mode unlockable'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96410851941941273
+    m_Localized: Hangar scavenging chance +10%
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96410851941941274
+    m_Localized: Hangar-vs-ship attack scavenging chance +1% (stacking)
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96410851941941275
+    m_Localized: Hangar-vs-hangar attack scavenging chance +1% (stacking)
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96410851941941276
+    m_Localized: Fleet-wide scavenging chance +10%
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96410851941941277
+    m_Localized: Missile blast radius +100%
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96410851941941278
+    m_Localized: Missile attack power +100%
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96410851941941279
+    m_Localized: Missile speed +100%
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96410851941941280
+    m_Localized: Fleet-wide missile attack power & speed +100%
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96410851941941281
+    m_Localized: Beam critical chance +100%
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96410851941941282
+    m_Localized: Missile critical chance +100%
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96410851941941283
+    m_Localized: Hangar critical chance +100%
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96410851941941284
+    m_Localized: Fleet-wide critical chance +100%
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96410851941941285
+    m_Localized: Ally ship repair ability enabled
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96410851941941286
+    m_Localized: Repair ability expanded to 2 ships simultaneously
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96410851941941287
+    m_Localized: Repair ability expanded to 3 ships simultaneously
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96410851941941288
+    m_Localized: Fleet health +100%
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96410851941941289
+    m_Localized: Ally shield gauge regen boost ability enabled
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96410851941941290
+    m_Localized: Shield regen boost expanded to 2 ships simultaneously
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96410851941941291
+    m_Localized: Shield regen boost expanded to 3 ships simultaneously
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96410851941941292
+    m_Localized: Fleet shield gauge +100%
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96410851941941293
+    m_Localized: Shield & interceptor enabled
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96410851941941294
+    m_Localized: Shield efficiency +100%
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96410851941941295
+    m_Localized: Shield gauge +100%
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96410851941941296
+    m_Localized: Fleet-wide shield efficiency +100%
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96410851941941297
+    m_Localized: Shield & interceptor enabled
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96410851941941298
+    m_Localized: Interceptor efficiency +100%
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96410851941941299
+    m_Localized: Interceptor cooldown -50%
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96410851941941300
+    m_Localized: Fleet-wide interceptor cooldown -30%
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96424402014306304
+    m_Localized: Passive
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96810128346316800
+    m_Localized: Module Level Up
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96810128413425664
+    m_Localized: UNLOCK
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96810128413425665
+    m_Localized: AP
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96810128413425666
+    m_Localized: Remove this ship from the fleet slot?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96810128413425667
+    m_Localized: REMOVE
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96848683730862080
+    m_Localized: Destroy enemy ships
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96848683789582336
+    m_Localized: Scouting success
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96848683789582337
+    m_Localized: Cumulative damage taken
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96848683789582338
+    m_Localized: Fleet resource charge
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96848683789582339
+    m_Localized: Scavenged minerals
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96848683793776640
+    m_Localized: Ally ship repair
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96848683793776641
+    m_Localized: Ally shield charge
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96848683793776642
+    m_Localized: Shield damage absorbed
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96848683793776643
+    m_Localized: Interceptions
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96848683793776644
+    m_Localized: Zone runs cleared
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96931116086067200
+    m_Localized: A versatile warship that performs reliably in any situation
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96931116144787456
+    m_Localized: An attack-specialized warship that overwhelms enemies with firepower
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96931116144787457
+    m_Localized: A focused-fire warship specialized in beam weapons
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96931116144787458
+    m_Localized: A scouting warship that discovers minerals while exploring during
+      combat
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96931116144787459
+    m_Localized: A tank ship that holds the front line with heavy armor and high
+      health
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96931116144787460
+    m_Localized: A transport ship responsible for the fleet's resource supply
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96931116144787461
+    m_Localized: A raider that secures minerals by scavenging enemy fighters
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96931116144787462
+    m_Localized: A bomber that wipes out enemy fleets with wide-area explosions
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96931116144787463
+    m_Localized: An assassin ship aiming for a decisive blow with a high critical
+      hit chance
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96931116144787464
+    m_Localized: A repair ship that keeps allied ships' combat strength up by repairing
+      them
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96931116144787465
+    m_Localized: A support ship that charges allies' shield gauges
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96931116144787466
+    m_Localized: A shield ship that protects allies with powerful shields
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96931116144787467
+    m_Localized: An interceptor that eliminates enemy threats in advance with interceptors
     m_Metadata:
       m_Items: []
   references:

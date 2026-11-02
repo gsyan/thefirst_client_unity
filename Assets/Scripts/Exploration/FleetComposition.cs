@@ -12,12 +12,6 @@ public enum EFleetPlaceResult
 
 public class FleetComposition
 {
-    // 강화 포인트 1당 소모 CP — DataTableConfig.gameSettings.general.reinforceCpCostPerPoint, 서버 GameDataService.getReinforceCpCostPerPoint()와 동일 소스
-    public static int GetReinforceCpCostPerPoint()
-    {
-        return DataManager.Instance.m_dataTableConfig.gameSettings.general.reinforceCpCostPerPoint;
-    }
-
     private int m_maxCommandPower;
     private List<FleetSlotEntry> m_placedShips = new();
     private DataTableModule m_moduleTable;
@@ -94,50 +88,13 @@ public class FleetComposition
         return new ModuleHullInfo { beams = new List<ModuleInfo>(), missiles = new List<ModuleInfo>(), hangars = new List<ModuleInfo>() };
     }
 
-    // 바디 설치비 + 현재 장착된 모든 모듈의 설치비 합 — 서버 FleetService.computeSlotCommandCost와 동일 계산
+    // 캐파(지휘력) 점유값은 바디(hull) 자신의 값만 — 모듈 설치/해제는 캐파와 무관(M13, 서버 FleetService.computeShipCommandCost와 동일 계산)
     private int ComputeSlotCommandCost(FleetSlotEntry entry)
     {
-        int bodyCost = 0;
-        if (m_moduleTable != null)
-        {
-            ModuleData bodyData = m_moduleTable.GetModuleDataFromTable(entry.hullSubType);
-            bodyCost = bodyData != null ? bodyData.statPoint : 0;
-        }
+        if (m_moduleTable == null) return 0;
 
-        int modulesCost = 0;
-        modulesCost += SumModuleCost(entry.modules != null ? entry.modules.beams : null);
-        modulesCost += SumModuleCost(entry.modules != null ? entry.modules.missiles : null);
-        modulesCost += SumModuleCost(entry.modules != null ? entry.modules.hangars : null);
-        if (entry.modules != null)
-        {
-            modulesCost += ComputeSingleModuleCost(entry.modules.shieldModuleSubType, entry.modules.shieldGaugePoints + entry.modules.shieldRegenRatePoints);
-            modulesCost += ComputeSingleModuleCost(entry.modules.interceptorModuleSubType, entry.modules.interceptorRegenRatePoints);
-        }
-        return bodyCost + modulesCost;
-    }
-
-    // 실드/요격체처럼 리스트가 아니라 서브타입 문자열 1개로 장착되는 모듈의 비용 — 미장착(빈 문자열)이면 0, 서버 computeShipCommandCost와 동일하게 설치비 + 강화 포인트 × CP
-    private int ComputeSingleModuleCost(string moduleSubType, int reinforcePoints)
-    {
-        if (string.IsNullOrEmpty(moduleSubType) == true || m_moduleTable == null) return 0;
-
-        ModuleData data = m_moduleTable.GetModuleDataFromTable(moduleSubType);
-        int installCost = data != null ? data.statPoint : 0;
-        return installCost + GetReinforceCpCostPerPoint() * reinforcePoints;
-    }
-
-    private int SumModuleCost(List<ModuleInfo> modules)
-    {
-        if (modules == null || m_moduleTable == null) return 0;
-        int sum = 0;
-        for (int i = 0; i < modules.Count; i++)
-        {
-            ModuleData data = m_moduleTable.GetModuleDataFromTable(modules[i].moduleSubType);
-            int installCost = data != null ? data.statPoint : 0;
-            int reinforceCost = GetReinforceCpCostPerPoint() * SumReinforcePoints(modules[i]);
-            sum += installCost + reinforceCost;
-        }
-        return sum;
+        ModuleData bodyData = m_moduleTable.GetModuleDataFromTable(entry.hullSubType);
+        return bodyData != null ? bodyData.statPoint : 0;
     }
 
     // 토글 API 응답 반영 — 해당 슬롯의 장착 모듈 상태만 갱신(hullSubType/isFront는 그대로)
@@ -181,18 +138,11 @@ public class FleetComposition
         // 실드/요격체는 새 함체가 해당 슬롯을 지원할 때만 유지(서버 filterModulesForNewHull과 동일) — 티어는 함체 티어로 클램프, 포인트는 그대로 복사
         result.shieldModuleSubType = "";
         if (newMaxSlots[3] > 0 && string.IsNullOrEmpty(existingModules.shieldModuleSubType) == false)
-        {
             result.shieldModuleSubType = ClampSubTypeToHullTier(EModuleType.shield, existingModules.shieldModuleSubType, newHullTier);
-            result.shieldGaugePoints = existingModules.shieldGaugePoints;
-            result.shieldRegenRatePoints = existingModules.shieldRegenRatePoints;
-        }
 
         result.interceptorModuleSubType = "";
         if (newMaxSlots[4] > 0 && string.IsNullOrEmpty(existingModules.interceptorModuleSubType) == false)
-        {
             result.interceptorModuleSubType = ClampSubTypeToHullTier(EModuleType.interceptor, existingModules.interceptorModuleSubType, newHullTier);
-            result.interceptorRegenRatePoints = existingModules.interceptorRegenRatePoints;
-        }
         return result;
     }
 
@@ -217,7 +167,7 @@ public class FleetComposition
         return clamped;
     }
 
-    // 편집용 복사본 — 서브타입/슬롯 정보와 모든 강화 포인트를 그대로 복제
+    // 편집용 복사본 — 서브타입/슬롯 정보를 그대로 복제
     public static ModuleInfo CloneModuleInfo(ModuleInfo module)
     {
         return new ModuleInfo
@@ -227,32 +177,7 @@ public class FleetComposition
             moduleLevel = module.moduleLevel,
             hullIndex = module.hullIndex,
             slotIndex = module.slotIndex,
-            attackPoints = module.attackPoints,
-            attackToFighterPoints = module.attackToFighterPoints,
-            fireRatePoints = module.fireRatePoints,
-            silencePoints = module.silencePoints,
-            ammoPoints = module.ammoPoints,
-            healthPoints = module.healthPoints,
-            disruptPoints = module.disruptPoints,
         };
-    }
-
-    public static bool AreSameReinforcePoints(ModuleInfo a, ModuleInfo b)
-    {
-        return a.attackPoints == b.attackPoints
-            && a.attackToFighterPoints == b.attackToFighterPoints
-            && a.fireRatePoints == b.fireRatePoints
-            && a.silencePoints == b.silencePoints
-            && a.ammoPoints == b.ammoPoints
-            && a.healthPoints == b.healthPoints
-            && a.disruptPoints == b.disruptPoints;
-    }
-
-    // 모듈 1개에 투자된 모든 강화 포인트의 합 — CP 비용 = 이 값 × reinforceCpCostPerPoint (서버 FleetService.sumReinforcePoints와 동일)
-    public static int SumReinforcePoints(ModuleInfo module)
-    {
-        if (module == null) return 0;
-        return module.attackPoints + module.attackToFighterPoints + module.fireRatePoints + module.silencePoints + module.ammoPoints + module.healthPoints + module.disruptPoints;
     }
 
     // 서브타입 티어가 함체 티어를 넘으면 {category}_{hullTier}_1로 다운그레이드한 이름을 반환 — 해당 티어 데이터가 없으면(비정상 데이터) 원본 그대로
@@ -272,11 +197,34 @@ public class FleetComposition
         return ComputeSlotCommandCost(new FleetSlotEntry(newHullSubType, false, keptModules));
     }
 
-    // hullSubType(예: "hull_3_1_11100") → [beam, missile, hangar, shield, interceptor] 카테고리별 최대 슬롯 수 — 서버 GameDataService.parseMaxSlotsFromHullSubType과 동일 규칙
-    // 이름 규칙: hull_{tier}_{gen}_{5자리구성} — 4번째 토큰(5자리)만 슬롯 수로 사용
+    // hullSubType → [beam, missile, hangar, shield, interceptor] 카테고리별 최대 슬롯 수 — 아키타입 프리팹에서 파싱된
+    // ModuleData.moduleSlots를 집계(서버 GameDataService.getMaxSlotsForHull과 동일 규칙/소스)
     public static int[] ParseMaxSlotsFromHullSubType(string hullSubType)
     {
         return CommonUtility.ParseHullSlotComposition(hullSubType);
+    }
+
+    // 아직 언락 안 된(미보유) 함체를 미리보기할 때 사용 — 모든 구조 슬롯에 레벨1 기본 모듈을 채운 ModuleHullInfo를 가상으로 조립
+    // (서버 FleetService.buildDefaultModules와 동일한 "항상 설치된 상태" 기본값)
+    public static ModuleHullInfo BuildDefaultLevel1Modules(string hullSubType)
+    {
+        int[] maxSlots = ParseMaxSlotsFromHullSubType(hullSubType);
+        ModuleHullInfo hull = new ModuleHullInfo { beams = new List<ModuleInfo>(), missiles = new List<ModuleInfo>(), hangars = new List<ModuleInfo>(), shieldModuleSubType = "", interceptorModuleSubType = "" };
+
+        AppendDefaultLevel1Modules(hull.beams, EModuleType.beam, maxSlots[0]);
+        AppendDefaultLevel1Modules(hull.missiles, EModuleType.missile, maxSlots[1]);
+        AppendDefaultLevel1Modules(hull.hangars, EModuleType.hangar, maxSlots[2]);
+        if (maxSlots[3] > 0) hull.shieldModuleSubType = "shield_1_1";
+        if (maxSlots[4] > 0) hull.interceptorModuleSubType = "interceptor_1_1";
+
+        return hull;
+    }
+
+    private static void AppendDefaultLevel1Modules(List<ModuleInfo> target, EModuleType moduleType, int maxSlotCount)
+    {
+        string defaultSubType = $"{moduleType}_1_1";
+        for (int i = 0; i < maxSlotCount; i++)
+            target.Add(new ModuleInfo { moduleType = moduleType, slotIndex = i, moduleSubType = defaultSubType });
     }
 
     // 배치 해제 시 지휘력은 즉시 반환됨 (점유 구조, 소모 아님)
@@ -320,7 +268,7 @@ public class FleetComposition
         return m_maxCommandPower;
     }
 
-    // IncreaseCommandPowerMax 응답 후 서버 확정값으로 즉시 반영 — 별도 재조회 없이 로컬 갱신
+    // 커맨더 레벨업 등으로 최대치가 바뀌면 즉시 반영 — 별도 재조회 없이 로컬 갱신(M13, Commander.UpdateCommanderLevel에서 호출)
     public void SetMaxCommandPower(int maxCommandPower)
     {
         m_maxCommandPower = maxCommandPower;
@@ -329,74 +277,6 @@ public class FleetComposition
     public List<FleetSlotEntry> GetPlacedShips()
     {
         return m_placedShips;
-    }
-
-    private static readonly List<ModuleInfo> s_installedModuleBuffer = new();
-
-    // 한 함선에 장착된 모듈을 빔 → 미사일 → 격납고 → 실드 → 요격체 순으로 buffer에 채움(실드/요격체는 서브타입 문자열 1개라 ModuleInfo로 변환)
-    private static void CollectInstalledModules(ModuleHullInfo modules, List<ModuleInfo> buffer)
-    {
-        buffer.Clear();
-        if (modules == null) return;
-
-        if (modules.beams != null) buffer.AddRange(modules.beams);
-        if (modules.missiles != null) buffer.AddRange(modules.missiles);
-        if (modules.hangars != null) buffer.AddRange(modules.hangars);
-
-        if (string.IsNullOrEmpty(modules.shieldModuleSubType) == false)
-            buffer.Add(new ModuleInfo { moduleType = EModuleType.shield, slotIndex = 0, moduleSubType = modules.shieldModuleSubType });
-        if (string.IsNullOrEmpty(modules.interceptorModuleSubType) == false)
-            buffer.Add(new ModuleInfo { moduleType = EModuleType.interceptor, slotIndex = 0, moduleSubType = modules.interceptorModuleSubType });
-    }
-
-    // 배치된 모든 함선의 장착 모듈 중 티어 2 이상이 하나라도 있는지 — 티어업 경험 여부 판단(모듈은 항상 티어1로 장착됨)
-    public bool HasTieredUpModule()
-    {
-        for (int i = 0; i < m_placedShips.Count; i++)
-        {
-            CollectInstalledModules(m_placedShips[i].modules, s_installedModuleBuffer);
-            for (int j = 0; j < s_installedModuleBuffer.Count; j++)
-            {
-                if (CommonUtility.ParseTier(s_installedModuleBuffer[j].moduleSubType) >= 2) return true;
-            }
-        }
-        return false;
-    }
-
-    // 지금 티어업이 실제로 가능한 첫 모듈 — 모듈 티어가 함체 티어보다 낮고, 여유 지휘력이 (다음 티어 statPoint - 현재 티어 statPoint) 이상
-    // 함선 슬롯 순 → 빔/미사일/격납고/실드/요격체 순으로 탐색. categorySlotIndex는 카테고리 안에서의 슬롯 인덱스(실드/요격체는 0)
-    public bool TryFindModuleTierUpCandidate(out int shipSlotIndex, out EModuleType moduleType, out int categorySlotIndex)
-    {
-        shipSlotIndex = -1;
-        moduleType = EModuleType.beam;
-        categorySlotIndex = 0;
-        if (m_moduleTable == null) return false;
-
-        int remainingCommandPower = GetRemainingCommandPower();
-        for (int i = 0; i < m_placedShips.Count; i++)
-        {
-            int hullTier = CommonUtility.ParseTier(m_placedShips[i].hullSubType);
-            CollectInstalledModules(m_placedShips[i].modules, s_installedModuleBuffer);
-            for (int j = 0; j < s_installedModuleBuffer.Count; j++)
-            {
-                ModuleInfo module = s_installedModuleBuffer[j];
-                int moduleTier = CommonUtility.ParseTier(module.moduleSubType);
-                if (moduleTier >= hullTier) continue;
-
-                ModuleData currentData = m_moduleTable.GetModuleDataFromTable(module.moduleSubType);
-                ModuleData nextData = m_moduleTable.GetModuleDataFromTable($"{module.moduleType}_{moduleTier + 1}_1");
-                if (currentData == null || nextData == null) continue;
-
-                int tierUpCost = nextData.statPoint - currentData.statPoint;
-                if (tierUpCost > remainingCommandPower) continue;
-
-                shipSlotIndex = i;
-                moduleType = module.moduleType;
-                categorySlotIndex = module.slotIndex;
-                return true;
-            }
-        }
-        return false;
     }
 
     // 전투시작 요청(EnterExplorationCellRequest)에 실어 보낼 페이로드 변환

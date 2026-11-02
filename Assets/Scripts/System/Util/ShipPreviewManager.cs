@@ -63,21 +63,74 @@ public class ShipPreviewManager : MonoSingleton<ShipPreviewManager>
             oldTexture.Release();
     }
 
-    public void ShowHull(ModuleData hull)
+    // moduleInfo를 넘기면 빔/미사일/격납고 슬롯에 실제 모듈 메시를 붙여서 보여줌(비주얼 전용 — 전투/스탯 로직은 초기화 안 함)
+    // null이면 함체 프리팹 기본 상태(슬롯마다 ModulePlaceholder 더미 메시) 그대로 표시
+    public void ShowHull(ModuleData hull, ModuleHullInfo moduleInfo = null)
     {
         EnsureStageReady();
         Clear();
 
         if (hull == null) return;
 
-        GameObject bodyPrefab = ObjectManager.Instance.LoadShipModulePrefab(EModuleType.hull.ToString(), hull.moduleSubType);
+        // 프리팹은 아키타입당 1개뿐이라 moduleSubType(레벨별로 다른 이름)이 아니라 CSV Import 시 캐싱된 실제 파일명을 사용
+        string prefabName = string.IsNullOrEmpty(hull.hullPrefabName) == false ? hull.hullPrefabName : hull.moduleSubType;
+        GameObject bodyPrefab = ObjectManager.Instance.LoadShipModulePrefab(EModuleType.hull.ToString(), prefabName);
         if (bodyPrefab == null) return;
 
         m_currentBodyInstance = Instantiate(bodyPrefab, m_spawnAnchor);
         m_currentBodyInstance.transform.localPosition = Vector3.zero;
         m_currentBodyInstance.transform.localRotation = Quaternion.identity;
 
+        if (moduleInfo != null)
+            AttachPreviewModules(m_currentBodyInstance, moduleInfo);
+
         FrameCameraOnInstance(m_currentBodyInstance);
+    }
+
+    // 슬롯에 실제 모듈 프리팹을 비주얼로만 붙임 — ModuleBeam/Missile/Hangar의 InitializeModule* 호출은 생략(SpaceShip/함대 컨텍스트가
+    // 없는 정적 미리보기 스테이지라 전투/스탯 초기화 로직을 타면 널 참조 위험) — 메시만 붙이고 게임플레이 컴포넌트는 바로 제거
+    private void AttachPreviewModules(GameObject bodyInstance, ModuleHullInfo moduleInfo)
+    {
+        ModuleSlot[] slots = bodyInstance.GetComponentsInChildren<ModuleSlot>(true);
+        AttachPreviewModulesForList(slots, moduleInfo.beams);
+        AttachPreviewModulesForList(slots, moduleInfo.missiles);
+        AttachPreviewModulesForList(slots, moduleInfo.hangars);
+        // 실드/요격체는 3D 슬롯/비주얼이 없는 논리 컴포넌트라(ModuleShield.cs 주석 참고) 미리보기 대상에서 제외
+    }
+
+    private void AttachPreviewModulesForList(ModuleSlot[] slots, List<ModuleInfo> moduleInfoList)
+    {
+        if (moduleInfoList == null) return;
+
+        foreach (ModuleInfo info in moduleInfoList)
+        {
+            ModuleSlot targetSlot = FindSlot(slots, info.moduleType, info.slotIndex);
+            if (targetSlot == null) continue;
+
+            GameObject modulePrefab = ObjectManager.Instance.LoadShipModulePrefab(info.moduleType.ToString(), info.moduleSubType);
+            if (modulePrefab == null) continue;
+
+            GameObject moduleObj = Instantiate(modulePrefab, targetSlot.transform.position, targetSlot.transform.rotation, targetSlot.transform);
+            moduleObj.transform.localScale = Vector3.one;
+
+            ModuleBase moduleComponent = moduleObj.GetComponent<ModuleBase>();
+            if (moduleComponent != null)
+                Destroy(moduleComponent);
+
+            ModulePlaceholder placeholder = targetSlot.GetComponentInChildren<ModulePlaceholder>(true);
+            if (placeholder != null)
+                placeholder.gameObject.SetActive(false);
+        }
+    }
+
+    private ModuleSlot FindSlot(ModuleSlot[] slots, EModuleType moduleType, int slotIndex)
+    {
+        foreach (ModuleSlot slot in slots)
+        {
+            if (slot.m_moduleSlotInfo.moduleType == moduleType && slot.m_moduleSlotInfo.slotIndex == slotIndex)
+                return slot;
+        }
+        return null;
     }
 
     // 모델 실제 크기를 몰라도 항상 화면에 맞게 잡히도록, 스폰 직후 바운즈를 계산해서 카메라/조명을 재배치.
@@ -108,22 +161,35 @@ public class ShipPreviewManager : MonoSingleton<ShipPreviewManager>
         Vector3 viewDirection = new Vector3(0.85f, -0.3f, 0.45f).normalized;
         Quaternion viewRotation = Quaternion.LookRotation(viewDirection, Vector3.up);
 
-        // 카메라 거리는 시선 각도에 투영한 폭/높이가 아니라, 바운즈의 가장 긴 축 하나로만 정한다 —
-        // 투영 방식은 함체마다 긴 축이 어느 방향을 향하냐에 따라 같은 함체라도 거리가 들쭉날쭉해지는 문제가 있었음.
-        // 가장 긴 축의 절반을 반지름으로 삼아 구를 씌운다고 가정하면 시선 각도가 바뀌어도 절대 잘리지 않으면서 거리는 일정하다
-        Vector3 size = bounds.size;
-        float longestAxis = Mathf.Max(size.x, Mathf.Max(size.y, size.z));
-        if (longestAxis <= 0f) longestAxis = 1f;
-        float radius = longestAxis * 0.5f;
+        // 바운즈 8개 꼭짓점을 시선 방향(viewRotation)의 right/up 축에 직접 투영해서 실제로 화면에 찍히는
+        // 가로/세로 절반 크기를 구한다 — 가장 긴 축 하나로 구를 씌우는 방식은 전장만 유독 긴 함선에서
+        // 실제 투영 크기보다 훨씬 큰 반지름을 써버려 화면에 여백이 크게 남는 문제가 있었음(스샷으로 확인됨)
+        Vector3 right = viewRotation * Vector3.right;
+        Vector3 up = viewRotation * Vector3.up;
+        Vector3 extents = bounds.extents;
+        float halfWidth = 0f;
+        float halfHeight = 0f;
+        for (int signX = -1; signX <= 1; signX += 2)
+        {
+            for (int signY = -1; signY <= 1; signY += 2)
+            {
+                for (int signZ = -1; signZ <= 1; signZ += 2)
+                {
+                    Vector3 corner = new Vector3(extents.x * signX, extents.y * signY, extents.z * signZ);
+                    halfWidth = Mathf.Max(halfWidth, Mathf.Abs(Vector3.Dot(corner, right)));
+                    halfHeight = Mathf.Max(halfHeight, Mathf.Abs(Vector3.Dot(corner, up)));
+                }
+            }
+        }
+        if (halfWidth <= 0f) halfWidth = 1f;
+        if (halfHeight <= 0f) halfHeight = 1f;
 
-        // 구 전체(반지름=긴축/2)가 세로/가로 FOV 양쪽에 다 들어가게 맞추는 방식이라 "어느 각도에서도 안 잘림"을 보장하는 대신
-        // 필요 이상으로 멀어짐 — 시선 각도는 고정값이라 그 정도 여유까진 필요 없어서 마진을 줄여 화면을 더 채움
-        const float k_paddingFactor = 0.7f; // 여유 마진
+        const float k_paddingFactor = 1.1f; // 테두리에 딱 붙지 않게 주는 약간의 여유
         float halfVFovRad = m_previewCamera.fieldOfView * 0.5f * Mathf.Deg2Rad;
         float halfHFovRad = Mathf.Atan(Mathf.Tan(halfVFovRad) * m_previewCamera.aspect);
 
-        float distanceForHeight = radius / Mathf.Tan(halfVFovRad);
-        float distanceForWidth = radius / Mathf.Tan(halfHFovRad);
+        float distanceForHeight = halfHeight / Mathf.Tan(halfVFovRad);
+        float distanceForWidth = halfWidth / Mathf.Tan(halfHFovRad);
         float fitDistance = Mathf.Max(distanceForHeight, distanceForWidth) * k_paddingFactor;
 
         m_previewCamera.transform.position = bounds.center - viewDirection * fitDistance;

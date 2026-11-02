@@ -1,4 +1,5 @@
-// 커맨더 레벨 ScriptableObject — 레벨별 필요 경험치(exp), 최대 함선 수(ship_count) 관리
+// 커맨더 레벨 ScriptableObject — 레벨별 필요 경험치(exp), 지휘력(command_power) 관리
+// 함대 슬롯 칸 수는 더 이상 레벨로 제한하지 않음 — DataTableConfig.GeneralSettings.maxFleetSlotCount(고정 상한), 배치 가능 여부는 지휘력만으로 결정
 // CSV: Assets/Resources/DataTable/Commander/datatable_commander.csv
 using UnityEngine;
 using System.Collections.Generic;
@@ -12,25 +13,17 @@ public class DataTableCommander : ScriptableObject
 {
     [SerializeField] private List<CommanderData> commanderDataList = new();
 
-    private int m_cachedMaxShipCount = -1;
-
     public List<CommanderData> GetCommanderDataList() { return commanderDataList; }
 
-    public int GetMaxShipCount()
-    {
-        if (m_cachedMaxShipCount >= 0) return m_cachedMaxShipCount;
-        RebuildCache();
-        return m_cachedMaxShipCount;
-    }
-
-    public int GetShipCount(int commanderLevel)
+    // 지휘력(캐파) 최대치 — 광물/탐험포인트 구매 없이 커맨더 레벨에 따라 자동으로 오름(M13)
+    public int GetCommandPower(int commanderLevel)
     {
         for (int i = 0; i < commanderDataList.Count; i++)
         {
             if (commanderDataList[i].commanderLevel == commanderLevel)
-                return commanderDataList[i].shipCount;
+                return commanderDataList[i].commandPower;
         }
-        return 1;
+        return 0;
     }
 
     public int GetRequireExp(int commanderLevel)
@@ -41,30 +34,6 @@ public class DataTableCommander : ScriptableObject
                 return commanderDataList[i].requireExp;
         }
         return 0;
-    }
-
-    // shipCount번째 함선을 허용하는 최소 커맨더 레벨 반환
-    public int GetRequiredCommanderLevel(int shipCount)
-    {
-        int minLevel = int.MaxValue;
-        for (int i = 0; i < commanderDataList.Count; i++)
-        {
-            var data = commanderDataList[i];
-            if (data.shipCount >= shipCount && data.commanderLevel < minLevel)
-                minLevel = data.commanderLevel;
-        }
-        return minLevel == int.MaxValue ? 1 : minLevel;
-    }
-
-    private void RebuildCache()
-    {
-        int max = 1;
-        for (int i = 0; i < commanderDataList.Count; i++)
-        {
-            if (commanderDataList[i].shipCount > max)
-                max = commanderDataList[i].shipCount;
-        }
-        m_cachedMaxShipCount = max;
     }
 
     #region JSON Export/Import
@@ -84,7 +53,6 @@ public class DataTableCommander : ScriptableObject
         if (list != null)
         {
             commanderDataList = list;
-            RebuildCache();
 #if UNITY_EDITOR
             EditorUtility.SetDirty(this);
 #endif
@@ -96,7 +64,7 @@ public class DataTableCommander : ScriptableObject
     #region CSV Import (Editor only)
 
 #if UNITY_EDITOR
-    // datatable_commander.csv 컬럼 순서(인덱스 고정) — commander_level, exp, ship_count
+    // datatable_commander.csv 컬럼 순서(인덱스 고정) — commander_level, exp, command_power
     public void LoadFromCsv(string csvText)
     {
         commanderDataList.Clear();
@@ -117,11 +85,10 @@ public class DataTableCommander : ScriptableObject
             {
                 commanderLevel = level,
                 requireExp     = ParseInt(GetCol(cols, 1)),
-                shipCount      = ParseInt(GetCol(cols, 2)),
+                commandPower   = ParseInt(GetCol(cols, 2)),
             });
         }
 
-        RebuildCache();
         Debug.Log($"[DataTableCommander] CSV Import 완료: {commanderDataList.Count}개");
         EditorUtility.SetDirty(this);
     }
@@ -168,5 +135,5 @@ public class CommanderData
 {
     public int commanderLevel;
     public int requireExp; // CSV 원본 컬럼명: exp — 이 레벨에 도달하기 위해 필요한 누적 경험치
-    public int shipCount;
+    public int commandPower; // 이 레벨에서의 지휘력(캐파) 최대치 — M13부터 구매 없이 레벨만으로 결정
 }

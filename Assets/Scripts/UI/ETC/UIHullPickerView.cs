@@ -17,13 +17,30 @@ public class UIHullPickerView : MonoBehaviour
     [SerializeField] private UIAvailableHullRow m_rowPrefab;
     [SerializeField] private Button m_confirmButton;
     [SerializeField] private Button m_cancelButton;
+    [SerializeField] private Button m_removeButton; // 이 슬롯에 이미 배치된 함선을 배치 해제(슬롯 비우기) — 언락 필요 시 숨김, 원래 비어있던 슬롯이면 숨김
+    [SerializeField] private TMP_Text m_removeButtonText;
 
+    [SerializeField] private TMP_Text m_shipDescribeText; // 스탯 목록 위 고정 영역 — 선택된 함체의 대략적인 설명(ModuleData.descriptionKey 로컬라이즈)
     [SerializeField] private UIStatRow m_statsRowPrefab; // 선택된 함체의 스탯 — Column_Stats와 동일한 구조/프리팹 재사용
     [SerializeField] private InfiniteScrollView m_statsScrollView;
+
+    [Header("성능 탭과 별개 탭 — 탭 전환 자체는 TabSystem(UIPanelRank 참고)이 프리팹에서 담당, 여기선 두 리스트 데이터만 갱신")]
+    [SerializeField] private UIShipPassiveRow m_passiveRowPrefab;
+    [SerializeField] private InfiniteScrollView m_passiveScrollView;
+    [SerializeField] private TMP_Text m_passiveTabText; // 탭 버튼 라벨("패시브") — m_statsTitleText와 동일하게 Awake에서 1회만 세팅
 
     [SerializeField] private RowLabelValue m_commandPowerRow; // 선택 후보를 적용했을 때의 지휘력 미리보기 — UIPanelFleet 성능 컬럼의 지휘력 행과 동일한 구성
 
     [SerializeField] private RawImage m_previewImage; // 선택된 함체의 3D 바디 미리보기 — ShipPreviewManager가 렌더링한 텍스처
+
+    [Header("화면 상단 진척도 게이지 — 선택된 함체의 미해금 패시브 중 counter_type별 다음 목표. 프리팹에 최대 개수(2)만큼 미리 배치, 런타임 Instantiate 금지")]
+    [SerializeField] private GameObject m_progressGaugeContainer; // 보여줄 미션이 하나도 없으면 컨테이너 자체를 비활성화
+    [SerializeField] private UIProgressGaugeBar[] m_progressGaugeSlots;
+
+    [Header("언락 — 행별 버튼이 아니라 현재 선택된 함체 기준 패널 공용 버튼 1개")]
+    [SerializeField] private Button m_unlockButton; // 별도 Root 없이 버튼 자체를 SetActive로 토글
+    [SerializeField] private TMP_Text m_unlockButtonLabelText; // "언락" 고정 라벨 — Awake에서 1회만 세팅
+    [SerializeField] private TMP_Text m_unlockButtonCostText; // 비용(AP n) — 선택된 함체 바뀔 때마다 갱신
 
     [Header("모듈 슬롯 개수 표시 — 순수 정보용(Button 비활성)")]
     [SerializeField] private TMP_Text m_beamSlotCountText;
@@ -34,17 +51,27 @@ public class UIHullPickerView : MonoBehaviour
 
     private readonly List<ModuleData> m_hullsCache = new();
     private List<ShipStatRowEntry> m_statEntries = new();
+    private List<PassiveRowEntry> m_passiveEntries = new();
     private Dictionary<string, ShipStatRowEntry> m_currentEntriesByLabel; // 비교 기준(현재 장착 함체) — 라벨로 조회
 
     private string m_selectedHullSubType;
     private ModuleHullInfo m_currentModules; // 이 슬롯에 실제로 장착돼 있던 모듈 — 함체 변경 시 슬롯 유지 계산의 기준
-    private int m_currentSlotCommandCost; // 이 슬롯이 지금 실제로 쓰고 있는 지휘력 — 각 후보 함체 행의 증감(+/-) 표시 기준
+    private int m_currentSlotCommandCost; // 이 슬롯이 지금 실제로 쓰고 있는 지휘력(보관만, 표시는 projectedUsedCommandPower/max 비율로 함)
     private int m_baseUsedCommandPower; // 이 슬롯이 점유 중이던 지휘력을 미리 뺀 값 — 후보 함체 비용만 더하면 미리보기 완성
     private int m_maxCommandPower;
     private System.Action<string, System.Action<bool>> m_onConfirm; // 확인 시 (선택된 hullSubType, 호출부가 처리를 마치고 부르는 콜백(true=팝업 닫기)) 전달
+    private System.Action<System.Action<bool>> m_onRemove; // 배치 해제 시 (호출부가 처리를 마치고 부르는 콜백(true=팝업 닫기)) 전달
+    private bool m_hasExistingShip; // Open() 시점에 이 슬롯에 이미 함선이 배치돼 있었는지 — Remove 버튼 노출 조건(선택 후보가 바뀌어도 유지)
     private System.Action m_onCancel;
     private System.Func<RectTransform> m_lowestLockedHullTargetResolver; // 등록/해제 시 같은 델리게이트 인스턴스를 써야 하므로 보관
     private System.Func<bool> m_overCommandPowerEvaluator;
+
+    private struct PassiveRowEntry
+    {
+        public int stage;
+        public string description;
+        public bool isUnlocked;
+    }
 
     private void Awake()
     {
@@ -52,18 +79,30 @@ public class UIHullPickerView : MonoBehaviour
             m_confirmButton.onClick.AddListener(OnConfirmClicked);
         if (m_cancelButton != null)
             m_cancelButton.onClick.AddListener(OnCancelClicked);
+        if (m_unlockButton != null)
+            m_unlockButton.onClick.AddListener(OnUnlockButtonClicked);
+        if (m_removeButton != null)
+            m_removeButton.onClick.AddListener(OnRemoveButtonClicked);
         if (m_scrollView != null)
             m_scrollView.onItemBind = OnItemBind;
         if (m_statsScrollView != null)
             m_statsScrollView.onItemBind = OnStatsItemBind;
+        if (m_passiveScrollView != null)
+            m_passiveScrollView.onItemBind = OnPassiveItemBind;
 
         // 한 번 세팅되면 바뀌지 않는 정적 라벨 — Open()마다 반복 세팅하지 않고 Awake에서 1회만 처리
         if (m_statsTitleText != null)
             CommonUtility.SetUILocText(m_statsTitleText, "UIFleet_StatsTitle");
+        if (m_passiveTabText != null)
+            CommonUtility.SetUILocText(m_passiveTabText, "UIFleet_PassiveTabTitle");
         if (m_confirmButtonText != null)
             CommonUtility.SetUILocText(m_confirmButtonText, "UI_Confirm");
         if (m_cancelButtonText != null)
             CommonUtility.SetUILocText(m_cancelButtonText, "UI_Cancel");
+        if (m_removeButtonText != null)
+            CommonUtility.SetUILocText(m_removeButtonText, "UI_Remove");
+        if (m_unlockButtonLabelText != null)
+            CommonUtility.SetUILocText(m_unlockButtonLabelText, "UIHullPicker_UnlockButtonLabel");
 
         // 튜토리얼이 "언락 안 된 최저 티어 함체의 언락 버튼"을 강조할 수 있도록 동적 타겟 리졸버 등록
         m_lowestLockedHullTargetResolver = ResolveLowestLockedHullUnlockButton;
@@ -86,18 +125,16 @@ public class UIHullPickerView : MonoBehaviour
         }
     }
 
-    // 언락 안 됐고 선행조건이 충족된 함체 중 티어가 가장 낮은(같으면 목록 앞쪽) 행의 언락 버튼 — 그 행이 화면에 바인딩돼 있지 않으면 null
+    // 언락 안 된 함체 중 티어가 가장 낮은(같으면 목록 앞쪽) 함체를 찾아 선택 상태로 만든 뒤,
+    // 패널 공용 언락 버튼의 rect를 돌려줌 — 버튼이 행별이 아니라 선택된 함체 기준 공용이라 스크롤 위치와 무관하게 항상 가리킬 수 있음
     private RectTransform ResolveLowestLockedHullUnlockButton()
     {
-        if (m_scrollView == null) return null;
-
         int targetDataIndex = -1;
         int lowestTier = int.MaxValue;
         for (int i = 0; i < m_hullsCache.Count; i++)
         {
             ModuleData hull = m_hullsCache[i];
             if (IsHullLocked(hull) == false) continue;
-            if (IsUnlockPrerequisiteMet(hull) == false) continue;
 
             int tier = CommonUtility.ParseTier(hull.moduleSubType);
             if (tier >= lowestTier) continue;
@@ -107,31 +144,30 @@ public class UIHullPickerView : MonoBehaviour
         }
         if (targetDataIndex < 0) return null;
 
-        RectTransform unlockButtonRect = null;
-        m_scrollView.ForEachVisibleItem((dataIndex, rowObject) =>
-        {
-            if (dataIndex != targetDataIndex) return;
+        string targetHullSubType = m_hullsCache[targetDataIndex].moduleSubType;
+        if (targetHullSubType != m_selectedHullSubType)
+            OnHullClicked(m_hullsCache[targetDataIndex]);
 
-            UIAvailableHullRow row = rowObject.GetComponent<UIAvailableHullRow>();
-            if (row != null) unlockButtonRect = row.GetVisibleUnlockButtonRect();
-        });
-        return unlockButtonRect;
+        if (m_unlockButton == null || m_unlockButton.gameObject.activeInHierarchy == false) return null;
+        return m_unlockButton.transform as RectTransform;
     }
 
     // availableHulls: 고를 수 있는 함체 목록, currentHull: 비교 기준이 되는 현재 장착 함체(빈 슬롯이면 null → 비교 없이 수치만 표시)
     // currentModules: 그 슬롯에 실제로 장착된 모듈 구성(로드아웃) — null이면 currentHull의 기본 장착 구성으로 비교
     // currentSlotCommandCost: 이 슬롯이 지금 실제로 쓰고 있는 지휘력 — 리스트 각 행의 증감(+/-) 표시 기준
     // baseUsedCommandPower: 이 슬롯이 점유 중이던 몫을 이미 뺀 사용 지휘력(호출부가 계산해서 넘김)
-    public void Open(List<ModuleData> availableHulls, ModuleData currentHull, ModuleHullInfo currentModules, int currentSlotCommandCost, int baseUsedCommandPower, int maxCommandPower, System.Action<string, System.Action<bool>> onConfirm, System.Action onCancel = null)
+    public void Open(List<ModuleData> availableHulls, ModuleData currentHull, ModuleHullInfo currentModules, int currentSlotCommandCost, int baseUsedCommandPower, int maxCommandPower, System.Action<string, System.Action<bool>> onConfirm, System.Action<System.Action<bool>> onRemove = null, System.Action onCancel = null)
     {
         m_hullsCache.Clear();
         m_hullsCache.AddRange(availableHulls);
         m_selectedHullSubType = currentHull != null ? currentHull.moduleSubType : null;
+        m_hasExistingShip = currentHull != null;
         m_currentModules = currentModules;
         m_currentSlotCommandCost = currentSlotCommandCost;
         m_baseUsedCommandPower = baseUsedCommandPower;
         m_maxCommandPower = maxCommandPower;
         m_onConfirm = onConfirm;
+        m_onRemove = onRemove;
         m_onCancel = onCancel;
 
         if (m_titleText != null)
@@ -150,15 +186,19 @@ public class UIHullPickerView : MonoBehaviour
         gameObject.SetActive(true);
         m_scrollView.Initialize(m_hullsCache.Count, m_rowPrefab.gameObject);
         RefreshStatsDisplay();
+        RefreshPassiveDisplay();
+        RefreshProgressGauges();
         RefreshCommandPowerPreview();
         RefreshPreview();
         RefreshModuleSlotCounts();
+        RefreshUnlockState();
     }
 
     public void Close()
     {
         gameObject.SetActive(false);
         m_onConfirm = null;
+        m_onRemove = null;
         m_onCancel = null;
         ShipPreviewManager.Instance.Clear();
     }
@@ -172,7 +212,10 @@ public class UIHullPickerView : MonoBehaviour
 
         m_previewImage.texture = ShipPreviewManager.Instance.GetPreviewTexture(aspect);
         ModuleData selectedHull = m_hullsCache.Find(p => p.moduleSubType == m_selectedHullSubType);
-        ShipPreviewManager.Instance.ShowHull(selectedHull);
+        ModuleHullInfo previewModules = selectedHull != null
+            ? (IsHullLocked(selectedHull) == true ? FleetComposition.BuildDefaultLevel1Modules(m_selectedHullSubType) : GetKeptModules(m_selectedHullSubType))
+            : null;
+        ShipPreviewManager.Instance.ShowHull(selectedHull, previewModules);
     }
 
     // 선택된 함체 후보의 카테고리별 슬롯 개수를 텍스트로 표시 — [beam, missile, hangar, shield, interceptor]
@@ -200,10 +243,10 @@ public class UIHullPickerView : MonoBehaviour
         FleetComposition composition = DataManager.Instance.m_currentFleetComposition;
         ModuleHullInfo keptModulesForRow = GetKeptModules(hullSubType);
         int projectedCost = composition != null ? composition.ComputeProjectedSlotCommandCost(hullSubType, keptModulesForRow) : hull.statPoint;
-        int deltaCost = projectedCost - m_currentSlotCommandCost;
+        bool isOverCommandPowerIfSelected = m_baseUsedCommandPower + projectedCost > m_maxCommandPower;
 
         bool isLocked = IsHullLocked(hull);
-        row.Setup(hull, deltaCost, isLocked, OnHullClicked, OnHullUnlockClicked);
+        row.Setup(hull, projectedCost, isOverCommandPowerIfSelected, isLocked, OnHullClicked);
         row.SetSelectedAvailableHullRow(hullSubType == m_selectedHullSubType);
 
         LayoutRebuilder.ForceRebuildLayoutImmediate(rowObject.transform as RectTransform);
@@ -214,59 +257,75 @@ public class UIHullPickerView : MonoBehaviour
         m_selectedHullSubType = hull.moduleSubType;
         m_scrollView.RefreshVisible(); // 재바인드되며 OnItemBind가 다시 불려 하이라이트가 새 선택으로 갱신됨
         RefreshStatsDisplay();
+        RefreshPassiveDisplay();
+        RefreshProgressGauges();
         RefreshCommandPowerPreview();
         RefreshPreview();
         RefreshModuleSlotCounts();
+        RefreshUnlockState();
+    }
+
+    // 선택된 함체가 잠김 상태인지에 따라 패널 공용 언락 버튼 노출/비용 텍스트 갱신 + Confirm/Remove 버튼 노출 전환
+    // 잠김: 언락 버튼만 표시. 언락됨: 언락 버튼 숨김, Confirm 표시 + (이 슬롯에 원래 함선이 있었을 때만) Remove 표시
+    private void RefreshUnlockState()
+    {
+        ModuleData selectedHull = m_hullsCache.Find(p => p.moduleSubType == m_selectedHullSubType);
+        bool isLocked = IsHullLocked(selectedHull);
+
+        if (m_unlockButton != null)
+            m_unlockButton.gameObject.SetActive(isLocked);
+
+        if (isLocked == true && m_unlockButtonCostText != null)
+        {
+            string apLabel = LocalizationManager.Instance.Get("UIHullPicker_UnlockButtonAP");
+            m_unlockButtonCostText.text = $"{apLabel} {CommonUtility.FormatNumber(selectedHull.unlockAchievementPointCost)}";
+        }
+
+        if (m_confirmButton != null)
+            m_confirmButton.gameObject.SetActive(isLocked == false);
+        if (m_removeButton != null)
+            m_removeButton.gameObject.SetActive(isLocked == false && m_hasExistingShip == true);
     }
 
     // unlockAchievementPointCost가 0보다 크면 티어4+ 언락 대상 — 아직 언락 안 됐으면 잠김
+    // 티어1은 기본 지급이라 항상 사용 가능, 티어2+는 비용(ap_cost)과 무관하게 언락 기록(CommanderInfo.unlockedHulls) 존재 여부로만 판정 — 서버 FleetService.placeFleetShip과 동일 규칙
     private bool IsHullLocked(ModuleData hull)
     {
-        if (hull == null || hull.unlockAchievementPointCost <= 0) return false;
+        if (hull == null || CommonUtility.ParseTier(hull.moduleSubType) <= 1) return false;
         Commander commander = DataManager.Instance.m_currentCommander;
         return commander == null || commander.IsHullUnlocked(hull.moduleSubType) == false;
     }
 
-    // 서버 FleetService.validateUnlockPrerequisite와 동일 규칙(값은 서버 ACHIEVEMENT_UNLOCK_MIN_HULL_TIER와 일치시켜야 함) —
-    // gen=1(기본 제공) 함체만 선행조건 적용. 티어당 함체가 하나뿐이라 이전 티어 함체가 선행 언락돼 있어야 하는 단순 선형 체인
-    private const int ACHIEVEMENT_UNLOCK_MIN_HULL_TIER = 4;
-
-    private bool IsUnlockPrerequisiteMet(ModuleData hull)
-    {
-        if (CommonUtility.ParseGen(hull.moduleSubType) != 1) return true;
-
-        int tier = CommonUtility.ParseTier(hull.moduleSubType);
-        if (tier <= ACHIEVEMENT_UNLOCK_MIN_HULL_TIER) return true;
-
-        int prerequisiteTier = tier - 1;
-        ModuleData prerequisiteHull = m_hullsCache.Find(p =>
-            CommonUtility.ParseGen(p.moduleSubType) == 1
-            && CommonUtility.ParseTier(p.moduleSubType) == prerequisiteTier);
-        if (prerequisiteHull == null) return true;
-
-        Commander commander = DataManager.Instance.m_currentCommander;
-        return commander != null && commander.IsHullUnlocked(prerequisiteHull.moduleSubType) == true;
-    }
-
-    // 언락 버튼 클릭 — 선행조건 먼저 검사(서버 왕복 없이 즉시 차단), 통과 시 함체명/비용 확인 팝업 후 확정 시 서버에 업적포인트 소모 요청
+    // 패널 공용 언락 버튼 클릭 — 현재 선택된 함체 기준. 함체명/비용 확인 팝업 후 확정 시 서버에 업적포인트 소모 요청
     // cost를 CostStruct로 넘기면 UIPopupConfirm이 부족 시 빨간색 표기 + 확인 버튼 비활성을 알아서 처리함
-    private void OnHullUnlockClicked(ModuleData hull)
+    private void OnUnlockButtonClicked()
     {
-        if (IsUnlockPrerequisiteMet(hull) == false)
-        {
-            UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig
-            {
-                message = LocalizationManager.Instance.Get("UIHullPicker_UnlockPrerequisiteFailMessage"),
-                onConfirm = () => { },
-            });
-            return;
-        }
+        ModuleData hull = m_hullsCache.Find(p => p.moduleSubType == m_selectedHullSubType);
+        if (hull == null) return;
 
         UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig
         {
             message = string.Format(LocalizationManager.Instance.Get("UIHullPicker_UnlockConfirmMessage"), CommonUtility.BuildHullDisplayName(hull.moduleSubType)),
             cost = new CostStruct(ECostType.AchievementPoint, hull.unlockAchievementPointCost),
             onConfirm = () => RequestUnlockHull(hull.moduleSubType),
+            onCancel = () => { },
+        });
+    }
+
+    // 배치 해제 버튼 — 호출부(UIPanelFleet)가 실제 서버 요청/로컬 편성 반영을 처리, 여기선 확인 후 위임만 함
+    private void OnRemoveButtonClicked()
+    {
+        if (m_onRemove == null) return;
+
+        UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig
+        {
+            message = LocalizationManager.Instance.Get("UIHullPicker_RemoveConfirmMessage"),
+            onConfirm = () =>
+            {
+                if (m_removeButton != null)
+                    m_removeButton.interactable = false;
+                m_onRemove(OnConfirmProcessed);
+            },
             onCancel = () => { },
         });
     }
@@ -278,14 +337,6 @@ public class UIHullPickerView : MonoBehaviour
         {
             if (response.errorCode != 0)
             {
-                if (response.errorCode == (int)ServerErrorCode.UNLOCK_HULL_FAIL_PREREQUISITE_NOT_UNLOCKED)
-                {
-                    UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig
-                    {
-                        message = LocalizationManager.Instance.Get("UIHullPicker_UnlockPrerequisiteFailMessage"),
-                        onConfirm = () => { },
-                    });
-                }
                 Debug.LogError($"[UIHullPickerView] UnlockHull 실패: {response.errorCode}");
                 return;
             }
@@ -299,6 +350,7 @@ public class UIHullPickerView : MonoBehaviour
 
             m_scrollView.RefreshVisible();
             RefreshCommandPowerPreview();
+            RefreshUnlockState();
         });
     }
 
@@ -361,16 +413,21 @@ public class UIHullPickerView : MonoBehaviour
             m_statEntries.Clear();
             if (m_statsScrollView != null && m_statsRowPrefab != null)
                 m_statsScrollView.Initialize(0, m_statsRowPrefab.gameObject);
+            if (m_shipDescribeText != null) m_shipDescribeText.text = string.Empty;
             return;
         }
 
-        ModuleHullInfo keptModules = GetKeptModules(m_selectedHullSubType);
+        // 언락된(보유 중인) 함체는 실제 장착 모듈 기준, 아직 언락 안 된 함체는 레벨1 기본 모듈을 전부 채운 가상 미리보기
+        ModuleHullInfo keptModules = IsHullLocked(selectedHull) == true
+            ? FleetComposition.BuildDefaultLevel1Modules(m_selectedHullSubType)
+            : GetKeptModules(m_selectedHullSubType);
         List<ShipStatRowEntry> entries = ShipStatGaugeBuilder.Build(selectedHull, keptModules);
         AppendRemovedStatEntries(entries);
         m_statEntries = entries;
 
         if (m_statsScrollView != null && m_statsRowPrefab != null)
             m_statsScrollView.Initialize(m_statEntries.Count, m_statsRowPrefab.gameObject);
+        if (m_shipDescribeText != null) m_shipDescribeText.text = LocalizationManager.Instance.Get(selectedHull.descriptionKey);
     }
 
     // InfiniteScrollView가 dataIndex번 스탯 행을 화면에 배치할 때마다 호출 — 캐시된 m_statEntries로 바인딩
@@ -388,6 +445,95 @@ public class UIHullPickerView : MonoBehaviour
             row.SetStatRow(entry.label, entry.value, diffText);
         else
             row.SetValueOnly(entry.label, entry.rawValueText, diffText);
+    }
+
+    // 아키타입 패시브 4단계 — 성능 탭과 별개 탭(패시브 탭)에서 자체 스크롤뷰로 표시. 아직 카운터를 실제로 증가시키는 로직이
+    // 전혀 연결돼 있지 않아서(M9~M11에서 아키타입별로 작업 예정) 지금은 전부 0/threshold로 보임. 잠김/해금 판정만 threshold 비교로 정확하게 표시
+    private void RefreshPassiveDisplay()
+    {
+        ModuleData selectedHull = m_hullsCache.Find(p => p.moduleSubType == m_selectedHullSubType);
+        m_passiveEntries.Clear();
+
+        if (selectedHull != null && string.IsNullOrEmpty(selectedHull.hullArchetype) == false)
+        {
+            List<HullArchetypePassiveData> passives = DataManager.Instance.m_dataTableHullArchetypePassive.GetPassivesForArchetype(selectedHull.hullArchetype);
+            Commander commander = DataManager.Instance.m_currentCommander;
+            bool isHullLocked = IsHullLocked(selectedHull); // 함체 자체를 아직 언락 못 한 상태면 패시브 진행도가 의미 없으니 전부 해금된 것처럼 미리보기
+
+            for (int i = 0; i < passives.Count; i++)
+            {
+                HullArchetypePassiveData passive = passives[i];
+                long currentValue = commander != null ? commander.GetHullArchetypePassiveCounterValue(selectedHull.hullArchetype, passive.counterType) : 0;
+                bool isUnlocked = isHullLocked == true || currentValue >= passive.threshold;
+
+                string description = LocalizationManager.Instance.Get(passive.descriptionKey);
+                string displayText = isUnlocked == true
+                    ? description
+                    : $"{description} ({CommonUtility.FormatNumber((int)currentValue)} / {CommonUtility.FormatNumber(passive.threshold)})";
+
+                m_passiveEntries.Add(new PassiveRowEntry { stage = passive.stage, description = displayText, isUnlocked = isUnlocked });
+            }
+        }
+
+        if (m_passiveScrollView != null && m_passiveRowPrefab != null)
+            m_passiveScrollView.Initialize(m_passiveEntries.Count, m_passiveRowPrefab.gameObject);
+    }
+
+    // 화면 상단 진척도 게이지 — 패시브 단계는 1→2→3→4 순차 해금이므로, 선택된 함체의 "다음 미달성 단계" 딱 하나만 표시
+    // (counter_type이 단계마다 달라도 병렬 트랙이 아니라 순서상 다음 단계 하나). 슬롯이 남으면 숨김
+    private void RefreshProgressGauges()
+    {
+        ModuleData selectedHull = m_hullsCache.Find(p => p.moduleSubType == m_selectedHullSubType);
+        List<(string counterType, long currentValue, int threshold, string description)> nextGoals = new();
+
+        if (selectedHull != null && string.IsNullOrEmpty(selectedHull.hullArchetype) == false && IsHullLocked(selectedHull) == false)
+        {
+            List<HullArchetypePassiveData> passives = DataManager.Instance.m_dataTableHullArchetypePassive.GetPassivesForArchetype(selectedHull.hullArchetype);
+            Commander commander = DataManager.Instance.m_currentCommander;
+
+            for (int i = 0; i < passives.Count; i++)
+            {
+                HullArchetypePassiveData passive = passives[i];
+                long currentValue = commander != null ? commander.GetHullArchetypePassiveCounterValue(selectedHull.hullArchetype, passive.counterType) : 0;
+                if (currentValue >= passive.threshold) continue; // 이 단계는 이미 달성 — 다음 단계 확인
+
+                string missionLabel = LocalizationManager.Instance.Get($"HullArchetypePassiveMission_{passive.counterType}"); // 효과 설명이 아니라 "무엇을 해야 하는지" 조건 라벨
+                nextGoals.Add((passive.counterType, currentValue, passive.threshold, missionLabel));
+                break; // 순차 해금 — 가장 빠른 미달성 단계 하나만
+            }
+        }
+
+        if (m_progressGaugeContainer != null)
+            m_progressGaugeContainer.SetActive(nextGoals.Count > 0);
+
+        if (m_progressGaugeSlots == null) return;
+        for (int i = 0; i < m_progressGaugeSlots.Length; i++)
+        {
+            if (m_progressGaugeSlots[i] == null) continue;
+
+            if (i >= nextGoals.Count)
+            {
+                m_progressGaugeSlots[i].Hide();
+                continue;
+            }
+
+            var goal = nextGoals[i];
+            float ratio = goal.threshold > 0 ? (float)goal.currentValue / goal.threshold : 0f;
+            string valueText = $"{CommonUtility.FormatNumber((int)goal.currentValue)} / {CommonUtility.FormatNumber(goal.threshold)}";
+            m_progressGaugeSlots[i].SetGauge(ratio, valueText, goal.description);
+        }
+    }
+
+    // InfiniteScrollView가 dataIndex번 패시브 행을 화면에 배치할 때마다 호출 — 캐시된 m_passiveEntries로 바인딩
+    private void OnPassiveItemBind(int dataIndex, GameObject rowObject)
+    {
+        if (dataIndex < 0 || dataIndex >= m_passiveEntries.Count) return;
+
+        UIShipPassiveRow row = rowObject.GetComponent<UIShipPassiveRow>();
+        if (row == null) return;
+
+        PassiveRowEntry entry = m_passiveEntries[dataIndex];
+        row.SetPassiveRow(entry.stage, entry.description, entry.isUnlocked);
     }
 
     // 현재 장착 함체엔 있었지만 선택한 함체에는 없어진 스탯(예: 미사일 미장착으로 변경)도 0값 항목으로 추가해
@@ -439,6 +585,8 @@ public class UIHullPickerView : MonoBehaviour
             return;
         }
 
+        if (m_removeButton != null)
+            m_removeButton.interactable = true;
         RefreshCommandPowerPreview();
     }
 

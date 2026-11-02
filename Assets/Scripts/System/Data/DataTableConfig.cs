@@ -1,5 +1,5 @@
 // 게임 전역 설정 ScriptableObject — PvP 설정, 전술 강화 탐험 포인트 소모량 관리
-// 커맨더 레벨별 최대 함선 수(ship_count)는 DataTableCommander.GetShipCount()에서 조회
+// 함대 슬롯 칸 수는 GeneralSettings.maxFleetSlotCount(고정 상한) — 배치 가능 여부는 지휘력(CP)만으로 결정
 using UnityEngine;
 using Newtonsoft.Json;
 
@@ -15,6 +15,20 @@ public class GameSettings
     public TacticSettings tactic = new TacticSettings();
     public ExplorationSettings exploration = new ExplorationSettings();
     public ShipStatFormulaSettings shipStatFormula = new ShipStatFormulaSettings();
+    public ArchetypeUpgradeSettings archetypeUpgrade = new ArchetypeUpgradeSettings();
+}
+
+// 아키타입 단위 영구 모듈강화(M6) — 업적포인트 소모, 모듈 타입(빔/미사일/격납고)별 레벨을 올림
+// DB에는 "구매 횟수"(0부터 시작)로 저장되고, 효과 레벨(datatable_module.csv 티어 행 조회용) = 구매횟수+1
+[System.Serializable]
+public class ArchetypeUpgradeSettings
+{
+    [Tooltip("1회 구매에 드는 업적포인트 기본값(0회 구매 상태에서 1회차 구매 비용)")]
+    public int baseAchievementPointCost = 500;
+    [Tooltip("구매할수록 비용에 추가되는 업적포인트(선형 증가) — 다음 구매 비용 = base + 현재 구매횟수 × 이 값")]
+    public int achievementPointCostPerLevel = 500;
+    [Tooltip("모듈 타입 1개당 최대 효과 레벨 — datatable_module.csv의 티어 행 개수(1~10)와 일치해야 함. 최대 구매횟수는 이 값-1")]
+    public int maxLevel = 10;
 }
 
 [System.Serializable]
@@ -28,6 +42,9 @@ public class GeneralSettings
 
     [Tooltip("강화 포인트 1점당 소모하는 지휘력(CP)")]
     public int reinforceCpCostPerPoint = 10;
+
+    [Tooltip("함대 슬롯 칸 수 고정 상한 — 지휘관 레벨과 무관, 지휘력(CP)만으로 실제 배치 가능 여부가 결정됨")]
+    public int maxFleetSlotCount = 9;
 }
 
 [System.Serializable]
@@ -52,6 +69,8 @@ public class TacticSettings
 {
     [Tooltip("수리 전술 ON 시 회복 틱마다, 체력이 100%가 아닌 함선 1척당 소모하는 탐험 포인트")]
     public int tacticRepairCost = 10;
+    [Tooltip("빔 전술 ON 시 빔 발사 1건마다 소모하는 탐험 포인트")]
+    public int tacticBeamCost = 1;
     [Tooltip("미사일 전술 ON 시 미사일 발사 1건마다 소모하는 탐험 포인트")]
     public int tacticMissileCost = 1;
     [Tooltip("함재기 전술 ON 시 함재기 발진 1건마다 소모하는 탐험 포인트")]
@@ -60,6 +79,8 @@ public class TacticSettings
     public int tacticShieldCost = 10;
     [Tooltip("요격체 전술 ON 시 요격체 1기 생성마다 소모하는 탐험 포인트")]
     public int tacticInterceptorCost = 10;
+    [Tooltip("자원 게이지(전술력) 수동 충전 — 광물 1개당 채워지는 자원 게이지 포인트")]
+    public int mineralToResourceRatio = 10;
 }
 
 // 성능포인트 1000 배분 → 최종 전투 수치 변환 공식의 기준값/계수

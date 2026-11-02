@@ -31,9 +31,7 @@ public class UIPanelFleet : UIPanelBase
     [SerializeField] private UIModuleCategoryIconRow m_hangarModuleIcons; // 격납고 슬롯
     [SerializeField] private UIModuleCategoryIconRow m_etcModuleIcons; // 실드(인덱스0)+요격체(인덱스1) — 슬롯 배열이 아니라 서브타입 문자열 1개씩이라 두 카테고리를 한 줄로 묶음
     [SerializeField] private TMP_Text m_modulesTitleText; // 모듈 현황 아이콘 위 헤더("모듈")
-    [SerializeField] private Button m_convertCommandPowerButton; // 탐험 포인트 -> 지휘력 최대치 변환 팝업(UIPopupConvertExplorationPoint)을 염 — 교환비는 ExplorationService 서버값과 항상 함께 수정
-    [SerializeField] private TMP_Text m_convertCommandPowerButtonText;
-    [SerializeField] private Button m_convertTacticPowerButton; // 탐험 포인트 -> 전술력 최대치 변환 팝업(UIPopupConvertExplorationPoint)을 염 — m_convertCommandPowerButton과 동일 팝업, target만 다름
+    [SerializeField] private Button m_convertTacticPowerButton; // 탐험 포인트 -> 전술력 최대치 변환 팝업(UIPopupConvertExplorationPoint)을 염
     [SerializeField] private TMP_Text m_convertTacticPowerButtonText;
     [SerializeField] private TMP_Text m_placedShipsTitleText; // Column_PlacedShips 헤더
     [SerializeField] private TMP_Text m_statsTitleText; // Column_Stats 헤더
@@ -100,19 +98,13 @@ public class UIPanelFleet : UIPanelBase
         EventManager.Subscribe_CommanderLevelChanged(OnCommanderLevelChanged);
         EventManager.Subscribe_MyFleetStateChanged(OnMyFleetStateChanged);
 
-        if (m_convertCommandPowerButton != null)
-            m_convertCommandPowerButton.onClick.AddListener(() => OnConvertExplorationPointButtonClicked(EExplorationPointConvertTarget.CommandPower));
         if (m_convertTacticPowerButton != null)
-            m_convertTacticPowerButton.onClick.AddListener(() => OnConvertExplorationPointButtonClicked(EExplorationPointConvertTarget.TacticPower));
+            m_convertTacticPowerButton.onClick.AddListener(OnConvertExplorationPointButtonClicked);
 
         if (m_beamModuleIcons != null) m_beamModuleIcons.SetOnIconClicked(i => OnModuleIconClicked(EModuleType.beam, i));
         if (m_missileModuleIcons != null) m_missileModuleIcons.SetOnIconClicked(i => OnModuleIconClicked(EModuleType.missile, i));
         if (m_hangarModuleIcons != null) m_hangarModuleIcons.SetOnIconClicked(i => OnModuleIconClicked(EModuleType.hangar, i));
         if (m_etcModuleIcons != null) m_etcModuleIcons.SetOnIconClicked(OnEtcModuleIconClicked);
-
-        // 모듈 티어업 튜토리얼이 "티어업 가능한 후보 함선 행의 관리 버튼"을 가리킬 수 있도록 리졸버 등록
-        m_tierUpShipManageButtonResolver = ResolveTierUpShipManageButton;
-        TutorialManager.Instance.RegisterDynamicTarget(TutorialManager.DYNAMIC_TARGET_TIER_UP_SHIP_MANAGE_BUTTON, m_tierUpShipManageButtonResolver);
 
         // 한 번 세팅되면 바뀌지 않는 정적 라벨 — 패널 초기화 시점에 1회만 처리
         if (m_placedShipsTitleText != null)
@@ -123,8 +115,6 @@ public class UIPanelFleet : UIPanelBase
             CommonUtility.SetUILocText(m_modulesTitleText, "UIFleet_ModulesTitle");
         if (m_fleetManagementText != null)
             CommonUtility.SetUILocText(m_fleetManagementText, "FleetManagement");
-        if (m_convertCommandPowerButtonText != null)
-            CommonUtility.SetUILocText(m_convertCommandPowerButtonText, "UIFleet_IncreaseCommandPowerButton");
         if (m_convertTacticPowerButtonText != null)
             CommonUtility.SetUILocText(m_convertTacticPowerButtonText, "UIFleet_IncreaseTacticPowerButton");
         if (m_enemyFleetManagementText != null)
@@ -135,35 +125,10 @@ public class UIPanelFleet : UIPanelBase
         ApplyViewportImmediate(open: false);
     }
 
-    private System.Func<RectTransform> m_tierUpShipManageButtonResolver;
-
     private void OnDestroy()
     {
         EventManager.Unsubscribe_CommanderLevelChanged(OnCommanderLevelChanged);
         EventManager.Unsubscribe_MyFleetStateChanged(OnMyFleetStateChanged);
-
-        TutorialManager tutorialManager = TutorialManager.Instance; // 종료 중이면 null
-        if (tutorialManager != null)
-            tutorialManager.UnregisterDynamicTarget(TutorialManager.DYNAMIC_TARGET_TIER_UP_SHIP_MANAGE_BUTTON, m_tierUpShipManageButtonResolver);
-    }
-
-    // 지금 티어업 가능한 후보 함선 행의 관리 버튼 — 그 행이 스크롤뷰에 보이도록 먼저 스크롤한 뒤 찾음(보이지 않는 행은 풀에 바인딩되지 않음)
-    private RectTransform ResolveTierUpShipManageButton()
-    {
-        if (m_placedShipsScrollView == null) return null;
-        if (TutorialManager.Instance.TryGetModuleTierUpCandidate(out int shipSlotIndex, out _, out _) == false) return null;
-
-        m_placedShipsScrollView.EnsureVisible(shipSlotIndex);
-
-        RectTransform manageButtonRect = null;
-        m_placedShipsScrollView.ForEachVisibleItem((dataIndex, rowObject) =>
-        {
-            if (dataIndex != shipSlotIndex) return;
-
-            UIPlacedShipRow row = rowObject.GetComponent<UIPlacedShipRow>();
-            if (row != null) manageButtonRect = row.GetManageButtonRect();
-        });
-        return manageButtonRect;
     }
 
     // 함대편성 UI가 열려있는 도중 전투가 시작/종료되면 함체 교체 버튼 활성 상태를 즉시 갱신
@@ -479,8 +444,6 @@ public class UIPanelFleet : UIPanelBase
             m_fleetStatsContainer.gameObject.SetActive(visible);
         if (m_enemyFleetStatsContainer != null)
             m_enemyFleetStatsContainer.gameObject.SetActive(visible == false);
-        if (m_convertCommandPowerButton != null)
-            m_convertCommandPowerButton.gameObject.SetActive(visible);
         if (m_convertTacticPowerButton != null)
             m_convertTacticPowerButton.gameObject.SetActive(visible);
     }
@@ -559,10 +522,10 @@ public class UIPanelFleet : UIPanelBase
             m_tacticPowerRow.SetRow("UI_TacticPower", $"{tacticPowerText} / {tacticPowerMaxText}", rawValue: true);
     }
 
-    // 소모량 조정 팝업(UIPopupConvertExplorationPoint)을 열어 사용자가 직접 수치를 정하도록 함
-    private void OnConvertExplorationPointButtonClicked(EExplorationPointConvertTarget target)
+    // 소모량 조정 팝업(UIPopupConvertExplorationPoint)을 열어 사용자가 직접 수치를 정하도록 함 — 전술력 최대치 전용(지휘력은 M13부터 구매 없이 레벨로 자동 결정)
+    private void OnConvertExplorationPointButtonClicked()
     {
-        UIManager.Instance.ShowConvertExplorationPointPopup(target, onConfirmed: RefreshFleetComposition);
+        UIManager.Instance.ShowConvertExplorationPointPopup(onConfirmed: RefreshFleetComposition);
     }
 
     private void RefreshPlacedShips()
@@ -571,20 +534,17 @@ public class UIPanelFleet : UIPanelBase
 
         if (m_isReadOnlyMode == true)
         {
-            // 읽기전용(적 함대)에는 커맨더 레벨/잠긴 슬롯 개념이 없음 — 실제 배치된 함선 수만큼만 표시
+            // 읽기전용(적 함대)에는 잠긴 슬롯 개념이 없음 — 실제 배치된 함선 수만큼만 표시
             m_placedTotalSlotCount = m_placedShipsCache.Count;
             m_placedOpenSlotCount = m_placedShipsCache.Count;
         }
         else
         {
-            // 지휘관 레벨에 따라 배치 가능한 함선 수(=열려있는 슬롯 수)가 달라짐 — 커맨더 탭의 "최대 함선 수"와 동일한 값 재사용
-            Commander commander = DataManager.Instance.m_currentCommander;
-            int commanderLevel = commander != null ? commander.GetCommanderLevel() : 0;
-            m_placedOpenSlotCount = DataManager.Instance.m_dataTableCommander.GetShipCount(commanderLevel);
-
-            // 디자인상 최대 슬롯 수(잠긴 칸 포함)까지는 항상 노출 — 레벨업 동기부여를 위해 잠긴 칸도 미리 보여줌
-            int maxSlotCount = DataManager.Instance.m_dataTableCommander.GetMaxShipCount();
-            m_placedTotalSlotCount = Mathf.Max(maxSlotCount, m_placedShipsCache.Count); // 배치 수가 어떤 이유로 슬롯 수를 넘어도(레벨 하락 등) 표시는 유지
+            // 함대 슬롯 칸 수는 고정 상한(GeneralSettings.maxFleetSlotCount) — 지휘관 레벨과 무관, 전 슬롯이 항상 열려있음(잠긴 슬롯 없음).
+            // 실제 배치 가능 여부는 지휘력(CP) 체크가 담당(FleetComposition.CheckPlaceShipAt)
+            int maxSlotCount = DataManager.Instance.m_dataTableConfig.gameSettings.general.maxFleetSlotCount;
+            m_placedTotalSlotCount = Mathf.Max(maxSlotCount, m_placedShipsCache.Count); // 배치 수가 어떤 이유로 슬롯 수를 넘어도 표시는 유지
+            m_placedOpenSlotCount = m_placedTotalSlotCount;
         }
 
         if (m_placedShipsScrollView != null && m_placedShipRowPrefab != null)
@@ -734,8 +694,7 @@ public class UIPanelFleet : UIPanelBase
         OnModuleIconClicked(moduleType, 0);
     }
 
-    // 모듈 현황 아이콘 클릭 — 장착된 슬롯이면 Ship Loadout 화면을 열면서 그 슬롯을 선택하고 강화 팝업까지 바로 띄움,
-    // 미장착 슬롯이면 Ship Loadout 화면을 열면서 그 슬롯만 선택(강화할 대상이 없어 팝업은 띄우지 않음)
+    // 모듈 현황 아이콘 클릭 — Ship Loadout 화면을 열면서 그 슬롯만 선택(모듈 강화는 더 이상 이 화면이 아니라 업적포인트 기반 아키타입 레벨업(M6)이 담당)
     private void OnModuleIconClicked(EModuleType moduleType, int categorySlotIndex)
     {
         if (m_isReadOnlyMode == true || m_shipLoadoutEditor == null || m_selectedSlotIndex < 0) return;
@@ -746,13 +705,9 @@ public class UIPanelFleet : UIPanelBase
         if (m_selectedSlotIndex >= placedShips.Count) return;
 
         bool isInstalled = IsModuleInstalledAtSlot(placedShips[m_selectedSlotIndex].modules, moduleType, categorySlotIndex);
-        if (isInstalled == true)
-            m_shipLoadoutEditor.OpenAndManageSlot(m_selectedSlotIndex, moduleType, categorySlotIndex, OnShipLoadoutChanged);
-        else
-        {
+        if (isInstalled == false)
             SelectShipForLoadout(m_selectedSlotIndex);
-            m_shipLoadoutEditor.OpenAndSelectSlot(m_selectedSlotIndex, moduleType, categorySlotIndex, OnShipLoadoutChanged);
-        }
+        m_shipLoadoutEditor.OpenAndSelectSlot(m_selectedSlotIndex, moduleType, categorySlotIndex, OnShipLoadoutChanged);
     }
 
     private bool IsModuleInstalledAtSlot(ModuleHullInfo modules, EModuleType moduleType, int categorySlotIndex)
@@ -906,10 +861,40 @@ public class UIPanelFleet : UIPanelBase
             m_tacticsToggleRow.Refresh();
     }
 
-    // 전체 함체 목록 — 티어1~3은 무조건, 티어4+는 잠김 상태로 표시(UIHullPickerView가 unlockAchievementPointCost 기준으로 잠금/언락 버튼 처리)
+    // 선택 가능한 함체 목록 — 아키타입당 1개(레벨1 행)만 대표로 노출. CSV에는 M6 레벨업용으로 아키타입당 레벨1~10행이 전부 있어서
+    // 중복 없이 거르지 않으면 같은 함체가 10번씩 나열됨(레벨 자체는 선택과 무관 — 배치 후 M6 레벨업으로 별도 성장)
+    // 티어1~3은 무조건, 티어4+는 잠김 상태로 표시(UIHullPickerView가 unlockAchievementPointCost 기준으로 잠금/언락 버튼 처리)
     private List<ModuleData> ComputeUnlockedHulls()
     {
-        return DataManager.Instance.m_dataTableModule.HullModules.modules;
+        List<ModuleData> allHulls = DataManager.Instance.m_dataTableModule.HullModules.modules;
+        Dictionary<string, ModuleData> bestByArchetype = new();
+        List<ModuleData> legacyHulls = new(); // hullArchetype 데이터가 없는 구 포맷 행은 방어적으로 그대로 노출
+
+        for (int i = 0; i < allHulls.Count; i++)
+        {
+            ModuleData hull = allHulls[i];
+            if (string.IsNullOrEmpty(hull.hullArchetype) == true)
+            {
+                legacyHulls.Add(hull);
+                continue;
+            }
+
+            bool hasExisting = bestByArchetype.TryGetValue(hull.hullArchetype, out ModuleData existing);
+            if (hasExisting == false || ParseHullLevelSuffix(hull.moduleSubType) < ParseHullLevelSuffix(existing.moduleSubType))
+                bestByArchetype[hull.hullArchetype] = hull;
+        }
+
+        List<ModuleData> result = new List<ModuleData>(legacyHulls);
+        result.AddRange(bestByArchetype.Values);
+        return result;
+    }
+
+    // hull_{tier}_{archetype}_{level} 형식의 마지막 토큰(레벨)만 파싱 — 형식이 다르면 비교에서 밀리도록 최댓값 반환
+    private static int ParseHullLevelSuffix(string hullSubType)
+    {
+        string[] parts = hullSubType.Split('_');
+        if (parts.Length != 4) return int.MaxValue;
+        return int.TryParse(parts[3], out int level) ? level : int.MaxValue;
     }
 
     // ── 배치된 함선 — 전방/후방 토글 ──────────────────────────────────
@@ -1005,7 +990,9 @@ public class UIPanelFleet : UIPanelBase
         int usedCommandPowerExcludingThisSlot = composition.GetUsedCommandPower() - currentSlotCommandCost;
         int maxCommandPower = composition.GetMaxCommandPower();
 
-        m_hullPicker.Open(ComputeUnlockedHulls(), currentHull, currentModules, currentSlotCommandCost, usedCommandPowerExcludingThisSlot, maxCommandPower, (selectedHullSubType, onProcessed) => ApplyHullToSlot(index, selectedHullSubType, onProcessed));
+        m_hullPicker.Open(ComputeUnlockedHulls(), currentHull, currentModules, currentSlotCommandCost, usedCommandPowerExcludingThisSlot, maxCommandPower,
+            (selectedHullSubType, onProcessed) => ApplyHullToSlot(index, selectedHullSubType, onProcessed),
+            onProcessed => RemoveShipFromSlot(index, onProcessed));
     }
 
     // 확인 버튼으로 선택된 함체를 해당 슬롯에 배치 — 기존 드래그앤드롭 배치 핵심 로직과 동일, dropIndex 대신 slotIndex 사용.
@@ -1071,6 +1058,49 @@ public class UIPanelFleet : UIPanelBase
             CommitHullPlacement(slotIndex, hullSubType, slotIsFront, keptModules);
             onProcessed(true);
         });
+    }
+
+    // Remove 버튼으로 이 슬롯의 함선을 배치 해제 — ApplyHullToSlot과 동일한 서버 확정 후 로컬 반영 패턴
+    private void RemoveShipFromSlot(int slotIndex, System.Action<bool> onProcessed)
+    {
+        FleetComposition composition = DataManager.Instance.m_currentFleetComposition;
+        if (composition == null)
+        {
+            onProcessed(true);
+            return;
+        }
+
+        // 지크프리트 함대(서버 미등록)는 서버가 모르는 슬롯이라 RemoveFleetShip을 호출하면 항상 실패함 — 로컬 반영만으로 끝냄
+        if (ObjectManager.Instance.IsSiegfriedFleetActive() == true)
+        {
+            CommitShipRemoval(slotIndex);
+            onProcessed(true);
+            return;
+        }
+
+        NetworkManager.Instance.RemoveFleetShip(new FleetRemoveShipRequest { slotIndex = slotIndex }, response =>
+        {
+            if (response.errorCode != 0)
+            {
+                NetworkManager.Instance.ShowRequestFailedPopup(response.errorCode);
+                onProcessed(false);
+                return;
+            }
+
+            CommitShipRemoval(slotIndex);
+            onProcessed(true);
+        });
+    }
+
+    // 서버가 배치 해제를 확정한 뒤(서버 미등록 튜토리얼 함대는 즉시) 로컬 편성과 3D 함선을 실제로 비움
+    private void CommitShipRemoval(int slotIndex)
+    {
+        FleetComposition composition = DataManager.Instance.m_currentFleetComposition;
+        if (composition == null) return;
+
+        composition.RemoveShip(slotIndex);
+        ObjectManager.Instance.RemoveMyFleetShipAt(slotIndex);
+        RefreshFleetComposition();
     }
 
     // 서버가 배치를 확정한 뒤(서버 미등록 튜토리얼 함대는 즉시) 로컬 편성과 3D 함선을 실제로 바꿈

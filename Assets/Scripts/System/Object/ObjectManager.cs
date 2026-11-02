@@ -431,6 +431,8 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         // 출석 보상은 자동 지급되지 않고 레드닷만 갱신되므로(달력은 유저가 직접 열어야 함) 튜토리얼 시작을 지연시킬 필요 없음
         if (DailyBonusManager.Instance != null)
             DailyBonusManager.Instance.CheckDailyBonusStatus();
+        if (NoticeManager.Instance != null)
+            NoticeManager.Instance.CheckAndShowNotices();
         TutorialManager.Instance.StartTutorial("Tutorial_Exploration");
 
         // 조건(업적포인트/함선 슬롯 수)은 이미 만족했는데 튜토리얼을 끝까지 못 본 채 재접속한 경우 이어서 진행 — 재생 중인 튜토리얼이 있으면 끝난 뒤 시작됨
@@ -855,20 +857,14 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         DataManager.Instance.m_currentFleetComposition = siegfriedComposition;
     }
 
-    // 튜토리얼 중 함선 추가(4→5번째) 및 지크프리트 함대(T14 기함 포함)의 모듈 레벨업이 지휘 레벨 요구사항에
-    // 막히지 않도록 임시로 레벨 지급 — 함선 수 요구 레벨과 T14 서브타입 상한 요구 레벨 중 더 높은 쪽을 지급
+    // 함선 수는 더 이상 지휘관 레벨로 제한되지 않음(함대 슬롯은 고정 상한, 배치 가능 여부는 지휘력만으로 결정) — 레벨을 올릴 필요가 없어졌지만,
+    // SwitchFromSiegfriedFleetToRealFleet이 이 백업값으로 복귀시키므로 원래 레벨을 그대로 기록만 해둠
     private void GrantTutorialCommanderLevel()
     {
         Commander commander = DataManager.Instance.m_currentCommander;
         if (commander == null) return;
 
-        SpaceFleet siegfriedFleet = GetMyFleet();
-        int nextShipCount = siegfriedFleet != null ? siegfriedFleet.m_ships.Count + 1 : 1;
-        int shipCountRequiredLevel = DataManager.Instance.m_dataTableCommander.GetRequiredCommanderLevel(nextShipCount);
-        int requiredLevel = shipCountRequiredLevel; // TutorialCinematicController 주석처리로 지크프리트 서브타입 티어 요구치는 임시 제외
-
         m_realCommanderLevelBackup = commander.GetCommanderLevel();
-        commander.UpdateCommanderLevel(requiredLevel);
     }
 
     // 튜토리얼 임시 함대(지크프리트 등 연출용)만 제거 — 실제 함대 스폰은 하지 않음
@@ -1044,6 +1040,37 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         // 신규 함선(isNewShip)은 이미 워프인 이동 중이므로 재스냅 대상에서 제외 — 나머지 함선만 대형 조정을 위해 부드럽게 슬라이드.
         // 기존 슬롯 함체 교체는 그대로 즉시 배치(bSmooth: false, 연출 없음)
         myFleet.UpdateShipFormation(myFleet.m_currentFormationType, bSmooth: isNewShip, excludeShip: isNewShip ? newShip : null);
+    }
+
+    // 함대편성 UI의 Remove로 슬롯을 비울 때 호출 — 그 슬롯의 함선을 파괴하고, 뒤 슬롯들을 한 칸씩 당김(positionIndex -1).
+    // FleetComposition.RemoveShip(List.RemoveAt)과 동일하게 "빈 슬롯은 항상 꼬리에만" 불변식을 3D 함대/m_fleetInfo에도 그대로 유지해야
+    // 자리를 바꾸지 않고 교체만 하는 ReplaceMyFleetShipAt의 인덱스 가정이 계속 성립함
+    public void RemoveMyFleetShipAt(int positionIndex)
+    {
+        SpaceFleet myFleet = GetMyFleet();
+        if (myFleet == null) return;
+
+        SpaceShip removedShip = myFleet.m_ships.Find(s => s != null && s.m_shipInfo.positionIndex == positionIndex);
+        if (removedShip != null)
+            myFleet.RemoveShip(removedShip, refreshFormation: false, triggerDefeatEvents: false);
+
+        foreach (SpaceShip ship in myFleet.m_ships)
+        {
+            if (ship != null && ship.m_shipInfo.positionIndex > positionIndex)
+                ship.m_shipInfo.positionIndex -= 1;
+        }
+
+        if (myFleet.m_fleetInfo != null && myFleet.m_fleetInfo.ships != null)
+        {
+            myFleet.m_fleetInfo.ships.RemoveAll(s => s.positionIndex == positionIndex);
+            foreach (ShipInfo info in myFleet.m_fleetInfo.ships)
+            {
+                if (info.positionIndex > positionIndex)
+                    info.positionIndex -= 1;
+            }
+        }
+
+        myFleet.UpdateShipFormation(myFleet.m_currentFormationType, bSmooth: false);
     }
 
     // myFleet.m_fleetInfo.ships에서 positionIndex가 일치하는 항목을 새 ShipInfo로 교체(없으면 추가) — ReplaceMyFleetShipAt 전용

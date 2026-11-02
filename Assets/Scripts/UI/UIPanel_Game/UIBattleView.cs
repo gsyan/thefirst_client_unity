@@ -17,9 +17,14 @@ public class UIBattleView : MonoBehaviour
     [SerializeField] private TextMeshProUGUI m_zoneNameText;
 
     [Header("함대 전술 토글")]
-    [SerializeField] private UITacticsToggleRow m_tacticsToggleRow; // 전술 토글 버튼 5종 — 클릭/표시/활성 처리는 이 컴포넌트가 전담(함대관리와 공용)
-    [SerializeField] private Image m_tacticPowerGauge; // 전술 토글 3종이 공유하는 소모 게이지(Filled/Horizontal) — 소모 계산은 UIPanelBattle이 전담, 여기선 표시만
+    [SerializeField] private UITacticsToggleRow m_tacticsToggleRow; // 전술 토글 버튼 6종(빔/미사일/함재기/수리/실드/요격체) — 클릭/표시/활성 처리는 이 컴포넌트가 전담(함대관리와 공용)
+    [SerializeField] private Image m_tacticPowerGauge; // 전술 토글들이 공유하는 자원 게이지(Filled/Horizontal) — 소모 계산은 UIPanelBattle이 전담, 여기선 표시만
     [SerializeField] private TextMeshProUGUI m_tacticsLabelText; // "TACTICS" 섹션 헤더 — 프리팹에 박힌 LocalizeStringEvent가 빈 키라 코드로 직접 세팅
+
+    [Header("광물 자원충전")]
+    [SerializeField] private Button m_mineralChargeButton; // 존런 중 쌓인 광물을 소모해 자원 게이지를 즉시 채움(Commander.ChargeTacticPowerWithMineral)
+    [SerializeField] private TextMeshProUGUI m_mineralChargeButtonText; // "충전" 고정 라벨 — Awake에서 1회만 로컬라이즈
+    [SerializeField] private TextMeshProUGUI m_mineralAmountText; // 보유 광물 수 표시
 
     private EUnitState m_fleetState = EUnitState.Idle;
 
@@ -30,9 +35,15 @@ public class UIBattleView : MonoBehaviour
         EventManager.Subscribe_ZoneEntered(OnZoneEntered);
         EventManager.Subscribe_MyFleetStateChanged(OnFleetStateChanged);
         EventManager.Subscribe_TacticPowerChanged(OnTacticPowerChanged);
+        EventManager.Subscribe_MineralAmountChanged(OnMineralAmountChanged);
 
         if (m_tacticsLabelText != null)
             CommonUtility.SetUILocText(m_tacticsLabelText, "UI_Tactics");
+        if (m_mineralChargeButtonText != null)
+            CommonUtility.SetUILocText(m_mineralChargeButtonText, "UIBattle_MineralChargeButton");
+
+        if (m_mineralChargeButton != null)
+            m_mineralChargeButton.onClick.AddListener(OnMineralChargeButtonClicked);
     }
 
     void Start()
@@ -70,6 +81,7 @@ public class UIBattleView : MonoBehaviour
         EventManager.Unsubscribe_ZoneEntered(OnZoneEntered);
         EventManager.Unsubscribe_MyFleetStateChanged(OnFleetStateChanged);
         EventManager.Unsubscribe_TacticPowerChanged(OnTacticPowerChanged);
+        EventManager.Unsubscribe_MineralAmountChanged(OnMineralAmountChanged);
     }
 
     private void OnTacticPowerChanged(float current, int max)
@@ -78,11 +90,34 @@ public class UIBattleView : MonoBehaviour
         m_tacticPowerGauge.fillAmount = max > 0 ? Mathf.Clamp01(current / max) : 0f;
     }
 
+    private void OnMineralAmountChanged(int amount)
+    {
+        RefreshMineralAmountText(amount);
+    }
+
+    private void RefreshMineralAmountText(int amount)
+    {
+        if (m_mineralAmountText != null)
+            m_mineralAmountText.text = CommonUtility.FormatNumber(amount);
+    }
+
+    private void OnMineralChargeButtonClicked()
+    {
+        Commander commander = DataManager.Instance.m_currentCommander;
+        if (commander == null) return;
+
+        SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true);
+        commander.ChargeTacticPowerWithMineral();
+    }
+
     // UIPanelBattle.OnShowUIPanel()이 호출 — 패널이 뜰 때마다 현재 함대 상태로 전술 토글 표시를 직접 동기화
     public void RefreshTacticsDisplay()
     {
         if (m_tacticsToggleRow != null)
             m_tacticsToggleRow.Refresh();
+
+        Commander commander = DataManager.Instance.m_currentCommander;
+        RefreshMineralAmountText(commander != null ? commander.GetMineralAmount() : 0);
     }
 
     private void OnFleetStateChanged(EUnitState state)

@@ -105,7 +105,6 @@ public class DataTableTotalEditor : EditorWindow
             EditorGUILayout.BeginVertical("box");
             EditorGUILayout.LabelField("Commander Level Info", EditorStyles.boldLabel);
             EditorGUILayout.LabelField($"Commander Levels: {dataTableCommander.GetCommanderDataList().Count}");
-            EditorGUILayout.LabelField($"Max Ship Count: {dataTableCommander.GetMaxShipCount()}");
             EditorGUILayout.EndVertical();
         }
 

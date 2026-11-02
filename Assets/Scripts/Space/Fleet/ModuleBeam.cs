@@ -83,8 +83,18 @@ public class ModuleBeam : ModuleBase
         // 복원된 데이터로 스탯 설정 — 체력은 테이블(티어) 기준, 공격력/쿨다운은 프리셋 계산값 있으면 그걸로 대체
         m_health = moduleData.health;
         m_healthMax = moduleData.health;
-        m_baseAttack = attackOverride ?? moduleData.attack;
-        m_baseAttackCool = attackCoolOverride ?? moduleData.attackCool;
+
+        // 아키타입 단위 영구 모듈강화(M6) — 이 함체의 아키타입+이 빔 슬롯(slotIndex) 기준 레벨(최소 1)에 해당하는 티어 데이터(beam_{level}_1)의 공격력/쿨다운을 그대로 사용
+        int archetypeLevel = parentBody != null ? ArchetypeUpgradeLevelLookup.GetLevel(parentBody.GetHullArchetype(), EModuleType.beam, m_moduleInfo.slotIndex) : 1;
+        ModuleData levelModuleData = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable($"beam_{archetypeLevel}_1");
+        float levelAttack = levelModuleData != null ? levelModuleData.attack : moduleData.attack;
+        float levelAttackCool = levelModuleData != null ? levelModuleData.attackCool : moduleData.attackCool;
+        float baseAttack = attackOverride ?? levelAttack;
+        float baseAttackCool = attackCoolOverride ?? levelAttackCool;
+        m_baseAttack = baseAttack;
+        m_baseAttackCool = baseAttackCool;
+        if (parentBody != null)
+            SetModuleLevel(archetypeLevel);
 
         m_lastAttackTime = 0f;
 
@@ -187,10 +197,20 @@ public class ModuleBeam : ModuleBase
 
         float shipCountMultiplier = m_ownerFleet != null ? m_ownerFleet.GetShipCountAttackMultiplier() : 1f;
         float formationMultiplier = m_ownerFleet != null ? m_ownerFleet.GetFormationAttackMultiplier() : 1f;
+        float tacticMultiplier    = m_ownerFleet != null ? m_ownerFleet.GetBeamTacticAttackMultiplier() : 1f;
+
+        // 전술 보너스가 실제로 적용 중일 때만 발사 1건당 과금 — 여유가 없으면 이번 발사만 보너스 없이 그대로 발사(토글은 유지)
+        if (tacticMultiplier > 1f)
+        {
+            int tacticBeamCost = DataManager.Instance.m_dataTableConfig.gameSettings.tactic.tacticBeamCost;
+            if (m_ownerFleet.TryChargeBeamTacticCost(tacticBeamCost) == false)
+                tacticMultiplier = 1f;
+        }
+
         DamageInfo damageInfo = new DamageInfo
         {
             baseDamage       = m_attack,
-            attackMultiplier = shipCountMultiplier * formationMultiplier,
+            attackMultiplier = shipCountMultiplier * formationMultiplier * tacticMultiplier,
             damageType       = EDamageType.Beam,
         };
 

@@ -22,8 +22,7 @@ public class ModuleInterceptor : ModuleBase
         m_parentBody = parentBody;
     }
 
-    // regenTimePoints: 회복시간 강화 투자 포인트 — 성능 표시(ShipStatCalculator)와 같은 공식으로 반영
-    public void InitializeModuleInterceptor(string interceptorSubType, int regenTimePoints)
+    public void InitializeModuleInterceptor(string interceptorSubType)
     {
         m_parentBody = GetComponentInParent<ModuleHull>();
         AutoDetectFleetInfo();
@@ -49,8 +48,7 @@ public class ModuleInterceptor : ModuleBase
         }
 
         m_maxCount = moduleData.interceptorCount;
-        ShipStatFormulaSettings formula = DataManager.Instance.m_dataTableConfig.gameSettings.shipStatFormula;
-        m_regenTime = ShipStatCalculator.ComputeInterceptorRegenTime(moduleData.interceptorRegenTime, regenTimePoints, formula);
+        m_regenTime = moduleData.interceptorRegenTime;
         m_slots = new InterceptorUnit[m_maxCount];
         m_regenProgress = 0f;
 

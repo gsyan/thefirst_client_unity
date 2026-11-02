@@ -84,6 +84,13 @@ public class ModuleHull : ModuleBase
         m_moduleHullInfo.hullIndex = hullIndex;
     }
 
+    // 아키타입 단위 영구 모듈강화(M6)에서 쓰는 이 함체의 아키타입 — 데이터 없으면 빈 문자열(보너스 없음으로 처리됨)
+    public string GetHullArchetype()
+    {
+        ModuleData moduleData = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(m_moduleHullInfo.moduleSubType);
+        return moduleData != null ? moduleData.hullArchetype : "";
+    }
+
     // Hull 초기화 (기존 모듈 재사용 가능)
     // statOverride: 성능포인트 프리셋 기반 스폰 시 테이블 값 대신 사용할 계산값(체력/수리력/슬롯별 공격력). null이면 기존처럼 테이블값 그대로 사용
     public void InitializeModuleHull(ModuleHullInfo moduleHullInfo, List<ModuleBase> savedModules, ShipFinalStats? statOverride = null)
@@ -95,15 +102,23 @@ public class ModuleHull : ModuleBase
         ModuleData moduleData = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(moduleHullInfo.moduleSubType);
         if (moduleData == null) return;
 
-        // 복원된 데이터로 초기화 — 체력/수리력은 프리셋 계산값 있으면 그걸로 대체, 없으면 기존처럼 테이블값
-        m_baseHealthMax = statOverride?.health ?? moduleData.health;
+        // 아키타입 단위 영구 모듈강화(M6) — 이 함체의 아키타입 기준 바디 레벨(최소 1)에 해당하는 레벨 행(hull_{tier}_{archetype}_{level})의 체력/수리력을 그대로 사용
+        int archetypeLevel = ArchetypeUpgradeLevelLookup.GetLevel(moduleData.hullArchetype, EModuleType.hull);
+        string levelKey = CommonUtility.BuildHullArchetypeLevelKey(moduleHullInfo.moduleSubType, archetypeLevel);
+        ModuleData levelModuleData = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(levelKey);
+        float levelHealth = levelModuleData != null ? levelModuleData.health : moduleData.health;
+        float levelRepair = levelModuleData != null ? levelModuleData.repair : moduleData.repair;
+        SetModuleLevel(archetypeLevel);
+
+        // 복원된 데이터로 초기화 — 체력/수리력은 프리셋 계산값 있으면 그걸로 대체, 없으면 레벨 행 값
+        m_baseHealthMax = statOverride?.health ?? levelHealth;
         m_healthMax = m_baseHealthMax;
         m_health = moduleHullInfo.currentHealth > 0f ? Mathf.Min(moduleHullInfo.currentHealth, m_healthMax) : m_healthMax;
 
         m_attack = 0.0f; // Hull은 직접 공격하지 않음
 
         // Hull 전용 능력치
-        m_repair = statOverride?.repair ?? moduleData.repair;
+        m_repair = statOverride?.repair ?? levelRepair;
         m_speed  = moduleData.speed; // 선회력(turnRate) 반영은 후속 작업
 
         // 함대 정보 자동 설정
@@ -367,13 +382,13 @@ public class ModuleHull : ModuleBase
         FillEmptySlotsWithPlaceholders();
 
         // 실드 — 슬롯/3D 배치 없이 논리적으로만 존재하는 자식 컴포넌트
-        InitializeShield(bodyInfo.shieldModuleSubType, bodyInfo.shieldGaugePoints, bodyInfo.shieldRegenRatePoints);
+        InitializeShield(bodyInfo.shieldModuleSubType);
 
         // 요격체 — 슬롯/3D 배치 없이 논리적으로만 존재하는 자식 컴포넌트(실제 요격체 유닛은 ModuleInterceptor가 별도 스폰)
-        InitializeInterceptor(bodyInfo.interceptorModuleSubType, bodyInfo.interceptorRegenRatePoints);
+        InitializeInterceptor(bodyInfo.interceptorModuleSubType);
     }
 
-    public void InitializeShield(string shieldSubTypeName, int gaugePoints, int regenRatePoints)
+    public void InitializeShield(string shieldSubTypeName)
     {
         if (m_shield == null)
         {
@@ -383,10 +398,10 @@ public class ModuleHull : ModuleBase
         }
 
         m_shield.SetFleetInfo(m_ownerFleet, m_ownerShip);
-        m_shield.InitializeModuleShield(shieldSubTypeName, gaugePoints, regenRatePoints);
+        m_shield.InitializeModuleShield(shieldSubTypeName);
     }
 
-    public void InitializeInterceptor(string interceptorSubTypeName, int regenRatePoints)
+    public void InitializeInterceptor(string interceptorSubTypeName)
     {
         if (m_interceptor == null)
         {
@@ -396,7 +411,7 @@ public class ModuleHull : ModuleBase
         }
 
         m_interceptor.SetFleetInfo(m_ownerFleet, m_ownerShip);
-        m_interceptor.InitializeModuleInterceptor(interceptorSubTypeName, regenRatePoints);
+        m_interceptor.InitializeModuleInterceptor(interceptorSubTypeName);
     }
 
     // 프리셋 계산값 배열에서 slotIndex에 해당하는 값을 안전하게 조회 (범위 밖/null이면 override 없음)

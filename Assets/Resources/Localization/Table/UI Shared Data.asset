@@ -43,6 +43,10 @@ MonoBehaviour:
     m_Key: UI_TierLabel
     m_Metadata:
       m_Items: []
+  - m_Id: 96810128346316800
+    m_Key: UI_ModuleLevelUp
+    m_Metadata:
+      m_Items: []
   - m_Id: 79158737540874241
     m_Key: UIPopupConvertExplorationPoint_Title
     m_Metadata:
@@ -97,10 +101,6 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 79084582279708672
     m_Key: UI_Tactics
-    m_Metadata:
-      m_Items: []
-  - m_Id: 79336418400141312
-    m_Key: UI_ModuleReinforce
     m_Metadata:
       m_Items: []
   - m_Id: 78728054842458112
@@ -499,6 +499,10 @@ MonoBehaviour:
     m_Key: UIFleet_StatsTitle
     m_Metadata:
       m_Items: []
+  - m_Id: 96424402014306304
+    m_Key: UIFleet_PassiveTabTitle
+    m_Metadata:
+      m_Items: []
   - m_Id: 81540723202981888
     m_Key: UIFleet_ModulesTitle
     m_Metadata:
@@ -579,12 +583,76 @@ MonoBehaviour:
     m_Key: UIHull_DisplayName
     m_Metadata:
       m_Items: []
+  - m_Id: 95912641813151744
+    m_Key: HullArchetype_centurion
+    m_Metadata:
+      m_Items: []
+  - m_Id: 95912641867677696
+    m_Key: HullArchetype_argus
+    m_Metadata:
+      m_Items: []
+  - m_Id: 95912641867677697
+    m_Key: HullArchetype_prism
+    m_Metadata:
+      m_Items: []
+  - m_Id: 95912641867677698
+    m_Key: HullArchetype_colossus
+    m_Metadata:
+      m_Items: []
+  - m_Id: 95912641867677699
+    m_Key: HullArchetype_leviathan
+    m_Metadata:
+      m_Items: []
+  - m_Id: 95912641867677700
+    m_Key: HullArchetype_corsair
+    m_Metadata:
+      m_Items: []
+  - m_Id: 95912641867677701
+    m_Key: HullArchetype_talon
+    m_Metadata:
+      m_Items: []
+  - m_Id: 95912641867677702
+    m_Key: HullArchetype_vulcan
+    m_Metadata:
+      m_Items: []
+  - m_Id: 95912641867677703
+    m_Key: HullArchetype_nemesis
+    m_Metadata:
+      m_Items: []
+  - m_Id: 95912641867677704
+    m_Key: HullArchetype_phoenix
+    m_Metadata:
+      m_Items: []
+  - m_Id: 95912641867677705
+    m_Key: HullArchetype_halcyon
+    m_Metadata:
+      m_Items: []
+  - m_Id: 95912641867677706
+    m_Key: HullArchetype_aegis
+    m_Metadata:
+      m_Items: []
+  - m_Id: 95912641867677707
+    m_Key: HullArchetype_sentinel
+    m_Metadata:
+      m_Items: []
   - m_Id: 76574125828472833
     m_Key: UIHullPicker_UnlockConfirmMessage
     m_Metadata:
       m_Items: []
-  - m_Id: 80555228885024768
-    m_Key: UIHullPicker_UnlockPrerequisiteFailMessage
+  - m_Id: 96810128413425664
+    m_Key: UIHullPicker_UnlockButtonLabel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96810128413425665
+    m_Key: UIHullPicker_UnlockButtonAP
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96810128413425666
+    m_Key: UIHullPicker_RemoveConfirmMessage
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96810128413425667
+    m_Key: UI_Remove
     m_Metadata:
       m_Items: []
   - m_Id: 84121888019578880
@@ -1067,6 +1135,10 @@ MonoBehaviour:
     m_Key: UIFleet_IncreaseTacticPowerButton
     m_Metadata:
       m_Items: []
+  - m_Id: 95713217811972096
+    m_Key: UIBattle_MineralChargeButton
+    m_Metadata:
+      m_Items: []
   - m_Id: 78447295728582656
     m_Key: UIAchievement_Name_cell_clear
     m_Metadata:
@@ -1213,6 +1285,314 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 82671357388521476
     m_Key: UIPopupMessage_RequestFailed
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96410851879026688
+    m_Key: UIHullPicker_PassiveStageLabel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96410851941941248
+    m_Key: UIHullPicker_PassiveUnlocked
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96410851941941249
+    m_Key: HullArchetypePassive_centurion_1
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96410851941941250
+    m_Key: HullArchetypePassive_centurion_2
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96410851941941251
+    m_Key: HullArchetypePassive_centurion_3
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96410851941941252
+    m_Key: HullArchetypePassive_centurion_4
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96410851941941253
+    m_Key: HullArchetypePassive_talon_1
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96410851941941254
+    m_Key: HullArchetypePassive_talon_2
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96410851941941255
+    m_Key: HullArchetypePassive_talon_3
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96410851941941256
+    m_Key: HullArchetypePassive_talon_4
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96410851941941257
+    m_Key: HullArchetypePassive_prism_1
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96410851941941258
+    m_Key: HullArchetypePassive_prism_2
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96410851941941259
+    m_Key: HullArchetypePassive_prism_3
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96410851941941260
+    m_Key: HullArchetypePassive_prism_4
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96410851941941261
+    m_Key: HullArchetypePassive_argus_1
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96410851941941262
+    m_Key: HullArchetypePassive_argus_2
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96410851941941263
+    m_Key: HullArchetypePassive_argus_3
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96410851941941264
+    m_Key: HullArchetypePassive_argus_4
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96410851941941265
+    m_Key: HullArchetypePassive_colossus_1
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96410851941941266
+    m_Key: HullArchetypePassive_colossus_2
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96410851941941267
+    m_Key: HullArchetypePassive_colossus_3
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96410851941941268
+    m_Key: HullArchetypePassive_colossus_4
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96410851941941269
+    m_Key: HullArchetypePassive_leviathan_1
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96410851941941270
+    m_Key: HullArchetypePassive_leviathan_2
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96410851941941271
+    m_Key: HullArchetypePassive_leviathan_3
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96410851941941272
+    m_Key: HullArchetypePassive_leviathan_4
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96410851941941273
+    m_Key: HullArchetypePassive_corsair_1
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96410851941941274
+    m_Key: HullArchetypePassive_corsair_2
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96410851941941275
+    m_Key: HullArchetypePassive_corsair_3
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96410851941941276
+    m_Key: HullArchetypePassive_corsair_4
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96410851941941277
+    m_Key: HullArchetypePassive_vulcan_1
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96410851941941278
+    m_Key: HullArchetypePassive_vulcan_2
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96410851941941279
+    m_Key: HullArchetypePassive_vulcan_3
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96410851941941280
+    m_Key: HullArchetypePassive_vulcan_4
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96410851941941281
+    m_Key: HullArchetypePassive_nemesis_1
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96410851941941282
+    m_Key: HullArchetypePassive_nemesis_2
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96410851941941283
+    m_Key: HullArchetypePassive_nemesis_3
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96410851941941284
+    m_Key: HullArchetypePassive_nemesis_4
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96410851941941285
+    m_Key: HullArchetypePassive_phoenix_1
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96410851941941286
+    m_Key: HullArchetypePassive_phoenix_2
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96410851941941287
+    m_Key: HullArchetypePassive_phoenix_3
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96410851941941288
+    m_Key: HullArchetypePassive_phoenix_4
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96410851941941289
+    m_Key: HullArchetypePassive_halcyon_1
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96410851941941290
+    m_Key: HullArchetypePassive_halcyon_2
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96410851941941291
+    m_Key: HullArchetypePassive_halcyon_3
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96410851941941292
+    m_Key: HullArchetypePassive_halcyon_4
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96410851941941293
+    m_Key: HullArchetypePassive_aegis_1
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96410851941941294
+    m_Key: HullArchetypePassive_aegis_2
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96410851941941295
+    m_Key: HullArchetypePassive_aegis_3
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96410851941941296
+    m_Key: HullArchetypePassive_aegis_4
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96410851941941297
+    m_Key: HullArchetypePassive_sentinel_1
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96410851941941298
+    m_Key: HullArchetypePassive_sentinel_2
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96410851941941299
+    m_Key: HullArchetypePassive_sentinel_3
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96410851941941300
+    m_Key: HullArchetypePassive_sentinel_4
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96848683730862080
+    m_Key: HullArchetypePassiveMission_destroy_enemy_ship
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96848683789582336
+    m_Key: HullArchetypePassiveMission_scout_success
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96848683789582337
+    m_Key: HullArchetypePassiveMission_damage_taken_cumulative
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96848683789582338
+    m_Key: HullArchetypePassiveMission_fleet_resource_charge
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96848683789582339
+    m_Key: HullArchetypePassiveMission_scavenge_mineral
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96848683793776640
+    m_Key: HullArchetypePassiveMission_ally_repair_amount
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96848683793776641
+    m_Key: HullArchetypePassiveMission_ally_shield_charge_amount
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96848683793776642
+    m_Key: HullArchetypePassiveMission_shield_absorb_amount
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96848683793776643
+    m_Key: HullArchetypePassiveMission_intercept_count
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96848683793776644
+    m_Key: HullArchetypePassiveMission_zone_run_clear
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96931116086067200
+    m_Key: ModuleDescription_centurion
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96931116144787456
+    m_Key: ModuleDescription_talon
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96931116144787457
+    m_Key: ModuleDescription_prism
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96931116144787458
+    m_Key: ModuleDescription_argus
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96931116144787459
+    m_Key: ModuleDescription_colossus
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96931116144787460
+    m_Key: ModuleDescription_leviathan
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96931116144787461
+    m_Key: ModuleDescription_corsair
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96931116144787462
+    m_Key: ModuleDescription_vulcan
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96931116144787463
+    m_Key: ModuleDescription_nemesis
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96931116144787464
+    m_Key: ModuleDescription_phoenix
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96931116144787465
+    m_Key: ModuleDescription_halcyon
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96931116144787466
+    m_Key: ModuleDescription_aegis
+    m_Metadata:
+      m_Items: []
+  - m_Id: 96931116144787467
+    m_Key: ModuleDescription_sentinel
     m_Metadata:
       m_Items: []
   m_Metadata:

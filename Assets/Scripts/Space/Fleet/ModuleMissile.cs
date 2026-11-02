@@ -88,9 +88,21 @@ public class ModuleMissile : ModuleBase
         // 복원된 데이터로 스탯 설정 — 체력은 테이블(티어) 기준, 공격력/쿨다운은 프리셋 계산값 있으면 그걸로 대체
         m_health = moduleData.health;
         m_healthMax = moduleData.health;
-        m_baseAttack = attackOverride ?? moduleData.attack;
-        m_baseAttackCoolTime = attackCoolOverride ?? moduleData.attackCool;
-        m_finalSilenceTime = silenceTimeOverride ?? moduleData.silenceTime;
+
+        // 아키타입 단위 영구 모듈강화(M6) — 이 함체의 아키타입+이 미사일 슬롯(slotIndex) 기준 레벨(최소 1)에 해당하는 티어 데이터(missile_{level}_1)를 그대로 사용
+        int archetypeLevel = parentBody != null ? ArchetypeUpgradeLevelLookup.GetLevel(parentBody.GetHullArchetype(), EModuleType.missile, m_moduleInfo.slotIndex) : 1;
+        ModuleData levelModuleData = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable($"missile_{archetypeLevel}_1");
+        float levelAttack = levelModuleData != null ? levelModuleData.attack : moduleData.attack;
+        float levelAttackCool = levelModuleData != null ? levelModuleData.attackCool : moduleData.attackCool;
+        float levelSilenceTime = levelModuleData != null ? levelModuleData.silenceTime : moduleData.silenceTime;
+        float baseAttack = attackOverride ?? levelAttack;
+        float baseAttackCool = attackCoolOverride ?? levelAttackCool;
+        float baseSilenceTime = silenceTimeOverride ?? levelSilenceTime;
+        m_baseAttack = baseAttack;
+        m_baseAttackCoolTime = baseAttackCool;
+        m_finalSilenceTime = baseSilenceTime;
+        if (parentBody != null)
+            SetModuleLevel(archetypeLevel);
 
         m_lastAttackTime = 0f;
 

@@ -298,32 +298,67 @@ public static class CommonUtility
         return gen;
     }
 
-    // hull 전용: 5자리 구성을 [빔,미사일,격납고,실드,요격체] 개수 배열로 파싱 (예: "hull_3_1_11100" -> [1,1,1,0,0])
+    // 아키타입 단위 영구 모듈강화(M6) — hull의 레벨별 CSV 행 키를 조립 (예: "hull_1_centurion_3", level=5 -> "hull_1_centurion_5")
+    // 레거시 포맷(hull_{tier}_{gen}_{슬롯코드}, gen 토큰이 숫자)은 레벨 축이 없어 원본 subType을 그대로 반환
+    public static string BuildHullArchetypeLevelKey(string hullSubType, int level)
+    {
+        string[] parts = hullSubType.Split('_');
+        bool isLegacyFormat = parts.Length != 4 || int.TryParse(parts[2], out _) == true;
+        if (isLegacyFormat == true) return hullSubType;
+
+        return $"{parts[0]}_{parts[1]}_{parts[2]}_{level}";
+    }
+
+    // hull 전용: 프리팹에서 파싱된 ModuleData.moduleSlots를 [빔,미사일,격납고,실드,요격체] 개수 배열로 집계
+    // 이름 문자열의 슬롯코드 파싱이 아니라 실제 슬롯 데이터를 센다 — 아키타입별 전용 프리팹(슬롯구성이 이름에 없음)에서도 그대로 동작
     public static int[] ParseHullSlotComposition(string hullSubType)
     {
         int[] result = new int[5];
-        if (string.IsNullOrEmpty(hullSubType) == true) return result;
+        ModuleData hullData = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(hullSubType);
+        if (hullData == null) return result;
 
-        string[] parts = hullSubType.Split('_');
-        if (parts.Length < 4 || parts[3].Length != 5) return result;
-
-        for (int i = 0; i < 5; i++)
+        if (hullData.moduleSlots != null)
         {
-            bool isDigit = char.IsDigit(parts[3][i]);
-            if (isDigit == false) return new int[5];
-            result[i] = parts[3][i] - '0';
+            foreach (ModuleSlotInfo slot in hullData.moduleSlots)
+            {
+                int compositionIndex = GetHullSlotCompositionIndex(slot.moduleType);
+                if (compositionIndex >= 0)
+                    result[compositionIndex]++;
+            }
         }
+
+        // 실드/요격체는 3D ModuleSlot 마커가 없어 moduleSlots로는 절대 안 잡힘 — CSV의 has_shield/has_interceptor 플래그로 직접 채움
+        result[3] = hullData.hasShield == true ? 1 : 0;
+        result[4] = hullData.hasInterceptor == true ? 1 : 0;
 
         return result;
     }
 
-    // hull_{tier}_{gen}_{composition} 코드를 유저 표시용 이름으로 변환 (예: "hull_6_1_22211" -> "티어6 함체 1세대")
-    // 티어당 함체가 하나뿐이라 실드/요격체 슬롯 보유 여부를 접미사로 구분할 필요가 없음(둘 다 언락 전제로 슬롯은 항상 존재)
+    // ParseHullSlotComposition의 [빔,미사일,격납고,실드,요격체] 배열 인덱스 매핑
+    private static int GetHullSlotCompositionIndex(EModuleType moduleType)
+    {
+        switch (moduleType)
+        {
+            case EModuleType.beam: return 0;
+            case EModuleType.missile: return 1;
+            case EModuleType.hangar: return 2;
+            case EModuleType.shield: return 3;
+            case EModuleType.interceptor: return 4;
+            default: return -1;
+        }
+    }
+
+    // 아키타입 전용 함체명으로 표시(예: "hull_1_centurion_3" -> "켄투리온함", 로컬라이즈 키 "HullArchetype_centurion")
+    // hullArchetype 데이터가 없는 구 포맷 행은 방어적으로 예전 티어/세대 표기로 폴백
     public static string BuildHullDisplayName(string hullSubType)
     {
+        ModuleData hullData = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(hullSubType);
+        string hullArchetype = hullData != null ? hullData.hullArchetype : "";
+        if (string.IsNullOrEmpty(hullArchetype) == false)
+            return LocalizationManager.Instance.Get($"HullArchetype_{hullArchetype}");
+
         int tier = ParseTier(hullSubType);
         int gen = ParseGen(hullSubType);
-
         return LocalizationManager.Instance.Get("UIHull_DisplayName", tier, gen, "");
     }
 
@@ -346,15 +381,6 @@ public static class CommonUtility
         string moduleTypeName = LocalizationManager.Instance.Get(GetModuleTypeLabelKey(moduleType));
 
         return LocalizationManager.Instance.Get("UIAchievement_ModuleTierName", tier, moduleTypeName);
-    }
-
-    // hull tier 강제 규칙 검증: tier == 빔+미사일+격납고 합 (실드/요격체 제외)
-    public static bool ValidateHullTier(string hullSubType)
-    {
-        int tier = ParseTier(hullSubType);
-        int[] composition = ParseHullSlotComposition(hullSubType);
-        int compositionTier = composition[0] + composition[1] + composition[2];
-        return tier == compositionTier;
     }
 
     #endregion Module Type end -----------------------------------------------------------------------------------

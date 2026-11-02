@@ -15,301 +15,301 @@ MonoBehaviour:
   commanderDataList:
   - commanderLevel: 1
     requireExp: 0
-    shipCount: 1
+    commandPower: 300
   - commanderLevel: 2
     requireExp: 100
-    shipCount: 1
+    commandPower: 340
   - commanderLevel: 3
     requireExp: 200
-    shipCount: 1
+    commandPower: 380
   - commanderLevel: 4
     requireExp: 300
-    shipCount: 1
+    commandPower: 420
   - commanderLevel: 5
     requireExp: 400
-    shipCount: 1
+    commandPower: 460
   - commanderLevel: 6
     requireExp: 500
-    shipCount: 1
+    commandPower: 500
   - commanderLevel: 7
     requireExp: 600
-    shipCount: 1
+    commandPower: 540
   - commanderLevel: 8
     requireExp: 700
-    shipCount: 1
+    commandPower: 580
   - commanderLevel: 9
     requireExp: 800
-    shipCount: 1
+    commandPower: 620
   - commanderLevel: 10
     requireExp: 900
-    shipCount: 2
+    commandPower: 660
   - commanderLevel: 11
     requireExp: 1100
-    shipCount: 2
+    commandPower: 700
   - commanderLevel: 12
     requireExp: 1300
-    shipCount: 2
+    commandPower: 740
   - commanderLevel: 13
     requireExp: 1500
-    shipCount: 2
+    commandPower: 780
   - commanderLevel: 14
     requireExp: 1700
-    shipCount: 2
+    commandPower: 820
   - commanderLevel: 15
     requireExp: 1900
-    shipCount: 2
+    commandPower: 860
   - commanderLevel: 16
     requireExp: 2100
-    shipCount: 2
+    commandPower: 900
   - commanderLevel: 17
     requireExp: 2300
-    shipCount: 2
+    commandPower: 940
   - commanderLevel: 18
     requireExp: 2500
-    shipCount: 2
+    commandPower: 980
   - commanderLevel: 19
     requireExp: 2700
-    shipCount: 2
+    commandPower: 1020
   - commanderLevel: 20
     requireExp: 2900
-    shipCount: 2
+    commandPower: 1060
   - commanderLevel: 21
     requireExp: 3100
-    shipCount: 2
+    commandPower: 1100
   - commanderLevel: 22
     requireExp: 3300
-    shipCount: 2
+    commandPower: 1140
   - commanderLevel: 23
     requireExp: 3500
-    shipCount: 2
+    commandPower: 1180
   - commanderLevel: 24
     requireExp: 3700
-    shipCount: 2
+    commandPower: 1220
   - commanderLevel: 25
     requireExp: 3900
-    shipCount: 2
+    commandPower: 1260
   - commanderLevel: 26
     requireExp: 4100
-    shipCount: 2
+    commandPower: 1300
   - commanderLevel: 27
     requireExp: 4300
-    shipCount: 2
+    commandPower: 1340
   - commanderLevel: 28
     requireExp: 4500
-    shipCount: 2
+    commandPower: 1380
   - commanderLevel: 29
     requireExp: 4700
-    shipCount: 2
+    commandPower: 1420
   - commanderLevel: 30
     requireExp: 5000
-    shipCount: 3
+    commandPower: 1460
   - commanderLevel: 31
     requireExp: 7000
-    shipCount: 3
+    commandPower: 1500
   - commanderLevel: 32
     requireExp: 9000
-    shipCount: 3
+    commandPower: 1540
   - commanderLevel: 33
     requireExp: 11000
-    shipCount: 3
+    commandPower: 1580
   - commanderLevel: 34
     requireExp: 13000
-    shipCount: 3
+    commandPower: 1620
   - commanderLevel: 35
     requireExp: 15000
-    shipCount: 3
+    commandPower: 1660
   - commanderLevel: 36
     requireExp: 17000
-    shipCount: 3
+    commandPower: 1700
   - commanderLevel: 37
     requireExp: 19000
-    shipCount: 3
+    commandPower: 1740
   - commanderLevel: 38
     requireExp: 21000
-    shipCount: 3
+    commandPower: 1780
   - commanderLevel: 39
     requireExp: 23000
-    shipCount: 3
+    commandPower: 1820
   - commanderLevel: 40
     requireExp: 25000
-    shipCount: 3
+    commandPower: 1860
   - commanderLevel: 41
     requireExp: 29000
-    shipCount: 3
+    commandPower: 1900
   - commanderLevel: 42
     requireExp: 33000
-    shipCount: 3
+    commandPower: 1940
   - commanderLevel: 43
     requireExp: 37000
-    shipCount: 3
+    commandPower: 1980
   - commanderLevel: 44
     requireExp: 41000
-    shipCount: 3
+    commandPower: 2020
   - commanderLevel: 45
     requireExp: 45000
-    shipCount: 3
+    commandPower: 2060
   - commanderLevel: 46
     requireExp: 49000
-    shipCount: 3
+    commandPower: 2100
   - commanderLevel: 47
     requireExp: 53000
-    shipCount: 3
+    commandPower: 2140
   - commanderLevel: 48
     requireExp: 57000
-    shipCount: 3
+    commandPower: 2180
   - commanderLevel: 49
     requireExp: 61000
-    shipCount: 3
+    commandPower: 2220
   - commanderLevel: 50
     requireExp: 65000
-    shipCount: 3
+    commandPower: 2260
   - commanderLevel: 51
     requireExp: 71000
-    shipCount: 3
+    commandPower: 2300
   - commanderLevel: 52
     requireExp: 77000
-    shipCount: 3
+    commandPower: 2340
   - commanderLevel: 53
     requireExp: 83000
-    shipCount: 3
+    commandPower: 2380
   - commanderLevel: 54
     requireExp: 89000
-    shipCount: 3
+    commandPower: 2420
   - commanderLevel: 55
     requireExp: 95000
-    shipCount: 3
+    commandPower: 2460
   - commanderLevel: 56
     requireExp: 101000
-    shipCount: 3
+    commandPower: 2500
   - commanderLevel: 57
     requireExp: 107000
-    shipCount: 3
+    commandPower: 2540
   - commanderLevel: 58
     requireExp: 113000
-    shipCount: 3
+    commandPower: 2580
   - commanderLevel: 59
     requireExp: 119000
-    shipCount: 3
+    commandPower: 2620
   - commanderLevel: 60
     requireExp: 125000
-    shipCount: 4
+    commandPower: 2660
   - commanderLevel: 61
     requireExp: 133000
-    shipCount: 4
+    commandPower: 2700
   - commanderLevel: 62
     requireExp: 141000
-    shipCount: 4
+    commandPower: 2740
   - commanderLevel: 63
     requireExp: 149000
-    shipCount: 4
+    commandPower: 2780
   - commanderLevel: 64
     requireExp: 157000
-    shipCount: 4
+    commandPower: 2820
   - commanderLevel: 65
     requireExp: 165000
-    shipCount: 4
+    commandPower: 2860
   - commanderLevel: 66
     requireExp: 173000
-    shipCount: 4
+    commandPower: 2900
   - commanderLevel: 67
     requireExp: 181000
-    shipCount: 4
+    commandPower: 2940
   - commanderLevel: 68
     requireExp: 189000
-    shipCount: 4
+    commandPower: 2980
   - commanderLevel: 69
     requireExp: 197000
-    shipCount: 4
+    commandPower: 3020
   - commanderLevel: 70
     requireExp: 205000
-    shipCount: 4
+    commandPower: 3060
   - commanderLevel: 71
     requireExp: 215000
-    shipCount: 4
+    commandPower: 3100
   - commanderLevel: 72
     requireExp: 225000
-    shipCount: 4
+    commandPower: 3140
   - commanderLevel: 73
     requireExp: 235000
-    shipCount: 4
+    commandPower: 3180
   - commanderLevel: 74
     requireExp: 245000
-    shipCount: 4
+    commandPower: 3220
   - commanderLevel: 75
     requireExp: 255000
-    shipCount: 4
+    commandPower: 3260
   - commanderLevel: 76
     requireExp: 265000
-    shipCount: 4
+    commandPower: 3300
   - commanderLevel: 77
     requireExp: 275000
-    shipCount: 4
+    commandPower: 3340
   - commanderLevel: 78
     requireExp: 285000
-    shipCount: 4
+    commandPower: 3380
   - commanderLevel: 79
     requireExp: 295000
-    shipCount: 4
+    commandPower: 3420
   - commanderLevel: 80
     requireExp: 305000
-    shipCount: 4
+    commandPower: 3460
   - commanderLevel: 81
     requireExp: 325000
-    shipCount: 4
+    commandPower: 3500
   - commanderLevel: 82
     requireExp: 345000
-    shipCount: 4
+    commandPower: 3540
   - commanderLevel: 83
     requireExp: 365000
-    shipCount: 4
+    commandPower: 3580
   - commanderLevel: 84
     requireExp: 385000
-    shipCount: 4
+    commandPower: 3620
   - commanderLevel: 85
     requireExp: 405000
-    shipCount: 4
+    commandPower: 3660
   - commanderLevel: 86
     requireExp: 425000
-    shipCount: 4
+    commandPower: 3700
   - commanderLevel: 87
     requireExp: 445000
-    shipCount: 4
+    commandPower: 3740
   - commanderLevel: 88
     requireExp: 465000
-    shipCount: 4
+    commandPower: 3780
   - commanderLevel: 89
     requireExp: 485000
-    shipCount: 4
+    commandPower: 3820
   - commanderLevel: 90
     requireExp: 505000
-    shipCount: 5
+    commandPower: 3860
   - commanderLevel: 91
     requireExp: 545000
-    shipCount: 5
+    commandPower: 3900
   - commanderLevel: 92
     requireExp: 585000
-    shipCount: 5
+    commandPower: 3940
   - commanderLevel: 93
     requireExp: 625000
-    shipCount: 5
+    commandPower: 3980
   - commanderLevel: 94
     requireExp: 665000
-    shipCount: 5
+    commandPower: 4020
   - commanderLevel: 95
     requireExp: 705000
-    shipCount: 5
+    commandPower: 4060
   - commanderLevel: 96
     requireExp: 745000
-    shipCount: 5
+    commandPower: 4100
   - commanderLevel: 97
     requireExp: 785000
-    shipCount: 5
+    commandPower: 4140
   - commanderLevel: 98
     requireExp: 825000
-    shipCount: 5
+    commandPower: 4180
   - commanderLevel: 99
     requireExp: 865000
-    shipCount: 5
+    commandPower: 4220
   - commanderLevel: 100
     requireExp: 905000
-    shipCount: 5
+    commandPower: 4260

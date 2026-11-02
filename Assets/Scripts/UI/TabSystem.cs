@@ -10,10 +10,6 @@ public class TabData
     public Button tabButton;
     public GameObject tabPanel;
     public string tabName;
-    [Header("Visual States")]
-    public Color activeColor = Color.white;
-    public Color inactiveColor = Color.gray;
-    public Graphic[] childGraphics; // 색상 연동할 자식 Image, TMP_Text
     [Header("Callbacks")]
     public System.Action onActivate;
     public System.Action onDeactivate;
@@ -39,25 +35,9 @@ public class TabSystem : MonoBehaviour
     public float animationDuration = 0.3f;
     public AnimationCurve animationCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
 
-    // ButtonGroupSystem.inactiveColorOverride로 그대로 전달 — Start() 전(예: UIPanelBase.InitializeUIPanel)에 설정해야 반영됨
-    public Color? inactiveColorOverride;
-
     private ButtonGroupSystem buttonGroup;
     private int currentActiveTab = -1;
     private readonly Dictionary<GameObject, Coroutine> m_animCoroutines = new Dictionary<GameObject, Coroutine>();
-
-    // 인스펙터에서 + 버튼으로 추가 시 색상 기본값 자동 적용
-    private void OnValidate()
-    {
-        for (int i = 0; i < tabs.Count; i++)
-        {
-            var item = tabs[i];
-            if (item.activeColor.a == 0f && item.activeColor.r == 0f && item.activeColor.g == 0f && item.activeColor.b == 0f)
-                item.activeColor = new Color(1f, 0.8f, 0.2f, 1f);
-            if (item.inactiveColor.a == 0f && item.inactiveColor.r == 0f && item.inactiveColor.g == 0f && item.inactiveColor.b == 0f)
-                item.inactiveColor = new Color(0.8f, 0.8f, 0.8f, 1f);
-        }
-    }
 
     public string GetSystemName() { return m_systemName; }
 
@@ -68,6 +48,14 @@ public class TabSystem : MonoBehaviour
             m_systemName = m_systemName.Substring(0, m_systemName.Length - 8);
         InitializeTabs();
         EventManager.Subscribe_MyFleetStateChanged(OnMyFleetStateChanged);
+    }
+
+    // Start()는 최초 1회뿐이라 defaultActiveTab 선택 적용이 재오픈마다 다시 일어나지 않음 — 안전하게 재확인
+    private void OnEnable()
+    {
+        if (m_bInitialized == false) return; // 최초 활성화는 Start()가 처리
+        if (currentActiveTab < 0) return;
+        buttonGroup.ReapplySelectedVisual();
     }
 
     private void OnDestroy()
@@ -100,7 +88,6 @@ public class TabSystem : MonoBehaviour
         buttonGroup = gameObject.AddComponent<ButtonGroupSystem>();
         buttonGroup.defaultIndex = defaultActiveTab;
         buttonGroup.allowDeselect = allowDeselect;
-        buttonGroup.inactiveColorOverride = inactiveColorOverride;
 
         for (int i = 0; i < tabs.Count; i++)
         {
@@ -110,9 +97,6 @@ public class TabSystem : MonoBehaviour
             var item = new ButtonGroupItem
             {
                 button = tab.tabButton,
-                childGraphics = tab.childGraphics,
-                activeColor = tab.activeColor,
-                inactiveColor = tab.inactiveColor,
                 onSelected = () => { SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true); ActivatePanel(tabIndex); },
                 onDeselected = () => DeactivatePanel(tabIndex)
             };
@@ -282,9 +266,6 @@ public class TabSystem : MonoBehaviour
         var item = new ButtonGroupItem
         {
             button = newTab.tabButton,
-            childGraphics = newTab.childGraphics,
-            activeColor = newTab.activeColor,
-            inactiveColor = newTab.inactiveColor,
             onSelected = () => ActivatePanel(tabIndex),
             onDeselected = () => DeactivatePanel(tabIndex)
         };
