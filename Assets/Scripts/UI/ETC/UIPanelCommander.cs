@@ -14,8 +14,8 @@ public class UIPanelCommander : UIPanelBase
     [SerializeField] private Transform m_shipImages;
     [SerializeField] private TMP_Text m_commandPowerTitleText;
     [SerializeField] private TMP_Text m_commandPowerText;
-    [SerializeField] private TMP_Text m_tacticPowerTitleText;
-    [SerializeField] private TMP_Text m_tacticPowerText;
+    [SerializeField] private TMP_Text m_resourceTitleText;
+    [SerializeField] private TMP_Text m_resourceText;
     [SerializeField] private Image m_expGaugeImage;       // 기술 포인트 게이지 Fill Image
     [SerializeField] private TMP_Text m_expGaugeText;           // 경험치 게이지 위 텍스트
 
@@ -41,8 +41,8 @@ public class UIPanelCommander : UIPanelBase
             CommonUtility.SetUILocText(m_shipCountUnitText, "UI_ShipCountUnit");
         if (m_commandPowerTitleText != null)
             CommonUtility.SetUILocText(m_commandPowerTitleText, "UI_CommandPower");
-        if (m_tacticPowerTitleText != null)
-            CommonUtility.SetUILocText(m_tacticPowerTitleText, "UI_TacticPower");
+        if (m_resourceTitleText != null)
+            CommonUtility.SetUILocText(m_resourceTitleText, "UI_TacticPower");
 
         m_colorActive   = CommonUtility.PaletteColor("GeneralNeon");
         m_colorInactive = CommonUtility.PaletteColor("GeneralNeon.Dark1");
@@ -58,7 +58,7 @@ public class UIPanelCommander : UIPanelBase
         EventManager.Subscribe_MyFleetSet(OnMyFleetSet);
         EventManager.Subscribe_CommanderLevelChanged(OnCommanderLevelChanged);
         EventManager.Subscribe_CommanderExpChanged(OnCommanderExpChanged);
-        EventManager.Subscribe_TacticPowerChanged(OnTacticPowerChanged);
+        EventManager.Subscribe_ResourceChanged(OnResourceChanged);
 
         // 이미 함대가 존재하면 즉시 갱신
         if (DataManager.Instance.m_currentCommander != null && ObjectManager.Instance.GetMyFleet() != null)
@@ -123,8 +123,8 @@ public class UIPanelCommander : UIPanelBase
             }
         }
 
-        if (m_tacticPowerText != null && commander.m_commanderInfo != null)
-            m_tacticPowerText.text = CommonUtility.FormatNumber(commander.m_commanderInfo.tacticPowerMax);
+        if (m_resourceText != null && commander.m_commanderInfo != null)
+            m_resourceText.text = CommonUtility.FormatNumber(commander.m_commanderInfo.resourceMax);
 
         RefreshShipSlots(maxShips);
 
@@ -183,8 +183,8 @@ public class UIPanelCommander : UIPanelBase
         UpdateCommanderLevelDisplay();
     }
 
-    // 전술력 최대치는 변환 팝업/존런 진입 등에서 바뀌므로 이벤트로 갱신
-    private void OnTacticPowerChanged(float current, int max)
+    // 자원 최대치는 변환 팝업/존런 진입 등에서 바뀌므로 이벤트로 갱신
+    private void OnResourceChanged(float current, int max)
     {
         UpdateCommanderLevelDisplay();
     }

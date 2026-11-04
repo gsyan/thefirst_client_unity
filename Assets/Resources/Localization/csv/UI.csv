@@ -3,11 +3,11 @@ UI_OK,,OK,확인
 UI_WatchAD,,WATCH AD,광고 보기
 UI_Cancel,,CANCEL,취소
 UI_Confirm,,CONFIRM,확인
+UI_Place,,PLACE,배치
 UI_All,,ALL,전체
 UI_Reset,,RESET,초기화
 UI_TierLabel,,Level {0},레벨 {0}
 UI_ModuleLevelUp,,Module Level Up,모듈 레벨업
-UIPopupConvertExplorationPoint_Title,,Convert Exploration Points,탐사포인트 전환
 UI_Commander,,COMMANDER,지휘관
 UI_Fleet,,FLEET,함대
 UI_Settings,,SETTINGS,설정
@@ -22,6 +22,7 @@ UI_ShipCountUnit,,ships,척
 UI_CommandPower,,Command Power,지휘력
 UI_TacticPower,,Tactic Power,전술력
 UI_Tactics,,TACTICS,전술
+UI_Resources,,Resources,자원
 
 
 
@@ -67,8 +68,7 @@ UIPopupRedeemCode_Success,,Code redeemed successfully,코드가 정상적으로 
 
 
 
-UIPanelExplorationGrid_BankedPoint,,Banked Exploration Point,적립 탐험 포인트
-UIPanelExplorationGrid_OwnedPoint,,Exploration Point,탐험 포인트
+UIPanelExplorationGrid_OwnedPoint,,Mineral,광물
 UIPanelFleet_AchievementPoint,,Achievement Point,업적포인트
 UIPopupRewardCardSelect_Title,,Choose a Reward Card,보상 카드를 선택하세요
 UIPopupRewardCardSelect_EscapeTitle,,Escape Point Found,탈출 지점 발견
@@ -79,7 +79,6 @@ UIPopupRewardCardSelect_RerollConfirmVip,,Reroll the reward cards?\nAs a VIP pri
 UIPopupRewardCardSelect_RerollLimitReached,,You have used all reroll chances for today.,오늘 사용할 수 있는 다시 뽑기 횟수를 모두 사용했습니다
 UIPanelExplorationGrid_EscapeConfirmMessage,,Escape Reward,탈출 보상
 UIPanelExplorationGrid_TreasureHealthHeal,,Fleet health restored by {0}%!,함대 체력을 {0}% 회복했습니다!
-UIPanelExplorationGrid_TreasureTacticPowerRestore,,Tactic power restored by {0}%!,전술력을 {0}% 회복했습니다!
 UIPanelExplorationGrid_OtherRunInProgress,,There is another exploration in progress.\nZone {0} / Cell {1} / Banked Exploration Point {2}\nAbandon it and start a new challenge in the selected zone?\n* Only 20% of banked points will be recovered if abandoned,진행 중인 다른 탐험이 있습니다.\n존 {0} / 구역 {1} / 적립된 탐험 포인트 {2}\n포기하고 선택한 존에 새로 도전하시겠습니까?\n* 포기 시 적립된 포인트의 20%만 회수 가능합니다
 UIPanelExplorationGrid_OtherRunInProgressWithAd,,There is another exploration in progress.\nZone {0} / Cell {1} / Banked Exploration Point {2}\nAbandon it and start a new challenge in the selected zone?\n* Watch an ad to recover 100% of banked points. Otherwise only 20% will be recovered,진행 중인 다른 탐험이 있습니다.\n존 {0} / 구역 {1} / 적립된 탐험 포인트 {2}\n포기하고 선택한 존에 새로 도전하시겠습니까?\n* 광고를 시청하면 적립된 포인트의 100%를 회수하고 시청하지 않으면 20%만 회수 가능합니다
 UIPanelExplorationGrid_OtherRunInProgressVip,,There is another exploration in progress.\nZone {0} / Cell {1} / Banked Exploration Point {2}\nAbandon it and start a new challenge in the selected zone?\n* As a VIP privilege, you still recover 100% of banked points,진행 중인 다른 탐험이 있습니다.\n존 {0} / 구역 {1} / 적립된 탐험 포인트 {2}\n포기하고 선택한 존에 새로 도전하시겠습니까?\n* VIP 특혜로 포기해도 적립된 포인트의 100%를 회수합니다
@@ -114,13 +113,12 @@ RewardCard_ShieldHeal_Name,,Shield Recharge,실드 회복
 RewardCard_ShieldHeal_Desc,,Restore {0:P0} of shield,실드 {0:P0} 회복
 RewardCard_InterceptorHeal_Name,,Interceptor Resupply,요격체 회복
 RewardCard_InterceptorHeal_Desc,,Restore {0:P0} of interceptors,요격체 {0:P0} 회복
-RewardCard_TacticPowerHeal_Name,,Tactic Power Recharge,전술력 회복
-RewardCard_TacticPowerHeal_Desc,,Restore {0:P0} of tactic power,전술력 {0:P0} 회복
 RewardCard_PointFlat_Name,,Exploration Point Bonus,탐험 포인트 획득
 RewardCard_PointFlat_Desc,,Exploration Point +{0:F0},탐험 포인트 +{0:F0}
 UIAvailableHullRow_Name,,Name:,이름:
 UIAvailableHullRow_Cost,,Cost:,코스트:
 UIAvailableHullRow_UnlockCost,,Unlock:,언락:
+UIAvailableHullRow_Setted,,PLACED,배치됨
 UIFleet_Front,,Front,전방
 UIFleet_Rear,,Rear,후방
 UIFleet_PlacedShipCount,,Placed Ships,배치 함선 수
@@ -128,6 +126,7 @@ UIFleet_PlaceShip,,Deploy Ship,함선 배치
 UIFleet_PlaceFailed_Locked,,This slot is locked. Raise your commander level to unlock it.,잠긴 슬롯입니다. 커맨더 레벨을 올려 슬롯을 해제하세요.
 UIFleet_PlaceFailed_NotEnoughCommandPower,,Not enough command power.,지휘력이 부족합니다.
 UIFleet_PlaceFailed_HullNotFound,,This hull is unavailable.,사용할 수 없는 함체입니다.
+UIFleet_PlaceFailed_DuplicateArchetype,,This ship type is already in your fleet.,이미 함대에 같은 종류의 함선이 있습니다.
 UIFleet_PlacedShipsTitle,,Fleet,함대구성
 UIFleet_StatsTitle,,Stats,성능
 UIFleet_PassiveTabTitle,,Passive,패시브
@@ -184,7 +183,6 @@ UIAchievement_Category_ZoneClearSpecific,,Zone Clear,존 클리어
 UIAchievement_Category_ZoneFullClear,,Zone Full Clear,존 완전 클리어
 UIAchievement_Category_CommanderLevel,,Commander Level,지휘관 레벨
 UIAchievement_Category_CommandPower,,Command Power,지휘력
-UIAchievement_Category_TacticPower,,Tactic Power,전술력
 UIAchievement_Category_ExplorationPointTotal,,Exploration Point (Total),탐사포인트(누적)
 UIAchievement_Category_HullTierCount,,Hull Tier,함체 티어
 UIAchievement_Category_ModuleTierCount,,Module Tier,모듈 티어
@@ -292,7 +290,6 @@ ShipName_7,,Hotel,호텔
 ShipName_8,,India,인디아
 FleetManagement,,FLEET MANAGEMENT,함대 관리
 UIFleet_IncreaseCommandPowerButton,,Increase CP,지휘력 증가
-UIFleet_IncreaseTacticPowerButton,,Increase TP,전술력 증가
 UIBattle_MineralChargeButton,,Charge,충전
 UIAchievement_Name_cell_clear,,Clear {1} Cells,셀 클리어 {1}회
 UIAchievement_Desc_cell_clear,,Clear {1} normal (non-event) cells cumulatively,일반(비이벤트) 셀을 누적 {1}회 클리어하면 완료
@@ -314,8 +311,6 @@ UIAchievement_Name_commander_level,,Reach Commander Level {1},지휘관 레벨 {
 UIAchievement_Desc_commander_level,,Reach Commander Level {1},지휘관 레벨 {1}에 도달하면 완료
 UIAchievement_Name_command_power,,Reach {1} Command Power,지휘력 {1} 달성
 UIAchievement_Desc_command_power,,Reach {1} Command Power,지휘력 {1}에 도달하면 완료
-UIAchievement_Name_tactic_power,,Reach {1} Tactic Power,전술력 {1} 달성
-UIAchievement_Desc_tactic_power,,Reach {1} Tactic Power,전술력 {1}에 도달하면 완료
 UIAchievement_Name_exploration_point_total,,Earn {1} Exploration Points (Total),누적 탐사포인트 {1} 획득
 UIAchievement_Desc_exploration_point_total,,"Earn {1} Exploration Points cumulatively (lifetime, not current balance)",역대 누적 획득 탐사포인트가 {1}에 도달하면 완료(현재 잔액이 아닌 역대 총 획득량 기준)
 UIAchievement_Name_hull_tier_count,,Deploy {1} Tier {0}+ Hulls,티어{0} 이상 함체 {1}척 동시 보유

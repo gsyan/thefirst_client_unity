@@ -379,11 +379,64 @@ public class DataTableModuleEditor : Editor
             }
 
             EditorGUILayout.EndHorizontal();
+
+            EditorGUILayout.Space(5);
+            EditorGUILayout.BeginHorizontal();
+
+            if (GUILayout.Button("Import Enemy Hull CSV"))
+            {
+                string csvPath = Application.dataPath + "/Resources/DataTable/Module/datatable_enemy_hull.csv";
+                if (System.IO.File.Exists(csvPath) == false)
+                {
+                    EditorUtility.DisplayDialog("Error", $"CSV 파일을 찾을 수 없습니다:\n{csvPath}", "OK");
+                }
+                else if (EditorUtility.DisplayDialog("Import Enemy Hull CSV",
+                    $"적 전용 hull 데이터를 읽어 갱신합니다(플레이어 hull 데이터는 영향 없음).\n\n{csvPath}\n\n계속하시겠습니까?", "Import", "Cancel"))
+                {
+                    string csvText = System.IO.File.ReadAllText(csvPath, System.Text.Encoding.UTF8);
+                    dataTableModule.LoadEnemyHullCsv(csvText);
+                    EditorUtility.DisplayDialog("완료", "적 전용 Hull CSV Import가 완료되었습니다.", "OK");
+                }
+            }
+
+            if (GUILayout.Button("Export Enemy Hull CSV"))
+            {
+                string csvPath = Application.dataPath + "/Resources/DataTable/Module/datatable_enemy_hull.csv";
+                if (EditorUtility.DisplayDialog("Export Enemy Hull CSV",
+                    $"현재 적 전용 hull 데이터를 CSV 파일로 덮어씁니다.\n\n{csvPath}\n\n계속하시겠습니까?", "Export", "Cancel"))
+                {
+                    string csv = ExportEnemyHullCsv();
+                    System.IO.File.WriteAllText(csvPath, csv, System.Text.Encoding.UTF8);
+                    AssetDatabase.Refresh();
+                    EditorUtility.DisplayDialog("완료", "적 전용 Hull CSV Export가 완료되었습니다.", "OK");
+                }
+            }
+
+            EditorGUILayout.EndHorizontal();
         }
 
         EditorGUILayout.EndVertical();
     }
     #endregion
+
+    private string ExportEnemyHullCsv()
+    {
+        var ic = System.Globalization.CultureInfo.InvariantCulture;
+        var sb = new System.Text.StringBuilder();
+        sb.AppendLine("type_level,health,repair,speed,turn_rate,has_shield,has_interceptor");
+
+        foreach (var group in dataTableModule.HullGroups)
+        {
+            foreach (var d in group.modules)
+            {
+                if (d.isEnemyOnly == false) continue;
+                sb.AppendLine(string.Format(ic, "{0},{1},{2},{3},{4},{5},{6}",
+                    d.moduleSubType, d.health, d.repair, d.speed, d.turnRate,
+                    d.hasShield == true ? 1 : 0, d.hasInterceptor == true ? 1 : 0));
+            }
+        }
+        return sb.ToString();
+    }
 
     private string ExportToCsv()
     {
@@ -403,6 +456,7 @@ public class DataTableModuleEditor : Editor
         {
             foreach (var d in group.modules)
             {
+                if (d.isEnemyOnly == true) continue; // 적 전용 hull은 datatable_enemy_hull.csv(ExportEnemyHullCsv)로만 내보냄
                 sb.AppendLine(string.Format(ic,
                     "{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16},{17},{18},{19},{20},{21},{22},{23},{24},{25},{26},{27},{28},{29},{30}",
                     d.moduleSubType,

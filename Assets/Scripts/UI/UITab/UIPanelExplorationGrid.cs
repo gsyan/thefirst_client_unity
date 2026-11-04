@@ -14,9 +14,8 @@ public class UIPanelExplorationGrid : UIPanelBase
     // 3D 그리드 루트 — 프리팹 에셋은 특정 씬의 오브젝트를 참조할 수 없어 런타임에 생성. 셀 좌표가 이미 절대 월드 좌표라 루트 자체의 위치/회전은 항상 원점 고정
     private Transform m_cellRoot;
 
-    [Header("탐험 포인트 / 런 포기")]
-    [SerializeField] private RowLabelValue m_bankedExplorationPointRow; // 진행 중인 런의 적립(미확정) 탐험 포인트 상시 표시
-    [SerializeField] private RowLabelValue m_ownedExplorationPointRow; // 확정 지급되어 실제 보유 중인 탐험 포인트(지휘력 증가 등에 소모하는 값) 상시 표시
+    [Header("광물 표시 / 런 포기")]
+    [SerializeField] private RowLabelValue m_mineralAmountRow; // 진행 중인 런의 광물 현재치 상시 표시(런 종료 시 소멸)
     [SerializeField] private UnityEngine.UI.Button m_abandonRunButton; // 진행 중인 런을 포기(적립분의 50%만 확정 지급)
     [SerializeField] private TMP_Text m_abandonRunButtonText;
 
@@ -67,15 +66,14 @@ public class UIPanelExplorationGrid : UIPanelBase
     private int m_previousRow;
     private int m_previousCol;
     private Vector3 m_previousFleetWorldPos;
-    // 전투 진입 직전 체력/전술력 스냅샷 — 셀 클리어 실패(패배/퇴각) 시 이 상태로 롤백(성공 시엔 롤백하지 않고 클리어 시점 값을 그대로 확정)
+    // 전투 진입 직전 체력/자원 스냅샷 — 셀 클리어 실패(패배/퇴각) 시 이 상태로 롤백(성공 시엔 롤백하지 않고 클리어 시점 값을 그대로 확정)
     private List<ShipHealthRatioInfo> m_previousShipHealthRatios;
-    private int m_previousTacticPower;
+    private int m_previousResource;
     private SpaceFleet m_standoffEnemyFleet;
 
-    private BankedRunReward m_bankedReward = new(); // 진행 중인 런의 적립(미확정) 보상(탐험 포인트/경험치 등) — 클리어마다 누적, 탈출/포기 확정 시 리셋
+    private BankedRunReward m_bankedReward = new(); // 진행 중인 런의 적립(미확정) 지휘관 경험치 — 클리어마다 누적, 탈출/포기 확정 시 리셋
     private BankedRunReward m_pendingBankedRewardGain = new(); // 전투 중(패널 비활성 상태)에 획득해서 아직 화면에 반영 안 한 적립량 — 패널이 열릴 때 한 번에 반영+애니메이션
-    private long m_displayedBankedPoint = -1; // 롤링 애니메이션의 시작값 추적 — 최초 1회는 -1이라 즉시 표시됨(UIResourceBar와 동일 패턴)
-    private long m_displayedOwnedPoint = -1;
+    private long m_displayedMineralAmount = -1; // 롤링 애니메이션의 시작값 추적 — 최초 1회는 -1이라 즉시 표시됨(UIResourceBar와 동일 패턴)
 
     private readonly List<GridCell3D> m_buttonPool = new();
     private readonly Dictionary<(int row, int col), GridCell3D> m_activeButtons = new();
@@ -247,13 +245,12 @@ public class UIPanelExplorationGrid : UIPanelBase
         SettleZoneEntry(m_pendingZoneNumber);
     }
 
-    // "실제로 이 존에 정착한다"는 단일 지점 — 존 탭/보유 포인트/그리드(좌표·적립포인트·버튼) 표시를 이 시점에 한 번에 갱신.
+    // "실제로 이 존에 정착한다"는 단일 지점 — 존 탭/광물/그리드(좌표·적립경험치·버튼) 표시를 이 시점에 한 번에 갱신.
     // 셀 클리어 결과 확정(적립 보상 반영, 탈출 팝업)은 여기서 하지 않음 — ContinueAfterCellClear가 그 결과를 아는 시점에 직접 처리함
     // (예전엔 여기서 처리했는데, 이 함수가 언제 호출되는지와 셀 클리어 서버 응답이 언제 오는지가 서로 무관해서 순서가 꼬이는 문제가 있었음)
     private void SettleZoneEntry(int zoneNumber)
     {
-        RefreshBankedPointText();
-        RefreshOwnedPointText();
+        RefreshMineralAmountText();
 
         // SelectZoneTab이 m_currentZoneNumber를 확정한 뒤에 탭 스크롤을 초기화해야 OnZoneTabNodeBind의 하이라이트 판정이 정확함
         SelectZoneTab(zoneNumber, ComputeZoneSeed(zoneNumber));
@@ -386,7 +383,7 @@ public class UIPanelExplorationGrid : UIPanelBase
             m_currentRow = m_activeZoneSnapshotRow;
             m_currentCol = m_activeZoneSnapshotCol;
             m_bankedReward.CopyFrom(m_activeZoneSnapshotBankedReward);
-            RefreshBankedPointText();
+            RefreshMineralAmountText();
 
             BuildCellButtons();
             BuildCellEnemyFleets(zoneConfig);
@@ -424,7 +421,7 @@ public class UIPanelExplorationGrid : UIPanelBase
         if (isSameZoneReentry == false)
         {
             m_bankedReward.Clear();
-            RefreshBankedPointText();
+            RefreshMineralAmountText();
         }
 
         BuildCellButtons();
@@ -457,15 +454,14 @@ public class UIPanelExplorationGrid : UIPanelBase
         // 응답 도착 전 유저가 이미 다른 존으로 이동했으면 지금 그리드와 무관한 데이터이므로 버림
         if (requestedZoneNumber != m_currentZoneNumber || response.data.zoneNumber != m_currentZoneNumber) return;
 
-        m_bankedReward.Set(EBankedRewardType.ExplorationPoint, response.data.explorationPointBanked);
         m_bankedReward.Set(EBankedRewardType.Exp, response.data.commanderExpBanked);
-        RefreshBankedPointText();
         RefreshAbandonRunButtonState();
         ApplyFleetHealthSnapshot(response.data.shipHealthRatios);
 
         CommanderInfo progressCommanderInfo = DataManager.Instance.m_currentCommander != null ? DataManager.Instance.m_currentCommander.m_commanderInfo : null;
         if (progressCommanderInfo != null)
             progressCommanderInfo.mineralAmount = response.data.mineralAmount;
+        RefreshMineralAmountText();
         // 보상카드 지속버프 복원은 ObjectManager.StartNormalPlay()에서 로그인 시점에 이미 끝남(중복 적용 방지) — 여기서는 재적용하지 않음
 
         string[] clearedCells = response.data.clearedCells;
@@ -766,7 +762,7 @@ public class UIPanelExplorationGrid : UIPanelBase
             }
 
             int otherZoneNumber = response.data.zoneNumber;
-            int otherBanked = response.data.explorationPointBanked;
+            int otherMineral = response.data.mineralAmount;
             string[] clearedCells = response.data.clearedCells;
 
             // 클리어한 셀이 하나도 없는 런(대치화면만 보고 물러났거나 첫 전투 클리어 전 퇴각)은 서버(enterExplorationCell)도
@@ -783,7 +779,7 @@ public class UIPanelExplorationGrid : UIPanelBase
 
             ShowAbandonConfirmPopup("UIPanelExplorationGrid_OtherRunInProgress",
                 data => OnOtherRunAbandonedThenEnterCell(data, newRow, newCol),
-                otherZoneNumber, otherCellDisplay, CommonUtility.FormatNumber(otherBanked));
+                otherZoneNumber, otherCellDisplay, CommonUtility.FormatNumber(otherMineral));
         });
     }
 
@@ -810,9 +806,8 @@ public class UIPanelExplorationGrid : UIPanelBase
 
     private void OnOtherRunAbandonedThenEnterCell(AbandonZoneRunResponse data, int row, int col)
     {
-        ApplyOwnedPointRemain(data.explorationPointRemain);
         ApplyExpAndLevel(data.totalExp, data.commanderLevel);
-        ApplyTacticPowerRecovered(data.tacticPower);
+        ApplyResourceRecovered(data.resource);
         ApplyMineralReset(); // 다른 진행중 런 포기 — 그 런의 광물은 폐기
         ApplyHasUnclaimedAchievement(data.hasUnclaimedAchievement);
         ClearActiveRunZoneCache();
@@ -867,7 +862,7 @@ public class UIPanelExplorationGrid : UIPanelBase
         m_previousFleetWorldPos = myFleet.transform.position;
         m_previousShipHealthRatios = myFleet.BuildHealthRatioSnapshot();
         CommanderInfo snapshotCommanderInfo = DataManager.Instance.m_currentCommander != null ? DataManager.Instance.m_currentCommander.m_commanderInfo : null;
-        m_previousTacticPower = snapshotCommanderInfo != null ? snapshotCommanderInfo.tacticPower : 0;
+        m_previousResource = snapshotCommanderInfo != null ? snapshotCommanderInfo.resource : 0;
 
         m_pendingEnemyFleetInfo = enemyFleetInfo;
 
@@ -1049,7 +1044,7 @@ public class UIPanelExplorationGrid : UIPanelBase
         m_previousFleetWorldPos = myFleet.transform.position;
         m_previousShipHealthRatios = myFleet.BuildHealthRatioSnapshot();
         CommanderInfo snapshotCommanderInfo = DataManager.Instance.m_currentCommander != null ? DataManager.Instance.m_currentCommander.m_commanderInfo : null;
-        m_previousTacticPower = snapshotCommanderInfo != null ? snapshotCommanderInfo.tacticPower : 0;
+        m_previousResource = snapshotCommanderInfo != null ? snapshotCommanderInfo.resource : 0;
 
         m_pendingEnemyFleetInfo = enemyFleetInfo;
 
@@ -1100,7 +1095,7 @@ public class UIPanelExplorationGrid : UIPanelBase
         m_previousCol = m_currentCol;
         m_previousFleetWorldPos = myFleet.transform.position;
         m_previousShipHealthRatios = myFleet.BuildHealthRatioSnapshot();
-        m_previousTacticPower = commanderInfo != null ? commanderInfo.tacticPower : 0;
+        m_previousResource = commanderInfo != null ? commanderInfo.resource : 0;
 
         m_currentRow = m_pendingCellRow;
         m_currentCol = m_pendingCellCol;
@@ -1114,7 +1109,7 @@ public class UIPanelExplorationGrid : UIPanelBase
             cellRow = m_currentRow,
             cellCol = m_currentCol,
             shipHealthRatios = myFleet.BuildHealthRatioSnapshot(),
-            tacticPower = commanderInfo != null ? commanderInfo.tacticPower : 0,
+            resource = commanderInfo != null ? commanderInfo.resource : 0,
             mineralAmount = commanderInfo != null ? commanderInfo.mineralAmount : 0,
             challengeToken = m_activeChallengeToken,
         };
@@ -1149,9 +1144,8 @@ public class UIPanelExplorationGrid : UIPanelBase
 
     private void OnAnotherRunAbandonedAndRetry(AbandonZoneRunResponse data)
     {
-        ApplyOwnedPointRemain(data.explorationPointRemain);
         ApplyExpAndLevel(data.totalExp, data.commanderLevel);
-        ApplyTacticPowerRecovered(data.tacticPower);
+        ApplyResourceRecovered(data.resource);
         ApplyMineralReset(); // 다른 진행중 런 포기 — 그 런의 광물은 폐기
         ApplyHasUnclaimedAchievement(data.hasUnclaimedAchievement);
         RequestEnemyFleetForCurrentCell(); // 기존 런 정리 완료 — 원래 셀 도전 요청을 재시도
@@ -1176,7 +1170,7 @@ public class UIPanelExplorationGrid : UIPanelBase
             cellRow = m_currentRow,
             cellCol = m_currentCol,
             shipHealthRatios = myFleet != null ? myFleet.BuildHealthRatioSnapshot() : null,
-            tacticPower = commanderInfo != null ? commanderInfo.tacticPower : 0,
+            resource = commanderInfo != null ? commanderInfo.resource : 0,
             mineralAmount = commanderInfo != null ? commanderInfo.mineralAmount : 0,
             challengeToken = m_activeChallengeToken,
         };
@@ -1199,7 +1193,7 @@ public class UIPanelExplorationGrid : UIPanelBase
             return;
         }
 
-        int pointGained = 0;
+        int mineralGained = 0;
         int expGained = 0;
         List<string> rewardCardCandidates = null;
         ETreasureRewardType treasureRewardType = ETreasureRewardType.None;
@@ -1207,17 +1201,16 @@ public class UIPanelExplorationGrid : UIPanelBase
         int rerollRemain = 0;
         if (response.data != null)
         {
-            pointGained = response.data.explorationPointGained;
+            mineralGained = response.data.mineralGained;
             expGained = response.data.expGained;
             rewardCardCandidates = response.data.rewardCardCandidates; // 탈출 셀/빈 셀은 null — 카드 선택 단계를 건너뜀
             m_rewardCardResyncAttempted = false;
             treasureRewardType = response.data.treasureRewardType;
             treasureRewardRatio = response.data.treasureRewardRatio;
             rerollRemain = response.data.rerollRemain;
-            // 이 시점엔 패널이 비활성 상태(전투 화면에 가려짐) — 값은 버퍼에만 쌓아두고, 화면 반영은 OnShowUIPanel에서 처리
-            m_pendingBankedRewardGain.Add(EBankedRewardType.ExplorationPoint, pointGained);
+            // 이 시점엔 패널이 비활성 상태(전투 화면에 가려짐) — 경험치는 버퍼에만 쌓아두고, 화면 반영은 OnShowUIPanel에서 처리(광물은 mineralAmount로 바로 반영됨)
             m_pendingBankedRewardGain.Add(EBankedRewardType.Exp, expGained);
-            ApplyTacticPowerRecovered(response.data.tacticPower);
+            ApplyResourceRecovered(response.data.resource);
 
             // 서버 ZoneRun은 첫 셀 클리어 시점에 생성됨 — 로컬 캐시도 이때 갱신해야 포기 버튼/"다른 존 진행중" 판정이 서버와 일치함
             CommanderInfo clearedCommanderInfo = DataManager.Instance.m_currentCommander != null ? DataManager.Instance.m_currentCommander.m_commanderInfo : null;
@@ -1233,26 +1226,26 @@ public class UIPanelExplorationGrid : UIPanelBase
             m_gridData.SetCellCleared(m_currentRow, m_currentCol, true);
         RefreshCellStates(); // Event 셀(전투 없이 도착)은 패널이 계속 보이는 상태라 여기서 직접 갱신해야 클리어 표시(투명화)가 즉시 반영됨
 
-        if (treasureRewardType == ETreasureRewardType.ShipHealthHeal || treasureRewardType == ETreasureRewardType.TacticPowerRestore)
+        if (treasureRewardType == ETreasureRewardType.ShipHealthHeal)
         {
-            ShowTreasureEffectPopup(treasureRewardType, treasureRewardRatio);
+            ShowTreasureEffectPopup(treasureRewardRatio);
             return;
         }
 
-        // 빈 셀(적 없음)은 획득 포인트도 카드도 없음 — 팝업 없이 바로 기존 흐름 진행
-        if (pointGained <= 0 && rewardCardCandidates == null)
+        // 빈 셀(적 없음)은 획득 광물도 카드도 없음 — 팝업 없이 바로 기존 흐름 진행
+        if (mineralGained <= 0 && rewardCardCandidates == null)
         {
             ContinueAfterCellClear();
             return;
         }
 
-        // 탐험 포인트/경험치 안내와 보상카드 3택1을 한 팝업에서 함께 처리 — 카드 후보가 없으면(탈출 셀, Treasure 등) 팝업이 카드 섹션만 숨기고 포인트 안내만 보여줌.
+        // 광물/경험치 안내와 보상카드 3택1을 한 팝업에서 함께 처리 — 카드 후보가 없으면(탈출 셀, Treasure 등) 팝업이 카드 섹션만 숨기고 안내만 보여줌.
         // 탈출 셀 여부는 카드 후보 유무로 추측하지 않고 그리드 데이터로 직접 판정(Treasure도 카드 후보가 없어서 구분이 안 되므로)
         bool isEscapeCell = m_gridData != null && m_gridData.IsInBounds(m_currentRow, m_currentCol) == true && m_gridData.GetCell(m_currentRow, m_currentCol).isEscape;
         int rewardZoneNumber = m_currentZoneNumber;
         int rewardCellRow = m_currentRow;
         int rewardCellCol = m_currentCol;
-        UIManager.Instance.ShowRewardCardSelectPopup(pointGained, expGained, rewardCardCandidates, isEscapeCell, rewardZoneNumber, rewardCellRow, rewardCellCol, rerollRemain, (selectedCardId, onProcessed) =>
+        UIManager.Instance.ShowRewardCardSelectPopup(mineralGained, expGained, rewardCardCandidates, isEscapeCell, rewardZoneNumber, rewardCellRow, rewardCellCol, rerollRemain, (selectedCardId, onProcessed) =>
         {
             if (selectedCardId == null)
             {
@@ -1264,21 +1257,13 @@ public class UIPanelExplorationGrid : UIPanelBase
         });
     }
 
-    // Treasure(Event) 셀의 체력회복/전술력회복 당첨 — 즉시 효과 적용 후 안내 팝업. 탐사포인트 당첨은 기존 보상카드 팝업 경로를 그대로 재사용하므로 여기서 다루지 않음
-    private void ShowTreasureEffectPopup(ETreasureRewardType rewardType, float rewardRatio)
+    // Treasure(Event) 셀의 체력회복 당첨 — 즉시 효과 적용 후 안내 팝업. 탐사포인트 당첨은 기존 보상카드 팝업 경로를 그대로 재사용하므로 여기서 다루지 않음
+    private void ShowTreasureEffectPopup(float rewardRatio)
     {
-        string messageKey;
-        if (rewardType == ETreasureRewardType.ShipHealthHeal)
-        {
-            SpaceFleet myFleet = ObjectManager.Instance.GetMyFleet();
-            if (myFleet != null)
-                myFleet.HealAllShipsByRatio(rewardRatio);
-            messageKey = "UIPanelExplorationGrid_TreasureHealthHeal";
-        }
-        else
-        {
-            messageKey = "UIPanelExplorationGrid_TreasureTacticPowerRestore"; // 전술력 값 자체는 OnClearExplorationCellResponse의 ApplyTacticPowerRecovered가 이미 반영함
-        }
+        SpaceFleet myFleet = ObjectManager.Instance.GetMyFleet();
+        if (myFleet != null)
+            myFleet.HealAllShipsByRatio(rewardRatio);
+        string messageKey = "UIPanelExplorationGrid_TreasureHealthHeal";
 
         int rewardPercent = Mathf.RoundToInt(rewardRatio * 100f);
         UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig
@@ -1307,8 +1292,7 @@ public class UIPanelExplorationGrid : UIPanelBase
             {
                 m_rewardCardResyncAttempted = false;
                 onProcessed(true);
-                if (response.data != null)
-                    ApplySelectedRewardCard(selectedCardId, response.data.explorationPointGained);
+                ApplySelectedRewardCard(selectedCardId);
 
                 ContinueAfterCellClear();
                 return;
@@ -1382,7 +1366,8 @@ public class UIPanelExplorationGrid : UIPanelBase
 
         m_bankedReward.Clear();
         m_pendingBankedRewardGain.Clear();
-        RefreshBankedPointText();
+        ApplyMineralReset();
+        RefreshMineralAmountText();
         ClearActiveRunZoneCache();
         RefreshAbandonRunButtonState();
 
@@ -1403,8 +1388,9 @@ public class UIPanelExplorationGrid : UIPanelBase
         SelectZoneTab(m_currentZoneNumber, ComputeZoneSeed(m_currentZoneNumber));
     }
 
-    // 지속버프면 세션 상태에 누적, 즉시효과면 그 자리에서 소모(체력 회복 등). 즉시 가산 포인트는 다음 SettleZoneEntry에 반영되도록 버퍼에 더함
-    private void ApplySelectedRewardCard(string selectedCardId, int explorationPointGainedFromCard)
+    // 지속버프(Buff_MineralRate/Buff_MineralFlatBonus 포함)면 세션 상태에 누적만 — 실제 광물 반영은 다음 셀 클리어 때 서버가 계산.
+    // 즉시효과(체력/실드/요격체 회복)는 그 자리에서 바로 소모
+    private void ApplySelectedRewardCard(string selectedCardId)
     {
         RewardCardData card = DataManager.Instance.m_dataTableRewardCard.GetCard(selectedCardId);
         if (card == null) return;
@@ -1433,14 +1419,6 @@ public class UIPanelExplorationGrid : UIPanelBase
             if (myFleet != null)
                 myFleet.HealInterceptorAllShipsByRatio(card.value1);
         }
-        else if (card.effectType == ECardEffectType.Instant_TacticPowerHeal)
-        {
-            Commander commander = DataManager.Instance.m_currentCommander;
-            if (commander != null)
-                commander.HealTacticPowerByRatio(card.value1);
-        }
-
-        m_pendingBankedRewardGain.Add(EBankedRewardType.ExplorationPoint, explorationPointGainedFromCard);
     }
 
     // 이 패널 위에 쌓여있던 패널들(대치화면/전투화면 등)을 전부 걷어내고 다시 top으로 노출 — 이 패널은 스택에서
@@ -1459,8 +1437,7 @@ public class UIPanelExplorationGrid : UIPanelBase
     {
         bool reachedEscape = m_gridData != null && m_gridData.GetCell(m_currentRow, m_currentCol).isEscape;
 
-        // 전투 중(패널 비활성 상태)에 획득한 적립 보상은 m_pendingBankedRewardGain에 쌓여있음 — 여기서 확정 반영
-        m_bankedReward.Add(EBankedRewardType.ExplorationPoint, m_pendingBankedRewardGain.Get(EBankedRewardType.ExplorationPoint));
+        // 전투 중(패널 비활성 상태)에 획득한 적립 경험치는 m_pendingBankedRewardGain에 쌓여있음 — 여기서 확정 반영(광물은 이미 mineralAmount로 즉시 반영됨)
         m_bankedReward.Add(EBankedRewardType.Exp, m_pendingBankedRewardGain.Get(EBankedRewardType.Exp));
         m_pendingBankedRewardGain.Clear();
 
@@ -1473,11 +1450,11 @@ public class UIPanelExplorationGrid : UIPanelBase
                 m_inputBlockOverlay.SetActive(true);
 
             // 롤링 애니메이션이 실제로 끝나는 콜백 시점에 탈출 확정 팝업을 띄움(별도 타이머 추정 없이 정확한 동기화)
-            RefreshBankedPointText(ShowEscapeConfirmPopup);
+            RefreshMineralAmountText(ShowEscapeConfirmPopup);
         }
         else
         {
-            RefreshBankedPointText();
+            RefreshMineralAmountText();
         }
 
         RefreshAbandonRunButtonState();
@@ -1485,21 +1462,17 @@ public class UIPanelExplorationGrid : UIPanelBase
         EventManager.TriggerZoneCellReturnedToGrid();
     }
 
-    // 탈출 셀 클리어 직후(ContinueAfterCellClear의 롤링 애니메이션 콜백)에만 호출됨 — 확정 전 실제로 받게 될 보상(경험치/탐험 포인트)을 미리 보여줌
-    // 탐험 포인트는 ExplorationService.settleZoneRun()과 동일한 계산식(적립값 * 배율, 올림)으로 미리 계산 —
-    // 서버 왕복 없이 로컬에서 정확한 예상 지급액을 보여주기 위함(서버 확정 전 미리보기로 설계됨)
+    // 탈출 셀 클리어 직후(ContinueAfterCellClear의 롤링 애니메이션 콜백)에만 호출됨 — 확정 전 실제로 받게 될 경험치를 미리 보여줌
+    // (광물은 탈출 확정 시 "지급"이 아니라 이미 가진 값 그대로 — 예고할 델타가 없어 여기서 다루지 않음)
     private void ShowEscapeConfirmPopup()
     {
         if (m_inputBlockOverlay != null)
             m_inputBlockOverlay.SetActive(false);
 
-        float pointRateMultiplier = ObjectManager.Instance.m_rewardCardSessionState.GetExplorationPointRateMultiplier();
-        int bankedPointWithRate = Mathf.CeilToInt(m_bankedReward.Get(EBankedRewardType.ExplorationPoint) * pointRateMultiplier);
-
         UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig
         {
             message = LocalizationManager.Instance.Get("UIPanelExplorationGrid_EscapeConfirmMessage"),
-            rewardAmounts = new List<int> { m_bankedReward.Get(EBankedRewardType.Exp), bankedPointWithRate },
+            rewardAmounts = new List<int> { m_bankedReward.Get(EBankedRewardType.Exp) },
             onConfirm = OnConfirmEscape,
         });
     }
@@ -1524,12 +1497,11 @@ public class UIPanelExplorationGrid : UIPanelBase
 
             m_bankedReward.Clear();
             m_pendingBankedRewardGain.Clear(); // 탈출로 이미 100% 정산됨 — 다음 존으로 누수되지 않도록 함께 리셋
-            RefreshBankedPointText();
             RefreshAbandonRunButtonState();
-            ApplyOwnedPointRemain(response.data.explorationPointRemain);
             ApplyExpAndLevel(response.data.totalExp, response.data.commanderLevel);
-            ApplyTacticPowerRecovered(response.data.tacticPower);
+            ApplyResourceRecovered(response.data.resource);
             ApplyMineralReset(); // 존런 종료 — 남은 광물은 전부 폐기(Commander 영구 자산으로 전환되지 않음)
+            RefreshMineralAmountText();
             ApplyHasUnclaimedAchievement(response.data.hasUnclaimedAchievement);
             ClearActiveRunZoneCache();
             ApplyHighestClearedZoneNumber(response.data.highestClearedZoneNumber);
@@ -1575,29 +1547,21 @@ public class UIPanelExplorationGrid : UIPanelBase
     }
 
     // onAnimComplete: 롤링 애니메이션이 실제로 끝난 프레임에 호출됨(코루틴을 아예 못 도는 경로에서도 즉시 호출됨) — 애니메이션과 정확히 동기화해야 하는 후속 로직(예: 탈출 확정 팝업)에 사용
-    private void RefreshBankedPointText(System.Action onAnimComplete = null)
+    // 광물은 은행/적립 개념 없이 commanderInfo.mineralAmount가 항상 최신 권위값이라 그 값을 그대로 표시
+    private void RefreshMineralAmountText(System.Action onAnimComplete = null)
     {
-        if (m_bankedExplorationPointRow == null)
+        if (m_mineralAmountRow == null)
         {
             onAnimComplete?.Invoke();
             return;
         }
 
-        int bankedExplorationPoint = m_bankedReward.Get(EBankedRewardType.ExplorationPoint);
-        m_bankedExplorationPointRow.SetLabel("UIPanelExplorationGrid_BankedPoint");
-        m_bankedExplorationPointRow.SetValueAnimated(m_displayedBankedPoint, bankedExplorationPoint, onAnimComplete);
-        m_displayedBankedPoint = bankedExplorationPoint;
-        UnityEngine.UI.LayoutRebuilder.ForceRebuildLayoutImmediate(m_bankedExplorationPointRow.transform as RectTransform);
-    }
-
-    // 탈출/포기 응답의 explorationPointRemain(확정 지급 후 보유 잔액)을 커맨더 정보에도 반영해 다른 화면(지휘력 증가 등)과 일치시킴
-    // Commander.UpdateExplorationPoint()를 거쳐야 EventManager.OnExplorationPointChanged가 발행되어 다른 열린 패널도 즉시 갱신됨
-    private void ApplyOwnedPointRemain(int explorationPointRemain)
-    {
-        if (DataManager.Instance.m_currentCommander != null)
-            DataManager.Instance.m_currentCommander.UpdateExplorationPoint(explorationPointRemain);
-
-        RefreshOwnedPointText();
+        CommanderInfo commanderInfo = DataManager.Instance.m_currentCommander != null ? DataManager.Instance.m_currentCommander.m_commanderInfo : null;
+        int mineralAmount = commanderInfo != null ? commanderInfo.mineralAmount : 0;
+        m_mineralAmountRow.SetLabel("UIPanelExplorationGrid_OwnedPoint");
+        m_mineralAmountRow.SetValueAnimated(m_displayedMineralAmount, mineralAmount, onAnimComplete);
+        m_displayedMineralAmount = mineralAmount;
+        UnityEngine.UI.LayoutRebuilder.ForceRebuildLayoutImmediate(m_mineralAmountRow.transform as RectTransform);
     }
 
     // 탈출/포기 정산 응답의 hasUnclaimedAchievement를 커맨더 캐시에 반영 — 업적 버튼/패널 레드닷이 존런 정산 즉시 갱신됨
@@ -1607,14 +1571,14 @@ public class UIPanelExplorationGrid : UIPanelBase
             DataManager.Instance.m_currentCommander.UpdateHasUnclaimedAchievement(hasUnclaimedAchievement);
     }
 
-    // 탈출/포기 응답의 tacticPower(런 종료로 회복된 전술력 현재치)를 커맨더 정보에 반영 — 게이지 등 다른 열린 UI도 즉시 갱신
-    private void ApplyTacticPowerRecovered(int tacticPower)
+    // 탈출/포기 응답의 resource(런 종료로 회복된 자원 현재치)를 커맨더 정보에 반영 — 게이지 등 다른 열린 UI도 즉시 갱신
+    private void ApplyResourceRecovered(int resource)
     {
         CommanderInfo commanderInfo = DataManager.Instance.m_currentCommander != null ? DataManager.Instance.m_currentCommander.m_commanderInfo : null;
         if (commanderInfo == null) return;
 
-        commanderInfo.tacticPower = tacticPower;
-        EventManager.Trigger_TacticPowerChanged(commanderInfo.tacticPower, commanderInfo.tacticPowerMax);
+        commanderInfo.resource = resource;
+        EventManager.Trigger_ResourceChanged(commanderInfo.resource, commanderInfo.resourceMax);
     }
 
     // 존런 종료(탈출/포기) — 광물은 Commander 영구 자산이 아니라 다음 런은 항상 0부터 시작
@@ -1663,18 +1627,6 @@ public class UIPanelExplorationGrid : UIPanelBase
         commanderInfo.highestClearedZoneNumber = highestClearedZoneNumber;
     }
 
-    private void RefreshOwnedPointText()
-    {
-        if (m_ownedExplorationPointRow == null) return;
-
-        CommanderInfo commanderInfo = DataManager.Instance.m_currentCommander != null ? DataManager.Instance.m_currentCommander.m_commanderInfo : null;
-        int ownedPoint = commanderInfo != null ? commanderInfo.explorationPoint : 0;
-
-        m_ownedExplorationPointRow.SetLabel("UIPanelExplorationGrid_OwnedPoint");
-        m_ownedExplorationPointRow.SetValueAnimated(m_displayedOwnedPoint, ownedPoint);
-        m_displayedOwnedPoint = ownedPoint;
-        UnityEngine.UI.LayoutRebuilder.ForceRebuildLayoutImmediate(m_ownedExplorationPointRow.transform as RectTransform);
-    }
 
     private void OnAbandonRunButtonClicked()
     {
@@ -1732,12 +1684,11 @@ public class UIPanelExplorationGrid : UIPanelBase
 
         m_bankedReward.Clear();
         m_pendingBankedRewardGain.Clear(); // 포기로 이미 정산됨 — 다음 진입 시 누수되지 않도록 함께 리셋
-        RefreshBankedPointText();
         RefreshAbandonRunButtonState();
-        ApplyOwnedPointRemain(data.explorationPointRemain);
         ApplyExpAndLevel(data.totalExp, data.commanderLevel);
-        ApplyTacticPowerRecovered(data.tacticPower);
+        ApplyResourceRecovered(data.resource);
         ApplyMineralReset(); // 존런 종료(포기) — 남은 광물은 전부 폐기
+        RefreshMineralAmountText();
         ApplyHasUnclaimedAchievement(data.hasUnclaimedAchievement);
         ClearActiveRunZoneCache();
 
@@ -1799,8 +1750,8 @@ public class UIPanelExplorationGrid : UIPanelBase
         CommanderInfo commanderInfo = DataManager.Instance.m_currentCommander != null ? DataManager.Instance.m_currentCommander.m_commanderInfo : null;
         if (commanderInfo != null)
         {
-            commanderInfo.tacticPower = m_previousTacticPower;
-            EventManager.Trigger_TacticPowerChanged(commanderInfo.tacticPower, commanderInfo.tacticPowerMax);
+            commanderInfo.resource = m_previousResource;
+            EventManager.Trigger_ResourceChanged(commanderInfo.resource, commanderInfo.resourceMax);
         }
 
         ReturnToGridPanel();

@@ -419,7 +419,7 @@ public class UIPanelRank : UIPanelBase
 
             Commander myCommander = DataManager.Instance.m_currentCommander;
             if (myCommander != null)
-                myCommander.HealTacticPowerByRatio(1f);  // 전술력도 PvP는 서버가 추적하지 않으므로 체력과 동일하게 전액 회복(ratio=1 → tacticPowerMax로 고정)
+                myCommander.HealResourceByRatio(1f);  // 자원도 PvP는 서버가 추적하지 않으므로 체력과 동일하게 전액 회복(ratio=1 → resourceMax로 고정)
 
             RequestPvpList();
             RequestPvpMyRank();

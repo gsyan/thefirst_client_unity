@@ -860,7 +860,7 @@ public class SpaceFleet : MonoBehaviour
         return count;
     }
 
-    // 전술 토글(수리) ON 상태에서 UIPanelBattle.Co_DrainTacticPower가 1초 간격으로 호출 — 함체별 repair 스탯만큼 체력 회복
+    // 전술 토글(수리) ON 상태에서 UIPanelBattle.Co_DrainResource가 1초 간격으로 호출 — 함체별 repair 스탯만큼 체력 회복
     public void ApplyRepairTickToAllShips()
     {
         foreach (SpaceShip ship in m_ships)
@@ -893,7 +893,7 @@ public class SpaceFleet : MonoBehaviour
         return count;
     }
 
-    // 전술 토글(실드) ON 상태에서 UIPanelBattle.Co_DrainTacticPower가 1초 간격으로 호출 — 함체별 shieldRegenRate만큼 게이지 충전
+    // 전술 토글(실드) ON 상태에서 UIPanelBattle.Co_DrainResource가 1초 간격으로 호출 — 함체별 shieldRegenRate만큼 게이지 충전
     public void ApplyShieldRegenTickToAllShips()
     {
         foreach (SpaceShip ship in m_ships)
@@ -919,7 +919,7 @@ public class SpaceFleet : MonoBehaviour
         return false;
     }
 
-    // 전술 토글(요격체) ON 상태에서 UIPanelBattle.Co_DrainTacticPower가 주기적으로 호출 — tickSeconds(호출 간격)만큼 각 함체의 요격체 회복시간을 누적
+    // 전술 토글(요격체) ON 상태에서 UIPanelBattle.Co_DrainResource가 주기적으로 호출 — tickSeconds(호출 간격)만큼 각 함체의 요격체 회복시간을 누적
     public void ApplyInterceptorRegenTickToAllShips(float tickSeconds)
     {
         foreach (SpaceShip ship in m_ships)
@@ -1182,15 +1182,15 @@ public class SpaceFleet : MonoBehaviour
         return 1f + preset.attackMultiplierPerStep[step - 1];
     }
 
-    // idx: 0=수리, 1=미사일, 2=함재기, 3=실드, 4=요격체, 5=빔 (EventManager.OnTacticOptionsChanged 주석과 동일)
-    private const int k_repairTacticBit = 1 << 0;
+    // idx: 0=빔, 1=미사일, 2=함재기, 3=수리, 4=실드, 5=요격체 (EventManager.OnTacticOptionsChanged 주석과 동일)
+    private const int k_beamTacticBit = 1 << 0;
     private const int k_missileTacticBit = 1 << 1;
     private const int k_aircraftTacticBit = 1 << 2;
-    private const int k_shieldTacticBit = 1 << 3;
-    private const int k_interceptorTacticBit = 1 << 4;
-    private const int k_beamTacticBit = 1 << 5;
+    private const int k_repairTacticBit = 1 << 3;
+    private const int k_shieldTacticBit = 1 << 4;
+    private const int k_interceptorTacticBit = 1 << 5;
 
-    // 빔 전술 토글(idx=5) ON 시 공격력 2배 — 내 함대만 적용(적/PvP상대/시네마틱은 토글 UI가 없어 배율 없음)
+    // 빔 전술 토글(idx=0) ON 시 공격력 2배 — 내 함대만 적용(적/PvP상대/시네마틱은 토글 UI가 없어 배율 없음)
     public float GetBeamTacticAttackMultiplier()
     {
         if (m_fleetSource != EFleetSource.fleet_source_player) return 1f;
@@ -1211,7 +1211,7 @@ public class SpaceFleet : MonoBehaviour
         return (m_fleetInfo.tacticOptions & k_aircraftTacticBit) != 0 ? 2f : 1f;
     }
 
-    // 실드 전술 토글(idx=3) ON 여부 — 이제 게이지 회복과는 무관하게 "흡수(피해감소) 효과 작동 여부"만 결정.
+    // 실드 전술 토글(idx=4) ON 여부 — 이제 게이지 회복과는 무관하게 "흡수(피해감소) 효과 작동 여부"만 결정.
     // 적/시네마틱 함대는 토글 UI가 없어 상시 ON(요격체 토글과 동일 규칙)
     public bool IsShieldTacticOn()
     {
@@ -1226,9 +1226,9 @@ public class SpaceFleet : MonoBehaviour
         if (m_fleetSource != EFleetSource.fleet_source_player) return true;
 
         Commander commander = DataManager.Instance.m_currentCommander;
-        if (commander == null || commander.GetTacticPower() < cost) return false;
+        if (commander == null || commander.GetResource() < cost) return false;
 
-        commander.SpendTacticPower(cost);
+        commander.SpendResource(cost);
         return true;
     }
 
@@ -1265,7 +1265,7 @@ public class SpaceFleet : MonoBehaviour
         });
     }
 
-    // 함대 구성상 사용 가능한 전술 토글 비트마스크(0=수리, 1=미사일, 2=함재기, 3=실드, 4=요격체, 5=빔) — 해당 모듈이 하나도 없으면 그 비트는 0
+    // 함대 구성상 사용 가능한 전술 토글 비트마스크(0=빔, 1=미사일, 2=함재기, 3=수리, 4=실드, 5=요격체) — 해당 모듈이 하나도 없으면 그 비트는 0
     public int GetAvailableTacticMask()
     {
         CapabilityProfile fleetProfile = GetFleetCapabilityProfile();
@@ -1302,7 +1302,7 @@ public class SpaceFleet : MonoBehaviour
 
         int bit = 1 << idx;
         bool turningOn = (m_fleetInfo.tacticOptions & bit) == 0;
-        if (turningOn == true && commander.GetTacticPower() <= 0) return false;
+        if (turningOn == true && commander.GetResource() <= 0) return false;
 
         int newOptions = turningOn ? (m_fleetInfo.tacticOptions | bit) : (m_fleetInfo.tacticOptions & ~bit);
         ApplyTacticOptions(newOptions);

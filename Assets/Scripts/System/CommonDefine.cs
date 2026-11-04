@@ -65,7 +65,7 @@ public enum FormationMoveState
 public enum EDailyBonusTier { Normal, VIP }
 
 [System.Serializable]
-public enum EDailyBonusRewardType { ExplorationPoint, AchievementPoint }
+public enum EDailyBonusRewardType { AchievementPoint }
 
 // 탐사 그리드 셀 타입 — Normal은 목록에 없는 좌표의 기본값(희소 저장이라 별도 항목을 만들지 않음)
 [System.Serializable]
@@ -81,7 +81,7 @@ public enum EGridCellType
 [System.Serializable]
 public enum EGridEventType
 {
-    Treasure, // 탐사포인트/함선체력회복/전술력회복 중 랜덤 1개 지급 — 세부 보상은 ETreasureRewardType 참고
+    Treasure, // 탐사포인트/함선체력회복 중 랜덤 1개 지급 — 세부 보상은 ETreasureRewardType 참고
     Trap,     // TODO: 미구현 — 함선 체력 등 페널티
     Merchant, // TODO: 미구현 — 상인 조우
 }
@@ -91,9 +91,8 @@ public enum EGridEventType
 public enum ETreasureRewardType
 {
     None,               // 이 클리어가 Treasure 보상이 아님(일반 전투/재방문 등)
-    ExplorationPoint,   // 그 존의 일반 전투 셀 보상의 배율 지급
+    Mineral,            // 그 존의 일반 전투 셀 보상의 배율만큼 광물 지급
     ShipHealthHeal,     // 함대 전체 체력 비율 회복
-    TacticPowerRestore, // 전술력 전액 회복
 }
 
 // 업적 조건 타입 — AchievementData.conditionType. conditionParam 해석은 타입별로 다름(예: ZoneClearSpecific="존번호", EventCell="ETreasureRewardType 이름",
@@ -107,8 +106,7 @@ public enum EAchievementConditionType
     ZoneClearSpecific,     // 특정 존 번호 클리어 여부
     CommanderLevel,        // 지휘관 레벨 스냅샷
     CommandPower,          // 지휘력(commandPowerMax) 스냅샷
-    TacticPower,           // 전술력(tacticPowerMax) 스냅샷
-    ExplorationPointTotal, // 역대 누적 획득 탐사포인트(Commander.explorationPointEarnedTotal)
+    MineralTotal,          // 역대 누적 획득 광물(Commander.mineralEarnedTotal) — 존런 종료로 사라지는 현재 보유량과 별개로 영구 누적
     HullTierCount,         // 활성 함대 내 특정 티어 함체 동시보유 개수
     ModuleTierCount,       // 활성 함대 내 특정 카테고리+티어 모듈 동시보유 개수
     HullUnlocked,          // 특정 함체(hullSubType) 언락 여부 — 언락 시 소비한 업적 포인트 일부 환급용
@@ -138,11 +136,10 @@ public enum ECardEffectType
     Buff_HangarAttackToShip,      // 지속버프: 함재기 대함 공격력(Phase_AttackShip) x(1+value1)
     Buff_HangarAttackToFighter,   // 지속버프: 함재기 대함재기 공격력(Dogfight) x(1+value1)
     Buff_ShipHealth,              // 지속버프: 체력 x(1+value1)
-    Buff_ExplorationPointRate,    // 지속버프: 탐험 포인트 획득률 x(1+value1)
+    Buff_MineralRate,             // 지속버프: 이번 런에서 앞으로 획득할 광물량 x(1+value1)
+    Buff_MineralFlatBonus,        // 지속버프: 이번 런에서 앞으로 셀 클리어마다 광물 +value1 가산(광물로 사는 카드라 "즉시 광물 지급"은 순환이라 제외 — 대신 향후 획득량 자체를 늘림)
     Instant_HealthHeal,           // 즉시효과: 체력 value1(0~1) 비율만큼 회복
     Instant_ShieldHeal,           // 즉시효과: 실드 value1 비율만큼 회복
     Instant_InterceptorHeal,      // 즉시효과: 요격체 value1 비율만큼 회복
-    Instant_ExplorationPointFlat, // 즉시효과: 탐험 포인트 +value1 가산(비율 버프보다 먼저 적용)
-    Instant_TacticPowerHeal,      // 즉시효과: 전술력 value1 비율만큼 회복 — 기존 값 뒤에 추가(에셋에 effectType이 정수로 직렬화되어 있어 순서 삽입 금지)
 }
 #endregion

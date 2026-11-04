@@ -416,12 +416,8 @@ MonoBehaviour:
     m_Localized: Shield Regen
     m_Metadata:
       m_Items: []
-  - m_Id: 61708245596504064
-    m_Localized: Banked Exploration Point
-    m_Metadata:
-      m_Items: []
   - m_Id: 61771964439461888
-    m_Localized: Exploration Point
+    m_Localized: Mineral
     m_Metadata:
       m_Items: []
   - m_Id: 64661855909314560
@@ -645,10 +641,6 @@ MonoBehaviour:
     m_Localized: Fleet health restored by {0}%!
     m_Metadata:
       m_Items: []
-  - m_Id: 76543106714828800
-    m_Localized: Tactic power restored by {0}%!
-    m_Metadata:
-      m_Items: []
   - m_Id: 76574125773946880
     m_Localized: Achievement Point
     m_Metadata:
@@ -685,10 +677,6 @@ MonoBehaviour:
     m_Localized: Command Power
     m_Metadata:
       m_Items: []
-  - m_Id: 76604851655409670
-    m_Localized: Tactic Power
-    m_Metadata:
-      m_Items: []
   - m_Id: 76604851655409671
     m_Localized: Exploration Point (Total)
     m_Metadata:
@@ -707,10 +695,6 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 76861906198855680
     m_Localized: Increase CP
-    m_Metadata:
-      m_Items: []
-  - m_Id: 76861906244993024
-    m_Localized: Increase TP
     m_Metadata:
       m_Items: []
   - m_Id: 76937344908656640
@@ -803,14 +787,6 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 78447295728582671
     m_Localized: Reach {1} Command Power
-    m_Metadata:
-      m_Items: []
-  - m_Id: 78447295728582672
-    m_Localized: Reach {1} Tactic Power
-    m_Metadata:
-      m_Items: []
-  - m_Id: 78447295728582673
-    m_Localized: Reach {1} Tactic Power
     m_Metadata:
       m_Items: []
   - m_Id: 78447295728582674
@@ -951,10 +927,6 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 79158737540874240
     m_Localized: RESET
-    m_Metadata:
-      m_Items: []
-  - m_Id: 79158737540874241
-    m_Localized: Convert Exploration Points
     m_Metadata:
       m_Items: []
   - m_Id: 79331435193696256
@@ -1137,7 +1109,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 81547759680618496
-    m_Localized: Tier {0}
+    m_Localized: Level {0}
     m_Metadata:
       m_Items: []
   - m_Id: 81553074287411200
@@ -1166,14 +1138,6 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 81595456236158976
     m_Localized: Disrupt
-    m_Metadata:
-      m_Items: []
-  - m_Id: 82007686480003072
-    m_Localized: Tactic Power Recharge
-    m_Metadata:
-      m_Items: []
-  - m_Id: 82007686542917632
-    m_Localized: Restore {0:P0} of tactic power
     m_Metadata:
       m_Items: []
   - m_Id: 82465825474084864
@@ -1625,6 +1589,22 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 96931116144787467
     m_Localized: An interceptor that eliminates enemy threats in advance with interceptors
+    m_Metadata:
+      m_Items: []
+  - m_Id: 97273644178079744
+    m_Localized: Resources
+    m_Metadata:
+      m_Items: []
+  - m_Id: 97458206149574656
+    m_Localized: PLACE
+    m_Metadata:
+      m_Items: []
+  - m_Id: 97467201207795712
+    m_Localized: This ship type is already in your fleet.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 97484819239141376
+    m_Localized: PLACED
     m_Metadata:
       m_Items: []
   references:

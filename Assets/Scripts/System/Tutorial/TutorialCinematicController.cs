@@ -47,6 +47,7 @@ public static class TutorialCinematicController
         for (int i = 0; i < hulls.Count; i++)
         {
             ModuleData data = hulls[i];
+            if (data.isEnemyOnly == true) continue; // 적 전용 hull은 시네마틱 NPC 함대에서도 제외
             if (CommonUtility.ParseTier(data.moduleSubType) != gradeLevel) continue;
             if (fallback == null) fallback = data;
 

@@ -11,14 +11,13 @@ public class UIHullPickerView : MonoBehaviour
 {
     [SerializeField] private TMP_Text m_titleText;
     [SerializeField] private TMP_Text m_statsTitleText;
-    [SerializeField] private TMP_Text m_confirmButtonText;
+    [SerializeField] private TMP_Text m_confirmButtonText; // 상태에 따라 "배치"/"배치해제"/"언락"으로 바뀌는 동적 라벨
+    [SerializeField] private TMP_Text m_confirmButtonCostText; // 언락 모드에서만 활성화되는 비용(AP n) 표시
     [SerializeField] private TMP_Text m_cancelButtonText;
     [SerializeField] private InfiniteScrollView m_scrollView;
     [SerializeField] private UIAvailableHullRow m_rowPrefab;
-    [SerializeField] private Button m_confirmButton;
+    [SerializeField] private Button m_confirmButton; // 배치/배치해제/언락 3가지 역할을 겸하는 패널 공용 버튼 1개 — 선택된 함체 상태에 따라 RefreshUnlockState가 라벨/동작을 바꿔줌
     [SerializeField] private Button m_cancelButton;
-    [SerializeField] private Button m_removeButton; // 이 슬롯에 이미 배치된 함선을 배치 해제(슬롯 비우기) — 언락 필요 시 숨김, 원래 비어있던 슬롯이면 숨김
-    [SerializeField] private TMP_Text m_removeButtonText;
 
     [SerializeField] private TMP_Text m_shipDescribeText; // 스탯 목록 위 고정 영역 — 선택된 함체의 대략적인 설명(ModuleData.descriptionKey 로컬라이즈)
     [SerializeField] private UIStatRow m_statsRowPrefab; // 선택된 함체의 스탯 — Column_Stats와 동일한 구조/프리팹 재사용
@@ -30,17 +29,13 @@ public class UIHullPickerView : MonoBehaviour
     [SerializeField] private TMP_Text m_passiveTabText; // 탭 버튼 라벨("패시브") — m_statsTitleText와 동일하게 Awake에서 1회만 세팅
 
     [SerializeField] private RowLabelValue m_commandPowerRow; // 선택 후보를 적용했을 때의 지휘력 미리보기 — UIPanelFleet 성능 컬럼의 지휘력 행과 동일한 구성
+    [SerializeField] private RowLabelValue m_achievementPointRow; // 현재 보유 업적포인트 — 언락 비용(AP)을 감당할 수 있는지 바로 비교해보라고 상시 표시
 
     [SerializeField] private RawImage m_previewImage; // 선택된 함체의 3D 바디 미리보기 — ShipPreviewManager가 렌더링한 텍스처
 
     [Header("화면 상단 진척도 게이지 — 선택된 함체의 미해금 패시브 중 counter_type별 다음 목표. 프리팹에 최대 개수(2)만큼 미리 배치, 런타임 Instantiate 금지")]
     [SerializeField] private GameObject m_progressGaugeContainer; // 보여줄 미션이 하나도 없으면 컨테이너 자체를 비활성화
     [SerializeField] private UIProgressGaugeBar[] m_progressGaugeSlots;
-
-    [Header("언락 — 행별 버튼이 아니라 현재 선택된 함체 기준 패널 공용 버튼 1개")]
-    [SerializeField] private Button m_unlockButton; // 별도 Root 없이 버튼 자체를 SetActive로 토글
-    [SerializeField] private TMP_Text m_unlockButtonLabelText; // "언락" 고정 라벨 — Awake에서 1회만 세팅
-    [SerializeField] private TMP_Text m_unlockButtonCostText; // 비용(AP n) — 선택된 함체 바뀔 때마다 갱신
 
     [Header("모듈 슬롯 개수 표시 — 순수 정보용(Button 비활성)")]
     [SerializeField] private TMP_Text m_beamSlotCountText;
@@ -55,16 +50,20 @@ public class UIHullPickerView : MonoBehaviour
     private Dictionary<string, ShipStatRowEntry> m_currentEntriesByLabel; // 비교 기준(현재 장착 함체) — 라벨로 조회
 
     private string m_selectedHullSubType;
-    private ModuleHullInfo m_currentModules; // 이 슬롯에 실제로 장착돼 있던 모듈 — 함체 변경 시 슬롯 유지 계산의 기준
     private int m_currentSlotCommandCost; // 이 슬롯이 지금 실제로 쓰고 있는 지휘력(보관만, 표시는 projectedUsedCommandPower/max 비율로 함)
     private int m_baseUsedCommandPower; // 이 슬롯이 점유 중이던 지휘력을 미리 뺀 값 — 후보 함체 비용만 더하면 미리보기 완성
     private int m_maxCommandPower;
     private System.Action<string, System.Action<bool>> m_onConfirm; // 확인 시 (선택된 hullSubType, 호출부가 처리를 마치고 부르는 콜백(true=팝업 닫기)) 전달
     private System.Action<System.Action<bool>> m_onRemove; // 배치 해제 시 (호출부가 처리를 마치고 부르는 콜백(true=팝업 닫기)) 전달
-    private bool m_hasExistingShip; // Open() 시점에 이 슬롯에 이미 함선이 배치돼 있었는지 — Remove 버튼 노출 조건(선택 후보가 바뀌어도 유지)
+    private bool m_hasExistingShip; // Open() 시점에 이 슬롯에 이미 함선이 배치돼 있었는지 — 배치해제 모드 판정 조건(선택 후보가 바뀌어도 유지)
+    private string m_originalHullSubType; // Open() 시점에 이 슬롯에 배치돼 있던 함체 — 선택이 이 값과 같으면 "배치해제" 모드로 전환
+    private HashSet<string> m_archetypesPlacedElsewhere = new(); // M7 — 다른 슬롯이 이미 쓰고 있는 아키타입(이 슬롯 자신의 현재 함체는 제외) — 행에 "배치됨" 표시용
     private System.Action m_onCancel;
     private System.Func<RectTransform> m_lowestLockedHullTargetResolver; // 등록/해제 시 같은 델리게이트 인스턴스를 써야 하므로 보관
     private System.Func<bool> m_overCommandPowerEvaluator;
+
+    private enum EPickerButtonMode { Place, Unplace, Unlock }
+    private EPickerButtonMode m_buttonMode = EPickerButtonMode.Place; // 패널 공용 버튼(m_confirmButton) 1개가 지금 어떤 동작을 하는지 — RefreshUnlockState가 갱신, 클릭 핸들러가 참조
 
     private struct PassiveRowEntry
     {
@@ -76,13 +75,9 @@ public class UIHullPickerView : MonoBehaviour
     private void Awake()
     {
         if (m_confirmButton != null)
-            m_confirmButton.onClick.AddListener(OnConfirmClicked);
+            m_confirmButton.onClick.AddListener(OnActionButtonClicked);
         if (m_cancelButton != null)
             m_cancelButton.onClick.AddListener(OnCancelClicked);
-        if (m_unlockButton != null)
-            m_unlockButton.onClick.AddListener(OnUnlockButtonClicked);
-        if (m_removeButton != null)
-            m_removeButton.onClick.AddListener(OnRemoveButtonClicked);
         if (m_scrollView != null)
             m_scrollView.onItemBind = OnItemBind;
         if (m_statsScrollView != null)
@@ -95,14 +90,9 @@ public class UIHullPickerView : MonoBehaviour
             CommonUtility.SetUILocText(m_statsTitleText, "UIFleet_StatsTitle");
         if (m_passiveTabText != null)
             CommonUtility.SetUILocText(m_passiveTabText, "UIFleet_PassiveTabTitle");
-        if (m_confirmButtonText != null)
-            CommonUtility.SetUILocText(m_confirmButtonText, "UI_Confirm");
         if (m_cancelButtonText != null)
             CommonUtility.SetUILocText(m_cancelButtonText, "UI_Cancel");
-        if (m_removeButtonText != null)
-            CommonUtility.SetUILocText(m_removeButtonText, "UI_Remove");
-        if (m_unlockButtonLabelText != null)
-            CommonUtility.SetUILocText(m_unlockButtonLabelText, "UIHullPicker_UnlockButtonLabel");
+        // m_confirmButtonText는 상태에 따라 바뀌는 동적 라벨이라 여기서 고정 세팅하지 않음 — RefreshUnlockState가 매번 갱신
 
         // 튜토리얼이 "언락 안 된 최저 티어 함체의 언락 버튼"을 강조할 수 있도록 동적 타겟 리졸버 등록
         m_lowestLockedHullTargetResolver = ResolveLowestLockedHullUnlockButton;
@@ -148,21 +138,25 @@ public class UIHullPickerView : MonoBehaviour
         if (targetHullSubType != m_selectedHullSubType)
             OnHullClicked(m_hullsCache[targetDataIndex]);
 
-        if (m_unlockButton == null || m_unlockButton.gameObject.activeInHierarchy == false) return null;
-        return m_unlockButton.transform as RectTransform;
+        if (m_confirmButton == null || m_buttonMode != EPickerButtonMode.Unlock) return null;
+        return m_confirmButton.transform as RectTransform;
     }
 
     // availableHulls: 고를 수 있는 함체 목록, currentHull: 비교 기준이 되는 현재 장착 함체(빈 슬롯이면 null → 비교 없이 수치만 표시)
     // currentModules: 그 슬롯에 실제로 장착된 모듈 구성(로드아웃) — null이면 currentHull의 기본 장착 구성으로 비교
     // currentSlotCommandCost: 이 슬롯이 지금 실제로 쓰고 있는 지휘력 — 리스트 각 행의 증감(+/-) 표시 기준
     // baseUsedCommandPower: 이 슬롯이 점유 중이던 몫을 이미 뺀 사용 지휘력(호출부가 계산해서 넘김)
-    public void Open(List<ModuleData> availableHulls, ModuleData currentHull, ModuleHullInfo currentModules, int currentSlotCommandCost, int baseUsedCommandPower, int maxCommandPower, System.Action<string, System.Action<bool>> onConfirm, System.Action<System.Action<bool>> onRemove = null, System.Action onCancel = null)
+    public void Open(List<ModuleData> availableHulls, ModuleData currentHull, ModuleHullInfo currentModules, int currentSlotCommandCost, int baseUsedCommandPower, int maxCommandPower, HashSet<string> archetypesPlacedElsewhere, System.Action<string, System.Action<bool>> onConfirm, System.Action<System.Action<bool>> onRemove = null, System.Action onCancel = null)
     {
         m_hullsCache.Clear();
         m_hullsCache.AddRange(availableHulls);
-        m_selectedHullSubType = currentHull != null ? currentHull.moduleSubType : null;
+        m_archetypesPlacedElsewhere = archetypesPlacedElsewhere != null ? archetypesPlacedElsewhere : new HashSet<string>();
+
+        // 원래 비어있던 슬롯(currentHull==null)은 고를 함체가 아직 없으므로, 목록 첫 번째 함체를 기본 선택해 미리보기가 빈 화면으로 뜨지 않게 함
+        string defaultHullSubType = m_hullsCache.Count > 0 ? m_hullsCache[0].moduleSubType : null;
+        m_selectedHullSubType = currentHull != null ? currentHull.moduleSubType : defaultHullSubType;
         m_hasExistingShip = currentHull != null;
-        m_currentModules = currentModules;
+        m_originalHullSubType = currentHull != null ? currentHull.moduleSubType : null;
         m_currentSlotCommandCost = currentSlotCommandCost;
         m_baseUsedCommandPower = baseUsedCommandPower;
         m_maxCommandPower = maxCommandPower;
@@ -188,10 +182,10 @@ public class UIHullPickerView : MonoBehaviour
         RefreshStatsDisplay();
         RefreshPassiveDisplay();
         RefreshProgressGauges();
+        RefreshUnlockState(); // m_buttonMode를 먼저 확정해야 바로 아래 RefreshCommandPowerPreview의 interactable 판정이 최신 모드를 씀
         RefreshCommandPowerPreview();
         RefreshPreview();
         RefreshModuleSlotCounts();
-        RefreshUnlockState();
     }
 
     public void Close()
@@ -212,9 +206,7 @@ public class UIHullPickerView : MonoBehaviour
 
         m_previewImage.texture = ShipPreviewManager.Instance.GetPreviewTexture(aspect);
         ModuleData selectedHull = m_hullsCache.Find(p => p.moduleSubType == m_selectedHullSubType);
-        ModuleHullInfo previewModules = selectedHull != null
-            ? (IsHullLocked(selectedHull) == true ? FleetComposition.BuildDefaultLevel1Modules(m_selectedHullSubType) : GetKeptModules(m_selectedHullSubType))
-            : null;
+        ModuleHullInfo previewModules = selectedHull != null ? FleetComposition.BuildDefaultLevel1Modules(m_selectedHullSubType) : null;
         ShipPreviewManager.Instance.ShowHull(selectedHull, previewModules);
     }
 
@@ -241,12 +233,13 @@ public class UIHullPickerView : MonoBehaviour
         ModuleData hull = m_hullsCache[dataIndex];
         string hullSubType = hull.moduleSubType;
         FleetComposition composition = DataManager.Instance.m_currentFleetComposition;
-        ModuleHullInfo keptModulesForRow = GetKeptModules(hullSubType);
-        int projectedCost = composition != null ? composition.ComputeProjectedSlotCommandCost(hullSubType, keptModulesForRow) : hull.statPoint;
+        ModuleHullInfo defaultModulesForRow = FleetComposition.BuildDefaultLevel1Modules(hullSubType);
+        int projectedCost = composition != null ? composition.ComputeProjectedSlotCommandCost(hullSubType, defaultModulesForRow) : hull.statPoint;
         bool isOverCommandPowerIfSelected = m_baseUsedCommandPower + projectedCost > m_maxCommandPower;
 
         bool isLocked = IsHullLocked(hull);
-        row.Setup(hull, projectedCost, isOverCommandPowerIfSelected, isLocked, OnHullClicked);
+        bool isPlacedElsewhere = string.IsNullOrEmpty(hull.hullArchetype) == false && m_archetypesPlacedElsewhere.Contains(hull.hullArchetype);
+        row.Setup(hull, projectedCost, isOverCommandPowerIfSelected, isLocked, isPlacedElsewhere, OnHullClicked);
         row.SetSelectedAvailableHullRow(hullSubType == m_selectedHullSubType);
 
         LayoutRebuilder.ForceRebuildLayoutImmediate(rowObject.transform as RectTransform);
@@ -259,32 +252,50 @@ public class UIHullPickerView : MonoBehaviour
         RefreshStatsDisplay();
         RefreshPassiveDisplay();
         RefreshProgressGauges();
+        RefreshUnlockState(); // m_buttonMode를 먼저 확정해야 바로 아래 RefreshCommandPowerPreview의 interactable 판정이 최신 모드를 씀
         RefreshCommandPowerPreview();
         RefreshPreview();
         RefreshModuleSlotCounts();
-        RefreshUnlockState();
     }
 
-    // 선택된 함체가 잠김 상태인지에 따라 패널 공용 언락 버튼 노출/비용 텍스트 갱신 + Confirm/Remove 버튼 노출 전환
-    // 잠김: 언락 버튼만 표시. 언락됨: 언락 버튼 숨김, Confirm 표시 + (이 슬롯에 원래 함선이 있었을 때만) Remove 표시
+    // 선택된 함체 상태에 따라 패널 공용 버튼(m_confirmButton) 1개의 모드를 결정 — 잠김: 언락, 이미 이 슬롯에 배치된 함체를 다시 선택: 배치해제, 그 외: 배치
     private void RefreshUnlockState()
     {
         ModuleData selectedHull = m_hullsCache.Find(p => p.moduleSubType == m_selectedHullSubType);
         bool isLocked = IsHullLocked(selectedHull);
+        bool isSameAsCurrent = m_hasExistingShip == true && m_selectedHullSubType == m_originalHullSubType;
 
-        if (m_unlockButton != null)
-            m_unlockButton.gameObject.SetActive(isLocked);
+        RefreshAchievementPointRow();
 
-        if (isLocked == true && m_unlockButtonCostText != null)
+        if (isLocked == true)
+            m_buttonMode = EPickerButtonMode.Unlock;
+        else if (isSameAsCurrent == true)
+            m_buttonMode = EPickerButtonMode.Unplace;
+        else
+            m_buttonMode = EPickerButtonMode.Place;
+
+        if (m_confirmButtonText != null)
         {
-            string apLabel = LocalizationManager.Instance.Get("UIHullPicker_UnlockButtonAP");
-            m_unlockButtonCostText.text = $"{apLabel} {CommonUtility.FormatNumber(selectedHull.unlockAchievementPointCost)}";
+            string labelKey;
+            if (m_buttonMode == EPickerButtonMode.Unlock)
+                labelKey = "UIHullPicker_UnlockButtonLabel";
+            else if (m_buttonMode == EPickerButtonMode.Unplace)
+                labelKey = "UI_Remove";
+            else
+                labelKey = "UI_Place";
+            CommonUtility.SetUILocText(m_confirmButtonText, labelKey);
         }
 
-        if (m_confirmButton != null)
-            m_confirmButton.gameObject.SetActive(isLocked == false);
-        if (m_removeButton != null)
-            m_removeButton.gameObject.SetActive(isLocked == false && m_hasExistingShip == true);
+        if (m_confirmButtonCostText != null)
+        {
+            bool showCost = m_buttonMode == EPickerButtonMode.Unlock;
+            m_confirmButtonCostText.gameObject.SetActive(showCost);
+            if (showCost == true)
+            {
+                string apLabel = LocalizationManager.Instance.Get("UIHullPicker_UnlockButtonAP");
+                m_confirmButtonCostText.text = $"{apLabel} {CommonUtility.FormatNumber(selectedHull.unlockAchievementPointCost)}";
+            }
+        }
     }
 
     // unlockAchievementPointCost가 0보다 크면 티어4+ 언락 대상 — 아직 언락 안 됐으면 잠김
@@ -322,8 +333,8 @@ public class UIHullPickerView : MonoBehaviour
             message = LocalizationManager.Instance.Get("UIHullPicker_RemoveConfirmMessage"),
             onConfirm = () =>
             {
-                if (m_removeButton != null)
-                    m_removeButton.interactable = false;
+                if (m_confirmButton != null)
+                    m_confirmButton.interactable = false;
                 m_onRemove(OnConfirmProcessed);
             },
             onCancel = () => { },
@@ -349,8 +360,8 @@ public class UIHullPickerView : MonoBehaviour
             }
 
             m_scrollView.RefreshVisible();
+            RefreshUnlockState(); // 언락 성공으로 모드가 Place로 바뀌므로 interactable 판정(RefreshCommandPowerPreview) 전에 먼저 갱신
             RefreshCommandPowerPreview();
-            RefreshUnlockState();
         });
     }
 
@@ -358,8 +369,8 @@ public class UIHullPickerView : MonoBehaviour
     private int GetProjectedUsedCommandPower()
     {
         FleetComposition composition = DataManager.Instance.m_currentFleetComposition;
-        ModuleHullInfo keptModules = GetKeptModules(m_selectedHullSubType);
-        int selectedCost = composition != null ? composition.ComputeProjectedSlotCommandCost(m_selectedHullSubType, keptModules) : 0;
+        ModuleHullInfo defaultModules = FleetComposition.BuildDefaultLevel1Modules(m_selectedHullSubType);
+        int selectedCost = composition != null ? composition.ComputeProjectedSlotCommandCost(m_selectedHullSubType, defaultModules) : 0;
         int projectedUsedCommandPower = m_baseUsedCommandPower + selectedCost;
         return projectedUsedCommandPower;
     }
@@ -375,8 +386,7 @@ public class UIHullPickerView : MonoBehaviour
     }
 
     // 선택 후보를 실제로 적용했다고 가정했을 때의 지휘력 사용량을 미리 계산해서 보여줌 — 최대치 초과 시 경고색 + 확인 버튼 비활성화
-    // 슬롯이 이미 점유 중이던 모듈(m_currentModules)은 새 함체의 슬롯 범위 안에서 그대로 유지되므로, 정적 statPoint가 아니라
-    // 실제 유지될 모듈 구성(GetKeptModules) 기준으로 계산해야 정확함 — 서버 FleetService.placeFleetShip과 동일 규칙
+    // 캐파는 바디(hull) 자신의 statPoint만 반영(M13) — 모듈 구성은 비용에 영향 없음
     private void RefreshCommandPowerPreview()
     {
         if (m_commandPowerRow == null) return;
@@ -390,17 +400,22 @@ public class UIHullPickerView : MonoBehaviour
         m_commandPowerRow.SetValueColor(CommonUtility.PaletteColor(isOverCommandPower == true ? "Text.Warning" : "Text.Dark1"));
         LayoutRebuilder.ForceRebuildLayoutImmediate(m_commandPowerRow.transform as RectTransform);
 
-        ModuleData selectedHull = m_hullsCache.Find(p => p.moduleSubType == m_selectedHullSubType);
-        bool isSelectedHullLocked = IsHullLocked(selectedHull);
+        // 언락/배치해제 모드는 지휘력과 무관하게 항상 눌림(언락은 AP 소모, 배치해제는 비용 없음) — 배치 모드에서만 지휘력 초과 여부로 잠금
         if (m_confirmButton != null)
-            m_confirmButton.interactable = isOverCommandPower == false && isSelectedHullLocked == false;
+            m_confirmButton.interactable = m_buttonMode != EPickerButtonMode.Place || isOverCommandPower == false;
     }
 
-    // m_currentModules를 targetHullSubType의 슬롯 범위로 필터링한 결과 — 리스트 각 행의 비용 미리보기와 선택된 함체의 미리보기/Confirm에 공용으로 사용
-    // m_currentModules가 null이면(원래 비어있던 슬롯) null을 그대로 반환해 기본 로드아웃(무기 없음) 분기를 그대로 타게 함
-    private ModuleHullInfo GetKeptModules(string targetHullSubType)
+    // 현재 보유 업적포인트 상시 표시 — 언락 비용(AP)을 감당할 수 있는지 바로 비교해보라는 용도, 선택 함체와 무관하게 항상 같은 값
+    private void RefreshAchievementPointRow()
     {
-        return FleetComposition.FilterModulesForNewHull(m_currentModules, targetHullSubType);
+        if (m_achievementPointRow == null) return;
+
+        Commander commander = DataManager.Instance.m_currentCommander;
+        int achievementPoint = commander != null ? commander.GetAchievementPoint() : 0;
+
+        string apLabel = LocalizationManager.Instance.Get("UIHullPicker_UnlockButtonAP");
+        m_achievementPointRow.SetRow(apLabel, CommonUtility.FormatNumber(achievementPoint), rawValue: true, rawLabel: true);
+        LayoutRebuilder.ForceRebuildLayoutImmediate(m_achievementPointRow.transform as RectTransform);
     }
 
     // 선택된 함체의 스탯을 현재 장착 함체와 비교해서 표시 — InfiniteScrollView가 화면에 보이는 행만 OnStatsItemBind로 바인딩하므로
@@ -417,11 +432,9 @@ public class UIHullPickerView : MonoBehaviour
             return;
         }
 
-        // 언락된(보유 중인) 함체는 실제 장착 모듈 기준, 아직 언락 안 된 함체는 레벨1 기본 모듈을 전부 채운 가상 미리보기
-        ModuleHullInfo keptModules = IsHullLocked(selectedHull) == true
-            ? FleetComposition.BuildDefaultLevel1Modules(m_selectedHullSubType)
-            : GetKeptModules(m_selectedHullSubType);
-        List<ShipStatRowEntry> entries = ShipStatGaugeBuilder.Build(selectedHull, keptModules);
+        // 함체는 항상 기본 로드아웃(전 슬롯 레벨1 장착) 기준으로 미리보기 — 언락 여부와 무관하게 동일
+        ModuleHullInfo previewModules = FleetComposition.BuildDefaultLevel1Modules(m_selectedHullSubType);
+        List<ShipStatRowEntry> entries = ShipStatGaugeBuilder.Build(selectedHull, previewModules);
         AppendRemovedStatEntries(entries);
         m_statEntries = entries;
 
@@ -566,7 +579,23 @@ public class UIHullPickerView : MonoBehaviour
         return ShipStatGaugeBuilder.BuildDiffText(entry, m_currentEntriesByLabel);
     }
 
-    private void OnConfirmClicked()
+    // 패널 공용 버튼(m_confirmButton) 클릭 — 지금 모드(RefreshUnlockState가 갱신)에 따라 배치/배치해제/언락 중 하나로 위임
+    private void OnActionButtonClicked()
+    {
+        if (m_buttonMode == EPickerButtonMode.Unlock)
+        {
+            OnUnlockButtonClicked();
+            return;
+        }
+        if (m_buttonMode == EPickerButtonMode.Unplace)
+        {
+            OnRemoveButtonClicked();
+            return;
+        }
+        OnPlaceClicked();
+    }
+
+    private void OnPlaceClicked()
     {
         if (m_onConfirm == null) return;
 
@@ -576,7 +605,7 @@ public class UIHullPickerView : MonoBehaviour
         m_onConfirm(m_selectedHullSubType, OnConfirmProcessed);
     }
 
-    // 호출부가 요청 처리를 마치고 알림 — closePicker=true면 닫고, false(재시도 가능한 실패)면 선택/미리보기를 유지한 채 확인 버튼 상태를 복원
+    // 호출부가 요청 처리를 마치고 알림 — closePicker=true면 닫고, false(재시도 가능한 실패)면 선택/미리보기를 유지한 채 버튼 상태를 복원
     private void OnConfirmProcessed(bool closePicker)
     {
         if (closePicker == true)
@@ -585,8 +614,6 @@ public class UIHullPickerView : MonoBehaviour
             return;
         }
 
-        if (m_removeButton != null)
-            m_removeButton.interactable = true;
         RefreshCommandPowerPreview();
     }
 

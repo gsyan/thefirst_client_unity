@@ -1084,12 +1084,6 @@ public class NetworkManager : MonoSingleton<NetworkManager>
         StartCoroutine(RunAsync(() => m_apiClient.AbandonZoneRunAsync(request), onComplete));
     }
 
-    public void IncreaseTacticPowerMax(IncreaseTacticPowerMaxRequest request, System.Action<ApiResponse<IncreaseTacticPowerMaxResponse>> onComplete)
-    {
-        if (m_bConnected == false) return;
-        StartCoroutine(RunAsync(() => m_apiClient.IncreaseTacticPowerMaxAsync(request), onComplete));
-    }
-
     public void PurchaseVip(VipPurchaseRequest request, System.Action<ApiResponse<VipStatusResponse>> onComplete)
     {
         StartCoroutine(RunAsync(() => m_apiClient.PurchaseVipAsync(request), onComplete));

@@ -115,14 +115,8 @@ public class UIPanelDailyBonus : UIPanelBase
         var loc = LocalizationManager.Instance;
         string desc = string.Empty;
 
-        if (response.grantedExplorationPoint > 0)
-            desc = loc.Get("DailyBonus_Desc", response.grantedExplorationPoint);
-
         if (response.grantedAchievementPoint > 0)
-        {
-            string achievementDesc = loc.Get("DailyBonus_DescAchievement", response.grantedAchievementPoint);
-            desc = string.IsNullOrEmpty(desc) ? achievementDesc : $"{desc}\n{achievementDesc}";
-        }
+            desc = loc.Get("DailyBonus_DescAchievement", response.grantedAchievementPoint);
 
         return desc;
     }

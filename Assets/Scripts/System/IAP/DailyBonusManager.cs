@@ -68,8 +68,6 @@ public class DailyBonusManager : MonoSingleton<DailyBonusManager>
             Commander commander = DataManager.Instance.m_currentCommander;
             if (commander != null)
             {
-                if (response.data.grantedExplorationPoint > 0)
-                    commander.UpdateExplorationPoint(response.data.explorationPointRemain);
                 if (response.data.grantedAchievementPoint > 0)
                     commander.UpdateAchievementPoint(response.data.achievementPointRemain);
                 commander.UpdateHasUnclaimedDailyBonus(HasClaimableDay());

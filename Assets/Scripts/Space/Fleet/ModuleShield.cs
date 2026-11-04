@@ -1,7 +1,7 @@
 //------------------------------------------------------------------------------
 // 실드 모듈 — 슬롯/3D 배치 없이 함체(ModuleHull)에 논리적으로만 붙는 방어막.
-// 게이지 충전은 전술 토글과 무관하게 항상 시도됨(자원이 있을 때만 ApplyRegenTick으로 충전) — UIPanelBattle.Co_DrainTacticPower 참고.
-// 전술 토글(idx=3)은 "흡수(피해감소) 효과 작동 여부"만 결정 — SpaceShip.ApplyShieldAbsorption/IsShieldActive 참고
+// 게이지 충전은 전술 토글과 무관하게 항상 시도됨(자원이 있을 때만 ApplyRegenTick으로 충전) — UIPanelBattle.Co_DrainResource 참고.
+// 전술 토글(idx=4)은 "흡수(피해감소) 효과 작동 여부"만 결정 — SpaceShip.ApplyShieldAbsorption/IsShieldActive 참고
 using UnityEngine;
 
 public class ModuleShield : ModuleBase
@@ -82,7 +82,7 @@ public class ModuleShield : ModuleBase
         return IsEquipped() == true && m_gauge >= incomingDamage;
     }
 
-    // 토글과 무관하게 UIPanelBattle.Co_DrainTacticPower가 1초 간격으로 호출(자원이 있을 때만) — m_regenRate는 이미 초당 단위라 deltaTime 계산 불필요
+    // 토글과 무관하게 UIPanelBattle.Co_DrainResource가 1초 간격으로 호출(자원이 있을 때만) — m_regenRate는 이미 초당 단위라 deltaTime 계산 불필요
     public void ApplyRegenTick()
     {
         m_gauge = Mathf.Min(m_gaugeMax, m_gauge + m_regenRate);

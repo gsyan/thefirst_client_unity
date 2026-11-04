@@ -109,8 +109,6 @@ public class UIDailyBonusDayRow : MonoBehaviour
 
     private static string GetRewardTypeLocKey(EDailyBonusRewardType type)
     {
-        if (type == EDailyBonusRewardType.AchievementPoint)
-            return "UIPanelFleet_AchievementPoint";
-        return "ExplorationPoint";
+        return "UIPanelFleet_AchievementPoint";
     }
 }

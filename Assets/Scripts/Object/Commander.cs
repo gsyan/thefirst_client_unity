@@ -66,39 +66,38 @@ public class Commander
         m_commanderInfo.pvpPointMaxGot = pvpPointMaxGot;
     }
 
-    public int GetExplorationPoint()
+    public int GetMineralEarnedTotal()
     {
         if (m_commanderInfo == null) return 0;
-        return m_commanderInfo.explorationPoint;
+        return m_commanderInfo.mineralEarnedTotal;
     }
 
-    public void UpdateExplorationPoint(int explorationPoint)
+    public void UpdateMineralEarnedTotal(int mineralEarnedTotal)
     {
         if (m_commanderInfo == null) return;
-        m_commanderInfo.explorationPoint = explorationPoint;
-        EventManager.TriggerExplorationPointChanged(explorationPoint);
+        m_commanderInfo.mineralEarnedTotal = mineralEarnedTotal;
     }
 
-    public int GetTacticPower()
+    public int GetResource()
     {
         if (m_commanderInfo == null) return 0;
-        return m_commanderInfo.tacticPower;
+        return m_commanderInfo.resource;
     }
 
-    // 전술 비용 차감 — 여유가 있는지(GetTacticPower() >= cost)는 호출부 책임, 여기선 차감과 이벤트 발생만 담당
-    public void SpendTacticPower(int cost)
+    // 전술 비용 차감 — 여유가 있는지(GetResource() >= cost)는 호출부 책임, 여기선 차감과 이벤트 발생만 담당
+    public void SpendResource(int cost)
     {
         if (m_commanderInfo == null) return;
-        m_commanderInfo.tacticPower -= cost;
-        EventManager.Trigger_TacticPowerChanged(m_commanderInfo.tacticPower, m_commanderInfo.tacticPowerMax);
+        m_commanderInfo.resource -= cost;
+        EventManager.Trigger_ResourceChanged(m_commanderInfo.resource, m_commanderInfo.resourceMax);
     }
 
-    // 최대 전술력 대비 healRatio만큼 가산 회복(즉시효과 보상카드용)
-    public void HealTacticPowerByRatio(float healRatio)
+    // 최대 자원 대비 healRatio만큼 가산 회복(즉시효과 보상카드용)
+    public void HealResourceByRatio(float healRatio)
     {
         if (healRatio <= 0f || m_commanderInfo == null) return;
-        m_commanderInfo.tacticPower = UnityEngine.Mathf.Min(m_commanderInfo.tacticPowerMax, m_commanderInfo.tacticPower + UnityEngine.Mathf.RoundToInt(m_commanderInfo.tacticPowerMax * healRatio));
-        EventManager.Trigger_TacticPowerChanged(m_commanderInfo.tacticPower, m_commanderInfo.tacticPowerMax);
+        m_commanderInfo.resource = UnityEngine.Mathf.Min(m_commanderInfo.resourceMax, m_commanderInfo.resource + UnityEngine.Mathf.RoundToInt(m_commanderInfo.resourceMax * healRatio));
+        EventManager.Trigger_ResourceChanged(m_commanderInfo.resource, m_commanderInfo.resourceMax);
     }
 
     public int GetMineralAmount()
@@ -107,13 +106,13 @@ public class Commander
         return m_commanderInfo.mineralAmount;
     }
 
-    // 자원 게이지(전술력) 자동/패시브 회복 없음 — 존런 중 쌓인 광물을 소모해서만 수동 충전 가능.
+    // 자원 게이지 자동/패시브 회복 없음 — 존런 중 쌓인 광물을 소모해서만 수동 충전 가능.
     // 광물 1개당 mineralToResourceRatio만큼 자원을 채우며, 자원이 이미 가득 차 있으면(필요량 0) 광물을 소모하지 않고 false 반환
-    public bool ChargeTacticPowerWithMineral()
+    public bool ChargeResourceWithMineral()
     {
         if (m_commanderInfo == null) return false;
 
-        int neededPoints = m_commanderInfo.tacticPowerMax - m_commanderInfo.tacticPower;
+        int neededPoints = m_commanderInfo.resourceMax - m_commanderInfo.resource;
         if (neededPoints <= 0 || m_commanderInfo.mineralAmount <= 0) return false;
 
         int ratio = DataManager.Instance.m_dataTableConfig.gameSettings.tactic.mineralToResourceRatio;
@@ -124,9 +123,9 @@ public class Commander
         int gainedPoints = UnityEngine.Mathf.Min(neededPoints, mineralToSpend * ratio);
 
         m_commanderInfo.mineralAmount -= mineralToSpend;
-        m_commanderInfo.tacticPower += gainedPoints;
+        m_commanderInfo.resource += gainedPoints;
 
-        EventManager.Trigger_TacticPowerChanged(m_commanderInfo.tacticPower, m_commanderInfo.tacticPowerMax);
+        EventManager.Trigger_ResourceChanged(m_commanderInfo.resource, m_commanderInfo.resourceMax);
         EventManager.Trigger_MineralAmountChanged(m_commanderInfo.mineralAmount);
         return true;
     }

@@ -31,6 +31,10 @@ MonoBehaviour:
     m_Key: UI_Confirm
     m_Metadata:
       m_Items: []
+  - m_Id: 97458206149574656
+    m_Key: UI_Place
+    m_Metadata:
+      m_Items: []
   - m_Id: 79158737477959680
     m_Key: UI_All
     m_Metadata:
@@ -45,10 +49,6 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 96810128346316800
     m_Key: UI_ModuleLevelUp
-    m_Metadata:
-      m_Items: []
-  - m_Id: 79158737540874241
-    m_Key: UIPopupConvertExplorationPoint_Title
     m_Metadata:
       m_Items: []
   - m_Id: 78718003033538560
@@ -101,6 +101,10 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 79084582279708672
     m_Key: UI_Tactics
+    m_Metadata:
+      m_Items: []
+  - m_Id: 97273644178079744
+    m_Key: UI_Resources
     m_Metadata:
       m_Items: []
   - m_Id: 78728054842458112
@@ -247,10 +251,6 @@ MonoBehaviour:
     m_Key: UIPopupRedeemCode_Success
     m_Metadata:
       m_Items: []
-  - m_Id: 61708245596504064
-    m_Key: UIPanelExplorationGrid_BankedPoint
-    m_Metadata:
-      m_Items: []
   - m_Id: 61771964439461888
     m_Key: UIPanelExplorationGrid_OwnedPoint
     m_Metadata:
@@ -293,10 +293,6 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 76543106660302848
     m_Key: UIPanelExplorationGrid_TreasureHealthHeal
-    m_Metadata:
-      m_Items: []
-  - m_Id: 76543106714828800
-    m_Key: UIPanelExplorationGrid_TreasureTacticPowerRestore
     m_Metadata:
       m_Items: []
   - m_Id: 74139633343922176
@@ -435,14 +431,6 @@ MonoBehaviour:
     m_Key: RewardCard_InterceptorHeal_Desc
     m_Metadata:
       m_Items: []
-  - m_Id: 82007686480003072
-    m_Key: RewardCard_TacticPowerHeal_Name
-    m_Metadata:
-      m_Items: []
-  - m_Id: 82007686542917632
-    m_Key: RewardCard_TacticPowerHeal_Desc
-    m_Metadata:
-      m_Items: []
   - m_Id: 66832217644335105
     m_Key: RewardCard_PointFlat_Name
     m_Metadata:
@@ -461,6 +449,10 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 84129404795355136
     m_Key: UIAvailableHullRow_UnlockCost
+    m_Metadata:
+      m_Items: []
+  - m_Id: 97484819239141376
+    m_Key: UIAvailableHullRow_Setted
     m_Metadata:
       m_Items: []
   - m_Id: 61639704113446912
@@ -489,6 +481,10 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 74419203729129473
     m_Key: UIFleet_PlaceFailed_HullNotFound
+    m_Metadata:
+      m_Items: []
+  - m_Id: 97467201207795712
+    m_Key: UIFleet_PlaceFailed_DuplicateArchetype
     m_Metadata:
       m_Items: []
   - m_Id: 61639704184750085
@@ -713,10 +709,6 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 76604851655409669
     m_Key: UIAchievement_Category_CommandPower
-    m_Metadata:
-      m_Items: []
-  - m_Id: 76604851655409670
-    m_Key: UIAchievement_Category_TacticPower
     m_Metadata:
       m_Items: []
   - m_Id: 76604851655409671
@@ -1131,10 +1123,6 @@ MonoBehaviour:
     m_Key: UIFleet_IncreaseCommandPowerButton
     m_Metadata:
       m_Items: []
-  - m_Id: 76861906244993024
-    m_Key: UIFleet_IncreaseTacticPowerButton
-    m_Metadata:
-      m_Items: []
   - m_Id: 95713217811972096
     m_Key: UIBattle_MineralChargeButton
     m_Metadata:
@@ -1217,14 +1205,6 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 78447295728582671
     m_Key: UIAchievement_Desc_command_power
-    m_Metadata:
-      m_Items: []
-  - m_Id: 78447295728582672
-    m_Key: UIAchievement_Name_tactic_power
-    m_Metadata:
-      m_Items: []
-  - m_Id: 78447295728582673
-    m_Key: UIAchievement_Desc_tactic_power
     m_Metadata:
       m_Items: []
   - m_Id: 78447295728582674

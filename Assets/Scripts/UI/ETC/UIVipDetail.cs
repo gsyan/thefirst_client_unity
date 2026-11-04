@@ -174,7 +174,7 @@ public class UIVipDetail : MonoBehaviour
             {
                 if (m_purchaseButton != null) m_purchaseButton.interactable = true;
 
-                int granted = claimResult != null ? claimResult.grantedExplorationPoint : 0;
+                int granted = claimResult != null ? claimResult.grantedAchievementPoint : 0;
                 Debug.Log($"[UIPanelVip][에디터] 일일보상 재청구 결과 granted={granted}");
 
                 Refresh();

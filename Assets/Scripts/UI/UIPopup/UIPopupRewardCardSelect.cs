@@ -55,7 +55,7 @@ public class UIPopupRewardCardSelect : UIPopupBase
         RefreshRerollButtonState();
     }
 
-    public void ShowPopupRewardCardSelect(int explorationPointGained, int expGained, List<string> candidateCardIds, bool isEscapeCell, int zoneNumber, int cellRow, int cellCol, int rerollRemain, System.Action<string, System.Action<bool>> onConfirmed)
+    public void ShowPopupRewardCardSelect(int mineralGained, int expGained, List<string> candidateCardIds, bool isEscapeCell, int zoneNumber, int cellRow, int cellCol, int rerollRemain, System.Action<string, System.Action<bool>> onConfirmed)
     {
         base.ShowPopup();
         m_candidateCardIds = candidateCardIds;
@@ -79,12 +79,12 @@ public class UIPopupRewardCardSelect : UIPopupBase
             titleKey = "UIPopupRewardCardSelect_Title";
         CommonUtility.SetUILocText(m_titleText, titleKey);
 
-        // 재접속 복구로 뜬 경우(포인트/경험치가 이미 반영되어 0으로 전달됨) 어색한 "+0" 문구 대신 요약 자체를 숨김
-        bool hasRewardSummary = explorationPointGained > 0 || expGained > 0;
+        // 재접속 복구로 뜬 경우(광물/경험치가 이미 반영되어 0으로 전달됨) 어색한 "+0" 문구 대신 요약 자체를 숨김
+        bool hasRewardSummary = mineralGained > 0 || expGained > 0;
         m_rewardSummaryContainer.SetActive(hasRewardSummary);
         if (hasRewardSummary == true)
         {
-            m_rewardPointRow.SetRow("UIPanelExplorationGrid_OwnedPoint", explorationPointGained.ToString(), rawValue: true);
+            m_rewardPointRow.SetRow("UIPanelExplorationGrid_OwnedPoint", mineralGained.ToString(), rawValue: true);
             m_rewardExpRow.SetRow("UIPopupConfirm_ExpLabel", expGained.ToString(), rawValue: true);
         }
 

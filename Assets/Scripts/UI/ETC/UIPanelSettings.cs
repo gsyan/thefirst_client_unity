@@ -295,9 +295,9 @@ public class UIPanelSettings : UIPanelBase
                 if (int.TryParse(value, out int exp))
                     commander.UpdateExp(exp);
                 break;
-            case "explorationpoint":
-                if (int.TryParse(value, out int exploPoint))
-                    commander.UpdateExplorationPoint(exploPoint);
+            case "mineralearnedtotal":
+                if (int.TryParse(value, out int mineralEarnedTotal))
+                    commander.UpdateMineralEarnedTotal(mineralEarnedTotal);
                 break;
             case "pvppointmaxgot":
                 if (int.TryParse(value, out int pvpMaxGot))

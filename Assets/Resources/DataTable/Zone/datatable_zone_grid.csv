@@ -1,4 +1,4 @@
-﻿zone_index,grid_width,grid_height,hull_tier_sum,base_hull_tier,max_ship_count,module_placement_prob,module_performance_prob,hull_weight_none,hull_weight_shield,hull_weight_interceptor,hull_weight_both,health_multiplier,attack_multiplier,wave_spawn_term_sec,exploration_point_reward,commander_exp_reward
+﻿zone_index,grid_width,grid_height,hull_tier_sum,base_hull_tier,max_ship_count,module_placement_prob,module_performance_prob,hull_weight_none,hull_weight_shield,hull_weight_interceptor,hull_weight_both,health_multiplier,attack_multiplier,wave_spawn_term_sec,mineral_reward,commander_exp_reward
 1,3,3,1,1,1,1,1,100,0,0,0,0.25,0.2,5,10,10
 2,3,3,1,1,1,1,1,100,0,0,0,0.45,0.4,5,11,11
 3,3,3,2,2,1,1,1,100,0,0,0,0.65,0.6,5,12,12

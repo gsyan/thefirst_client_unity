@@ -1038,7 +1038,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_zone_clear
     descKey: UIAchievement_Desc_zone_clear
   - achievementId: zone_full_clear_1
-    conditionType: 11
+    conditionType: 10
     conditionParam: 1
     threshold: 1
     achievementPointReward: 50
@@ -1046,7 +1046,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_zone_full_clear
     descKey: UIAchievement_Desc_zone_full_clear
   - achievementId: zone_full_clear_2
-    conditionType: 11
+    conditionType: 10
     conditionParam: 2
     threshold: 1
     achievementPointReward: 50
@@ -1054,7 +1054,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_zone_full_clear
     descKey: UIAchievement_Desc_zone_full_clear
   - achievementId: zone_full_clear_3
-    conditionType: 11
+    conditionType: 10
     conditionParam: 3
     threshold: 1
     achievementPointReward: 50
@@ -1062,7 +1062,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_zone_full_clear
     descKey: UIAchievement_Desc_zone_full_clear
   - achievementId: zone_full_clear_4
-    conditionType: 11
+    conditionType: 10
     conditionParam: 4
     threshold: 1
     achievementPointReward: 50
@@ -1070,7 +1070,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_zone_full_clear
     descKey: UIAchievement_Desc_zone_full_clear
   - achievementId: zone_full_clear_5
-    conditionType: 11
+    conditionType: 10
     conditionParam: 5
     threshold: 1
     achievementPointReward: 50
@@ -1078,7 +1078,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_zone_full_clear
     descKey: UIAchievement_Desc_zone_full_clear
   - achievementId: zone_full_clear_6
-    conditionType: 11
+    conditionType: 10
     conditionParam: 6
     threshold: 1
     achievementPointReward: 50
@@ -1086,7 +1086,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_zone_full_clear
     descKey: UIAchievement_Desc_zone_full_clear
   - achievementId: zone_full_clear_7
-    conditionType: 11
+    conditionType: 10
     conditionParam: 7
     threshold: 1
     achievementPointReward: 50
@@ -1094,7 +1094,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_zone_full_clear
     descKey: UIAchievement_Desc_zone_full_clear
   - achievementId: zone_full_clear_8
-    conditionType: 11
+    conditionType: 10
     conditionParam: 8
     threshold: 1
     achievementPointReward: 50
@@ -1102,7 +1102,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_zone_full_clear
     descKey: UIAchievement_Desc_zone_full_clear
   - achievementId: zone_full_clear_9
-    conditionType: 11
+    conditionType: 10
     conditionParam: 9
     threshold: 1
     achievementPointReward: 50
@@ -1110,7 +1110,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_zone_full_clear
     descKey: UIAchievement_Desc_zone_full_clear
   - achievementId: zone_full_clear_10
-    conditionType: 11
+    conditionType: 10
     conditionParam: 10
     threshold: 1
     achievementPointReward: 50
@@ -1118,7 +1118,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_zone_full_clear
     descKey: UIAchievement_Desc_zone_full_clear
   - achievementId: zone_full_clear_11
-    conditionType: 11
+    conditionType: 10
     conditionParam: 11
     threshold: 1
     achievementPointReward: 60
@@ -1126,7 +1126,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_zone_full_clear
     descKey: UIAchievement_Desc_zone_full_clear
   - achievementId: zone_full_clear_12
-    conditionType: 11
+    conditionType: 10
     conditionParam: 12
     threshold: 1
     achievementPointReward: 60
@@ -1134,7 +1134,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_zone_full_clear
     descKey: UIAchievement_Desc_zone_full_clear
   - achievementId: zone_full_clear_13
-    conditionType: 11
+    conditionType: 10
     conditionParam: 13
     threshold: 1
     achievementPointReward: 60
@@ -1142,7 +1142,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_zone_full_clear
     descKey: UIAchievement_Desc_zone_full_clear
   - achievementId: zone_full_clear_14
-    conditionType: 11
+    conditionType: 10
     conditionParam: 14
     threshold: 1
     achievementPointReward: 60
@@ -1150,7 +1150,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_zone_full_clear
     descKey: UIAchievement_Desc_zone_full_clear
   - achievementId: zone_full_clear_15
-    conditionType: 11
+    conditionType: 10
     conditionParam: 15
     threshold: 1
     achievementPointReward: 60
@@ -1158,7 +1158,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_zone_full_clear
     descKey: UIAchievement_Desc_zone_full_clear
   - achievementId: zone_full_clear_16
-    conditionType: 11
+    conditionType: 10
     conditionParam: 16
     threshold: 1
     achievementPointReward: 60
@@ -1166,7 +1166,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_zone_full_clear
     descKey: UIAchievement_Desc_zone_full_clear
   - achievementId: zone_full_clear_17
-    conditionType: 11
+    conditionType: 10
     conditionParam: 17
     threshold: 1
     achievementPointReward: 60
@@ -1174,7 +1174,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_zone_full_clear
     descKey: UIAchievement_Desc_zone_full_clear
   - achievementId: zone_full_clear_18
-    conditionType: 11
+    conditionType: 10
     conditionParam: 18
     threshold: 1
     achievementPointReward: 60
@@ -1182,7 +1182,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_zone_full_clear
     descKey: UIAchievement_Desc_zone_full_clear
   - achievementId: zone_full_clear_19
-    conditionType: 11
+    conditionType: 10
     conditionParam: 19
     threshold: 1
     achievementPointReward: 60
@@ -1190,7 +1190,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_zone_full_clear
     descKey: UIAchievement_Desc_zone_full_clear
   - achievementId: zone_full_clear_20
-    conditionType: 11
+    conditionType: 10
     conditionParam: 20
     threshold: 1
     achievementPointReward: 60
@@ -1198,7 +1198,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_zone_full_clear
     descKey: UIAchievement_Desc_zone_full_clear
   - achievementId: zone_full_clear_21
-    conditionType: 11
+    conditionType: 10
     conditionParam: 21
     threshold: 1
     achievementPointReward: 70
@@ -1206,7 +1206,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_zone_full_clear
     descKey: UIAchievement_Desc_zone_full_clear
   - achievementId: zone_full_clear_22
-    conditionType: 11
+    conditionType: 10
     conditionParam: 22
     threshold: 1
     achievementPointReward: 70
@@ -1214,7 +1214,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_zone_full_clear
     descKey: UIAchievement_Desc_zone_full_clear
   - achievementId: zone_full_clear_23
-    conditionType: 11
+    conditionType: 10
     conditionParam: 23
     threshold: 1
     achievementPointReward: 70
@@ -1222,7 +1222,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_zone_full_clear
     descKey: UIAchievement_Desc_zone_full_clear
   - achievementId: zone_full_clear_24
-    conditionType: 11
+    conditionType: 10
     conditionParam: 24
     threshold: 1
     achievementPointReward: 70
@@ -1230,7 +1230,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_zone_full_clear
     descKey: UIAchievement_Desc_zone_full_clear
   - achievementId: zone_full_clear_25
-    conditionType: 11
+    conditionType: 10
     conditionParam: 25
     threshold: 1
     achievementPointReward: 70
@@ -1238,7 +1238,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_zone_full_clear
     descKey: UIAchievement_Desc_zone_full_clear
   - achievementId: zone_full_clear_26
-    conditionType: 11
+    conditionType: 10
     conditionParam: 26
     threshold: 1
     achievementPointReward: 70
@@ -1246,7 +1246,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_zone_full_clear
     descKey: UIAchievement_Desc_zone_full_clear
   - achievementId: zone_full_clear_27
-    conditionType: 11
+    conditionType: 10
     conditionParam: 27
     threshold: 1
     achievementPointReward: 70
@@ -1254,7 +1254,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_zone_full_clear
     descKey: UIAchievement_Desc_zone_full_clear
   - achievementId: zone_full_clear_28
-    conditionType: 11
+    conditionType: 10
     conditionParam: 28
     threshold: 1
     achievementPointReward: 70
@@ -1262,7 +1262,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_zone_full_clear
     descKey: UIAchievement_Desc_zone_full_clear
   - achievementId: zone_full_clear_29
-    conditionType: 11
+    conditionType: 10
     conditionParam: 29
     threshold: 1
     achievementPointReward: 70
@@ -1270,7 +1270,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_zone_full_clear
     descKey: UIAchievement_Desc_zone_full_clear
   - achievementId: zone_full_clear_30
-    conditionType: 11
+    conditionType: 10
     conditionParam: 30
     threshold: 1
     achievementPointReward: 70
@@ -1278,7 +1278,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_zone_full_clear
     descKey: UIAchievement_Desc_zone_full_clear
   - achievementId: zone_full_clear_31
-    conditionType: 11
+    conditionType: 10
     conditionParam: 31
     threshold: 1
     achievementPointReward: 80
@@ -1286,7 +1286,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_zone_full_clear
     descKey: UIAchievement_Desc_zone_full_clear
   - achievementId: zone_full_clear_32
-    conditionType: 11
+    conditionType: 10
     conditionParam: 32
     threshold: 1
     achievementPointReward: 80
@@ -1294,7 +1294,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_zone_full_clear
     descKey: UIAchievement_Desc_zone_full_clear
   - achievementId: zone_full_clear_33
-    conditionType: 11
+    conditionType: 10
     conditionParam: 33
     threshold: 1
     achievementPointReward: 80
@@ -1302,7 +1302,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_zone_full_clear
     descKey: UIAchievement_Desc_zone_full_clear
   - achievementId: zone_full_clear_34
-    conditionType: 11
+    conditionType: 10
     conditionParam: 34
     threshold: 1
     achievementPointReward: 80
@@ -1310,7 +1310,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_zone_full_clear
     descKey: UIAchievement_Desc_zone_full_clear
   - achievementId: zone_full_clear_35
-    conditionType: 11
+    conditionType: 10
     conditionParam: 35
     threshold: 1
     achievementPointReward: 80
@@ -1318,7 +1318,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_zone_full_clear
     descKey: UIAchievement_Desc_zone_full_clear
   - achievementId: zone_full_clear_36
-    conditionType: 11
+    conditionType: 10
     conditionParam: 36
     threshold: 1
     achievementPointReward: 80
@@ -1326,7 +1326,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_zone_full_clear
     descKey: UIAchievement_Desc_zone_full_clear
   - achievementId: zone_full_clear_37
-    conditionType: 11
+    conditionType: 10
     conditionParam: 37
     threshold: 1
     achievementPointReward: 80
@@ -1334,7 +1334,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_zone_full_clear
     descKey: UIAchievement_Desc_zone_full_clear
   - achievementId: zone_full_clear_38
-    conditionType: 11
+    conditionType: 10
     conditionParam: 38
     threshold: 1
     achievementPointReward: 80
@@ -1342,7 +1342,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_zone_full_clear
     descKey: UIAchievement_Desc_zone_full_clear
   - achievementId: zone_full_clear_39
-    conditionType: 11
+    conditionType: 10
     conditionParam: 39
     threshold: 1
     achievementPointReward: 80
@@ -1350,7 +1350,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_zone_full_clear
     descKey: UIAchievement_Desc_zone_full_clear
   - achievementId: zone_full_clear_40
-    conditionType: 11
+    conditionType: 10
     conditionParam: 40
     threshold: 1
     achievementPointReward: 80
@@ -1358,7 +1358,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_zone_full_clear
     descKey: UIAchievement_Desc_zone_full_clear
   - achievementId: zone_full_clear_41
-    conditionType: 11
+    conditionType: 10
     conditionParam: 41
     threshold: 1
     achievementPointReward: 90
@@ -1366,7 +1366,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_zone_full_clear
     descKey: UIAchievement_Desc_zone_full_clear
   - achievementId: zone_full_clear_42
-    conditionType: 11
+    conditionType: 10
     conditionParam: 42
     threshold: 1
     achievementPointReward: 90
@@ -1374,7 +1374,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_zone_full_clear
     descKey: UIAchievement_Desc_zone_full_clear
   - achievementId: zone_full_clear_43
-    conditionType: 11
+    conditionType: 10
     conditionParam: 43
     threshold: 1
     achievementPointReward: 90
@@ -1382,7 +1382,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_zone_full_clear
     descKey: UIAchievement_Desc_zone_full_clear
   - achievementId: zone_full_clear_44
-    conditionType: 11
+    conditionType: 10
     conditionParam: 44
     threshold: 1
     achievementPointReward: 90
@@ -1390,7 +1390,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_zone_full_clear
     descKey: UIAchievement_Desc_zone_full_clear
   - achievementId: zone_full_clear_45
-    conditionType: 11
+    conditionType: 10
     conditionParam: 45
     threshold: 1
     achievementPointReward: 90
@@ -1398,7 +1398,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_zone_full_clear
     descKey: UIAchievement_Desc_zone_full_clear
   - achievementId: zone_full_clear_46
-    conditionType: 11
+    conditionType: 10
     conditionParam: 46
     threshold: 1
     achievementPointReward: 90
@@ -1406,7 +1406,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_zone_full_clear
     descKey: UIAchievement_Desc_zone_full_clear
   - achievementId: zone_full_clear_47
-    conditionType: 11
+    conditionType: 10
     conditionParam: 47
     threshold: 1
     achievementPointReward: 90
@@ -1414,7 +1414,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_zone_full_clear
     descKey: UIAchievement_Desc_zone_full_clear
   - achievementId: zone_full_clear_48
-    conditionType: 11
+    conditionType: 10
     conditionParam: 48
     threshold: 1
     achievementPointReward: 90
@@ -1422,7 +1422,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_zone_full_clear
     descKey: UIAchievement_Desc_zone_full_clear
   - achievementId: zone_full_clear_49
-    conditionType: 11
+    conditionType: 10
     conditionParam: 49
     threshold: 1
     achievementPointReward: 90
@@ -1430,7 +1430,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_zone_full_clear
     descKey: UIAchievement_Desc_zone_full_clear
   - achievementId: zone_full_clear_50
-    conditionType: 11
+    conditionType: 10
     conditionParam: 50
     threshold: 1
     achievementPointReward: 90
@@ -1438,7 +1438,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_zone_full_clear
     descKey: UIAchievement_Desc_zone_full_clear
   - achievementId: zone_full_clear_51
-    conditionType: 11
+    conditionType: 10
     conditionParam: 51
     threshold: 1
     achievementPointReward: 100
@@ -1446,7 +1446,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_zone_full_clear
     descKey: UIAchievement_Desc_zone_full_clear
   - achievementId: zone_full_clear_52
-    conditionType: 11
+    conditionType: 10
     conditionParam: 52
     threshold: 1
     achievementPointReward: 100
@@ -1454,7 +1454,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_zone_full_clear
     descKey: UIAchievement_Desc_zone_full_clear
   - achievementId: zone_full_clear_53
-    conditionType: 11
+    conditionType: 10
     conditionParam: 53
     threshold: 1
     achievementPointReward: 100
@@ -1462,7 +1462,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_zone_full_clear
     descKey: UIAchievement_Desc_zone_full_clear
   - achievementId: zone_full_clear_54
-    conditionType: 11
+    conditionType: 10
     conditionParam: 54
     threshold: 1
     achievementPointReward: 100
@@ -1470,7 +1470,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_zone_full_clear
     descKey: UIAchievement_Desc_zone_full_clear
   - achievementId: zone_full_clear_55
-    conditionType: 11
+    conditionType: 10
     conditionParam: 55
     threshold: 1
     achievementPointReward: 100
@@ -1478,7 +1478,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_zone_full_clear
     descKey: UIAchievement_Desc_zone_full_clear
   - achievementId: zone_full_clear_56
-    conditionType: 11
+    conditionType: 10
     conditionParam: 56
     threshold: 1
     achievementPointReward: 100
@@ -1486,7 +1486,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_zone_full_clear
     descKey: UIAchievement_Desc_zone_full_clear
   - achievementId: zone_full_clear_57
-    conditionType: 11
+    conditionType: 10
     conditionParam: 57
     threshold: 1
     achievementPointReward: 100
@@ -1494,7 +1494,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_zone_full_clear
     descKey: UIAchievement_Desc_zone_full_clear
   - achievementId: zone_full_clear_58
-    conditionType: 11
+    conditionType: 10
     conditionParam: 58
     threshold: 1
     achievementPointReward: 100
@@ -1502,7 +1502,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_zone_full_clear
     descKey: UIAchievement_Desc_zone_full_clear
   - achievementId: zone_full_clear_59
-    conditionType: 11
+    conditionType: 10
     conditionParam: 59
     threshold: 1
     achievementPointReward: 100
@@ -1510,7 +1510,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_zone_full_clear
     descKey: UIAchievement_Desc_zone_full_clear
   - achievementId: zone_full_clear_60
-    conditionType: 11
+    conditionType: 10
     conditionParam: 60
     threshold: 1
     achievementPointReward: 100
@@ -1518,7 +1518,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_zone_full_clear
     descKey: UIAchievement_Desc_zone_full_clear
   - achievementId: zone_full_clear_61
-    conditionType: 11
+    conditionType: 10
     conditionParam: 61
     threshold: 1
     achievementPointReward: 110
@@ -1526,7 +1526,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_zone_full_clear
     descKey: UIAchievement_Desc_zone_full_clear
   - achievementId: zone_full_clear_62
-    conditionType: 11
+    conditionType: 10
     conditionParam: 62
     threshold: 1
     achievementPointReward: 110
@@ -1534,7 +1534,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_zone_full_clear
     descKey: UIAchievement_Desc_zone_full_clear
   - achievementId: zone_full_clear_63
-    conditionType: 11
+    conditionType: 10
     conditionParam: 63
     threshold: 1
     achievementPointReward: 110
@@ -1542,7 +1542,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_zone_full_clear
     descKey: UIAchievement_Desc_zone_full_clear
   - achievementId: zone_full_clear_64
-    conditionType: 11
+    conditionType: 10
     conditionParam: 64
     threshold: 1
     achievementPointReward: 110
@@ -1550,7 +1550,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_zone_full_clear
     descKey: UIAchievement_Desc_zone_full_clear
   - achievementId: zone_full_clear_65
-    conditionType: 11
+    conditionType: 10
     conditionParam: 65
     threshold: 1
     achievementPointReward: 110
@@ -1558,7 +1558,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_zone_full_clear
     descKey: UIAchievement_Desc_zone_full_clear
   - achievementId: zone_full_clear_66
-    conditionType: 11
+    conditionType: 10
     conditionParam: 66
     threshold: 1
     achievementPointReward: 110
@@ -1566,7 +1566,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_zone_full_clear
     descKey: UIAchievement_Desc_zone_full_clear
   - achievementId: zone_full_clear_67
-    conditionType: 11
+    conditionType: 10
     conditionParam: 67
     threshold: 1
     achievementPointReward: 110
@@ -1574,7 +1574,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_zone_full_clear
     descKey: UIAchievement_Desc_zone_full_clear
   - achievementId: zone_full_clear_68
-    conditionType: 11
+    conditionType: 10
     conditionParam: 68
     threshold: 1
     achievementPointReward: 110
@@ -1582,7 +1582,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_zone_full_clear
     descKey: UIAchievement_Desc_zone_full_clear
   - achievementId: zone_full_clear_69
-    conditionType: 11
+    conditionType: 10
     conditionParam: 69
     threshold: 1
     achievementPointReward: 110
@@ -1590,7 +1590,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_zone_full_clear
     descKey: UIAchievement_Desc_zone_full_clear
   - achievementId: zone_full_clear_70
-    conditionType: 11
+    conditionType: 10
     conditionParam: 70
     threshold: 1
     achievementPointReward: 110
@@ -1598,7 +1598,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_zone_full_clear
     descKey: UIAchievement_Desc_zone_full_clear
   - achievementId: zone_full_clear_71
-    conditionType: 11
+    conditionType: 10
     conditionParam: 71
     threshold: 1
     achievementPointReward: 120
@@ -1606,7 +1606,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_zone_full_clear
     descKey: UIAchievement_Desc_zone_full_clear
   - achievementId: zone_full_clear_72
-    conditionType: 11
+    conditionType: 10
     conditionParam: 72
     threshold: 1
     achievementPointReward: 120
@@ -1614,7 +1614,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_zone_full_clear
     descKey: UIAchievement_Desc_zone_full_clear
   - achievementId: zone_full_clear_73
-    conditionType: 11
+    conditionType: 10
     conditionParam: 73
     threshold: 1
     achievementPointReward: 120
@@ -1622,7 +1622,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_zone_full_clear
     descKey: UIAchievement_Desc_zone_full_clear
   - achievementId: zone_full_clear_74
-    conditionType: 11
+    conditionType: 10
     conditionParam: 74
     threshold: 1
     achievementPointReward: 120
@@ -1630,7 +1630,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_zone_full_clear
     descKey: UIAchievement_Desc_zone_full_clear
   - achievementId: zone_full_clear_75
-    conditionType: 11
+    conditionType: 10
     conditionParam: 75
     threshold: 1
     achievementPointReward: 120
@@ -1638,7 +1638,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_zone_full_clear
     descKey: UIAchievement_Desc_zone_full_clear
   - achievementId: zone_full_clear_76
-    conditionType: 11
+    conditionType: 10
     conditionParam: 76
     threshold: 1
     achievementPointReward: 120
@@ -1646,7 +1646,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_zone_full_clear
     descKey: UIAchievement_Desc_zone_full_clear
   - achievementId: zone_full_clear_77
-    conditionType: 11
+    conditionType: 10
     conditionParam: 77
     threshold: 1
     achievementPointReward: 120
@@ -1654,7 +1654,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_zone_full_clear
     descKey: UIAchievement_Desc_zone_full_clear
   - achievementId: zone_full_clear_78
-    conditionType: 11
+    conditionType: 10
     conditionParam: 78
     threshold: 1
     achievementPointReward: 120
@@ -1662,7 +1662,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_zone_full_clear
     descKey: UIAchievement_Desc_zone_full_clear
   - achievementId: zone_full_clear_79
-    conditionType: 11
+    conditionType: 10
     conditionParam: 79
     threshold: 1
     achievementPointReward: 120
@@ -1670,7 +1670,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_zone_full_clear
     descKey: UIAchievement_Desc_zone_full_clear
   - achievementId: zone_full_clear_80
-    conditionType: 11
+    conditionType: 10
     conditionParam: 80
     threshold: 1
     achievementPointReward: 120
@@ -1678,7 +1678,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_zone_full_clear
     descKey: UIAchievement_Desc_zone_full_clear
   - achievementId: zone_full_clear_81
-    conditionType: 11
+    conditionType: 10
     conditionParam: 81
     threshold: 1
     achievementPointReward: 130
@@ -1686,7 +1686,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_zone_full_clear
     descKey: UIAchievement_Desc_zone_full_clear
   - achievementId: zone_full_clear_82
-    conditionType: 11
+    conditionType: 10
     conditionParam: 82
     threshold: 1
     achievementPointReward: 130
@@ -1694,7 +1694,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_zone_full_clear
     descKey: UIAchievement_Desc_zone_full_clear
   - achievementId: zone_full_clear_83
-    conditionType: 11
+    conditionType: 10
     conditionParam: 83
     threshold: 1
     achievementPointReward: 130
@@ -1702,7 +1702,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_zone_full_clear
     descKey: UIAchievement_Desc_zone_full_clear
   - achievementId: zone_full_clear_84
-    conditionType: 11
+    conditionType: 10
     conditionParam: 84
     threshold: 1
     achievementPointReward: 130
@@ -1710,7 +1710,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_zone_full_clear
     descKey: UIAchievement_Desc_zone_full_clear
   - achievementId: zone_full_clear_85
-    conditionType: 11
+    conditionType: 10
     conditionParam: 85
     threshold: 1
     achievementPointReward: 130
@@ -1718,7 +1718,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_zone_full_clear
     descKey: UIAchievement_Desc_zone_full_clear
   - achievementId: zone_full_clear_86
-    conditionType: 11
+    conditionType: 10
     conditionParam: 86
     threshold: 1
     achievementPointReward: 130
@@ -1726,7 +1726,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_zone_full_clear
     descKey: UIAchievement_Desc_zone_full_clear
   - achievementId: zone_full_clear_87
-    conditionType: 11
+    conditionType: 10
     conditionParam: 87
     threshold: 1
     achievementPointReward: 130
@@ -1734,7 +1734,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_zone_full_clear
     descKey: UIAchievement_Desc_zone_full_clear
   - achievementId: zone_full_clear_88
-    conditionType: 11
+    conditionType: 10
     conditionParam: 88
     threshold: 1
     achievementPointReward: 130
@@ -1742,7 +1742,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_zone_full_clear
     descKey: UIAchievement_Desc_zone_full_clear
   - achievementId: zone_full_clear_89
-    conditionType: 11
+    conditionType: 10
     conditionParam: 89
     threshold: 1
     achievementPointReward: 130
@@ -1750,7 +1750,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_zone_full_clear
     descKey: UIAchievement_Desc_zone_full_clear
   - achievementId: zone_full_clear_90
-    conditionType: 11
+    conditionType: 10
     conditionParam: 90
     threshold: 1
     achievementPointReward: 130
@@ -1758,7 +1758,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_zone_full_clear
     descKey: UIAchievement_Desc_zone_full_clear
   - achievementId: zone_full_clear_91
-    conditionType: 11
+    conditionType: 10
     conditionParam: 91
     threshold: 1
     achievementPointReward: 140
@@ -1766,7 +1766,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_zone_full_clear
     descKey: UIAchievement_Desc_zone_full_clear
   - achievementId: zone_full_clear_92
-    conditionType: 11
+    conditionType: 10
     conditionParam: 92
     threshold: 1
     achievementPointReward: 140
@@ -1774,7 +1774,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_zone_full_clear
     descKey: UIAchievement_Desc_zone_full_clear
   - achievementId: zone_full_clear_93
-    conditionType: 11
+    conditionType: 10
     conditionParam: 93
     threshold: 1
     achievementPointReward: 140
@@ -1782,7 +1782,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_zone_full_clear
     descKey: UIAchievement_Desc_zone_full_clear
   - achievementId: zone_full_clear_94
-    conditionType: 11
+    conditionType: 10
     conditionParam: 94
     threshold: 1
     achievementPointReward: 140
@@ -1790,7 +1790,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_zone_full_clear
     descKey: UIAchievement_Desc_zone_full_clear
   - achievementId: zone_full_clear_95
-    conditionType: 11
+    conditionType: 10
     conditionParam: 95
     threshold: 1
     achievementPointReward: 140
@@ -1798,7 +1798,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_zone_full_clear
     descKey: UIAchievement_Desc_zone_full_clear
   - achievementId: zone_full_clear_96
-    conditionType: 11
+    conditionType: 10
     conditionParam: 96
     threshold: 1
     achievementPointReward: 140
@@ -1806,7 +1806,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_zone_full_clear
     descKey: UIAchievement_Desc_zone_full_clear
   - achievementId: zone_full_clear_97
-    conditionType: 11
+    conditionType: 10
     conditionParam: 97
     threshold: 1
     achievementPointReward: 140
@@ -1814,7 +1814,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_zone_full_clear
     descKey: UIAchievement_Desc_zone_full_clear
   - achievementId: zone_full_clear_98
-    conditionType: 11
+    conditionType: 10
     conditionParam: 98
     threshold: 1
     achievementPointReward: 140
@@ -1822,7 +1822,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_zone_full_clear
     descKey: UIAchievement_Desc_zone_full_clear
   - achievementId: zone_full_clear_99
-    conditionType: 11
+    conditionType: 10
     conditionParam: 99
     threshold: 1
     achievementPointReward: 140
@@ -1830,7 +1830,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_zone_full_clear
     descKey: UIAchievement_Desc_zone_full_clear
   - achievementId: zone_full_clear_100
-    conditionType: 11
+    conditionType: 10
     conditionParam: 100
     threshold: 1
     achievementPointReward: 140
@@ -2229,224 +2229,8 @@ MonoBehaviour:
     achievementPointRewardVip: 200
     nameKey: UIAchievement_Name_command_power
     descKey: UIAchievement_Desc_command_power
-  - achievementId: tactic_power_2000
-    conditionType: 6
-    conditionParam: 
-    threshold: 2000
-    achievementPointReward: 50
-    achievementPointRewardVip: 50
-    nameKey: UIAchievement_Name_tactic_power
-    descKey: UIAchievement_Desc_tactic_power
-  - achievementId: tactic_power_3000
-    conditionType: 6
-    conditionParam: 
-    threshold: 3000
-    achievementPointReward: 50
-    achievementPointRewardVip: 50
-    nameKey: UIAchievement_Name_tactic_power
-    descKey: UIAchievement_Desc_tactic_power
-  - achievementId: tactic_power_4000
-    conditionType: 6
-    conditionParam: 
-    threshold: 4000
-    achievementPointReward: 50
-    achievementPointRewardVip: 50
-    nameKey: UIAchievement_Name_tactic_power
-    descKey: UIAchievement_Desc_tactic_power
-  - achievementId: tactic_power_5000
-    conditionType: 6
-    conditionParam: 
-    threshold: 5000
-    achievementPointReward: 50
-    achievementPointRewardVip: 50
-    nameKey: UIAchievement_Name_tactic_power
-    descKey: UIAchievement_Desc_tactic_power
-  - achievementId: tactic_power_6000
-    conditionType: 6
-    conditionParam: 
-    threshold: 6000
-    achievementPointReward: 50
-    achievementPointRewardVip: 50
-    nameKey: UIAchievement_Name_tactic_power
-    descKey: UIAchievement_Desc_tactic_power
-  - achievementId: tactic_power_7000
-    conditionType: 6
-    conditionParam: 
-    threshold: 7000
-    achievementPointReward: 50
-    achievementPointRewardVip: 50
-    nameKey: UIAchievement_Name_tactic_power
-    descKey: UIAchievement_Desc_tactic_power
-  - achievementId: tactic_power_8000
-    conditionType: 6
-    conditionParam: 
-    threshold: 8000
-    achievementPointReward: 50
-    achievementPointRewardVip: 50
-    nameKey: UIAchievement_Name_tactic_power
-    descKey: UIAchievement_Desc_tactic_power
-  - achievementId: tactic_power_9000
-    conditionType: 6
-    conditionParam: 
-    threshold: 9000
-    achievementPointReward: 50
-    achievementPointRewardVip: 50
-    nameKey: UIAchievement_Name_tactic_power
-    descKey: UIAchievement_Desc_tactic_power
-  - achievementId: tactic_power_10000
-    conditionType: 6
-    conditionParam: 
-    threshold: 10000
-    achievementPointReward: 50
-    achievementPointRewardVip: 50
-    nameKey: UIAchievement_Name_tactic_power
-    descKey: UIAchievement_Desc_tactic_power
-  - achievementId: tactic_power_20000
-    conditionType: 6
-    conditionParam: 
-    threshold: 20000
-    achievementPointReward: 100
-    achievementPointRewardVip: 100
-    nameKey: UIAchievement_Name_tactic_power
-    descKey: UIAchievement_Desc_tactic_power
-  - achievementId: tactic_power_30000
-    conditionType: 6
-    conditionParam: 
-    threshold: 30000
-    achievementPointReward: 100
-    achievementPointRewardVip: 100
-    nameKey: UIAchievement_Name_tactic_power
-    descKey: UIAchievement_Desc_tactic_power
-  - achievementId: tactic_power_40000
-    conditionType: 6
-    conditionParam: 
-    threshold: 40000
-    achievementPointReward: 100
-    achievementPointRewardVip: 100
-    nameKey: UIAchievement_Name_tactic_power
-    descKey: UIAchievement_Desc_tactic_power
-  - achievementId: tactic_power_50000
-    conditionType: 6
-    conditionParam: 
-    threshold: 50000
-    achievementPointReward: 100
-    achievementPointRewardVip: 100
-    nameKey: UIAchievement_Name_tactic_power
-    descKey: UIAchievement_Desc_tactic_power
-  - achievementId: tactic_power_60000
-    conditionType: 6
-    conditionParam: 
-    threshold: 60000
-    achievementPointReward: 100
-    achievementPointRewardVip: 100
-    nameKey: UIAchievement_Name_tactic_power
-    descKey: UIAchievement_Desc_tactic_power
-  - achievementId: tactic_power_70000
-    conditionType: 6
-    conditionParam: 
-    threshold: 70000
-    achievementPointReward: 100
-    achievementPointRewardVip: 100
-    nameKey: UIAchievement_Name_tactic_power
-    descKey: UIAchievement_Desc_tactic_power
-  - achievementId: tactic_power_80000
-    conditionType: 6
-    conditionParam: 
-    threshold: 80000
-    achievementPointReward: 100
-    achievementPointRewardVip: 100
-    nameKey: UIAchievement_Name_tactic_power
-    descKey: UIAchievement_Desc_tactic_power
-  - achievementId: tactic_power_90000
-    conditionType: 6
-    conditionParam: 
-    threshold: 90000
-    achievementPointReward: 100
-    achievementPointRewardVip: 100
-    nameKey: UIAchievement_Name_tactic_power
-    descKey: UIAchievement_Desc_tactic_power
-  - achievementId: tactic_power_100000
-    conditionType: 6
-    conditionParam: 
-    threshold: 100000
-    achievementPointReward: 100
-    achievementPointRewardVip: 100
-    nameKey: UIAchievement_Name_tactic_power
-    descKey: UIAchievement_Desc_tactic_power
-  - achievementId: tactic_power_200000
-    conditionType: 6
-    conditionParam: 
-    threshold: 200000
-    achievementPointReward: 200
-    achievementPointRewardVip: 200
-    nameKey: UIAchievement_Name_tactic_power
-    descKey: UIAchievement_Desc_tactic_power
-  - achievementId: tactic_power_300000
-    conditionType: 6
-    conditionParam: 
-    threshold: 300000
-    achievementPointReward: 200
-    achievementPointRewardVip: 200
-    nameKey: UIAchievement_Name_tactic_power
-    descKey: UIAchievement_Desc_tactic_power
-  - achievementId: tactic_power_400000
-    conditionType: 6
-    conditionParam: 
-    threshold: 400000
-    achievementPointReward: 200
-    achievementPointRewardVip: 200
-    nameKey: UIAchievement_Name_tactic_power
-    descKey: UIAchievement_Desc_tactic_power
-  - achievementId: tactic_power_500000
-    conditionType: 6
-    conditionParam: 
-    threshold: 500000
-    achievementPointReward: 200
-    achievementPointRewardVip: 200
-    nameKey: UIAchievement_Name_tactic_power
-    descKey: UIAchievement_Desc_tactic_power
-  - achievementId: tactic_power_600000
-    conditionType: 6
-    conditionParam: 
-    threshold: 600000
-    achievementPointReward: 200
-    achievementPointRewardVip: 200
-    nameKey: UIAchievement_Name_tactic_power
-    descKey: UIAchievement_Desc_tactic_power
-  - achievementId: tactic_power_700000
-    conditionType: 6
-    conditionParam: 
-    threshold: 700000
-    achievementPointReward: 200
-    achievementPointRewardVip: 200
-    nameKey: UIAchievement_Name_tactic_power
-    descKey: UIAchievement_Desc_tactic_power
-  - achievementId: tactic_power_800000
-    conditionType: 6
-    conditionParam: 
-    threshold: 800000
-    achievementPointReward: 200
-    achievementPointRewardVip: 200
-    nameKey: UIAchievement_Name_tactic_power
-    descKey: UIAchievement_Desc_tactic_power
-  - achievementId: tactic_power_900000
-    conditionType: 6
-    conditionParam: 
-    threshold: 900000
-    achievementPointReward: 200
-    achievementPointRewardVip: 200
-    nameKey: UIAchievement_Name_tactic_power
-    descKey: UIAchievement_Desc_tactic_power
-  - achievementId: tactic_power_1000000
-    conditionType: 6
-    conditionParam: 
-    threshold: 1000000
-    achievementPointReward: 200
-    achievementPointRewardVip: 200
-    nameKey: UIAchievement_Name_tactic_power
-    descKey: UIAchievement_Desc_tactic_power
   - achievementId: exploration_point_total_1000
-    conditionType: 7
+    conditionType: 6
     conditionParam: 
     threshold: 1000
     achievementPointReward: 50
@@ -2454,7 +2238,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_exploration_point_total
     descKey: UIAchievement_Desc_exploration_point_total
   - achievementId: exploration_point_total_2000
-    conditionType: 7
+    conditionType: 6
     conditionParam: 
     threshold: 2000
     achievementPointReward: 50
@@ -2462,7 +2246,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_exploration_point_total
     descKey: UIAchievement_Desc_exploration_point_total
   - achievementId: exploration_point_total_3000
-    conditionType: 7
+    conditionType: 6
     conditionParam: 
     threshold: 3000
     achievementPointReward: 50
@@ -2470,7 +2254,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_exploration_point_total
     descKey: UIAchievement_Desc_exploration_point_total
   - achievementId: exploration_point_total_4000
-    conditionType: 7
+    conditionType: 6
     conditionParam: 
     threshold: 4000
     achievementPointReward: 50
@@ -2478,7 +2262,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_exploration_point_total
     descKey: UIAchievement_Desc_exploration_point_total
   - achievementId: exploration_point_total_5000
-    conditionType: 7
+    conditionType: 6
     conditionParam: 
     threshold: 5000
     achievementPointReward: 50
@@ -2486,7 +2270,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_exploration_point_total
     descKey: UIAchievement_Desc_exploration_point_total
   - achievementId: exploration_point_total_6000
-    conditionType: 7
+    conditionType: 6
     conditionParam: 
     threshold: 6000
     achievementPointReward: 50
@@ -2494,7 +2278,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_exploration_point_total
     descKey: UIAchievement_Desc_exploration_point_total
   - achievementId: exploration_point_total_7000
-    conditionType: 7
+    conditionType: 6
     conditionParam: 
     threshold: 7000
     achievementPointReward: 50
@@ -2502,7 +2286,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_exploration_point_total
     descKey: UIAchievement_Desc_exploration_point_total
   - achievementId: exploration_point_total_8000
-    conditionType: 7
+    conditionType: 6
     conditionParam: 
     threshold: 8000
     achievementPointReward: 50
@@ -2510,7 +2294,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_exploration_point_total
     descKey: UIAchievement_Desc_exploration_point_total
   - achievementId: exploration_point_total_9000
-    conditionType: 7
+    conditionType: 6
     conditionParam: 
     threshold: 9000
     achievementPointReward: 50
@@ -2518,7 +2302,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_exploration_point_total
     descKey: UIAchievement_Desc_exploration_point_total
   - achievementId: exploration_point_total_10000
-    conditionType: 7
+    conditionType: 6
     conditionParam: 
     threshold: 10000
     achievementPointReward: 50
@@ -2526,7 +2310,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_exploration_point_total
     descKey: UIAchievement_Desc_exploration_point_total
   - achievementId: exploration_point_total_20000
-    conditionType: 7
+    conditionType: 6
     conditionParam: 
     threshold: 20000
     achievementPointReward: 100
@@ -2534,7 +2318,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_exploration_point_total
     descKey: UIAchievement_Desc_exploration_point_total
   - achievementId: exploration_point_total_30000
-    conditionType: 7
+    conditionType: 6
     conditionParam: 
     threshold: 30000
     achievementPointReward: 100
@@ -2542,7 +2326,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_exploration_point_total
     descKey: UIAchievement_Desc_exploration_point_total
   - achievementId: exploration_point_total_40000
-    conditionType: 7
+    conditionType: 6
     conditionParam: 
     threshold: 40000
     achievementPointReward: 100
@@ -2550,7 +2334,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_exploration_point_total
     descKey: UIAchievement_Desc_exploration_point_total
   - achievementId: exploration_point_total_50000
-    conditionType: 7
+    conditionType: 6
     conditionParam: 
     threshold: 50000
     achievementPointReward: 100
@@ -2558,7 +2342,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_exploration_point_total
     descKey: UIAchievement_Desc_exploration_point_total
   - achievementId: exploration_point_total_60000
-    conditionType: 7
+    conditionType: 6
     conditionParam: 
     threshold: 60000
     achievementPointReward: 100
@@ -2566,7 +2350,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_exploration_point_total
     descKey: UIAchievement_Desc_exploration_point_total
   - achievementId: exploration_point_total_70000
-    conditionType: 7
+    conditionType: 6
     conditionParam: 
     threshold: 70000
     achievementPointReward: 100
@@ -2574,7 +2358,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_exploration_point_total
     descKey: UIAchievement_Desc_exploration_point_total
   - achievementId: exploration_point_total_80000
-    conditionType: 7
+    conditionType: 6
     conditionParam: 
     threshold: 80000
     achievementPointReward: 100
@@ -2582,7 +2366,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_exploration_point_total
     descKey: UIAchievement_Desc_exploration_point_total
   - achievementId: exploration_point_total_90000
-    conditionType: 7
+    conditionType: 6
     conditionParam: 
     threshold: 90000
     achievementPointReward: 100
@@ -2590,7 +2374,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_exploration_point_total
     descKey: UIAchievement_Desc_exploration_point_total
   - achievementId: exploration_point_total_100000
-    conditionType: 7
+    conditionType: 6
     conditionParam: 
     threshold: 100000
     achievementPointReward: 200
@@ -2598,7 +2382,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_exploration_point_total
     descKey: UIAchievement_Desc_exploration_point_total
   - achievementId: exploration_point_total_200000
-    conditionType: 7
+    conditionType: 6
     conditionParam: 
     threshold: 200000
     achievementPointReward: 200
@@ -2606,7 +2390,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_exploration_point_total
     descKey: UIAchievement_Desc_exploration_point_total
   - achievementId: exploration_point_total_300000
-    conditionType: 7
+    conditionType: 6
     conditionParam: 
     threshold: 300000
     achievementPointReward: 200
@@ -2614,7 +2398,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_exploration_point_total
     descKey: UIAchievement_Desc_exploration_point_total
   - achievementId: exploration_point_total_400000
-    conditionType: 7
+    conditionType: 6
     conditionParam: 
     threshold: 400000
     achievementPointReward: 200
@@ -2622,7 +2406,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_exploration_point_total
     descKey: UIAchievement_Desc_exploration_point_total
   - achievementId: exploration_point_total_500000
-    conditionType: 7
+    conditionType: 6
     conditionParam: 
     threshold: 500000
     achievementPointReward: 200
@@ -2630,7 +2414,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_exploration_point_total
     descKey: UIAchievement_Desc_exploration_point_total
   - achievementId: exploration_point_total_600000
-    conditionType: 7
+    conditionType: 6
     conditionParam: 
     threshold: 600000
     achievementPointReward: 200
@@ -2638,7 +2422,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_exploration_point_total
     descKey: UIAchievement_Desc_exploration_point_total
   - achievementId: exploration_point_total_700000
-    conditionType: 7
+    conditionType: 6
     conditionParam: 
     threshold: 700000
     achievementPointReward: 200
@@ -2646,7 +2430,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_exploration_point_total
     descKey: UIAchievement_Desc_exploration_point_total
   - achievementId: exploration_point_total_800000
-    conditionType: 7
+    conditionType: 6
     conditionParam: 
     threshold: 800000
     achievementPointReward: 200
@@ -2654,7 +2438,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_exploration_point_total
     descKey: UIAchievement_Desc_exploration_point_total
   - achievementId: exploration_point_total_900000
-    conditionType: 7
+    conditionType: 6
     conditionParam: 
     threshold: 900000
     achievementPointReward: 200
@@ -2662,7 +2446,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_exploration_point_total
     descKey: UIAchievement_Desc_exploration_point_total
   - achievementId: exploration_point_total_1000000
-    conditionType: 7
+    conditionType: 6
     conditionParam: 
     threshold: 1000000
     achievementPointReward: 200
@@ -2670,7 +2454,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_exploration_point_total
     descKey: UIAchievement_Desc_exploration_point_total
   - achievementId: hull_tier4_count_1
-    conditionType: 8
+    conditionType: 7
     conditionParam: 4
     threshold: 1
     achievementPointReward: 10
@@ -2678,7 +2462,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_hull_tier_count
     descKey: UIAchievement_Desc_hull_tier_count
   - achievementId: hull_tier4_count_2
-    conditionType: 8
+    conditionType: 7
     conditionParam: 4
     threshold: 2
     achievementPointReward: 10
@@ -2686,7 +2470,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_hull_tier_count
     descKey: UIAchievement_Desc_hull_tier_count
   - achievementId: hull_tier4_count_3
-    conditionType: 8
+    conditionType: 7
     conditionParam: 4
     threshold: 3
     achievementPointReward: 10
@@ -2694,7 +2478,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_hull_tier_count
     descKey: UIAchievement_Desc_hull_tier_count
   - achievementId: hull_tier5_count_1
-    conditionType: 8
+    conditionType: 7
     conditionParam: 5
     threshold: 1
     achievementPointReward: 20
@@ -2702,7 +2486,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_hull_tier_count
     descKey: UIAchievement_Desc_hull_tier_count
   - achievementId: hull_tier5_count_2
-    conditionType: 8
+    conditionType: 7
     conditionParam: 5
     threshold: 2
     achievementPointReward: 20
@@ -2710,7 +2494,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_hull_tier_count
     descKey: UIAchievement_Desc_hull_tier_count
   - achievementId: hull_tier5_count_3
-    conditionType: 8
+    conditionType: 7
     conditionParam: 5
     threshold: 3
     achievementPointReward: 20
@@ -2718,7 +2502,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_hull_tier_count
     descKey: UIAchievement_Desc_hull_tier_count
   - achievementId: hull_tier6_count_1
-    conditionType: 8
+    conditionType: 7
     conditionParam: 6
     threshold: 1
     achievementPointReward: 30
@@ -2726,7 +2510,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_hull_tier_count
     descKey: UIAchievement_Desc_hull_tier_count
   - achievementId: hull_tier6_count_2
-    conditionType: 8
+    conditionType: 7
     conditionParam: 6
     threshold: 2
     achievementPointReward: 30
@@ -2734,7 +2518,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_hull_tier_count
     descKey: UIAchievement_Desc_hull_tier_count
   - achievementId: hull_tier6_count_3
-    conditionType: 8
+    conditionType: 7
     conditionParam: 6
     threshold: 3
     achievementPointReward: 30
@@ -2742,7 +2526,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_hull_tier_count
     descKey: UIAchievement_Desc_hull_tier_count
   - achievementId: hull_tier7_count_1
-    conditionType: 8
+    conditionType: 7
     conditionParam: 7
     threshold: 1
     achievementPointReward: 40
@@ -2750,7 +2534,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_hull_tier_count
     descKey: UIAchievement_Desc_hull_tier_count
   - achievementId: hull_tier7_count_2
-    conditionType: 8
+    conditionType: 7
     conditionParam: 7
     threshold: 2
     achievementPointReward: 40
@@ -2758,7 +2542,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_hull_tier_count
     descKey: UIAchievement_Desc_hull_tier_count
   - achievementId: hull_tier7_count_3
-    conditionType: 8
+    conditionType: 7
     conditionParam: 7
     threshold: 3
     achievementPointReward: 40
@@ -2766,7 +2550,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_hull_tier_count
     descKey: UIAchievement_Desc_hull_tier_count
   - achievementId: hull_tier8_count_1
-    conditionType: 8
+    conditionType: 7
     conditionParam: 8
     threshold: 1
     achievementPointReward: 50
@@ -2774,7 +2558,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_hull_tier_count
     descKey: UIAchievement_Desc_hull_tier_count
   - achievementId: hull_tier8_count_2
-    conditionType: 8
+    conditionType: 7
     conditionParam: 8
     threshold: 2
     achievementPointReward: 50
@@ -2782,7 +2566,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_hull_tier_count
     descKey: UIAchievement_Desc_hull_tier_count
   - achievementId: hull_tier8_count_3
-    conditionType: 8
+    conditionType: 7
     conditionParam: 8
     threshold: 3
     achievementPointReward: 50
@@ -2790,7 +2574,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_hull_tier_count
     descKey: UIAchievement_Desc_hull_tier_count
   - achievementId: hull_tier9_count_1
-    conditionType: 8
+    conditionType: 7
     conditionParam: 9
     threshold: 1
     achievementPointReward: 60
@@ -2798,7 +2582,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_hull_tier_count
     descKey: UIAchievement_Desc_hull_tier_count
   - achievementId: hull_tier9_count_2
-    conditionType: 8
+    conditionType: 7
     conditionParam: 9
     threshold: 2
     achievementPointReward: 60
@@ -2806,7 +2590,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_hull_tier_count
     descKey: UIAchievement_Desc_hull_tier_count
   - achievementId: hull_tier9_count_3
-    conditionType: 8
+    conditionType: 7
     conditionParam: 9
     threshold: 3
     achievementPointReward: 60
@@ -2814,7 +2598,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_hull_tier_count
     descKey: UIAchievement_Desc_hull_tier_count
   - achievementId: hull_tier10_count_1
-    conditionType: 8
+    conditionType: 7
     conditionParam: 10
     threshold: 1
     achievementPointReward: 70
@@ -2822,7 +2606,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_hull_tier_count
     descKey: UIAchievement_Desc_hull_tier_count
   - achievementId: hull_tier10_count_2
-    conditionType: 8
+    conditionType: 7
     conditionParam: 10
     threshold: 2
     achievementPointReward: 70
@@ -2830,7 +2614,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_hull_tier_count
     descKey: UIAchievement_Desc_hull_tier_count
   - achievementId: hull_tier10_count_3
-    conditionType: 8
+    conditionType: 7
     conditionParam: 10
     threshold: 3
     achievementPointReward: 70
@@ -2838,7 +2622,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_hull_tier_count
     descKey: UIAchievement_Desc_hull_tier_count
   - achievementId: hull_tier11_count_1
-    conditionType: 8
+    conditionType: 7
     conditionParam: 11
     threshold: 1
     achievementPointReward: 80
@@ -2846,7 +2630,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_hull_tier_count
     descKey: UIAchievement_Desc_hull_tier_count
   - achievementId: hull_tier11_count_2
-    conditionType: 8
+    conditionType: 7
     conditionParam: 11
     threshold: 2
     achievementPointReward: 80
@@ -2854,7 +2638,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_hull_tier_count
     descKey: UIAchievement_Desc_hull_tier_count
   - achievementId: hull_tier11_count_3
-    conditionType: 8
+    conditionType: 7
     conditionParam: 11
     threshold: 3
     achievementPointReward: 80
@@ -2862,7 +2646,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_hull_tier_count
     descKey: UIAchievement_Desc_hull_tier_count
   - achievementId: hull_tier12_count_1
-    conditionType: 8
+    conditionType: 7
     conditionParam: 12
     threshold: 1
     achievementPointReward: 90
@@ -2870,7 +2654,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_hull_tier_count
     descKey: UIAchievement_Desc_hull_tier_count
   - achievementId: hull_tier12_count_2
-    conditionType: 8
+    conditionType: 7
     conditionParam: 12
     threshold: 2
     achievementPointReward: 90
@@ -2878,7 +2662,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_hull_tier_count
     descKey: UIAchievement_Desc_hull_tier_count
   - achievementId: hull_tier12_count_3
-    conditionType: 8
+    conditionType: 7
     conditionParam: 12
     threshold: 3
     achievementPointReward: 90
@@ -2886,7 +2670,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_hull_tier_count
     descKey: UIAchievement_Desc_hull_tier_count
   - achievementId: hull_tier13_count_1
-    conditionType: 8
+    conditionType: 7
     conditionParam: 13
     threshold: 1
     achievementPointReward: 100
@@ -2894,7 +2678,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_hull_tier_count
     descKey: UIAchievement_Desc_hull_tier_count
   - achievementId: hull_tier13_count_2
-    conditionType: 8
+    conditionType: 7
     conditionParam: 13
     threshold: 2
     achievementPointReward: 100
@@ -2902,7 +2686,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_hull_tier_count
     descKey: UIAchievement_Desc_hull_tier_count
   - achievementId: hull_tier13_count_3
-    conditionType: 8
+    conditionType: 7
     conditionParam: 13
     threshold: 3
     achievementPointReward: 100
@@ -2910,7 +2694,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_hull_tier_count
     descKey: UIAchievement_Desc_hull_tier_count
   - achievementId: hull_tier14_count_1
-    conditionType: 8
+    conditionType: 7
     conditionParam: 14
     threshold: 1
     achievementPointReward: 100
@@ -2918,7 +2702,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_hull_tier_count
     descKey: UIAchievement_Desc_hull_tier_count
   - achievementId: hull_tier14_count_2
-    conditionType: 8
+    conditionType: 7
     conditionParam: 14
     threshold: 2
     achievementPointReward: 100
@@ -2926,7 +2710,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_hull_tier_count
     descKey: UIAchievement_Desc_hull_tier_count
   - achievementId: hull_tier14_count_3
-    conditionType: 8
+    conditionType: 7
     conditionParam: 14
     threshold: 3
     achievementPointReward: 100
@@ -2934,7 +2718,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_hull_tier_count
     descKey: UIAchievement_Desc_hull_tier_count
   - achievementId: module_beam_tier2_count_1
-    conditionType: 9
+    conditionType: 8
     conditionParam: beam_2
     threshold: 1
     achievementPointReward: 10
@@ -2942,7 +2726,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_beam_tier2_count_2
-    conditionType: 9
+    conditionType: 8
     conditionParam: beam_2
     threshold: 2
     achievementPointReward: 10
@@ -2950,7 +2734,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_beam_tier2_count_3
-    conditionType: 9
+    conditionType: 8
     conditionParam: beam_2
     threshold: 3
     achievementPointReward: 10
@@ -2958,7 +2742,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_beam_tier3_count_1
-    conditionType: 9
+    conditionType: 8
     conditionParam: beam_3
     threshold: 1
     achievementPointReward: 10
@@ -2966,7 +2750,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_beam_tier3_count_2
-    conditionType: 9
+    conditionType: 8
     conditionParam: beam_3
     threshold: 2
     achievementPointReward: 10
@@ -2974,7 +2758,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_beam_tier3_count_3
-    conditionType: 9
+    conditionType: 8
     conditionParam: beam_3
     threshold: 3
     achievementPointReward: 10
@@ -2982,7 +2766,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_beam_tier4_count_1
-    conditionType: 9
+    conditionType: 8
     conditionParam: beam_4
     threshold: 1
     achievementPointReward: 10
@@ -2990,7 +2774,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_beam_tier4_count_2
-    conditionType: 9
+    conditionType: 8
     conditionParam: beam_4
     threshold: 2
     achievementPointReward: 10
@@ -2998,7 +2782,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_beam_tier4_count_3
-    conditionType: 9
+    conditionType: 8
     conditionParam: beam_4
     threshold: 3
     achievementPointReward: 10
@@ -3006,7 +2790,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_beam_tier5_count_1
-    conditionType: 9
+    conditionType: 8
     conditionParam: beam_5
     threshold: 1
     achievementPointReward: 20
@@ -3014,7 +2798,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_beam_tier5_count_2
-    conditionType: 9
+    conditionType: 8
     conditionParam: beam_5
     threshold: 2
     achievementPointReward: 20
@@ -3022,7 +2806,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_beam_tier5_count_3
-    conditionType: 9
+    conditionType: 8
     conditionParam: beam_5
     threshold: 3
     achievementPointReward: 20
@@ -3030,7 +2814,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_beam_tier6_count_1
-    conditionType: 9
+    conditionType: 8
     conditionParam: beam_6
     threshold: 1
     achievementPointReward: 30
@@ -3038,7 +2822,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_beam_tier6_count_2
-    conditionType: 9
+    conditionType: 8
     conditionParam: beam_6
     threshold: 2
     achievementPointReward: 30
@@ -3046,7 +2830,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_beam_tier6_count_3
-    conditionType: 9
+    conditionType: 8
     conditionParam: beam_6
     threshold: 3
     achievementPointReward: 30
@@ -3054,7 +2838,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_beam_tier7_count_1
-    conditionType: 9
+    conditionType: 8
     conditionParam: beam_7
     threshold: 1
     achievementPointReward: 40
@@ -3062,7 +2846,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_beam_tier7_count_2
-    conditionType: 9
+    conditionType: 8
     conditionParam: beam_7
     threshold: 2
     achievementPointReward: 40
@@ -3070,7 +2854,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_beam_tier7_count_3
-    conditionType: 9
+    conditionType: 8
     conditionParam: beam_7
     threshold: 3
     achievementPointReward: 40
@@ -3078,7 +2862,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_beam_tier8_count_1
-    conditionType: 9
+    conditionType: 8
     conditionParam: beam_8
     threshold: 1
     achievementPointReward: 50
@@ -3086,7 +2870,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_beam_tier8_count_2
-    conditionType: 9
+    conditionType: 8
     conditionParam: beam_8
     threshold: 2
     achievementPointReward: 50
@@ -3094,7 +2878,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_beam_tier8_count_3
-    conditionType: 9
+    conditionType: 8
     conditionParam: beam_8
     threshold: 3
     achievementPointReward: 50
@@ -3102,7 +2886,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_beam_tier9_count_1
-    conditionType: 9
+    conditionType: 8
     conditionParam: beam_9
     threshold: 1
     achievementPointReward: 60
@@ -3110,7 +2894,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_beam_tier9_count_2
-    conditionType: 9
+    conditionType: 8
     conditionParam: beam_9
     threshold: 2
     achievementPointReward: 60
@@ -3118,7 +2902,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_beam_tier9_count_3
-    conditionType: 9
+    conditionType: 8
     conditionParam: beam_9
     threshold: 3
     achievementPointReward: 60
@@ -3126,7 +2910,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_beam_tier10_count_1
-    conditionType: 9
+    conditionType: 8
     conditionParam: beam_10
     threshold: 1
     achievementPointReward: 70
@@ -3134,7 +2918,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_beam_tier10_count_2
-    conditionType: 9
+    conditionType: 8
     conditionParam: beam_10
     threshold: 2
     achievementPointReward: 70
@@ -3142,7 +2926,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_beam_tier10_count_3
-    conditionType: 9
+    conditionType: 8
     conditionParam: beam_10
     threshold: 3
     achievementPointReward: 70
@@ -3150,7 +2934,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_beam_tier11_count_1
-    conditionType: 9
+    conditionType: 8
     conditionParam: beam_11
     threshold: 1
     achievementPointReward: 80
@@ -3158,7 +2942,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_beam_tier11_count_2
-    conditionType: 9
+    conditionType: 8
     conditionParam: beam_11
     threshold: 2
     achievementPointReward: 80
@@ -3166,7 +2950,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_beam_tier11_count_3
-    conditionType: 9
+    conditionType: 8
     conditionParam: beam_11
     threshold: 3
     achievementPointReward: 80
@@ -3174,7 +2958,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_beam_tier12_count_1
-    conditionType: 9
+    conditionType: 8
     conditionParam: beam_12
     threshold: 1
     achievementPointReward: 90
@@ -3182,7 +2966,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_beam_tier12_count_2
-    conditionType: 9
+    conditionType: 8
     conditionParam: beam_12
     threshold: 2
     achievementPointReward: 90
@@ -3190,7 +2974,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_beam_tier12_count_3
-    conditionType: 9
+    conditionType: 8
     conditionParam: beam_12
     threshold: 3
     achievementPointReward: 90
@@ -3198,7 +2982,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_beam_tier13_count_1
-    conditionType: 9
+    conditionType: 8
     conditionParam: beam_13
     threshold: 1
     achievementPointReward: 100
@@ -3206,7 +2990,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_beam_tier13_count_2
-    conditionType: 9
+    conditionType: 8
     conditionParam: beam_13
     threshold: 2
     achievementPointReward: 100
@@ -3214,7 +2998,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_beam_tier13_count_3
-    conditionType: 9
+    conditionType: 8
     conditionParam: beam_13
     threshold: 3
     achievementPointReward: 100
@@ -3222,7 +3006,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_beam_tier14_count_1
-    conditionType: 9
+    conditionType: 8
     conditionParam: beam_14
     threshold: 1
     achievementPointReward: 100
@@ -3230,7 +3014,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_beam_tier14_count_2
-    conditionType: 9
+    conditionType: 8
     conditionParam: beam_14
     threshold: 2
     achievementPointReward: 100
@@ -3238,7 +3022,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_beam_tier14_count_3
-    conditionType: 9
+    conditionType: 8
     conditionParam: beam_14
     threshold: 3
     achievementPointReward: 100
@@ -3246,7 +3030,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_missile_tier2_count_1
-    conditionType: 9
+    conditionType: 8
     conditionParam: missile_2
     threshold: 1
     achievementPointReward: 10
@@ -3254,7 +3038,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_missile_tier2_count_2
-    conditionType: 9
+    conditionType: 8
     conditionParam: missile_2
     threshold: 2
     achievementPointReward: 10
@@ -3262,7 +3046,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_missile_tier2_count_3
-    conditionType: 9
+    conditionType: 8
     conditionParam: missile_2
     threshold: 3
     achievementPointReward: 10
@@ -3270,7 +3054,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_missile_tier3_count_1
-    conditionType: 9
+    conditionType: 8
     conditionParam: missile_3
     threshold: 1
     achievementPointReward: 10
@@ -3278,7 +3062,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_missile_tier3_count_2
-    conditionType: 9
+    conditionType: 8
     conditionParam: missile_3
     threshold: 2
     achievementPointReward: 10
@@ -3286,7 +3070,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_missile_tier3_count_3
-    conditionType: 9
+    conditionType: 8
     conditionParam: missile_3
     threshold: 3
     achievementPointReward: 10
@@ -3294,7 +3078,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_missile_tier4_count_1
-    conditionType: 9
+    conditionType: 8
     conditionParam: missile_4
     threshold: 1
     achievementPointReward: 10
@@ -3302,7 +3086,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_missile_tier4_count_2
-    conditionType: 9
+    conditionType: 8
     conditionParam: missile_4
     threshold: 2
     achievementPointReward: 10
@@ -3310,7 +3094,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_missile_tier4_count_3
-    conditionType: 9
+    conditionType: 8
     conditionParam: missile_4
     threshold: 3
     achievementPointReward: 10
@@ -3318,7 +3102,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_missile_tier5_count_1
-    conditionType: 9
+    conditionType: 8
     conditionParam: missile_5
     threshold: 1
     achievementPointReward: 20
@@ -3326,7 +3110,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_missile_tier5_count_2
-    conditionType: 9
+    conditionType: 8
     conditionParam: missile_5
     threshold: 2
     achievementPointReward: 20
@@ -3334,7 +3118,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_missile_tier5_count_3
-    conditionType: 9
+    conditionType: 8
     conditionParam: missile_5
     threshold: 3
     achievementPointReward: 20
@@ -3342,7 +3126,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_missile_tier6_count_1
-    conditionType: 9
+    conditionType: 8
     conditionParam: missile_6
     threshold: 1
     achievementPointReward: 30
@@ -3350,7 +3134,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_missile_tier6_count_2
-    conditionType: 9
+    conditionType: 8
     conditionParam: missile_6
     threshold: 2
     achievementPointReward: 30
@@ -3358,7 +3142,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_missile_tier6_count_3
-    conditionType: 9
+    conditionType: 8
     conditionParam: missile_6
     threshold: 3
     achievementPointReward: 30
@@ -3366,7 +3150,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_missile_tier7_count_1
-    conditionType: 9
+    conditionType: 8
     conditionParam: missile_7
     threshold: 1
     achievementPointReward: 40
@@ -3374,7 +3158,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_missile_tier7_count_2
-    conditionType: 9
+    conditionType: 8
     conditionParam: missile_7
     threshold: 2
     achievementPointReward: 40
@@ -3382,7 +3166,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_missile_tier7_count_3
-    conditionType: 9
+    conditionType: 8
     conditionParam: missile_7
     threshold: 3
     achievementPointReward: 40
@@ -3390,7 +3174,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_missile_tier8_count_1
-    conditionType: 9
+    conditionType: 8
     conditionParam: missile_8
     threshold: 1
     achievementPointReward: 50
@@ -3398,7 +3182,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_missile_tier8_count_2
-    conditionType: 9
+    conditionType: 8
     conditionParam: missile_8
     threshold: 2
     achievementPointReward: 50
@@ -3406,7 +3190,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_missile_tier8_count_3
-    conditionType: 9
+    conditionType: 8
     conditionParam: missile_8
     threshold: 3
     achievementPointReward: 50
@@ -3414,7 +3198,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_missile_tier9_count_1
-    conditionType: 9
+    conditionType: 8
     conditionParam: missile_9
     threshold: 1
     achievementPointReward: 60
@@ -3422,7 +3206,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_missile_tier9_count_2
-    conditionType: 9
+    conditionType: 8
     conditionParam: missile_9
     threshold: 2
     achievementPointReward: 60
@@ -3430,7 +3214,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_missile_tier9_count_3
-    conditionType: 9
+    conditionType: 8
     conditionParam: missile_9
     threshold: 3
     achievementPointReward: 60
@@ -3438,7 +3222,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_missile_tier10_count_1
-    conditionType: 9
+    conditionType: 8
     conditionParam: missile_10
     threshold: 1
     achievementPointReward: 70
@@ -3446,7 +3230,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_missile_tier10_count_2
-    conditionType: 9
+    conditionType: 8
     conditionParam: missile_10
     threshold: 2
     achievementPointReward: 70
@@ -3454,7 +3238,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_missile_tier10_count_3
-    conditionType: 9
+    conditionType: 8
     conditionParam: missile_10
     threshold: 3
     achievementPointReward: 70
@@ -3462,7 +3246,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_missile_tier11_count_1
-    conditionType: 9
+    conditionType: 8
     conditionParam: missile_11
     threshold: 1
     achievementPointReward: 80
@@ -3470,7 +3254,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_missile_tier11_count_2
-    conditionType: 9
+    conditionType: 8
     conditionParam: missile_11
     threshold: 2
     achievementPointReward: 80
@@ -3478,7 +3262,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_missile_tier11_count_3
-    conditionType: 9
+    conditionType: 8
     conditionParam: missile_11
     threshold: 3
     achievementPointReward: 80
@@ -3486,7 +3270,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_missile_tier12_count_1
-    conditionType: 9
+    conditionType: 8
     conditionParam: missile_12
     threshold: 1
     achievementPointReward: 90
@@ -3494,7 +3278,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_missile_tier12_count_2
-    conditionType: 9
+    conditionType: 8
     conditionParam: missile_12
     threshold: 2
     achievementPointReward: 90
@@ -3502,7 +3286,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_missile_tier12_count_3
-    conditionType: 9
+    conditionType: 8
     conditionParam: missile_12
     threshold: 3
     achievementPointReward: 90
@@ -3510,7 +3294,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_missile_tier13_count_1
-    conditionType: 9
+    conditionType: 8
     conditionParam: missile_13
     threshold: 1
     achievementPointReward: 100
@@ -3518,7 +3302,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_missile_tier13_count_2
-    conditionType: 9
+    conditionType: 8
     conditionParam: missile_13
     threshold: 2
     achievementPointReward: 100
@@ -3526,7 +3310,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_missile_tier13_count_3
-    conditionType: 9
+    conditionType: 8
     conditionParam: missile_13
     threshold: 3
     achievementPointReward: 100
@@ -3534,7 +3318,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_missile_tier14_count_1
-    conditionType: 9
+    conditionType: 8
     conditionParam: missile_14
     threshold: 1
     achievementPointReward: 100
@@ -3542,7 +3326,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_missile_tier14_count_2
-    conditionType: 9
+    conditionType: 8
     conditionParam: missile_14
     threshold: 2
     achievementPointReward: 100
@@ -3550,7 +3334,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_missile_tier14_count_3
-    conditionType: 9
+    conditionType: 8
     conditionParam: missile_14
     threshold: 3
     achievementPointReward: 100
@@ -3558,7 +3342,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_hangar_tier2_count_1
-    conditionType: 9
+    conditionType: 8
     conditionParam: hangar_2
     threshold: 1
     achievementPointReward: 10
@@ -3566,7 +3350,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_hangar_tier2_count_2
-    conditionType: 9
+    conditionType: 8
     conditionParam: hangar_2
     threshold: 2
     achievementPointReward: 10
@@ -3574,7 +3358,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_hangar_tier2_count_3
-    conditionType: 9
+    conditionType: 8
     conditionParam: hangar_2
     threshold: 3
     achievementPointReward: 10
@@ -3582,7 +3366,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_hangar_tier3_count_1
-    conditionType: 9
+    conditionType: 8
     conditionParam: hangar_3
     threshold: 1
     achievementPointReward: 10
@@ -3590,7 +3374,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_hangar_tier3_count_2
-    conditionType: 9
+    conditionType: 8
     conditionParam: hangar_3
     threshold: 2
     achievementPointReward: 10
@@ -3598,7 +3382,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_hangar_tier3_count_3
-    conditionType: 9
+    conditionType: 8
     conditionParam: hangar_3
     threshold: 3
     achievementPointReward: 10
@@ -3606,7 +3390,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_hangar_tier4_count_1
-    conditionType: 9
+    conditionType: 8
     conditionParam: hangar_4
     threshold: 1
     achievementPointReward: 10
@@ -3614,7 +3398,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_hangar_tier4_count_2
-    conditionType: 9
+    conditionType: 8
     conditionParam: hangar_4
     threshold: 2
     achievementPointReward: 10
@@ -3622,7 +3406,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_hangar_tier4_count_3
-    conditionType: 9
+    conditionType: 8
     conditionParam: hangar_4
     threshold: 3
     achievementPointReward: 10
@@ -3630,7 +3414,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_hangar_tier5_count_1
-    conditionType: 9
+    conditionType: 8
     conditionParam: hangar_5
     threshold: 1
     achievementPointReward: 20
@@ -3638,7 +3422,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_hangar_tier5_count_2
-    conditionType: 9
+    conditionType: 8
     conditionParam: hangar_5
     threshold: 2
     achievementPointReward: 20
@@ -3646,7 +3430,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_hangar_tier5_count_3
-    conditionType: 9
+    conditionType: 8
     conditionParam: hangar_5
     threshold: 3
     achievementPointReward: 20
@@ -3654,7 +3438,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_hangar_tier6_count_1
-    conditionType: 9
+    conditionType: 8
     conditionParam: hangar_6
     threshold: 1
     achievementPointReward: 30
@@ -3662,7 +3446,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_hangar_tier6_count_2
-    conditionType: 9
+    conditionType: 8
     conditionParam: hangar_6
     threshold: 2
     achievementPointReward: 30
@@ -3670,7 +3454,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_hangar_tier6_count_3
-    conditionType: 9
+    conditionType: 8
     conditionParam: hangar_6
     threshold: 3
     achievementPointReward: 30
@@ -3678,7 +3462,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_hangar_tier7_count_1
-    conditionType: 9
+    conditionType: 8
     conditionParam: hangar_7
     threshold: 1
     achievementPointReward: 40
@@ -3686,7 +3470,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_hangar_tier7_count_2
-    conditionType: 9
+    conditionType: 8
     conditionParam: hangar_7
     threshold: 2
     achievementPointReward: 40
@@ -3694,7 +3478,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_hangar_tier7_count_3
-    conditionType: 9
+    conditionType: 8
     conditionParam: hangar_7
     threshold: 3
     achievementPointReward: 40
@@ -3702,7 +3486,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_hangar_tier8_count_1
-    conditionType: 9
+    conditionType: 8
     conditionParam: hangar_8
     threshold: 1
     achievementPointReward: 50
@@ -3710,7 +3494,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_hangar_tier8_count_2
-    conditionType: 9
+    conditionType: 8
     conditionParam: hangar_8
     threshold: 2
     achievementPointReward: 50
@@ -3718,7 +3502,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_hangar_tier8_count_3
-    conditionType: 9
+    conditionType: 8
     conditionParam: hangar_8
     threshold: 3
     achievementPointReward: 50
@@ -3726,7 +3510,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_hangar_tier9_count_1
-    conditionType: 9
+    conditionType: 8
     conditionParam: hangar_9
     threshold: 1
     achievementPointReward: 60
@@ -3734,7 +3518,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_hangar_tier9_count_2
-    conditionType: 9
+    conditionType: 8
     conditionParam: hangar_9
     threshold: 2
     achievementPointReward: 60
@@ -3742,7 +3526,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_hangar_tier9_count_3
-    conditionType: 9
+    conditionType: 8
     conditionParam: hangar_9
     threshold: 3
     achievementPointReward: 60
@@ -3750,7 +3534,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_hangar_tier10_count_1
-    conditionType: 9
+    conditionType: 8
     conditionParam: hangar_10
     threshold: 1
     achievementPointReward: 70
@@ -3758,7 +3542,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_hangar_tier10_count_2
-    conditionType: 9
+    conditionType: 8
     conditionParam: hangar_10
     threshold: 2
     achievementPointReward: 70
@@ -3766,7 +3550,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_hangar_tier10_count_3
-    conditionType: 9
+    conditionType: 8
     conditionParam: hangar_10
     threshold: 3
     achievementPointReward: 70
@@ -3774,7 +3558,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_hangar_tier11_count_1
-    conditionType: 9
+    conditionType: 8
     conditionParam: hangar_11
     threshold: 1
     achievementPointReward: 80
@@ -3782,7 +3566,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_hangar_tier11_count_2
-    conditionType: 9
+    conditionType: 8
     conditionParam: hangar_11
     threshold: 2
     achievementPointReward: 80
@@ -3790,7 +3574,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_hangar_tier11_count_3
-    conditionType: 9
+    conditionType: 8
     conditionParam: hangar_11
     threshold: 3
     achievementPointReward: 80
@@ -3798,7 +3582,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_hangar_tier12_count_1
-    conditionType: 9
+    conditionType: 8
     conditionParam: hangar_12
     threshold: 1
     achievementPointReward: 90
@@ -3806,7 +3590,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_hangar_tier12_count_2
-    conditionType: 9
+    conditionType: 8
     conditionParam: hangar_12
     threshold: 2
     achievementPointReward: 90
@@ -3814,7 +3598,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_hangar_tier12_count_3
-    conditionType: 9
+    conditionType: 8
     conditionParam: hangar_12
     threshold: 3
     achievementPointReward: 90
@@ -3822,7 +3606,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_hangar_tier13_count_1
-    conditionType: 9
+    conditionType: 8
     conditionParam: hangar_13
     threshold: 1
     achievementPointReward: 100
@@ -3830,7 +3614,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_hangar_tier13_count_2
-    conditionType: 9
+    conditionType: 8
     conditionParam: hangar_13
     threshold: 2
     achievementPointReward: 100
@@ -3838,7 +3622,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_hangar_tier13_count_3
-    conditionType: 9
+    conditionType: 8
     conditionParam: hangar_13
     threshold: 3
     achievementPointReward: 100
@@ -3846,7 +3630,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_hangar_tier14_count_1
-    conditionType: 9
+    conditionType: 8
     conditionParam: hangar_14
     threshold: 1
     achievementPointReward: 100
@@ -3854,7 +3638,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_hangar_tier14_count_2
-    conditionType: 9
+    conditionType: 8
     conditionParam: hangar_14
     threshold: 2
     achievementPointReward: 100
@@ -3862,7 +3646,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_hangar_tier14_count_3
-    conditionType: 9
+    conditionType: 8
     conditionParam: hangar_14
     threshold: 3
     achievementPointReward: 100
@@ -3870,7 +3654,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_shield_tier2_count_1
-    conditionType: 9
+    conditionType: 8
     conditionParam: shield_2
     threshold: 1
     achievementPointReward: 10
@@ -3878,7 +3662,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_shield_tier2_count_2
-    conditionType: 9
+    conditionType: 8
     conditionParam: shield_2
     threshold: 2
     achievementPointReward: 10
@@ -3886,7 +3670,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_shield_tier2_count_3
-    conditionType: 9
+    conditionType: 8
     conditionParam: shield_2
     threshold: 3
     achievementPointReward: 10
@@ -3894,7 +3678,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_shield_tier3_count_1
-    conditionType: 9
+    conditionType: 8
     conditionParam: shield_3
     threshold: 1
     achievementPointReward: 10
@@ -3902,7 +3686,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_shield_tier3_count_2
-    conditionType: 9
+    conditionType: 8
     conditionParam: shield_3
     threshold: 2
     achievementPointReward: 10
@@ -3910,7 +3694,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_shield_tier3_count_3
-    conditionType: 9
+    conditionType: 8
     conditionParam: shield_3
     threshold: 3
     achievementPointReward: 10
@@ -3918,7 +3702,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_shield_tier4_count_1
-    conditionType: 9
+    conditionType: 8
     conditionParam: shield_4
     threshold: 1
     achievementPointReward: 10
@@ -3926,7 +3710,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_shield_tier4_count_2
-    conditionType: 9
+    conditionType: 8
     conditionParam: shield_4
     threshold: 2
     achievementPointReward: 10
@@ -3934,7 +3718,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_shield_tier4_count_3
-    conditionType: 9
+    conditionType: 8
     conditionParam: shield_4
     threshold: 3
     achievementPointReward: 10
@@ -3942,7 +3726,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_shield_tier5_count_1
-    conditionType: 9
+    conditionType: 8
     conditionParam: shield_5
     threshold: 1
     achievementPointReward: 20
@@ -3950,7 +3734,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_shield_tier5_count_2
-    conditionType: 9
+    conditionType: 8
     conditionParam: shield_5
     threshold: 2
     achievementPointReward: 20
@@ -3958,7 +3742,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_shield_tier5_count_3
-    conditionType: 9
+    conditionType: 8
     conditionParam: shield_5
     threshold: 3
     achievementPointReward: 20
@@ -3966,7 +3750,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_shield_tier6_count_1
-    conditionType: 9
+    conditionType: 8
     conditionParam: shield_6
     threshold: 1
     achievementPointReward: 30
@@ -3974,7 +3758,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_shield_tier6_count_2
-    conditionType: 9
+    conditionType: 8
     conditionParam: shield_6
     threshold: 2
     achievementPointReward: 30
@@ -3982,7 +3766,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_shield_tier6_count_3
-    conditionType: 9
+    conditionType: 8
     conditionParam: shield_6
     threshold: 3
     achievementPointReward: 30
@@ -3990,7 +3774,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_shield_tier7_count_1
-    conditionType: 9
+    conditionType: 8
     conditionParam: shield_7
     threshold: 1
     achievementPointReward: 40
@@ -3998,7 +3782,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_shield_tier7_count_2
-    conditionType: 9
+    conditionType: 8
     conditionParam: shield_7
     threshold: 2
     achievementPointReward: 40
@@ -4006,7 +3790,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_shield_tier7_count_3
-    conditionType: 9
+    conditionType: 8
     conditionParam: shield_7
     threshold: 3
     achievementPointReward: 40
@@ -4014,7 +3798,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_shield_tier8_count_1
-    conditionType: 9
+    conditionType: 8
     conditionParam: shield_8
     threshold: 1
     achievementPointReward: 50
@@ -4022,7 +3806,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_shield_tier8_count_2
-    conditionType: 9
+    conditionType: 8
     conditionParam: shield_8
     threshold: 2
     achievementPointReward: 50
@@ -4030,7 +3814,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_shield_tier8_count_3
-    conditionType: 9
+    conditionType: 8
     conditionParam: shield_8
     threshold: 3
     achievementPointReward: 50
@@ -4038,7 +3822,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_shield_tier9_count_1
-    conditionType: 9
+    conditionType: 8
     conditionParam: shield_9
     threshold: 1
     achievementPointReward: 60
@@ -4046,7 +3830,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_shield_tier9_count_2
-    conditionType: 9
+    conditionType: 8
     conditionParam: shield_9
     threshold: 2
     achievementPointReward: 60
@@ -4054,7 +3838,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_shield_tier9_count_3
-    conditionType: 9
+    conditionType: 8
     conditionParam: shield_9
     threshold: 3
     achievementPointReward: 60
@@ -4062,7 +3846,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_shield_tier10_count_1
-    conditionType: 9
+    conditionType: 8
     conditionParam: shield_10
     threshold: 1
     achievementPointReward: 70
@@ -4070,7 +3854,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_shield_tier10_count_2
-    conditionType: 9
+    conditionType: 8
     conditionParam: shield_10
     threshold: 2
     achievementPointReward: 70
@@ -4078,7 +3862,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_shield_tier10_count_3
-    conditionType: 9
+    conditionType: 8
     conditionParam: shield_10
     threshold: 3
     achievementPointReward: 70
@@ -4086,7 +3870,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_shield_tier11_count_1
-    conditionType: 9
+    conditionType: 8
     conditionParam: shield_11
     threshold: 1
     achievementPointReward: 80
@@ -4094,7 +3878,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_shield_tier11_count_2
-    conditionType: 9
+    conditionType: 8
     conditionParam: shield_11
     threshold: 2
     achievementPointReward: 80
@@ -4102,7 +3886,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_shield_tier11_count_3
-    conditionType: 9
+    conditionType: 8
     conditionParam: shield_11
     threshold: 3
     achievementPointReward: 80
@@ -4110,7 +3894,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_shield_tier12_count_1
-    conditionType: 9
+    conditionType: 8
     conditionParam: shield_12
     threshold: 1
     achievementPointReward: 90
@@ -4118,7 +3902,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_shield_tier12_count_2
-    conditionType: 9
+    conditionType: 8
     conditionParam: shield_12
     threshold: 2
     achievementPointReward: 90
@@ -4126,7 +3910,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_shield_tier12_count_3
-    conditionType: 9
+    conditionType: 8
     conditionParam: shield_12
     threshold: 3
     achievementPointReward: 90
@@ -4134,7 +3918,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_shield_tier13_count_1
-    conditionType: 9
+    conditionType: 8
     conditionParam: shield_13
     threshold: 1
     achievementPointReward: 100
@@ -4142,7 +3926,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_shield_tier13_count_2
-    conditionType: 9
+    conditionType: 8
     conditionParam: shield_13
     threshold: 2
     achievementPointReward: 100
@@ -4150,7 +3934,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_shield_tier13_count_3
-    conditionType: 9
+    conditionType: 8
     conditionParam: shield_13
     threshold: 3
     achievementPointReward: 100
@@ -4158,7 +3942,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_shield_tier14_count_1
-    conditionType: 9
+    conditionType: 8
     conditionParam: shield_14
     threshold: 1
     achievementPointReward: 100
@@ -4166,7 +3950,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_shield_tier14_count_2
-    conditionType: 9
+    conditionType: 8
     conditionParam: shield_14
     threshold: 2
     achievementPointReward: 100
@@ -4174,7 +3958,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_shield_tier14_count_3
-    conditionType: 9
+    conditionType: 8
     conditionParam: shield_14
     threshold: 3
     achievementPointReward: 100
@@ -4182,7 +3966,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_interceptor_tier2_count_1
-    conditionType: 9
+    conditionType: 8
     conditionParam: interceptor_2
     threshold: 1
     achievementPointReward: 10
@@ -4190,7 +3974,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_interceptor_tier2_count_2
-    conditionType: 9
+    conditionType: 8
     conditionParam: interceptor_2
     threshold: 2
     achievementPointReward: 10
@@ -4198,7 +3982,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_interceptor_tier2_count_3
-    conditionType: 9
+    conditionType: 8
     conditionParam: interceptor_2
     threshold: 3
     achievementPointReward: 10
@@ -4206,7 +3990,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_interceptor_tier3_count_1
-    conditionType: 9
+    conditionType: 8
     conditionParam: interceptor_3
     threshold: 1
     achievementPointReward: 10
@@ -4214,7 +3998,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_interceptor_tier3_count_2
-    conditionType: 9
+    conditionType: 8
     conditionParam: interceptor_3
     threshold: 2
     achievementPointReward: 10
@@ -4222,7 +4006,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_interceptor_tier3_count_3
-    conditionType: 9
+    conditionType: 8
     conditionParam: interceptor_3
     threshold: 3
     achievementPointReward: 10
@@ -4230,7 +4014,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_interceptor_tier4_count_1
-    conditionType: 9
+    conditionType: 8
     conditionParam: interceptor_4
     threshold: 1
     achievementPointReward: 10
@@ -4238,7 +4022,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_interceptor_tier4_count_2
-    conditionType: 9
+    conditionType: 8
     conditionParam: interceptor_4
     threshold: 2
     achievementPointReward: 10
@@ -4246,7 +4030,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_interceptor_tier4_count_3
-    conditionType: 9
+    conditionType: 8
     conditionParam: interceptor_4
     threshold: 3
     achievementPointReward: 10
@@ -4254,7 +4038,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_interceptor_tier5_count_1
-    conditionType: 9
+    conditionType: 8
     conditionParam: interceptor_5
     threshold: 1
     achievementPointReward: 20
@@ -4262,7 +4046,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_interceptor_tier5_count_2
-    conditionType: 9
+    conditionType: 8
     conditionParam: interceptor_5
     threshold: 2
     achievementPointReward: 20
@@ -4270,7 +4054,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_interceptor_tier5_count_3
-    conditionType: 9
+    conditionType: 8
     conditionParam: interceptor_5
     threshold: 3
     achievementPointReward: 20
@@ -4278,7 +4062,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_interceptor_tier6_count_1
-    conditionType: 9
+    conditionType: 8
     conditionParam: interceptor_6
     threshold: 1
     achievementPointReward: 30
@@ -4286,7 +4070,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_interceptor_tier6_count_2
-    conditionType: 9
+    conditionType: 8
     conditionParam: interceptor_6
     threshold: 2
     achievementPointReward: 30
@@ -4294,7 +4078,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_interceptor_tier6_count_3
-    conditionType: 9
+    conditionType: 8
     conditionParam: interceptor_6
     threshold: 3
     achievementPointReward: 30
@@ -4302,7 +4086,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_interceptor_tier7_count_1
-    conditionType: 9
+    conditionType: 8
     conditionParam: interceptor_7
     threshold: 1
     achievementPointReward: 40
@@ -4310,7 +4094,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_interceptor_tier7_count_2
-    conditionType: 9
+    conditionType: 8
     conditionParam: interceptor_7
     threshold: 2
     achievementPointReward: 40
@@ -4318,7 +4102,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_interceptor_tier7_count_3
-    conditionType: 9
+    conditionType: 8
     conditionParam: interceptor_7
     threshold: 3
     achievementPointReward: 40
@@ -4326,7 +4110,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_interceptor_tier8_count_1
-    conditionType: 9
+    conditionType: 8
     conditionParam: interceptor_8
     threshold: 1
     achievementPointReward: 50
@@ -4334,7 +4118,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_interceptor_tier8_count_2
-    conditionType: 9
+    conditionType: 8
     conditionParam: interceptor_8
     threshold: 2
     achievementPointReward: 50
@@ -4342,7 +4126,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_interceptor_tier8_count_3
-    conditionType: 9
+    conditionType: 8
     conditionParam: interceptor_8
     threshold: 3
     achievementPointReward: 50
@@ -4350,7 +4134,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_interceptor_tier9_count_1
-    conditionType: 9
+    conditionType: 8
     conditionParam: interceptor_9
     threshold: 1
     achievementPointReward: 60
@@ -4358,7 +4142,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_interceptor_tier9_count_2
-    conditionType: 9
+    conditionType: 8
     conditionParam: interceptor_9
     threshold: 2
     achievementPointReward: 60
@@ -4366,7 +4150,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_interceptor_tier9_count_3
-    conditionType: 9
+    conditionType: 8
     conditionParam: interceptor_9
     threshold: 3
     achievementPointReward: 60
@@ -4374,7 +4158,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_interceptor_tier10_count_1
-    conditionType: 9
+    conditionType: 8
     conditionParam: interceptor_10
     threshold: 1
     achievementPointReward: 70
@@ -4382,7 +4166,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_interceptor_tier10_count_2
-    conditionType: 9
+    conditionType: 8
     conditionParam: interceptor_10
     threshold: 2
     achievementPointReward: 70
@@ -4390,7 +4174,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_interceptor_tier10_count_3
-    conditionType: 9
+    conditionType: 8
     conditionParam: interceptor_10
     threshold: 3
     achievementPointReward: 70
@@ -4398,7 +4182,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_interceptor_tier11_count_1
-    conditionType: 9
+    conditionType: 8
     conditionParam: interceptor_11
     threshold: 1
     achievementPointReward: 80
@@ -4406,7 +4190,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_interceptor_tier11_count_2
-    conditionType: 9
+    conditionType: 8
     conditionParam: interceptor_11
     threshold: 2
     achievementPointReward: 80
@@ -4414,7 +4198,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_interceptor_tier11_count_3
-    conditionType: 9
+    conditionType: 8
     conditionParam: interceptor_11
     threshold: 3
     achievementPointReward: 80
@@ -4422,7 +4206,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_interceptor_tier12_count_1
-    conditionType: 9
+    conditionType: 8
     conditionParam: interceptor_12
     threshold: 1
     achievementPointReward: 90
@@ -4430,7 +4214,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_interceptor_tier12_count_2
-    conditionType: 9
+    conditionType: 8
     conditionParam: interceptor_12
     threshold: 2
     achievementPointReward: 90
@@ -4438,7 +4222,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_interceptor_tier12_count_3
-    conditionType: 9
+    conditionType: 8
     conditionParam: interceptor_12
     threshold: 3
     achievementPointReward: 90
@@ -4446,7 +4230,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_interceptor_tier13_count_1
-    conditionType: 9
+    conditionType: 8
     conditionParam: interceptor_13
     threshold: 1
     achievementPointReward: 100
@@ -4454,7 +4238,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_interceptor_tier13_count_2
-    conditionType: 9
+    conditionType: 8
     conditionParam: interceptor_13
     threshold: 2
     achievementPointReward: 100
@@ -4462,7 +4246,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_interceptor_tier13_count_3
-    conditionType: 9
+    conditionType: 8
     conditionParam: interceptor_13
     threshold: 3
     achievementPointReward: 100
@@ -4470,7 +4254,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_interceptor_tier14_count_1
-    conditionType: 9
+    conditionType: 8
     conditionParam: interceptor_14
     threshold: 1
     achievementPointReward: 100
@@ -4478,7 +4262,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_interceptor_tier14_count_2
-    conditionType: 9
+    conditionType: 8
     conditionParam: interceptor_14
     threshold: 2
     achievementPointReward: 100
@@ -4486,7 +4270,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: module_interceptor_tier14_count_3
-    conditionType: 9
+    conditionType: 8
     conditionParam: interceptor_14
     threshold: 3
     achievementPointReward: 100
@@ -4494,7 +4278,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_module_tier_count
     descKey: UIAchievement_Desc_module_tier_count
   - achievementId: hull_unlock_hull_4_1_21100
-    conditionType: 10
+    conditionType: 9
     conditionParam: hull_4_1_21100
     threshold: 1
     achievementPointReward: 40
@@ -4502,7 +4286,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_hull_unlock
     descKey: UIAchievement_Desc_hull_unlock
   - achievementId: hull_unlock_hull_5_1_22100
-    conditionType: 10
+    conditionType: 9
     conditionParam: hull_5_1_22100
     threshold: 1
     achievementPointReward: 50
@@ -4510,7 +4294,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_hull_unlock
     descKey: UIAchievement_Desc_hull_unlock
   - achievementId: hull_unlock_hull_6_1_22211
-    conditionType: 10
+    conditionType: 9
     conditionParam: hull_6_1_22211
     threshold: 1
     achievementPointReward: 60
@@ -4518,7 +4302,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_hull_unlock
     descKey: UIAchievement_Desc_hull_unlock
   - achievementId: hull_unlock_hull_7_1_32211
-    conditionType: 10
+    conditionType: 9
     conditionParam: hull_7_1_32211
     threshold: 1
     achievementPointReward: 70
@@ -4526,7 +4310,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_hull_unlock
     descKey: UIAchievement_Desc_hull_unlock
   - achievementId: hull_unlock_hull_8_1_33211
-    conditionType: 10
+    conditionType: 9
     conditionParam: hull_8_1_33211
     threshold: 1
     achievementPointReward: 80
@@ -4534,7 +4318,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_hull_unlock
     descKey: UIAchievement_Desc_hull_unlock
   - achievementId: hull_unlock_hull_9_1_33311
-    conditionType: 10
+    conditionType: 9
     conditionParam: hull_9_1_33311
     threshold: 1
     achievementPointReward: 90
@@ -4542,7 +4326,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_hull_unlock
     descKey: UIAchievement_Desc_hull_unlock
   - achievementId: hull_unlock_hull_10_1_43311
-    conditionType: 10
+    conditionType: 9
     conditionParam: hull_10_1_43311
     threshold: 1
     achievementPointReward: 100
@@ -4550,7 +4334,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_hull_unlock
     descKey: UIAchievement_Desc_hull_unlock
   - achievementId: hull_unlock_hull_11_1_44311
-    conditionType: 10
+    conditionType: 9
     conditionParam: hull_11_1_44311
     threshold: 1
     achievementPointReward: 110
@@ -4558,7 +4342,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_hull_unlock
     descKey: UIAchievement_Desc_hull_unlock
   - achievementId: hull_unlock_hull_12_1_44411
-    conditionType: 10
+    conditionType: 9
     conditionParam: hull_12_1_44411
     threshold: 1
     achievementPointReward: 120
@@ -4566,7 +4350,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_hull_unlock
     descKey: UIAchievement_Desc_hull_unlock
   - achievementId: hull_unlock_hull_13_1_54411
-    conditionType: 10
+    conditionType: 9
     conditionParam: hull_13_1_54411
     threshold: 1
     achievementPointReward: 130
@@ -4574,7 +4358,7 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_hull_unlock
     descKey: UIAchievement_Desc_hull_unlock
   - achievementId: hull_unlock_hull_14_1_55411
-    conditionType: 10
+    conditionType: 9
     conditionParam: hull_14_1_55411
     threshold: 1
     achievementPointReward: 140

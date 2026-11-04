@@ -37,7 +37,7 @@ public static class ExplorationEnemyFleetGenerator
     {
         List<FleetInfo> waves = new List<FleetInfo>();
 
-        List<ModuleData> hulls = moduleTable != null ? moduleTable.HullModules.modules : null;
+        List<ModuleData> hulls = moduleTable != null ? moduleTable.HullModules.modules.FindAll(h => h.isEnemyOnly == true) : null;
         if (hulls == null || hulls.Count == 0 || zoneConfig == null || moduleTable == null) return waves;
 
         List<BuildingShip> allShips = GenerateAllShips(seed, row, col, hulls, zoneConfig, moduleTable);
@@ -190,12 +190,17 @@ public static class ExplorationEnemyFleetGenerator
 
     // enemyModulePerformanceProbability를 정점(평균) 위치로 삼아 [1, 함체티어] 범위에서 정규분포로 모듈 티어를 굴려 슬롯 하나를 채움
     // (배치확률 체크 없이 바로 장착 시도) — 1이면 정점이 함체티어 자체지만 편차가 있어 그보다 낮은 티어도 확률적으로 섞임
+    // 함체티어가 그 카테고리에 실제 존재하는 최대 티어(maxModuleTier)를 넘으면 롤 상한을 maxModuleTier로 낮춤 — 함체 데이터와
+    // 무기 데이터의 최대 티어가 서로 달라져도(예: 함체는 14까지, 무기는 10까지) 존재하지 않는 티어를 요청해 슬롯이 비는 일이 없도록 방지
     private static void TryEquipModuleAtSlot(List<ModuleInfo> list, EModuleType type, ModuleDataList categoryModules, int hullTier, int slotIndex, ZoneConfig zoneConfig, CrossPlatformRandom random)
     {
-        float mean = 1f + zoneConfig.enemyModulePerformanceProbability * (hullTier - 1);
-        float sigma = (hullTier - 1) * k_tierSpreadRatio;
+        int maxModuleTier = ResolveMaxAvailableTier(categoryModules.modules);
+        int effectiveTierCap = UnityEngine.Mathf.Min(hullTier, maxModuleTier);
+
+        float mean = 1f + zoneConfig.enemyModulePerformanceProbability * (effectiveTierCap - 1);
+        float sigma = (effectiveTierCap - 1) * k_tierSpreadRatio;
         float sample = mean + (float)random.NextGaussian() * sigma;
-        float clampedSample = UnityEngine.Mathf.Clamp(sample, 1f, hullTier);
+        float clampedSample = UnityEngine.Mathf.Clamp(sample, 1f, effectiveTierCap);
         int tier = UnityEngine.Mathf.RoundToInt(clampedSample);
         ModuleData data = categoryModules.Find(d => CommonUtility.ParseTier(d.moduleSubType) == tier);
         if (data == null) return; // 해당 티어 모듈 데이터 없음 — 이 슬롯만 자연스럽게 빈 채로 스킵

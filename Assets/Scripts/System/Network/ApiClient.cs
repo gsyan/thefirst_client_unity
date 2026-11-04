@@ -21,8 +21,8 @@ public class CustomException : Exception
 
 public static class ApiServerUrl
 {
-    // Dev server
-    public const string Dev     = "http://localhost:8080/api";
+    // Dev server — Windows 포트 예약 범위(8080/8081)를 피해 서버 application-dev.properties에서 8888로 변경됨
+    public const string Dev     = "http://localhost:8888/api";
     //public const string Dev     = "http://192.168.50.51:8080/api";
 
     // test server
@@ -636,11 +636,6 @@ public class ApiClient
     public async Task<ApiResponse<AbandonZoneRunResponse>> AbandonZoneRunAsync(AbandonZoneRunRequest request)
     {
         return await PostAsync<AbandonZoneRunResponse>("/exploration/abandon-run", request);
-    }
-
-    public async Task<ApiResponse<IncreaseTacticPowerMaxResponse>> IncreaseTacticPowerMaxAsync(IncreaseTacticPowerMaxRequest request)
-    {
-        return await PostAsync<IncreaseTacticPowerMaxResponse>("/exploration/increase-tactic-power", request);
     }
 
     #endregion

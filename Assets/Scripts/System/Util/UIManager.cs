@@ -627,10 +627,10 @@ public class UIManager : MonoSingleton<UIManager>
         });
     }
 
-    // 셀 클리어 보상(탐험 포인트/경험치 안내 + 보상카드 3택1) 통합 팝업 — 취소 없음
+    // 셀 클리어 보상(광물/경험치 안내 + 보상카드 3택1) 통합 팝업 — 취소 없음
     // onConfirmed(selectedCardId)는 CONFIRM 클릭 시 호출 — 카드 후보가 없었던 셀(탈출 셀, Treasure 등)이면 selectedCardId는 null
     // onConfirmed(selectedCardId, onProcessed): 호출부가 서버 응답을 처리한 뒤 onProcessed(true)를 부르면 팝업을 닫고, onProcessed(false)면 팝업을 유지해 재시도하게 함
-    public void ShowRewardCardSelectPopup(int explorationPointGained, int expGained, System.Collections.Generic.List<string> candidateCardIds, bool isEscapeCell, int zoneNumber, int cellRow, int cellCol, int rerollRemain, System.Action<string, System.Action<bool>> onConfirmed)
+    public void ShowRewardCardSelectPopup(int mineralGained, int expGained, System.Collections.Generic.List<string> candidateCardIds, bool isEscapeCell, int zoneNumber, int cellRow, int cellCol, int rerollRemain, System.Action<string, System.Action<bool>> onConfirmed)
     {
         UIPopupRewardCardSelect popup = GetOrCreatePopup<UIPopupRewardCardSelect>("UIPopupRewardCardSelect", EPopupLayer.Overlay);
         if (popup == null) return;
@@ -638,7 +638,7 @@ public class UIManager : MonoSingleton<UIManager>
         PushPopup(popup, EPopupLayer.Overlay);
 
         System.Action<string, System.Action<bool>> userConfirmed = onConfirmed;
-        popup.ShowPopupRewardCardSelect(explorationPointGained, expGained, candidateCardIds, isEscapeCell, zoneNumber, cellRow, cellCol, rerollRemain, (selectedCardId, onPopupProcessed) =>
+        popup.ShowPopupRewardCardSelect(mineralGained, expGained, candidateCardIds, isEscapeCell, zoneNumber, cellRow, cellCol, rerollRemain, (selectedCardId, onPopupProcessed) =>
         {
             if (userConfirmed == null)
             {
@@ -678,16 +678,6 @@ public class UIManager : MonoSingleton<UIManager>
 
         ReplacePopup(popup, EPopupLayer.Normal);
         popup.ShowPopupRedeemCode(onClose: () => CloseTopPopup(EPopupLayer.Normal));
-    }
-
-    // 탐사포인트 -> 전술력 최대치 변환 팝업(지휘력은 M13부터 구매 없이 커맨더 레벨로 자동 결정)
-    public void ShowConvertExplorationPointPopup(System.Action onConfirmed = null)
-    {
-        UIPopupConvertExplorationPoint popup = GetOrCreatePopup<UIPopupConvertExplorationPoint>("UIPopupConvertExplorationPoint", EPopupLayer.Normal);
-        if (popup == null) return;
-
-        ReplacePopup(popup, EPopupLayer.Normal);
-        popup.ShowPopupConvertExplorationPoint(onClose: () => CloseTopPopup(EPopupLayer.Normal), onConfirmed: onConfirmed);
     }
 
     // 함선 로드아웃 슬롯의 모듈 레벨업 팝업(UIShipLoadoutEditorView의 ManageButton에서 오픈) — 업적포인트 기반 아키타입단위 영구강화(M6)

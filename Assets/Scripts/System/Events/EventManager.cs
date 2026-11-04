@@ -52,11 +52,6 @@ public static class EventManager
     public static void Subscribe_PvpPointChanged(Action<int> callback)   { OnPvpPointChanged += callback; }
     public static void Unsubscribe_PvpPointChanged(Action<int> callback) { OnPvpPointChanged -= callback; }
 
-    // explorationPoint — 값을 직접 대입하지 말고 반드시 Commander.UpdateExplorationPoint()를 거칠 것(이 이벤트가 자동 발행됨)
-    public static event Action<int> OnExplorationPointChanged;
-    public static void TriggerExplorationPointChanged(int explorationPoint) { OnExplorationPointChanged?.Invoke(explorationPoint); }
-    public static void Subscribe_ExplorationPointChanged(Action<int> callback)   { OnExplorationPointChanged += callback; }
-    public static void Unsubscribe_ExplorationPointChanged(Action<int> callback) { OnExplorationPointChanged -= callback; }
 
     // achievementPoint — 값을 직접 대입하지 말고 반드시 Commander.UpdateAchievementPoint()를 거칠 것(이 이벤트가 자동 발행됨)
     public static event Action<int> OnAchievementPointChanged;
@@ -395,17 +390,17 @@ public static class EventManager
         OnGameSpeedChanged -= callback;
     }
 
-    // 전술 옵션 변경 (tacticOptions 비트마스크: 0=수리, 1=미사일, 2=함재기, 3=실드)
+    // 전술 옵션 변경 (tacticOptions 비트마스크: 0=빔, 1=미사일, 2=함재기, 3=수리, 4=실드, 5=요격체)
     public static event Action<int> OnTacticOptionsChanged;
     public static void Trigger_TacticOptionsChanged(int tacticOptions) { OnTacticOptionsChanged?.Invoke(tacticOptions); }
     public static void Subscribe_TacticOptionsChanged(Action<int> callback)   { OnTacticOptionsChanged += callback; }
     public static void Unsubscribe_TacticOptionsChanged(Action<int> callback) { OnTacticOptionsChanged -= callback; }
 
-    // 전술력(TacticPower) 현재치 변경 — UIPanelBattle이 매 프레임 소모 계산 후 발행, UIBattleView가 게이지 표시만 갱신
-    public static event Action<float, int> OnTacticPowerChanged;
-    public static void Trigger_TacticPowerChanged(float current, int max) { OnTacticPowerChanged?.Invoke(current, max); }
-    public static void Subscribe_TacticPowerChanged(Action<float, int> callback)   { OnTacticPowerChanged += callback; }
-    public static void Unsubscribe_TacticPowerChanged(Action<float, int> callback) { OnTacticPowerChanged -= callback; }
+    // 자원(Resource) 현재치 변경 — UIPanelBattle이 매 프레임 소모 계산 후 발행, UIBattleView/UIPanelFleet가 게이지 표시만 갱신
+    public static event Action<float, int> OnResourceChanged;
+    public static void Trigger_ResourceChanged(float current, int max) { OnResourceChanged?.Invoke(current, max); }
+    public static void Subscribe_ResourceChanged(Action<float, int> callback)   { OnResourceChanged += callback; }
+    public static void Unsubscribe_ResourceChanged(Action<float, int> callback) { OnResourceChanged -= callback; }
 
     // 광물(Mineral) 현재치 변경 — 존런 전용 재화, 자원충전 소모/약탈·탐사 획득 등 변경 지점에서 발행
     public static event Action<int> OnMineralAmountChanged;

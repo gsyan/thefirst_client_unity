@@ -871,7 +871,7 @@ public class ModuleHull : ModuleBase
         return m_repair;
     }
 
-    // 전술 토글(수리) ON 상태에서 UIPanelBattle.Co_DrainTacticPower가 1초 간격으로 호출 — m_repair는 이미 초당 단위라 deltaTime 계산 불필요
+    // 전술 토글(수리) ON 상태에서 UIPanelBattle.Co_DrainResource가 1초 간격으로 호출 — m_repair는 이미 초당 단위라 deltaTime 계산 불필요
     public void ApplyRepairTick()
     {
         m_health = Mathf.Min(m_healthMax, m_health + m_repair);

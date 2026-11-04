@@ -68,7 +68,8 @@ public class DataManager : Singleton<DataManager>
         {
             ShipInfo shipInfo = m_currentFleetInfo.ships[i];
             ModuleHullInfo modules = shipInfo.hulls != null && shipInfo.hulls.Count > 0 ? shipInfo.hulls[0] : null;
-            m_currentFleetComposition.TryPlaceShip(shipInfo.hullSubType, shipInfo.isFront, modules);
+            // 서버 ships 리스트 순서가 아니라 실제 positionIndex에 배치 — 중간 슬롯이 비어있을 수 있어 리스트 순서로 쌓으면 자리가 밀림
+            m_currentFleetComposition.TryPlaceShipAt(shipInfo.positionIndex, shipInfo.hullSubType, shipInfo.isFront, modules);
         }
     }
     #endregion

@@ -1,4 +1,4 @@
-// 전술 토글 버튼 6종(0=수리, 1=미사일, 2=함재기, 3=실드, 4=요격체, 5=빔) 한 줄 — 전투 화면(UIBattleView)과 함대관리(UIPanelFleet)가 공용으로 사용
+// 전술 토글 버튼 6종(0=빔, 1=미사일, 2=함재기, 3=수리, 4=실드, 5=요격체) 한 줄 — 전투 화면(UIBattleView)과 함대관리(UIPanelFleet)가 공용으로 사용
 // 상태의 단일 소스는 SpaceFleet.m_fleetInfo.tacticOptions — 클릭은 SpaceFleet.TryToggleTactic, 표시는 TacticOptionsChanged 이벤트로 갱신
 // 자식 Button은 순서대로 idx에 대응하고, 각 버튼 자식의 "UsingImage" 활성화로 on/off를 표현
 using UnityEngine;

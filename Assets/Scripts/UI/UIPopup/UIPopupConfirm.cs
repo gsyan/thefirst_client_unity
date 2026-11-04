@@ -308,7 +308,7 @@ public class UIPopupConfirm : UIPopupBase
         }
     }
 
-    // rewardAmounts 규약: index0=exp, index1=explorationPoint, index2=pvpPoint(미네랄/모듈포인트는 이 팝업에서 제거됨)
+    // rewardAmounts 규약: index0=exp, index1=mineral, index2=pvpPoint
     private static string GetRewardLabelKey(int rewardIndex)
     {
         if (rewardIndex == 0) return "UIPopupConfirm_ExpLabel";

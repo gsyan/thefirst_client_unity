@@ -1,7 +1,7 @@
 // 실전투 화면 패널 — 존 전투 중(IsBattleState) 표시. 풀스크린 투명 이미지로 3D 함선 터치를 막아
 // 전투 중 함대관리 UI(UIPanelFleet)가 열리는 것을 방지하고, UIBattleView(카메라 포커스/전술 토글 버튼)와
 // UIRewardCardBuffDisplay(보상카드 지속버프 표시)를 자식으로 둔다.
-// 전술력(TacticPower) 소모 계산도 이 패널이 담당 — 패널이 꺼지면(전투 종료) 코루틴도 Unity가 자동으로 멈춰줌
+// 자원(Resource) 소모 계산도 이 패널이 담당 — 패널이 꺼지면(전투 종료) 코루틴도 Unity가 자동으로 멈춰줌
 using System.Collections;
 using UnityEngine;
 
@@ -13,9 +13,9 @@ public class UIPanelBattle : UIPanelBase
     private EUnitState m_fleetState = EUnitState.Idle;
     private bool m_isExplorationOpen = false;
 
-    // 전술력은 전투 중 서버에 실시간 저장하지 않음 — 셀 클리어 성공 시 ClearExplorationCellRequest에 실어 확정 저장,
+    // 자원은 전투 중 서버에 실시간 저장하지 않음 — 셀 클리어 성공 시 ClearExplorationCellRequest에 실어 확정 저장,
     // 실패(퇴각/패배)면 UIPanelExplorationGrid가 진입 직전 스냅샷으로 로컬 롤백(서버는 애초에 그 변화를 모름)
-    private Coroutine m_tacticPowerDrainCoroutine;
+    private Coroutine m_resourceDrainCoroutine;
     private const float k_tacticTickSeconds = 1f;
     private static readonly WaitForSeconds k_oneSecondWait = new WaitForSeconds(k_tacticTickSeconds);
 
@@ -109,18 +109,18 @@ public class UIPanelBattle : UIPanelBase
 
         CommanderInfo commanderInfo = GetCommanderInfo();
         if (commanderInfo != null)
-            EventManager.Trigger_TacticPowerChanged(commanderInfo.tacticPower, commanderInfo.tacticPowerMax);
+            EventManager.Trigger_ResourceChanged(commanderInfo.resource, commanderInfo.resourceMax);
 
-        if (m_tacticPowerDrainCoroutine == null)
-            m_tacticPowerDrainCoroutine = StartCoroutine(Co_DrainTacticPower());
+        if (m_resourceDrainCoroutine == null)
+            m_resourceDrainCoroutine = StartCoroutine(Co_DrainResource());
     }
 
     public override void OnHideUIPanel()
     {
-        if (m_tacticPowerDrainCoroutine != null)
+        if (m_resourceDrainCoroutine != null)
         {
-            StopCoroutine(m_tacticPowerDrainCoroutine);
-            m_tacticPowerDrainCoroutine = null;
+            StopCoroutine(m_resourceDrainCoroutine);
+            m_resourceDrainCoroutine = null;
         }
     }
 
@@ -130,8 +130,8 @@ public class UIPanelBattle : UIPanelBase
     }
 
     // 1초마다 수리/실드/요격체 틱을 시도 — 빔/미사일/함재기는 발사/발진 시점(ModuleBeam/ModuleMissile/LauncherAircraft)에서 개별 과금하므로 여기 관여하지 않음.
-    // 실드는 수리/요격체와 다르게 토글과 무관하게 항상 회복을 시도함 — 토글(idx=3)은 이제 "흡수 효과 작동 여부"만 결정(SpaceShip.ApplyShieldAbsorption 참고)
-    private IEnumerator Co_DrainTacticPower()
+    // 실드는 수리/요격체와 다르게 토글과 무관하게 항상 회복을 시도함 — 토글(idx=4)은 이제 "흡수 효과 작동 여부"만 결정(SpaceShip.ApplyShieldAbsorption 참고)
+    private IEnumerator Co_DrainResource()
     {
         while (true)
         {
@@ -140,7 +140,7 @@ public class UIPanelBattle : UIPanelBase
             CommanderInfo commanderInfo = GetCommanderInfo();
             SpaceFleet myFleet = ObjectManager.Instance.GetMyFleet();
             if (commanderInfo == null || myFleet == null || myFleet.m_fleetInfo == null) continue;
-            if (commanderInfo.tacticPower <= 0) continue;
+            if (commanderInfo.resource <= 0) continue;
 
             int tacticOptions = myFleet.m_fleetInfo.tacticOptions;
             GameSettings gameSettings = DataManager.Instance.m_dataTableConfig.gameSettings;
@@ -151,7 +151,7 @@ public class UIPanelBattle : UIPanelBase
             bool shieldHasEffect = myFleet.HasAnyShieldDefending() || myFleet.HasAnyShieldBelowMax();
             bool interceptorHasEffect = myFleet.HasAnyInterceptorBelowMax();
 
-            if ((tacticOptions & (1 << 0)) != 0 && repairHasEffect == true)
+            if ((tacticOptions & (1 << 3)) != 0 && repairHasEffect == true)
             {
                 int shipsNeedingRepair = myFleet.CountShipsNeedingRepair();
                 if (shipsNeedingRepair > 0 && myFleet.TryChargeRepairTacticCost(shipsNeedingRepair * gameSettings.tactic.tacticRepairCost) == true)
@@ -163,7 +163,7 @@ public class UIPanelBattle : UIPanelBase
                 if (shipsNeedingShield > 0 && myFleet.TryChargeShieldTacticCost(shipsNeedingShield * gameSettings.tactic.tacticShieldCost) == true)
                     myFleet.ApplyShieldRegenTickToAllShips();
             }
-            if ((tacticOptions & (1 << 4)) != 0 && interceptorHasEffect == true)
+            if ((tacticOptions & (1 << 5)) != 0 && interceptorHasEffect == true)
                 myFleet.ApplyInterceptorRegenTickToAllShips(k_tacticTickSeconds); // 실제 생성 개수만큼의 과금은 ModuleInterceptor.ApplyRegenTick 내부에서 처리
         }
     }

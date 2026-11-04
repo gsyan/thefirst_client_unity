@@ -1,13 +1,1 @@
 day,tier,rewardType,amount
-1,Normal,ExplorationPoint,100
-1,VIP,ExplorationPoint,100
-2,Normal,ExplorationPoint,200
-2,VIP,ExplorationPoint,200
-3,Normal,ExplorationPoint,300
-3,VIP,ExplorationPoint,300
-4,Normal,ExplorationPoint,300
-4,VIP,ExplorationPoint,300
-5,Normal,ExplorationPoint,300
-5,VIP,ExplorationPoint,300
-6,Normal,ExplorationPoint,300
-6,VIP,ExplorationPoint,300

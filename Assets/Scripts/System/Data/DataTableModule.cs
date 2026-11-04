@@ -41,6 +41,10 @@ public class ModuleData
     public bool hasShield = false;
     public bool hasInterceptor = false;
 
+    // hull 전용 — 적 전용 hull(datatable_enemy_hull.csv 기원)인지 표시. 플레이어 UI(hull picker 등)에서 제외하고
+    // 적 함대 생성기(ExplorationEnemyFleetGenerator)에서만 사용하는 용도로 구분
+    public bool isEnemyOnly = false;
+
     // Hull ---------------------------------------------------------------------------
     [Header("Hull Stats")]
     public float health = 0f;
@@ -269,7 +273,7 @@ public class DataTableModule : ScriptableObject
     {
         var modulesDict = new Dictionary<int, List<object>>
         {
-            { (int)EModuleType.hull, HullModules.modules.Cast<object>().ToList() },
+            { (int)EModuleType.hull, HullModules.modules.FindAll(m => m.isEnemyOnly == false).Cast<object>().ToList() },
             { (int)EModuleType.beam, BeamModules.modules.Cast<object>().ToList() },
             { (int)EModuleType.missile, MissileModules.modules.Cast<object>().ToList() },
             { (int)EModuleType.hangar, HangarModules.modules.Cast<object>().ToList() },
@@ -389,7 +393,11 @@ public class DataTableModule : ScriptableObject
     private ModuleSlotInfo[] ExtractModuleSlotsFromPrefab(string subType)
     {
         string prefabName = BuildHullPrefabName(subType);
-        string prefabPath = $"Prefabs/ShipModule/Hull/{prefabName}";
+        return ExtractModuleSlotsFromPrefabAtPath($"Prefabs/ShipModule/Hull/{prefabName}");
+    }
+
+    private static ModuleSlotInfo[] ExtractModuleSlotsFromPrefabAtPath(string prefabPath)
+    {
         GameObject prefab = Resources.Load<GameObject>(prefabPath);
         if (prefab == null) return null;
 
@@ -416,7 +424,9 @@ public class DataTableModule : ScriptableObject
 #if UNITY_EDITOR
     public void LoadFromCsv(string csvText)
     {
-        hullGroups.Clear();
+        // hullGroups는 적 전용 hull(LoadEnemyHullCsv로 별도 CSV에서 들어온 isEnemyOnly 행)과 공유되므로,
+        // 전체 Clear 대신 플레이어 기원(isEnemyOnly==false) 행만 제거 — 적 전용 행은 이 Import와 무관하게 유지
+        hullGroups.RemoveAll(g => g.modules.Count > 0 && g.modules[0].isEnemyOnly == false);
         beamGroups.Clear();
         missileGroups.Clear();
         hangarGroups.Clear();
@@ -500,6 +510,49 @@ public class DataTableModule : ScriptableObject
         int total = HullModules.Count + BeamModules.Count + MissileModules.Count + HangarModules.Count
                   + ShieldModules.Count + InterceptorModules.Count;
         Debug.Log($"[DataTableModule] CSV Import 완료: {total}개 모듈");
+        EditorUtility.SetDirty(this);
+    }
+
+    // 적 전용 hull 전용 CSV(datatable_enemy_hull.csv) — 플레이어 CSV와 완전히 분리된 저작 소스. 패시브/아키타입/언락 개념이
+    // 없는 적 전용이라 스키마가 최소한(체력/수리/속도/선회력/실드유무/요격체유무)만 있음. 프리팹은 Hull/enemy 폴더에 위치.
+    // 컬럼: 0:type_level, 1:health, 2:repair, 3:speed, 4:turn_rate, 5:has_shield, 6:has_interceptor
+    public void LoadEnemyHullCsv(string csvText)
+    {
+        hullGroups.RemoveAll(g => g.modules.Count > 0 && g.modules[0].isEnemyOnly == true);
+
+        string[] lines = csvText.Split('\n');
+        if (lines.Length < 2) return;
+
+        for (int i = 1; i < lines.Length; i++)
+        {
+            string line = lines[i].Trim();
+            if (string.IsNullOrEmpty(line)) continue;
+
+            string[] cols = ParseCsvLine(line);
+            if (cols.Length < 2) continue;
+
+            string moduleSubType = cols[0].Trim();
+            if (string.IsNullOrEmpty(moduleSubType) == true) continue;
+
+            var module = new ModuleData
+            {
+                moduleName      = moduleSubType,
+                moduleSubType   = moduleSubType,
+                health          = ParseCsvFloat(cols, 1),
+                repair          = ParseCsvFloat(cols, 2),
+                speed           = ParseCsvFloat(cols, 3),
+                turnRate        = ParseCsvFloat(cols, 4),
+                hasShield       = ParseCsvInt(cols, 5) != 0,
+                hasInterceptor  = ParseCsvInt(cols, 6) != 0,
+                isEnemyOnly     = true,
+                hullPrefabName  = $"enemy/{moduleSubType}",
+            };
+            module.moduleSlots = ExtractModuleSlotsFromPrefabAtPath($"Prefabs/ShipModule/Hull/enemy/{moduleSubType}");
+
+            AddModuleDataToTable(module);
+        }
+
+        Debug.Log($"[DataTableModule] 적 전용 Hull CSV Import 완료: {HullModules.modules.FindAll(m => m.isEnemyOnly == true).Count}개");
         EditorUtility.SetDirty(this);
     }
 

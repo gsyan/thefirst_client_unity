@@ -1042,9 +1042,7 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         myFleet.UpdateShipFormation(myFleet.m_currentFormationType, bSmooth: isNewShip, excludeShip: isNewShip ? newShip : null);
     }
 
-    // 함대편성 UI의 Remove로 슬롯을 비울 때 호출 — 그 슬롯의 함선을 파괴하고, 뒤 슬롯들을 한 칸씩 당김(positionIndex -1).
-    // FleetComposition.RemoveShip(List.RemoveAt)과 동일하게 "빈 슬롯은 항상 꼬리에만" 불변식을 3D 함대/m_fleetInfo에도 그대로 유지해야
-    // 자리를 바꾸지 않고 교체만 하는 ReplaceMyFleetShipAt의 인덱스 가정이 계속 성립함
+    // 함대편성 UI의 Remove로 슬롯을 비울 때 호출 — 그 슬롯의 함선만 파괴. 다른 슬롯의 positionIndex는 건드리지 않음(자리 유지, 압축 없음)
     public void RemoveMyFleetShipAt(int positionIndex)
     {
         SpaceFleet myFleet = GetMyFleet();
@@ -1054,21 +1052,8 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         if (removedShip != null)
             myFleet.RemoveShip(removedShip, refreshFormation: false, triggerDefeatEvents: false);
 
-        foreach (SpaceShip ship in myFleet.m_ships)
-        {
-            if (ship != null && ship.m_shipInfo.positionIndex > positionIndex)
-                ship.m_shipInfo.positionIndex -= 1;
-        }
-
         if (myFleet.m_fleetInfo != null && myFleet.m_fleetInfo.ships != null)
-        {
             myFleet.m_fleetInfo.ships.RemoveAll(s => s.positionIndex == positionIndex);
-            foreach (ShipInfo info in myFleet.m_fleetInfo.ships)
-            {
-                if (info.positionIndex > positionIndex)
-                    info.positionIndex -= 1;
-            }
-        }
 
         myFleet.UpdateShipFormation(myFleet.m_currentFormationType, bSmooth: false);
     }

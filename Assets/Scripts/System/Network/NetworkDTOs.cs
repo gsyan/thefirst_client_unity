@@ -29,7 +29,7 @@ public class FleetInfo
     public string description;
     public bool isActive;
     public EFormationType formation;
-    // bit0=전투수리, bit1=미사일, bit2=항공기. 기본값 7(0b111=전체 ON)
+    // bit0=빔, bit1=미사일, bit2=함재기, bit3=수리, bit4=실드, bit5=요격체
     public int tacticOptions;
     public List<ShipInfo> ships;
 }
@@ -102,11 +102,11 @@ public class CommanderInfo
     public int commanderLevel;
     public int exp;    
     public int commandPowerMax;  // 지휘력(캐파) 최대치 — 구매 없이 커맨더 레벨에 따라 자동 증가(M13)
-    public int tacticPowerMax;  // 전술 토글(체력회복/미사일/함재기) 공용 소모 게이지 상한 — IncreaseTacticPowerMaxRequest로 영구 증가
-    public int tacticPower;  // 진행 중인 탐험 런의 전술력 현재치(ZoneRun.tacticPower와 동일), 진행 중인 런이 없으면 tacticPowerMax와 동일값
+    public int resourceMax;  // 전술 토글(체력회복/미사일/함재기) 공용 소모 게이지 상한 — 커맨더 생성 시 고정값, 성장 수단 없음
+    public int resource;  // 진행 중인 탐험 런의 자원 현재치(ZoneRun.resource와 동일), 진행 중인 런이 없으면 resourceMax와 동일값
     public int mineralAmount;  // 진행 중인 탐험 런의 광물 현재치(ZoneRun.mineralAmount와 동일) — 존런 전용, 영구 자산 아님, 진행 중인 런이 없으면 0
     public int explorationSeedBase;  // 서버 월드 시드+커맨더 조합 고정값 — 존별 그리드/적함대 시드는 클라에서 이 값과 zoneNumber를 조합해 결정론적으로 계산
-    public int explorationPoint;    // 보유(확정 지급된) 탐험 포인트 — 적립(ZoneRun.explorationPointBanked)과 별개
+    public int mineralEarnedTotal;  // 역대 누적 획득 광물(영구, MineralTotal 업적 조건 전용) — 존런 종료로 사라지는 mineralAmount와 별개
     public int achievementPoint;    // 보유 업적포인트 — 티어4+ 함체 언락(소모형)에 사용, 존 탈출/포기 정산 시 지급
     public List<string> unlockedHulls;  // 업적포인트로 언락 완료한 hullSubType 목록(티어1~3은 언락 불필요라 여기 없어도 사용 가능)
     public int explorationZoneNumber;  // 진행 중인 탐험 런의 존 번호, 없으면 0
@@ -359,7 +359,7 @@ public class ClearExplorationCellRequest
     public int cellRow;
     public int cellCol;
     public List<ShipHealthRatioInfo> shipHealthRatios; // 셀 클리어 시점의 내 함대 체력 스냅샷 — ZoneRun에 저장돼 재접속 시 복구됨
-    public int tacticPower; // 셀 클리어 시점의 전술력 현재치 — ZoneRun.tacticPower에 확정 저장(전투 중엔 서버에 실시간 저장하지 않고 클리어 시에만 확정)
+    public int resource; // 셀 클리어 시점의 자원 현재치 — ZoneRun.resource에 확정 저장(전투 중엔 서버에 실시간 저장하지 않고 클리어 시에만 확정)
     public int mineralAmount; // 셀 클리어 시점의 광물 현재치 — ZoneRun.mineralAmount에 확정 저장(존런 전용, 서버 검증 없이 클라 보고값을 그대로 신뢰)
     public string challengeToken; // EnterExplorationCellResponse.challengeToken을 그대로 반환 — enter-cell 없이 clear-cell만 반복 호출하는 것을 막음
 }
@@ -367,13 +367,13 @@ public class ClearExplorationCellRequest
 [System.Serializable]
 public class ClearExplorationCellResponse
 {
-    public int explorationPointGained; // 존 고정값만큼 적립 (미확정 상태, 탈출 시 확정 정산) — 적 함대 성능과 무관
     public int expGained;              // 존 고정값만큼 적립된 지휘관 경험치 (미확정 상태, 탈출 시 확정 정산) — 빈 셀은 0
+    public int mineralGained;          // 이 클리어로 방금 지급된 광물(존 고정값 + Treasure/VIP/버프 반영분) — mineralAmount는 누적 총량, 이건 델타
     public List<string> rewardCardCandidates; // 서버가 추첨한 보상카드 후보 3개(cardId) — 탈출 셀이거나 보상이 없는 셀(빈 셀)은 null
-    public ETreasureRewardType treasureRewardType; // None이면 Treasure 보상 아님(ExplorationPoint면 explorationPointGained에 이미 반영됨)
-    public float treasureRewardRatio;              // treasureRewardType이 ShipHealthHeal/TacticPowerRestore일 때만 유효한 회복 비율(0~1)
-    public int tacticPower;                        // 이 클리어 확정 후 서버가 확정한 전술력 현재치(권위값) — 항상 채워짐
-    public int mineralAmount;                       // 이 클리어 확정 후 서버에 저장된 광물 현재치 — 클라 보고값을 그대로 저장한 것(서버 검증 없음)
+    public ETreasureRewardType treasureRewardType; // None이면 Treasure 보상 아님(Mineral이면 mineralAmount에 이미 반영됨)
+    public float treasureRewardRatio;              // treasureRewardType이 ShipHealthHeal일 때만 유효한 회복 비율(0~1)
+    public int resource;                        // 이 클리어 확정 후 서버가 확정한 자원 현재치(권위값) — 항상 채워짐
+    public int mineralAmount;                       // 이 클리어 확정 후 서버에 저장된 광물 현재치(존 고정지급분까지 서버가 반영한 권위값)
     public int rerollRemain;                       // 오늘 남은 보상카드 리롤 가능 횟수(소모 전 조회값) — rewardCardCandidates가 null이면 무의미
 }
 
@@ -390,7 +390,6 @@ public class ConfirmRewardCardRequest
 public class ConfirmRewardCardResponse
 {
     public string selectedCardId;
-    public int explorationPointGained; // 즉시 가산형 카드(Instant_ExplorationPointFlat)일 때만 확정 지급량, 그 외 0
 }
 
 [System.Serializable]
@@ -416,7 +415,6 @@ public class GetActiveZoneRunProgressResponse
 {
     public int zoneNumber;        // 진행 중인 런이 없으면 0
     public string[] clearedCells; // "row-col"(0-indexed) 목록, 클리어 순서대로
-    public int explorationPointBanked; // 진행 중인 런의 적립(미확정) 탐험 포인트, 없으면 0
     public int commanderExpBanked;     // 진행 중인 런의 적립(미확정) 지휘관 경험치, 없으면 0
     public List<ShipHealthRatioInfo> shipHealthRatios; // 마지막 셀 클리어 시점에 저장된 내 함대 체력 스냅샷 — 없으면 null(만피로 스폰된 상태 그대로)
     public List<string> selectedRewardCards; // 이번 런에서 선택 확정한 보상카드(cardId) 전체 목록 — 지속버프 여부는 클라가 DataTableRewardCard로 재판별
@@ -435,13 +433,11 @@ public class EscapeExplorationZoneRequest
 [System.Serializable]
 public class EscapeExplorationZoneResponse
 {
-    public int explorationPointGained;   // 확정 지급된 탐험 포인트
-    public int explorationPointRemain;   // 확정 지급 후 은행 잔액
     public int expGained;                // 확정 지급된 지휘관 경험치
     public int totalExp;                 // 반영 후 누적 경험치(권위값)
     public int commanderLevel;           // 반영 후 커맨더 레벨(레벨업 없으면 기존과 동일)
     public int highestClearedZoneNumber; // 탈출 성공 시 갱신된 값(권위값) — 클라 GetInitialZoneIndex()가 이 값 기준으로 다음 존을 계산
-    public int tacticPower;              // 런 종료로 회복된 전술력 현재치(=tacticPowerMax, 권위값)
+    public int resource;              // 런 종료로 회복된 자원 현재치(=resourceMax, 권위값)
     public bool hasUnclaimedAchievement; // 이 존런 정산 시점 기준 완료+미수령 업적 존재 여부(업적 버튼 레드닷용)
 }
 
@@ -455,12 +451,10 @@ public class AbandonZoneRunRequest
 [System.Serializable]
 public class AbandonZoneRunResponse
 {
-    public int explorationPointGained; // 포기로 확정 지급된 탐험 포인트(watchedAd 여부에 따라 20%/100%)
-    public int explorationPointRemain; // 확정 지급 후 은행 잔액
     public int expGained;              // 포기로 확정 지급된 지휘관 경험치(watchedAd 여부에 따라 20%/100%)
     public int totalExp;               // 반영 후 누적 경험치(권위값)
     public int commanderLevel;         // 반영 후 커맨더 레벨(레벨업 없으면 기존과 동일)
-    public int tacticPower;            // 런 종료로 회복된 전술력 현재치(=tacticPowerMax, 권위값)
+    public int resource;            // 런 종료로 회복된 자원 현재치(=resourceMax, 권위값)
     public bool hasUnclaimedAchievement; // 이 존런 정산 시점 기준 완료+미수령 업적 존재 여부(업적 버튼 레드닷용)
 }
 
@@ -584,21 +578,6 @@ public class ClaimAllDailyAchievementsResponse
     public List<string> claimedAchievementIds;    // 이번 호출로 수령 처리된 일일 업적 id 목록
     public int totalAchievementPointGranted;       // 이번 호출로 지급된 총 업적포인트
     public int achievementPointRemain;             // 지급 후 보유량
-}
-
-
-[System.Serializable]
-public class IncreaseTacticPowerMaxRequest
-{
-    public int amount; // 소모할 탐험 포인트 — 전술력 최대치도 동일 수치만큼 증가(교환비 1:1)
-}
-
-[System.Serializable]
-public class IncreaseTacticPowerMaxResponse
-{
-    public int tacticPowerMax;         // 갱신된 전술력 최대치
-    public int tacticPower;            // 갱신된 전술력 현재치 — 진행 중인 런이 있으면 그 런의 현재치도 증가분만큼 함께 올라간 값, 없으면 tacticPowerMax와 동일
-    public int explorationPointRemain; // 소모 후 은행 잔액
 }
 
 #endregion
@@ -823,9 +802,7 @@ public class DailyClaimRequest
 public class DailyClaimResponse
 {
     public bool available;              // true=지급됨, false=이미 수령했거나 테이블 없음
-    public int grantedExplorationPoint; // 이번에 지급된 탐험 포인트 양
     public int grantedAchievementPoint; // 이번에 지급된 업적 포인트 양
-    public int explorationPointRemain;  // 지급 후 현재 탐험 포인트
     public int achievementPointRemain;  // 지급 후 현재 업적 포인트
     public int todayDay;                // 출석일수 — 접속한 서로 다른 날짜 수(1~6), 이 값 이하의 미수령 칸은 전부 클레임 가능
     public int claimedDaysMask;         // 이번 주 수령 현황 비트마스크 (bit0=1일, bit5=6일)

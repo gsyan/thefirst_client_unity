@@ -96,7 +96,7 @@ public class ZoneConfig
     public float enemyWaveSpawnTermSec = 5f; // 셀에 웨이브가 여러 개일 때 다음 웨이브 스폰 간격(초) — 현재 웨이브를 그 전에 전멸시키면 대기 없이 즉시 다음 웨이브 스폰
 
     [Header("셀 클리어 보상 (웨이브가 있던 셀만 적립, 존 단위 고정값)")]
-    public int explorationPointReward = 0; // [server] 적 함대 성능(commandCost)과 무관한 고정 탐험 포인트 적립량
+    public int mineralReward = 0; // [server] 적 함대 성능(commandCost)과 무관한 고정 광물 지급량
     public int commanderExpReward = 0;     // [server] 고정 지휘관 경험치 적립량
 }
 [CreateAssetMenu(fileName = "DataTableZone", menuName = "Custom/DataTableZone")]
@@ -145,7 +145,7 @@ public class DataTableZone : ScriptableObject
                 zoneIndex             = z.zoneIndex,
                 gridWidth             = z.gridWidth,
                 gridHeight            = z.gridHeight,
-                explorationPointReward = z.explorationPointReward,
+                mineralReward = z.mineralReward,
                 commanderExpReward     = z.commanderExpReward,
                 cellOverrides         = z.cellOverrides.ConvertAll(o => (object)new { row = o.row, col = o.col, type = o.type.ToString(), eventType = o.eventType.ToString() }),
             });

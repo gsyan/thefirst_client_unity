@@ -22,7 +22,7 @@ public class FleetComposition
         m_moduleTable = moduleTable;
     }
 
-    // 리스트 끝에 추가 — 순서가 상관없을 때 사용. modules를 생략하면(null) 무기 없는 빈 로드아웃으로 배치됨 —
+    // 리스트 끝에 추가 — 순서가 상관없을 때 사용. modules를 생략하면(null) 모든 구조 슬롯에 레벨1 모듈을 기본 장착한 상태로 배치됨 —
     // 서버에서 이미 커스터마이징된 로드아웃을 복원할 때는 modules를 그대로 넘겨줌
     public EFleetPlaceResult TryPlaceShip(string hullSubType, bool isFront, ModuleHullInfo modules = null)
     {
@@ -39,9 +39,10 @@ public class FleetComposition
             return EFleetPlaceResult.HullNotFound;
         }
 
-        ModuleHullInfo resolvedModules = modules != null ? modules : BuildDefaultModules();
+        ModuleHullInfo resolvedModules = modules != null ? modules : BuildDefaultLevel1Modules(hullSubType);
 
-        int clampedIndex = index < 0 ? 0 : index > m_placedShips.Count ? m_placedShips.Count : index;
+        // 상한 클램프 없음 — 슬롯은 더 이상 꼬리에만 비지 않으므로, 리스트 길이보다 먼저인 인덱스도 그대로 허용(패딩은 TryPlaceShipAt에서 처리)
+        int clampedIndex = index < 0 ? 0 : index;
         bool isReplacingExisting = clampedIndex < m_placedShips.Count;
 
         // 이미 함선이 배치된 슬롯에 드롭하면 교체 — 기존 함선의 지휘력을 먼저 반환한 뒤 새 비용을 체크
@@ -70,22 +71,23 @@ public class FleetComposition
             return checkResult;
         }
 
-        ModuleHullInfo resolvedModules = modules != null ? modules : BuildDefaultModules();
+        ModuleHullInfo resolvedModules = modules != null ? modules : BuildDefaultLevel1Modules(hullSubType);
 
-        int clampedIndex = index < 0 ? 0 : index > m_placedShips.Count ? m_placedShips.Count : index;
+        int clampedIndex = index < 0 ? 0 : index;
         bool isReplacingExisting = clampedIndex < m_placedShips.Count;
 
         if (isReplacingExisting == true)
+        {
             m_placedShips[clampedIndex] = new FleetSlotEntry(hullSubType, isFront, resolvedModules);
+        }
         else
-            m_placedShips.Insert(clampedIndex, new FleetSlotEntry(hullSubType, isFront, resolvedModules));
+        {
+            // 목표 인덱스보다 리스트가 짧으면 그 사이를 빈 슬롯으로 채워서 늘림 — 중간에 빈 슬롯이 있어도 자리 유지
+            while (m_placedShips.Count < clampedIndex)
+                m_placedShips.Add(new FleetSlotEntry(null, true, null));
+            m_placedShips.Add(new FleetSlotEntry(hullSubType, isFront, resolvedModules));
+        }
         return EFleetPlaceResult.Success;
-    }
-
-    // 빈 슬롯의 기본 로드아웃 — 무기 없이 배치
-    private ModuleHullInfo BuildDefaultModules()
-    {
-        return new ModuleHullInfo { beams = new List<ModuleInfo>(), missiles = new List<ModuleInfo>(), hangars = new List<ModuleInfo>() };
     }
 
     // 캐파(지휘력) 점유값은 바디(hull) 자신의 값만 — 모듈 설치/해제는 캐파와 무관(M13, 서버 FleetService.computeShipCommandCost와 동일 계산)
@@ -119,54 +121,6 @@ public class FleetComposition
         return ComputeSlotCommandCost(m_placedShips[index]);
     }
 
-    // 기존 장착 모듈(existingModules) 중 새 함체(newHullSubType)에도 같은 카테고리+슬롯 인덱스가 존재하는 것만 남김 — 강화 포인트는 그대로 복사
-    // (서버 FleetService.filterModulesForNewHull과 동일 규칙, 함체 변경 시 미리보기/실제 배치 양쪽에서 공용으로 사용)
-    // 설계 확정: 무기 티어는 함체 티어와 독립적인 별도 축(강화로 별도 상승)이지만, 상한은 항상 함체 티어 — 함체를 더 낮은 티어로 바꾸면
-    // 그 함체 티어를 넘는 기존 모듈은 함체 티어에 맞춰 자동 다운그레이드됨(지휘력 회수는 별도 처리 불필요 — 아래서 낮아진 statPoint로 재조립하므로 이후 비용 계산에 자동 반영)
-    // existingModules가 null이면(원래 비어있던 슬롯의 신규 배치) null을 그대로 반환 — TryPlaceShipAt의 기본 로드아웃(BuildDefaultModules, 무기 없음) 분기를 그대로 타게 함
-    public static ModuleHullInfo FilterModulesForNewHull(ModuleHullInfo existingModules, string newHullSubType)
-    {
-        if (existingModules == null) return null;
-
-        int[] newMaxSlots = ParseMaxSlotsFromHullSubType(newHullSubType);
-        int newHullTier = CommonUtility.ParseTier(newHullSubType);
-        ModuleHullInfo result = new ModuleHullInfo { beams = new List<ModuleInfo>(), missiles = new List<ModuleInfo>(), hangars = new List<ModuleInfo>() };
-        AppendKeptModules(result.beams, existingModules.beams, newMaxSlots[0], newHullTier);
-        AppendKeptModules(result.missiles, existingModules.missiles, newMaxSlots[1], newHullTier);
-        AppendKeptModules(result.hangars, existingModules.hangars, newMaxSlots[2], newHullTier);
-
-        // 실드/요격체는 새 함체가 해당 슬롯을 지원할 때만 유지(서버 filterModulesForNewHull과 동일) — 티어는 함체 티어로 클램프, 포인트는 그대로 복사
-        result.shieldModuleSubType = "";
-        if (newMaxSlots[3] > 0 && string.IsNullOrEmpty(existingModules.shieldModuleSubType) == false)
-            result.shieldModuleSubType = ClampSubTypeToHullTier(EModuleType.shield, existingModules.shieldModuleSubType, newHullTier);
-
-        result.interceptorModuleSubType = "";
-        if (newMaxSlots[4] > 0 && string.IsNullOrEmpty(existingModules.interceptorModuleSubType) == false)
-            result.interceptorModuleSubType = ClampSubTypeToHullTier(EModuleType.interceptor, existingModules.interceptorModuleSubType, newHullTier);
-        return result;
-    }
-
-    private static void AppendKeptModules(List<ModuleInfo> target, List<ModuleInfo> source, int maxSlotCount, int newHullTier)
-    {
-        if (source == null) return;
-        for (int i = 0; i < source.Count; i++)
-        {
-            if (source[i].slotIndex >= maxSlotCount) continue;
-            target.Add(ClampModuleTierToHull(source[i], newHullTier));
-        }
-    }
-
-    // 모듈 티어가 함체 티어를 넘으면 {category}_{hullTier}_1로 다운그레이드 — 해당 티어 데이터가 없으면(비정상 데이터) 원본 유지
-    private static ModuleInfo ClampModuleTierToHull(ModuleInfo module, int hullTier)
-    {
-        string clampedSubType = ClampSubTypeToHullTier(module.moduleType, module.moduleSubType, hullTier);
-        if (clampedSubType == module.moduleSubType) return module;
-
-        ModuleInfo clamped = CloneModuleInfo(module);
-        clamped.moduleSubType = clampedSubType;
-        return clamped;
-    }
-
     // 편집용 복사본 — 서브타입/슬롯 정보를 그대로 복제
     public static ModuleInfo CloneModuleInfo(ModuleInfo module)
     {
@@ -180,18 +134,8 @@ public class FleetComposition
         };
     }
 
-    // 서브타입 티어가 함체 티어를 넘으면 {category}_{hullTier}_1로 다운그레이드한 이름을 반환 — 해당 티어 데이터가 없으면(비정상 데이터) 원본 그대로
-    private static string ClampSubTypeToHullTier(EModuleType moduleType, string subType, int hullTier)
-    {
-        if (CommonUtility.ParseTier(subType) <= hullTier) return subType;
-
-        string downgradedSubType = $"{moduleType}_{hullTier}_1";
-        if (DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(downgradedSubType) == null) return subType;
-
-        return downgradedSubType;
-    }
-
-    // 새 함체(newHullSubType) + 유지되는 모듈(keptModules) 기준 실제 지휘력 비용 미리보기 — ComputeSlotCommandCost와 동일 계산식 재사용
+    // 새 함체(newHullSubType) 기준 실제 지휘력 비용 미리보기 — ComputeSlotCommandCost와 동일 계산식 재사용.
+    // 캐파는 바디(hull) 자신의 값만 반영하므로(M13) keptModules는 비용 계산에 쓰이지 않음 — 미리보기 스탯 계산용으로만 호출부에서 넘김
     public int ComputeProjectedSlotCommandCost(string newHullSubType, ModuleHullInfo keptModules)
     {
         return ComputeSlotCommandCost(new FleetSlotEntry(newHullSubType, false, keptModules));
@@ -228,10 +172,11 @@ public class FleetComposition
     }
 
     // 배치 해제 시 지휘력은 즉시 반환됨 (점유 구조, 소모 아님)
+    // 자리는 유지 — 다른 슬롯이 밀려오지 않도록 리스트에서 빼지 않고(RemoveAt 금지) 그 자리를 빈 슬롯으로 비움
     public void RemoveShip(int index)
     {
         if (index < 0 || index >= m_placedShips.Count) return;
-        m_placedShips.RemoveAt(index);
+        m_placedShips[index] = new FleetSlotEntry(null, true, null);
     }
 
     public void SetFront(int index, bool isFront)
@@ -287,10 +232,12 @@ public class FleetComposition
         for (int i = 0; i < m_placedShips.Count; i++)
         {
             FleetSlotEntry entry = m_placedShips[i];
+            if (string.IsNullOrEmpty(entry.hullSubType) == true) continue; // 빈 슬롯은 전송하지 않음
+
             fleetInfo.ships.Add(new ShipInfo
             {
-                // id/positionIndex는 이 리스트 내 자리(i)를 그대로 씀 — FleetComposition은 슬롯을 리스트 순서로만 관리하므로
-                // 별도 슬롯 번호 개념이 없음. SpaceFleet 진형 배치(positionIndex 기준)와 서버 체력 스냅샷 매칭(positionIndex 기준)이
+                // id/positionIndex는 이 리스트 내 자리(i)를 그대로 씀 — 빈 슬롯이 중간에 있어도 압축하지 않고 그 인덱스 그대로 사용.
+                // SpaceFleet 진형 배치(positionIndex 기준)와 서버 체력 스냅샷 매칭(positionIndex 기준)이
                 // 함선마다 고유값을 필요로 해서 0(기본값) 그대로 두면 전원 충돌함
                 id = i,
                 positionIndex = i,
