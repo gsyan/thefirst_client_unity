@@ -292,7 +292,7 @@ public class UIHullPickerView : MonoBehaviour
             m_confirmButtonCostText.gameObject.SetActive(showCost);
             if (showCost == true)
             {
-                string apLabel = LocalizationManager.Instance.Get("UIHullPicker_UnlockButtonAP");
+                string apLabel = LocalizationManager.Instance.Get("UI_AchievementPoint");
                 m_confirmButtonCostText.text = $"{apLabel} {CommonUtility.FormatNumber(selectedHull.unlockAchievementPointCost)}";
             }
         }
@@ -413,7 +413,7 @@ public class UIHullPickerView : MonoBehaviour
         Commander commander = DataManager.Instance.m_currentCommander;
         int achievementPoint = commander != null ? commander.GetAchievementPoint() : 0;
 
-        string apLabel = LocalizationManager.Instance.Get("UIHullPicker_UnlockButtonAP");
+        string apLabel = LocalizationManager.Instance.Get("UI_AchievementPoint");
         m_achievementPointRow.SetRow(apLabel, CommonUtility.FormatNumber(achievementPoint), rawValue: true, rawLabel: true);
         LayoutRebuilder.ForceRebuildLayoutImmediate(m_achievementPointRow.transform as RectTransform);
     }

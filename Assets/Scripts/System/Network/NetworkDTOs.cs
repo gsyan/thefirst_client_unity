@@ -367,30 +367,52 @@ public class ClearExplorationCellRequest
 [System.Serializable]
 public class ClearExplorationCellResponse
 {
-    public int expGained;              // 존 고정값만큼 적립된 지휘관 경험치 (미확정 상태, 탈출 시 확정 정산) — 빈 셀은 0
     public int mineralGained;          // 이 클리어로 방금 지급된 광물(존 고정값 + Treasure/VIP/버프 반영분) — mineralAmount는 누적 총량, 이건 델타
     public List<string> rewardCardCandidates; // 서버가 추첨한 보상카드 후보 3개(cardId) — 탈출 셀이거나 보상이 없는 셀(빈 셀)은 null
     public ETreasureRewardType treasureRewardType; // None이면 Treasure 보상 아님(Mineral이면 mineralAmount에 이미 반영됨)
     public float treasureRewardRatio;              // treasureRewardType이 ShipHealthHeal일 때만 유효한 회복 비율(0~1)
     public int resource;                        // 이 클리어 확정 후 서버가 확정한 자원 현재치(권위값) — 항상 채워짐
     public int mineralAmount;                       // 이 클리어 확정 후 서버에 저장된 광물 현재치(존 고정지급분까지 서버가 반영한 권위값)
-    public int rerollRemain;                       // 오늘 남은 보상카드 리롤 가능 횟수(소모 전 조회값) — rewardCardCandidates가 null이면 무의미
+    public int rerollRemain;                       // 현재 보상카드 리롤 가능 횟수(충전식, 계정 전체 공유) — rewardCardCandidates가 null이면 무의미
 }
 
 [System.Serializable]
-public class ConfirmRewardCardRequest
+public class GetRewardCardShopRequest { } // 셀 클리어와 무관하게 언제든 보상카드 구매 UI를 열기 위한 조회 — 진행 중인 런의 현재 셀 후보를 그대로 돌려주거나(없으면 새로 추첨) 광물/경험치 안내는 없음
+
+[System.Serializable]
+public class GetRewardCardShopResponse
+{
+    public List<string> rewardCardCandidates;
+    public int rerollRemain;
+}
+
+[System.Serializable]
+public class PurchaseRewardCardRequest
 {
     public int zoneNumber;
     public int cellRow;
     public int cellCol;
-    public string selectedCardId; // ClearExplorationCellResponse.rewardCardCandidates 중 하나여야 함(서버가 검증)
+    public string cardId; // ClearExplorationCellResponse.rewardCardCandidates 중 하나여야 함(서버가 검증)
+    public int mineralSpent; // 이 카드의 구매 비용(클라가 계산) — 서버는 검증 없이 그대로 차감
 }
 
 [System.Serializable]
-public class ConfirmRewardCardResponse
+public class PurchaseRewardCardResponse
 {
-    public string selectedCardId;
+    public List<string> rewardCardCandidates; // 구매 직후 서버가 새로 추첨한 후보 3개(cardId) — 같은 팝업에서 계속 구매 가능하도록 즉시 갱신
+    public int mineralAmount; // 차감 반영된 이번 런의 광물 현재치
 }
+
+[System.Serializable]
+public class CloseRewardCardPopupRequest
+{
+    public int zoneNumber;
+    public int cellRow;
+    public int cellCol;
+}
+
+[System.Serializable]
+public class CloseRewardCardPopupResponse { } // 팝업을 닫았다는 사실만 기록(재접속 시 재노출 방지) — 반환 데이터 없음
 
 [System.Serializable]
 public class RerollRewardCardRequest
@@ -404,7 +426,16 @@ public class RerollRewardCardRequest
 public class RerollRewardCardResponse
 {
     public List<string> rewardCardCandidates; // 서버가 새로 추첨한 후보 3개(cardId)
-    public int rerollRemain; // 이번 리롤 이후 오늘 남은 리롤 가능 횟수
+    public int rerollRemain; // 이번 리롤 이후 남은 리롤 가능 횟수(충전식, 계정 전체 공유)
+}
+
+[System.Serializable]
+public class WatchAdForRewardCardRerollChargeRequest { } // 리롤 횟수 0 상태에서 광고 시청(또는 VIP) 충전 — 계정당 횟수라 셀/존 정보 불필요
+
+[System.Serializable]
+public class WatchAdForRewardCardRerollChargeResponse
+{
+    public int rewardCardRerollCharge; // 충전 반영된 현재 리롤 가능 횟수
 }
 
 [System.Serializable]
@@ -415,11 +446,10 @@ public class GetActiveZoneRunProgressResponse
 {
     public int zoneNumber;        // 진행 중인 런이 없으면 0
     public string[] clearedCells; // "row-col"(0-indexed) 목록, 클리어 순서대로
-    public int commanderExpBanked;     // 진행 중인 런의 적립(미확정) 지휘관 경험치, 없으면 0
     public List<ShipHealthRatioInfo> shipHealthRatios; // 마지막 셀 클리어 시점에 저장된 내 함대 체력 스냅샷 — 없으면 null(만피로 스폰된 상태 그대로)
-    public List<string> selectedRewardCards; // 이번 런에서 선택 확정한 보상카드(cardId) 전체 목록 — 지속버프 여부는 클라가 DataTableRewardCard로 재판별
-    public List<string> pendingRewardCardCandidates; // 마지막 클리어 셀에 후보는 나왔지만 아직 선택 확정 전이면 그 후보 3개 — 카드 선택 팝업이 뜨기 전에 앱이 꺼진 경우 재접속 시 복구용, 없으면 null
-    public int rerollRemain;                          // 오늘 남은 보상카드 리롤 가능 횟수(소모 전 조회값) — pendingRewardCardCandidates가 null이면 무의미
+    public List<string> purchasedRewardCards; // 이번 런에서 구매 확정한 보상카드(cardId) 전체 목록 — 지속버프 여부는 클라가 DataTableRewardCard로 재판별
+    public List<string> pendingRewardCardCandidates; // 마지막 클리어 셀에 후보는 있는데 아직 팝업을 닫지 않았으면 그 후보 3개 — 팝업이 뜨기 전에 앱이 꺼진 경우 재접속 시 복구용, 없으면 null
+    public int rerollRemain;                          // 현재 보상카드 리롤 가능 횟수(충전식) — pendingRewardCardCandidates가 null이면 무의미
     public int mineralAmount;                         // 진행 중인 런의 광물 현재치, 없으면 0
 }
 
@@ -442,20 +472,26 @@ public class EscapeExplorationZoneResponse
 }
 
 [System.Serializable]
-public class AbandonZoneRunRequest
-{
-    // 다른 존 도전 전 진행 중인 런을 명시적으로 포기 — 커맨더당 IN_PROGRESS 런은 항상 1개뿐이라 zoneNumber 불필요
-    public bool watchedAd; // 포기 확인 팝업에서 광고를 시청했는지 — true면 적립 보상 전액(100%), false면 기본 지급률(20%)
-}
+public class AbandonZoneRunRequest { } // 다른 존 도전 전 진행 중인 런을 명시적으로 포기 — 커맨더당 IN_PROGRESS 런은 항상 1개뿐이라 zoneNumber 불필요. 포기는 보상(경험치) 없음
 
 [System.Serializable]
 public class AbandonZoneRunResponse
 {
-    public int expGained;              // 포기로 확정 지급된 지휘관 경험치(watchedAd 여부에 따라 20%/100%)
+    public int expGained;              // 포기로 지급된 지휘관 경험치 — 포기는 보상 없음이라 항상 0(지휘관 경험치는 존런을 성공적으로 클리어했을 때만 지급)
     public int totalExp;               // 반영 후 누적 경험치(권위값)
     public int commanderLevel;         // 반영 후 커맨더 레벨(레벨업 없으면 기존과 동일)
     public int resource;            // 런 종료로 회복된 자원 현재치(=resourceMax, 권위값)
     public bool hasUnclaimedAchievement; // 이 존런 정산 시점 기준 완료+미수령 업적 존재 여부(업적 버튼 레드닷용)
+}
+
+[System.Serializable]
+public class ChargeResourceRequest { } // 진행 중인 런의 광물을 소모해 자원 게이지를 즉시 채움 — IN_PROGRESS 런은 1개뿐이라 zoneNumber 불필요. 환산량은 서버가 권위적으로 계산(ZoneRun.resource/mineralAmount 갱신)
+
+[System.Serializable]
+public class ChargeResourceResponse
+{
+    public int resource;      // 충전 반영 후 자원 현재치(권위값)
+    public int mineralAmount; // 충전 반영 후 광물 현재치(권위값) — 충전할 게 없었으면(만피/광물0) 변화 없이 그대로
 }
 
 [System.Serializable]

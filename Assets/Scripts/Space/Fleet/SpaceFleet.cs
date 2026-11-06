@@ -83,52 +83,6 @@ public class SpaceFleet : MonoBehaviour
         return false;
     }
 
-    // 함대 구성상 실드 모듈이 하나라도 장착돼 있는지 — 게이지 상태와 무관, 전술 토글 버튼 자체를 비활성화할지 판단용
-    public bool HasAnyShieldEquipped()
-    {
-        foreach (SpaceShip ship in m_ships)
-        {
-            if (ship == null) continue;
-            foreach (ModuleHull body in ship.m_moduleHulls)
-            {
-                if (body == null || body.m_shield == null) continue;
-                if (body.m_shield.IsEquipped() == true) return true;
-            }
-        }
-        return false;
-    }
-
-    // 함대 구성상 요격체 모듈이 하나라도 장착돼 있는지 — 게이지 상태와 무관, 전술 토글 버튼 자체를 비활성화할지 판단용
-    public bool HasAnyInterceptorEquipped()
-    {
-        foreach (SpaceShip ship in m_ships)
-        {
-            if (ship == null) continue;
-            foreach (ModuleHull body in ship.m_moduleHulls)
-            {
-                if (body == null || body.m_interceptor == null) continue;
-                if (body.m_interceptor.IsEquipped() == true) return true;
-            }
-        }
-        return false;
-    }
-
-    // 함대 구성상 수리 능력(repair > 0)을 가진 함체가 하나라도 있는지 — 체력 게이지 자체는 모든 함선이 갖지만
-    // repair가 0인 함체만으로 이루어진 함대는 토글을 켜도 회복 효과가 전혀 없으므로 전술 토글 버튼 자체를 비활성화할지 판단용
-    public bool HasAnyRepairCapability()
-    {
-        foreach (SpaceShip ship in m_ships)
-        {
-            if (ship == null) continue;
-            foreach (ModuleHull body in ship.m_moduleHulls)
-            {
-                if (body == null) continue;
-                if (body.GetRepair() > 0f) return true;
-            }
-        }
-        return false;
-    }
-
     private void Start()
     {
         EventManager.Subscribe_ShipBodyChanged(OnShipBodyChanged);
@@ -1190,6 +1144,27 @@ public class SpaceFleet : MonoBehaviour
     private const int k_shieldTacticBit = 1 << 4;
     private const int k_interceptorTacticBit = 1 << 5;
 
+    // 빔 전술 토글(idx=0) OFF면 발사 자체를 하지 않음 — 적/PvP상대/시네마틱은 토글 UI가 없어 상시 ON
+    public bool IsBeamTacticOn()
+    {
+        if (m_fleetSource != EFleetSource.fleet_source_player) return true;
+        return (m_fleetInfo.tacticOptions & k_beamTacticBit) != 0;
+    }
+
+    // 미사일 전술 토글(idx=1) OFF면 발사 자체를 하지 않음 — 적/PvP상대/시네마틱은 토글 UI가 없어 상시 ON
+    public bool IsMissileTacticOn()
+    {
+        if (m_fleetSource != EFleetSource.fleet_source_player) return true;
+        return (m_fleetInfo.tacticOptions & k_missileTacticBit) != 0;
+    }
+
+    // 함재기 전술 토글(idx=2) OFF면 발진 자체를 하지 않음 — 적/PvP상대/시네마틱은 토글 UI가 없어 상시 ON
+    public bool IsAircraftTacticOn()
+    {
+        if (m_fleetSource != EFleetSource.fleet_source_player) return true;
+        return (m_fleetInfo.tacticOptions & k_aircraftTacticBit) != 0;
+    }
+
     // 빔 전술 토글(idx=0) ON 시 공격력 2배 — 내 함대만 적용(적/PvP상대/시네마틱은 토글 UI가 없어 배율 없음)
     public float GetBeamTacticAttackMultiplier()
     {
@@ -1239,7 +1214,7 @@ public class SpaceFleet : MonoBehaviour
     public bool TryChargeInterceptorTacticCost(int cost) { return TryChargeTacticCost(cost); }
     public bool TryChargeBeamTacticCost(int cost) { return TryChargeTacticCost(cost); }
 
-    // 토글 상태 반영 + 요격체 즉시 전파 + 서버 동기화 — UI 클릭(TryToggleTactic)과 함대 구성 변화(ClearUnavailableTactics) 공용 경로
+    // 토글 상태 반영 + 요격체 즉시 전파 + 서버 동기화 — UI 클릭(TryToggleTactic) 전용 경로
     public void ApplyTacticOptions(int newOptions)
     {
         int oldOptions = m_fleetInfo.tacticOptions;
@@ -1263,35 +1238,6 @@ public class SpaceFleet : MonoBehaviour
             if (response.errorCode != 0)
                 Debug.LogError($"[SpaceFleet] ChangeTacticOptions 실패: {response.errorCode} fleetId={fleetId}");
         });
-    }
-
-    // 함대 구성상 사용 가능한 전술 토글 비트마스크(0=빔, 1=미사일, 2=함재기, 3=수리, 4=실드, 5=요격체) — 해당 모듈이 하나도 없으면 그 비트는 0
-    public int GetAvailableTacticMask()
-    {
-        CapabilityProfile fleetProfile = GetFleetCapabilityProfile();
-        bool hasRepair = HasAnyRepairCapability();
-        bool hasBeam = fleetProfile.beamAttack > 0f;
-        bool hasMissile = fleetProfile.missileAttack > 0f;
-        bool hasAircraft = fleetProfile.airCount > 0;
-        bool hasShield = HasAnyShieldEquipped();
-        bool hasInterceptor = HasAnyInterceptorEquipped();
-
-        int mask = 0;
-        if (hasRepair == true) mask |= k_repairTacticBit;
-        if (hasMissile == true) mask |= k_missileTacticBit;
-        if (hasAircraft == true) mask |= k_aircraftTacticBit;
-        if (hasShield == true) mask |= k_shieldTacticBit;
-        if (hasInterceptor == true) mask |= k_interceptorTacticBit;
-        if (hasBeam == true) mask |= k_beamTacticBit;
-        return mask;
-    }
-
-    // 함대에 모듈이 없어진 전술 토글은 켜져 있어도 해제(서버 동기화 포함)
-    public void ClearUnavailableTactics()
-    {
-        int availableMask = GetAvailableTacticMask();
-        int newOptions = m_fleetInfo.tacticOptions & availableMask;
-        ApplyTacticOptions(newOptions);
     }
 
     // idx 전술 토글을 뒤집음 — 전투 화면/함대관리 화면 공용. 전술력이 없으면 새로 켤 수 없어 false

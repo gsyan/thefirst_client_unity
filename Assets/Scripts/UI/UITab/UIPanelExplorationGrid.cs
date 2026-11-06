@@ -19,6 +19,15 @@ public class UIPanelExplorationGrid : UIPanelBase
     [SerializeField] private UnityEngine.UI.Button m_abandonRunButton; // 진행 중인 런을 포기(적립분의 50%만 확정 지급)
     [SerializeField] private TMP_Text m_abandonRunButtonText;
 
+    [Header("자원 게이지 / 충전 버튼 — 광물량 UI 바로 아래(UIPanelFleet에서 이전)")]
+    [SerializeField] private UnityEngine.UI.Image m_resourceGauge; // 자원 게이지(Filled/Horizontal), 전술 토글들이 공유
+    [SerializeField] private TMP_Text m_resourceText; // 게이지바 위에 겹쳐 표시되는 현재치/최대치 텍스트("500 / 1000")
+    [SerializeField] private TMP_Text m_gaugeNameText; // 자원 게이지 위 라벨("Resources")
+    [SerializeField] private UnityEngine.UI.Button m_chargeResourceButton; // 존런 중 쌓인 광물을 소모해 자원 게이지를 즉시 채움 — 존런 진행 중에만 사용 가능
+    [SerializeField] private TMP_Text m_chargeResourceButtonText;
+    [SerializeField] private UnityEngine.UI.Button m_buyCardButton; // 셀 클리어와 무관하게 언제든 보상카드 구매 UI를 염 — 존런 진행 중에만 사용 가능
+    [SerializeField] private TMP_Text m_buyCardButtonText;
+
     [Header("존 선택 스크롤")]
     [SerializeField] private InfiniteScrollViewH m_zoneTabScroll;
     [SerializeField] private GameObject m_zoneTabNodePrefab;
@@ -51,7 +60,6 @@ public class UIPanelExplorationGrid : UIPanelBase
     private ExplorationGridData m_activeZoneSnapshotGridData;
     private int m_activeZoneSnapshotRow;
     private int m_activeZoneSnapshotCol;
-    private BankedRunReward m_activeZoneSnapshotBankedReward = new();
 
     private bool m_isAutoMovingAlongPath; // 경로 자동 주행(점프 이동 + 로컬 비주얼 워크) 중 — 추가 터치 무시
     private bool m_pendingCellEntry;
@@ -71,8 +79,6 @@ public class UIPanelExplorationGrid : UIPanelBase
     private int m_previousResource;
     private SpaceFleet m_standoffEnemyFleet;
 
-    private BankedRunReward m_bankedReward = new(); // 진행 중인 런의 적립(미확정) 지휘관 경험치 — 클리어마다 누적, 탈출/포기 확정 시 리셋
-    private BankedRunReward m_pendingBankedRewardGain = new(); // 전투 중(패널 비활성 상태)에 획득해서 아직 화면에 반영 안 한 적립량 — 패널이 열릴 때 한 번에 반영+애니메이션
     private long m_displayedMineralAmount = -1; // 롤링 애니메이션의 시작값 추적 — 최초 1회는 -1이라 즉시 표시됨(UIResourceBar와 동일 패턴)
 
     private readonly List<GridCell3D> m_buttonPool = new();
@@ -86,11 +92,25 @@ public class UIPanelExplorationGrid : UIPanelBase
         EventManager.Subscribe_ZoneStageBattleEnd(OnZoneStageBattleEnd);
         EventManager.Subscribe_RetreatExploration(OnRetreatDuringBattle);
         EventManager.Subscribe_TutorialGeneralUIBlockedChanged(OnTutorialGeneralUIBlockedChanged);
+        EventManager.Subscribe_RewardCardBuffsChanged(RefreshRewardCardBuffDisplay);
 
         if (m_abandonRunButton != null)
             m_abandonRunButton.onClick.AddListener(OnAbandonRunButtonClicked);
         if (m_abandonRunButtonText != null)
             CommonUtility.SetUILocText(m_abandonRunButtonText, "UI_Abandon");
+
+        EventManager.Subscribe_ResourceChanged(OnResourceChanged);
+        if (m_chargeResourceButton != null)
+            m_chargeResourceButton.onClick.AddListener(OnChargeResourceButtonClicked);
+        if (m_chargeResourceButtonText != null)
+            CommonUtility.SetUILocText(m_chargeResourceButtonText, "UIBattle_MineralChargeButton");
+        if (m_gaugeNameText != null)
+            CommonUtility.SetUILocText(m_gaugeNameText, "UI_Resources");
+
+        if (m_buyCardButton != null)
+            m_buyCardButton.onClick.AddListener(OnBuyCardButtonClicked);
+        if (m_buyCardButtonText != null)
+            CommonUtility.SetUILocText(m_buyCardButtonText, "UIPanelExplorationGrid_BuyCardButton");
 
         // 캔버스 계층 밖의 독립 루트 — 3D 셀이 UI Canvas의 스케일/회전에 영향받지 않도록 별도로 생성
         m_cellRoot = new GameObject("ExplorationGridCellRoot").transform;
@@ -101,6 +121,118 @@ public class UIPanelExplorationGrid : UIPanelBase
         EventManager.Unsubscribe_ZoneStageBattleEnd(OnZoneStageBattleEnd);
         EventManager.Unsubscribe_RetreatExploration(OnRetreatDuringBattle);
         EventManager.Unsubscribe_TutorialGeneralUIBlockedChanged(OnTutorialGeneralUIBlockedChanged);
+        EventManager.Unsubscribe_ResourceChanged(OnResourceChanged);
+        EventManager.Unsubscribe_RewardCardBuffsChanged(RefreshRewardCardBuffDisplay);
+    }
+
+    private void OnResourceChanged(float current, int max)
+    {
+        if (m_resourceGauge != null)
+            m_resourceGauge.fillAmount = max > 0 ? Mathf.Clamp01(current / max) : 0f;
+
+        if (m_resourceText != null)
+            m_resourceText.text = $"{CommonUtility.FormatNumber(Mathf.RoundToInt(current))} / {CommonUtility.FormatNumber(max)}";
+    }
+
+    // ResourceChanged 이벤트는 값이 실제로 바뀔 때만 발행되므로, 패널이 정착할 때 현재 커맨더 상태로 직접 한 번 동기화해야
+    // 게이지/텍스트가 프리팹에 박제된 placeholder 값 그대로 남는 걸 막을 수 있음(RefreshMineralAmountText와 동일한 이유)
+    private void RefreshResourceDisplay()
+    {
+        CommanderInfo commanderInfo = DataManager.Instance.m_currentCommander != null ? DataManager.Instance.m_currentCommander.m_commanderInfo : null;
+        if (commanderInfo == null) return;
+
+        OnResourceChanged(commanderInfo.resource, commanderInfo.resourceMax);
+    }
+
+    // 자원 충전은 존런 진행 중에만 가능 — 그 외에는 버튼 자체를 비활성화
+    private void RefreshChargeResourceButtonInteractable()
+    {
+        if (m_chargeResourceButton == null) return;
+        m_chargeResourceButton.interactable = ObjectManager.Instance.IsExplorationRunActive();
+    }
+
+    // 보상카드 구매도 자원 충전과 동일하게 존런 진행 중에만 가능
+    private void RefreshBuyCardButtonInteractable()
+    {
+        if (m_buyCardButton == null) return;
+        m_buyCardButton.interactable = ObjectManager.Instance.IsExplorationRunActive();
+    }
+
+    // 셀 클리어 직후가 아니어도 언제든 보상카드 구매 UI를 염 — 현재 위치한 셀의 후보를 그대로 가져오거나(없으면 서버가 새로 추첨) 재사용
+    // 방금 클리어로 받은 광물/경험치 안내는 없음(클리어 이벤트가 아니므로)
+    private void OnBuyCardButtonClicked()
+    {
+        if (ObjectManager.Instance.IsExplorationRunActive() == false) return; // 버튼이 비활성화돼 있어야 하지만 방어적으로 재확인
+
+        SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true);
+        NetworkManager.Instance.GetRewardCardShop(new GetRewardCardShopRequest(), response =>
+        {
+            if (response.errorCode != 0 || response.data == null)
+            {
+                NetworkManager.Instance.ShowRequestFailedPopup(response.errorCode);
+                return;
+            }
+
+            UIManager.Instance.ShowRewardCardSelectPopup(0, response.data.rewardCardCandidates, false, m_currentZoneNumber, m_currentRow, m_currentCol, response.data.rerollRemain, () => { });
+        });
+    }
+
+    private void OnChargeResourceButtonClicked()
+    {
+        if (ObjectManager.Instance.IsExplorationRunActive() == false) return; // 버튼이 비활성화돼 있어야 하지만 방어적으로 재확인
+
+        SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true);
+
+        (int mineralToSpend, int gainedResource) = ComputeChargeResourcePreview();
+        UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig
+        {
+            message = string.Format(LocalizationManager.Instance.Get("UIPanelExplorationGrid_ChargeResourceConfirmMessage"), mineralToSpend, gainedResource),
+            onConfirm = RequestChargeResource,
+            onCancel = () => { },
+        });
+    }
+
+    // 서버 ExplorationService.chargeResource와 동일한 공식으로 미리 계산 — 확인 팝업에 실제로 소모/충전될 양을 그대로 보여주기 위함(서버가 최종 권위값)
+    private (int mineralToSpend, int gainedResource) ComputeChargeResourcePreview()
+    {
+        CommanderInfo commanderInfo = DataManager.Instance.m_currentCommander != null ? DataManager.Instance.m_currentCommander.m_commanderInfo : null;
+        if (commanderInfo == null) return (0, 0);
+
+        int neededResource = commanderInfo.resourceMax - commanderInfo.resource;
+        if (neededResource <= 0) return (0, 0);
+
+        int ratio = Mathf.Max(1, DataManager.Instance.m_dataTableConfig.gameSettings.tactic.mineralToResourceRatio);
+        int affordableMineral = (neededResource + ratio - 1) / ratio; // 올림 나눗셈
+        int mineralToSpend = Mathf.Min(affordableMineral, commanderInfo.mineralAmount);
+        int gainedResource = Mathf.Min(neededResource, mineralToSpend * ratio);
+        return (mineralToSpend, gainedResource);
+    }
+
+    private void RequestChargeResource()
+    {
+        NetworkManager.Instance.ChargeResource(new ChargeResourceRequest(), response =>
+        {
+            if (response.errorCode != 0)
+            {
+                NetworkManager.Instance.ShowRequestFailedPopup(response.errorCode);
+                return;
+            }
+
+            ApplyChargeResourceResult(response.data.resource, response.data.mineralAmount);
+        });
+    }
+
+    // 자원 충전 응답(권위값)을 커맨더 정보에 반영 — 게이지/광물 표시 둘 다 즉시 갱신
+    private void ApplyChargeResourceResult(int resource, int mineralAmount)
+    {
+        CommanderInfo commanderInfo = DataManager.Instance.m_currentCommander != null ? DataManager.Instance.m_currentCommander.m_commanderInfo : null;
+        if (commanderInfo == null) return;
+
+        commanderInfo.resource = resource;
+        commanderInfo.mineralAmount = mineralAmount;
+        EventManager.Trigger_ResourceChanged(commanderInfo.resource, commanderInfo.resourceMax);
+        EventManager.Trigger_MineralAmountChanged(commanderInfo.mineralAmount);
+        RefreshMineralAmountText();
     }
 
     // 튜토리얼이 dim 없이(3D 조작은 열어두고) 일반 UI만 막는 스텝일 때, 화면 하단 존 탭 스크롤뷰도 같이 잠금 —
@@ -139,6 +271,8 @@ public class UIPanelExplorationGrid : UIPanelBase
         int targetZoneNumber = m_battleZoneNumber > 0 ? m_battleZoneNumber : ObjectManager.Instance.GetInitialZoneIndex();
         EnterZone(targetZoneNumber);
         RefreshRewardCardBuffDisplay();
+        RefreshChargeResourceButtonInteractable();
+        RefreshBuyCardButtonInteractable();
     }
 
     // 셀 전투(대치 화면 진입 ~ 클리어/퇴각 처리 완료) 동안 전투 중인 존 번호 — 0이면 전투 중 아님
@@ -251,6 +385,9 @@ public class UIPanelExplorationGrid : UIPanelBase
     private void SettleZoneEntry(int zoneNumber)
     {
         RefreshMineralAmountText();
+        RefreshResourceDisplay();
+        RefreshChargeResourceButtonInteractable();
+        RefreshBuyCardButtonInteractable();
 
         // SelectZoneTab이 m_currentZoneNumber를 확정한 뒤에 탭 스크롤을 초기화해야 OnZoneTabNodeBind의 하이라이트 판정이 정확함
         SelectZoneTab(zoneNumber, ComputeZoneSeed(zoneNumber));
@@ -353,7 +490,6 @@ public class UIPanelExplorationGrid : UIPanelBase
         m_activeZoneSnapshotGridData = m_gridData;
         m_activeZoneSnapshotRow = m_currentRow;
         m_activeZoneSnapshotCol = m_currentCol;
-        m_activeZoneSnapshotBankedReward.CopyFrom(m_bankedReward);
     }
 
     public void SelectZoneTab(int zoneNumber, int seed)
@@ -382,7 +518,6 @@ public class UIPanelExplorationGrid : UIPanelBase
             m_gridData = m_activeZoneSnapshotGridData;
             m_currentRow = m_activeZoneSnapshotRow;
             m_currentCol = m_activeZoneSnapshotCol;
-            m_bankedReward.CopyFrom(m_activeZoneSnapshotBankedReward);
             RefreshMineralAmountText();
 
             BuildCellButtons();
@@ -417,12 +552,8 @@ public class UIPanelExplorationGrid : UIPanelBase
             m_currentCol = m_gridData.startCol;
         }
 
-        // 존 자체가 바뀌는 진입(재진입 제외)에서는 로컬 적립 표시를 일단 비움 — 진행 중인 런이면 아래 서버 응답으로 곧 채워짐
         if (isSameZoneReentry == false)
-        {
-            m_bankedReward.Clear();
             RefreshMineralAmountText();
-        }
 
         BuildCellButtons();
         BuildCellEnemyFleets(zoneConfig);
@@ -454,7 +585,6 @@ public class UIPanelExplorationGrid : UIPanelBase
         // 응답 도착 전 유저가 이미 다른 존으로 이동했으면 지금 그리드와 무관한 데이터이므로 버림
         if (requestedZoneNumber != m_currentZoneNumber || response.data.zoneNumber != m_currentZoneNumber) return;
 
-        m_bankedReward.Set(EBankedRewardType.Exp, response.data.commanderExpBanked);
         RefreshAbandonRunButtonState();
         ApplyFleetHealthSnapshot(response.data.shipHealthRatios);
 
@@ -481,10 +611,10 @@ public class UIPanelExplorationGrid : UIPanelBase
             RefreshCellStates();
         }
 
-        // 마지막 클리어 셀에 아직 선택 확정 안 된 카드 후보가 있으면(팝업이 뜨기 전에 앱이 꺼진 경우) 재접속 시 다시 띄움
+        // 마지막 클리어 셀에 아직 안 닫은 카드 후보 팝업이 있으면(팝업이 뜨기 전에 앱이 꺼진 경우) 재접속 시 다시 띄움
         if (response.data.pendingRewardCardCandidates != null && response.data.pendingRewardCardCandidates.Count > 0)
         {
-            // 미확정 후보는 서버 기준 마지막 클리어 셀의 것 — 패널의 현재 좌표가 아니라 clearedCells의 마지막 셀로 확정 요청을 보내야 함
+            // 미확정 후보는 서버 기준 마지막 클리어 셀의 것 — 패널의 현재 좌표가 아니라 clearedCells의 마지막 셀로 구매/닫기 요청을 보내야 함
             int rewardZoneNumber = response.data.zoneNumber;
             int rewardCellRow = m_currentRow;
             int rewardCellCol = m_currentCol;
@@ -498,15 +628,7 @@ public class UIPanelExplorationGrid : UIPanelBase
                 }
             }
 
-            UIManager.Instance.ShowRewardCardSelectPopup(0, 0, response.data.pendingRewardCardCandidates, false, rewardZoneNumber, rewardCellRow, rewardCellCol, response.data.rerollRemain, (selectedCardId, onProcessed) =>
-            {
-                if (selectedCardId == null)
-                {
-                    onProcessed(true);
-                    return;
-                }
-                OnRewardCardSelected(rewardZoneNumber, rewardCellRow, rewardCellCol, selectedCardId, onProcessed);
-            });
+            UIManager.Instance.ShowRewardCardSelectPopup(0, response.data.pendingRewardCardCandidates, false, rewardZoneNumber, rewardCellRow, rewardCellCol, response.data.rerollRemain, () => { });
         }
     }
 
@@ -749,8 +871,7 @@ public class UIPanelExplorationGrid : UIPanelBase
             onComplete.Invoke();
     }
 
-    // 다른 존에 진행 중인 런의 최신 정보(존/셀/적립량)를 서버에서 받아와 포기 여부를 묻는 팝업 표시
-    // — 로컬 캐시(m_bankedReward)는 그 존을 벗어나며 리셋되므로 여기선 신뢰할 수 없어 서버에 재조회
+    // 다른 존에 진행 중인 런의 최신 정보(존/셀/광물)를 서버에서 받아와 포기 여부를 묻는 팝업 표시
     private void ShowSwitchZoneAbandonPopup(int newRow, int newCol)
     {
         NetworkManager.Instance.GetActiveZoneRunProgress(new GetActiveZoneRunProgressRequest(), response =>
@@ -798,10 +919,10 @@ public class UIPanelExplorationGrid : UIPanelBase
         return $"{row + 1}-{col + 1}";
     }
 
-    // 진행도 없는 다른 존 런(보상 0)을 조용히 포기하고, 곧바로 지금 클릭한 셀로 새 런 진입을 확정 — 보상이 없어 광고 옵션 의미 없음
+    // 진행도 없는 다른 존 런을 조용히 포기하고, 곧바로 지금 클릭한 셀로 새 런 진입을 확정
     private void ConfirmAbandonThenEnterCell(int row, int col)
     {
-        RequestAbandonZoneRun(false, data => OnOtherRunAbandonedThenEnterCell(data, row, col));
+        RequestAbandonZoneRun(data => OnOtherRunAbandonedThenEnterCell(data, row, col));
     }
 
     private void OnOtherRunAbandonedThenEnterCell(AbandonZoneRunResponse data, int row, int col)
@@ -1194,7 +1315,6 @@ public class UIPanelExplorationGrid : UIPanelBase
         }
 
         int mineralGained = 0;
-        int expGained = 0;
         List<string> rewardCardCandidates = null;
         ETreasureRewardType treasureRewardType = ETreasureRewardType.None;
         float treasureRewardRatio = 0f;
@@ -1202,14 +1322,10 @@ public class UIPanelExplorationGrid : UIPanelBase
         if (response.data != null)
         {
             mineralGained = response.data.mineralGained;
-            expGained = response.data.expGained;
-            rewardCardCandidates = response.data.rewardCardCandidates; // 탈출 셀/빈 셀은 null — 카드 선택 단계를 건너뜀
-            m_rewardCardResyncAttempted = false;
+            rewardCardCandidates = response.data.rewardCardCandidates; // 탈출 셀/빈 셀은 null — 카드 구매 단계를 건너뜀
             treasureRewardType = response.data.treasureRewardType;
             treasureRewardRatio = response.data.treasureRewardRatio;
             rerollRemain = response.data.rerollRemain;
-            // 이 시점엔 패널이 비활성 상태(전투 화면에 가려짐) — 경험치는 버퍼에만 쌓아두고, 화면 반영은 OnShowUIPanel에서 처리(광물은 mineralAmount로 바로 반영됨)
-            m_pendingBankedRewardGain.Add(EBankedRewardType.Exp, expGained);
             ApplyResourceRecovered(response.data.resource);
 
             // 서버 ZoneRun은 첫 셀 클리어 시점에 생성됨 — 로컬 캐시도 이때 갱신해야 포기 버튼/"다른 존 진행중" 판정이 서버와 일치함
@@ -1232,29 +1348,30 @@ public class UIPanelExplorationGrid : UIPanelBase
             return;
         }
 
-        // 빈 셀(적 없음)은 획득 광물도 카드도 없음 — 팝업 없이 바로 기존 흐름 진행
-        if (mineralGained <= 0 && rewardCardCandidates == null)
+        // 탈출 셀 여부는 카드 후보 유무로 추측하지 않고 그리드 데이터로 직접 판정(Treasure도 카드 후보가 없어서 구분이 안 되므로)
+        bool isEscapeCell = m_gridData != null && m_gridData.IsInBounds(m_currentRow, m_currentCol) == true && m_gridData.GetCell(m_currentRow, m_currentCol).isEscape;
+
+        // 빈 셀(적 없음)은 획득 광물도 카드도 없음 — 팝업 없이 바로 기존 흐름 진행. 탈출 셀은 전투가 없어 항상 이 조건에 걸리지만
+        // "탈출 보상 경험치" 안내를 보여줘야 하므로 건너뛰지 않음
+        if (isEscapeCell == false && mineralGained <= 0 && rewardCardCandidates == null)
         {
             ContinueAfterCellClear();
             return;
         }
 
-        // 광물/경험치 안내와 보상카드 3택1을 한 팝업에서 함께 처리 — 카드 후보가 없으면(탈출 셀, Treasure 등) 팝업이 카드 섹션만 숨기고 안내만 보여줌.
-        // 탈출 셀 여부는 카드 후보 유무로 추측하지 않고 그리드 데이터로 직접 판정(Treasure도 카드 후보가 없어서 구분이 안 되므로)
-        bool isEscapeCell = m_gridData != null && m_gridData.IsInBounds(m_currentRow, m_currentCol) == true && m_gridData.GetCell(m_currentRow, m_currentCol).isEscape;
+        // 탈출 셀은 광물이 아니라 그 존의 확정 탈출 보상 경험치를 미리 보여줌(실제 지급은 ShowEscapeConfirmPopup 확정 후 escapeExplorationZone에서)
+        int rewardAmount = mineralGained;
+        if (isEscapeCell == true)
+        {
+            ZoneConfig zoneConfig = DataManager.Instance.m_dataTableZone.GetZoneByZoneIndex(m_currentZoneNumber);
+            rewardAmount = zoneConfig != null ? zoneConfig.commanderExpReward : 0;
+        }
+
+        // 광물/경험치 안내와 보상카드 3택1을 한 팝업에서 함께 처리 — 카드 후보가 없으면(탈출 셀, Treasure 등) 팝업이 카드 섹션만 숨기고 안내만 보여줌
         int rewardZoneNumber = m_currentZoneNumber;
         int rewardCellRow = m_currentRow;
         int rewardCellCol = m_currentCol;
-        UIManager.Instance.ShowRewardCardSelectPopup(mineralGained, expGained, rewardCardCandidates, isEscapeCell, rewardZoneNumber, rewardCellRow, rewardCellCol, rerollRemain, (selectedCardId, onProcessed) =>
-        {
-            if (selectedCardId == null)
-            {
-                onProcessed(true);
-                ContinueAfterCellClear();
-                return;
-            }
-            OnRewardCardSelected(rewardZoneNumber, rewardCellRow, rewardCellCol, selectedCardId, onProcessed);
-        });
+        UIManager.Instance.ShowRewardCardSelectPopup(rewardAmount, rewardCardCandidates, isEscapeCell, rewardZoneNumber, rewardCellRow, rewardCellCol, rerollRemain, ContinueAfterCellClear);
     }
 
     // Treasure(Event) 셀의 체력회복 당첨 — 즉시 효과 적용 후 안내 팝업. 탐사포인트 당첨은 기존 보상카드 팝업 경로를 그대로 재사용하므로 여기서 다루지 않음
@@ -1273,154 +1390,6 @@ public class UIPanelExplorationGrid : UIPanelBase
         });
     }
 
-    private bool m_rewardCardResyncAttempted; // 보상카드 확정 실패 후 재동기화를 한 번 시도했는지 — 같은 실패가 재동기화 직후 또 나면 반복하지 않고 넘어가기 위함
-
-    // onProcessed(true)=보상카드 팝업 닫기, (false)=팝업 유지 — 성공했거나 서버와 상태가 어긋나 재시도가 무의미할 때만 닫고, 그 외 실패는 같은 확인 버튼으로 재시도하게 유지
-    // zoneNumber/cellRow/cellCol은 팝업을 띄운 시점(그 보상이 걸린 셀)의 값 — 팝업이 떠 있는 동안 패널의 m_current*가 바뀔 수 있어 현재 값을 쓰지 않음
-    private void OnRewardCardSelected(int zoneNumber, int cellRow, int cellCol, string selectedCardId, System.Action<bool> onProcessed)
-    {
-        ConfirmRewardCardRequest request = new ConfirmRewardCardRequest
-        {
-            zoneNumber = zoneNumber,
-            cellRow = cellRow,
-            cellCol = cellCol,
-            selectedCardId = selectedCardId,
-        };
-        NetworkManager.Instance.ConfirmRewardCard(request, response =>
-        {
-            if (response.errorCode == 0)
-            {
-                m_rewardCardResyncAttempted = false;
-                onProcessed(true);
-                ApplySelectedRewardCard(selectedCardId);
-
-                ContinueAfterCellClear();
-                return;
-            }
-
-            Debug.LogError($"[UIPanelExplorationGrid] ConfirmRewardCard 실패: {response.errorCode}");
-            bool isNoActiveRun = response.errorCode == (int)ServerErrorCode.EXPLORATION_NO_ACTIVE_RUN;
-            bool isInvalidSelection = response.errorCode == (int)ServerErrorCode.EXPLORATION_REWARD_CARD_INVALID_SELECTION;
-            bool isStateMismatch = isNoActiveRun == true || isInvalidSelection == true;
-            if (isStateMismatch == false)
-            {
-                onProcessed(false);
-                return;
-            }
-
-            // 재동기화 직후 다시 뜬 팝업에서 같은 실패가 또 나면 서버 기준으로 확정할 수 없는 상태 — 무한 반복 대신 이 셀의 카드 선택은 포기하고 진행
-            if (m_rewardCardResyncAttempted == true)
-            {
-                m_rewardCardResyncAttempted = false;
-                onProcessed(true);
-                ContinueAfterCellClear();
-                return;
-            }
-
-            m_rewardCardResyncAttempted = true;
-            onProcessed(true);
-            UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig
-            {
-                message = LocalizationManager.Instance.Get("UIPopupMessage_NetworkStateMismatch"),
-                onConfirm = () => ResyncRunAfterStateMismatch(),
-            });
-        });
-    }
-
-    // 서버가 런/카드 선택 상태를 클라와 다르게 들고 있을 때 — 서버 값이 권위이므로 진행 상황을 다시 받아 맞춘다.
-    // 서버에 런이 없으면 로컬 런 상태를 종료하고, 있으면 적립/체력/보상카드/미확정 후보를 서버 값으로 복원(재접속 복구와 같은 경로)
-    private void ResyncRunAfterStateMismatch()
-    {
-        m_pendingBankedRewardGain.Clear(); // 로컬 임시 누적은 버리고 서버 적립값을 기준으로 함
-        NetworkManager.Instance.GetActiveZoneRunProgress(new GetActiveZoneRunProgressRequest(), response =>
-        {
-            if (response.errorCode != 0 || response.data == null)
-            {
-                Debug.LogError($"[UIPanelExplorationGrid] 상태 재동기화 실패: {response.errorCode}");
-                ReturnToGridPanel();
-                m_battleZoneNumber = 0;
-                return;
-            }
-
-            bool hasActiveRun = response.data.zoneNumber > 0;
-            if (hasActiveRun == false)
-            {
-                ResetRunStateAfterServerLoss();
-                return;
-            }
-
-            ObjectManager.Instance.m_rewardCardSessionState.Reset();
-            ObjectManager.Instance.m_rewardCardSessionState.ApplyPersistentCardIds(response.data.selectedRewardCards);
-            ObjectManager.Instance.RefreshRewardCardBuffsOnMyFleet();
-            RefreshRewardCardBuffDisplay();
-
-            OnGetActiveZoneRunProgressResponse(response, m_currentZoneNumber);
-            ContinueAfterCellClear();
-        });
-    }
-
-    // 서버에 진행 중인 런이 없다는 확인을 받았을 때 — 서버 정산값 없이 로컬 런 상태만 종료(OnAbandonRunConfirmed에서 서버 정산 반영을 뺀 것과 같은 정리)
-    private void ResetRunStateAfterServerLoss()
-    {
-        EventManager.Trigger_ZoneRunEnded();
-
-        m_bankedReward.Clear();
-        m_pendingBankedRewardGain.Clear();
-        ApplyMineralReset();
-        RefreshMineralAmountText();
-        ClearActiveRunZoneCache();
-        RefreshAbandonRunButtonState();
-
-        SpaceFleet myFleet = ObjectManager.Instance.GetMyFleet();
-        if (myFleet != null)
-        {
-            myFleet.RestoreAllDestroyedShips(0.1f);
-            myFleet.FullRepair();
-        }
-
-        ObjectManager.Instance.m_rewardCardSessionState.Reset();
-        ObjectManager.Instance.RefreshRewardCardBuffsOnMyFleet();
-        RefreshRewardCardBuffDisplay();
-
-        ReturnToGridPanel();
-        m_battleZoneNumber = 0;
-        m_gridData = null;
-        SelectZoneTab(m_currentZoneNumber, ComputeZoneSeed(m_currentZoneNumber));
-    }
-
-    // 지속버프(Buff_MineralRate/Buff_MineralFlatBonus 포함)면 세션 상태에 누적만 — 실제 광물 반영은 다음 셀 클리어 때 서버가 계산.
-    // 즉시효과(체력/실드/요격체 회복)는 그 자리에서 바로 소모
-    private void ApplySelectedRewardCard(string selectedCardId)
-    {
-        RewardCardData card = DataManager.Instance.m_dataTableRewardCard.GetCard(selectedCardId);
-        if (card == null) return;
-
-        if (card.isPersistent == true)
-        {
-            ObjectManager.Instance.m_rewardCardSessionState.ApplyCard(card);
-            ObjectManager.Instance.RefreshRewardCardBuffsOnMyFleet();
-            RefreshRewardCardBuffDisplay();
-        }
-        else if (card.effectType == ECardEffectType.Instant_HealthHeal)
-        {
-            SpaceFleet myFleet = ObjectManager.Instance.GetMyFleet();
-            if (myFleet != null)
-                myFleet.HealAllShipsByRatio(card.value1);
-        }
-        else if (card.effectType == ECardEffectType.Instant_ShieldHeal)
-        {
-            SpaceFleet myFleet = ObjectManager.Instance.GetMyFleet();
-            if (myFleet != null)
-                myFleet.HealShieldAllShipsByRatio(card.value1);
-        }
-        else if (card.effectType == ECardEffectType.Instant_InterceptorHeal)
-        {
-            SpaceFleet myFleet = ObjectManager.Instance.GetMyFleet();
-            if (myFleet != null)
-                myFleet.HealInterceptorAllShipsByRatio(card.value1);
-        }
-    }
-
     // 이 패널 위에 쌓여있던 패널들(대치화면/전투화면 등)을 전부 걷어내고 다시 top으로 노출 — 이 패널은 스택에서
     // 제거된 적이 없으므로(계속 덮여만 있었음) 별도 재오픈 없이 위에 남은 것만 pop하면 됨. 무엇이 몇 겹 쌓여있었는지는 몰라도 됨
     private void ReturnToGridPanel()
@@ -1436,10 +1405,6 @@ public class UIPanelExplorationGrid : UIPanelBase
     private void ContinueAfterCellClear()
     {
         bool reachedEscape = m_gridData != null && m_gridData.GetCell(m_currentRow, m_currentCol).isEscape;
-
-        // 전투 중(패널 비활성 상태)에 획득한 적립 경험치는 m_pendingBankedRewardGain에 쌓여있음 — 여기서 확정 반영(광물은 이미 mineralAmount로 즉시 반영됨)
-        m_bankedReward.Add(EBankedRewardType.Exp, m_pendingBankedRewardGain.Get(EBankedRewardType.Exp));
-        m_pendingBankedRewardGain.Clear();
 
         ReturnToGridPanel();
 
@@ -1464,15 +1429,19 @@ public class UIPanelExplorationGrid : UIPanelBase
 
     // 탈출 셀 클리어 직후(ContinueAfterCellClear의 롤링 애니메이션 콜백)에만 호출됨 — 확정 전 실제로 받게 될 경험치를 미리 보여줌
     // (광물은 탈출 확정 시 "지급"이 아니라 이미 가진 값 그대로 — 예고할 델타가 없어 여기서 다루지 않음)
+    // 지휘관 경험치는 셀 클리어로는 쌓이지 않고 존의 commander_exp_reward 값을 탈출 확정 시 1회만 받으므로, 여기서 데이터테이블 값을 그대로 미리보기로 씀
     private void ShowEscapeConfirmPopup()
     {
         if (m_inputBlockOverlay != null)
             m_inputBlockOverlay.SetActive(false);
 
+        ZoneConfig zoneConfig = DataManager.Instance.m_dataTableZone.GetZoneByZoneIndex(m_currentZoneNumber);
+        int expOnEscape = zoneConfig != null ? zoneConfig.commanderExpReward : 0;
+
         UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig
         {
             message = LocalizationManager.Instance.Get("UIPanelExplorationGrid_EscapeConfirmMessage"),
-            rewardAmounts = new List<int> { m_bankedReward.Get(EBankedRewardType.Exp) },
+            rewardAmounts = new List<int> { expOnEscape },
             onConfirm = OnConfirmEscape,
         });
     }
@@ -1495,8 +1464,6 @@ public class UIPanelExplorationGrid : UIPanelBase
 
             EventManager.Trigger_ZoneRunEnded();
 
-            m_bankedReward.Clear();
-            m_pendingBankedRewardGain.Clear(); // 탈출로 이미 100% 정산됨 — 다음 존으로 누수되지 않도록 함께 리셋
             RefreshAbandonRunButtonState();
             ApplyExpAndLevel(response.data.totalExp, response.data.commanderLevel);
             ApplyResourceRecovered(response.data.resource);
@@ -1520,10 +1487,9 @@ public class UIPanelExplorationGrid : UIPanelBase
                 myFleet.FullRepair();
             }
 
-            // 보상카드 지속버프도 이번 런 한정(세션 스코프)이므로 런 종료와 함께 초기화
+            // 보상카드 지속버프도 이번 런 한정(세션 스코프)이므로 런 종료와 함께 초기화 — 아이콘 UI는 RefreshRewardCardBuffsOnMyFleet이 이벤트로 알아서 갱신
             ObjectManager.Instance.m_rewardCardSessionState.Reset();
             ObjectManager.Instance.RefreshRewardCardBuffsOnMyFleet();
-            RefreshRewardCardBuffDisplay();
 
             // 이미 갤럭시뷰(그리드) 중이라 EnterZone(EnterGalaxyView 기반)은 못 씀 — EnterGalaxyView는 "m_isGalaxyView==true면 no-op"라
             // 정착 이벤트가 영원히 안 옴. NavigateToZone(존 탭 브라우징)과 동일하게 FocusOnZoneAnchor로 즉시 리타겟 후 바로 재구성
@@ -1634,39 +1600,22 @@ public class UIPanelExplorationGrid : UIPanelBase
         ShowAbandonConfirmPopup("UIPanelExplorationGrid_AbandonRunConfirm", OnAbandonRunConfirmed);
     }
 
-    // 존런 포기 확인 팝업 — VIP면 광고 없이 100% 지급 문구만 노출(취소/포기 2버튼), 아니면 취소/포기(20%) 기본 2버튼 +
-    // 광고가 준비된 경우에만 광고시청(100%) 3번째 버튼 추가
+    // 존런 포기 확인 팝업 — 포기 시 보상(경험치) 없음을 메시지에 명시, 취소/포기 2버튼만(광고/VIP 보너스 없음)
     private void ShowAbandonConfirmPopup(string messageKey, Action<AbandonZoneRunResponse> onComplete, params object[] messageArgs)
     {
-        bool isVip = IAPManager.Instance.IsVipActive();
-        bool adReady = AdManager.Instance.IsRewardedAdReady;
-
-        string finalMessageKey = messageKey;
-        if (isVip == true)
-            finalMessageKey = messageKey + "Vip";
-        else if (adReady == true)
-            finalMessageKey = messageKey + "WithAd"; // 광고가 준비됐을 때만 "광고보면 100%" 문구가 있는 WithAd 버전 키를 씀 — 버튼이 안 뜨는데 문구만 광고를 언급하는 불일치 방지
-
         UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig
         {
-            message = LocalizationManager.Instance.Get(finalMessageKey, messageArgs),
+            message = LocalizationManager.Instance.Get(messageKey, messageArgs),
             confirmText1 = LocalizationManager.Instance.Get("UI_Abandon"),
-            extraText1 = (isVip == false && adReady == true) ? LocalizationManager.Instance.Get("UI_WatchAD") : null,
-            onConfirm = () => RequestAbandonZoneRun(false, onComplete),
-            onExtra = (isVip == false && adReady == true) ? () => RequestAbandonZoneRunWithAd(onComplete) : null,
+            onConfirm = () => RequestAbandonZoneRun(onComplete),
             onCancel = () => { }
         });
     }
 
-    private void RequestAbandonZoneRunWithAd(Action<AbandonZoneRunResponse> onComplete)
+    // 포기는 지휘관 경험치 지급 없음(서버가 0으로 처리) — 지휘관 경험치는 존런을 성공적으로 클리어했을 때만 지급됨
+    private void RequestAbandonZoneRun(Action<AbandonZoneRunResponse> onComplete)
     {
-        AdManager.Instance.ShowRewardedAd(result => RequestAbandonZoneRun(result == EAdResult.Rewarded, onComplete));
-    }
-
-    // 광고 미시청(watchedAd=false)이면 기본 지급률(20%), 시청 완료면 전액(100%) — 서버가 최종 판단/지급
-    private void RequestAbandonZoneRun(bool watchedAd, Action<AbandonZoneRunResponse> onComplete)
-    {
-        AbandonZoneRunRequest request = new AbandonZoneRunRequest { watchedAd = watchedAd };
+        AbandonZoneRunRequest request = new AbandonZoneRunRequest();
         NetworkManager.Instance.AbandonZoneRun(request, response =>
         {
             if (response.errorCode != 0)
@@ -1682,8 +1631,6 @@ public class UIPanelExplorationGrid : UIPanelBase
     {
         EventManager.Trigger_ZoneRunEnded();
 
-        m_bankedReward.Clear();
-        m_pendingBankedRewardGain.Clear(); // 포기로 이미 정산됨 — 다음 진입 시 누수되지 않도록 함께 리셋
         RefreshAbandonRunButtonState();
         ApplyExpAndLevel(data.totalExp, data.commanderLevel);
         ApplyResourceRecovered(data.resource);
@@ -1701,10 +1648,9 @@ public class UIPanelExplorationGrid : UIPanelBase
             myFleet.FullRepair();
         }
 
-        // 보상카드 지속버프도 이번 런 한정(세션 스코프)이므로 런 종료와 함께 초기화
+        // 보상카드 지속버프도 이번 런 한정(세션 스코프)이므로 런 종료와 함께 초기화 — 아이콘 UI는 RefreshRewardCardBuffsOnMyFleet이 이벤트로 알아서 갱신
         ObjectManager.Instance.m_rewardCardSessionState.Reset();
         ObjectManager.Instance.RefreshRewardCardBuffsOnMyFleet();
-        RefreshRewardCardBuffDisplay();
 
         // 진행 중이던 런이 종료되었으므로 현재 존을 시작 셀 상태로 다시 진입 — m_gridData를 비워 SelectZoneTab의 좌표 보존 경로를 건너뜀
         m_gridData = null;

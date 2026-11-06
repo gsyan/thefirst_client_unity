@@ -40,6 +40,12 @@ public class LauncherAircraft : LauncherBase
     {
         if (target == null) yield break;
 
+        SpaceShip carrierShip = m_moduleHangar.GetSpaceShip();
+        SpaceFleet ownerFleet = carrierShip != null ? carrierShip.m_ownerFleet : null;
+
+        // 함재기 전술 토글이 꺼져 있으면 발진 자체를 하지 않음(격납고에서 기체를 꺼내지도 않음 — 토글을 다시 켜면 바로 발진 가능)
+        if (ownerFleet != null && ownerFleet.IsAircraftTacticOn() == false) yield break;
+
         AircraftInfo aircraftInfo = m_moduleHangar.GetReadyAircraft();
         if (aircraftInfo == null) yield break;
 
@@ -50,9 +56,6 @@ public class LauncherAircraft : LauncherBase
         if (moduleData != null)
             aircraftInfo.UpdateAircraftInfo(moduleData, m_moduleHangar.GetFinalAttackToShip(), m_moduleHangar.GetFinalAttackToFighter(),
                 m_moduleHangar.GetFinalAirHealth(), m_moduleHangar.GetFinalAirAmmo(), m_moduleHangar.GetFinalAirDisrupt());
-
-        SpaceShip carrierShip = m_moduleHangar.GetSpaceShip();
-        SpaceFleet ownerFleet = carrierShip != null ? carrierShip.m_ownerFleet : null;
 
         SoundManager.Instance.PlayFX(EFx.Aircraft_Launch, transform.position);
 

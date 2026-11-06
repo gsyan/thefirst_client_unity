@@ -627,32 +627,19 @@ public class UIManager : MonoSingleton<UIManager>
         });
     }
 
-    // 셀 클리어 보상(광물/경험치 안내 + 보상카드 3택1) 통합 팝업 — 취소 없음
-    // onConfirmed(selectedCardId)는 CONFIRM 클릭 시 호출 — 카드 후보가 없었던 셀(탈출 셀, Treasure 등)이면 selectedCardId는 null
-    // onConfirmed(selectedCardId, onProcessed): 호출부가 서버 응답을 처리한 뒤 onProcessed(true)를 부르면 팝업을 닫고, onProcessed(false)면 팝업을 유지해 재시도하게 함
-    public void ShowRewardCardSelectPopup(int mineralGained, int expGained, System.Collections.Generic.List<string> candidateCardIds, bool isEscapeCell, int zoneNumber, int cellRow, int cellCol, int rerollRemain, System.Action<string, System.Action<bool>> onConfirmed)
+    // 셀 클리어 보상(광물/경험치 안내 + 보상카드 구매) 통합 팝업 — 카드는 클릭 즉시 구매되고(별도 확인 없음), 닫기 버튼을 눌러야 다음으로 진행됨
+    // rewardAmount: 일반 셀 클리어는 이번에 획득한 광물, 탈출 셀은 그 존의 탈출 보상 경험치(미리보기) — isEscapeCell로 어느 쪽인지 구분해 표시
+    public void ShowRewardCardSelectPopup(int rewardAmount, System.Collections.Generic.List<string> candidateCardIds, bool isEscapeCell, int zoneNumber, int cellRow, int cellCol, int rerollRemain, System.Action onClosed)
     {
         UIPopupRewardCardSelect popup = GetOrCreatePopup<UIPopupRewardCardSelect>("UIPopupRewardCardSelect", EPopupLayer.Overlay);
         if (popup == null) return;
 
         PushPopup(popup, EPopupLayer.Overlay);
 
-        System.Action<string, System.Action<bool>> userConfirmed = onConfirmed;
-        popup.ShowPopupRewardCardSelect(mineralGained, expGained, candidateCardIds, isEscapeCell, zoneNumber, cellRow, cellCol, rerollRemain, (selectedCardId, onPopupProcessed) =>
+        popup.ShowPopupRewardCardSelect(rewardAmount, candidateCardIds, isEscapeCell, zoneNumber, cellRow, cellCol, rerollRemain, () =>
         {
-            if (userConfirmed == null)
-            {
-                CloseTopPopup(EPopupLayer.Overlay);
-                onPopupProcessed(true);
-                return;
-            }
-
-            userConfirmed(selectedCardId, closePopup =>
-            {
-                if (closePopup == true)
-                    CloseTopPopup(EPopupLayer.Overlay);
-                onPopupProcessed(closePopup);
-            });
+            CloseTopPopup(EPopupLayer.Overlay);
+            onClosed?.Invoke();
         });
     }
 

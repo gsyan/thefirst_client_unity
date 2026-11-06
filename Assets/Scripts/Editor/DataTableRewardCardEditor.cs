@@ -1,6 +1,6 @@
 // DataTableRewardCard 커스텀 에디터 — 보상카드 Inspector UI 및 CSV/서버 JSON Import/Export 툴
 // CSV 경로: Assets/Resources/DataTable/RewardCard/datatable_reward_card.csv
-// 서버 JSON 경로: Assets/Resources/DataTable/RewardCard/DataTableRewardCard.json (서버 리소스 폴더에 수동 배치)
+// 서버 JSON은 클라 프로젝트에 남기지 않고 서버 src/main/resources/data/ 폴더에 직접 씀(DataTableTotalEditor와 동일한 경로 규칙)
 
 #if UNITY_EDITOR
 using UnityEngine;
@@ -36,7 +36,8 @@ public class DataTableRewardCardEditor : Editor
         EditorGUILayout.LabelField("CSV / 서버 JSON Import / Export", EditorStyles.boldLabel);
 
         string csvPath = Application.dataPath + "/Resources/DataTable/RewardCard/datatable_reward_card.csv";
-        string serverJsonPath = Application.dataPath + "/Resources/DataTable/RewardCard/DataTableRewardCard.json";
+        string serverJsonPath = System.IO.Path.GetFullPath(
+            System.IO.Path.Combine(Application.dataPath, "..", "..", "thefirst_server", "src", "main", "resources", "data", "DataTableRewardCard.json"));
 
         EditorGUILayout.BeginHorizontal();
 
@@ -77,9 +78,9 @@ public class DataTableRewardCardEditor : Editor
         if (GUILayout.Button("Export 서버용 JSON"))
         {
             string serverJson = dataTable.ExportToServerJson();
+            System.IO.Directory.CreateDirectory(System.IO.Path.GetDirectoryName(serverJsonPath));
             System.IO.File.WriteAllText(serverJsonPath, serverJson, new System.Text.UTF8Encoding(false)); // BOM 없이 저장 — 서버 Jackson 파서가 BOM을 문자로 오인해 파싱 실패함
-            AssetDatabase.Refresh();
-            EditorUtility.DisplayDialog("Complete", $"서버용 JSON Export가 완료되었습니다.\n{serverJsonPath}\n\n이 파일을 서버 src/main/resources/gamedata/ 폴더에 수동 배치해야 합니다.", "OK");
+            EditorUtility.DisplayDialog("Complete", $"서버용 JSON Export가 완료되었습니다.\n{serverJsonPath}", "OK");
         }
 
         EditorGUILayout.EndVertical();

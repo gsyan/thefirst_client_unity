@@ -106,30 +106,6 @@ public class Commander
         return m_commanderInfo.mineralAmount;
     }
 
-    // 자원 게이지 자동/패시브 회복 없음 — 존런 중 쌓인 광물을 소모해서만 수동 충전 가능.
-    // 광물 1개당 mineralToResourceRatio만큼 자원을 채우며, 자원이 이미 가득 차 있으면(필요량 0) 광물을 소모하지 않고 false 반환
-    public bool ChargeResourceWithMineral()
-    {
-        if (m_commanderInfo == null) return false;
-
-        int neededPoints = m_commanderInfo.resourceMax - m_commanderInfo.resource;
-        if (neededPoints <= 0 || m_commanderInfo.mineralAmount <= 0) return false;
-
-        int ratio = DataManager.Instance.m_dataTableConfig.gameSettings.tactic.mineralToResourceRatio;
-        if (ratio <= 0) return false;
-
-        int affordableMineral = (neededPoints + ratio - 1) / ratio; // 필요 포인트를 다 채우는 데 드는 광물 수(올림)
-        int mineralToSpend = UnityEngine.Mathf.Min(affordableMineral, m_commanderInfo.mineralAmount);
-        int gainedPoints = UnityEngine.Mathf.Min(neededPoints, mineralToSpend * ratio);
-
-        m_commanderInfo.mineralAmount -= mineralToSpend;
-        m_commanderInfo.resource += gainedPoints;
-
-        EventManager.Trigger_ResourceChanged(m_commanderInfo.resource, m_commanderInfo.resourceMax);
-        EventManager.Trigger_MineralAmountChanged(m_commanderInfo.mineralAmount);
-        return true;
-    }
-
     public int GetAchievementPoint()
     {
         if (m_commanderInfo == null) return 0;

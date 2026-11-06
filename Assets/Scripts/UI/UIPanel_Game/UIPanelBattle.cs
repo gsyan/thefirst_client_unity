@@ -3,12 +3,21 @@
 // UIRewardCardBuffDisplay(보상카드 지속버프 표시)를 자식으로 둔다.
 // 자원(Resource) 소모 계산도 이 패널이 담당 — 패널이 꺼지면(전투 종료) 코루틴도 Unity가 자동으로 멈춰줌
 using System.Collections;
+using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
+using UnityEngine.UI;
 
 public class UIPanelBattle : UIPanelBase
 {
     [SerializeField] private UIRewardCardBuffDisplay m_rewardCardBuffDisplay;
     [SerializeField] private UIBattleView m_battleView;
+
+    [Header("자원 게이지")]
+    [SerializeField] private TMP_Text m_gaugeNameText; // 게이지 위 라벨("Resources")
+    [SerializeField] private Image m_tacticPowerGauge; // 자원 게이지(Filled/Horizontal)
+    [FormerlySerializedAs("m_mineralAmountText")]
+    [SerializeField] private TMP_Text m_resourceText; // 게이지바 위에 겹쳐 표시되는 현재치/최대치 텍스트("968 / 1,000")
 
     private EUnitState m_fleetState = EUnitState.Idle;
     private bool m_isExplorationOpen = false;
@@ -25,6 +34,11 @@ public class UIPanelBattle : UIPanelBase
         EventManager.Subscribe_ExplorationTabOpened(OnExplorationTabOpened);
         EventManager.Subscribe_ExplorationTabClosed(OnExplorationTabClosed);
         EventManager.Subscribe_ZoneRunEnded(OnZoneRunEnded);
+        EventManager.Subscribe_ResourceChanged(OnResourceChanged);
+        EventManager.Subscribe_RewardCardBuffsChanged(RefreshRewardCardBuffDisplay);
+
+        if (m_gaugeNameText != null)
+            CommonUtility.SetUILocText(m_gaugeNameText, "UI_Resources");
 
         // RefreshVisibility는 함대상태/탐사탭 이벤트가 발생할 때만 재평가되는데, isTutorialBattle 판정은 그 이벤트들과
         // 무관하게 튜토리얼 종료 시점에 바뀜 — 종료 계기를 놓치면 다음 실제 전투까지 패널이 계속 숨겨진 채로 남을 수 있어 직접 구독
@@ -38,9 +52,26 @@ public class UIPanelBattle : UIPanelBase
         EventManager.Unsubscribe_ExplorationTabOpened(OnExplorationTabOpened);
         EventManager.Unsubscribe_ExplorationTabClosed(OnExplorationTabClosed);
         EventManager.Unsubscribe_ZoneRunEnded(OnZoneRunEnded);
+        EventManager.Unsubscribe_ResourceChanged(OnResourceChanged);
+        EventManager.Unsubscribe_RewardCardBuffsChanged(RefreshRewardCardBuffDisplay);
 
         if (TutorialManager.Instance != null)
             TutorialManager.Instance.OnTutorialCompleted -= OnAnyTutorialCompleted;
+    }
+
+    private void RefreshRewardCardBuffDisplay()
+    {
+        if (m_rewardCardBuffDisplay != null)
+            m_rewardCardBuffDisplay.Refresh(ObjectManager.Instance.m_rewardCardSessionState);
+    }
+
+    private void OnResourceChanged(float current, int max)
+    {
+        if (m_tacticPowerGauge != null)
+            m_tacticPowerGauge.fillAmount = max > 0 ? Mathf.Clamp01(current / max) : 0f;
+
+        if (m_resourceText != null)
+            m_resourceText.text = $"{CommonUtility.FormatNumber(Mathf.RoundToInt(current))} / {CommonUtility.FormatNumber(max)}";
     }
 
     private void OnAnyTutorialCompleted(string tutorialId)
@@ -103,13 +134,11 @@ public class UIPanelBattle : UIPanelBase
         if (m_battleView != null)
             m_battleView.RefreshTacticsDisplay();
 
-        // 카드 선택은 그리드(전투 밖)에서만 일어나고 전투 중엔 바뀌지 않으므로, 패널이 뜰 때 1회 동기화면 충분
-        if (m_rewardCardBuffDisplay != null)
-            m_rewardCardBuffDisplay.Refresh(ObjectManager.Instance.m_rewardCardSessionState);
+        RefreshRewardCardBuffDisplay(); // 패널이 뜨는 시점에도 1회 동기화(이후엔 OnRewardCardBuffsChanged 구독으로 갱신됨)
 
         CommanderInfo commanderInfo = GetCommanderInfo();
         if (commanderInfo != null)
-            EventManager.Trigger_ResourceChanged(commanderInfo.resource, commanderInfo.resourceMax);
+            EventManager.Trigger_ResourceChanged(commanderInfo.resource, commanderInfo.resourceMax); // 이벤트는 값이 바뀔 때만 발행되므로 패널이 뜰 때 직접 한 번 동기화
 
         if (m_resourceDrainCoroutine == null)
             m_resourceDrainCoroutine = StartCoroutine(Co_DrainResource());

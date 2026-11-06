@@ -13,4 +13,6 @@ public class RewardCardData
     public float value1;
     public float value2;
     public int weight;          // 서버 후보 추첨 가중치(클수록 잘 뽑힘)
+    public int baseMineralCost; // 이번 런에서 이 카드를 처음 구매할 때 광물 비용
+    public int mineralCostStep; // 이번 런에서 이 카드를 구매할 때마다(RewardCardSessionState 구매 횟수 기준) 비용에 추가로 더해지는 증가분
 }

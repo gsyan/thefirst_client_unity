@@ -192,6 +192,9 @@ public class ModuleBeam : ModuleBase
     
     private void ExecuteAttackOnTarget(ModuleHull target)
     {
+        // 빔 전술 토글이 꺼져 있으면 발사 자체를 하지 않음(쿨다운은 그대로 흘러감 — 토글을 다시 켜면 바로 쏠 수 있음)
+        if (m_ownerFleet != null && m_ownerFleet.IsBeamTacticOn() == false) return;
+
         if (m_animator != null)
             m_animator.SetTrigger("Fire");
 

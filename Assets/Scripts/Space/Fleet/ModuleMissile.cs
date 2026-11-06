@@ -210,6 +210,9 @@ public class ModuleMissile : ModuleBase
 
     private void ExecuteAttackOnTarget(ModuleHull target)
     {
+        // 미사일 전술 토글이 꺼져 있으면 발사 자체를 하지 않음(쿨다운은 그대로 흘러감 — 토글을 다시 켜면 바로 쏠 수 있음)
+        if (m_ownerFleet != null && m_ownerFleet.IsMissileTacticOn() == false) return;
+
         float shipCountMultiplier = m_ownerFleet != null ? m_ownerFleet.GetShipCountAttackMultiplier() : 1f;
         float formationMultiplier = m_ownerFleet != null ? m_ownerFleet.GetFormationAttackMultiplier() : 1f;
         float tacticMultiplier    = m_ownerFleet != null ? m_ownerFleet.GetMissileTacticAttackMultiplier() : 1f;

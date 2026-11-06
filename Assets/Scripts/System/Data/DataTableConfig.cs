@@ -60,8 +60,14 @@ public class PvpSettings
 [System.Serializable]
 public class ExplorationSettings
 {
-    [Tooltip("보상카드 다시 뽑기(광고 시청 리롤) 1일 최대 횟수 — UTC 자정 기준 리셋")]
-    public int rewardCardRerollLimit = 10;
+    [Tooltip("보상카드 리롤 가능 횟수 최대치(충전 상한) — 계정 전체 공유, 존런/접속 여부와 무관")]
+    public int rewardCardRerollChargeMax = 10;
+    [Tooltip("리롤 횟수가 1 충전되는 데 걸리는 시간(분)")]
+    public int rewardCardRerollChargeRegenMinutes = 5;
+    [Tooltip("리롤 횟수가 0일 때 광고 시청으로 받는 충전량")]
+    public int rewardCardRerollChargeAdBonus = 10;
+    [Tooltip("이번 런에서 보상 클리어를 거듭할수록 셀 클리어 광물 보상에 가산되는 값(0번째=가산 없음, 1번째 이후부터 매 클리어마다 이 값만큼 추가)")]
+    public int mineralRewardBonusPerClear = 50;
 }
 
 [System.Serializable]
@@ -79,8 +85,8 @@ public class TacticSettings
     public int tacticShieldCost = 10;
     [Tooltip("요격체 전술 ON 시 요격체 1기 생성마다 소모하는 탐험 포인트")]
     public int tacticInterceptorCost = 10;
-    [Tooltip("자원 게이지(전술력) 수동 충전 — 광물 1개당 채워지는 자원 게이지 포인트")]
-    public int mineralToResourceRatio = 10;
+    [Tooltip("자원 게이지(전술력) 수동 충전 — 광물 1개당 채워지는 자원 게이지 포인트(1:1)")]
+    public int mineralToResourceRatio = 1;
 }
 
 // 성능포인트 1000 배분 → 최종 전투 수치 변환 공식의 기준값/계수

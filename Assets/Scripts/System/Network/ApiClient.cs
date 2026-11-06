@@ -613,14 +613,29 @@ public class ApiClient
         return await PostAsync<MoveToExplorationCellResponse>("/exploration/move-to-cell", request);
     }
 
-    public async Task<ApiResponse<ConfirmRewardCardResponse>> ConfirmRewardCardAsync(ConfirmRewardCardRequest request)
+    public async Task<ApiResponse<GetRewardCardShopResponse>> GetRewardCardShopAsync(GetRewardCardShopRequest request)
     {
-        return await PostAsync<ConfirmRewardCardResponse>("/exploration/confirm-reward-card", request);
+        return await PostAsync<GetRewardCardShopResponse>("/exploration/reward-card-shop", request);
+    }
+
+    public async Task<ApiResponse<PurchaseRewardCardResponse>> PurchaseRewardCardAsync(PurchaseRewardCardRequest request)
+    {
+        return await PostAsync<PurchaseRewardCardResponse>("/exploration/purchase-reward-card", request);
+    }
+
+    public async Task<ApiResponse<CloseRewardCardPopupResponse>> CloseRewardCardPopupAsync(CloseRewardCardPopupRequest request)
+    {
+        return await PostAsync<CloseRewardCardPopupResponse>("/exploration/close-reward-card-popup", request);
     }
 
     public async Task<ApiResponse<RerollRewardCardResponse>> RerollRewardCardAsync(RerollRewardCardRequest request)
     {
         return await PostAsync<RerollRewardCardResponse>("/exploration/reroll-reward-card", request);
+    }
+
+    public async Task<ApiResponse<WatchAdForRewardCardRerollChargeResponse>> WatchAdForRewardCardRerollChargeAsync(WatchAdForRewardCardRerollChargeRequest request)
+    {
+        return await PostAsync<WatchAdForRewardCardRerollChargeResponse>("/exploration/watch-ad-reward-card-reroll-charge", request);
     }
 
     public async Task<ApiResponse<GetActiveZoneRunProgressResponse>> GetActiveZoneRunProgressAsync(GetActiveZoneRunProgressRequest request)
@@ -636,6 +651,11 @@ public class ApiClient
     public async Task<ApiResponse<AbandonZoneRunResponse>> AbandonZoneRunAsync(AbandonZoneRunRequest request)
     {
         return await PostAsync<AbandonZoneRunResponse>("/exploration/abandon-run", request);
+    }
+
+    public async Task<ApiResponse<ChargeResourceResponse>> ChargeResourceAsync(ChargeResourceRequest request)
+    {
+        return await PostAsync<ChargeResourceResponse>("/exploration/charge-resource", request);
     }
 
     #endregion

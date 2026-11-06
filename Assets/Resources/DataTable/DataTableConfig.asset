@@ -17,6 +17,7 @@ MonoBehaviour:
       commandPowerMaxInit: 400
       attackJitterMax: 1
       reinforceCpCostPerPoint: 10
+      maxFleetSlotCount: 9
     pvp:
       pvpMinCommanderLevel: 2
       pvpListCount: 3
@@ -25,12 +26,17 @@ MonoBehaviour:
       pvpRankScorePenalty: 1
     tactic:
       tacticRepairCost: 10
+      tacticBeamCost: 1
       tacticMissileCost: 1
       tacticHangerCost: 1
       tacticShieldCost: 10
       tacticInterceptorCost: 10
+      mineralToResourceRatio: 1
     exploration:
-      rewardCardRerollLimit: 10
+      rewardCardRerollChargeMax: 10
+      rewardCardRerollChargeRegenMinutes: 5
+      rewardCardRerollChargeAdBonus: 10
+      mineralRewardBonusPerClear: 10
     shipStatFormula:
       maxModuleSlots: 6
       maxAttackReinforcePointsPerSlot: 10
@@ -53,3 +59,7 @@ MonoBehaviour:
         regenRatePerPoint: 0.5
       interceptor:
         maxRegenTimeReductionRatio: 0.5
+    archetypeUpgrade:
+      baseAchievementPointCost: 500
+      achievementPointCostPerLevel: 500
+      maxLevel: 10

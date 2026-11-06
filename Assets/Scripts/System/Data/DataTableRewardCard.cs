@@ -82,14 +82,15 @@ public class DataTableRewardCard : ScriptableObject
     {
         var ic = System.Globalization.CultureInfo.InvariantCulture;
         var sb = new System.Text.StringBuilder();
-        sb.AppendLine("card_id,name_key,desc_key,rarity,effect_type,is_persistent,value1,value2,weight,icon_name");
+        sb.AppendLine("card_id,name_key,desc_key,rarity,effect_type,is_persistent,value1,value2,weight,icon_name,base_mineral_cost,mineral_cost_step");
 
         for (int i = 0; i < rewardCardDataList.Count; i++)
         {
             RewardCardData data = rewardCardDataList[i];
-            sb.AppendLine(string.Format(ic, "{0},{1},{2},{3},{4},{5},{6},{7},{8},{9}",
+            sb.AppendLine(string.Format(ic, "{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11}",
                 data.cardId, data.nameKey, data.descKey, data.rarity, data.effectType,
-                data.isPersistent, data.value1, data.value2, data.weight, data.iconName));
+                data.isPersistent, data.value1, data.value2, data.weight, data.iconName,
+                data.baseMineralCost, data.mineralCostStep));
         }
 
         return sb.ToString();
@@ -129,6 +130,8 @@ public class DataTableRewardCard : ScriptableObject
                 value2 = ParseFloat(GetCol(cols, 7)),
                 weight = ParseInt(GetCol(cols, 8)),
                 iconName = GetCol(cols, 9),
+                baseMineralCost = ParseInt(GetCol(cols, 10)),
+                mineralCostStep = ParseInt(GetCol(cols, 11)),
             });
         }
 

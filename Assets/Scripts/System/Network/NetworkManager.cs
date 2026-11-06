@@ -1054,16 +1054,34 @@ public class NetworkManager : MonoSingleton<NetworkManager>
         StartCoroutine(RunAsync(() => m_apiClient.MoveToExplorationCellAsync(request), onComplete));
     }
 
-    public void ConfirmRewardCard(ConfirmRewardCardRequest request, System.Action<ApiResponse<ConfirmRewardCardResponse>> onComplete)
+    public void GetRewardCardShop(GetRewardCardShopRequest request, System.Action<ApiResponse<GetRewardCardShopResponse>> onComplete)
     {
         if (m_bConnected == false) return;
-        StartCoroutine(RunAsync(() => m_apiClient.ConfirmRewardCardAsync(request), onComplete));
+        StartCoroutine(RunAsync(() => m_apiClient.GetRewardCardShopAsync(request), onComplete));
+    }
+
+    public void PurchaseRewardCard(PurchaseRewardCardRequest request, System.Action<ApiResponse<PurchaseRewardCardResponse>> onComplete)
+    {
+        if (m_bConnected == false) return;
+        StartCoroutine(RunAsync(() => m_apiClient.PurchaseRewardCardAsync(request), onComplete));
+    }
+
+    public void CloseRewardCardPopup(CloseRewardCardPopupRequest request, System.Action<ApiResponse<CloseRewardCardPopupResponse>> onComplete)
+    {
+        if (m_bConnected == false) return;
+        StartCoroutine(RunAsync(() => m_apiClient.CloseRewardCardPopupAsync(request), onComplete));
     }
 
     public void RerollRewardCard(RerollRewardCardRequest request, System.Action<ApiResponse<RerollRewardCardResponse>> onComplete)
     {
         if (m_bConnected == false) return;
         StartCoroutine(RunAsync(() => m_apiClient.RerollRewardCardAsync(request), onComplete));
+    }
+
+    public void WatchAdForRewardCardRerollCharge(WatchAdForRewardCardRerollChargeRequest request, System.Action<ApiResponse<WatchAdForRewardCardRerollChargeResponse>> onComplete)
+    {
+        if (m_bConnected == false) return;
+        StartCoroutine(RunAsync(() => m_apiClient.WatchAdForRewardCardRerollChargeAsync(request), onComplete));
     }
 
     public void GetActiveZoneRunProgress(GetActiveZoneRunProgressRequest request, System.Action<ApiResponse<GetActiveZoneRunProgressResponse>> onComplete)
@@ -1082,6 +1100,12 @@ public class NetworkManager : MonoSingleton<NetworkManager>
     {
         if (m_bConnected == false) return;
         StartCoroutine(RunAsync(() => m_apiClient.AbandonZoneRunAsync(request), onComplete));
+    }
+
+    public void ChargeResource(ChargeResourceRequest request, System.Action<ApiResponse<ChargeResourceResponse>> onComplete)
+    {
+        if (m_bConnected == false) return;
+        StartCoroutine(RunAsync(() => m_apiClient.ChargeResourceAsync(request), onComplete));
     }
 
     public void PurchaseVip(VipPurchaseRequest request, System.Action<ApiResponse<VipStatusResponse>> onComplete)

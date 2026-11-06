@@ -408,6 +408,13 @@ public static class EventManager
     public static void Subscribe_MineralAmountChanged(Action<int> callback)   { OnMineralAmountChanged += callback; }
     public static void Unsubscribe_MineralAmountChanged(Action<int> callback) { OnMineralAmountChanged -= callback; }
 
+    // 보상카드 지속버프(RewardCardSessionState) 구성이 바뀜 — 구매/재접속복구/런종료 등 ObjectManager.RefreshRewardCardBuffsOnMyFleet와 같이 호출
+    // UIPanelExplorationGrid/UIPanelBattle의 버프 아이콘 배지(UIRewardCardBuffDisplay)가 열려있지 않아도 갱신되도록 발행
+    public static event Action OnRewardCardBuffsChanged;
+    public static void Trigger_RewardCardBuffsChanged() { OnRewardCardBuffsChanged?.Invoke(); }
+    public static void Subscribe_RewardCardBuffsChanged(Action callback)   { OnRewardCardBuffsChanged += callback; }
+    public static void Unsubscribe_RewardCardBuffsChanged(Action callback) { OnRewardCardBuffsChanged -= callback; }
+
     // Module Replaced (oldModule, newModule)
     public static event Action<ModuleBase, ModuleBase> OnModuleReplaced;
     public static void TriggerModuleReplaced(ModuleBase oldModule, ModuleBase newModule)

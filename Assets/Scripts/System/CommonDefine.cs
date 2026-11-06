@@ -137,7 +137,7 @@ public enum ECardEffectType
     Buff_HangarAttackToFighter,   // 지속버프: 함재기 대함재기 공격력(Dogfight) x(1+value1)
     Buff_ShipHealth,              // 지속버프: 체력 x(1+value1)
     Buff_MineralRate,             // 지속버프: 이번 런에서 앞으로 획득할 광물량 x(1+value1)
-    Buff_MineralFlatBonus,        // 지속버프: 이번 런에서 앞으로 셀 클리어마다 광물 +value1 가산(광물로 사는 카드라 "즉시 광물 지급"은 순환이라 제외 — 대신 향후 획득량 자체를 늘림)
+    Buff_MineralFlatBonus,        // 지속버프: 이번 런에서 앞으로 셀 클리어마다 광물 가산 — 가산량은 card.value1이 아니라 "이번에 지불한 비용 그대로"(구매할수록 비싸지는 만큼 가산량도 커짐)
     Instant_HealthHeal,           // 즉시효과: 체력 value1(0~1) 비율만큼 회복
     Instant_ShieldHeal,           // 즉시효과: 실드 value1 비율만큼 회복
     Instant_InterceptorHeal,      // 즉시효과: 요격체 value1 비율만큼 회복

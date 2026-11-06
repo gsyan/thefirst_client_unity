@@ -212,7 +212,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 42163135078858755
-    m_Localized: 'Tip: Run explorations to gather resources when you run short.'
+    m_Localized: 'Tip: Run explorations to gather combat resources when you run short.'
     m_Metadata:
       m_Items: []
   - m_Id: 43649151266586624
@@ -453,7 +453,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 66827767299047424
-    m_Localized: Choose a Reward Card
+    m_Localized: Buy a Reward Card
     m_Metadata:
       m_Items: []
   - m_Id: 66832217589809152
@@ -505,11 +505,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 66832217640140813
-    m_Localized: Exploration Point Rate Up
+    m_Localized: Mineral Rate Up
     m_Metadata:
       m_Items: []
   - m_Id: 66832217640140814
-    m_Localized: Exploration point gain +{0:P0}
+    m_Localized: Mineral gain +{0:P0}
     m_Metadata:
       m_Items: []
   - m_Id: 66832217640140815
@@ -537,11 +537,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 66832217644335105
-    m_Localized: Exploration Point Bonus
+    m_Localized: Extra Mineral Gain
     m_Metadata:
       m_Items: []
   - m_Id: 66832217644335106
-    m_Localized: Exploration Point +{0:F0}
+    m_Localized: Future cell-clear mineral reward +{0:F0}
     m_Metadata:
       m_Items: []
   - m_Id: 67415317726232576
@@ -572,10 +572,6 @@ MonoBehaviour:
     m_Localized: Missile Att
     m_Metadata:
       m_Items: []
-  - m_Id: 72096273103978496
-    m_Localized: Exploration Point
-    m_Metadata:
-      m_Items: []
   - m_Id: 72096273103978497
     m_Localized: Command Power
     m_Metadata:
@@ -590,19 +586,17 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 74139633343922176
     m_Localized: There is another exploration in progress.\nZone {0} / Cell {1} /
-      Banked Exploration Point {2}\nAbandon it and start a new challenge in the selected
-      zone?\n* Only 20% of banked points will be recovered if abandoned
+      Mineral {2}\nAbandoning it grants no reward. Abandon it and start a new challenge
+      in the selected zone?
     m_Metadata:
       m_Items: []
   - m_Id: 74139633398448128
     m_Localized: There is an exploration in progress in another zone. Abandoning
-      it now only grants 20% of the banked exploration points. Abandon it and start
-      a new challenge?
+      it grants no reward. Abandon it and start a new challenge?
     m_Metadata:
       m_Items: []
   - m_Id: 74139633398448129
-    m_Localized: Abandon the exploration in progress?\nOnly 20% of the banked exploration
-      points will be granted.
+    m_Localized: Abandon the exploration in progress?\nYou will not receive any reward.
     m_Metadata:
       m_Items: []
   - m_Id: 74139633411031040
@@ -678,7 +672,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 76604851655409671
-    m_Localized: Exploration Point (Total)
+    m_Localized: Mineral (Total)
     m_Metadata:
       m_Items: []
   - m_Id: 76604851655409672
@@ -790,12 +784,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 78447295728582674
-    m_Localized: Earn {1} Exploration Points (Total)
+    m_Localized: Earn {1} Mineral (Total)
     m_Metadata:
       m_Items: []
   - m_Id: 78447295728582675
-    m_Localized: Earn {1} Exploration Points cumulatively (lifetime, not current
-      balance)
+    m_Localized: Earn {1} Mineral cumulatively (lifetime, not current balance)
     m_Metadata:
       m_Items: []
   - m_Id: 78447295728582676
@@ -961,24 +954,6 @@ MonoBehaviour:
     m_Localized: Achievements
     m_Metadata:
       m_Items: []
-  - m_Id: 79356561679319040
-    m_Localized: There is another exploration in progress.\nZone {0} / Cell {1} /
-      Banked Exploration Point {2}\nAbandon it and start a new challenge in the selected
-      zone?\n* Watch an ad to recover 100% of banked points. Otherwise only 20% will
-      be recovered
-    m_Metadata:
-      m_Items: []
-  - m_Id: 79356561738039296
-    m_Localized: There is an exploration in progress in another zone. Watch an ad
-      to receive 100% of the banked exploration points or abandon now for only 20%.
-      Abandon it and start a new challenge?
-    m_Metadata:
-      m_Items: []
-  - m_Id: 79356561738039297
-    m_Localized: Abandon the exploration in progress?\nWatch an ad to receive 100%
-      of the banked exploration points or abandon now for only 20%.
-    m_Metadata:
-      m_Items: []
   - m_Id: 79356561738039298
     m_Localized: ABANDON
     m_Metadata:
@@ -987,41 +962,12 @@ MonoBehaviour:
     m_Localized: Reroll
     m_Metadata:
       m_Items: []
-  - m_Id: 79529385672966144
-    m_Localized: Watch an ad to reroll the reward cards?
-    m_Metadata:
-      m_Items: []
-  - m_Id: 79529385672966145
-    m_Localized: You have used all reroll chances for today.
-    m_Metadata:
-      m_Items: []
-  - m_Id: 79863397285232640
-    m_Localized: Reroll the reward cards?\nAs a VIP privilege
-    m_Metadata:
-      m_Items: []
-  - m_Id: 79863397360730112
-    m_Localized: There is another exploration in progress.\nZone {0} / Cell {1} /
-      Banked Exploration Point {2}\nAbandon it and start a new challenge in the selected
-      zone?\n* As a VIP privilege
-    m_Metadata:
-      m_Items: []
-  - m_Id: 79863397364924416
-    m_Localized: There is an exploration in progress in another zone. As a VIP privilege,
-      you still receive 100% of the banked exploration points. Abandon it and start
-      a new challenge?
-    m_Metadata:
-      m_Items: []
-  - m_Id: 79863397364924417
-    m_Localized: Abandon the exploration in progress?\nAs a VIP privilege, you still
-      receive 100% of the banked exploration points.
-    m_Metadata:
-      m_Items: []
   - m_Id: 79863397364924418
     m_Localized: VIP Reward
     m_Metadata:
       m_Items: []
   - m_Id: 79919752008302592
-    m_Localized: 2x Exploration Points & EXP
+    m_Localized: 2x Mineral & EXP
     m_Metadata:
       m_Items: []
   - m_Id: 79919752054439936
@@ -1085,7 +1031,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 81546886816595968
-    m_Localized: Fire Rate
+    m_Localized: Attack Cooldown
     m_Metadata:
       m_Items: []
   - m_Id: 81546886816595970
@@ -1109,7 +1055,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 81547759680618496
-    m_Localized: Level {0}
+    m_Localized: Tier {0}
     m_Metadata:
       m_Items: []
   - m_Id: 81553074287411200
@@ -1190,8 +1136,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 84572619914739713
-    m_Localized: 'Tip: It''s best to convert Exploration Points into Command Power
-      or Tactic Power as you go.'
+    m_Localized: 'Tip: Mineral only lasts while the exploration run is active and
+      resets when it ends. Use it to charge your combat resource or buy reward cards.'
     m_Metadata:
       m_Items: []
   - m_Id: 84870060622872576
@@ -1343,7 +1289,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 96410851941941269
-    m_Localized: Fleet resource charge efficiency +100%
+    m_Localized: Fleet combat resource charge efficiency +100%
     m_Metadata:
       m_Items: []
   - m_Id: 96410851941941270
@@ -1476,15 +1422,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 96810128346316800
-    m_Localized: Module Level Up
+    m_Localized: Module Reinforcement
     m_Metadata:
       m_Items: []
   - m_Id: 96810128413425664
     m_Localized: UNLOCK
-    m_Metadata:
-      m_Items: []
-  - m_Id: 96810128413425665
-    m_Localized: AP
     m_Metadata:
       m_Items: []
   - m_Id: 96810128413425666
@@ -1508,7 +1450,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 96848683789582338
-    m_Localized: Fleet resource charge
+    m_Localized: Fleet combat resource charge
     m_Metadata:
       m_Items: []
   - m_Id: 96848683789582339
@@ -1558,7 +1500,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 96931116144787460
-    m_Localized: A transport ship responsible for the fleet's resource supply
+    m_Localized: A transport ship responsible for the fleet's combat resource supply
     m_Metadata:
       m_Items: []
   - m_Id: 96931116144787461
@@ -1592,7 +1534,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 97273644178079744
-    m_Localized: Resources
+    m_Localized: Combat Resources
     m_Metadata:
       m_Items: []
   - m_Id: 97458206149574656
@@ -1605,6 +1547,50 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 97484819239141376
     m_Localized: PLACED
+    m_Metadata:
+      m_Items: []
+  - m_Id: 97830713742458880
+    m_Localized: AP
+    m_Metadata:
+      m_Items: []
+  - m_Id: 98045500493529088
+    m_Localized: UPGRADE
+    m_Metadata:
+      m_Items: []
+  - m_Id: 98048292280991744
+    m_Localized: Upgrade to tier {0}?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 98055575777968128
+    m_Localized: STAT CHANGE
+    m_Metadata:
+      m_Items: []
+  - m_Id: 98068785860050944
+    m_Localized: Spend {0} mineral to charge {1} combat resource?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 98274330147684352
+    m_Localized: CLOSE
+    m_Metadata:
+      m_Items: []
+  - m_Id: 98274330214793216
+    m_Localized: Reroll charges used up. Watch an ad to recharge 10?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 98299760716152832
+    m_Localized: 'Cost: Mineral {0}'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 98319187180388352
+    m_Localized: Buy Card
+    m_Metadata:
+      m_Items: []
+  - m_Id: 98333330037932032
+    m_Localized: 'Not enough mineral. (Have: {0} / Need: {1})'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 98414821719801856
+    m_Localized: Mineral Gained
     m_Metadata:
       m_Items: []
   references:

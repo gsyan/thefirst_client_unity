@@ -27,6 +27,10 @@ MonoBehaviour:
     m_Key: UI_Cancel
     m_Metadata:
       m_Items: []
+  - m_Id: 98274330147684352
+    m_Key: UI_Close
+    m_Metadata:
+      m_Items: []
   - m_Id: 78720883400507394
     m_Key: UI_Confirm
     m_Metadata:
@@ -49,6 +53,18 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 96810128346316800
     m_Key: UI_ModuleLevelUp
+    m_Metadata:
+      m_Items: []
+  - m_Id: 98045500493529088
+    m_Key: UI_ModuleLevelUpButton
+    m_Metadata:
+      m_Items: []
+  - m_Id: 98048292280991744
+    m_Key: UIPopupModuleReinforce_LevelUpConfirmMessage
+    m_Metadata:
+      m_Items: []
+  - m_Id: 98055575777968128
+    m_Key: UIPopupModuleReinforce_StatChangeTitle
     m_Metadata:
       m_Items: []
   - m_Id: 78718003033538560
@@ -255,6 +271,10 @@ MonoBehaviour:
     m_Key: UIPanelExplorationGrid_OwnedPoint
     m_Metadata:
       m_Items: []
+  - m_Id: 98068785860050944
+    m_Key: UIPanelExplorationGrid_ChargeResourceConfirmMessage
+    m_Metadata:
+      m_Items: []
   - m_Id: 76574125773946880
     m_Key: UIPanelFleet_AchievementPoint
     m_Metadata:
@@ -275,16 +295,20 @@ MonoBehaviour:
     m_Key: UIPopupRewardCardSelect_RerollButton
     m_Metadata:
       m_Items: []
-  - m_Id: 79529385672966144
-    m_Key: UIPopupRewardCardSelect_RerollConfirm
+  - m_Id: 98299760716152832
+    m_Key: RewardCardButton_MineralCost
     m_Metadata:
       m_Items: []
-  - m_Id: 79863397285232640
-    m_Key: UIPopupRewardCardSelect_RerollConfirmVip
+  - m_Id: 98333330037932032
+    m_Key: RewardCardButton_InsufficientMineral
     m_Metadata:
       m_Items: []
-  - m_Id: 79529385672966145
-    m_Key: UIPopupRewardCardSelect_RerollLimitReached
+  - m_Id: 98319187180388352
+    m_Key: UIPanelExplorationGrid_BuyCardButton
+    m_Metadata:
+      m_Items: []
+  - m_Id: 98274330214793216
+    m_Key: UIPopupRewardCardSelect_RerollChargeAd
     m_Metadata:
       m_Items: []
   - m_Id: 72478145331986432
@@ -299,36 +323,12 @@ MonoBehaviour:
     m_Key: UIPanelExplorationGrid_OtherRunInProgress
     m_Metadata:
       m_Items: []
-  - m_Id: 79356561679319040
-    m_Key: UIPanelExplorationGrid_OtherRunInProgressWithAd
-    m_Metadata:
-      m_Items: []
-  - m_Id: 79863397360730112
-    m_Key: UIPanelExplorationGrid_OtherRunInProgressVip
-    m_Metadata:
-      m_Items: []
   - m_Id: 74139633398448128
     m_Key: UIPanelExplorationGrid_AbandonAnotherRunConfirm
     m_Metadata:
       m_Items: []
-  - m_Id: 79356561738039296
-    m_Key: UIPanelExplorationGrid_AbandonAnotherRunConfirmWithAd
-    m_Metadata:
-      m_Items: []
-  - m_Id: 79863397364924416
-    m_Key: UIPanelExplorationGrid_AbandonAnotherRunConfirmVip
-    m_Metadata:
-      m_Items: []
   - m_Id: 74139633398448129
     m_Key: UIPanelExplorationGrid_AbandonRunConfirm
-    m_Metadata:
-      m_Items: []
-  - m_Id: 79356561738039297
-    m_Key: UIPanelExplorationGrid_AbandonRunConfirmWithAd
-    m_Metadata:
-      m_Items: []
-  - m_Id: 79863397364924417
-    m_Key: UIPanelExplorationGrid_AbandonRunConfirmVip
     m_Metadata:
       m_Items: []
   - m_Id: 79356561738039298
@@ -639,8 +639,8 @@ MonoBehaviour:
     m_Key: UIHullPicker_UnlockButtonLabel
     m_Metadata:
       m_Items: []
-  - m_Id: 96810128413425665
-    m_Key: UIHullPicker_UnlockButtonAP
+  - m_Id: 97830713742458880
+    m_Key: UI_AchievementPoint
     m_Metadata:
       m_Items: []
   - m_Id: 96810128413425666
@@ -797,6 +797,10 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 64946077664411649
     m_Key: UIPopupConfirm_ExpLabel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 98414821719801856
+    m_Key: UIPopupRewardCardSelect_MineralGainedLabel
     m_Metadata:
       m_Items: []
   - m_Id: 57079978713284608
@@ -1029,10 +1033,6 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 51571244805259266
     m_Key: UIPopupMessage_PvpCommanderLevelRequiredMessage
-    m_Metadata:
-      m_Items: []
-  - m_Id: 72096273103978496
-    m_Key: ExplorationPoint
     m_Metadata:
       m_Items: []
   - m_Id: 72096273103978497

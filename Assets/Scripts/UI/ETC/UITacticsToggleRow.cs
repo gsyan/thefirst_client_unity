@@ -61,6 +61,7 @@ public class UITacticsToggleRow : MonoBehaviour
     }
 
     // 패널이 뜰 때마다 호출 — 이벤트는 옵션이 실제로 바뀔 때만 발행되므로 현재 함대 상태로 직접 동기화
+    // 해당 모듈이 없어도 토글 버튼은 항상 눌리게 둠(나중에 모듈을 갖추기 전에도 켜/꺼 둘 수 있어야 함) — 모듈이 없으면 실제 효과만 안 날 뿐
     public void Refresh()
     {
         EnsureInitialized();
@@ -68,18 +69,6 @@ public class UITacticsToggleRow : MonoBehaviour
         SpaceFleet myFleet = ObjectManager.Instance.GetMyFleet();
         if (myFleet == null) return;
 
-        // 모듈이 없어진 전술 토글은 여기서 해제 — 해제 시 이벤트로 표시도 갱신되지만 변화가 없을 때를 위해 아래에서 직접 동기화
-        myFleet.ClearUnavailableTactics();
         OnTacticOptionsChanged(myFleet.m_fleetInfo.tacticOptions);
-        RefreshButtonsInteractable(myFleet);
-    }
-
-    // 함대 구성상 아예 해당 모듈이 없는 전술 토글은 버튼 자체를 비활성화
-    // 수리는 함체 체력은 항상 있지만 repair 스탯이 0인 함체뿐이면 효과가 없으므로 별도 체크(SpaceFleet.GetAvailableTacticMask)
-    private void RefreshButtonsInteractable(SpaceFleet myFleet)
-    {
-        int availableMask = myFleet.GetAvailableTacticMask();
-        for (int i = 0; i < m_buttons.Length; i++)
-            m_buttons[i].interactable = (availableMask & (1 << i)) != 0;
     }
 }

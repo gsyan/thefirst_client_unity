@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: DataTableRewardCard
   m_EditorClassIdentifier: Assembly-CSharp::DataTableRewardCard
   rewardCardDataList:
-  - cardId: card_beam_attack_1per
+  - cardId: card_beam_attack
     nameKey: RewardCard_BeamAttack_Name
     descKey: RewardCard_BeamAttack_Desc
     iconName: bubbling-beam
@@ -23,47 +23,9 @@ MonoBehaviour:
     value1: 0.01
     value2: 0
     weight: 20
-  - cardId: card_beam_attack_2per
-    nameKey: RewardCard_BeamAttack_Name
-    descKey: RewardCard_BeamAttack_Desc
-    iconName: bubbling-beam
-    rarity: 1
-    effectType: 0
-    isPersistent: 1
-    value1: 0.02
-    value2: 0
-    weight: 15
-  - cardId: card_beam_attack_3per
-    nameKey: RewardCard_BeamAttack_Name
-    descKey: RewardCard_BeamAttack_Desc
-    iconName: bubbling-beam
-    rarity: 2
-    effectType: 0
-    isPersistent: 1
-    value1: 0.03
-    value2: 0
-    weight: 10
-  - cardId: card_beam_attack_4per
-    nameKey: RewardCard_BeamAttack_Name
-    descKey: RewardCard_BeamAttack_Desc
-    iconName: bubbling-beam
-    rarity: 2
-    effectType: 0
-    isPersistent: 1
-    value1: 0.04
-    value2: 0
-    weight: 5
-  - cardId: card_beam_attack_5per
-    nameKey: RewardCard_BeamAttack_Name
-    descKey: RewardCard_BeamAttack_Desc
-    iconName: bubbling-beam
-    rarity: 3
-    effectType: 0
-    isPersistent: 1
-    value1: 0.05
-    value2: 0
-    weight: 2
-  - cardId: card_beam_firerate_1per
+    baseMineralCost: 50
+    mineralCostStep: 20
+  - cardId: card_beam_firerate
     nameKey: RewardCard_BeamFireRate_Name
     descKey: RewardCard_BeamFireRate_Desc
     iconName: sinusoidal-beam
@@ -73,47 +35,9 @@ MonoBehaviour:
     value1: 0.01
     value2: 0
     weight: 20
-  - cardId: card_beam_firerate_2per
-    nameKey: RewardCard_BeamFireRate_Name
-    descKey: RewardCard_BeamFireRate_Desc
-    iconName: sinusoidal-beam
-    rarity: 1
-    effectType: 1
-    isPersistent: 1
-    value1: 0.02
-    value2: 0
-    weight: 15
-  - cardId: card_beam_firerate_3per
-    nameKey: RewardCard_BeamFireRate_Name
-    descKey: RewardCard_BeamFireRate_Desc
-    iconName: sinusoidal-beam
-    rarity: 2
-    effectType: 1
-    isPersistent: 1
-    value1: 0.03
-    value2: 0
-    weight: 10
-  - cardId: card_beam_firerate_4per
-    nameKey: RewardCard_BeamFireRate_Name
-    descKey: RewardCard_BeamFireRate_Desc
-    iconName: sinusoidal-beam
-    rarity: 2
-    effectType: 1
-    isPersistent: 1
-    value1: 0.04
-    value2: 0
-    weight: 5
-  - cardId: card_beam_firerate_5per
-    nameKey: RewardCard_BeamFireRate_Name
-    descKey: RewardCard_BeamFireRate_Desc
-    iconName: sinusoidal-beam
-    rarity: 3
-    effectType: 1
-    isPersistent: 1
-    value1: 0.05
-    value2: 0
-    weight: 2
-  - cardId: card_missile_attack_1per
+    baseMineralCost: 50
+    mineralCostStep: 20
+  - cardId: card_missile_attack
     nameKey: RewardCard_MissileAttack_Name
     descKey: RewardCard_MissileAttack_Desc
     iconName: missile-pod
@@ -123,47 +47,9 @@ MonoBehaviour:
     value1: 0.01
     value2: 0
     weight: 20
-  - cardId: card_missile_attack_2per
-    nameKey: RewardCard_MissileAttack_Name
-    descKey: RewardCard_MissileAttack_Desc
-    iconName: missile-pod
-    rarity: 1
-    effectType: 2
-    isPersistent: 1
-    value1: 0.02
-    value2: 0
-    weight: 15
-  - cardId: card_missile_attack_3per
-    nameKey: RewardCard_MissileAttack_Name
-    descKey: RewardCard_MissileAttack_Desc
-    iconName: missile-pod
-    rarity: 2
-    effectType: 2
-    isPersistent: 1
-    value1: 0.03
-    value2: 0
-    weight: 10
-  - cardId: card_missile_attack_4per
-    nameKey: RewardCard_MissileAttack_Name
-    descKey: RewardCard_MissileAttack_Desc
-    iconName: missile-pod
-    rarity: 2
-    effectType: 2
-    isPersistent: 1
-    value1: 0.04
-    value2: 0
-    weight: 5
-  - cardId: card_missile_attack_5per
-    nameKey: RewardCard_MissileAttack_Name
-    descKey: RewardCard_MissileAttack_Desc
-    iconName: missile-pod
-    rarity: 3
-    effectType: 2
-    isPersistent: 1
-    value1: 0.05
-    value2: 0
-    weight: 2
-  - cardId: card_missile_firerate_1per
+    baseMineralCost: 50
+    mineralCostStep: 20
+  - cardId: card_missile_firerate
     nameKey: RewardCard_MissileFireRate_Name
     descKey: RewardCard_MissileFireRate_Desc
     iconName: missile-swarm
@@ -173,47 +59,9 @@ MonoBehaviour:
     value1: 0.01
     value2: 0
     weight: 20
-  - cardId: card_missile_firerate_2per
-    nameKey: RewardCard_MissileFireRate_Name
-    descKey: RewardCard_MissileFireRate_Desc
-    iconName: missile-swarm
-    rarity: 1
-    effectType: 3
-    isPersistent: 1
-    value1: 0.02
-    value2: 0
-    weight: 15
-  - cardId: card_missile_firerate_3per
-    nameKey: RewardCard_MissileFireRate_Name
-    descKey: RewardCard_MissileFireRate_Desc
-    iconName: missile-swarm
-    rarity: 2
-    effectType: 3
-    isPersistent: 1
-    value1: 0.03
-    value2: 0
-    weight: 10
-  - cardId: card_missile_firerate_4per
-    nameKey: RewardCard_MissileFireRate_Name
-    descKey: RewardCard_MissileFireRate_Desc
-    iconName: missile-swarm
-    rarity: 2
-    effectType: 3
-    isPersistent: 1
-    value1: 0.04
-    value2: 0
-    weight: 5
-  - cardId: card_missile_firerate_5per
-    nameKey: RewardCard_MissileFireRate_Name
-    descKey: RewardCard_MissileFireRate_Desc
-    iconName: missile-swarm
-    rarity: 3
-    effectType: 3
-    isPersistent: 1
-    value1: 0.05
-    value2: 0
-    weight: 2
-  - cardId: card_missile_silence_1per
+    baseMineralCost: 50
+    mineralCostStep: 20
+  - cardId: card_missile_silence
     nameKey: RewardCard_MissileSilence_Name
     descKey: RewardCard_MissileSilence_Desc
     iconName: sight-disabled
@@ -223,47 +71,9 @@ MonoBehaviour:
     value1: 0.01
     value2: 0
     weight: 20
-  - cardId: card_missile_silence_2per
-    nameKey: RewardCard_MissileSilence_Name
-    descKey: RewardCard_MissileSilence_Desc
-    iconName: sight-disabled
-    rarity: 1
-    effectType: 4
-    isPersistent: 1
-    value1: 0.02
-    value2: 0
-    weight: 15
-  - cardId: card_missile_silence_3per
-    nameKey: RewardCard_MissileSilence_Name
-    descKey: RewardCard_MissileSilence_Desc
-    iconName: sight-disabled
-    rarity: 2
-    effectType: 4
-    isPersistent: 1
-    value1: 0.03
-    value2: 0
-    weight: 10
-  - cardId: card_missile_silence_4per
-    nameKey: RewardCard_MissileSilence_Name
-    descKey: RewardCard_MissileSilence_Desc
-    iconName: sight-disabled
-    rarity: 2
-    effectType: 4
-    isPersistent: 1
-    value1: 0.04
-    value2: 0
-    weight: 5
-  - cardId: card_missile_silence_5per
-    nameKey: RewardCard_MissileSilence_Name
-    descKey: RewardCard_MissileSilence_Desc
-    iconName: sight-disabled
-    rarity: 3
-    effectType: 4
-    isPersistent: 1
-    value1: 0.05
-    value2: 0
-    weight: 2
-  - cardId: card_hangar_attack_to_ship_1per
+    baseMineralCost: 50
+    mineralCostStep: 20
+  - cardId: card_hangar_attack_to_ship
     nameKey: RewardCard_HangarAttackToShip_Name
     descKey: RewardCard_HangarAttackToShip_Desc
     iconName: jet-fighter
@@ -273,47 +83,9 @@ MonoBehaviour:
     value1: 0.01
     value2: 0
     weight: 20
-  - cardId: card_hangar_attack_to_ship_2per
-    nameKey: RewardCard_HangarAttackToShip_Name
-    descKey: RewardCard_HangarAttackToShip_Desc
-    iconName: jet-fighter
-    rarity: 1
-    effectType: 5
-    isPersistent: 1
-    value1: 0.02
-    value2: 0
-    weight: 15
-  - cardId: card_hangar_attack_to_ship_3per
-    nameKey: RewardCard_HangarAttackToShip_Name
-    descKey: RewardCard_HangarAttackToShip_Desc
-    iconName: jet-fighter
-    rarity: 2
-    effectType: 5
-    isPersistent: 1
-    value1: 0.03
-    value2: 0
-    weight: 10
-  - cardId: card_hangar_attack_to_ship_4per
-    nameKey: RewardCard_HangarAttackToShip_Name
-    descKey: RewardCard_HangarAttackToShip_Desc
-    iconName: jet-fighter
-    rarity: 2
-    effectType: 5
-    isPersistent: 1
-    value1: 0.04
-    value2: 0
-    weight: 5
-  - cardId: card_hangar_attack_to_ship_5per
-    nameKey: RewardCard_HangarAttackToShip_Name
-    descKey: RewardCard_HangarAttackToShip_Desc
-    iconName: jet-fighter
-    rarity: 3
-    effectType: 5
-    isPersistent: 1
-    value1: 0.05
-    value2: 0
-    weight: 2
-  - cardId: card_hangar_attack_to_fighter_1per
+    baseMineralCost: 50
+    mineralCostStep: 20
+  - cardId: card_hangar_attack_to_fighter
     nameKey: RewardCard_HangarAttackToFighter_Name
     descKey: RewardCard_HangarAttackToFighter_Desc
     iconName: strafe
@@ -323,47 +95,9 @@ MonoBehaviour:
     value1: 0.01
     value2: 0
     weight: 20
-  - cardId: card_hangar_attack_to_fighter_2per
-    nameKey: RewardCard_HangarAttackToFighter_Name
-    descKey: RewardCard_HangarAttackToFighter_Desc
-    iconName: strafe
-    rarity: 1
-    effectType: 6
-    isPersistent: 1
-    value1: 0.02
-    value2: 0
-    weight: 15
-  - cardId: card_hangar_attack_to_fighter_3per
-    nameKey: RewardCard_HangarAttackToFighter_Name
-    descKey: RewardCard_HangarAttackToFighter_Desc
-    iconName: strafe
-    rarity: 2
-    effectType: 6
-    isPersistent: 1
-    value1: 0.03
-    value2: 0
-    weight: 10
-  - cardId: card_hangar_attack_to_fighter_4per
-    nameKey: RewardCard_HangarAttackToFighter_Name
-    descKey: RewardCard_HangarAttackToFighter_Desc
-    iconName: strafe
-    rarity: 2
-    effectType: 6
-    isPersistent: 1
-    value1: 0.04
-    value2: 0
-    weight: 5
-  - cardId: card_hangar_attack_to_fighter_5per
-    nameKey: RewardCard_HangarAttackToFighter_Name
-    descKey: RewardCard_HangarAttackToFighter_Desc
-    iconName: strafe
-    rarity: 3
-    effectType: 6
-    isPersistent: 1
-    value1: 0.05
-    value2: 0
-    weight: 2
-  - cardId: card_ship_health_1per
+    baseMineralCost: 50
+    mineralCostStep: 20
+  - cardId: card_ship_health
     nameKey: RewardCard_ShipHealth_Name
     descKey: RewardCard_ShipHealth_Desc
     iconName: heart-wings
@@ -373,47 +107,9 @@ MonoBehaviour:
     value1: 0.01
     value2: 0
     weight: 20
-  - cardId: card_ship_health_2per
-    nameKey: RewardCard_ShipHealth_Name
-    descKey: RewardCard_ShipHealth_Desc
-    iconName: heart-wings
-    rarity: 1
-    effectType: 7
-    isPersistent: 1
-    value1: 0.02
-    value2: 0
-    weight: 15
-  - cardId: card_ship_health_3per
-    nameKey: RewardCard_ShipHealth_Name
-    descKey: RewardCard_ShipHealth_Desc
-    iconName: heart-wings
-    rarity: 2
-    effectType: 7
-    isPersistent: 1
-    value1: 0.03
-    value2: 0
-    weight: 10
-  - cardId: card_ship_health_4per
-    nameKey: RewardCard_ShipHealth_Name
-    descKey: RewardCard_ShipHealth_Desc
-    iconName: heart-wings
-    rarity: 2
-    effectType: 7
-    isPersistent: 1
-    value1: 0.04
-    value2: 0
-    weight: 5
-  - cardId: card_ship_health_5per
-    nameKey: RewardCard_ShipHealth_Name
-    descKey: RewardCard_ShipHealth_Desc
-    iconName: heart-wings
-    rarity: 3
-    effectType: 7
-    isPersistent: 1
-    value1: 0.05
-    value2: 0
-    weight: 2
-  - cardId: card_point_rate_1per
+    baseMineralCost: 50
+    mineralCostStep: 20
+  - cardId: card_point_rate
     nameKey: RewardCard_PointRate_Name
     descKey: RewardCard_PointRate_Desc
     iconName: coins-pile
@@ -423,46 +119,8 @@ MonoBehaviour:
     value1: 0.01
     value2: 0
     weight: 20
-  - cardId: card_point_rate_2per
-    nameKey: RewardCard_PointRate_Name
-    descKey: RewardCard_PointRate_Desc
-    iconName: coins-pile
-    rarity: 1
-    effectType: 8
-    isPersistent: 1
-    value1: 0.02
-    value2: 0
-    weight: 15
-  - cardId: card_point_rate_3per
-    nameKey: RewardCard_PointRate_Name
-    descKey: RewardCard_PointRate_Desc
-    iconName: coins-pile
-    rarity: 2
-    effectType: 8
-    isPersistent: 1
-    value1: 0.03
-    value2: 0
-    weight: 10
-  - cardId: card_point_rate_4per
-    nameKey: RewardCard_PointRate_Name
-    descKey: RewardCard_PointRate_Desc
-    iconName: coins-pile
-    rarity: 2
-    effectType: 8
-    isPersistent: 1
-    value1: 0.04
-    value2: 0
-    weight: 5
-  - cardId: card_point_rate_5per
-    nameKey: RewardCard_PointRate_Name
-    descKey: RewardCard_PointRate_Desc
-    iconName: coins-pile
-    rarity: 3
-    effectType: 8
-    isPersistent: 1
-    value1: 0.05
-    value2: 0
-    weight: 2
+    baseMineralCost: 50
+    mineralCostStep: 20
   - cardId: card_health_heal_10per
     nameKey: RewardCard_HealthHeal_Name
     descKey: RewardCard_HealthHeal_Desc
@@ -473,6 +131,8 @@ MonoBehaviour:
     value1: 0.1
     value2: 0
     weight: 20
+    baseMineralCost: 50
+    mineralCostStep: 20
   - cardId: card_health_heal_20per
     nameKey: RewardCard_HealthHeal_Name
     descKey: RewardCard_HealthHeal_Desc
@@ -483,6 +143,8 @@ MonoBehaviour:
     value1: 0.2
     value2: 0
     weight: 15
+    baseMineralCost: 50
+    mineralCostStep: 20
   - cardId: card_health_heal_30per
     nameKey: RewardCard_HealthHeal_Name
     descKey: RewardCard_HealthHeal_Desc
@@ -493,6 +155,8 @@ MonoBehaviour:
     value1: 0.3
     value2: 0
     weight: 10
+    baseMineralCost: 100
+    mineralCostStep: 30
   - cardId: card_health_heal_40per
     nameKey: RewardCard_HealthHeal_Name
     descKey: RewardCard_HealthHeal_Desc
@@ -503,6 +167,8 @@ MonoBehaviour:
     value1: 0.4
     value2: 0
     weight: 5
+    baseMineralCost: 100
+    mineralCostStep: 30
   - cardId: card_health_heal_50per
     nameKey: RewardCard_HealthHeal_Name
     descKey: RewardCard_HealthHeal_Desc
@@ -513,6 +179,8 @@ MonoBehaviour:
     value1: 0.5
     value2: 0
     weight: 2
+    baseMineralCost: 200
+    mineralCostStep: 50
   - cardId: card_shield_heal
     nameKey: RewardCard_ShieldHeal_Name
     descKey: RewardCard_ShieldHeal_Desc
@@ -523,6 +191,8 @@ MonoBehaviour:
     value1: 1
     value2: 0
     weight: 8
+    baseMineralCost: 50
+    mineralCostStep: 20
   - cardId: card_interceptor_heal
     nameKey: RewardCard_InterceptorHeal_Name
     descKey: RewardCard_InterceptorHeal_Desc
@@ -533,6 +203,8 @@ MonoBehaviour:
     value1: 1
     value2: 0
     weight: 8
+    baseMineralCost: 50
+    mineralCostStep: 20
   - cardId: card_point_flat
     nameKey: RewardCard_PointFlat_Name
     descKey: RewardCard_PointFlat_Desc
@@ -543,3 +215,5 @@ MonoBehaviour:
     value1: 50
     value2: 0
     weight: 10
+    baseMineralCost: 50
+    mineralCostStep: 20

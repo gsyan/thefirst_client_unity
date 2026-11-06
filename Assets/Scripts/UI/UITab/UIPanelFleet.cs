@@ -13,11 +13,6 @@ public class UIPanelFleet : UIPanelBase
 {
     [SerializeField] private RowLabelValue m_commandPowerRow; // 상단 FleetStats — 지휘력(사용량/최대치)
     [SerializeField] private UITacticsToggleRow m_tacticsToggleRow; // 상단 FleetStats — 전술 토글 6종(전투 화면과 동일 상태 공유)
-    [SerializeField] private Image m_resourceGauge; // 상단 FleetStats — 자원 게이지(Filled/Horizontal), 전술 토글들이 공유
-    [SerializeField] private TMP_Text m_resourceText; // 게이지바 위에 겹쳐 표시되는 현재치/최대치 텍스트("500 / 1000")
-    [SerializeField] private TMP_Text m_gaugeNameText; // 자원 게이지 위 라벨("Resources")
-    [SerializeField] private Button m_chargeResourceButton; // 존런 중 쌓인 광물을 소모해 자원 게이지를 즉시 채움(Commander.ChargeResourceWithMineral) — 전투 중엔 비노출, 함대 UI 전용
-    [SerializeField] private TMP_Text m_chargeResourceButtonText;
     [SerializeField] private UIStatRow m_statsRowPrefab;    // 성능 컬럼 전용 — 선택한 함선의 상세 스탯
     [SerializeField] private UIPlacedShipRow m_placedShipRowPrefab;
     [SerializeField] private InfiniteScrollView m_placedShipsScrollView; // 배치된 함선 목록 — 세로 가상 스크롤(PlacedShipsContainer 아래 배치된 스크롤뷰)
@@ -99,12 +94,6 @@ public class UIPanelFleet : UIPanelBase
 
         EventManager.Subscribe_CommanderLevelChanged(OnCommanderLevelChanged);
         EventManager.Subscribe_MyFleetStateChanged(OnMyFleetStateChanged);
-        EventManager.Subscribe_ResourceChanged(OnResourceChanged);
-
-        if (m_chargeResourceButton != null)
-            m_chargeResourceButton.onClick.AddListener(OnChargeResourceButtonClicked);
-        if (m_chargeResourceButtonText != null)
-            CommonUtility.SetUILocText(m_chargeResourceButtonText, "UIBattle_MineralChargeButton");
 
         if (m_beamModuleIcons != null) m_beamModuleIcons.SetOnIconClicked(i => OnModuleIconClicked(EModuleType.beam, i));
         if (m_missileModuleIcons != null) m_missileModuleIcons.SetOnIconClicked(i => OnModuleIconClicked(EModuleType.missile, i));
@@ -120,8 +109,6 @@ public class UIPanelFleet : UIPanelBase
             CommonUtility.SetUILocText(m_modulesTitleText, "UIFleet_ModulesTitle");
         if (m_fleetManagementText != null)
             CommonUtility.SetUILocText(m_fleetManagementText, "FleetManagement");
-        if (m_gaugeNameText != null)
-            CommonUtility.SetUILocText(m_gaugeNameText, "UI_Resources");
         if (m_enemyFleetManagementText != null)
             CommonUtility.SetUILocText(m_enemyFleetManagementText, "UIFleet_EnemyFleetTitle");
 
@@ -134,25 +121,6 @@ public class UIPanelFleet : UIPanelBase
     {
         EventManager.Unsubscribe_CommanderLevelChanged(OnCommanderLevelChanged);
         EventManager.Unsubscribe_MyFleetStateChanged(OnMyFleetStateChanged);
-        EventManager.Unsubscribe_ResourceChanged(OnResourceChanged);
-    }
-
-    private void OnResourceChanged(float current, int max)
-    {
-        if (m_resourceGauge != null)
-            m_resourceGauge.fillAmount = max > 0 ? Mathf.Clamp01(current / max) : 0f;
-
-        if (m_resourceText != null)
-            m_resourceText.text = $"{CommonUtility.FormatNumber(Mathf.RoundToInt(current))} / {CommonUtility.FormatNumber(max)}";
-    }
-
-    private void OnChargeResourceButtonClicked()
-    {
-        Commander commander = DataManager.Instance.m_currentCommander;
-        if (commander == null) return;
-
-        SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true);
-        commander.ChargeResourceWithMineral();
     }
 
     // 함대편성 UI가 열려있는 도중 전투가 시작/종료되면 함체 교체 버튼 활성 상태를 즉시 갱신
@@ -524,23 +492,17 @@ public class UIPanelFleet : UIPanelBase
         LayoutRebuilder.ForceRebuildLayoutImmediate(m_columnContainer);
     }
 
-    // 상단 — 항상 보이는 요약(지휘력 사용량/최대치, 전술력 현재치/최대치)
+    // 상단 — 항상 보이는 요약(지휘력 사용량/최대치) — 자원 게이지/충전 버튼은 UIPanelExplorationGrid(갤럭시뷰)로 이전됨
     private void RefreshFleetStatsSummary(FleetComposition composition)
     {
         int usedCommandPower = composition.GetUsedCommandPower();
         int maxCommandPower = composition.GetMaxCommandPower();
-
-        CommanderInfo commanderInfo = DataManager.Instance.m_currentCommander != null ? DataManager.Instance.m_currentCommander.m_commanderInfo : null;
-        int resource = commanderInfo != null ? commanderInfo.resource : 0;
-        int resourceMax = commanderInfo != null ? commanderInfo.resourceMax : 0;
 
         string usedCommandPowerText = CommonUtility.FormatNumber(usedCommandPower);
         string maxCommandPowerText = CommonUtility.FormatNumber(maxCommandPower);
 
         if (m_commandPowerRow != null)
             m_commandPowerRow.SetRow("UI_CommandPower", $"{usedCommandPowerText} / {maxCommandPowerText}", rawValue: true);
-
-        OnResourceChanged(resource, resourceMax);
     }
 
     private void RefreshPlacedShips()

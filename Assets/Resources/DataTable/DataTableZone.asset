@@ -77,8 +77,8 @@ MonoBehaviour:
     enemyHealthMultiplier: 0.25
     enemyAttackMultiplier: 0.2
     enemyWaveSpawnTermSec: 5
-    mineralReward: 10
-    commanderExpReward: 10
+    mineralReward: 50
+    commanderExpReward: 50
   - zoneIndex: 2
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 3000
@@ -143,8 +143,8 @@ MonoBehaviour:
     enemyHealthMultiplier: 0.45
     enemyAttackMultiplier: 0.4
     enemyWaveSpawnTermSec: 5
-    mineralReward: 11
-    commanderExpReward: 11
+    mineralReward: 60
+    commanderExpReward: 60
   - zoneIndex: 3
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 3000
@@ -209,8 +209,8 @@ MonoBehaviour:
     enemyHealthMultiplier: 0.65
     enemyAttackMultiplier: 0.6
     enemyWaveSpawnTermSec: 5
-    mineralReward: 12
-    commanderExpReward: 12
+    mineralReward: 70
+    commanderExpReward: 70
   - zoneIndex: 4
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 3000
@@ -275,8 +275,8 @@ MonoBehaviour:
     enemyHealthMultiplier: 0.85
     enemyAttackMultiplier: 0.8
     enemyWaveSpawnTermSec: 5
-    mineralReward: 13
-    commanderExpReward: 13
+    mineralReward: 80
+    commanderExpReward: 80
   - zoneIndex: 5
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 5000
@@ -349,8 +349,8 @@ MonoBehaviour:
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
     enemyWaveSpawnTermSec: 5
-    mineralReward: 14
-    commanderExpReward: 14
+    mineralReward: 90
+    commanderExpReward: 90
   - zoneIndex: 6
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 5000
@@ -423,8 +423,8 @@ MonoBehaviour:
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
     enemyWaveSpawnTermSec: 5
-    mineralReward: 15
-    commanderExpReward: 15
+    mineralReward: 100
+    commanderExpReward: 100
   - zoneIndex: 7
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 5000
@@ -497,8 +497,8 @@ MonoBehaviour:
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
     enemyWaveSpawnTermSec: 5
-    mineralReward: 16
-    commanderExpReward: 16
+    mineralReward: 110
+    commanderExpReward: 110
   - zoneIndex: 8
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 5000
@@ -571,8 +571,8 @@ MonoBehaviour:
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
     enemyWaveSpawnTermSec: 5
-    mineralReward: 17
-    commanderExpReward: 17
+    mineralReward: 120
+    commanderExpReward: 120
   - zoneIndex: 9
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 5000
@@ -645,8 +645,8 @@ MonoBehaviour:
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
     enemyWaveSpawnTermSec: 5
-    mineralReward: 18
-    commanderExpReward: 18
+    mineralReward: 130
+    commanderExpReward: 130
   - zoneIndex: 10
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 5000
@@ -719,8 +719,8 @@ MonoBehaviour:
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
     enemyWaveSpawnTermSec: 5
-    mineralReward: 19
-    commanderExpReward: 19
+    mineralReward: 140
+    commanderExpReward: 140
   - zoneIndex: 11
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 5000
@@ -793,8 +793,8 @@ MonoBehaviour:
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
     enemyWaveSpawnTermSec: 5
-    mineralReward: 20
-    commanderExpReward: 20
+    mineralReward: 150
+    commanderExpReward: 150
   - zoneIndex: 12
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 5000
@@ -867,8 +867,8 @@ MonoBehaviour:
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
     enemyWaveSpawnTermSec: 5
-    mineralReward: 21
-    commanderExpReward: 21
+    mineralReward: 160
+    commanderExpReward: 160
   - zoneIndex: 13
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 5000
@@ -941,8 +941,8 @@ MonoBehaviour:
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
     enemyWaveSpawnTermSec: 5
-    mineralReward: 22
-    commanderExpReward: 22
+    mineralReward: 170
+    commanderExpReward: 170
   - zoneIndex: 14
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 5000
@@ -1015,8 +1015,8 @@ MonoBehaviour:
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
     enemyWaveSpawnTermSec: 5
-    mineralReward: 23
-    commanderExpReward: 23
+    mineralReward: 180
+    commanderExpReward: 180
   - zoneIndex: 15
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 5000
@@ -1089,8 +1089,8 @@ MonoBehaviour:
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
     enemyWaveSpawnTermSec: 5
-    mineralReward: 24
-    commanderExpReward: 24
+    mineralReward: 190
+    commanderExpReward: 190
   - zoneIndex: 16
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 5000
@@ -1163,8 +1163,8 @@ MonoBehaviour:
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
     enemyWaveSpawnTermSec: 5
-    mineralReward: 25
-    commanderExpReward: 25
+    mineralReward: 200
+    commanderExpReward: 200
   - zoneIndex: 17
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 5000
@@ -1237,8 +1237,8 @@ MonoBehaviour:
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
     enemyWaveSpawnTermSec: 5
-    mineralReward: 26
-    commanderExpReward: 26
+    mineralReward: 210
+    commanderExpReward: 210
   - zoneIndex: 18
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 5000
@@ -1311,8 +1311,8 @@ MonoBehaviour:
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
     enemyWaveSpawnTermSec: 5
-    mineralReward: 27
-    commanderExpReward: 27
+    mineralReward: 220
+    commanderExpReward: 220
   - zoneIndex: 19
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 5000
@@ -1385,8 +1385,8 @@ MonoBehaviour:
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
     enemyWaveSpawnTermSec: 5
-    mineralReward: 28
-    commanderExpReward: 28
+    mineralReward: 230
+    commanderExpReward: 230
   - zoneIndex: 20
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 5000
@@ -1459,8 +1459,8 @@ MonoBehaviour:
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
     enemyWaveSpawnTermSec: 5
-    mineralReward: 29
-    commanderExpReward: 29
+    mineralReward: 240
+    commanderExpReward: 240
   - zoneIndex: 21
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 5000
@@ -1533,8 +1533,8 @@ MonoBehaviour:
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
     enemyWaveSpawnTermSec: 5
-    mineralReward: 30
-    commanderExpReward: 30
+    mineralReward: 250
+    commanderExpReward: 250
   - zoneIndex: 22
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 5000
@@ -1607,8 +1607,8 @@ MonoBehaviour:
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
     enemyWaveSpawnTermSec: 5
-    mineralReward: 31
-    commanderExpReward: 31
+    mineralReward: 260
+    commanderExpReward: 260
   - zoneIndex: 23
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 5000
@@ -1681,8 +1681,8 @@ MonoBehaviour:
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
     enemyWaveSpawnTermSec: 5
-    mineralReward: 32
-    commanderExpReward: 32
+    mineralReward: 270
+    commanderExpReward: 270
   - zoneIndex: 24
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 5000
@@ -1755,8 +1755,8 @@ MonoBehaviour:
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
     enemyWaveSpawnTermSec: 5
-    mineralReward: 33
-    commanderExpReward: 33
+    mineralReward: 280
+    commanderExpReward: 280
   - zoneIndex: 25
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 5000
@@ -1829,8 +1829,8 @@ MonoBehaviour:
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
     enemyWaveSpawnTermSec: 5
-    mineralReward: 34
-    commanderExpReward: 34
+    mineralReward: 290
+    commanderExpReward: 290
   - zoneIndex: 26
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 5000
@@ -1903,8 +1903,8 @@ MonoBehaviour:
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
     enemyWaveSpawnTermSec: 5
-    mineralReward: 35
-    commanderExpReward: 35
+    mineralReward: 300
+    commanderExpReward: 300
   - zoneIndex: 27
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 5000
@@ -1977,8 +1977,8 @@ MonoBehaviour:
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
     enemyWaveSpawnTermSec: 5
-    mineralReward: 36
-    commanderExpReward: 36
+    mineralReward: 310
+    commanderExpReward: 310
   - zoneIndex: 28
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 5000
@@ -2051,8 +2051,8 @@ MonoBehaviour:
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
     enemyWaveSpawnTermSec: 5
-    mineralReward: 37
-    commanderExpReward: 37
+    mineralReward: 320
+    commanderExpReward: 320
   - zoneIndex: 29
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 5000
@@ -2125,8 +2125,8 @@ MonoBehaviour:
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
     enemyWaveSpawnTermSec: 5
-    mineralReward: 38
-    commanderExpReward: 38
+    mineralReward: 330
+    commanderExpReward: 330
   - zoneIndex: 30
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 5000
@@ -2199,8 +2199,8 @@ MonoBehaviour:
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
     enemyWaveSpawnTermSec: 5
-    mineralReward: 39
-    commanderExpReward: 39
+    mineralReward: 340
+    commanderExpReward: 340
   - zoneIndex: 31
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -2289,8 +2289,8 @@ MonoBehaviour:
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
     enemyWaveSpawnTermSec: 5
-    mineralReward: 40
-    commanderExpReward: 40
+    mineralReward: 350
+    commanderExpReward: 350
   - zoneIndex: 32
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -2379,8 +2379,8 @@ MonoBehaviour:
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
     enemyWaveSpawnTermSec: 5
-    mineralReward: 41
-    commanderExpReward: 41
+    mineralReward: 360
+    commanderExpReward: 360
   - zoneIndex: 33
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -2469,8 +2469,8 @@ MonoBehaviour:
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
     enemyWaveSpawnTermSec: 5
-    mineralReward: 42
-    commanderExpReward: 42
+    mineralReward: 370
+    commanderExpReward: 370
   - zoneIndex: 34
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -2559,8 +2559,8 @@ MonoBehaviour:
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
     enemyWaveSpawnTermSec: 5
-    mineralReward: 43
-    commanderExpReward: 43
+    mineralReward: 380
+    commanderExpReward: 380
   - zoneIndex: 35
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -2649,8 +2649,8 @@ MonoBehaviour:
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
     enemyWaveSpawnTermSec: 5
-    mineralReward: 44
-    commanderExpReward: 44
+    mineralReward: 390
+    commanderExpReward: 390
   - zoneIndex: 36
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -2739,8 +2739,8 @@ MonoBehaviour:
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
     enemyWaveSpawnTermSec: 5
-    mineralReward: 45
-    commanderExpReward: 45
+    mineralReward: 400
+    commanderExpReward: 400
   - zoneIndex: 37
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -2829,8 +2829,8 @@ MonoBehaviour:
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
     enemyWaveSpawnTermSec: 5
-    mineralReward: 46
-    commanderExpReward: 46
+    mineralReward: 410
+    commanderExpReward: 410
   - zoneIndex: 38
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -2919,8 +2919,8 @@ MonoBehaviour:
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
     enemyWaveSpawnTermSec: 5
-    mineralReward: 47
-    commanderExpReward: 47
+    mineralReward: 420
+    commanderExpReward: 420
   - zoneIndex: 39
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -3009,8 +3009,8 @@ MonoBehaviour:
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
     enemyWaveSpawnTermSec: 5
-    mineralReward: 48
-    commanderExpReward: 48
+    mineralReward: 430
+    commanderExpReward: 430
   - zoneIndex: 40
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -3099,8 +3099,8 @@ MonoBehaviour:
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
     enemyWaveSpawnTermSec: 5
-    mineralReward: 49
-    commanderExpReward: 49
+    mineralReward: 440
+    commanderExpReward: 440
   - zoneIndex: 41
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -3189,8 +3189,8 @@ MonoBehaviour:
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
     enemyWaveSpawnTermSec: 5
-    mineralReward: 50
-    commanderExpReward: 50
+    mineralReward: 450
+    commanderExpReward: 450
   - zoneIndex: 42
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -3279,8 +3279,8 @@ MonoBehaviour:
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
     enemyWaveSpawnTermSec: 5
-    mineralReward: 51
-    commanderExpReward: 51
+    mineralReward: 460
+    commanderExpReward: 460
   - zoneIndex: 43
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -3369,8 +3369,8 @@ MonoBehaviour:
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
     enemyWaveSpawnTermSec: 5
-    mineralReward: 52
-    commanderExpReward: 52
+    mineralReward: 470
+    commanderExpReward: 470
   - zoneIndex: 44
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -3459,8 +3459,8 @@ MonoBehaviour:
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
     enemyWaveSpawnTermSec: 5
-    mineralReward: 53
-    commanderExpReward: 53
+    mineralReward: 480
+    commanderExpReward: 480
   - zoneIndex: 45
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -3549,8 +3549,8 @@ MonoBehaviour:
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
     enemyWaveSpawnTermSec: 5
-    mineralReward: 54
-    commanderExpReward: 54
+    mineralReward: 490
+    commanderExpReward: 490
   - zoneIndex: 46
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -3639,8 +3639,8 @@ MonoBehaviour:
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
     enemyWaveSpawnTermSec: 5
-    mineralReward: 55
-    commanderExpReward: 55
+    mineralReward: 500
+    commanderExpReward: 500
   - zoneIndex: 47
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -3729,8 +3729,8 @@ MonoBehaviour:
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
     enemyWaveSpawnTermSec: 5
-    mineralReward: 56
-    commanderExpReward: 56
+    mineralReward: 510
+    commanderExpReward: 510
   - zoneIndex: 48
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -3819,8 +3819,8 @@ MonoBehaviour:
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
     enemyWaveSpawnTermSec: 5
-    mineralReward: 57
-    commanderExpReward: 57
+    mineralReward: 520
+    commanderExpReward: 520
   - zoneIndex: 49
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -3909,8 +3909,8 @@ MonoBehaviour:
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
     enemyWaveSpawnTermSec: 5
-    mineralReward: 58
-    commanderExpReward: 58
+    mineralReward: 530
+    commanderExpReward: 530
   - zoneIndex: 50
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -3999,8 +3999,8 @@ MonoBehaviour:
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
     enemyWaveSpawnTermSec: 5
-    mineralReward: 59
-    commanderExpReward: 59
+    mineralReward: 540
+    commanderExpReward: 540
   - zoneIndex: 51
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -4089,8 +4089,8 @@ MonoBehaviour:
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
     enemyWaveSpawnTermSec: 5
-    mineralReward: 60
-    commanderExpReward: 60
+    mineralReward: 550
+    commanderExpReward: 550
   - zoneIndex: 52
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -4179,8 +4179,8 @@ MonoBehaviour:
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
     enemyWaveSpawnTermSec: 5
-    mineralReward: 61
-    commanderExpReward: 61
+    mineralReward: 560
+    commanderExpReward: 560
   - zoneIndex: 53
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -4269,8 +4269,8 @@ MonoBehaviour:
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
     enemyWaveSpawnTermSec: 5
-    mineralReward: 62
-    commanderExpReward: 62
+    mineralReward: 570
+    commanderExpReward: 570
   - zoneIndex: 54
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -4359,8 +4359,8 @@ MonoBehaviour:
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
     enemyWaveSpawnTermSec: 5
-    mineralReward: 63
-    commanderExpReward: 63
+    mineralReward: 580
+    commanderExpReward: 580
   - zoneIndex: 55
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -4449,8 +4449,8 @@ MonoBehaviour:
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
     enemyWaveSpawnTermSec: 5
-    mineralReward: 64
-    commanderExpReward: 64
+    mineralReward: 590
+    commanderExpReward: 590
   - zoneIndex: 56
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -4539,8 +4539,8 @@ MonoBehaviour:
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
     enemyWaveSpawnTermSec: 5
-    mineralReward: 65
-    commanderExpReward: 65
+    mineralReward: 600
+    commanderExpReward: 600
   - zoneIndex: 57
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -4629,8 +4629,8 @@ MonoBehaviour:
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
     enemyWaveSpawnTermSec: 5
-    mineralReward: 66
-    commanderExpReward: 66
+    mineralReward: 610
+    commanderExpReward: 610
   - zoneIndex: 58
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -4719,8 +4719,8 @@ MonoBehaviour:
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
     enemyWaveSpawnTermSec: 5
-    mineralReward: 67
-    commanderExpReward: 67
+    mineralReward: 620
+    commanderExpReward: 620
   - zoneIndex: 59
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -4809,8 +4809,8 @@ MonoBehaviour:
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
     enemyWaveSpawnTermSec: 5
-    mineralReward: 68
-    commanderExpReward: 68
+    mineralReward: 630
+    commanderExpReward: 630
   - zoneIndex: 60
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -4899,8 +4899,8 @@ MonoBehaviour:
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
     enemyWaveSpawnTermSec: 5
-    mineralReward: 69
-    commanderExpReward: 69
+    mineralReward: 640
+    commanderExpReward: 640
   - zoneIndex: 61
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -4989,8 +4989,8 @@ MonoBehaviour:
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
     enemyWaveSpawnTermSec: 5
-    mineralReward: 70
-    commanderExpReward: 70
+    mineralReward: 650
+    commanderExpReward: 650
   - zoneIndex: 62
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -5079,8 +5079,8 @@ MonoBehaviour:
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
     enemyWaveSpawnTermSec: 5
-    mineralReward: 71
-    commanderExpReward: 71
+    mineralReward: 660
+    commanderExpReward: 660
   - zoneIndex: 63
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -5169,8 +5169,8 @@ MonoBehaviour:
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
     enemyWaveSpawnTermSec: 5
-    mineralReward: 72
-    commanderExpReward: 72
+    mineralReward: 670
+    commanderExpReward: 670
   - zoneIndex: 64
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -5259,8 +5259,8 @@ MonoBehaviour:
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
     enemyWaveSpawnTermSec: 5
-    mineralReward: 73
-    commanderExpReward: 73
+    mineralReward: 680
+    commanderExpReward: 680
   - zoneIndex: 65
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -5349,8 +5349,8 @@ MonoBehaviour:
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
     enemyWaveSpawnTermSec: 5
-    mineralReward: 74
-    commanderExpReward: 74
+    mineralReward: 690
+    commanderExpReward: 690
   - zoneIndex: 66
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -5439,8 +5439,8 @@ MonoBehaviour:
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
     enemyWaveSpawnTermSec: 5
-    mineralReward: 75
-    commanderExpReward: 75
+    mineralReward: 700
+    commanderExpReward: 700
   - zoneIndex: 67
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -5529,8 +5529,8 @@ MonoBehaviour:
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
     enemyWaveSpawnTermSec: 5
-    mineralReward: 76
-    commanderExpReward: 76
+    mineralReward: 710
+    commanderExpReward: 710
   - zoneIndex: 68
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -5619,8 +5619,8 @@ MonoBehaviour:
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
     enemyWaveSpawnTermSec: 5
-    mineralReward: 77
-    commanderExpReward: 77
+    mineralReward: 720
+    commanderExpReward: 720
   - zoneIndex: 69
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -5709,8 +5709,8 @@ MonoBehaviour:
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
     enemyWaveSpawnTermSec: 5
-    mineralReward: 78
-    commanderExpReward: 78
+    mineralReward: 730
+    commanderExpReward: 730
   - zoneIndex: 70
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -5799,8 +5799,8 @@ MonoBehaviour:
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
     enemyWaveSpawnTermSec: 5
-    mineralReward: 79
-    commanderExpReward: 79
+    mineralReward: 740
+    commanderExpReward: 740
   - zoneIndex: 71
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -5889,8 +5889,8 @@ MonoBehaviour:
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
     enemyWaveSpawnTermSec: 5
-    mineralReward: 80
-    commanderExpReward: 80
+    mineralReward: 750
+    commanderExpReward: 750
   - zoneIndex: 72
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -5979,8 +5979,8 @@ MonoBehaviour:
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
     enemyWaveSpawnTermSec: 5
-    mineralReward: 81
-    commanderExpReward: 81
+    mineralReward: 760
+    commanderExpReward: 760
   - zoneIndex: 73
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -6069,8 +6069,8 @@ MonoBehaviour:
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
     enemyWaveSpawnTermSec: 5
-    mineralReward: 82
-    commanderExpReward: 82
+    mineralReward: 770
+    commanderExpReward: 770
   - zoneIndex: 74
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -6159,8 +6159,8 @@ MonoBehaviour:
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
     enemyWaveSpawnTermSec: 5
-    mineralReward: 83
-    commanderExpReward: 83
+    mineralReward: 780
+    commanderExpReward: 780
   - zoneIndex: 75
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -6249,8 +6249,8 @@ MonoBehaviour:
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
     enemyWaveSpawnTermSec: 5
-    mineralReward: 84
-    commanderExpReward: 84
+    mineralReward: 790
+    commanderExpReward: 790
   - zoneIndex: 76
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -6339,8 +6339,8 @@ MonoBehaviour:
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
     enemyWaveSpawnTermSec: 5
-    mineralReward: 85
-    commanderExpReward: 85
+    mineralReward: 800
+    commanderExpReward: 800
   - zoneIndex: 77
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -6429,8 +6429,8 @@ MonoBehaviour:
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
     enemyWaveSpawnTermSec: 5
-    mineralReward: 86
-    commanderExpReward: 86
+    mineralReward: 810
+    commanderExpReward: 810
   - zoneIndex: 78
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -6519,8 +6519,8 @@ MonoBehaviour:
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
     enemyWaveSpawnTermSec: 5
-    mineralReward: 87
-    commanderExpReward: 87
+    mineralReward: 820
+    commanderExpReward: 820
   - zoneIndex: 79
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -6609,8 +6609,8 @@ MonoBehaviour:
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
     enemyWaveSpawnTermSec: 5
-    mineralReward: 88
-    commanderExpReward: 88
+    mineralReward: 830
+    commanderExpReward: 830
   - zoneIndex: 80
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -6699,8 +6699,8 @@ MonoBehaviour:
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
     enemyWaveSpawnTermSec: 5
-    mineralReward: 89
-    commanderExpReward: 89
+    mineralReward: 840
+    commanderExpReward: 840
   - zoneIndex: 81
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -6789,8 +6789,8 @@ MonoBehaviour:
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
     enemyWaveSpawnTermSec: 5
-    mineralReward: 90
-    commanderExpReward: 90
+    mineralReward: 850
+    commanderExpReward: 850
   - zoneIndex: 82
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -6879,8 +6879,8 @@ MonoBehaviour:
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
     enemyWaveSpawnTermSec: 5
-    mineralReward: 91
-    commanderExpReward: 91
+    mineralReward: 860
+    commanderExpReward: 860
   - zoneIndex: 83
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -6969,8 +6969,8 @@ MonoBehaviour:
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
     enemyWaveSpawnTermSec: 5
-    mineralReward: 92
-    commanderExpReward: 92
+    mineralReward: 870
+    commanderExpReward: 870
   - zoneIndex: 84
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -7059,8 +7059,8 @@ MonoBehaviour:
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
     enemyWaveSpawnTermSec: 5
-    mineralReward: 93
-    commanderExpReward: 93
+    mineralReward: 880
+    commanderExpReward: 880
   - zoneIndex: 85
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -7149,8 +7149,8 @@ MonoBehaviour:
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
     enemyWaveSpawnTermSec: 5
-    mineralReward: 94
-    commanderExpReward: 94
+    mineralReward: 890
+    commanderExpReward: 890
   - zoneIndex: 86
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -7239,8 +7239,8 @@ MonoBehaviour:
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
     enemyWaveSpawnTermSec: 5
-    mineralReward: 95
-    commanderExpReward: 95
+    mineralReward: 900
+    commanderExpReward: 900
   - zoneIndex: 87
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -7329,8 +7329,8 @@ MonoBehaviour:
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
     enemyWaveSpawnTermSec: 5
-    mineralReward: 96
-    commanderExpReward: 96
+    mineralReward: 910
+    commanderExpReward: 910
   - zoneIndex: 88
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -7419,8 +7419,8 @@ MonoBehaviour:
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
     enemyWaveSpawnTermSec: 5
-    mineralReward: 97
-    commanderExpReward: 97
+    mineralReward: 920
+    commanderExpReward: 920
   - zoneIndex: 89
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -7509,8 +7509,8 @@ MonoBehaviour:
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
     enemyWaveSpawnTermSec: 5
-    mineralReward: 98
-    commanderExpReward: 98
+    mineralReward: 930
+    commanderExpReward: 930
   - zoneIndex: 90
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -7599,8 +7599,8 @@ MonoBehaviour:
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
     enemyWaveSpawnTermSec: 5
-    mineralReward: 99
-    commanderExpReward: 99
+    mineralReward: 940
+    commanderExpReward: 940
   - zoneIndex: 91
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -7689,8 +7689,8 @@ MonoBehaviour:
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
     enemyWaveSpawnTermSec: 5
-    mineralReward: 100
-    commanderExpReward: 100
+    mineralReward: 950
+    commanderExpReward: 950
   - zoneIndex: 92
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -7779,8 +7779,8 @@ MonoBehaviour:
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
     enemyWaveSpawnTermSec: 5
-    mineralReward: 101
-    commanderExpReward: 101
+    mineralReward: 960
+    commanderExpReward: 960
   - zoneIndex: 93
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -7869,8 +7869,8 @@ MonoBehaviour:
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
     enemyWaveSpawnTermSec: 5
-    mineralReward: 102
-    commanderExpReward: 102
+    mineralReward: 970
+    commanderExpReward: 970
   - zoneIndex: 94
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -7959,8 +7959,8 @@ MonoBehaviour:
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
     enemyWaveSpawnTermSec: 5
-    mineralReward: 103
-    commanderExpReward: 103
+    mineralReward: 980
+    commanderExpReward: 980
   - zoneIndex: 95
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -8049,8 +8049,8 @@ MonoBehaviour:
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
     enemyWaveSpawnTermSec: 5
-    mineralReward: 104
-    commanderExpReward: 104
+    mineralReward: 990
+    commanderExpReward: 990
   - zoneIndex: 96
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -8139,8 +8139,8 @@ MonoBehaviour:
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
     enemyWaveSpawnTermSec: 5
-    mineralReward: 105
-    commanderExpReward: 105
+    mineralReward: 1000
+    commanderExpReward: 1000
   - zoneIndex: 97
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -8229,8 +8229,8 @@ MonoBehaviour:
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
     enemyWaveSpawnTermSec: 5
-    mineralReward: 106
-    commanderExpReward: 106
+    mineralReward: 1010
+    commanderExpReward: 1010
   - zoneIndex: 98
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -8319,8 +8319,8 @@ MonoBehaviour:
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
     enemyWaveSpawnTermSec: 5
-    mineralReward: 107
-    commanderExpReward: 107
+    mineralReward: 1020
+    commanderExpReward: 1020
   - zoneIndex: 99
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -8409,8 +8409,8 @@ MonoBehaviour:
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
     enemyWaveSpawnTermSec: 5
-    mineralReward: 108
-    commanderExpReward: 108
+    mineralReward: 1030
+    commanderExpReward: 1030
   - zoneIndex: 100
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -8499,5 +8499,5 @@ MonoBehaviour:
     enemyHealthMultiplier: 1
     enemyAttackMultiplier: 1
     enemyWaveSpawnTermSec: 5
-    mineralReward: 109
-    commanderExpReward: 109
+    mineralReward: 1040
+    commanderExpReward: 1040
