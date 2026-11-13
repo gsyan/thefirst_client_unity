@@ -43,7 +43,7 @@ MonoBehaviour:
     arrowDirection: 0
     textBoxOffset: {x: 0, y: 0}
     textBoxSize: {x: 0, y: 0}
-    textBoxPosition: {x: 0, y: -500}
+    textBoxPosition: {x: 0, y: 300}
     autoNextDelay: 0
     preActionPanelName: 
     preActionTabName: 
@@ -77,7 +77,7 @@ MonoBehaviour:
     arrowDirection: 0
     textBoxOffset: {x: 0, y: 0}
     textBoxSize: {x: 0, y: 0}
-    textBoxPosition: {x: 0, y: -500}
+    textBoxPosition: {x: 0, y: 300}
     autoNextDelay: 0
     preActionPanelName: 
     preActionTabName: 
@@ -128,7 +128,7 @@ MonoBehaviour:
     arrowDirection: 0
     textBoxOffset: {x: 0, y: 0}
     textBoxSize: {x: 0, y: 0}
-    textBoxPosition: {x: 0, y: -500}
+    textBoxPosition: {x: 0, y: 300}
     autoNextDelay: 0
     preActionPanelName: 
     preActionTabName: 

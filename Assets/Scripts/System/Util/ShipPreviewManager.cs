@@ -8,7 +8,11 @@ using UnityEngine;
 public class ShipPreviewManager : MonoSingleton<ShipPreviewManager>
 {
     private const float k_stageDistance = 5000f; // 메인 씬 콘텐츠와 안 겹치게 멀리 떨어뜨림
-    private const int k_textureBaseHeight = 512; // 세로 해상도는 고정, 가로는 요청받은 비율만큼 스케일
+    private const float k_cameraDistance = 18f; // 프리뷰 카메라와 함선(바운즈 중심) 사이의 고정 거리
+    private const int k_textureBaseHeight = 512; // 호출부가 화면 픽셀 크기를 넘기기 전 기본 세로 해상도
+    private const int k_textureMinHeight = 256;
+    private const int k_textureMaxHeight = 1024; // 메모리/성능 상한
+    private const int k_textureAntiAliasing = 4; // 프리뷰 모서리 계단 현상 완화(MSAA)
 
     private Transform m_stageRoot;
     private Transform m_spawnAnchor;
@@ -17,6 +21,7 @@ public class ShipPreviewManager : MonoSingleton<ShipPreviewManager>
     private RenderTexture m_previewTexture;
     private GameObject m_currentBodyInstance;
     private float m_currentAspect = 1f;
+    private int m_currentHeight = k_textureBaseHeight;
 
     public void EnsureStageReady()
     {
@@ -38,7 +43,7 @@ public class ShipPreviewManager : MonoSingleton<ShipPreviewManager>
         m_previewCamera.orthographic = false;
         m_previewCamera.fieldOfView = 30f;
 
-        CreatePreviewTexture(m_currentAspect);
+        CreatePreviewTexture(m_currentAspect, m_currentHeight);
 
         GameObject lightObj = new GameObject("PreviewLight");
         lightObj.transform.SetParent(m_stageRoot, false);
@@ -48,14 +53,14 @@ public class ShipPreviewManager : MonoSingleton<ShipPreviewManager>
     }
 
     // RawImage의 실제 가로/세로 비율(width/height)에 맞춰 텍스처를 다시 만듦 — 정사각형으로 제한하면 넓은 자리에서 함선이 작아 보이는 문제 방지
-    private void CreatePreviewTexture(float aspect)
+    private void CreatePreviewTexture(float aspect, int height)
     {
-        int height = k_textureBaseHeight;
-        int width = Mathf.Max(1, Mathf.RoundToInt(k_textureBaseHeight * aspect));
+        int width = Mathf.Max(1, Mathf.RoundToInt(height * aspect));
 
         RenderTexture oldTexture = m_previewTexture;
 
-        m_previewTexture = new RenderTexture(width, height, 16);
+        m_previewTexture = new RenderTexture(width, height, 24);
+        m_previewTexture.antiAliasing = k_textureAntiAliasing;
         m_previewTexture.name = "ShipPreviewRT";
         m_previewCamera.targetTexture = m_previewTexture;
 
@@ -133,15 +138,11 @@ public class ShipPreviewManager : MonoSingleton<ShipPreviewManager>
         return null;
     }
 
-    // 모델 실제 크기를 몰라도 항상 화면에 맞게 잡히도록, 스폰 직후 바운즈를 계산해서 카메라/조명을 재배치.
-    // "가장 긴 축 하나를 세로 FOV에 맞춘다"는 이전 방식은, 그 긴 축이 카메라의 위쪽 방향과 거의 무관한(예: 옆으로 누운 전장) 경우
-    // 실제 세로로 보이는 크기는 그보다 훨씬 작은데도 카메라를 필요 이상으로 멀리 빼버려 여백이 크게 남는 문제가 실측으로 확인됨
-    // (함선 예시: X=1.96 Y=1.95 Z=4.33인데 카메라 위쪽은 월드 Y와 거의 같아서, 세로로는 1.95만 보이는데 4.33 기준으로 거리를 잡았었음) —
-    // 대신 카메라가 실제로 보는 방향의 위/오른쪽 축에 바운즈를 투영해서 진짜 필요한 세로/가로 크기를 구해 맞춘다
+    // 함선 크기/각도와 무관하게 카메라를 바운즈 중심에서 항상 k_cameraDistance만큼 떨어뜨려 배치하고, 그 거리에 맞춰 조명을 재배치.
     private void FrameCameraOnInstance(GameObject instance)
     {
         // ShieldGrid가 모든 함체에 미리 만들어두는 "ShieldSurface" 표면 메쉬는 실제 선체보다 boundScale/margin만큼
-        // 일부러 더 크게 잡혀있어(ShieldGrid.ComputeBoundingBox), 카메라 거리 산정에 포함되면 함체가 실제보다 작게 보인다 —
+        // 일부러 더 크게 잡혀있어(ShieldGrid.ComputeBoundingBox) 바운즈 중심 산정에 포함되면 중심이 어긋난다 —
         // QuickOutline/Outline.cs가 아웃라인 대상에서 이 렌더러를 제외하는 것과 동일한 방식으로 여기서도 제외한다
         Renderer[] allRenderers = instance.GetComponentsInChildren<Renderer>();
         List<Renderer> hullRenderers = new List<Renderer>();
@@ -161,44 +162,13 @@ public class ShipPreviewManager : MonoSingleton<ShipPreviewManager>
         Vector3 viewDirection = new Vector3(0.85f, -0.3f, 0.45f).normalized;
         Quaternion viewRotation = Quaternion.LookRotation(viewDirection, Vector3.up);
 
-        // 바운즈 8개 꼭짓점을 시선 방향(viewRotation)의 right/up 축에 직접 투영해서 실제로 화면에 찍히는
-        // 가로/세로 절반 크기를 구한다 — 가장 긴 축 하나로 구를 씌우는 방식은 전장만 유독 긴 함선에서
-        // 실제 투영 크기보다 훨씬 큰 반지름을 써버려 화면에 여백이 크게 남는 문제가 있었음(스샷으로 확인됨)
-        Vector3 right = viewRotation * Vector3.right;
-        Vector3 up = viewRotation * Vector3.up;
-        Vector3 extents = bounds.extents;
-        float halfWidth = 0f;
-        float halfHeight = 0f;
-        for (int signX = -1; signX <= 1; signX += 2)
-        {
-            for (int signY = -1; signY <= 1; signY += 2)
-            {
-                for (int signZ = -1; signZ <= 1; signZ += 2)
-                {
-                    Vector3 corner = new Vector3(extents.x * signX, extents.y * signY, extents.z * signZ);
-                    halfWidth = Mathf.Max(halfWidth, Mathf.Abs(Vector3.Dot(corner, right)));
-                    halfHeight = Mathf.Max(halfHeight, Mathf.Abs(Vector3.Dot(corner, up)));
-                }
-            }
-        }
-        if (halfWidth <= 0f) halfWidth = 1f;
-        if (halfHeight <= 0f) halfHeight = 1f;
-
-        const float k_paddingFactor = 1.1f; // 테두리에 딱 붙지 않게 주는 약간의 여유
-        float halfVFovRad = m_previewCamera.fieldOfView * 0.5f * Mathf.Deg2Rad;
-        float halfHFovRad = Mathf.Atan(Mathf.Tan(halfVFovRad) * m_previewCamera.aspect);
-
-        float distanceForHeight = halfHeight / Mathf.Tan(halfVFovRad);
-        float distanceForWidth = halfWidth / Mathf.Tan(halfHFovRad);
-        float fitDistance = Mathf.Max(distanceForHeight, distanceForWidth) * k_paddingFactor;
-
-        m_previewCamera.transform.position = bounds.center - viewDirection * fitDistance;
+        m_previewCamera.transform.position = bounds.center - viewDirection * k_cameraDistance;
         m_previewCamera.transform.rotation = viewRotation;
         m_previewCamera.nearClipPlane = 0.05f;
 
         float boundsRadius = bounds.extents.magnitude;
         if (boundsRadius <= 0f) boundsRadius = 1f;
-        m_previewCamera.farClipPlane = fitDistance + boundsRadius * 2f + 10f;
+        m_previewCamera.farClipPlane = k_cameraDistance + boundsRadius * 2f + 10f;
 
         m_previewLight.transform.position = bounds.center + new Vector3(boundsRadius, boundsRadius, -boundsRadius);
         m_previewLight.range = boundsRadius * 6f;
@@ -214,14 +184,20 @@ public class ShipPreviewManager : MonoSingleton<ShipPreviewManager>
     }
 
     // aspectRatio: RawImage의 width/height — 함체 선택 화면을 열 때마다 최신 레이아웃 비율을 넘겨받아 텍스처를 맞춤
-    public RenderTexture GetPreviewTexture(float aspectRatio = 1f)
+    // pixelHeight: RawImage가 화면에서 실제로 차지하는 세로 픽셀 수 — 텍스처가 그보다 작으면 늘려 그려져 흐려지므로 맞춰서 만듦(상·하한 클램프)
+    public RenderTexture GetPreviewTexture(float aspectRatio = 1f, int pixelHeight = k_textureBaseHeight)
     {
         EnsureStageReady();
 
-        if (aspectRatio > 0f && Mathf.Approximately(aspectRatio, m_currentAspect) == false)
+        int clampedHeight = Mathf.Clamp(pixelHeight, k_textureMinHeight, k_textureMaxHeight);
+        bool isAspectChanged = aspectRatio > 0f && Mathf.Approximately(aspectRatio, m_currentAspect) == false;
+        bool isHeightChanged = clampedHeight != m_currentHeight;
+        if (isAspectChanged == true || isHeightChanged == true)
         {
-            m_currentAspect = aspectRatio;
-            CreatePreviewTexture(m_currentAspect);
+            if (aspectRatio > 0f)
+                m_currentAspect = aspectRatio;
+            m_currentHeight = clampedHeight;
+            CreatePreviewTexture(m_currentAspect, m_currentHeight);
         }
 
         return m_previewTexture;

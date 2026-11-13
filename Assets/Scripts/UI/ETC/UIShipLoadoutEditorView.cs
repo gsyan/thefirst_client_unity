@@ -84,6 +84,48 @@ public class UIShipLoadoutEditorView : MonoBehaviour
     private System.Func<RectTransform> m_confirmButtonResolver;
     private System.Func<RectTransform> m_reinforceModuleManageResolver;
 
+    // 편집 화면이 열려 있는 동안만 3D 함선/모듈 클릭을 받아 편집 대상을 따라가게 함
+    private void OnEnable()
+    {
+        EventManager.Subscribe_SpaceShipSelected(OnShip3DSelected);
+        EventManager.Subscribe_SpaceShipModuleSelected(OnModule3DSelected);
+    }
+
+    private void OnDisable()
+    {
+        EventManager.Unsubscribe_SpaceShipSelected(OnShip3DSelected);
+        EventManager.Unsubscribe_SpaceShipModuleSelected(OnModule3DSelected);
+    }
+
+    // 다른 함선을 3D로 클릭하면 편집 대상을 그 함선으로 교체 — 함선이 바뀌었으니 목록 맨 위(함체) 행이 선택된 상태로 시작
+    private void OnShip3DSelected(SpaceShip ship)
+    {
+        if (m_slotIndex < 0 || ship == null) return;
+
+        SpaceFleet myFleet = ObjectManager.Instance.GetMyFleet();
+        if (myFleet == null || ship.m_ownerFleet != myFleet) return;
+
+        int clickedSlotIndex = ship.m_shipInfo.positionIndex;
+        if (clickedSlotIndex == m_slotIndex) return;
+
+        ClearSelectedModuleHighlight(); // 이전 함선에 남은 모듈 하이라이트 정리
+        Open(clickedSlotIndex, m_onChanged);
+    }
+
+    // 3D에서 모듈을 클릭하면 그 모듈의 행을 선택 — 함선 클릭 이벤트가 먼저 처리돼 편집 대상이 이미 그 함선으로 바뀐 뒤에 호출됨
+    private void OnModule3DSelected(SpaceShip ship, ModuleBase module)
+    {
+        if (m_slotIndex < 0 || ship == null || module == null) return;
+        if (ship.m_shipInfo.positionIndex != m_slotIndex) return;
+
+        int dataIndex = FindDataIndex(module.GetModuleType(), module.GetSlotIndex());
+        if (dataIndex < 0) return;
+
+        OnRowSelected(dataIndex);
+        if (m_moduleScrollView != null)
+            m_moduleScrollView.EnsureVisible(dataIndex);
+    }
+
     private void OnDestroy()
     {
         TutorialManager tutorialManager = TutorialManager.Instance; // 종료 중이면 null

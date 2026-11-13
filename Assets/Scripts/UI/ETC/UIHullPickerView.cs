@@ -254,7 +254,10 @@ public class UIHullPickerView : MonoBehaviour
         Rect previewRect = m_previewImage.rectTransform.rect;
         float aspect = previewRect.height > 0f ? previewRect.width / previewRect.height : 1f;
 
-        m_previewImage.texture = ShipPreviewManager.Instance.GetPreviewTexture(aspect);
+        // 화면에서 실제로 그려지는 세로 픽셀 수(캔버스 스케일 반영)에 맞춰 텍스처를 만들어 늘려 그려지는 흐림을 방지
+        float canvasScale = m_previewImage.canvas != null ? m_previewImage.canvas.rootCanvas.scaleFactor : 1f;
+        int screenPixelHeight = Mathf.RoundToInt(previewRect.height * canvasScale);
+        m_previewImage.texture = ShipPreviewManager.Instance.GetPreviewTexture(aspect, screenPixelHeight);
         ModuleData selectedHull = m_hullsCache.Find(p => p.moduleSubType == m_selectedHullSubType);
         ModuleHullInfo previewModules = selectedHull != null ? FleetComposition.BuildDefaultLevel1Modules(m_selectedHullSubType) : null;
         ShipPreviewManager.Instance.ShowHull(selectedHull, previewModules);
