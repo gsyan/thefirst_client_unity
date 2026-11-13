@@ -17,41 +17,24 @@ MonoBehaviour:
   priority: 0
   isHideSkipButton: 0
   steps:
-  - stepId: step1
-    message: Tutorial_Exploration_Intro
-    triggerType: 0
+  - stepId: step0
+    message: 
+    triggerType: 4
     targetPanelName: 
-    targetUIId: ExplorationButton
-    showArrow: 1
+    targetUIId: step_resume
+    showArrow: 0
     arrowDirection: 0
     textBoxOffset: {x: 0, y: 0}
     textBoxSize: {x: 0, y: 0}
-    textBoxPosition: {x: 0, y: -500}
+    textBoxPosition: {x: 0, y: 0}
     autoNextDelay: 0
     preActionPanelName: 
     preActionTabName: 
-    conditionType: 0
+    conditionType: 19
     conditionThreshold: 90
     conditionCount: 3
     targetModuleType: 0
-  - stepId: step2
-    message: Tutorial_Exploration_CheckResource
-    triggerType: 1
-    targetPanelName: UIPanelExplorationGrid
-    targetUIId: RowLabelValueContainer
-    showArrow: 1
-    arrowDirection: 0
-    textBoxOffset: {x: 0, y: 100}
-    textBoxSize: {x: 0, y: 0}
-    textBoxPosition: {x: 0, y: 510}
-    autoNextDelay: 0
-    preActionPanelName: 
-    preActionTabName: 
-    conditionType: 0
-    conditionThreshold: 90
-    conditionCount: 3
-    targetModuleType: 0
-  - stepId: step3
+  - stepId: step1
     message: Tutorial_Exploration_Enter
     triggerType: 3
     targetPanelName: ExplorationGridCell
@@ -68,7 +51,7 @@ MonoBehaviour:
     conditionThreshold: 90
     conditionCount: 3
     targetModuleType: 0
-  - stepId: step4
+  - stepId: step2
     message: Tutorial_Exploration_Confirm
     triggerType: 0
     targetPanelName: UIPopupConfirm
@@ -85,7 +68,7 @@ MonoBehaviour:
     conditionThreshold: 90
     conditionCount: 3
     targetModuleType: 0
-  - stepId: step5
+  - stepId: step3
     message: Tutorial_Exploration_StartBattle
     triggerType: 0
     targetPanelName: UIPanelPrepareBattle
@@ -102,7 +85,7 @@ MonoBehaviour:
     conditionThreshold: 90
     conditionCount: 3
     targetModuleType: 0
-  - stepId: step6
+  - stepId: step4
     message: 
     triggerType: 3
     targetPanelName: 
@@ -115,15 +98,83 @@ MonoBehaviour:
     autoNextDelay: 0
     preActionPanelName: 
     preActionTabName: 
-    conditionType: 14
+    conditionType: 18
+    conditionThreshold: 90
+    conditionCount: 3
+    targetModuleType: 0
+  - stepId: step5
+    message: Tutorial_Exploration_MineralGained
+    triggerType: 1
+    targetPanelName: UIPopupRewardCardSelect
+    targetUIId: MineralReward
+    showArrow: 1
+    arrowDirection: 0
+    textBoxOffset: {x: 0, y: 0}
+    textBoxSize: {x: 0, y: 0}
+    textBoxPosition: {x: 0, y: -500}
+    autoNextDelay: 0
+    preActionPanelName: 
+    preActionTabName: 
+    conditionType: 0
+    conditionThreshold: 90
+    conditionCount: 3
+    targetModuleType: 0
+  - stepId: step6
+    message: Tutorial_Exploration_Cards
+    triggerType: 1
+    targetPanelName: UIPopupRewardCardSelect
+    targetUIId: RewardCardButtonContainer
+    showArrow: 1
+    arrowDirection: 0
+    textBoxOffset: {x: 0, y: 0}
+    textBoxSize: {x: 0, y: 0}
+    textBoxPosition: {x: 0, y: -500}
+    autoNextDelay: 0
+    preActionPanelName: 
+    preActionTabName: 
+    conditionType: 0
     conditionThreshold: 90
     conditionCount: 3
     targetModuleType: 0
   - stepId: step7
-    message: Tutorial_Exploration_RewardBanked
+    message: Tutorial_Exploration_Reroll
+    triggerType: 1
+    targetPanelName: UIPopupRewardCardSelect
+    targetUIId: RerollButton
+    showArrow: 1
+    arrowDirection: 0
+    textBoxOffset: {x: 0, y: 0}
+    textBoxSize: {x: 0, y: 0}
+    textBoxPosition: {x: 0, y: -500}
+    autoNextDelay: 0
+    preActionPanelName: 
+    preActionTabName: 
+    conditionType: 0
+    conditionThreshold: 90
+    conditionCount: 3
+    targetModuleType: 0
+  - stepId: step8
+    message: Tutorial_Exploration_ClosePopup
+    triggerType: 0
+    targetPanelName: UIPopupRewardCardSelect
+    targetUIId: ConfirmButton
+    showArrow: 1
+    arrowDirection: 0
+    textBoxOffset: {x: 0, y: 0}
+    textBoxSize: {x: 0, y: 0}
+    textBoxPosition: {x: 0, y: -500}
+    autoNextDelay: 0
+    preActionPanelName: 
+    preActionTabName: 
+    conditionType: 0
+    conditionThreshold: 90
+    conditionCount: 3
+    targetModuleType: 0
+  - stepId: step_buycard
+    message: Tutorial_Exploration_BuyCardButton
     triggerType: 1
     targetPanelName: UIPanelExplorationGrid
-    targetUIId: RowLabelValue(ExplorationPointBanked)
+    targetUIId: BuyCardButton
     showArrow: 1
     arrowDirection: 0
     textBoxOffset: {x: 0, y: 100}
@@ -136,7 +187,7 @@ MonoBehaviour:
     conditionThreshold: 90
     conditionCount: 3
     targetModuleType: 0
-  - stepId: step8
+  - stepId: step_end
     message: Tutorial_Exploration_ContinueToEscape
     triggerType: 1
     targetPanelName: 
@@ -145,7 +196,126 @@ MonoBehaviour:
     arrowDirection: 0
     textBoxOffset: {x: 0, y: 0}
     textBoxSize: {x: 0, y: 0}
+    textBoxPosition: {x: 0, y: -500}
+    autoNextDelay: 0
+    preActionPanelName: 
+    preActionTabName: 
+    conditionType: 0
+    conditionThreshold: 90
+    conditionCount: 3
+    targetModuleType: 0
+  - stepId: step_finish
+    message: 
+    triggerType: 4
+    targetPanelName: 
+    targetUIId: END
+    showArrow: 0
+    arrowDirection: 0
+    textBoxOffset: {x: 0, y: 0}
+    textBoxSize: {x: 0, y: 0}
+    textBoxPosition: {x: 0, y: 0}
+    autoNextDelay: 0
+    preActionPanelName: 
+    preActionTabName: 
+    conditionType: 17
+    conditionThreshold: 90
+    conditionCount: 3
+    targetModuleType: 0
+  - stepId: step_resume
+    message: Tutorial_Exploration_BuyCardPress
+    triggerType: 0
+    targetPanelName: UIPanelExplorationGrid
+    targetUIId: BuyCardButton
+    showArrow: 1
+    arrowDirection: 0
+    textBoxOffset: {x: 0, y: 100}
+    textBoxSize: {x: 0, y: 0}
     textBoxPosition: {x: 0, y: 510}
+    autoNextDelay: 0
+    preActionPanelName: 
+    preActionTabName: 
+    conditionType: 0
+    conditionThreshold: 90
+    conditionCount: 3
+    targetModuleType: 0
+  - stepId: step_resume_wait
+    message: 
+    triggerType: 3
+    targetPanelName: 
+    targetUIId: 
+    showArrow: 0
+    arrowDirection: 0
+    textBoxOffset: {x: 0, y: 0}
+    textBoxSize: {x: 800, y: 0}
+    textBoxPosition: {x: 0, y: -500}
+    autoNextDelay: 0
+    preActionPanelName: 
+    preActionTabName: 
+    conditionType: 18
+    conditionThreshold: 90
+    conditionCount: 3
+    targetModuleType: 0
+  - stepId: step_resume_cards
+    message: Tutorial_Exploration_Cards
+    triggerType: 1
+    targetPanelName: UIPopupRewardCardSelect
+    targetUIId: RewardCardButtonContainer
+    showArrow: 1
+    arrowDirection: 0
+    textBoxOffset: {x: 0, y: 0}
+    textBoxSize: {x: 0, y: 0}
+    textBoxPosition: {x: 0, y: -500}
+    autoNextDelay: 0
+    preActionPanelName: 
+    preActionTabName: 
+    conditionType: 0
+    conditionThreshold: 90
+    conditionCount: 3
+    targetModuleType: 0
+  - stepId: step_resume_reroll
+    message: Tutorial_Exploration_Reroll
+    triggerType: 1
+    targetPanelName: UIPopupRewardCardSelect
+    targetUIId: RerollButton
+    showArrow: 1
+    arrowDirection: 0
+    textBoxOffset: {x: 0, y: 0}
+    textBoxSize: {x: 0, y: 0}
+    textBoxPosition: {x: 0, y: -500}
+    autoNextDelay: 0
+    preActionPanelName: 
+    preActionTabName: 
+    conditionType: 0
+    conditionThreshold: 90
+    conditionCount: 3
+    targetModuleType: 0
+  - stepId: step_resume_close
+    message: Tutorial_Exploration_ClosePopup
+    triggerType: 0
+    targetPanelName: UIPopupRewardCardSelect
+    targetUIId: ConfirmButton
+    showArrow: 1
+    arrowDirection: 0
+    textBoxOffset: {x: 0, y: 0}
+    textBoxSize: {x: 0, y: 0}
+    textBoxPosition: {x: 0, y: -500}
+    autoNextDelay: 0
+    preActionPanelName: 
+    preActionTabName: 
+    conditionType: 0
+    conditionThreshold: 90
+    conditionCount: 3
+    targetModuleType: 0
+  - stepId: step_resume_end
+    message: Tutorial_Exploration_ContinueToEscape
+    triggerType: 1
+    targetPanelName: 
+    targetUIId: 
+    showArrow: 0
+    arrowDirection: 0
+    textBoxOffset: {x: 0, y: 0}
+    textBoxSize: {x: 0, y: 0}
+    textBoxPosition: {x: 0, y: -500}
     autoNextDelay: 0
     preActionPanelName: 
     preActionTabName: 

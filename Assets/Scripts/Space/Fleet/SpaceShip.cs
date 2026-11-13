@@ -168,6 +168,10 @@ public class SpaceShip : MonoBehaviour
     private ModuleHull m_currentTargetBody;
     private Coroutine m_rotationCoroutine;
     private Coroutine m_returnRotationCoroutine;
+    private Coroutine m_scoutCoroutine;
+    private Coroutine m_supportCoroutine;
+    private ShipSupportAbility m_supportAbility;
+    private readonly Dictionary<string, float> m_passiveEffectCache = new Dictionary<string, float>();
     private const float k_angularSpeedMult = 2f;
     private List<ModuleHull> m_candidateBodies = new List<ModuleHull>();
 
@@ -199,6 +203,12 @@ public class SpaceShip : MonoBehaviour
                 // FindTargetModuleHull는 SpaceFleet.StartCombat()에서 양쪽 모두 배틀 상태 후 시작
                 if (m_rotationCoroutine == null)
                     m_rotationCoroutine = StartCoroutine(RotateTowardTarget());
+                // 탐사(argus) 판정 — 전투 상태 동안 일정 간격으로 돌며, 탐사 능력이 없는 함선은 판정 시 바로 건너뜀
+                if (m_scoutCoroutine == null)
+                    m_scoutCoroutine = StartCoroutine(Co_Scout());
+                // 지원 능력(phoenix 아군 수리/halcyon 아군 실드 충전) — 전투 상태 동안 틱마다 대상을 잡아 지원, 능력이 없는 함선은 틱에서 바로 건너뜀
+                if (m_supportCoroutine == null)
+                    m_supportCoroutine = StartCoroutine(Co_Support());
                 break;
             default:
                 m_shipState = EUnitState.Idle;
@@ -208,6 +218,27 @@ public class SpaceShip : MonoBehaviour
         
         foreach (ModuleHull body in m_moduleHulls)
             body.ApplyShipStateToModule();
+    }
+
+    // 아키타입 패시브 수치 효과(능력치 배율 등) — 내 함대와 진행도를 받은 PVP 상대 함대의 함선만 값이 있고 그 외는 0. 함대 구성/패시브 진행이 바뀔 때만 다시 계산하려고 캐시(InvalidatePassiveEffectCache로 무효화)
+    public float GetPassiveEffect(string effectType)
+    {
+        if (m_ownerFleet == null || m_ownerFleet.HasPassiveSource() == false) return 0f;
+
+        if (m_passiveEffectCache.TryGetValue(effectType, out float cachedValue) == true)
+        {
+            PassiveAudit.RecordUse(this, effectType, cachedValue);
+            return cachedValue;
+        }
+
+        float effectValue = HullArchetypePassiveEffects.SumEffect(this, effectType);
+        m_passiveEffectCache[effectType] = effectValue;
+        return effectValue;
+    }
+
+    public void InvalidatePassiveEffectCache()
+    {
+        m_passiveEffectCache.Clear();
     }
 
     // 보상카드 지속버프가 바뀔 때(카드 선택/런 종료 초기화) 호출 — 이미 스폰된 이 함선의 모든 바디/무기 모듈에 최신 배율을 다시 반영
@@ -222,8 +253,59 @@ public class SpaceShip : MonoBehaviour
         FindTargetModuleHull();
     }
 
+    // 탐사 판정 루프 — 무기 첫 발과 같은 규칙(쿨타임이 찬 상태로 시작, 지터 0.1~attackJitterMax초 뒤 첫 판정), 이후 ScoutSettings.intervalSeconds(쿨타임)마다
+    // ShipScout가 슬롯별 확률 판정(함선이 죽으면 종료)
+    private IEnumerator Co_Scout()
+    {
+        GameSettings gameSettings = DataManager.Instance.m_dataTableConfig.gameSettings;
+        float intervalSeconds = Mathf.Max(gameSettings.scout.intervalSeconds, 0.5f);
+        WaitForSeconds interval = new WaitForSeconds(intervalSeconds);
+
+        float firstDelay = UnityEngine.Random.Range(ModuleBase.k_attackJitterMin, gameSettings.general.attackJitterMax);
+        yield return new WaitForSeconds(firstDelay);
+
+        while (true)
+        {
+            if (IsAlive() == false) yield break;
+
+            ShipScout.RollScout(this);
+            yield return interval;
+        }
+    }
+
+    // 지원 능력 루프 — 전투 상태에 들어가는 즉시 첫 틱, 이후 SupportAbilitySettings.tickSeconds마다 반복(함선이 죽으면 종료)
+    private IEnumerator Co_Support()
+    {
+        if (m_supportAbility == null)
+            m_supportAbility = new ShipSupportAbility(this);
+
+        float tickSeconds = Mathf.Max(DataManager.Instance.m_dataTableConfig.gameSettings.supportAbility.tickSeconds, 1);
+        WaitForSeconds tickWait = new WaitForSeconds(tickSeconds);
+        while (true)
+        {
+            if (IsAlive() == false) yield break;
+
+            m_supportAbility.Tick();
+            yield return tickWait;
+        }
+    }
+
     public void StopAutoCombat()
     {
+        if (m_supportCoroutine != null)
+        {
+            StopCoroutine(m_supportCoroutine);
+            m_supportCoroutine = null;
+        }
+        if (m_supportAbility != null)
+            m_supportAbility.ClearAll(); // 전투가 끝나면 대상에 붙어 있던 지원 이펙트를 풀로 반환
+
+        if (m_scoutCoroutine != null)
+        {
+            StopCoroutine(m_scoutCoroutine);
+            m_scoutCoroutine = null;
+        }
+
         if (m_rotationCoroutine != null)
         {
             StopCoroutine(m_rotationCoroutine);
@@ -558,6 +640,9 @@ public class SpaceShip : MonoBehaviour
         ModuleHull targetBody = GetRandomAliveBody();
         if (targetBody != null)
         {
+            // 아키타입 패시브 damage_taken_cumulative — 실드가 흡수하기 전 데미지를 이 함선이 받은 양으로 집계
+            BattleStatTracker.AddShipArchetypeCounter(this, BattleStatTracker.k_counterDamageTaken, incomingDamage);
+
             if (damageInfo.damageType == EDamageType.Beam)
             {
                 float damageBeforeShield = incomingDamage;
@@ -589,6 +674,9 @@ public class SpaceShip : MonoBehaviour
     private void HandleShipDestroyed(bool playEffects = true)
     {
         ClearAllScorchMarks();
+        // 이 함선이 아군에게 붙여둔 지원 이펙트를 코루틴 중지 전에 반납(대상 함선에서 떼어 풀로)
+        if (m_supportAbility != null)
+            m_supportAbility.ClearAll();
         // 코루틴 중지
         StopAllCoroutines();
 
@@ -718,6 +806,58 @@ public class SpaceShip : MonoBehaviour
         return max > 0f ? total / max : 1f;
     }
 
+    // 이 함선의 수리력(초당 수리량) — 모든 바디의 repair 합. datatable_module.csv hull 행의 repair 컬럼이 출처
+    public float GetRepairPower()
+    {
+        float repairPower = 0f;
+        foreach (ModuleHull body in m_moduleHulls)
+        {
+            if (body == null) continue;
+            repairPower += body.GetRepair();
+        }
+        return repairPower;
+    }
+
+    // 현재 체력에 healAmount만큼 가산(지원 능력 수리용) — 바디 순서대로 채우며 남은 양을 다음 바디로 넘김. 실제로 회복된 체력 합계를 반환, 파괴된 바디는 되살리지 않음
+    public float HealByAmount(float healAmount)
+    {
+        if (healAmount <= 0f) return 0f;
+
+        float healedTotal = 0f;
+        float remainingHeal = healAmount;
+        foreach (ModuleHull body in m_moduleHulls)
+        {
+            if (remainingHeal <= 0f) break;
+            if (body == null || body.m_health <= 0f) continue;
+
+            float healthBefore = body.m_health;
+            float healthAfter = Mathf.Min(body.m_healthMax, healthBefore + remainingHeal);
+            float healedByBody = healthAfter - healthBefore;
+            body.m_health = healthAfter;
+            healedTotal += healedByBody;
+            remainingHeal -= healedByBody;
+        }
+
+        if (healedTotal > 0f)
+        {
+            UpdateShipStatCur();
+            EventManager.Trigger_FleetUpdateHP();
+            EventManager.Trigger_ShipUpdateHP();
+        }
+        return healedTotal;
+    }
+
+    // 장착된 실드 모듈(없으면 null) — 지원 능력(halcyon)의 대상 판정/충전용
+    public ModuleShield GetEquippedShield()
+    {
+        foreach (ModuleHull body in m_moduleHulls)
+        {
+            if (body == null || body.m_shield == null) continue;
+            if (body.m_shield.IsEquipped() == true) return body.m_shield;
+        }
+        return null;
+    }
+
     // 함선 실드 게이지 비율 (모든 바디 합산) — GetHealthRatio와 동일한 집계 방식
     public float GetShieldRatio()
     {
@@ -801,7 +941,11 @@ public class SpaceShip : MonoBehaviour
 
         float absorbed = shield.AbsorbBeamDamage(incomingDamage);
         if (absorbed > 0f)
+        {
             SpawnShieldHitEffect(targetBody, hitPosition);
+            // 아키타입 패시브 shield_absorb_amount — 이 함선의 실드가 흡수한 데미지 양
+            BattleStatTracker.AddShipArchetypeCounter(this, BattleStatTracker.k_counterShieldAbsorb, absorbed);
+        }
 
         return incomingDamage - absorbed;
     }

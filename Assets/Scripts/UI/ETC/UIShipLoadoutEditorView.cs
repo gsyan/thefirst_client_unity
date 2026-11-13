@@ -75,11 +75,14 @@ public class UIShipLoadoutEditorView : MonoBehaviour
         // 로드아웃 확인 버튼을 가리킬 수 있도록 리졸버 등록
         m_confirmButtonResolver = ResolveConfirmButton;
         TutorialManager.Instance.RegisterDynamicTarget(TutorialManager.DYNAMIC_TARGET_LOADOUT_CONFIRM_BUTTON, m_confirmButtonResolver);
+        m_reinforceModuleManageResolver = ResolveReinforceModuleManageButton;
+        TutorialManager.Instance.RegisterDynamicTarget(TutorialManager.DYNAMIC_TARGET_REINFORCE_MODULE_MANAGE_BUTTON, m_reinforceModuleManageResolver);
 
         gameObject.SetActive(false);
     }
 
     private System.Func<RectTransform> m_confirmButtonResolver;
+    private System.Func<RectTransform> m_reinforceModuleManageResolver;
 
     private void OnDestroy()
     {
@@ -87,6 +90,30 @@ public class UIShipLoadoutEditorView : MonoBehaviour
         if (tutorialManager == null) return;
 
         tutorialManager.UnregisterDynamicTarget(TutorialManager.DYNAMIC_TARGET_LOADOUT_CONFIRM_BUTTON, m_confirmButtonResolver);
+        tutorialManager.UnregisterDynamicTarget(TutorialManager.DYNAMIC_TARGET_REINFORCE_MODULE_MANAGE_BUTTON, m_reinforceModuleManageResolver);
+    }
+
+    // 모듈 강화 튜토리얼 대상 행(함체/빔/미사일/... 중 하나)이 보이도록 스크롤한 뒤 그 행의 강화 버튼 rect를 돌려줌 — 행이 아직 바인딩 전이면 null(다음 프레임 재시도)
+    private RectTransform ResolveReinforceModuleManageButton()
+    {
+        if (gameObject.activeInHierarchy == false || m_moduleScrollView == null) return null;
+
+        EModuleType targetModuleType = TutorialManager.Instance.GetReinforceModuleType();
+        int targetCategorySlotIndex = TutorialManager.Instance.GetReinforceCategorySlotIndex();
+        int targetDataIndex = FindDataIndex(targetModuleType, targetCategorySlotIndex);
+        if (targetDataIndex < 0) return null;
+
+        m_moduleScrollView.EnsureVisible(targetDataIndex);
+
+        RectTransform result = null;
+        m_moduleScrollView.ForEachVisibleItem((dataIndex, rowObject) =>
+        {
+            if (dataIndex != targetDataIndex) return;
+
+            UIModuleSlotToggleRow row = rowObject.GetComponent<UIModuleSlotToggleRow>();
+            if (row != null) result = row.GetManageButtonRect();
+        });
+        return result;
     }
 
     private RectTransform ResolveConfirmButton()
@@ -158,6 +185,7 @@ public class UIShipLoadoutEditorView : MonoBehaviour
 
         m_moduleSlotEntries.Clear();
         m_pendingModules.Clear();
+        AppendHullRow();
         // 모든 슬롯은 항상 설치된 상태 — 설치/해제 선택 없음
         AppendCategorySlots(EModuleType.beam, maxSlots[0]);
         AppendCategorySlots(EModuleType.missile, maxSlots[1]);
@@ -184,6 +212,18 @@ public class UIShipLoadoutEditorView : MonoBehaviour
         SyncSelectedModuleHighlight();
     }
 
+    // 함체 강화 행(목록 맨 위) — 장착 대상이 아니라 강화 레벨만 다루므로 Confirm 전송/변경 감지/3D 프리뷰에서는 제외(IsHullEntry)
+    private void AppendHullRow()
+    {
+        m_moduleSlotEntries.Add(new ModuleSlotEntry(EModuleType.hull, 0));
+        m_pendingModules.Add(new ModuleInfo { moduleType = EModuleType.hull, slotIndex = 0, moduleSubType = m_hullSubType });
+    }
+
+    private static bool IsHullEntry(ModuleSlotEntry entry)
+    {
+        return entry.moduleType == EModuleType.hull;
+    }
+
     private void AppendCategorySlots(EModuleType moduleType, int maxSlotCount)
     {
         List<ModuleInfo> installedList = GetModulesListForType(m_originalModules, moduleType);
@@ -207,6 +247,9 @@ public class UIShipLoadoutEditorView : MonoBehaviour
         // 이미 장착돼 있으면 실제 레벨(예: shield_5_1)로 시드해야 강화 팝업이 그 레벨부터 시작함 — 미장착 이력이면 기본 레벨1
         ModuleInfo editInfo = CreateEditInfoFromHull(EModuleType.shield, m_originalModules);
         if (editInfo == null) editInfo = new ModuleInfo { moduleType = EModuleType.shield, slotIndex = 0, moduleSubType = GetDefaultSubType(EModuleType.shield) };
+        // 패시브로 해금되기 전에는 행만 보여주고(잠금 문구) 미장착 상태로 둠
+        if (HullArchetypePassiveUnlock.IsModuleUnlocked(GetEditingHullArchetype(), EModuleType.shield) == false)
+            editInfo.moduleSubType = "";
         m_pendingModules.Add(editInfo);
     }
 
@@ -219,6 +262,9 @@ public class UIShipLoadoutEditorView : MonoBehaviour
         // 이미 장착돼 있으면 실제 레벨로 시드해야 강화 팝업이 그 레벨부터 시작함 — 미장착 이력이면 기본 레벨1
         ModuleInfo editInfo = CreateEditInfoFromHull(EModuleType.interceptor, m_originalModules);
         if (editInfo == null) editInfo = new ModuleInfo { moduleType = EModuleType.interceptor, slotIndex = 0, moduleSubType = GetDefaultSubType(EModuleType.interceptor) };
+        // 패시브로 해금되기 전에는 행만 보여주고(잠금 문구) 미장착 상태로 둠
+        if (HullArchetypePassiveUnlock.IsModuleUnlocked(GetEditingHullArchetype(), EModuleType.interceptor) == false)
+            editInfo.moduleSubType = "";
         m_pendingModules.Add(editInfo);
     }
 
@@ -276,20 +322,50 @@ public class UIShipLoadoutEditorView : MonoBehaviour
         ModuleInfo pending = m_pendingModules[dataIndex];
         bool isSelected = dataIndex == m_selectedDataIndex;
 
+        int level = GetSlotDisplayLevel(entry.moduleType, entry.slotIndex, pending.moduleSubType);
         row.Setup(entry.moduleType, entry.slotIndex,
-            isSelected, pending.moduleSubType,
+            isSelected, level,
             (moduleType, slotIndex) => OnRowSelected(dataIndex),
             (moduleType, slotIndex) => OnManageButtonClicked(moduleType, slotIndex));
+
+        // 패시브 미해금 실드/요격체 — 레벨 대신 해금 단계 안내, 강화 버튼 숨김
+        string hullArchetype = GetEditingHullArchetype();
+        if (HullArchetypePassiveUnlock.IsModuleUnlocked(hullArchetype, entry.moduleType) == false)
+        {
+            int unlockStage = HullArchetypePassiveUnlock.GetUnlockStage(hullArchetype, entry.moduleType);
+            row.SetLocked(LocalizationManager.Instance.Get("UIModuleSlot_LockedByPassive", unlockStage));
+        }
     }
 
-    // ManageButton 클릭 — 업적포인트 기반 아키타입 모듈 레벨업 팝업(M6) 오픈
-    private void OnManageButtonClicked(EModuleType moduleType, int slotIndex)
+    private string GetEditingHullArchetype()
     {
         DataTableModule moduleTable = DataManager.Instance.m_dataTableModule;
         ModuleData hullData = moduleTable != null ? moduleTable.GetModuleDataFromTable(m_hullSubType) : null;
-        string hullArchetype = hullData != null ? hullData.hullArchetype : "";
+        return hullData != null ? hullData.hullArchetype : "";
+    }
 
-        UIManager.Instance.ShowModuleReinforcePopup(hullArchetype, moduleType, slotIndex);
+    // beam/missile/hangar는 아키타입 강화 레벨(M6, 레벨업 팝업과 같은 출처), shield/interceptor는 장착 서브타입의 티어
+    private int GetSlotDisplayLevel(EModuleType moduleType, int slotIndex, string moduleSubType)
+    {
+        bool isUpgradableSlot = moduleType == EModuleType.hull || moduleType == EModuleType.beam || moduleType == EModuleType.missile || moduleType == EModuleType.hangar;
+        if (isUpgradableSlot == false) return CommonUtility.ParseTier(moduleSubType);
+
+        string hullArchetype = GetEditingHullArchetype();
+        return ArchetypeUpgradeLevelLookup.GetLevel(hullArchetype, moduleType, slotIndex);
+    }
+
+    // ManageButton 클릭 — 업적포인트 기반 아키타입 모듈 레벨업 팝업(M6) 오픈, 닫힐 때 행의 레벨 표기를 다시 그림
+    private void OnManageButtonClicked(EModuleType moduleType, int slotIndex)
+    {
+        string hullArchetype = GetEditingHullArchetype();
+        UIManager.Instance.ShowModuleReinforcePopup(hullArchetype, moduleType, slotIndex, OnModuleReinforcePopupClosed);
+    }
+
+    private void OnModuleReinforcePopupClosed()
+    {
+        if (m_moduleScrollView != null)
+            m_moduleScrollView.RefreshVisible();
+        RefreshStatsDisplay();
     }
 
     // 좌측 행 클릭 — 선택 상태만 바뀜(장착 여부와 무관). SelectedImage 갱신을 위해 보이는 행 전체를 다시 bind
@@ -314,13 +390,18 @@ public class UIShipLoadoutEditorView : MonoBehaviour
         if (ship == null) return;
 
         ModuleBase module = null;
+        bool isHullSelected = false;
         if (m_selectedDataIndex >= 0 && m_selectedDataIndex < m_moduleSlotEntries.Count && ship.m_moduleHulls.Count > 0)
         {
             ModuleSlotEntry entry = m_moduleSlotEntries[m_selectedDataIndex];
+            isHullSelected = IsHullEntry(entry);
             // 실드/요격체는 SetupSelectedModuleVisualing 대상에서 빠져있어 하이라이트 대상 없음(둘 다 슬롯/3D 배치 없는 논리 컴포넌트)
-            if (entry.moduleType != EModuleType.shield && entry.moduleType != EModuleType.interceptor)
+            if (entry.moduleType != EModuleType.shield && entry.moduleType != EModuleType.interceptor && isHullSelected == false)
                 module = ship.m_moduleHulls[0].FindModuleOrPlaceholder(entry.moduleType, entry.slotIndex); // 미설치 슬롯도 Placeholder 위치에 하이라이트 표시
         }
+
+        // 함체 행 선택 시엔 모듈 대신 함체 전체 아웃라인 — 그 외엔 꺼둠(편집 중 기본 상태, Close에서 복원)
+        ship.SetShipSelected(isHullSelected);
 
         if (module != null)
             ship.SetSelectedModule(ship, module);
@@ -356,6 +437,7 @@ public class UIShipLoadoutEditorView : MonoBehaviour
 
         ModuleHull body = ship.m_moduleHulls[0];
         ModuleSlotEntry entry = m_moduleSlotEntries[dataIndex];
+        if (IsHullEntry(entry) == true) return; // 함체 강화는 외형 변화 없음
 
         if (entry.moduleType == EModuleType.shield)
         {
@@ -413,13 +495,42 @@ public class UIShipLoadoutEditorView : MonoBehaviour
         }
 
         ModuleSlotEntry entry = m_moduleSlotEntries[m_selectedDataIndex];
+        if (IsHullEntry(entry) == true)
+        {
+            m_statEntries = BuildHullStatEntries();
+            m_selectedOriginalEntriesByLabel.Clear(); // 함체 강화는 팝업에서 즉시 서버 반영 — 비교 기준 없음(diff 미표시)
+            if (m_statsScrollView != null && m_statsRowPrefab != null)
+                m_statsScrollView.Initialize(m_statEntries.Count, m_statsRowPrefab.gameObject);
+            return;
+        }
+
         ModuleHullInfo pendingHull = BuildSingleModuleHullInfo(m_pendingModules[m_selectedDataIndex]);
-        m_statEntries = ShipStatGaugeBuilder.Build(null, pendingHull, includeBodyStats: false);
+        string upgradeArchetype = GetEditingHullArchetype();
+        m_statEntries = ShipStatGaugeBuilder.Build(null, pendingHull, includeBodyStats: false, upgradeArchetype: upgradeArchetype);
 
         m_selectedOriginalEntriesByLabel = BuildOriginalEntriesByLabelForSelectedSlot(entry);
 
         if (m_statsScrollView != null && m_statsRowPrefab != null)
             m_statsScrollView.Initialize(m_statEntries.Count, m_statsRowPrefab.gameObject);
+    }
+
+    // 함체 행 성능 — 함체 전용 스탯(체력/선회력/수리력, 강화 레벨·패시브 반영)만 보이도록 빈 로드아웃으로 계산 + 속도는 강화 레벨 행에서 직접
+    private List<ShipStatRowEntry> BuildHullStatEntries()
+    {
+        DataTableModule moduleTable = DataManager.Instance.m_dataTableModule;
+        ModuleData hullData = moduleTable != null ? moduleTable.GetModuleDataFromTable(m_hullSubType) : null;
+        if (hullData == null) return new List<ShipStatRowEntry>();
+
+        string upgradeArchetype = GetEditingHullArchetype();
+        ModuleHullInfo emptyLoadout = new ModuleHullInfo { beams = new List<ModuleInfo>(), missiles = new List<ModuleInfo>(), hangars = new List<ModuleInfo>(), shieldModuleSubType = "" };
+        List<ShipStatRowEntry> entries = ShipStatGaugeBuilder.Build(hullData, emptyLoadout, includeBodyStats: true, upgradeArchetype: upgradeArchetype);
+
+        int hullLevel = ArchetypeUpgradeLevelLookup.GetLevel(upgradeArchetype, EModuleType.hull, 0);
+        string levelKey = CommonUtility.BuildHullArchetypeLevelKey(m_hullSubType, hullLevel);
+        ModuleData levelData = moduleTable.GetModuleDataFromTable(levelKey);
+        ModuleData speedSource = levelData != null ? levelData : hullData;
+        entries.Add(ShipStatGaugeBuilder.MakeHullSpeedEntry(speedSource.speed));
+        return entries;
     }
 
     // 선택된 슬롯이 팝업을 열었던 시점(m_originalModules)에 실제로 설치돼 있던 모듈 기준 비교값 — 원래 미설치였으면 빈 딕셔너리(=0 기준 diff)
@@ -431,7 +542,8 @@ public class UIShipLoadoutEditorView : MonoBehaviour
         if (original == null) return result;
 
         ModuleHullInfo originalHull = BuildSingleModuleHullInfo(original);
-        List<ShipStatRowEntry> originalEntries = ShipStatGaugeBuilder.Build(null, originalHull, includeBodyStats: false);
+        string upgradeArchetype = GetEditingHullArchetype();
+        List<ShipStatRowEntry> originalEntries = ShipStatGaugeBuilder.Build(null, originalHull, includeBodyStats: false, upgradeArchetype: upgradeArchetype);
         for (int i = 0; i < originalEntries.Count; i++)
             result[originalEntries[i].label] = originalEntries[i];
 
@@ -462,11 +574,13 @@ public class UIShipLoadoutEditorView : MonoBehaviour
     private bool IsSlotChangedFromOriginal(int dataIndex)
     {
         ModuleSlotEntry entry = m_moduleSlotEntries[dataIndex];
+        if (IsHullEntry(entry) == true) return false; // 함체 강화는 팝업에서 즉시 서버 반영 — Confirm 대상 아님
         ModuleInfo original = TryGetOriginalModuleInfo(entry);
         bool wasInstalled = original != null;
-        if (wasInstalled == false) return true;
-
         ModuleInfo pending = m_pendingModules[dataIndex];
+        bool isPendingInstalled = string.IsNullOrEmpty(pending.moduleSubType) == false;
+        if (wasInstalled == false) return isPendingInstalled; // 원본·팬딩 모두 미장착(패시브 미해금 실드/요격체)이면 변경 없음
+
         if (pending.moduleSubType != original.moduleSubType) return true;
         return false;
     }
@@ -488,7 +602,9 @@ public class UIShipLoadoutEditorView : MonoBehaviour
         if (row == null) return;
 
         ShipStatRowEntry entry = m_statEntries[dataIndex];
-        string diffText = ShipStatGaugeBuilder.BuildDiffText(entry, m_selectedOriginalEntriesByLabel);
+        // 함체 행은 현재 값만 보여주는 화면 — 비교 기준이 없으면 BuildDiffText가 0과 비교해 값 전체를 변화량으로 표시하므로 생략
+        bool isHullSelected = m_selectedDataIndex >= 0 && m_selectedDataIndex < m_moduleSlotEntries.Count && IsHullEntry(m_moduleSlotEntries[m_selectedDataIndex]) == true;
+        string diffText = isHullSelected == true ? null : ShipStatGaugeBuilder.BuildDiffText(entry, m_selectedOriginalEntriesByLabel);
 
         if (entry.isNumericValue == true)
             row.SetStatRow(entry.label, entry.value, diffText);
@@ -502,6 +618,7 @@ public class UIShipLoadoutEditorView : MonoBehaviour
         ModuleHullInfo pending = new ModuleHullInfo { beams = new List<ModuleInfo>(), missiles = new List<ModuleInfo>(), hangars = new List<ModuleInfo>(), shieldModuleSubType = "" };
         for (int i = 0; i < m_moduleSlotEntries.Count; i++)
         {
+            if (IsHullEntry(m_moduleSlotEntries[i]) == true) continue; // 함체 행은 장착 구성이 아님
             // 모든 슬롯은 항상 설치된 상태로 커밋 — 강화 팝업에서 레벨업/다운된 실제 서브타입을 그대로 사용(기본값을 쓰면 항상 레벨1로 되돌아감)
             ApplyEditInfoToHull(pending, m_pendingModules[i]);
         }
@@ -571,18 +688,6 @@ public class UIShipLoadoutEditorView : MonoBehaviour
         }
 
         ModuleHullInfo desired = BuildPendingModuleHullInfo();
-
-        // 지크프리트 함대(서버 미등록)는 SetModule을 호출해도 서버가 모르는 슬롯이라 항상 실패함 — 로컬 FleetComposition에 바로 반영
-        if (ObjectManager.Instance.IsSiegfriedFleetActive() == true)
-        {
-            FleetComposition tutorialComposition = DataManager.Instance.m_currentFleetComposition;
-            if (tutorialComposition != null)
-                tutorialComposition.ApplyModuleToggleResult(m_slotIndex, desired);
-
-            if (m_onChanged != null) m_onChanged();
-            Close();
-            return;
-        }
 
         SetModuleRequest request = new SetModuleRequest
         {

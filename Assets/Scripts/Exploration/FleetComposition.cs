@@ -158,8 +158,14 @@ public class FleetComposition
         AppendDefaultLevel1Modules(hull.beams, EModuleType.beam, maxSlots[0]);
         AppendDefaultLevel1Modules(hull.missiles, EModuleType.missile, maxSlots[1]);
         AppendDefaultLevel1Modules(hull.hangars, EModuleType.hangar, maxSlots[2]);
-        if (maxSlots[3] > 0) hull.shieldModuleSubType = "shield_1_1";
-        if (maxSlots[4] > 0) hull.interceptorModuleSubType = "interceptor_1_1";
+
+        // 실드/요격체는 슬롯이 있어도 패시브로 해금된 경우에만 장착 상태(서버 buildModuleHullInfoDto와 같은 규칙)
+        ModuleData hullData = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(hullSubType);
+        string hullArchetype = hullData != null ? hullData.hullArchetype : "";
+        bool shieldUnlocked = HullArchetypePassiveUnlock.IsModuleUnlocked(hullArchetype, EModuleType.shield);
+        bool interceptorUnlocked = HullArchetypePassiveUnlock.IsModuleUnlocked(hullArchetype, EModuleType.interceptor);
+        if (maxSlots[3] > 0 && shieldUnlocked == true) hull.shieldModuleSubType = "shield_1_1";
+        if (maxSlots[4] > 0 && interceptorUnlocked == true) hull.interceptorModuleSubType = "interceptor_1_1";
 
         return hull;
     }

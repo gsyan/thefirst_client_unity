@@ -36,6 +36,7 @@ public class ModuleHull : ModuleBase
 
     // 보상카드 지속버프(Buff_ShipHealth) 미반영 원본 최대체력 — RefreshRewardCardBuff()가 이 값 기준으로 m_healthMax를 다시 계산
     private float m_baseHealthMax;
+    private float m_baseRepair; // 패시브(체력회복 +N%) 미반영 원본 수리력 — RefreshRewardCardBuff()가 이 값 기준으로 m_repair를 다시 계산(내 함대만)
 
 
     public override void ApplyShipStateToModule()
@@ -103,7 +104,7 @@ public class ModuleHull : ModuleBase
         if (moduleData == null) return;
 
         // 아키타입 단위 영구 모듈강화(M6) — 이 함체의 아키타입 기준 바디 레벨(최소 1)에 해당하는 레벨 행(hull_{tier}_{archetype}_{level})의 체력/수리력을 그대로 사용
-        int archetypeLevel = ArchetypeUpgradeLevelLookup.GetLevel(moduleData.hullArchetype, EModuleType.hull);
+        int archetypeLevel = ArchetypeUpgradeLevelLookup.GetLevel(ResolveOwnerFleet(), moduleData.hullArchetype, EModuleType.hull);
         string levelKey = CommonUtility.BuildHullArchetypeLevelKey(moduleHullInfo.moduleSubType, archetypeLevel);
         ModuleData levelModuleData = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(levelKey);
         float levelHealth = levelModuleData != null ? levelModuleData.health : moduleData.health;
@@ -113,12 +114,14 @@ public class ModuleHull : ModuleBase
         // 복원된 데이터로 초기화 — 체력/수리력은 프리셋 계산값 있으면 그걸로 대체, 없으면 레벨 행 값
         m_baseHealthMax = statOverride?.health ?? levelHealth;
         m_healthMax = m_baseHealthMax;
-        m_health = moduleHullInfo.currentHealth > 0f ? Mathf.Min(moduleHullInfo.currentHealth, m_healthMax) : m_healthMax;
+        // 항상 만피로 시작 — 손상 상태 복구는 함대 체력 비율 스냅샷(shipHealthRatios → ApplyHealthRatio)이 스폰 후에 덮어씀
+        m_health = m_healthMax;
 
         m_attack = 0.0f; // Hull은 직접 공격하지 않음
 
         // Hull 전용 능력치
-        m_repair = statOverride?.repair ?? levelRepair;
+        m_baseRepair = statOverride?.repair ?? levelRepair;
+        m_repair = m_baseRepair;
         m_speed  = moduleData.speed; // 선회력(turnRate) 반영은 후속 작업
 
         // 함대 정보 자동 설정
@@ -421,9 +424,17 @@ public class ModuleHull : ModuleBase
         return attackArray[slotIndex];
     }
 
+    // 무기 프리팹 이름 — 데이터에 modulePrefabName이 있으면(적 전용 무기 행이 같은 티어의 플레이어 프리팹을 공유) 그 이름, 없으면 서브타입 그대로
+    private static string ResolveWeaponPrefabName(ModuleInfo moduleInfo)
+    {
+        ModuleData moduleData = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(moduleInfo.moduleSubType);
+        bool hasPrefabOverride = moduleData != null && string.IsNullOrEmpty(moduleData.modulePrefabName) == false;
+        return hasPrefabOverride == true ? moduleData.modulePrefabName : moduleInfo.moduleSubType;
+    }
+
     public void InitializeBeam(ModuleInfo moduleInfo, float? attackOverride = null, float? attackCoolOverride = null)
     {
-        GameObject modulePrefab = ObjectManager.Instance.LoadShipModulePrefab(moduleInfo.moduleType.ToString(), moduleInfo.moduleSubType);
+        GameObject modulePrefab = ObjectManager.Instance.LoadShipModulePrefab(moduleInfo.moduleType.ToString(), ResolveWeaponPrefabName(moduleInfo));
         if (modulePrefab == null) return;
         ModuleSlot targetSlot = FindModuleSlot(moduleInfo.moduleType, moduleInfo.slotIndex);
         if (targetSlot == null) return;
@@ -442,7 +453,7 @@ public class ModuleHull : ModuleBase
 
     public void InitializeMissile(ModuleInfo moduleInfo, float? attackOverride = null, float? attackCoolOverride = null, float? silenceTimeOverride = null)
     {
-        GameObject modulePrefab = ObjectManager.Instance.LoadShipModulePrefab(moduleInfo.moduleType.ToString(), moduleInfo.moduleSubType);
+        GameObject modulePrefab = ObjectManager.Instance.LoadShipModulePrefab(moduleInfo.moduleType.ToString(), ResolveWeaponPrefabName(moduleInfo));
         if (modulePrefab == null) return;
         ModuleSlot targetSlot = FindModuleSlot(moduleInfo.moduleType, moduleInfo.slotIndex);
         if (targetSlot == null) return;
@@ -461,7 +472,7 @@ public class ModuleHull : ModuleBase
 
     public void InitializeHangar(ModuleInfo moduleInfo, float? shipAttackOverride = null, float? fighterAttackOverride = null, float? airHealthOverride = null, float? airAmmoOverride = null, float? airDisruptOverride = null)
     {
-        GameObject modulePrefab = ObjectManager.Instance.LoadShipModulePrefab(moduleInfo.moduleType.ToString(), moduleInfo.moduleSubType);
+        GameObject modulePrefab = ObjectManager.Instance.LoadShipModulePrefab(moduleInfo.moduleType.ToString(), ResolveWeaponPrefabName(moduleInfo));
         if (modulePrefab == null)
         {
             Debug.LogWarning($"InitializeHangar: Cannot find module prefab - Level: {moduleInfo.moduleLevel}");
@@ -810,6 +821,10 @@ public class ModuleHull : ModuleBase
         {
             EventManager.Trigger_ModuleHullDestroyed(this);
 
+            bool isEnemyHull = m_ownerFleet != null && ObjectManager.Instance.IsEnemyOfMyTeam(m_ownerFleet) == true;
+            if (isEnemyHull == true)
+                BattleStatTracker.AddEnemyShipKill();
+
             // 모든 슬롯의 모듈 비활성화
             foreach (ModuleSlot slot in m_moduleSlots)
             {
@@ -872,20 +887,40 @@ public class ModuleHull : ModuleBase
     }
 
     // 전술 토글(수리) ON 상태에서 UIPanelBattle.Co_DrainResource가 1초 간격으로 호출 — m_repair는 이미 초당 단위라 deltaTime 계산 불필요
-    public void ApplyRepairTick()
+    // 실제로 회복된 양을 반환(최대 체력에서 잘린 만큼 제외)
+    public float ApplyRepairTick()
     {
+        float beforeHealth = m_health;
         m_health = Mathf.Min(m_healthMax, m_health + m_repair);
+        float healedAmount = m_health - beforeHealth;
+        return healedAmount;
     }
 
     // 보상카드 지속버프 배율이 바뀔 때마다(카드 선택/런 종료 초기화) 호출 — 이 바디의 체력과 하위 무기 모듈들을 모두 갱신
     public void RefreshRewardCardBuff()
     {
         float oldHealthMax = m_healthMax;
-        m_healthMax = m_baseHealthMax * GetRewardCardBuffMultiplier(ECardEffectType.Buff_ShipHealth);
-        // 최대체력이 늘어난 만큼 현재체력도 같이 늘려줌(그 자리에서 즉시 회복은 아님) — 줄어드는 경우는 없음(버프는 항상 증가)
+        // 최대체력 = 원본 × 보상카드 배율 × 아키타입 패시브 배율(체력 +N%, 함대 범위는 그 아키타입 함선이 살아있을 때만)
+        float passiveHealthMultiplier = 1f + GetPassiveEffect(HullArchetypePassiveEffects.k_shipHealthPercent) / 100f;
+        m_healthMax = m_baseHealthMax * GetRewardCardBuffMultiplier(ECardEffectType.Buff_ShipHealth) * passiveHealthMultiplier;
+        // 최대체력이 늘어난 만큼 현재체력도 같이 늘려줌(그 자리에서 즉시 회복은 아님). 지원 함선 파괴 등으로 최대체력이 줄면 현재체력은 최대치로만 잘라내고 깎지 않음(체력 0으로 죽는 일 방지)
         float healthMaxDelta = m_healthMax - oldHealthMax;
-        if (healthMaxDelta != 0f)
+        if (healthMaxDelta > 0f)
             m_health = Mathf.Clamp(m_health + healthMaxDelta, 0f, m_healthMax);
+        else if (healthMaxDelta < 0f)
+            m_health = Mathf.Min(m_health, m_healthMax);
+
+        // 체력회복 +N%(패시브) — 패시브를 받는 함대(내 함대/PVP 상대)만. 존 적 함대는 생성 시 배율이 따로 적용돼 건드리지 않음
+        bool hasPassiveSource = m_ownerFleet != null && m_ownerFleet.HasPassiveSource();
+        if (hasPassiveSource == true)
+        {
+            float passiveRegenMultiplier = 1f + GetPassiveEffect(HullArchetypePassiveEffects.k_healthRegenPercent) / 100f;
+            m_repair = m_baseRepair * passiveRegenMultiplier;
+        }
+
+        // 실드 게이지/회복 패시브 반영
+        if (m_shield != null)
+            m_shield.RefreshPassiveStats();
 
         foreach (ModuleBeam beam in m_beams)
             if (beam != null) beam.RefreshRewardCardBuff();

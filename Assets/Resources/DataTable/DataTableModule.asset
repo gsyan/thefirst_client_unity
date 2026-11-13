@@ -28,6 +28,7 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 1
+      modulePrefabName: 
       health: 300
       repair: 0
       speed: 1
@@ -36,6 +37,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 5
       airMaintenanceTime: 10
       airHealth: 50
@@ -69,6 +72,7 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 1
+      modulePrefabName: 
       health: 400
       repair: 0
       speed: 1
@@ -77,6 +81,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 5
       airMaintenanceTime: 10
       airHealth: 50
@@ -112,6 +118,7 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 1
+      modulePrefabName: 
       health: 500
       repair: 0
       speed: 1
@@ -120,6 +127,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 5
       airMaintenanceTime: 10
       airHealth: 50
@@ -157,6 +166,7 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 1
+      modulePrefabName: 
       health: 600
       repair: 0
       speed: 1
@@ -165,6 +175,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 5
       airMaintenanceTime: 10
       airHealth: 50
@@ -204,6 +216,7 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 1
+      modulePrefabName: 
       health: 700
       repair: 0
       speed: 1
@@ -212,6 +225,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 5
       airMaintenanceTime: 10
       airHealth: 50
@@ -253,6 +268,7 @@ MonoBehaviour:
       hasShield: 1
       hasInterceptor: 1
       isEnemyOnly: 1
+      modulePrefabName: 
       health: 800
       repair: 0
       speed: 1
@@ -261,6 +277,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 5
       airMaintenanceTime: 10
       airHealth: 50
@@ -304,6 +322,7 @@ MonoBehaviour:
       hasShield: 1
       hasInterceptor: 1
       isEnemyOnly: 1
+      modulePrefabName: 
       health: 900
       repair: 0
       speed: 1
@@ -312,6 +331,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 5
       airMaintenanceTime: 10
       airHealth: 50
@@ -357,6 +378,7 @@ MonoBehaviour:
       hasShield: 1
       hasInterceptor: 1
       isEnemyOnly: 1
+      modulePrefabName: 
       health: 1000
       repair: 0
       speed: 1
@@ -365,6 +387,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 5
       airMaintenanceTime: 10
       airHealth: 50
@@ -412,6 +436,7 @@ MonoBehaviour:
       hasShield: 1
       hasInterceptor: 1
       isEnemyOnly: 1
+      modulePrefabName: 
       health: 1100
       repair: 0
       speed: 1
@@ -420,6 +445,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 5
       airMaintenanceTime: 10
       airHealth: 50
@@ -469,6 +496,7 @@ MonoBehaviour:
       hasShield: 1
       hasInterceptor: 1
       isEnemyOnly: 1
+      modulePrefabName: 
       health: 1200
       repair: 0
       speed: 1
@@ -477,6 +505,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 5
       airMaintenanceTime: 10
       airHealth: 50
@@ -528,6 +558,7 @@ MonoBehaviour:
       hasShield: 1
       hasInterceptor: 1
       isEnemyOnly: 1
+      modulePrefabName: 
       health: 1300
       repair: 0
       speed: 1
@@ -536,6 +567,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 5
       airMaintenanceTime: 10
       airHealth: 50
@@ -589,6 +622,7 @@ MonoBehaviour:
       hasShield: 1
       hasInterceptor: 1
       isEnemyOnly: 1
+      modulePrefabName: 
       health: 1400
       repair: 0
       speed: 1
@@ -597,6 +631,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 5
       airMaintenanceTime: 10
       airHealth: 50
@@ -652,6 +688,7 @@ MonoBehaviour:
       hasShield: 1
       hasInterceptor: 1
       isEnemyOnly: 1
+      modulePrefabName: 
       health: 1500
       repair: 0
       speed: 1
@@ -660,6 +697,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 5
       airMaintenanceTime: 10
       airHealth: 50
@@ -717,6 +756,7 @@ MonoBehaviour:
       hasShield: 1
       hasInterceptor: 1
       isEnemyOnly: 1
+      modulePrefabName: 
       health: 1600
       repair: 0
       speed: 1
@@ -725,6 +765,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 5
       airMaintenanceTime: 10
       airHealth: 50
@@ -760,7 +802,8 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
-      health: 300
+      modulePrefabName: 
+      health: 1000
       repair: 0
       speed: 1
       turnRate: 1
@@ -768,6 +811,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -789,7 +834,7 @@ MonoBehaviour:
     - moduleName: hull_1_centurion_2
       moduleSubType: hull_1_centurion_2
       statPoint: 300
-      unlockAchievementPointCost: 10
+      unlockAchievementPointCost: 50
       hullArchetype: centurion
       hullPrefabName: hull_1_centurion_11100
       descriptionKey: ModuleDescription_centurion
@@ -803,7 +848,8 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
-      health: 400
+      modulePrefabName: 
+      health: 1100
       repair: 0
       speed: 1
       turnRate: 1
@@ -811,6 +857,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -832,7 +880,7 @@ MonoBehaviour:
     - moduleName: hull_1_centurion_3
       moduleSubType: hull_1_centurion_3
       statPoint: 300
-      unlockAchievementPointCost: 10
+      unlockAchievementPointCost: 50
       hullArchetype: centurion
       hullPrefabName: hull_1_centurion_11100
       descriptionKey: ModuleDescription_centurion
@@ -846,7 +894,8 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
-      health: 500
+      modulePrefabName: 
+      health: 1200
       repair: 0
       speed: 1
       turnRate: 1
@@ -854,6 +903,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -875,7 +926,7 @@ MonoBehaviour:
     - moduleName: hull_1_centurion_4
       moduleSubType: hull_1_centurion_4
       statPoint: 300
-      unlockAchievementPointCost: 10
+      unlockAchievementPointCost: 50
       hullArchetype: centurion
       hullPrefabName: hull_1_centurion_11100
       descriptionKey: ModuleDescription_centurion
@@ -889,7 +940,8 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
-      health: 600
+      modulePrefabName: 
+      health: 1300
       repair: 0
       speed: 1
       turnRate: 1
@@ -897,6 +949,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -918,7 +972,7 @@ MonoBehaviour:
     - moduleName: hull_1_centurion_5
       moduleSubType: hull_1_centurion_5
       statPoint: 300
-      unlockAchievementPointCost: 10
+      unlockAchievementPointCost: 50
       hullArchetype: centurion
       hullPrefabName: hull_1_centurion_11100
       descriptionKey: ModuleDescription_centurion
@@ -932,7 +986,8 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
-      health: 700
+      modulePrefabName: 
+      health: 1400
       repair: 0
       speed: 1
       turnRate: 1
@@ -940,6 +995,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -961,7 +1018,7 @@ MonoBehaviour:
     - moduleName: hull_1_centurion_6
       moduleSubType: hull_1_centurion_6
       statPoint: 300
-      unlockAchievementPointCost: 10
+      unlockAchievementPointCost: 50
       hullArchetype: centurion
       hullPrefabName: hull_1_centurion_11100
       descriptionKey: ModuleDescription_centurion
@@ -975,7 +1032,8 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
-      health: 800
+      modulePrefabName: 
+      health: 1500
       repair: 0
       speed: 1
       turnRate: 1
@@ -983,6 +1041,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -1004,7 +1064,7 @@ MonoBehaviour:
     - moduleName: hull_1_centurion_7
       moduleSubType: hull_1_centurion_7
       statPoint: 300
-      unlockAchievementPointCost: 10
+      unlockAchievementPointCost: 50
       hullArchetype: centurion
       hullPrefabName: hull_1_centurion_11100
       descriptionKey: ModuleDescription_centurion
@@ -1018,7 +1078,8 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
-      health: 900
+      modulePrefabName: 
+      health: 1600
       repair: 0
       speed: 1
       turnRate: 1
@@ -1026,6 +1087,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -1047,7 +1110,7 @@ MonoBehaviour:
     - moduleName: hull_1_centurion_8
       moduleSubType: hull_1_centurion_8
       statPoint: 300
-      unlockAchievementPointCost: 10
+      unlockAchievementPointCost: 50
       hullArchetype: centurion
       hullPrefabName: hull_1_centurion_11100
       descriptionKey: ModuleDescription_centurion
@@ -1061,7 +1124,8 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
-      health: 1000
+      modulePrefabName: 
+      health: 1700
       repair: 0
       speed: 1
       turnRate: 1
@@ -1069,6 +1133,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -1090,7 +1156,7 @@ MonoBehaviour:
     - moduleName: hull_1_centurion_9
       moduleSubType: hull_1_centurion_9
       statPoint: 300
-      unlockAchievementPointCost: 10
+      unlockAchievementPointCost: 50
       hullArchetype: centurion
       hullPrefabName: hull_1_centurion_11100
       descriptionKey: ModuleDescription_centurion
@@ -1104,7 +1170,8 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
-      health: 1100
+      modulePrefabName: 
+      health: 1800
       repair: 0
       speed: 1
       turnRate: 1
@@ -1112,6 +1179,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -1133,7 +1202,7 @@ MonoBehaviour:
     - moduleName: hull_1_centurion_10
       moduleSubType: hull_1_centurion_10
       statPoint: 300
-      unlockAchievementPointCost: 10
+      unlockAchievementPointCost: 50
       hullArchetype: centurion
       hullPrefabName: hull_1_centurion_11100
       descriptionKey: ModuleDescription_centurion
@@ -1147,7 +1216,8 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
-      health: 1200
+      modulePrefabName: 
+      health: 1900
       repair: 0
       speed: 1
       turnRate: 1
@@ -1155,6 +1225,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -1192,7 +1264,8 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
-      health: 300
+      modulePrefabName: 
+      health: 1000
       repair: 0
       speed: 1
       turnRate: 1
@@ -1200,6 +1273,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -1237,7 +1312,8 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
-      health: 400
+      modulePrefabName: 
+      health: 1100
       repair: 0
       speed: 1
       turnRate: 1
@@ -1245,6 +1321,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -1282,7 +1360,8 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
-      health: 500
+      modulePrefabName: 
+      health: 1200
       repair: 0
       speed: 1
       turnRate: 1
@@ -1290,6 +1369,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -1327,7 +1408,8 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
-      health: 600
+      modulePrefabName: 
+      health: 1300
       repair: 0
       speed: 1
       turnRate: 1
@@ -1335,6 +1417,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -1372,7 +1456,8 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
-      health: 700
+      modulePrefabName: 
+      health: 1400
       repair: 0
       speed: 1
       turnRate: 1
@@ -1380,6 +1465,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -1417,7 +1504,8 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
-      health: 800
+      modulePrefabName: 
+      health: 1500
       repair: 0
       speed: 1
       turnRate: 1
@@ -1425,6 +1513,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -1462,7 +1552,8 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
-      health: 900
+      modulePrefabName: 
+      health: 1600
       repair: 0
       speed: 1
       turnRate: 1
@@ -1470,6 +1561,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -1507,7 +1600,8 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
-      health: 1000
+      modulePrefabName: 
+      health: 1700
       repair: 0
       speed: 1
       turnRate: 1
@@ -1515,6 +1609,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -1552,7 +1648,8 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
-      health: 1100
+      modulePrefabName: 
+      health: 1800
       repair: 0
       speed: 1
       turnRate: 1
@@ -1560,6 +1657,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -1597,7 +1696,8 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
-      health: 1200
+      modulePrefabName: 
+      health: 1900
       repair: 0
       speed: 1
       turnRate: 1
@@ -1605,6 +1705,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -1642,7 +1744,8 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
-      health: 300
+      modulePrefabName: 
+      health: 1000
       repair: 0
       speed: 1
       turnRate: 1
@@ -1650,6 +1753,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -1687,7 +1792,8 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
-      health: 400
+      modulePrefabName: 
+      health: 1100
       repair: 0
       speed: 1
       turnRate: 1
@@ -1695,6 +1801,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -1732,7 +1840,8 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
-      health: 500
+      modulePrefabName: 
+      health: 1200
       repair: 0
       speed: 1
       turnRate: 1
@@ -1740,6 +1849,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -1777,7 +1888,8 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
-      health: 600
+      modulePrefabName: 
+      health: 1300
       repair: 0
       speed: 1
       turnRate: 1
@@ -1785,6 +1897,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -1822,7 +1936,8 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
-      health: 700
+      modulePrefabName: 
+      health: 1400
       repair: 0
       speed: 1
       turnRate: 1
@@ -1830,6 +1945,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -1867,7 +1984,8 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
-      health: 800
+      modulePrefabName: 
+      health: 1500
       repair: 0
       speed: 1
       turnRate: 1
@@ -1875,6 +1993,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -1912,7 +2032,8 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
-      health: 900
+      modulePrefabName: 
+      health: 1600
       repair: 0
       speed: 1
       turnRate: 1
@@ -1920,6 +2041,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -1957,7 +2080,8 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
-      health: 1000
+      modulePrefabName: 
+      health: 1700
       repair: 0
       speed: 1
       turnRate: 1
@@ -1965,6 +2089,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -2002,7 +2128,8 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
-      health: 1100
+      modulePrefabName: 
+      health: 1800
       repair: 0
       speed: 1
       turnRate: 1
@@ -2010,6 +2137,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -2047,7 +2176,8 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
-      health: 1200
+      modulePrefabName: 
+      health: 1900
       repair: 0
       speed: 1
       turnRate: 1
@@ -2055,6 +2185,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -2094,7 +2226,8 @@ MonoBehaviour:
       hasShield: 1
       hasInterceptor: 1
       isEnemyOnly: 0
-      health: 300
+      modulePrefabName: 
+      health: 1000
       repair: 0
       speed: 1
       turnRate: 1
@@ -2102,6 +2235,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -2141,7 +2276,8 @@ MonoBehaviour:
       hasShield: 1
       hasInterceptor: 1
       isEnemyOnly: 0
-      health: 400
+      modulePrefabName: 
+      health: 1100
       repair: 0
       speed: 1
       turnRate: 1
@@ -2149,6 +2285,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -2188,7 +2326,8 @@ MonoBehaviour:
       hasShield: 1
       hasInterceptor: 1
       isEnemyOnly: 0
-      health: 500
+      modulePrefabName: 
+      health: 1200
       repair: 0
       speed: 1
       turnRate: 1
@@ -2196,6 +2335,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -2235,7 +2376,8 @@ MonoBehaviour:
       hasShield: 1
       hasInterceptor: 1
       isEnemyOnly: 0
-      health: 600
+      modulePrefabName: 
+      health: 1300
       repair: 0
       speed: 1
       turnRate: 1
@@ -2243,6 +2385,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -2282,7 +2426,8 @@ MonoBehaviour:
       hasShield: 1
       hasInterceptor: 1
       isEnemyOnly: 0
-      health: 700
+      modulePrefabName: 
+      health: 1400
       repair: 0
       speed: 1
       turnRate: 1
@@ -2290,6 +2435,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -2329,7 +2476,8 @@ MonoBehaviour:
       hasShield: 1
       hasInterceptor: 1
       isEnemyOnly: 0
-      health: 800
+      modulePrefabName: 
+      health: 1500
       repair: 0
       speed: 1
       turnRate: 1
@@ -2337,6 +2485,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -2376,7 +2526,8 @@ MonoBehaviour:
       hasShield: 1
       hasInterceptor: 1
       isEnemyOnly: 0
-      health: 900
+      modulePrefabName: 
+      health: 1600
       repair: 0
       speed: 1
       turnRate: 1
@@ -2384,6 +2535,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -2423,7 +2576,8 @@ MonoBehaviour:
       hasShield: 1
       hasInterceptor: 1
       isEnemyOnly: 0
-      health: 1000
+      modulePrefabName: 
+      health: 1700
       repair: 0
       speed: 1
       turnRate: 1
@@ -2431,6 +2585,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -2470,7 +2626,8 @@ MonoBehaviour:
       hasShield: 1
       hasInterceptor: 1
       isEnemyOnly: 0
-      health: 1100
+      modulePrefabName: 
+      health: 1800
       repair: 0
       speed: 1
       turnRate: 1
@@ -2478,6 +2635,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -2517,7 +2676,8 @@ MonoBehaviour:
       hasShield: 1
       hasInterceptor: 1
       isEnemyOnly: 0
-      health: 1200
+      modulePrefabName: 
+      health: 1900
       repair: 0
       speed: 1
       turnRate: 1
@@ -2525,6 +2685,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -2558,7 +2720,8 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
-      health: 300
+      modulePrefabName: 
+      health: 1000
       repair: 0
       speed: 1
       turnRate: 1
@@ -2566,6 +2729,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -2599,7 +2764,8 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
-      health: 400
+      modulePrefabName: 
+      health: 1100
       repair: 0
       speed: 1
       turnRate: 1
@@ -2607,6 +2773,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -2640,7 +2808,8 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
-      health: 500
+      modulePrefabName: 
+      health: 1200
       repair: 0
       speed: 1
       turnRate: 1
@@ -2648,6 +2817,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -2681,7 +2852,8 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
-      health: 600
+      modulePrefabName: 
+      health: 1300
       repair: 0
       speed: 1
       turnRate: 1
@@ -2689,6 +2861,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -2722,7 +2896,8 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
-      health: 700
+      modulePrefabName: 
+      health: 1400
       repair: 0
       speed: 1
       turnRate: 1
@@ -2730,6 +2905,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -2763,7 +2940,8 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
-      health: 800
+      modulePrefabName: 
+      health: 1500
       repair: 0
       speed: 1
       turnRate: 1
@@ -2771,6 +2949,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -2804,7 +2984,8 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
-      health: 900
+      modulePrefabName: 
+      health: 1600
       repair: 0
       speed: 1
       turnRate: 1
@@ -2812,6 +2993,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -2845,7 +3028,8 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
-      health: 1000
+      modulePrefabName: 
+      health: 1700
       repair: 0
       speed: 1
       turnRate: 1
@@ -2853,6 +3037,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -2886,7 +3072,8 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
-      health: 1100
+      modulePrefabName: 
+      health: 1800
       repair: 0
       speed: 1
       turnRate: 1
@@ -2894,6 +3081,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -2927,7 +3116,8 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
-      health: 1200
+      modulePrefabName: 
+      health: 1900
       repair: 0
       speed: 1
       turnRate: 1
@@ -2935,6 +3125,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -2976,7 +3168,8 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
-      health: 300
+      modulePrefabName: 
+      health: 1000
       repair: 0
       speed: 1
       turnRate: 1
@@ -2984,6 +3177,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -3025,7 +3220,8 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
-      health: 400
+      modulePrefabName: 
+      health: 1100
       repair: 0
       speed: 1
       turnRate: 1
@@ -3033,6 +3229,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -3074,7 +3272,8 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
-      health: 500
+      modulePrefabName: 
+      health: 1200
       repair: 0
       speed: 1
       turnRate: 1
@@ -3082,6 +3281,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -3123,7 +3324,8 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
-      health: 600
+      modulePrefabName: 
+      health: 1300
       repair: 0
       speed: 1
       turnRate: 1
@@ -3131,6 +3333,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -3172,7 +3376,8 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
-      health: 700
+      modulePrefabName: 
+      health: 1400
       repair: 0
       speed: 1
       turnRate: 1
@@ -3180,6 +3385,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -3221,7 +3428,8 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
-      health: 800
+      modulePrefabName: 
+      health: 1500
       repair: 0
       speed: 1
       turnRate: 1
@@ -3229,6 +3437,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -3270,7 +3480,8 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
-      health: 900
+      modulePrefabName: 
+      health: 1600
       repair: 0
       speed: 1
       turnRate: 1
@@ -3278,6 +3489,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -3319,7 +3532,8 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
-      health: 1000
+      modulePrefabName: 
+      health: 1700
       repair: 0
       speed: 1
       turnRate: 1
@@ -3327,6 +3541,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -3368,7 +3584,8 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
-      health: 1100
+      modulePrefabName: 
+      health: 1800
       repair: 0
       speed: 1
       turnRate: 1
@@ -3376,6 +3593,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -3417,7 +3636,8 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
-      health: 1200
+      modulePrefabName: 
+      health: 1900
       repair: 0
       speed: 1
       turnRate: 1
@@ -3425,6 +3645,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -3466,7 +3688,8 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
-      health: 300
+      modulePrefabName: 
+      health: 1000
       repair: 0
       speed: 1
       turnRate: 1
@@ -3474,6 +3697,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -3515,7 +3740,8 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
-      health: 400
+      modulePrefabName: 
+      health: 1100
       repair: 0
       speed: 1
       turnRate: 1
@@ -3523,6 +3749,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -3564,7 +3792,8 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
-      health: 500
+      modulePrefabName: 
+      health: 1200
       repair: 0
       speed: 1
       turnRate: 1
@@ -3572,6 +3801,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -3613,7 +3844,8 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
-      health: 600
+      modulePrefabName: 
+      health: 1300
       repair: 0
       speed: 1
       turnRate: 1
@@ -3621,6 +3853,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -3662,7 +3896,8 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
-      health: 700
+      modulePrefabName: 
+      health: 1400
       repair: 0
       speed: 1
       turnRate: 1
@@ -3670,6 +3905,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -3711,7 +3948,8 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
-      health: 800
+      modulePrefabName: 
+      health: 1500
       repair: 0
       speed: 1
       turnRate: 1
@@ -3719,6 +3957,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -3760,7 +4000,8 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
-      health: 900
+      modulePrefabName: 
+      health: 1600
       repair: 0
       speed: 1
       turnRate: 1
@@ -3768,6 +4009,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -3809,7 +4052,8 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
-      health: 1000
+      modulePrefabName: 
+      health: 1700
       repair: 0
       speed: 1
       turnRate: 1
@@ -3817,6 +4061,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -3858,7 +4104,8 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
-      health: 1100
+      modulePrefabName: 
+      health: 1800
       repair: 0
       speed: 1
       turnRate: 1
@@ -3866,6 +4113,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -3907,7 +4156,8 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
-      health: 1200
+      modulePrefabName: 
+      health: 1900
       repair: 0
       speed: 1
       turnRate: 1
@@ -3915,6 +4165,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -3956,7 +4208,8 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
-      health: 300
+      modulePrefabName: 
+      health: 1000
       repair: 0
       speed: 1
       turnRate: 1
@@ -3964,6 +4217,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -4005,7 +4260,8 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
-      health: 400
+      modulePrefabName: 
+      health: 1100
       repair: 0
       speed: 1
       turnRate: 1
@@ -4013,6 +4269,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -4054,7 +4312,8 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
-      health: 500
+      modulePrefabName: 
+      health: 1200
       repair: 0
       speed: 1
       turnRate: 1
@@ -4062,6 +4321,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -4103,7 +4364,8 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
-      health: 600
+      modulePrefabName: 
+      health: 1300
       repair: 0
       speed: 1
       turnRate: 1
@@ -4111,6 +4373,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -4152,7 +4416,8 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
-      health: 700
+      modulePrefabName: 
+      health: 1400
       repair: 0
       speed: 1
       turnRate: 1
@@ -4160,6 +4425,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -4201,7 +4468,8 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
-      health: 800
+      modulePrefabName: 
+      health: 1500
       repair: 0
       speed: 1
       turnRate: 1
@@ -4209,6 +4477,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -4250,7 +4520,8 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
-      health: 900
+      modulePrefabName: 
+      health: 1600
       repair: 0
       speed: 1
       turnRate: 1
@@ -4258,6 +4529,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -4299,7 +4572,8 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
-      health: 1000
+      modulePrefabName: 
+      health: 1700
       repair: 0
       speed: 1
       turnRate: 1
@@ -4307,6 +4581,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -4348,7 +4624,8 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
-      health: 1100
+      modulePrefabName: 
+      health: 1800
       repair: 0
       speed: 1
       turnRate: 1
@@ -4356,6 +4633,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -4397,7 +4676,8 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
-      health: 1200
+      modulePrefabName: 
+      health: 1900
       repair: 0
       speed: 1
       turnRate: 1
@@ -4405,6 +4685,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -4448,7 +4730,8 @@ MonoBehaviour:
       hasShield: 1
       hasInterceptor: 1
       isEnemyOnly: 0
-      health: 300
+      modulePrefabName: 
+      health: 1000
       repair: 0
       speed: 1
       turnRate: 1
@@ -4456,6 +4739,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -4499,7 +4784,8 @@ MonoBehaviour:
       hasShield: 1
       hasInterceptor: 1
       isEnemyOnly: 0
-      health: 400
+      modulePrefabName: 
+      health: 1100
       repair: 0
       speed: 1
       turnRate: 1
@@ -4507,6 +4793,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -4550,7 +4838,8 @@ MonoBehaviour:
       hasShield: 1
       hasInterceptor: 1
       isEnemyOnly: 0
-      health: 500
+      modulePrefabName: 
+      health: 1200
       repair: 0
       speed: 1
       turnRate: 1
@@ -4558,6 +4847,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -4601,7 +4892,8 @@ MonoBehaviour:
       hasShield: 1
       hasInterceptor: 1
       isEnemyOnly: 0
-      health: 600
+      modulePrefabName: 
+      health: 1300
       repair: 0
       speed: 1
       turnRate: 1
@@ -4609,6 +4901,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -4652,7 +4946,8 @@ MonoBehaviour:
       hasShield: 1
       hasInterceptor: 1
       isEnemyOnly: 0
-      health: 700
+      modulePrefabName: 
+      health: 1400
       repair: 0
       speed: 1
       turnRate: 1
@@ -4660,6 +4955,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -4703,7 +5000,8 @@ MonoBehaviour:
       hasShield: 1
       hasInterceptor: 1
       isEnemyOnly: 0
-      health: 800
+      modulePrefabName: 
+      health: 1500
       repair: 0
       speed: 1
       turnRate: 1
@@ -4711,6 +5009,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -4754,7 +5054,8 @@ MonoBehaviour:
       hasShield: 1
       hasInterceptor: 1
       isEnemyOnly: 0
-      health: 900
+      modulePrefabName: 
+      health: 1600
       repair: 0
       speed: 1
       turnRate: 1
@@ -4762,6 +5063,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -4805,7 +5108,8 @@ MonoBehaviour:
       hasShield: 1
       hasInterceptor: 1
       isEnemyOnly: 0
-      health: 1000
+      modulePrefabName: 
+      health: 1700
       repair: 0
       speed: 1
       turnRate: 1
@@ -4813,6 +5117,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -4856,7 +5162,8 @@ MonoBehaviour:
       hasShield: 1
       hasInterceptor: 1
       isEnemyOnly: 0
-      health: 1100
+      modulePrefabName: 
+      health: 1800
       repair: 0
       speed: 1
       turnRate: 1
@@ -4864,6 +5171,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -4907,7 +5216,8 @@ MonoBehaviour:
       hasShield: 1
       hasInterceptor: 1
       isEnemyOnly: 0
-      health: 1200
+      modulePrefabName: 
+      health: 1900
       repair: 0
       speed: 1
       turnRate: 1
@@ -4915,6 +5225,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -4958,7 +5270,8 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
-      health: 300
+      modulePrefabName: 
+      health: 1000
       repair: 0
       speed: 1
       turnRate: 1
@@ -4966,6 +5279,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -5009,7 +5324,8 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
-      health: 400
+      modulePrefabName: 
+      health: 1100
       repair: 0
       speed: 1
       turnRate: 1
@@ -5017,6 +5333,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -5060,7 +5378,8 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
-      health: 500
+      modulePrefabName: 
+      health: 1200
       repair: 0
       speed: 1
       turnRate: 1
@@ -5068,6 +5387,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -5111,7 +5432,8 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
-      health: 600
+      modulePrefabName: 
+      health: 1300
       repair: 0
       speed: 1
       turnRate: 1
@@ -5119,6 +5441,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -5162,7 +5486,8 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
-      health: 700
+      modulePrefabName: 
+      health: 1400
       repair: 0
       speed: 1
       turnRate: 1
@@ -5170,6 +5495,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -5213,7 +5540,8 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
-      health: 800
+      modulePrefabName: 
+      health: 1500
       repair: 0
       speed: 1
       turnRate: 1
@@ -5221,6 +5549,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -5264,7 +5594,8 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
-      health: 900
+      modulePrefabName: 
+      health: 1600
       repair: 0
       speed: 1
       turnRate: 1
@@ -5272,6 +5603,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -5315,7 +5648,8 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
-      health: 1000
+      modulePrefabName: 
+      health: 1700
       repair: 0
       speed: 1
       turnRate: 1
@@ -5323,6 +5657,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -5366,7 +5702,8 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
-      health: 1100
+      modulePrefabName: 
+      health: 1800
       repair: 0
       speed: 1
       turnRate: 1
@@ -5374,6 +5711,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -5417,7 +5756,8 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
-      health: 1200
+      modulePrefabName: 
+      health: 1900
       repair: 0
       speed: 1
       turnRate: 1
@@ -5425,6 +5765,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -5468,7 +5810,8 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
-      health: 300
+      modulePrefabName: 
+      health: 1000
       repair: 0
       speed: 1
       turnRate: 1
@@ -5476,6 +5819,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -5519,7 +5864,8 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
-      health: 400
+      modulePrefabName: 
+      health: 1100
       repair: 0
       speed: 1
       turnRate: 1
@@ -5527,6 +5873,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -5570,7 +5918,8 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
-      health: 500
+      modulePrefabName: 
+      health: 1200
       repair: 0
       speed: 1
       turnRate: 1
@@ -5578,6 +5927,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -5621,7 +5972,8 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
-      health: 600
+      modulePrefabName: 
+      health: 1300
       repair: 0
       speed: 1
       turnRate: 1
@@ -5629,6 +5981,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -5672,7 +6026,8 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
-      health: 700
+      modulePrefabName: 
+      health: 1400
       repair: 0
       speed: 1
       turnRate: 1
@@ -5680,6 +6035,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -5723,7 +6080,8 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
-      health: 800
+      modulePrefabName: 
+      health: 1500
       repair: 0
       speed: 1
       turnRate: 1
@@ -5731,6 +6089,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -5774,7 +6134,8 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
-      health: 900
+      modulePrefabName: 
+      health: 1600
       repair: 0
       speed: 1
       turnRate: 1
@@ -5782,6 +6143,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -5825,7 +6188,8 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
-      health: 1000
+      modulePrefabName: 
+      health: 1700
       repair: 0
       speed: 1
       turnRate: 1
@@ -5833,6 +6197,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -5876,7 +6242,8 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
-      health: 1100
+      modulePrefabName: 
+      health: 1800
       repair: 0
       speed: 1
       turnRate: 1
@@ -5884,6 +6251,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -5927,7 +6296,8 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
-      health: 1200
+      modulePrefabName: 
+      health: 1900
       repair: 0
       speed: 1
       turnRate: 1
@@ -5935,6 +6305,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -5978,14 +6350,17 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
-      health: 300
-      repair: 0
+      modulePrefabName: 
+      health: 1000
+      repair: 50
       speed: 1
       turnRate: 1
       attack: 0
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -6029,14 +6404,17 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
-      health: 400
-      repair: 0
+      modulePrefabName: 
+      health: 1100
+      repair: 55
       speed: 1
       turnRate: 1
       attack: 0
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -6080,14 +6458,17 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
-      health: 500
-      repair: 0
+      modulePrefabName: 
+      health: 1200
+      repair: 60
       speed: 1
       turnRate: 1
       attack: 0
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -6131,14 +6512,17 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
-      health: 600
-      repair: 0
+      modulePrefabName: 
+      health: 1300
+      repair: 65
       speed: 1
       turnRate: 1
       attack: 0
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -6182,14 +6566,17 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
-      health: 700
-      repair: 0
+      modulePrefabName: 
+      health: 1400
+      repair: 70
       speed: 1
       turnRate: 1
       attack: 0
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -6233,14 +6620,17 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
-      health: 800
-      repair: 0
+      modulePrefabName: 
+      health: 1500
+      repair: 75
       speed: 1
       turnRate: 1
       attack: 0
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -6284,14 +6674,17 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
-      health: 900
-      repair: 0
+      modulePrefabName: 
+      health: 1600
+      repair: 80
       speed: 1
       turnRate: 1
       attack: 0
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -6335,14 +6728,17 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
-      health: 1000
-      repair: 0
+      modulePrefabName: 
+      health: 1700
+      repair: 85
       speed: 1
       turnRate: 1
       attack: 0
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -6386,14 +6782,17 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
-      health: 1100
-      repair: 0
+      modulePrefabName: 
+      health: 1800
+      repair: 90
       speed: 1
       turnRate: 1
       attack: 0
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -6437,14 +6836,17 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
-      health: 1200
-      repair: 0
+      modulePrefabName: 
+      health: 1900
+      repair: 95
       speed: 1
       turnRate: 1
       attack: 0
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -6488,7 +6890,8 @@ MonoBehaviour:
       hasShield: 1
       hasInterceptor: 1
       isEnemyOnly: 0
-      health: 300
+      modulePrefabName: 
+      health: 1000
       repair: 0
       speed: 1
       turnRate: 1
@@ -6496,6 +6899,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -6539,7 +6944,8 @@ MonoBehaviour:
       hasShield: 1
       hasInterceptor: 1
       isEnemyOnly: 0
-      health: 400
+      modulePrefabName: 
+      health: 1100
       repair: 0
       speed: 1
       turnRate: 1
@@ -6547,6 +6953,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -6590,7 +6998,8 @@ MonoBehaviour:
       hasShield: 1
       hasInterceptor: 1
       isEnemyOnly: 0
-      health: 500
+      modulePrefabName: 
+      health: 1200
       repair: 0
       speed: 1
       turnRate: 1
@@ -6598,6 +7007,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -6641,7 +7052,8 @@ MonoBehaviour:
       hasShield: 1
       hasInterceptor: 1
       isEnemyOnly: 0
-      health: 600
+      modulePrefabName: 
+      health: 1300
       repair: 0
       speed: 1
       turnRate: 1
@@ -6649,6 +7061,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -6692,7 +7106,8 @@ MonoBehaviour:
       hasShield: 1
       hasInterceptor: 1
       isEnemyOnly: 0
-      health: 700
+      modulePrefabName: 
+      health: 1400
       repair: 0
       speed: 1
       turnRate: 1
@@ -6700,6 +7115,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -6743,7 +7160,8 @@ MonoBehaviour:
       hasShield: 1
       hasInterceptor: 1
       isEnemyOnly: 0
-      health: 800
+      modulePrefabName: 
+      health: 1500
       repair: 0
       speed: 1
       turnRate: 1
@@ -6751,6 +7169,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -6794,7 +7214,8 @@ MonoBehaviour:
       hasShield: 1
       hasInterceptor: 1
       isEnemyOnly: 0
-      health: 900
+      modulePrefabName: 
+      health: 1600
       repair: 0
       speed: 1
       turnRate: 1
@@ -6802,6 +7223,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -6845,7 +7268,8 @@ MonoBehaviour:
       hasShield: 1
       hasInterceptor: 1
       isEnemyOnly: 0
-      health: 1000
+      modulePrefabName: 
+      health: 1700
       repair: 0
       speed: 1
       turnRate: 1
@@ -6853,6 +7277,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -6896,7 +7322,8 @@ MonoBehaviour:
       hasShield: 1
       hasInterceptor: 1
       isEnemyOnly: 0
-      health: 1100
+      modulePrefabName: 
+      health: 1800
       repair: 0
       speed: 1
       turnRate: 1
@@ -6904,6 +7331,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -6947,7 +7376,8 @@ MonoBehaviour:
       hasShield: 1
       hasInterceptor: 1
       isEnemyOnly: 0
-      health: 1200
+      modulePrefabName: 
+      health: 1900
       repair: 0
       speed: 1
       turnRate: 1
@@ -6955,6 +7385,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -6972,6 +7404,406 @@ MonoBehaviour:
       interceptorCount: 0
       interceptorRegenTime: 0
   beamGroups:
+  - subType: beam_1_enemy
+    modules:
+    - moduleName: beam_1_enemy
+      moduleSubType: beam_1_enemy
+      statPoint: 0
+      unlockAchievementPointCost: 0
+      hullArchetype: 
+      hullPrefabName: 
+      descriptionKey: 
+      moduleSlots: []
+      hasShield: 0
+      hasInterceptor: 0
+      isEnemyOnly: 1
+      modulePrefabName: beam_1_1
+      health: 0
+      repair: 0
+      speed: 200
+      turnRate: 0
+      attack: 10
+      splashRadius: 0
+      attackCool: 3
+      silenceTime: 0
+      critChance: 0
+      critDamage: 2
+      airCount: 0
+      airMaintenanceTime: 0
+      airHealth: 0
+      airAttackToShip: 0
+      airAttackToFighter: 0
+      airAttackRange: 0
+      airAttackCool: 0
+      airSpeed: 0
+      airAmmo: 0
+      airDetectRadius: 0
+      airAvoidRadius: 0
+      airDisrupt: 0
+      shieldGauge: 0
+      shieldRegenRate: 0
+      interceptorCount: 0
+      interceptorRegenTime: 0
+  - subType: beam_2_enemy
+    modules:
+    - moduleName: beam_2_enemy
+      moduleSubType: beam_2_enemy
+      statPoint: 0
+      unlockAchievementPointCost: 0
+      hullArchetype: 
+      hullPrefabName: 
+      descriptionKey: 
+      moduleSlots: []
+      hasShield: 0
+      hasInterceptor: 0
+      isEnemyOnly: 1
+      modulePrefabName: beam_2_1
+      health: 0
+      repair: 0
+      speed: 200
+      turnRate: 0
+      attack: 20
+      splashRadius: 0
+      attackCool: 3
+      silenceTime: 0
+      critChance: 0
+      critDamage: 2
+      airCount: 0
+      airMaintenanceTime: 0
+      airHealth: 0
+      airAttackToShip: 0
+      airAttackToFighter: 0
+      airAttackRange: 0
+      airAttackCool: 0
+      airSpeed: 0
+      airAmmo: 0
+      airDetectRadius: 0
+      airAvoidRadius: 0
+      airDisrupt: 0
+      shieldGauge: 0
+      shieldRegenRate: 0
+      interceptorCount: 0
+      interceptorRegenTime: 0
+  - subType: beam_3_enemy
+    modules:
+    - moduleName: beam_3_enemy
+      moduleSubType: beam_3_enemy
+      statPoint: 0
+      unlockAchievementPointCost: 0
+      hullArchetype: 
+      hullPrefabName: 
+      descriptionKey: 
+      moduleSlots: []
+      hasShield: 0
+      hasInterceptor: 0
+      isEnemyOnly: 1
+      modulePrefabName: beam_3_1
+      health: 0
+      repair: 0
+      speed: 200
+      turnRate: 0
+      attack: 30
+      splashRadius: 0
+      attackCool: 3
+      silenceTime: 0
+      critChance: 0
+      critDamage: 2
+      airCount: 0
+      airMaintenanceTime: 0
+      airHealth: 0
+      airAttackToShip: 0
+      airAttackToFighter: 0
+      airAttackRange: 0
+      airAttackCool: 0
+      airSpeed: 0
+      airAmmo: 0
+      airDetectRadius: 0
+      airAvoidRadius: 0
+      airDisrupt: 0
+      shieldGauge: 0
+      shieldRegenRate: 0
+      interceptorCount: 0
+      interceptorRegenTime: 0
+  - subType: beam_4_enemy
+    modules:
+    - moduleName: beam_4_enemy
+      moduleSubType: beam_4_enemy
+      statPoint: 0
+      unlockAchievementPointCost: 0
+      hullArchetype: 
+      hullPrefabName: 
+      descriptionKey: 
+      moduleSlots: []
+      hasShield: 0
+      hasInterceptor: 0
+      isEnemyOnly: 1
+      modulePrefabName: beam_4_1
+      health: 0
+      repair: 0
+      speed: 200
+      turnRate: 0
+      attack: 40
+      splashRadius: 0
+      attackCool: 3
+      silenceTime: 0
+      critChance: 0
+      critDamage: 2
+      airCount: 0
+      airMaintenanceTime: 0
+      airHealth: 0
+      airAttackToShip: 0
+      airAttackToFighter: 0
+      airAttackRange: 0
+      airAttackCool: 0
+      airSpeed: 0
+      airAmmo: 0
+      airDetectRadius: 0
+      airAvoidRadius: 0
+      airDisrupt: 0
+      shieldGauge: 0
+      shieldRegenRate: 0
+      interceptorCount: 0
+      interceptorRegenTime: 0
+  - subType: beam_5_enemy
+    modules:
+    - moduleName: beam_5_enemy
+      moduleSubType: beam_5_enemy
+      statPoint: 0
+      unlockAchievementPointCost: 0
+      hullArchetype: 
+      hullPrefabName: 
+      descriptionKey: 
+      moduleSlots: []
+      hasShield: 0
+      hasInterceptor: 0
+      isEnemyOnly: 1
+      modulePrefabName: beam_5_1
+      health: 0
+      repair: 0
+      speed: 200
+      turnRate: 0
+      attack: 50
+      splashRadius: 0
+      attackCool: 3
+      silenceTime: 0
+      critChance: 0
+      critDamage: 2
+      airCount: 0
+      airMaintenanceTime: 0
+      airHealth: 0
+      airAttackToShip: 0
+      airAttackToFighter: 0
+      airAttackRange: 0
+      airAttackCool: 0
+      airSpeed: 0
+      airAmmo: 0
+      airDetectRadius: 0
+      airAvoidRadius: 0
+      airDisrupt: 0
+      shieldGauge: 0
+      shieldRegenRate: 0
+      interceptorCount: 0
+      interceptorRegenTime: 0
+  - subType: beam_6_enemy
+    modules:
+    - moduleName: beam_6_enemy
+      moduleSubType: beam_6_enemy
+      statPoint: 0
+      unlockAchievementPointCost: 0
+      hullArchetype: 
+      hullPrefabName: 
+      descriptionKey: 
+      moduleSlots: []
+      hasShield: 0
+      hasInterceptor: 0
+      isEnemyOnly: 1
+      modulePrefabName: beam_6_1
+      health: 0
+      repair: 0
+      speed: 200
+      turnRate: 0
+      attack: 60
+      splashRadius: 0
+      attackCool: 3
+      silenceTime: 0
+      critChance: 0
+      critDamage: 2
+      airCount: 0
+      airMaintenanceTime: 0
+      airHealth: 0
+      airAttackToShip: 0
+      airAttackToFighter: 0
+      airAttackRange: 0
+      airAttackCool: 0
+      airSpeed: 0
+      airAmmo: 0
+      airDetectRadius: 0
+      airAvoidRadius: 0
+      airDisrupt: 0
+      shieldGauge: 0
+      shieldRegenRate: 0
+      interceptorCount: 0
+      interceptorRegenTime: 0
+  - subType: beam_7_enemy
+    modules:
+    - moduleName: beam_7_enemy
+      moduleSubType: beam_7_enemy
+      statPoint: 0
+      unlockAchievementPointCost: 0
+      hullArchetype: 
+      hullPrefabName: 
+      descriptionKey: 
+      moduleSlots: []
+      hasShield: 0
+      hasInterceptor: 0
+      isEnemyOnly: 1
+      modulePrefabName: beam_7_1
+      health: 0
+      repair: 0
+      speed: 200
+      turnRate: 0
+      attack: 70
+      splashRadius: 0
+      attackCool: 3
+      silenceTime: 0
+      critChance: 0
+      critDamage: 2
+      airCount: 0
+      airMaintenanceTime: 0
+      airHealth: 0
+      airAttackToShip: 0
+      airAttackToFighter: 0
+      airAttackRange: 0
+      airAttackCool: 0
+      airSpeed: 0
+      airAmmo: 0
+      airDetectRadius: 0
+      airAvoidRadius: 0
+      airDisrupt: 0
+      shieldGauge: 0
+      shieldRegenRate: 0
+      interceptorCount: 0
+      interceptorRegenTime: 0
+  - subType: beam_8_enemy
+    modules:
+    - moduleName: beam_8_enemy
+      moduleSubType: beam_8_enemy
+      statPoint: 0
+      unlockAchievementPointCost: 0
+      hullArchetype: 
+      hullPrefabName: 
+      descriptionKey: 
+      moduleSlots: []
+      hasShield: 0
+      hasInterceptor: 0
+      isEnemyOnly: 1
+      modulePrefabName: beam_8_1
+      health: 0
+      repair: 0
+      speed: 200
+      turnRate: 0
+      attack: 80
+      splashRadius: 0
+      attackCool: 3
+      silenceTime: 0
+      critChance: 0
+      critDamage: 2
+      airCount: 0
+      airMaintenanceTime: 0
+      airHealth: 0
+      airAttackToShip: 0
+      airAttackToFighter: 0
+      airAttackRange: 0
+      airAttackCool: 0
+      airSpeed: 0
+      airAmmo: 0
+      airDetectRadius: 0
+      airAvoidRadius: 0
+      airDisrupt: 0
+      shieldGauge: 0
+      shieldRegenRate: 0
+      interceptorCount: 0
+      interceptorRegenTime: 0
+  - subType: beam_9_enemy
+    modules:
+    - moduleName: beam_9_enemy
+      moduleSubType: beam_9_enemy
+      statPoint: 0
+      unlockAchievementPointCost: 0
+      hullArchetype: 
+      hullPrefabName: 
+      descriptionKey: 
+      moduleSlots: []
+      hasShield: 0
+      hasInterceptor: 0
+      isEnemyOnly: 1
+      modulePrefabName: beam_9_1
+      health: 0
+      repair: 0
+      speed: 200
+      turnRate: 0
+      attack: 90
+      splashRadius: 0
+      attackCool: 3
+      silenceTime: 0
+      critChance: 0
+      critDamage: 2
+      airCount: 0
+      airMaintenanceTime: 0
+      airHealth: 0
+      airAttackToShip: 0
+      airAttackToFighter: 0
+      airAttackRange: 0
+      airAttackCool: 0
+      airSpeed: 0
+      airAmmo: 0
+      airDetectRadius: 0
+      airAvoidRadius: 0
+      airDisrupt: 0
+      shieldGauge: 0
+      shieldRegenRate: 0
+      interceptorCount: 0
+      interceptorRegenTime: 0
+  - subType: beam_10_enemy
+    modules:
+    - moduleName: beam_10_enemy
+      moduleSubType: beam_10_enemy
+      statPoint: 0
+      unlockAchievementPointCost: 0
+      hullArchetype: 
+      hullPrefabName: 
+      descriptionKey: 
+      moduleSlots: []
+      hasShield: 0
+      hasInterceptor: 0
+      isEnemyOnly: 1
+      modulePrefabName: beam_10_1
+      health: 0
+      repair: 0
+      speed: 200
+      turnRate: 0
+      attack: 100
+      splashRadius: 0
+      attackCool: 3
+      silenceTime: 0
+      critChance: 0
+      critDamage: 2
+      airCount: 0
+      airMaintenanceTime: 0
+      airHealth: 0
+      airAttackToShip: 0
+      airAttackToFighter: 0
+      airAttackRange: 0
+      airAttackCool: 0
+      airSpeed: 0
+      airAmmo: 0
+      airDetectRadius: 0
+      airAvoidRadius: 0
+      airDisrupt: 0
+      shieldGauge: 0
+      shieldRegenRate: 0
+      interceptorCount: 0
+      interceptorRegenTime: 0
   - subType: beam_1_1
     modules:
     - moduleName: beam_1_1
@@ -6985,6 +7817,7 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
+      modulePrefabName: 
       health: 0
       repair: 0
       speed: 200
@@ -6993,6 +7826,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 3
       silenceTime: 0
+      critChance: 5
+      critDamage: 2
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -7022,6 +7857,7 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
+      modulePrefabName: 
       health: 0
       repair: 0
       speed: 200
@@ -7030,6 +7866,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 3
       silenceTime: 0
+      critChance: 5
+      critDamage: 2
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -7059,6 +7897,7 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
+      modulePrefabName: 
       health: 0
       repair: 0
       speed: 200
@@ -7067,6 +7906,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 3
       silenceTime: 0
+      critChance: 5
+      critDamage: 2
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -7096,6 +7937,7 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
+      modulePrefabName: 
       health: 0
       repair: 0
       speed: 200
@@ -7104,6 +7946,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 3
       silenceTime: 0
+      critChance: 5
+      critDamage: 2
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -7133,6 +7977,7 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
+      modulePrefabName: 
       health: 0
       repair: 0
       speed: 200
@@ -7141,6 +7986,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 3
       silenceTime: 0
+      critChance: 5
+      critDamage: 2
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -7170,6 +8017,7 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
+      modulePrefabName: 
       health: 0
       repair: 0
       speed: 200
@@ -7178,6 +8026,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 3
       silenceTime: 0
+      critChance: 5
+      critDamage: 2
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -7207,6 +8057,7 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
+      modulePrefabName: 
       health: 0
       repair: 0
       speed: 200
@@ -7215,6 +8066,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 3
       silenceTime: 0
+      critChance: 5
+      critDamage: 2
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -7244,6 +8097,7 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
+      modulePrefabName: 
       health: 0
       repair: 0
       speed: 200
@@ -7252,6 +8106,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 3
       silenceTime: 0
+      critChance: 5
+      critDamage: 2
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -7281,6 +8137,7 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
+      modulePrefabName: 
       health: 0
       repair: 0
       speed: 200
@@ -7289,6 +8146,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 3
       silenceTime: 0
+      critChance: 5
+      critDamage: 2
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -7318,6 +8177,7 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
+      modulePrefabName: 
       health: 0
       repair: 0
       speed: 200
@@ -7326,6 +8186,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 3
       silenceTime: 0
+      critChance: 5
+      critDamage: 2
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -7343,6 +8205,406 @@ MonoBehaviour:
       interceptorCount: 0
       interceptorRegenTime: 0
   missileGroups:
+  - subType: missile_1_enemy
+    modules:
+    - moduleName: missile_1_enemy
+      moduleSubType: missile_1_enemy
+      statPoint: 0
+      unlockAchievementPointCost: 0
+      hullArchetype: 
+      hullPrefabName: 
+      descriptionKey: 
+      moduleSlots: []
+      hasShield: 0
+      hasInterceptor: 0
+      isEnemyOnly: 1
+      modulePrefabName: missile_1_1
+      health: 0
+      repair: 0
+      speed: 20
+      turnRate: 0
+      attack: 20
+      splashRadius: 1
+      attackCool: 3
+      silenceTime: 1
+      critChance: 0
+      critDamage: 2
+      airCount: 0
+      airMaintenanceTime: 0
+      airHealth: 0
+      airAttackToShip: 0
+      airAttackToFighter: 0
+      airAttackRange: 0
+      airAttackCool: 0
+      airSpeed: 0
+      airAmmo: 0
+      airDetectRadius: 0
+      airAvoidRadius: 0
+      airDisrupt: 0
+      shieldGauge: 0
+      shieldRegenRate: 0
+      interceptorCount: 0
+      interceptorRegenTime: 0
+  - subType: missile_2_enemy
+    modules:
+    - moduleName: missile_2_enemy
+      moduleSubType: missile_2_enemy
+      statPoint: 0
+      unlockAchievementPointCost: 0
+      hullArchetype: 
+      hullPrefabName: 
+      descriptionKey: 
+      moduleSlots: []
+      hasShield: 0
+      hasInterceptor: 0
+      isEnemyOnly: 1
+      modulePrefabName: missile_2_1
+      health: 0
+      repair: 0
+      speed: 20
+      turnRate: 0
+      attack: 40
+      splashRadius: 2
+      attackCool: 3
+      silenceTime: 1.1
+      critChance: 0
+      critDamage: 2
+      airCount: 0
+      airMaintenanceTime: 0
+      airHealth: 0
+      airAttackToShip: 0
+      airAttackToFighter: 0
+      airAttackRange: 0
+      airAttackCool: 0
+      airSpeed: 0
+      airAmmo: 0
+      airDetectRadius: 0
+      airAvoidRadius: 0
+      airDisrupt: 0
+      shieldGauge: 0
+      shieldRegenRate: 0
+      interceptorCount: 0
+      interceptorRegenTime: 0
+  - subType: missile_3_enemy
+    modules:
+    - moduleName: missile_3_enemy
+      moduleSubType: missile_3_enemy
+      statPoint: 0
+      unlockAchievementPointCost: 0
+      hullArchetype: 
+      hullPrefabName: 
+      descriptionKey: 
+      moduleSlots: []
+      hasShield: 0
+      hasInterceptor: 0
+      isEnemyOnly: 1
+      modulePrefabName: missile_3_1
+      health: 0
+      repair: 0
+      speed: 20
+      turnRate: 0
+      attack: 60
+      splashRadius: 3
+      attackCool: 3
+      silenceTime: 1.2
+      critChance: 0
+      critDamage: 2
+      airCount: 0
+      airMaintenanceTime: 0
+      airHealth: 0
+      airAttackToShip: 0
+      airAttackToFighter: 0
+      airAttackRange: 0
+      airAttackCool: 0
+      airSpeed: 0
+      airAmmo: 0
+      airDetectRadius: 0
+      airAvoidRadius: 0
+      airDisrupt: 0
+      shieldGauge: 0
+      shieldRegenRate: 0
+      interceptorCount: 0
+      interceptorRegenTime: 0
+  - subType: missile_4_enemy
+    modules:
+    - moduleName: missile_4_enemy
+      moduleSubType: missile_4_enemy
+      statPoint: 0
+      unlockAchievementPointCost: 0
+      hullArchetype: 
+      hullPrefabName: 
+      descriptionKey: 
+      moduleSlots: []
+      hasShield: 0
+      hasInterceptor: 0
+      isEnemyOnly: 1
+      modulePrefabName: missile_4_1
+      health: 0
+      repair: 0
+      speed: 20
+      turnRate: 0
+      attack: 80
+      splashRadius: 4
+      attackCool: 3
+      silenceTime: 1.3
+      critChance: 0
+      critDamage: 2
+      airCount: 0
+      airMaintenanceTime: 0
+      airHealth: 0
+      airAttackToShip: 0
+      airAttackToFighter: 0
+      airAttackRange: 0
+      airAttackCool: 0
+      airSpeed: 0
+      airAmmo: 0
+      airDetectRadius: 0
+      airAvoidRadius: 0
+      airDisrupt: 0
+      shieldGauge: 0
+      shieldRegenRate: 0
+      interceptorCount: 0
+      interceptorRegenTime: 0
+  - subType: missile_5_enemy
+    modules:
+    - moduleName: missile_5_enemy
+      moduleSubType: missile_5_enemy
+      statPoint: 0
+      unlockAchievementPointCost: 0
+      hullArchetype: 
+      hullPrefabName: 
+      descriptionKey: 
+      moduleSlots: []
+      hasShield: 0
+      hasInterceptor: 0
+      isEnemyOnly: 1
+      modulePrefabName: missile_5_1
+      health: 0
+      repair: 0
+      speed: 20
+      turnRate: 0
+      attack: 100
+      splashRadius: 5
+      attackCool: 3
+      silenceTime: 1.4
+      critChance: 0
+      critDamage: 2
+      airCount: 0
+      airMaintenanceTime: 0
+      airHealth: 0
+      airAttackToShip: 0
+      airAttackToFighter: 0
+      airAttackRange: 0
+      airAttackCool: 0
+      airSpeed: 0
+      airAmmo: 0
+      airDetectRadius: 0
+      airAvoidRadius: 0
+      airDisrupt: 0
+      shieldGauge: 0
+      shieldRegenRate: 0
+      interceptorCount: 0
+      interceptorRegenTime: 0
+  - subType: missile_6_enemy
+    modules:
+    - moduleName: missile_6_enemy
+      moduleSubType: missile_6_enemy
+      statPoint: 0
+      unlockAchievementPointCost: 0
+      hullArchetype: 
+      hullPrefabName: 
+      descriptionKey: 
+      moduleSlots: []
+      hasShield: 0
+      hasInterceptor: 0
+      isEnemyOnly: 1
+      modulePrefabName: missile_6_1
+      health: 0
+      repair: 0
+      speed: 20
+      turnRate: 0
+      attack: 120
+      splashRadius: 6
+      attackCool: 3
+      silenceTime: 1.5
+      critChance: 0
+      critDamage: 2
+      airCount: 0
+      airMaintenanceTime: 0
+      airHealth: 0
+      airAttackToShip: 0
+      airAttackToFighter: 0
+      airAttackRange: 0
+      airAttackCool: 0
+      airSpeed: 0
+      airAmmo: 0
+      airDetectRadius: 0
+      airAvoidRadius: 0
+      airDisrupt: 0
+      shieldGauge: 0
+      shieldRegenRate: 0
+      interceptorCount: 0
+      interceptorRegenTime: 0
+  - subType: missile_7_enemy
+    modules:
+    - moduleName: missile_7_enemy
+      moduleSubType: missile_7_enemy
+      statPoint: 0
+      unlockAchievementPointCost: 0
+      hullArchetype: 
+      hullPrefabName: 
+      descriptionKey: 
+      moduleSlots: []
+      hasShield: 0
+      hasInterceptor: 0
+      isEnemyOnly: 1
+      modulePrefabName: missile_7_1
+      health: 0
+      repair: 0
+      speed: 20
+      turnRate: 0
+      attack: 140
+      splashRadius: 7
+      attackCool: 3
+      silenceTime: 1.6
+      critChance: 0
+      critDamage: 2
+      airCount: 0
+      airMaintenanceTime: 0
+      airHealth: 0
+      airAttackToShip: 0
+      airAttackToFighter: 0
+      airAttackRange: 0
+      airAttackCool: 0
+      airSpeed: 0
+      airAmmo: 0
+      airDetectRadius: 0
+      airAvoidRadius: 0
+      airDisrupt: 0
+      shieldGauge: 0
+      shieldRegenRate: 0
+      interceptorCount: 0
+      interceptorRegenTime: 0
+  - subType: missile_8_enemy
+    modules:
+    - moduleName: missile_8_enemy
+      moduleSubType: missile_8_enemy
+      statPoint: 0
+      unlockAchievementPointCost: 0
+      hullArchetype: 
+      hullPrefabName: 
+      descriptionKey: 
+      moduleSlots: []
+      hasShield: 0
+      hasInterceptor: 0
+      isEnemyOnly: 1
+      modulePrefabName: missile_8_1
+      health: 0
+      repair: 0
+      speed: 20
+      turnRate: 0
+      attack: 160
+      splashRadius: 8
+      attackCool: 3
+      silenceTime: 1.7
+      critChance: 0
+      critDamage: 2
+      airCount: 0
+      airMaintenanceTime: 0
+      airHealth: 0
+      airAttackToShip: 0
+      airAttackToFighter: 0
+      airAttackRange: 0
+      airAttackCool: 0
+      airSpeed: 0
+      airAmmo: 0
+      airDetectRadius: 0
+      airAvoidRadius: 0
+      airDisrupt: 0
+      shieldGauge: 0
+      shieldRegenRate: 0
+      interceptorCount: 0
+      interceptorRegenTime: 0
+  - subType: missile_9_enemy
+    modules:
+    - moduleName: missile_9_enemy
+      moduleSubType: missile_9_enemy
+      statPoint: 0
+      unlockAchievementPointCost: 0
+      hullArchetype: 
+      hullPrefabName: 
+      descriptionKey: 
+      moduleSlots: []
+      hasShield: 0
+      hasInterceptor: 0
+      isEnemyOnly: 1
+      modulePrefabName: missile_9_1
+      health: 0
+      repair: 0
+      speed: 20
+      turnRate: 0
+      attack: 180
+      splashRadius: 9
+      attackCool: 3
+      silenceTime: 1.8
+      critChance: 0
+      critDamage: 2
+      airCount: 0
+      airMaintenanceTime: 0
+      airHealth: 0
+      airAttackToShip: 0
+      airAttackToFighter: 0
+      airAttackRange: 0
+      airAttackCool: 0
+      airSpeed: 0
+      airAmmo: 0
+      airDetectRadius: 0
+      airAvoidRadius: 0
+      airDisrupt: 0
+      shieldGauge: 0
+      shieldRegenRate: 0
+      interceptorCount: 0
+      interceptorRegenTime: 0
+  - subType: missile_10_enemy
+    modules:
+    - moduleName: missile_10_enemy
+      moduleSubType: missile_10_enemy
+      statPoint: 0
+      unlockAchievementPointCost: 0
+      hullArchetype: 
+      hullPrefabName: 
+      descriptionKey: 
+      moduleSlots: []
+      hasShield: 0
+      hasInterceptor: 0
+      isEnemyOnly: 1
+      modulePrefabName: missile_10_1
+      health: 0
+      repair: 0
+      speed: 20
+      turnRate: 0
+      attack: 200
+      splashRadius: 10
+      attackCool: 3
+      silenceTime: 1.9
+      critChance: 0
+      critDamage: 2
+      airCount: 0
+      airMaintenanceTime: 0
+      airHealth: 0
+      airAttackToShip: 0
+      airAttackToFighter: 0
+      airAttackRange: 0
+      airAttackCool: 0
+      airSpeed: 0
+      airAmmo: 0
+      airDetectRadius: 0
+      airAvoidRadius: 0
+      airDisrupt: 0
+      shieldGauge: 0
+      shieldRegenRate: 0
+      interceptorCount: 0
+      interceptorRegenTime: 0
   - subType: missile_1_1
     modules:
     - moduleName: missile_1_1
@@ -7356,14 +8618,17 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
+      modulePrefabName: 
       health: 0
       repair: 0
-      speed: 10
+      speed: 20
       turnRate: 0
-      attack: 10
+      attack: 20
       splashRadius: 1
       attackCool: 3
       silenceTime: 1
+      critChance: 5
+      critDamage: 2
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -7393,14 +8658,17 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
+      modulePrefabName: 
       health: 0
       repair: 0
-      speed: 10
+      speed: 20
       turnRate: 0
-      attack: 20
+      attack: 40
       splashRadius: 2
       attackCool: 3
       silenceTime: 1.1
+      critChance: 5
+      critDamage: 2
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -7430,14 +8698,17 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
+      modulePrefabName: 
       health: 0
       repair: 0
-      speed: 10
+      speed: 20
       turnRate: 0
-      attack: 30
+      attack: 60
       splashRadius: 3
       attackCool: 3
       silenceTime: 1.2
+      critChance: 5
+      critDamage: 2
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -7467,14 +8738,17 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
+      modulePrefabName: 
       health: 0
       repair: 0
-      speed: 10
+      speed: 20
       turnRate: 0
-      attack: 40
+      attack: 80
       splashRadius: 4
       attackCool: 3
       silenceTime: 1.3
+      critChance: 5
+      critDamage: 2
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -7504,14 +8778,17 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
+      modulePrefabName: 
       health: 0
       repair: 0
-      speed: 10
+      speed: 20
       turnRate: 0
-      attack: 50
+      attack: 100
       splashRadius: 5
       attackCool: 3
       silenceTime: 1.4
+      critChance: 5
+      critDamage: 2
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -7541,14 +8818,17 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
+      modulePrefabName: 
       health: 0
       repair: 0
-      speed: 10
+      speed: 20
       turnRate: 0
-      attack: 60
+      attack: 120
       splashRadius: 6
       attackCool: 3
       silenceTime: 1.5
+      critChance: 5
+      critDamage: 2
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -7578,14 +8858,17 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
+      modulePrefabName: 
       health: 0
       repair: 0
-      speed: 10
+      speed: 20
       turnRate: 0
-      attack: 70
+      attack: 140
       splashRadius: 7
       attackCool: 3
       silenceTime: 1.6
+      critChance: 5
+      critDamage: 2
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -7615,14 +8898,17 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
+      modulePrefabName: 
       health: 0
       repair: 0
-      speed: 10
+      speed: 20
       turnRate: 0
-      attack: 80
+      attack: 160
       splashRadius: 8
       attackCool: 3
       silenceTime: 1.7
+      critChance: 5
+      critDamage: 2
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -7652,14 +8938,17 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
+      modulePrefabName: 
       health: 0
       repair: 0
-      speed: 10
+      speed: 20
       turnRate: 0
-      attack: 90
+      attack: 180
       splashRadius: 9
       attackCool: 3
       silenceTime: 1.8
+      critChance: 5
+      critDamage: 2
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -7689,14 +8978,17 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
+      modulePrefabName: 
       health: 0
       repair: 0
-      speed: 10
+      speed: 20
       turnRate: 0
-      attack: 100
+      attack: 200
       splashRadius: 10
       attackCool: 3
       silenceTime: 1.9
+      critChance: 5
+      critDamage: 2
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -7714,6 +9006,406 @@ MonoBehaviour:
       interceptorCount: 0
       interceptorRegenTime: 0
   hangarGroups:
+  - subType: hangar_1_enemy
+    modules:
+    - moduleName: hangar_1_enemy
+      moduleSubType: hangar_1_enemy
+      statPoint: 0
+      unlockAchievementPointCost: 0
+      hullArchetype: 
+      hullPrefabName: 
+      descriptionKey: 
+      moduleSlots: []
+      hasShield: 0
+      hasInterceptor: 0
+      isEnemyOnly: 1
+      modulePrefabName: hangar_1_1
+      health: 0
+      repair: 0
+      speed: 0
+      turnRate: 0
+      attack: 0
+      splashRadius: 0
+      attackCool: 3
+      silenceTime: 0
+      critChance: 0
+      critDamage: 2
+      airCount: 3
+      airMaintenanceTime: 15
+      airHealth: 50
+      airAttackToShip: 10
+      airAttackToFighter: 5
+      airAttackRange: 4
+      airAttackCool: 4
+      airSpeed: 20
+      airAmmo: 10
+      airDetectRadius: 10
+      airAvoidRadius: 2
+      airDisrupt: 0.05
+      shieldGauge: 0
+      shieldRegenRate: 0
+      interceptorCount: 0
+      interceptorRegenTime: 0
+  - subType: hangar_2_enemy
+    modules:
+    - moduleName: hangar_2_enemy
+      moduleSubType: hangar_2_enemy
+      statPoint: 0
+      unlockAchievementPointCost: 0
+      hullArchetype: 
+      hullPrefabName: 
+      descriptionKey: 
+      moduleSlots: []
+      hasShield: 0
+      hasInterceptor: 0
+      isEnemyOnly: 1
+      modulePrefabName: hangar_2_1
+      health: 0
+      repair: 0
+      speed: 0
+      turnRate: 0
+      attack: 0
+      splashRadius: 0
+      attackCool: 3
+      silenceTime: 0
+      critChance: 0
+      critDamage: 2
+      airCount: 3
+      airMaintenanceTime: 15
+      airHealth: 60
+      airAttackToShip: 20
+      airAttackToFighter: 10
+      airAttackRange: 4
+      airAttackCool: 3.8
+      airSpeed: 20
+      airAmmo: 11
+      airDetectRadius: 10
+      airAvoidRadius: 2
+      airDisrupt: 0.1
+      shieldGauge: 0
+      shieldRegenRate: 0
+      interceptorCount: 0
+      interceptorRegenTime: 0
+  - subType: hangar_3_enemy
+    modules:
+    - moduleName: hangar_3_enemy
+      moduleSubType: hangar_3_enemy
+      statPoint: 0
+      unlockAchievementPointCost: 0
+      hullArchetype: 
+      hullPrefabName: 
+      descriptionKey: 
+      moduleSlots: []
+      hasShield: 0
+      hasInterceptor: 0
+      isEnemyOnly: 1
+      modulePrefabName: hangar_3_1
+      health: 0
+      repair: 0
+      speed: 0
+      turnRate: 0
+      attack: 0
+      splashRadius: 0
+      attackCool: 3
+      silenceTime: 0
+      critChance: 0
+      critDamage: 2
+      airCount: 3
+      airMaintenanceTime: 15
+      airHealth: 70
+      airAttackToShip: 30
+      airAttackToFighter: 15
+      airAttackRange: 4
+      airAttackCool: 3.6
+      airSpeed: 20
+      airAmmo: 12
+      airDetectRadius: 10
+      airAvoidRadius: 2
+      airDisrupt: 0.15
+      shieldGauge: 0
+      shieldRegenRate: 0
+      interceptorCount: 0
+      interceptorRegenTime: 0
+  - subType: hangar_4_enemy
+    modules:
+    - moduleName: hangar_4_enemy
+      moduleSubType: hangar_4_enemy
+      statPoint: 0
+      unlockAchievementPointCost: 0
+      hullArchetype: 
+      hullPrefabName: 
+      descriptionKey: 
+      moduleSlots: []
+      hasShield: 0
+      hasInterceptor: 0
+      isEnemyOnly: 1
+      modulePrefabName: hangar_4_1
+      health: 0
+      repair: 0
+      speed: 0
+      turnRate: 0
+      attack: 0
+      splashRadius: 0
+      attackCool: 3
+      silenceTime: 0
+      critChance: 0
+      critDamage: 2
+      airCount: 3
+      airMaintenanceTime: 15
+      airHealth: 80
+      airAttackToShip: 40
+      airAttackToFighter: 20
+      airAttackRange: 4
+      airAttackCool: 3.4
+      airSpeed: 20
+      airAmmo: 13
+      airDetectRadius: 10
+      airAvoidRadius: 2
+      airDisrupt: 0.2
+      shieldGauge: 0
+      shieldRegenRate: 0
+      interceptorCount: 0
+      interceptorRegenTime: 0
+  - subType: hangar_5_enemy
+    modules:
+    - moduleName: hangar_5_enemy
+      moduleSubType: hangar_5_enemy
+      statPoint: 0
+      unlockAchievementPointCost: 0
+      hullArchetype: 
+      hullPrefabName: 
+      descriptionKey: 
+      moduleSlots: []
+      hasShield: 0
+      hasInterceptor: 0
+      isEnemyOnly: 1
+      modulePrefabName: hangar_5_1
+      health: 0
+      repair: 0
+      speed: 0
+      turnRate: 0
+      attack: 0
+      splashRadius: 0
+      attackCool: 3
+      silenceTime: 0
+      critChance: 0
+      critDamage: 2
+      airCount: 3
+      airMaintenanceTime: 15
+      airHealth: 90
+      airAttackToShip: 50
+      airAttackToFighter: 25
+      airAttackRange: 4
+      airAttackCool: 3.2
+      airSpeed: 20
+      airAmmo: 14
+      airDetectRadius: 10
+      airAvoidRadius: 2
+      airDisrupt: 0.25
+      shieldGauge: 0
+      shieldRegenRate: 0
+      interceptorCount: 0
+      interceptorRegenTime: 0
+  - subType: hangar_6_enemy
+    modules:
+    - moduleName: hangar_6_enemy
+      moduleSubType: hangar_6_enemy
+      statPoint: 0
+      unlockAchievementPointCost: 0
+      hullArchetype: 
+      hullPrefabName: 
+      descriptionKey: 
+      moduleSlots: []
+      hasShield: 0
+      hasInterceptor: 0
+      isEnemyOnly: 1
+      modulePrefabName: hangar_6_1
+      health: 0
+      repair: 0
+      speed: 0
+      turnRate: 0
+      attack: 0
+      splashRadius: 0
+      attackCool: 3
+      silenceTime: 0
+      critChance: 0
+      critDamage: 2
+      airCount: 3
+      airMaintenanceTime: 15
+      airHealth: 100
+      airAttackToShip: 60
+      airAttackToFighter: 30
+      airAttackRange: 4
+      airAttackCool: 3
+      airSpeed: 20
+      airAmmo: 15
+      airDetectRadius: 10
+      airAvoidRadius: 2
+      airDisrupt: 0.3
+      shieldGauge: 0
+      shieldRegenRate: 0
+      interceptorCount: 0
+      interceptorRegenTime: 0
+  - subType: hangar_7_enemy
+    modules:
+    - moduleName: hangar_7_enemy
+      moduleSubType: hangar_7_enemy
+      statPoint: 0
+      unlockAchievementPointCost: 0
+      hullArchetype: 
+      hullPrefabName: 
+      descriptionKey: 
+      moduleSlots: []
+      hasShield: 0
+      hasInterceptor: 0
+      isEnemyOnly: 1
+      modulePrefabName: hangar_7_1
+      health: 0
+      repair: 0
+      speed: 0
+      turnRate: 0
+      attack: 0
+      splashRadius: 0
+      attackCool: 3
+      silenceTime: 0
+      critChance: 0
+      critDamage: 2
+      airCount: 3
+      airMaintenanceTime: 15
+      airHealth: 110
+      airAttackToShip: 70
+      airAttackToFighter: 35
+      airAttackRange: 4
+      airAttackCool: 2.8
+      airSpeed: 20
+      airAmmo: 16
+      airDetectRadius: 10
+      airAvoidRadius: 2
+      airDisrupt: 0.35
+      shieldGauge: 0
+      shieldRegenRate: 0
+      interceptorCount: 0
+      interceptorRegenTime: 0
+  - subType: hangar_8_enemy
+    modules:
+    - moduleName: hangar_8_enemy
+      moduleSubType: hangar_8_enemy
+      statPoint: 0
+      unlockAchievementPointCost: 0
+      hullArchetype: 
+      hullPrefabName: 
+      descriptionKey: 
+      moduleSlots: []
+      hasShield: 0
+      hasInterceptor: 0
+      isEnemyOnly: 1
+      modulePrefabName: hangar_8_1
+      health: 0
+      repair: 0
+      speed: 0
+      turnRate: 0
+      attack: 0
+      splashRadius: 0
+      attackCool: 3
+      silenceTime: 0
+      critChance: 0
+      critDamage: 2
+      airCount: 3
+      airMaintenanceTime: 15
+      airHealth: 120
+      airAttackToShip: 80
+      airAttackToFighter: 40
+      airAttackRange: 4
+      airAttackCool: 2.6
+      airSpeed: 20
+      airAmmo: 17
+      airDetectRadius: 10
+      airAvoidRadius: 2
+      airDisrupt: 0.4
+      shieldGauge: 0
+      shieldRegenRate: 0
+      interceptorCount: 0
+      interceptorRegenTime: 0
+  - subType: hangar_9_enemy
+    modules:
+    - moduleName: hangar_9_enemy
+      moduleSubType: hangar_9_enemy
+      statPoint: 0
+      unlockAchievementPointCost: 0
+      hullArchetype: 
+      hullPrefabName: 
+      descriptionKey: 
+      moduleSlots: []
+      hasShield: 0
+      hasInterceptor: 0
+      isEnemyOnly: 1
+      modulePrefabName: hangar_9_1
+      health: 0
+      repair: 0
+      speed: 0
+      turnRate: 0
+      attack: 0
+      splashRadius: 0
+      attackCool: 3
+      silenceTime: 0
+      critChance: 0
+      critDamage: 2
+      airCount: 3
+      airMaintenanceTime: 15
+      airHealth: 130
+      airAttackToShip: 90
+      airAttackToFighter: 45
+      airAttackRange: 4
+      airAttackCool: 2.4
+      airSpeed: 20
+      airAmmo: 18
+      airDetectRadius: 10
+      airAvoidRadius: 2
+      airDisrupt: 0.45
+      shieldGauge: 0
+      shieldRegenRate: 0
+      interceptorCount: 0
+      interceptorRegenTime: 0
+  - subType: hangar_10_enemy
+    modules:
+    - moduleName: hangar_10_enemy
+      moduleSubType: hangar_10_enemy
+      statPoint: 0
+      unlockAchievementPointCost: 0
+      hullArchetype: 
+      hullPrefabName: 
+      descriptionKey: 
+      moduleSlots: []
+      hasShield: 0
+      hasInterceptor: 0
+      isEnemyOnly: 1
+      modulePrefabName: hangar_10_1
+      health: 0
+      repair: 0
+      speed: 0
+      turnRate: 0
+      attack: 0
+      splashRadius: 0
+      attackCool: 3
+      silenceTime: 0
+      critChance: 0
+      critDamage: 2
+      airCount: 3
+      airMaintenanceTime: 15
+      airHealth: 140
+      airAttackToShip: 100
+      airAttackToFighter: 50
+      airAttackRange: 4
+      airAttackCool: 2.2
+      airSpeed: 20
+      airAmmo: 19
+      airDetectRadius: 10
+      airAvoidRadius: 2
+      airDisrupt: 0.5
+      shieldGauge: 0
+      shieldRegenRate: 0
+      interceptorCount: 0
+      interceptorRegenTime: 0
   - subType: hangar_1_1
     modules:
     - moduleName: hangar_1_1
@@ -7727,6 +9419,7 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
+      modulePrefabName: 
       health: 0
       repair: 0
       speed: 0
@@ -7735,14 +9428,16 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 3
       silenceTime: 0
+      critChance: 5
+      critDamage: 2
       airCount: 3
       airMaintenanceTime: 15
       airHealth: 50
       airAttackToShip: 10
-      airAttackToFighter: 10
+      airAttackToFighter: 5
       airAttackRange: 4
       airAttackCool: 4
-      airSpeed: 10
+      airSpeed: 20
       airAmmo: 10
       airDetectRadius: 10
       airAvoidRadius: 2
@@ -7764,6 +9459,7 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
+      modulePrefabName: 
       health: 0
       repair: 0
       speed: 0
@@ -7772,15 +9468,17 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 3
       silenceTime: 0
+      critChance: 5
+      critDamage: 2
       airCount: 3
       airMaintenanceTime: 15
-      airHealth: 50
-      airAttackToShip: 11
-      airAttackToFighter: 11
+      airHealth: 60
+      airAttackToShip: 20
+      airAttackToFighter: 10
       airAttackRange: 4
-      airAttackCool: 4
-      airSpeed: 10
-      airAmmo: 10
+      airAttackCool: 3.8
+      airSpeed: 20
+      airAmmo: 11
       airDetectRadius: 10
       airAvoidRadius: 2
       airDisrupt: 0.1
@@ -7801,6 +9499,7 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
+      modulePrefabName: 
       health: 0
       repair: 0
       speed: 0
@@ -7809,15 +9508,17 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 3
       silenceTime: 0
+      critChance: 5
+      critDamage: 2
       airCount: 3
       airMaintenanceTime: 15
-      airHealth: 50
-      airAttackToShip: 12
-      airAttackToFighter: 12
+      airHealth: 70
+      airAttackToShip: 30
+      airAttackToFighter: 15
       airAttackRange: 4
-      airAttackCool: 4
-      airSpeed: 10
-      airAmmo: 10
+      airAttackCool: 3.6
+      airSpeed: 20
+      airAmmo: 12
       airDetectRadius: 10
       airAvoidRadius: 2
       airDisrupt: 0.15
@@ -7838,6 +9539,7 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
+      modulePrefabName: 
       health: 0
       repair: 0
       speed: 0
@@ -7846,15 +9548,17 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 3
       silenceTime: 0
+      critChance: 5
+      critDamage: 2
       airCount: 3
       airMaintenanceTime: 15
-      airHealth: 50
-      airAttackToShip: 13
-      airAttackToFighter: 13
+      airHealth: 80
+      airAttackToShip: 40
+      airAttackToFighter: 20
       airAttackRange: 4
-      airAttackCool: 4
-      airSpeed: 10
-      airAmmo: 10
+      airAttackCool: 3.4
+      airSpeed: 20
+      airAmmo: 13
       airDetectRadius: 10
       airAvoidRadius: 2
       airDisrupt: 0.2
@@ -7875,6 +9579,7 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
+      modulePrefabName: 
       health: 0
       repair: 0
       speed: 0
@@ -7883,15 +9588,17 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 3
       silenceTime: 0
+      critChance: 5
+      critDamage: 2
       airCount: 3
       airMaintenanceTime: 15
-      airHealth: 50
-      airAttackToShip: 15
-      airAttackToFighter: 15
+      airHealth: 90
+      airAttackToShip: 50
+      airAttackToFighter: 25
       airAttackRange: 4
-      airAttackCool: 4
-      airSpeed: 10
-      airAmmo: 10
+      airAttackCool: 3.2
+      airSpeed: 20
+      airAmmo: 14
       airDetectRadius: 10
       airAvoidRadius: 2
       airDisrupt: 0.25
@@ -7912,6 +9619,7 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
+      modulePrefabName: 
       health: 0
       repair: 0
       speed: 0
@@ -7920,15 +9628,17 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 3
       silenceTime: 0
+      critChance: 5
+      critDamage: 2
       airCount: 3
       airMaintenanceTime: 15
-      airHealth: 50
-      airAttackToShip: 16
-      airAttackToFighter: 16
+      airHealth: 100
+      airAttackToShip: 60
+      airAttackToFighter: 30
       airAttackRange: 4
-      airAttackCool: 4
-      airSpeed: 10
-      airAmmo: 10
+      airAttackCool: 3
+      airSpeed: 20
+      airAmmo: 15
       airDetectRadius: 10
       airAvoidRadius: 2
       airDisrupt: 0.3
@@ -7949,6 +9659,7 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
+      modulePrefabName: 
       health: 0
       repair: 0
       speed: 0
@@ -7957,15 +9668,17 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 3
       silenceTime: 0
+      critChance: 5
+      critDamage: 2
       airCount: 3
       airMaintenanceTime: 15
-      airHealth: 50
-      airAttackToShip: 17
-      airAttackToFighter: 17
+      airHealth: 110
+      airAttackToShip: 70
+      airAttackToFighter: 35
       airAttackRange: 4
-      airAttackCool: 4
-      airSpeed: 10
-      airAmmo: 10
+      airAttackCool: 2.8
+      airSpeed: 20
+      airAmmo: 16
       airDetectRadius: 10
       airAvoidRadius: 2
       airDisrupt: 0.35
@@ -7986,6 +9699,7 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
+      modulePrefabName: 
       health: 0
       repair: 0
       speed: 0
@@ -7994,15 +9708,17 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 3
       silenceTime: 0
+      critChance: 5
+      critDamage: 2
       airCount: 3
       airMaintenanceTime: 15
-      airHealth: 50
-      airAttackToShip: 18
-      airAttackToFighter: 18
+      airHealth: 120
+      airAttackToShip: 80
+      airAttackToFighter: 40
       airAttackRange: 4
-      airAttackCool: 4
-      airSpeed: 10
-      airAmmo: 10
+      airAttackCool: 2.6
+      airSpeed: 20
+      airAmmo: 17
       airDetectRadius: 10
       airAvoidRadius: 2
       airDisrupt: 0.4
@@ -8023,6 +9739,7 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
+      modulePrefabName: 
       health: 0
       repair: 0
       speed: 0
@@ -8031,15 +9748,17 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 3
       silenceTime: 0
+      critChance: 5
+      critDamage: 2
       airCount: 3
       airMaintenanceTime: 15
-      airHealth: 50
-      airAttackToShip: 19
-      airAttackToFighter: 19
+      airHealth: 130
+      airAttackToShip: 90
+      airAttackToFighter: 45
       airAttackRange: 4
-      airAttackCool: 4
-      airSpeed: 10
-      airAmmo: 10
+      airAttackCool: 2.4
+      airSpeed: 20
+      airAmmo: 18
       airDetectRadius: 10
       airAvoidRadius: 2
       airDisrupt: 0.45
@@ -8060,6 +9779,7 @@ MonoBehaviour:
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
+      modulePrefabName: 
       health: 0
       repair: 0
       speed: 0
@@ -8068,15 +9788,17 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 3
       silenceTime: 0
+      critChance: 5
+      critDamage: 2
       airCount: 3
       airMaintenanceTime: 15
-      airHealth: 50
-      airAttackToShip: 20
-      airAttackToFighter: 20
+      airHealth: 140
+      airAttackToShip: 100
+      airAttackToFighter: 50
       airAttackRange: 4
-      airAttackCool: 4
-      airSpeed: 10
-      airAmmo: 10
+      airAttackCool: 2.2
+      airSpeed: 20
+      airAmmo: 19
       airDetectRadius: 10
       airAvoidRadius: 2
       airDisrupt: 0.5
@@ -8093,11 +9815,12 @@ MonoBehaviour:
       unlockAchievementPointCost: 0
       hullArchetype: 
       hullPrefabName: 
-      descriptionKey: 0
+      descriptionKey: 
       moduleSlots: []
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
+      modulePrefabName: 
       health: 0
       repair: 0
       speed: 0
@@ -8106,6 +9829,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -8118,9 +9843,9 @@ MonoBehaviour:
       airDetectRadius: 0
       airAvoidRadius: 0
       airDisrupt: 0
-      shieldGauge: 0
-      shieldRegenRate: 100
-      interceptorCount: 5
+      shieldGauge: 100
+      shieldRegenRate: 5
+      interceptorCount: 0
       interceptorRegenTime: 0
   - subType: shield_2_1
     modules:
@@ -8130,11 +9855,12 @@ MonoBehaviour:
       unlockAchievementPointCost: 200
       hullArchetype: 
       hullPrefabName: 
-      descriptionKey: 0
+      descriptionKey: 
       moduleSlots: []
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
+      modulePrefabName: 
       health: 0
       repair: 0
       speed: 0
@@ -8143,6 +9869,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -8155,9 +9883,9 @@ MonoBehaviour:
       airDetectRadius: 0
       airAvoidRadius: 0
       airDisrupt: 0
-      shieldGauge: 0
-      shieldRegenRate: 200
-      interceptorCount: 10
+      shieldGauge: 200
+      shieldRegenRate: 10
+      interceptorCount: 0
       interceptorRegenTime: 0
   - subType: shield_3_1
     modules:
@@ -8167,11 +9895,12 @@ MonoBehaviour:
       unlockAchievementPointCost: 300
       hullArchetype: 
       hullPrefabName: 
-      descriptionKey: 0
+      descriptionKey: 
       moduleSlots: []
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
+      modulePrefabName: 
       health: 0
       repair: 0
       speed: 0
@@ -8180,6 +9909,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -8192,9 +9923,9 @@ MonoBehaviour:
       airDetectRadius: 0
       airAvoidRadius: 0
       airDisrupt: 0
-      shieldGauge: 0
-      shieldRegenRate: 300
-      interceptorCount: 15
+      shieldGauge: 300
+      shieldRegenRate: 15
+      interceptorCount: 0
       interceptorRegenTime: 0
   - subType: shield_4_1
     modules:
@@ -8204,11 +9935,12 @@ MonoBehaviour:
       unlockAchievementPointCost: 400
       hullArchetype: 
       hullPrefabName: 
-      descriptionKey: 0
+      descriptionKey: 
       moduleSlots: []
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
+      modulePrefabName: 
       health: 0
       repair: 0
       speed: 0
@@ -8217,6 +9949,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -8229,9 +9963,9 @@ MonoBehaviour:
       airDetectRadius: 0
       airAvoidRadius: 0
       airDisrupt: 0
-      shieldGauge: 0
-      shieldRegenRate: 400
-      interceptorCount: 20
+      shieldGauge: 400
+      shieldRegenRate: 20
+      interceptorCount: 0
       interceptorRegenTime: 0
   - subType: shield_5_1
     modules:
@@ -8241,11 +9975,12 @@ MonoBehaviour:
       unlockAchievementPointCost: 500
       hullArchetype: 
       hullPrefabName: 
-      descriptionKey: 0
+      descriptionKey: 
       moduleSlots: []
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
+      modulePrefabName: 
       health: 0
       repair: 0
       speed: 0
@@ -8254,6 +9989,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -8266,9 +10003,9 @@ MonoBehaviour:
       airDetectRadius: 0
       airAvoidRadius: 0
       airDisrupt: 0
-      shieldGauge: 0
-      shieldRegenRate: 500
-      interceptorCount: 25
+      shieldGauge: 500
+      shieldRegenRate: 25
+      interceptorCount: 0
       interceptorRegenTime: 0
   - subType: shield_6_1
     modules:
@@ -8278,11 +10015,12 @@ MonoBehaviour:
       unlockAchievementPointCost: 600
       hullArchetype: 
       hullPrefabName: 
-      descriptionKey: 0
+      descriptionKey: 
       moduleSlots: []
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
+      modulePrefabName: 
       health: 0
       repair: 0
       speed: 0
@@ -8291,6 +10029,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -8303,9 +10043,9 @@ MonoBehaviour:
       airDetectRadius: 0
       airAvoidRadius: 0
       airDisrupt: 0
-      shieldGauge: 0
-      shieldRegenRate: 600
-      interceptorCount: 30
+      shieldGauge: 600
+      shieldRegenRate: 30
+      interceptorCount: 0
       interceptorRegenTime: 0
   - subType: shield_7_1
     modules:
@@ -8315,11 +10055,12 @@ MonoBehaviour:
       unlockAchievementPointCost: 700
       hullArchetype: 
       hullPrefabName: 
-      descriptionKey: 0
+      descriptionKey: 
       moduleSlots: []
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
+      modulePrefabName: 
       health: 0
       repair: 0
       speed: 0
@@ -8328,6 +10069,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -8340,9 +10083,9 @@ MonoBehaviour:
       airDetectRadius: 0
       airAvoidRadius: 0
       airDisrupt: 0
-      shieldGauge: 0
-      shieldRegenRate: 700
-      interceptorCount: 35
+      shieldGauge: 700
+      shieldRegenRate: 35
+      interceptorCount: 0
       interceptorRegenTime: 0
   - subType: shield_8_1
     modules:
@@ -8352,11 +10095,12 @@ MonoBehaviour:
       unlockAchievementPointCost: 800
       hullArchetype: 
       hullPrefabName: 
-      descriptionKey: 0
+      descriptionKey: 
       moduleSlots: []
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
+      modulePrefabName: 
       health: 0
       repair: 0
       speed: 0
@@ -8365,6 +10109,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -8377,9 +10123,9 @@ MonoBehaviour:
       airDetectRadius: 0
       airAvoidRadius: 0
       airDisrupt: 0
-      shieldGauge: 0
-      shieldRegenRate: 800
-      interceptorCount: 40
+      shieldGauge: 800
+      shieldRegenRate: 40
+      interceptorCount: 0
       interceptorRegenTime: 0
   - subType: shield_9_1
     modules:
@@ -8389,11 +10135,12 @@ MonoBehaviour:
       unlockAchievementPointCost: 900
       hullArchetype: 
       hullPrefabName: 
-      descriptionKey: 0
+      descriptionKey: 
       moduleSlots: []
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
+      modulePrefabName: 
       health: 0
       repair: 0
       speed: 0
@@ -8402,6 +10149,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -8414,9 +10163,9 @@ MonoBehaviour:
       airDetectRadius: 0
       airAvoidRadius: 0
       airDisrupt: 0
-      shieldGauge: 0
-      shieldRegenRate: 900
-      interceptorCount: 45
+      shieldGauge: 900
+      shieldRegenRate: 45
+      interceptorCount: 0
       interceptorRegenTime: 0
   - subType: shield_10_1
     modules:
@@ -8426,11 +10175,12 @@ MonoBehaviour:
       unlockAchievementPointCost: 1000
       hullArchetype: 
       hullPrefabName: 
-      descriptionKey: 0
+      descriptionKey: 
       moduleSlots: []
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
+      modulePrefabName: 
       health: 0
       repair: 0
       speed: 0
@@ -8439,6 +10189,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -8451,9 +10203,9 @@ MonoBehaviour:
       airDetectRadius: 0
       airAvoidRadius: 0
       airDisrupt: 0
-      shieldGauge: 0
-      shieldRegenRate: 1000
-      interceptorCount: 50
+      shieldGauge: 1000
+      shieldRegenRate: 50
+      interceptorCount: 0
       interceptorRegenTime: 0
   interceptorGroups:
   - subType: interceptor_1_1
@@ -8464,11 +10216,12 @@ MonoBehaviour:
       unlockAchievementPointCost: 0
       hullArchetype: 
       hullPrefabName: 
-      descriptionKey: 5
+      descriptionKey: 
       moduleSlots: []
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
+      modulePrefabName: 
       health: 0
       repair: 0
       speed: 0
@@ -8477,6 +10230,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -8491,8 +10246,8 @@ MonoBehaviour:
       airDisrupt: 0
       shieldGauge: 0
       shieldRegenRate: 0
-      interceptorCount: 0
-      interceptorRegenTime: 1
+      interceptorCount: 1
+      interceptorRegenTime: 5
   - subType: interceptor_2_1
     modules:
     - moduleName: interceptor_2_1
@@ -8501,11 +10256,12 @@ MonoBehaviour:
       unlockAchievementPointCost: 200
       hullArchetype: 
       hullPrefabName: 
-      descriptionKey: 5
+      descriptionKey: 
       moduleSlots: []
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
+      modulePrefabName: 
       health: 0
       repair: 0
       speed: 0
@@ -8514,6 +10270,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -8528,8 +10286,8 @@ MonoBehaviour:
       airDisrupt: 0
       shieldGauge: 0
       shieldRegenRate: 0
-      interceptorCount: 0
-      interceptorRegenTime: 1
+      interceptorCount: 1
+      interceptorRegenTime: 5
   - subType: interceptor_3_1
     modules:
     - moduleName: interceptor_3_1
@@ -8538,11 +10296,12 @@ MonoBehaviour:
       unlockAchievementPointCost: 300
       hullArchetype: 
       hullPrefabName: 
-      descriptionKey: 5
+      descriptionKey: 
       moduleSlots: []
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
+      modulePrefabName: 
       health: 0
       repair: 0
       speed: 0
@@ -8551,6 +10310,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -8565,8 +10326,8 @@ MonoBehaviour:
       airDisrupt: 0
       shieldGauge: 0
       shieldRegenRate: 0
-      interceptorCount: 0
-      interceptorRegenTime: 1
+      interceptorCount: 1
+      interceptorRegenTime: 5
   - subType: interceptor_4_1
     modules:
     - moduleName: interceptor_4_1
@@ -8575,11 +10336,12 @@ MonoBehaviour:
       unlockAchievementPointCost: 400
       hullArchetype: 
       hullPrefabName: 
-      descriptionKey: 5
+      descriptionKey: 
       moduleSlots: []
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
+      modulePrefabName: 
       health: 0
       repair: 0
       speed: 0
@@ -8588,6 +10350,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -8602,8 +10366,8 @@ MonoBehaviour:
       airDisrupt: 0
       shieldGauge: 0
       shieldRegenRate: 0
-      interceptorCount: 0
-      interceptorRegenTime: 2
+      interceptorCount: 2
+      interceptorRegenTime: 5
   - subType: interceptor_5_1
     modules:
     - moduleName: interceptor_5_1
@@ -8612,11 +10376,12 @@ MonoBehaviour:
       unlockAchievementPointCost: 500
       hullArchetype: 
       hullPrefabName: 
-      descriptionKey: 5
+      descriptionKey: 
       moduleSlots: []
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
+      modulePrefabName: 
       health: 0
       repair: 0
       speed: 0
@@ -8625,6 +10390,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -8639,8 +10406,8 @@ MonoBehaviour:
       airDisrupt: 0
       shieldGauge: 0
       shieldRegenRate: 0
-      interceptorCount: 0
-      interceptorRegenTime: 2
+      interceptorCount: 2
+      interceptorRegenTime: 5
   - subType: interceptor_6_1
     modules:
     - moduleName: interceptor_6_1
@@ -8649,11 +10416,12 @@ MonoBehaviour:
       unlockAchievementPointCost: 600
       hullArchetype: 
       hullPrefabName: 
-      descriptionKey: 5
+      descriptionKey: 
       moduleSlots: []
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
+      modulePrefabName: 
       health: 0
       repair: 0
       speed: 0
@@ -8662,6 +10430,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -8676,8 +10446,8 @@ MonoBehaviour:
       airDisrupt: 0
       shieldGauge: 0
       shieldRegenRate: 0
-      interceptorCount: 0
-      interceptorRegenTime: 2
+      interceptorCount: 2
+      interceptorRegenTime: 5
   - subType: interceptor_7_1
     modules:
     - moduleName: interceptor_7_1
@@ -8686,11 +10456,12 @@ MonoBehaviour:
       unlockAchievementPointCost: 700
       hullArchetype: 
       hullPrefabName: 
-      descriptionKey: 5
+      descriptionKey: 
       moduleSlots: []
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
+      modulePrefabName: 
       health: 0
       repair: 0
       speed: 0
@@ -8699,6 +10470,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -8713,8 +10486,8 @@ MonoBehaviour:
       airDisrupt: 0
       shieldGauge: 0
       shieldRegenRate: 0
-      interceptorCount: 0
-      interceptorRegenTime: 2
+      interceptorCount: 2
+      interceptorRegenTime: 5
   - subType: interceptor_8_1
     modules:
     - moduleName: interceptor_8_1
@@ -8723,11 +10496,12 @@ MonoBehaviour:
       unlockAchievementPointCost: 800
       hullArchetype: 
       hullPrefabName: 
-      descriptionKey: 5
+      descriptionKey: 
       moduleSlots: []
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
+      modulePrefabName: 
       health: 0
       repair: 0
       speed: 0
@@ -8736,6 +10510,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -8750,8 +10526,8 @@ MonoBehaviour:
       airDisrupt: 0
       shieldGauge: 0
       shieldRegenRate: 0
-      interceptorCount: 0
-      interceptorRegenTime: 3
+      interceptorCount: 3
+      interceptorRegenTime: 5
   - subType: interceptor_9_1
     modules:
     - moduleName: interceptor_9_1
@@ -8760,11 +10536,12 @@ MonoBehaviour:
       unlockAchievementPointCost: 900
       hullArchetype: 
       hullPrefabName: 
-      descriptionKey: 5
+      descriptionKey: 
       moduleSlots: []
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
+      modulePrefabName: 
       health: 0
       repair: 0
       speed: 0
@@ -8773,6 +10550,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -8787,8 +10566,8 @@ MonoBehaviour:
       airDisrupt: 0
       shieldGauge: 0
       shieldRegenRate: 0
-      interceptorCount: 0
-      interceptorRegenTime: 3
+      interceptorCount: 3
+      interceptorRegenTime: 5
   - subType: interceptor_10_1
     modules:
     - moduleName: interceptor_10_1
@@ -8797,11 +10576,12 @@ MonoBehaviour:
       unlockAchievementPointCost: 1000
       hullArchetype: 
       hullPrefabName: 
-      descriptionKey: 5
+      descriptionKey: 
       moduleSlots: []
       hasShield: 0
       hasInterceptor: 0
       isEnemyOnly: 0
+      modulePrefabName: 
       health: 0
       repair: 0
       speed: 0
@@ -8810,6 +10590,8 @@ MonoBehaviour:
       splashRadius: 0
       attackCool: 0
       silenceTime: 0
+      critChance: 0
+      critDamage: 1
       airCount: 0
       airMaintenanceTime: 0
       airHealth: 0
@@ -8824,5 +10606,5 @@ MonoBehaviour:
       airDisrupt: 0
       shieldGauge: 0
       shieldRegenRate: 0
-      interceptorCount: 0
-      interceptorRegenTime: 3
+      interceptorCount: 3
+      interceptorRegenTime: 5

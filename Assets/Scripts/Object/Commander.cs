@@ -216,6 +216,16 @@ public class Commander
         return m_commanderInfo.exp >= cost;
     }
 
+    // 능력치 계산용 빌드 데이터(패시브 진행도 + 강화 레벨) — 커맨더 정보의 리스트를 그대로 참조(복사 없음). 리스트가 교체돼도 호출 시점마다 다시 연결
+    private readonly CommanderBuildData m_buildData = new CommanderBuildData();
+
+    public CommanderBuildData GetBuildData()
+    {
+        m_buildData.passiveProgress = m_commanderInfo != null ? m_commanderInfo.hullArchetypePassiveProgress : null;
+        m_buildData.archetypeUpgrades = m_commanderInfo != null ? m_commanderInfo.archetypeUpgrades : null;
+        return m_buildData;
+    }
+
     // 아키타입 단위 영구 모듈강화(M6) 현재 레벨 — 기록이 없으면 0. beam/missile/hangar는 slotIndex별로 독립, hull/shield/interceptor는 항상 slotIndex=0
     public int GetArchetypeUpgradeLevel(string hullArchetype, EModuleType moduleType, int slotIndex = 0)
     {
@@ -251,17 +261,30 @@ public class Commander
         m_commanderInfo.archetypeUpgrades.Add(new ArchetypeUpgradeInfo { hullArchetype = hullArchetype, moduleType = moduleType, slotIndex = slotIndex, level = level });
     }
 
-    // 아키타입 패시브(1~5성, 4단계) 언락 조건 누적 카운터 — 기록이 없으면 0
-    public long GetHullArchetypePassiveCounterValue(string hullArchetype, string counterType)
+    // 셀 클리어/존런 정산 응답이 내려준 최신 해금 카운터 전체 목록으로 교체 — null이면 기존 값 유지
+    public void UpdateHullArchetypePassiveProgress(System.Collections.Generic.List<HullArchetypeProgressInfo> progress)
     {
-        if (m_commanderInfo == null || m_commanderInfo.hullArchetypePassiveProgress == null) return 0;
+        if (m_commanderInfo == null || progress == null) return;
+        m_commanderInfo.hullArchetypePassiveProgress = progress;
+    }
+
+    // 아키타입 패시브 한 단계의 진행도(이 단계 안에서의 값)와 해금 여부 — 서버가 단계별로 따로 저장하고 해금을 판정함
+    // 서버 기록이 아직 없으면 진행도 0, 문턱이 0인 단계(1단계)만 해금으로 취급
+    public void GetHullArchetypePassiveStageProgress(string hullArchetype, int stage, int threshold, out long value, out bool completed)
+    {
+        value = 0;
+        completed = threshold <= 0;
+        if (m_commanderInfo == null || m_commanderInfo.hullArchetypePassiveProgress == null) return;
+
         for (int i = 0; i < m_commanderInfo.hullArchetypePassiveProgress.Count; i++)
         {
             HullArchetypeProgressInfo entry = m_commanderInfo.hullArchetypePassiveProgress[i];
-            if (entry.hullArchetype == hullArchetype && entry.counterType == counterType)
-                return entry.counterValue;
+            if (entry.hullArchetype != hullArchetype || entry.stage != stage) continue;
+
+            value = entry.counterValue;
+            completed = entry.completed;
+            return;
         }
-        return 0;
     }
 
 }

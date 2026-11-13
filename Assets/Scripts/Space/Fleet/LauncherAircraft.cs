@@ -46,6 +46,14 @@ public class LauncherAircraft : LauncherBase
         // 함재기 전술 토글이 꺼져 있으면 발진 자체를 하지 않음(격납고에서 기체를 꺼내지도 않음 — 토글을 다시 켜면 바로 발진 가능)
         if (ownerFleet != null && ownerFleet.IsAircraftTacticOn() == false) yield break;
 
+        // 출격 가능한 기체가 있을 때만 발진 1건당 자원 과금 — 여유가 없으면 이번 발진은 하지 않음(토글은 유지)
+        if (m_moduleHangar.HasReadyAircraft() == false) yield break;
+        if (ownerFleet != null)
+        {
+            int tacticHangerCost = DataManager.Instance.m_dataTableConfig.gameSettings.tactic.tacticHangerCost;
+            if (ownerFleet.TryChargeAircraftTacticCost(tacticHangerCost) == false) yield break;
+        }
+
         AircraftInfo aircraftInfo = m_moduleHangar.GetReadyAircraft();
         if (aircraftInfo == null) yield break;
 
@@ -68,21 +76,21 @@ public class LauncherAircraft : LauncherBase
         }
 
         // 실제 발진이 확정된 시점에만 공격 배율 조립 — airAttack은 원본 유지, 배율만 airAttackMultiplier에 저장(귀환 시 UpdateAircraftInfo로 1f 원복)
-        // 전술 보너스가 실제로 적용 중일 때만 발진 1건당 과금 — 여유가 없으면 이번 발진만 보너스 없이 그대로 발진(토글은 유지)
         float shipCountMultiplier = ownerFleet != null ? ownerFleet.GetShipCountAttackMultiplier() : 1f;
         float formationMultiplier = ownerFleet != null ? ownerFleet.GetFormationAttackMultiplier() : 1f;
-        float tacticMultiplier    = ownerFleet != null ? ownerFleet.GetAircraftTacticAttackMultiplier() : 1f;
-        if (tacticMultiplier > 1f)
-        {
-            int tacticHangerCost = DataManager.Instance.m_dataTableConfig.gameSettings.tactic.tacticHangerCost;
-            if (ownerFleet.TryChargeAircraftTacticCost(tacticHangerCost) == false)
-                tacticMultiplier = 1f;
-        }
-        aircraftInfo.airAttackMultiplier = shipCountMultiplier * formationMultiplier * tacticMultiplier;
+        float berserkerMultiplier = ownerFleet != null ? ownerFleet.GetBerserkerAttackMultiplier() : 1f;
+        // 아키타입 패시브(함재기 공격력 +N%) — 발진 시점에 조회(내 함대 모듈만 0이 아님)
+        float passiveMultiplier = 1f + m_moduleHangar.GetPassiveEffect(HullArchetypePassiveEffects.k_hangarAttackPercent) / 100f;
+        aircraftInfo.airAttackMultiplier = shipCountMultiplier * formationMultiplier * berserkerMultiplier * passiveMultiplier;
+        PassiveAudit.RecordDetail(carrierShip, "함재기발진", $"1기대함공격={aircraftInfo.airAttackToShip} 함선수={shipCountMultiplier} 진형={formationMultiplier} 버서커={berserkerMultiplier} 패시브={passiveMultiplier}");
 
         aircraft.transform.position = m_firePoint.position;
         aircraft.transform.rotation = m_firePoint.rotation;
         aircraft.InitializeAirCraft(m_firePoint, target, aircraftInfo, m_moduleHangar, Color.black);
+
+        bool isEnemyCarrier = ownerFleet != null && ObjectManager.Instance.IsEnemyOfMyTeam(ownerFleet) == true;
+        if (isEnemyCarrier == false)
+            BattleStatTracker.AddAircraftLaunch();
     }
 
 }

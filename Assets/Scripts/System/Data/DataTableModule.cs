@@ -41,9 +41,11 @@ public class ModuleData
     public bool hasShield = false;
     public bool hasInterceptor = false;
 
-    // hull 전용 — 적 전용 hull(datatable_enemy_hull.csv 기원)인지 표시. 플레이어 UI(hull picker 등)에서 제외하고
-    // 적 함대 생성기(ExplorationEnemyFleetGenerator)에서만 사용하는 용도로 구분
+    // 적 전용 행인지 — hull은 datatable_enemy_hull.csv, 빔/미사일/격납고는 datatable_enemy_module.csv 기원.
+    // 플레이어 목록(BeamModules 등)/서버 JSON에서 제외하고 적 함대 생성기(ExplorationEnemyFleetGenerator)에서만 사용
     public bool isEnemyOnly = false;
+    // 무기(빔/미사일/격납고) 전용 — 비어있지 않으면 moduleSubType 대신 이 이름의 프리팹을 로드(적 무기 행이 같은 티어의 플레이어 프리팹을 공유할 때 사용)
+    public string modulePrefabName = "";
 
     // Hull ---------------------------------------------------------------------------
     [Header("Hull Stats")]
@@ -59,6 +61,8 @@ public class ModuleData
     public float splashRadius = 0f;     // 0 = 단일 타겟, >0 = 범위 공격 반경
     public float attackCool = 0f;       // 발사 쿨다운 빔, 미사일, 함재기
     public float silenceTime = 0f;      // 미사일 적중 시 무장 침묵 시간 (초)
+    public float critChance = 0f;       // 빔/미사일/격납고 — 기본 치명타 확률(%), 함선 패시브(nemesis 등)가 %p로 가산
+    public float critDamage = 1f;       // 빔/미사일/격납고 — 치명타 피해 배수(2 = 2배)
 
     // Hangar ------------------------------------------------------------------------------------------------
     [Header("Hangar Stats")]
@@ -153,40 +157,23 @@ public class DataTableModule : ScriptableObject
         }
     }
 
-    public ModuleDataList BeamModules
-    {
-        get
-        {
-            var list = new ModuleDataList();
-            foreach (var group in beamGroups)
-                foreach (var module in group.modules)
-                    list.Add(module);
-            return list;
-        }
-    }
+    // 빔/미사일/격납고 목록은 플레이어 행만 — 적 전용 행(datatable_enemy_module.csv)은 Enemy*Modules로만 조회
+    public ModuleDataList BeamModules => CollectWeaponModules(beamGroups, false);
+    public ModuleDataList MissileModules => CollectWeaponModules(missileGroups, false);
+    public ModuleDataList HangarModules => CollectWeaponModules(hangarGroups, false);
 
-    public ModuleDataList MissileModules
-    {
-        get
-        {
-            var list = new ModuleDataList();
-            foreach (var group in missileGroups)
-                foreach (var module in group.modules)
-                    list.Add(module);
-            return list;
-        }
-    }
+    public ModuleDataList EnemyBeamModules => CollectWeaponModules(beamGroups, true);
+    public ModuleDataList EnemyMissileModules => CollectWeaponModules(missileGroups, true);
+    public ModuleDataList EnemyHangarModules => CollectWeaponModules(hangarGroups, true);
 
-    public ModuleDataList HangarModules
+    private static ModuleDataList CollectWeaponModules(List<ModuleSubTypeGroup> groups, bool enemyOnly)
     {
-        get
-        {
-            var list = new ModuleDataList();
-            foreach (var group in hangarGroups)
-                foreach (var module in group.modules)
+        var list = new ModuleDataList();
+        foreach (var group in groups)
+            foreach (var module in group.modules)
+                if (module.isEnemyOnly == enemyOnly)
                     list.Add(module);
-            return list;
-        }
+        return list;
     }
 
     public ModuleDataList ShieldModules
@@ -427,9 +414,10 @@ public class DataTableModule : ScriptableObject
         // hullGroups는 적 전용 hull(LoadEnemyHullCsv로 별도 CSV에서 들어온 isEnemyOnly 행)과 공유되므로,
         // 전체 Clear 대신 플레이어 기원(isEnemyOnly==false) 행만 제거 — 적 전용 행은 이 Import와 무관하게 유지
         hullGroups.RemoveAll(g => g.modules.Count > 0 && g.modules[0].isEnemyOnly == false);
-        beamGroups.Clear();
-        missileGroups.Clear();
-        hangarGroups.Clear();
+        // 빔/미사일/격납고도 적 전용 행(LoadEnemyModuleCsv)과 그룹을 공유하므로 플레이어 행만 제거
+        beamGroups.RemoveAll(g => g.modules.Count > 0 && g.modules[0].isEnemyOnly == false);
+        missileGroups.RemoveAll(g => g.modules.Count > 0 && g.modules[0].isEnemyOnly == false);
+        hangarGroups.RemoveAll(g => g.modules.Count > 0 && g.modules[0].isEnemyOnly == false);
         shieldGroups.Clear();
         interceptorGroups.Clear();
 
@@ -442,7 +430,8 @@ public class DataTableModule : ScriptableObject
         // 21:air_detect_radius, 22:air_avoid_radius, 23:air_disrupt,
         // 24:shield_gauge, 25:shield_regen_rate,
         // 26:interceptor_count, 27:interceptor_regen_time, 28:description_key(로컬라이즈 키, UI.csv),
-        // 29:has_shield(hull 전용, 0/1), 30:has_interceptor(hull 전용, 0/1)
+        // 29:has_shield(hull 전용, 0/1), 30:has_interceptor(hull 전용, 0/1),
+        // 31:crit_chance(무기 전용, %), 32:crit_damage(무기 전용, 배수 — 비어있으면 1)
         // 발사체 이동속도(빔/미사일)는 별도 컬럼 없이 speed 컬럼을 재사용
         // 성급(1~5)은 별도 컬럼 없이 type_level의 "hull_" 다음 숫자(ParseTier)를 그대로 사용 — UIAvailableHullRow가 직접 파싱
         string[] lines = csvText.Split('\n');
@@ -494,7 +483,9 @@ public class DataTableModule : ScriptableObject
                 interceptorRegenTime    = ParseCsvFloat(cols, 27),
                 descriptionKey      = cols.Length > 28 ? cols[28].Trim() : "",
                 hasShield           = ParseCsvInt(cols, 29) != 0,
-                hasInterceptor      = ParseCsvInt(cols, 30) != 0
+                hasInterceptor      = ParseCsvInt(cols, 30) != 0,
+                critChance          = ParseCsvFloat(cols, 31),
+                critDamage          = ParseCritDamage(cols, 32)
             };
 
             // hull 모듈만 prefab에서 슬롯 정보 추출 + 실제 프리팹 파일명 캐싱(런타임 로드용)
@@ -554,6 +545,87 @@ public class DataTableModule : ScriptableObject
 
         Debug.Log($"[DataTableModule] 적 전용 Hull CSV Import 완료: {HullModules.modules.FindAll(m => m.isEnemyOnly == true).Count}개");
         EditorUtility.SetDirty(this);
+    }
+
+    // 적 전용 무기 CSV(datatable_enemy_module.csv) — 플레이어 무기와 수치/치명타를 따로 조절하기 위한 저작 소스.
+    // 행 이름은 {type}_{tier}_enemy(예: beam_3_enemy) — 첫 토큰으로 모듈 종류, 둘째 토큰으로 티어를 파싱하는 기존 규칙을 그대로 따름.
+    // 프리팹은 같은 티어의 플레이어 무기 프리팹({type}_{tier}_1)을 공유(modulePrefabName)
+    // 컬럼: 0:type_level, 1:health, 2:speed(발사체 속도), 3:attack, 4:splash_radius, 5:attack_cool, 6:silence_time,
+    // 7:air_count, 8:air_maintenance_time, 9:air_health, 10:air_attack, 11:air_attack_to_fighter, 12:air_attack_range,
+    // 13:air_attack_cool, 14:air_speed, 15:air_ammo, 16:air_detect_radius, 17:air_avoid_radius, 18:air_disrupt,
+    // 19:crit_chance(%), 20:crit_damage(배수)
+    public void LoadEnemyModuleCsv(string csvText)
+    {
+        beamGroups.RemoveAll(g => g.modules.Count > 0 && g.modules[0].isEnemyOnly == true);
+        missileGroups.RemoveAll(g => g.modules.Count > 0 && g.modules[0].isEnemyOnly == true);
+        hangarGroups.RemoveAll(g => g.modules.Count > 0 && g.modules[0].isEnemyOnly == true);
+
+        string[] lines = csvText.Split('\n');
+        if (lines.Length < 2) return;
+
+        int loadedCount = 0;
+        for (int i = 1; i < lines.Length; i++)
+        {
+            string line = lines[i].Trim();
+            if (string.IsNullOrEmpty(line)) continue;
+
+            string[] cols = ParseCsvLine(line);
+            if (cols.Length < 2) continue;
+
+            string moduleSubType = cols[0].Trim();
+            if (string.IsNullOrEmpty(moduleSubType) == true) continue;
+
+            EModuleType moduleType = CommonUtility.ParseModuleType(moduleSubType);
+            bool isWeapon = moduleType == EModuleType.beam || moduleType == EModuleType.missile || moduleType == EModuleType.hangar;
+            if (isWeapon == false)
+            {
+                Debug.LogWarning($"[DataTableModule] 적 무기 CSV: 무기가 아닌 행 무시 — {moduleSubType}");
+                continue;
+            }
+
+            int tier = CommonUtility.ParseTier(moduleSubType);
+            var module = new ModuleData
+            {
+                moduleName          = moduleSubType,
+                moduleSubType       = moduleSubType,
+                isEnemyOnly         = true,
+                modulePrefabName    = $"{moduleType}_{tier}_1",
+                health              = ParseCsvFloat(cols, 1),
+                speed               = ParseCsvFloat(cols, 2),
+                attack              = ParseCsvFloat(cols, 3),
+                splashRadius        = ParseCsvFloat(cols, 4),
+                attackCool          = ParseCsvFloat(cols, 5),
+                silenceTime         = ParseCsvFloat(cols, 6),
+                airCount            = ParseCsvInt  (cols, 7),
+                airMaintenanceTime  = ParseCsvFloat(cols, 8),
+                airHealth           = ParseCsvFloat(cols, 9),
+                airAttackToShip     = ParseCsvFloat(cols, 10),
+                airAttackToFighter  = ParseCsvFloat(cols, 11),
+                airAttackRange      = ParseCsvFloat(cols, 12),
+                airAttackCool       = ParseCsvFloat(cols, 13),
+                airSpeed            = ParseCsvFloat(cols, 14),
+                airAmmo             = ParseCsvInt  (cols, 15),
+                airDetectRadius     = ParseCsvFloat(cols, 16),
+                airAvoidRadius      = ParseCsvFloat(cols, 17),
+                airDisrupt          = ParseCsvFloat(cols, 18),
+                critChance          = ParseCsvFloat(cols, 19),
+                critDamage          = ParseCritDamage(cols, 20),
+            };
+
+            AddModuleDataToTable(module);
+            loadedCount++;
+        }
+
+        Debug.Log($"[DataTableModule] 적 전용 무기 CSV Import 완료: {loadedCount}개");
+        EditorUtility.SetDirty(this);
+    }
+
+    // 치명타 배수 — 빈 칸/0 이하이면 1(치명타가 나도 피해 변화 없음)
+    private float ParseCritDamage(string[] cols, int idx)
+    {
+        float value = ParseCsvFloat(cols, idx);
+        if (value <= 0f) return 1f;
+        return value;
     }
 
     private float ParseCsvFloat(string[] cols, int idx) => idx < cols.Length ? ParseCsvFloat(cols[idx]) : 0f;

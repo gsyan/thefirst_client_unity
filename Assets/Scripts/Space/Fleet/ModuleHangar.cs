@@ -119,13 +119,15 @@ public class ModuleHangar : ModuleBase
         m_lastLaunchTime = 0f;
 
         // 아키타입 단위 영구 모듈강화(M6) — 이 함체의 아키타입+이 격납고 슬롯(slotIndex) 기준 레벨(최소 1)에 해당하는 티어 데이터(hangar_{level}_1)를 함재기 스탯 전반에 그대로 사용
-        int archetypeLevel = parentBody != null ? ArchetypeUpgradeLevelLookup.GetLevel(parentBody.GetHullArchetype(), EModuleType.hangar, m_moduleInfo.slotIndex) : 1;
-        ModuleData levelModuleData = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable($"hangar_{archetypeLevel}_1");
-        float levelAttackToShip = levelModuleData != null ? levelModuleData.airAttackToShip : moduleData.airAttackToShip;
-        float levelAttackToFighter = levelModuleData != null ? levelModuleData.airAttackToFighter : moduleData.airAttackToFighter;
-        float levelAirHealth = levelModuleData != null ? levelModuleData.airHealth : moduleData.airHealth;
-        float levelAirAmmo = levelModuleData != null ? levelModuleData.airAmmo : moduleData.airAmmo;
-        float levelAirDisrupt = levelModuleData != null ? levelModuleData.airDisrupt : moduleData.airDisrupt;
+        // 존 적은 강화 개념이 없어 장착한 적 전용 무기 행을 그대로 사용(ResolveWeaponLevelData)
+        int archetypeLevel = parentBody != null ? ArchetypeUpgradeLevelLookup.GetLevel(ResolveOwnerFleet(), parentBody.GetHullArchetype(), EModuleType.hangar, m_moduleInfo.slotIndex) : 1;
+        ModuleData levelModuleData = ResolveWeaponLevelData(moduleData, EModuleType.hangar, archetypeLevel);
+        float levelAttackToShip = levelModuleData.airAttackToShip;
+        float levelAttackToFighter = levelModuleData.airAttackToFighter;
+        float levelAirHealth = levelModuleData.airHealth;
+        float levelAirAmmo = levelModuleData.airAmmo;
+        float levelAirDisrupt = levelModuleData.airDisrupt;
+        SetCritStats(levelModuleData);
         float baseAttackToShip = shipAttackOverride ?? levelAttackToShip;
         float baseAttackToFighter = fighterAttackOverride ?? levelAttackToFighter;
         float baseAirHealth = airHealthOverride ?? levelAirHealth;
@@ -139,7 +141,8 @@ public class ModuleHangar : ModuleBase
         if (parentBody != null)
             SetModuleLevel(archetypeLevel);
 
-        // 함재기 데이터 풀 초기화
+        // 함재기 데이터 풀 초기화 — 재초기화(함선 편집 미리보기)에도 airCount를 넘지 않도록 비우고 채움
+        m_aircraftPool.Clear();
         int totalAircraftCount = m_airCount;
         for (int i = 0; i < totalAircraftCount; i++)
         {
@@ -147,11 +150,13 @@ public class ModuleHangar : ModuleBase
             m_aircraftPool.Add(aircraftInfo);
         }
 
-        // 런처 설정
-        LauncherAircraft launcher = gameObject.AddComponent<LauncherAircraft>();
-        launcher.InitializeLauncherAircraft(this, 0);
-        m_launchers.Add(launcher);
-
+        // 런처 설정 — 재초기화 때 런처가 중복 등록되면 발진 1회에 여러 기가 나가므로 최초 1회만 생성
+        if (m_launchers.Count == 0)
+        {
+            LauncherAircraft launcher = gameObject.AddComponent<LauncherAircraft>();
+            launcher.InitializeLauncherAircraft(this, 0);
+            m_launchers.Add(launcher);
+        }
         AutoDetectFleetInfo();
 
         // Zone 적 함선일 때 격납고 체력·함재기 공격력에 배율 적용 — 속도/사거리/탄약은 과도한 영향이라 배율 미적용
@@ -262,6 +267,16 @@ public class ModuleHangar : ModuleBase
         }
     }
 
+    // 출격 대기 기체 존재 여부(꺼내지 않음) — 발진 비용 과금 전 확인용
+    public bool HasReadyAircraft()
+    {
+        for (int i = 0; i < m_aircraftPool.Count; i++)
+        {
+            if (m_aircraftPool[i].isReady == true) return true;
+        }
+        return false;
+    }
+
     public AircraftInfo GetReadyAircraft()
     {
         for (int i = 0; i < m_aircraftPool.Count; i++)
@@ -370,12 +385,13 @@ public class ModuleHangar : ModuleBase
 
         CapabilityProfile stats = new CapabilityProfile();
         stats.totalWeapons = 1;
-        // 함재기 데이터로부터 계산
-        ModuleData moduleData = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(m_moduleInfo.moduleSubType);
+        // 강화 레벨이 반영된 1기당 대함 공격력 × 아키타입 패시브(발진 시 LauncherAircraft가 곱하는 것과 같은 값)
+        float passiveMultiplier = 1f + GetPassiveEffect(HullArchetypePassiveEffects.k_hangarAttackPercent) / 100f;
+        float attackPerAircraft = m_finalAttackToShip * passiveMultiplier;
         // airAttack은 함재기 1기당 공격력이라, 이 격납고의 총 화력(1기당 공격력 × 함재기 수)으로 환산
         // — 함선에 격납고가 여러 개면 상위(ModuleHull)에서 단순 합산되므로 여기서 미리 곱해둬야 총 화력 합산이 맞음
-        stats.airAttack = moduleData.airAttackToShip * moduleData.airCount;
-        stats.airCount = moduleData.airCount;
+        stats.airAttack = attackPerAircraft * m_airCount;
+        stats.airCount = m_airCount;
 
         return stats;
     }

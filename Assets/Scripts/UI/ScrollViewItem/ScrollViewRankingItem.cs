@@ -84,25 +84,7 @@ public class ScrollViewRankingItem : MonoBehaviour
         if (m_entry == null) return;
         SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true);
 
-        var rows = new List<(string label, string value)>
-        {
-            ("fleet_ship_count", m_entry.shipCount.ToString()),
-            ("UIFleet_Stats_Health", CommonUtility.FormatBigNumber(m_entry.statHealth)),
-            ("Simple_Attack", CommonUtility.FormatBigNumber(m_entry.statAttack)),
-        };
-        if (m_entry.statAirCount > 0)
-        {
-            rows.Add(("Simple_AirAttack", m_entry.statAirAttack.ToString()));
-            rows.Add(("Simple_AirCount", m_entry.statAirCount.ToString()));
-        }
-
-        string name = Commander.GetDisplayName(m_entry.commanderName, m_entry.commanderId);
-        string rankStr = m_entry.rank > 0 ? $"#{m_entry.rank}" : "-";
-        UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig
-        {
-            message         = $"{name}\n{rankStr}  {m_entry.score}",
-            pvpOpponentRows = rows,
-            onConfirm       = () => { },
-        });
+        // 랭킹 목록은 가볍게 유지 — 클릭할 때만 서버에서 실시간 상세(함대/빌드 데이터)를 받아 전투와 같은 규칙의 최종 스탯으로 표시
+        UIManager.Instance.ShowOpponentDetailPopup(m_entry.commanderId);
     }
 }

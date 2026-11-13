@@ -51,8 +51,16 @@ MonoBehaviour:
     m_Key: UI_TierLabel
     m_Metadata:
       m_Items: []
+  - m_Id: 99703893306245120
+    m_Key: UIModuleSlot_LockedByPassive
+    m_Metadata:
+      m_Items: []
   - m_Id: 96810128346316800
     m_Key: UI_ModuleLevelUp
+    m_Metadata:
+      m_Items: []
+  - m_Id: 100854743844126720
+    m_Key: UI_ModuleLevelUpTitle
     m_Metadata:
       m_Items: []
   - m_Id: 98045500493529088
@@ -275,6 +283,26 @@ MonoBehaviour:
     m_Key: UIPanelExplorationGrid_ChargeResourceConfirmMessage
     m_Metadata:
       m_Items: []
+  - m_Id: 100042550177300480
+    m_Key: UIPopupChargeResource_Title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 100042550244409344
+    m_Key: UIPopupChargeResource_Current
+    m_Metadata:
+      m_Items: []
+  - m_Id: 100042550244409345
+    m_Key: UIPopupChargeResource_Target
+    m_Metadata:
+      m_Items: []
+  - m_Id: 100042550244409346
+    m_Key: UIPopupChargeResource_MineralCost
+    m_Metadata:
+      m_Items: []
+  - m_Id: 100042550244409347
+    m_Key: UIPopupChargeResource_Gain
+    m_Metadata:
+      m_Items: []
   - m_Id: 76574125773946880
     m_Key: UIPanelFleet_AchievementPoint
     m_Metadata:
@@ -343,12 +371,20 @@ MonoBehaviour:
     m_Key: RewardCard_BeamAttack_Desc
     m_Metadata:
       m_Items: []
+  - m_Id: 99299614980440064
+    m_Key: RewardCard_BeamAttack_Desc_Stacked
+    m_Metadata:
+      m_Items: []
   - m_Id: 66832217635946497
     m_Key: RewardCard_BeamFireRate_Name
     m_Metadata:
       m_Items: []
   - m_Id: 66832217640140800
     m_Key: RewardCard_BeamFireRate_Desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 99299615030771712
+    m_Key: RewardCard_BeamFireRate_Desc_Stacked
     m_Metadata:
       m_Items: []
   - m_Id: 66832217640140801
@@ -359,12 +395,20 @@ MonoBehaviour:
     m_Key: RewardCard_MissileAttack_Desc
     m_Metadata:
       m_Items: []
+  - m_Id: 99299615030771713
+    m_Key: RewardCard_MissileAttack_Desc_Stacked
+    m_Metadata:
+      m_Items: []
   - m_Id: 66832217640140803
     m_Key: RewardCard_MissileFireRate_Name
     m_Metadata:
       m_Items: []
   - m_Id: 66832217640140804
     m_Key: RewardCard_MissileFireRate_Desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 99299615030771714
+    m_Key: RewardCard_MissileFireRate_Desc_Stacked
     m_Metadata:
       m_Items: []
   - m_Id: 66832217640140805
@@ -375,12 +419,20 @@ MonoBehaviour:
     m_Key: RewardCard_MissileSilence_Desc
     m_Metadata:
       m_Items: []
+  - m_Id: 99299615030771715
+    m_Key: RewardCard_MissileSilence_Desc_Stacked
+    m_Metadata:
+      m_Items: []
   - m_Id: 67415317726232576
     m_Key: RewardCard_HangarAttackToShip_Name
     m_Metadata:
       m_Items: []
   - m_Id: 67415317789147136
     m_Key: RewardCard_HangarAttackToShip_Desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 99299615030771716
+    m_Key: RewardCard_HangarAttackToShip_Desc_Stacked
     m_Metadata:
       m_Items: []
   - m_Id: 67415317789147137
@@ -391,6 +443,10 @@ MonoBehaviour:
     m_Key: RewardCard_HangarAttackToFighter_Desc
     m_Metadata:
       m_Items: []
+  - m_Id: 99299615030771717
+    m_Key: RewardCard_HangarAttackToFighter_Desc_Stacked
+    m_Metadata:
+      m_Items: []
   - m_Id: 66832217640140811
     m_Key: RewardCard_ShipHealth_Name
     m_Metadata:
@@ -399,12 +455,20 @@ MonoBehaviour:
     m_Key: RewardCard_ShipHealth_Desc
     m_Metadata:
       m_Items: []
+  - m_Id: 99299615030771718
+    m_Key: RewardCard_ShipHealth_Desc_Stacked
+    m_Metadata:
+      m_Items: []
   - m_Id: 66832217640140813
     m_Key: RewardCard_PointRate_Name
     m_Metadata:
       m_Items: []
   - m_Id: 66832217640140814
     m_Key: RewardCard_PointRate_Desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 99299615030771719
+    m_Key: RewardCard_PointRate_Desc_Stacked
     m_Metadata:
       m_Items: []
   - m_Id: 66832217640140815
@@ -513,6 +577,10 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 61660888284659713
     m_Key: UIFleet_Stats_Repair
+    m_Metadata:
+      m_Items: []
+  - m_Id: 100429028334108672
+    m_Key: UIFleet_Stats_Speed
     m_Metadata:
       m_Items: []
   - m_Id: 61660888284659714
@@ -683,6 +751,26 @@ MonoBehaviour:
     m_Key: UIAchievement_HideCompletedToggle
     m_Metadata:
       m_Items: []
+  - m_Id: 98858372916183040
+    m_Key: UIAchievement_TabDaily
+    m_Metadata:
+      m_Items: []
+  - m_Id: 98858372979097600
+    m_Key: UIAchievement_TabAchievement
+    m_Metadata:
+      m_Items: []
+  - m_Id: 98858372979097601
+    m_Key: UIDailyStreak_Title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 98858372979097602
+    m_Key: UIDailyStreak_Desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 98858372979097603
+    m_Key: UIDailyStreak_Max
+    m_Metadata:
+      m_Items: []
   - m_Id: 76604851655409664
     m_Key: UIAchievement_Category_CellClear
     m_Metadata:
@@ -739,6 +827,18 @@ MonoBehaviour:
     m_Key: UIDailyAchievement_Category_ZoneClearTotal
     m_Metadata:
       m_Items: []
+  - m_Id: 98855777619279872
+    m_Key: UIDailyAchievement_Difficulty_easy
+    m_Metadata:
+      m_Items: []
+  - m_Id: 98855777711554560
+    m_Key: UIDailyAchievement_Difficulty_normal
+    m_Metadata:
+      m_Items: []
+  - m_Id: 98855777711554561
+    m_Key: UIDailyAchievement_Difficulty_hard
+    m_Metadata:
+      m_Items: []
   - m_Id: 76279911311867904
     m_Key: UIFleet_EnemyFleetTitle
     m_Metadata:
@@ -753,6 +853,34 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 32106946823585795
     m_Key: UITabRank_ScoreRank
+    m_Metadata:
+      m_Items: []
+  - m_Id: 99764641525006336
+    m_Key: UIOpponentDetail_Level
+    m_Metadata:
+      m_Items: []
+  - m_Id: 99764641525006337
+    m_Key: UIOpponentDetail_Score
+    m_Metadata:
+      m_Items: []
+  - m_Id: 99764641525006338
+    m_Key: UIOpponentDetail_Rank
+    m_Metadata:
+      m_Items: []
+  - m_Id: 99764641525006339
+    m_Key: UIOpponentDetail_Record
+    m_Metadata:
+      m_Items: []
+  - m_Id: 99764641525006340
+    m_Key: UIOpponentDetail_RecordValue
+    m_Metadata:
+      m_Items: []
+  - m_Id: 99764641525006341
+    m_Key: UIOpponentDetail_InterceptorWithCapacity
+    m_Metadata:
+      m_Items: []
+  - m_Id: 99802339560259584
+    m_Key: UIOpponentDetail_ShieldRegen
     m_Metadata:
       m_Items: []
   - m_Id: 32106946823585796
@@ -803,6 +931,14 @@ MonoBehaviour:
     m_Key: UIPopupRewardCardSelect_MineralGainedLabel
     m_Metadata:
       m_Items: []
+  - m_Id: 99717845700444160
+    m_Key: UIPopupRewardCardSelect_ScavengedLabel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 99717845759164416
+    m_Key: UIPopupRewardCardSelect_ScoutedLabel
+    m_Metadata:
+      m_Items: []
   - m_Id: 57079978713284608
     m_Key: Simple_Attack
     m_Metadata:
@@ -841,6 +977,10 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 76121706862608384
     m_Key: module_type_interceptor
+    m_Metadata:
+      m_Items: []
+  - m_Id: 100429028392828928
+    m_Key: module_type_hull
     m_Metadata:
       m_Items: []
   - m_Id: 65472345728221184
@@ -889,6 +1029,18 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 81546886816595974
     m_Key: UIModuleReinforce_Health
+    m_Metadata:
+      m_Items: []
+  - m_Id: 100429028392828929
+    m_Key: UIModuleReinforce_Repair
+    m_Metadata:
+      m_Items: []
+  - m_Id: 100429028392828930
+    m_Key: UIModuleReinforce_TurnRate
+    m_Metadata:
+      m_Items: []
+  - m_Id: 100429028392828931
+    m_Key: UIModuleReinforce_Speed
     m_Metadata:
       m_Items: []
   - m_Id: 81595456236158976
@@ -1035,6 +1187,10 @@ MonoBehaviour:
     m_Key: UIPopupMessage_PvpCommanderLevelRequiredMessage
     m_Metadata:
       m_Items: []
+  - m_Id: 99994941937025024
+    m_Key: UIPopupMessage_FleetEmpty
+    m_Metadata:
+      m_Items: []
   - m_Id: 72096273103978497
     m_Key: CommandPower
     m_Metadata:
@@ -1173,6 +1329,134 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 79331435256610825
     m_Key: UIDailyAchievement_Desc_zone_clear_total
+    m_Metadata:
+      m_Items: []
+  - m_Id: 98855777732526080
+    m_Key: UIDailyAchievement_Name_zone_clear_specific
+    m_Metadata:
+      m_Items: []
+  - m_Id: 98855777732526081
+    m_Key: UIDailyAchievement_Desc_zone_clear_specific
+    m_Metadata:
+      m_Items: []
+  - m_Id: 98855777732526082
+    m_Key: UIDailyAchievement_Name_reward_card_purchase
+    m_Metadata:
+      m_Items: []
+  - m_Id: 98855777732526083
+    m_Key: UIDailyAchievement_Desc_reward_card_purchase
+    m_Metadata:
+      m_Items: []
+  - m_Id: 98855777732526084
+    m_Key: UIDailyAchievement_Name_mineral_earned
+    m_Metadata:
+      m_Items: []
+  - m_Id: 98855777732526085
+    m_Key: UIDailyAchievement_Desc_mineral_earned
+    m_Metadata:
+      m_Items: []
+  - m_Id: 98855777732526086
+    m_Key: UIDailyAchievement_Name_mineral_spent
+    m_Metadata:
+      m_Items: []
+  - m_Id: 98855777732526087
+    m_Key: UIDailyAchievement_Desc_mineral_spent
+    m_Metadata:
+      m_Items: []
+  - m_Id: 98855777732526090
+    m_Key: UIDailyAchievement_Name_pvp_battle
+    m_Metadata:
+      m_Items: []
+  - m_Id: 98855777732526091
+    m_Key: UIDailyAchievement_Desc_pvp_battle
+    m_Metadata:
+      m_Items: []
+  - m_Id: 98855777732526092
+    m_Key: UIDailyAchievement_Name_pvp_victory
+    m_Metadata:
+      m_Items: []
+  - m_Id: 98855777732526093
+    m_Key: UIDailyAchievement_Desc_pvp_victory
+    m_Metadata:
+      m_Items: []
+  - m_Id: 98859064854708224
+    m_Key: UIDailyAchievement_Name_enemy_kill
+    m_Metadata:
+      m_Items: []
+  - m_Id: 98859064863096832
+    m_Key: UIDailyAchievement_Desc_enemy_kill
+    m_Metadata:
+      m_Items: []
+  - m_Id: 98859064863096833
+    m_Key: UIDailyAchievement_Name_aircraft_launch
+    m_Metadata:
+      m_Items: []
+  - m_Id: 98859064863096834
+    m_Key: UIDailyAchievement_Desc_aircraft_launch
+    m_Metadata:
+      m_Items: []
+  - m_Id: 98855777732526094
+    m_Key: UIDailyAchievement_Name_ad_reward
+    m_Metadata:
+      m_Items: []
+  - m_Id: 98855777732526095
+    m_Key: UIDailyAchievement_Desc_ad_reward
+    m_Metadata:
+      m_Items: []
+  - m_Id: 100404887631560704
+    m_Key: UIDailyAchievement_Name_missile_only_clear
+    m_Metadata:
+      m_Items: []
+  - m_Id: 100404887694475264
+    m_Key: UIDailyAchievement_Desc_missile_only_clear
+    m_Metadata:
+      m_Items: []
+  - m_Id: 100404887694475265
+    m_Key: UIDailyAchievement_Name_aircraft_only_clear
+    m_Metadata:
+      m_Items: []
+  - m_Id: 100404887694475266
+    m_Key: UIDailyAchievement_Desc_aircraft_only_clear
+    m_Metadata:
+      m_Items: []
+  - m_Id: 100404887694475267
+    m_Key: UIDailyAchievement_Name_no_shield_clear
+    m_Metadata:
+      m_Items: []
+  - m_Id: 100404887694475268
+    m_Key: UIDailyAchievement_Desc_no_shield_clear
+    m_Metadata:
+      m_Items: []
+  - m_Id: 100404887694475269
+    m_Key: UIDailyAchievement_Name_shield_absorb
+    m_Metadata:
+      m_Items: []
+  - m_Id: 100404887694475270
+    m_Key: UIDailyAchievement_Desc_shield_absorb
+    m_Metadata:
+      m_Items: []
+  - m_Id: 100404887694475271
+    m_Key: UIDailyAchievement_Name_intercept
+    m_Metadata:
+      m_Items: []
+  - m_Id: 100404887694475272
+    m_Key: UIDailyAchievement_Desc_intercept
+    m_Metadata:
+      m_Items: []
+  - m_Id: 100404887694475273
+    m_Key: UIDailyAchievement_Name_fleet_repair
+    m_Metadata:
+      m_Items: []
+  - m_Id: 100404887694475274
+    m_Key: UIDailyAchievement_Desc_fleet_repair
+    m_Metadata:
+      m_Items: []
+  - m_Id: 100404887694475275
+    m_Key: UIDailyAchievement_Name_scavenge
+    m_Metadata:
+      m_Items: []
+  - m_Id: 100404887694475276
+    m_Key: UIDailyAchievement_Desc_scavenge
     m_Metadata:
       m_Items: []
   - m_Id: 78447295728582666
@@ -1495,8 +1779,8 @@ MonoBehaviour:
     m_Key: HullArchetypePassiveMission_damage_taken_cumulative
     m_Metadata:
       m_Items: []
-  - m_Id: 96848683789582338
-    m_Key: HullArchetypePassiveMission_fleet_resource_charge
+  - m_Id: 100042550261186560
+    m_Key: HullArchetypePassiveMission_fleet_resource_saved
     m_Metadata:
       m_Items: []
   - m_Id: 96848683789582339

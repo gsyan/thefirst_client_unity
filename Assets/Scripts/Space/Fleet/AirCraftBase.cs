@@ -287,6 +287,7 @@ public abstract class AircraftBase : MonoBehaviour
 
 
     private const float k_dogfightSphereRadius = 2.5f;
+    private const float k_circlingSpeedMultiplier = 0.5f; // 함선 선회/도그파이팅 중 이동속도 배율
 
     protected virtual IEnumerator Phase_Dogfight()
     {
@@ -330,7 +331,7 @@ public abstract class AircraftBase : MonoBehaviour
                 targetDir = Vector3.Lerp(targetDir, inwardDir, overRatio * 2f).normalized;
             }
 
-            SmoothRotateAndMove(targetDir, angularMultiplier: 20f, avoidance: Vector3.zero, speedMultiplier: 1f);
+            SmoothRotateAndMove(targetDir, angularMultiplier: 20f, avoidance: Vector3.zero, speedMultiplier: k_circlingSpeedMultiplier);
 
             // 공격 범위 안이면 공격
             float distance = Vector3.Distance(transform.position, currentDogfightTarget.transform.position);
@@ -426,7 +427,7 @@ public abstract class AircraftBase : MonoBehaviour
                 currentIndex = GetNextIndexByAlignment(points, currentIndex, m_currentDirection);
             }
 
-            SmoothRotateAndMove(toTarget, angularMultiplier: 20f, avoidance: Vector3.zero, speedMultiplier: 1f);
+            SmoothRotateAndMove(toTarget, angularMultiplier: 20f, avoidance: Vector3.zero, speedMultiplier: k_circlingSpeedMultiplier);
 
             // 공격 처리
             if (Time.time >= m_lastAttackTime + m_aircraftInfo.airAttackCool)
@@ -475,7 +476,7 @@ public abstract class AircraftBase : MonoBehaviour
         return savedNeighbor;
     }
 
-    const float k_returnMinSpeed = 0.5f;
+    const float k_returnMinSpeed = 0.25f;
     // 격납고 출입구 앞 접근 지점까지 ReturnPath WP를 따라 비행, 완료 시 Docking으로 전환
     protected virtual IEnumerator Phase_ReturnToApproach()
     {
@@ -669,10 +670,13 @@ public abstract class AircraftBase : MonoBehaviour
         ProjectileMissile missile = ObjectManager.Instance.m_poolManager.Get<ProjectileMissile>(m_missilePoolName);
         if (missile == null) return;
 
+        // 치명타 — 함선 공격 1회마다 소속 격납고의 치명타 확률로 판정
+        float critMultiplier = m_moduleHangar != null ? m_moduleHangar.RollCritMultiplier(HullArchetypePassiveEffects.k_hangarCritChance) : 1f;
+
         DamageInfo damageInfo = new DamageInfo
         {
             baseDamage       = m_aircraftInfo.airAttackToShip,
-            attackMultiplier = m_aircraftInfo.airAttackMultiplier,
+            attackMultiplier = m_aircraftInfo.airAttackMultiplier * critMultiplier,
             damageType       = EDamageType.Aircraft,
         };
 
@@ -695,6 +699,8 @@ public abstract class AircraftBase : MonoBehaviour
             if (explosion != null)
             {
                 explosion.transform.position = transform.position;
+                // 같은 풀을 미사일 폭발과 공유 — 직전 미사일이 바꾼 크기가 남지 않게 기본값으로
+                explosion.transform.localScale = Vector3.one;
                 explosion.PlayEffect();
             }
             SoundManager.Instance.PlayFX(EFx.Explosion_Aircraft_Missile, transform.position);

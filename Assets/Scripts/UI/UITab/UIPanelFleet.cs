@@ -62,6 +62,8 @@ public class UIPanelFleet : UIPanelBase
     private bool m_pendingIsReadOnly;
 
     private CanvasGroup m_canvasGroup;
+    private System.Func<RectTransform> m_hullUnlockSlotTargetResolver; // 등록/해제 시 같은 델리게이트 인스턴스를 써야 하므로 보관
+    private System.Func<RectTransform> m_reinforceShipManageTargetResolver;
 
     // 이 패널 좌측 경계 기준 카메라 viewport 열림 폭
     private float m_openCameraWidth;
@@ -112,6 +114,11 @@ public class UIPanelFleet : UIPanelBase
         if (m_enemyFleetManagementText != null)
             CommonUtility.SetUILocText(m_enemyFleetManagementText, "UIFleet_EnemyFleetTitle");
 
+        m_hullUnlockSlotTargetResolver = ResolveHullUnlockSlotSelectButton;
+        TutorialManager.Instance.RegisterDynamicTarget(TutorialManager.DYNAMIC_TARGET_HULL_UNLOCK_SLOT_SELECT_BUTTON, m_hullUnlockSlotTargetResolver);
+        m_reinforceShipManageTargetResolver = ResolveReinforceShipManageButton;
+        TutorialManager.Instance.RegisterDynamicTarget(TutorialManager.DYNAMIC_TARGET_REINFORCE_SHIP_MANAGE_BUTTON, m_reinforceShipManageTargetResolver);
+
         m_openCameraWidth = ComputeOpenCameraWidth();
         //CreateCameraViewportBackground();
         ApplyViewportImmediate(open: false);
@@ -121,6 +128,45 @@ public class UIPanelFleet : UIPanelBase
     {
         EventManager.Unsubscribe_CommanderLevelChanged(OnCommanderLevelChanged);
         EventManager.Unsubscribe_MyFleetStateChanged(OnMyFleetStateChanged);
+
+        TutorialManager tutorialManager = TutorialManager.Instance; // 종료 중이면 null
+        if (tutorialManager != null)
+        {
+            tutorialManager.UnregisterDynamicTarget(TutorialManager.DYNAMIC_TARGET_HULL_UNLOCK_SLOT_SELECT_BUTTON, m_hullUnlockSlotTargetResolver);
+            tutorialManager.UnregisterDynamicTarget(TutorialManager.DYNAMIC_TARGET_REINFORCE_SHIP_MANAGE_BUTTON, m_reinforceShipManageTargetResolver);
+        }
+    }
+
+    // 함선 언락 튜토리얼 대상 슬롯 행의 함체 선택 버튼 rect — 행이 아직 바인딩 전이면 null(다음 프레임 재시도)
+    private RectTransform ResolveHullUnlockSlotSelectButton()
+    {
+        UIPlacedShipRow row = FindPlacedShipRowForTutorial(TutorialManager.Instance.GetHullUnlockSlotIndex());
+        if (row == null) return null;
+        return row.GetShipTypeSelectButtonRect();
+    }
+
+    // 모듈 강화 튜토리얼 대상 함선 행의 관리 버튼 rect
+    private RectTransform ResolveReinforceShipManageButton()
+    {
+        UIPlacedShipRow row = FindPlacedShipRowForTutorial(TutorialManager.Instance.GetReinforceFleetSlotIndex());
+        if (row == null) return null;
+        return row.GetManageButtonRect();
+    }
+
+    // 슬롯 행이 보이도록 스크롤한 뒤 그 행을 찾아 돌려줌
+    private UIPlacedShipRow FindPlacedShipRowForTutorial(int slotIndex)
+    {
+        if (m_placedShipsScrollView == null) return null;
+
+        m_placedShipsScrollView.EnsureVisible(slotIndex);
+
+        UIPlacedShipRow result = null;
+        m_placedShipsScrollView.ForEachVisibleItem((dataIndex, rowObject) =>
+        {
+            if (dataIndex != slotIndex) return;
+            result = rowObject.GetComponent<UIPlacedShipRow>();
+        });
+        return result;
     }
 
     // 함대편성 UI가 열려있는 도중 전투가 시작/종료되면 함체 교체 버튼 활성 상태를 즉시 갱신
@@ -605,7 +651,9 @@ public class UIPanelFleet : UIPanelBase
         PlacedShipView selectedShip = placedShips[m_selectedSlotIndex];
         // 읽기전용(적 함대 열람)이 아닐 때만 보상카드 지속버프 반영 — ObjectManager.SpawnFleetFromPreset()의 team/source 판정과 동일한 기준
         RewardCardSessionState applyBuffs = m_isReadOnlyMode == false ? ObjectManager.Instance.m_rewardCardSessionState : null;
-        m_statEntries = ShipStatGaugeBuilder.Build(selectedHull, selectedShip.modules, selectedShip.healthMultiplier, selectedShip.attackMultiplier, applyBuffs);
+        // 아키타입 강화 레벨도 같은 기준 — 내 함대일 때만 반영(적 함대는 강화 없음)
+        string upgradeArchetype = m_isReadOnlyMode == false ? selectedHull.hullArchetype : null;
+        m_statEntries = ShipStatGaugeBuilder.Build(selectedHull, selectedShip.modules, selectedShip.healthMultiplier, selectedShip.attackMultiplier, applyBuffs, upgradeArchetype: upgradeArchetype);
         RefreshModuleStatusIcons(selectedShip.hullSubType, selectedShip.modules);
 
         // 존런 진행 중인 내 함대는 체력/실드 게이지를 정적 최대치가 아니라 3D 씬의 실제 현재값(현재/최대)으로 덮어씀
@@ -1029,14 +1077,6 @@ public class UIPanelFleet : UIPanelBase
             return;
         }
 
-        // 지크프리트 함대(서버 미등록)는 서버가 모르는 슬롯이라 PlaceFleetShip을 호출하면 항상 실패함 — 로컬 반영만으로 끝냄
-        if (ObjectManager.Instance.IsSiegfriedFleetActive() == true)
-        {
-            CommitHullPlacement(slotIndex, hullSubType, slotIsFront);
-            onProcessed(true);
-            return;
-        }
-
         NetworkManager.Instance.PlaceFleetShip(new FleetPlaceShipRequest
         {
             slotIndex = slotIndex,
@@ -1062,14 +1102,6 @@ public class UIPanelFleet : UIPanelBase
         FleetComposition composition = DataManager.Instance.m_currentFleetComposition;
         if (composition == null)
         {
-            onProcessed(true);
-            return;
-        }
-
-        // 지크프리트 함대(서버 미등록)는 서버가 모르는 슬롯이라 RemoveFleetShip을 호출하면 항상 실패함 — 로컬 반영만으로 끝냄
-        if (ObjectManager.Instance.IsSiegfriedFleetActive() == true)
-        {
-            CommitShipRemoval(slotIndex);
             onProcessed(true);
             return;
         }

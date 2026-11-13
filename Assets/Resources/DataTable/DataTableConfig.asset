@@ -25,13 +25,19 @@ MonoBehaviour:
       pvpRankScoreInit: 1000
       pvpRankScorePenalty: 1
     tactic:
-      tacticRepairCost: 10
-      tacticBeamCost: 1
-      tacticMissileCost: 1
-      tacticHangerCost: 1
-      tacticShieldCost: 10
-      tacticInterceptorCost: 10
-      mineralToResourceRatio: 1
+      tacticRepairCost: 100
+      tacticBeamCost: 10
+      tacticMissileCost: 10
+      tacticHangerCost: 10
+      tacticShieldCost: 100
+      tacticInterceptorCost: 100
+      mineralToResourceRatio: 10
+      berserkerThreshold1Percent: 50
+      berserkerThreshold2Percent: 30
+      berserkerThreshold3Percent: 10
+      berserkerAttackMultiplier1: 2
+      berserkerAttackMultiplier2: 3
+      berserkerAttackMultiplier3: 4
     exploration:
       rewardCardRerollChargeMax: 10
       rewardCardRerollChargeRegenMinutes: 5
@@ -63,3 +69,24 @@ MonoBehaviour:
       baseAchievementPointCost: 500
       achievementPointCostPerLevel: 500
       maxLevel: 10
+    dailyQuest:
+      streakPercentPerDay: 5
+      streakMaxDays: 10
+      pvpQuestMinShipCount: 2
+    scavenge:
+      baseChancePercent: 10
+      mineralMin: 10
+      mineralMax: 50
+      mineralStep: 10
+    scout:
+      intervalSeconds: 3
+      mineralMin: 10
+      mineralMax: 50
+      mineralStep: 10
+    supportAbility:
+      tickSeconds: 1
+      repairCostPerTick: 10
+      repairReleaseRatioPercent: 80
+      shieldChargeBonusPercent: 100
+      shieldChargeCostPerTick: 10
+      shieldChargeReleaseRatioPercent: 80

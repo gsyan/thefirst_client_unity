@@ -1,0 +1,3 @@
+stepId,message,triggerType,targetPanelName,targetUIId,showArrow,arrowDirection,textBoxOffsetX,textBoxOffsetY,textBoxSizeX,textBoxSizeY,textBoxPositionX,textBoxPositionY,autoNextDelay,preActionPanelName,preActionTabName,conditionType,conditionThreshold,conditionCount,targetModuleType
+step1,Tutorial_AbandonRun_Button,AnyClick,UIPanelExplorationGrid,AbandonRunButton,True,Auto,0,0,0,0,0,-500,0,,,None,90,3,none
+step2,Tutorial_AbandonRun_Escape,AnyClick,,,False,Auto,0,0,0,0,0,-500,0,,,None,90,3,none

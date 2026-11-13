@@ -9,9 +9,6 @@ public class TutorialManager : MonoSingleton<TutorialManager>
     private const string TUTORIAL_UI_PATH = "Prefabs/UI/Tutorial/UITutorial";
     private const string PROGRESS_CATEGORY = "tutorial";
 
-    // 모듈 미네랄 강화 모드 언락 — 이 튜토리얼의 완료 여부 자체를 언락 플래그로 사용 (별도 서버 필드 불필요)
-    public const string MINERAL_MODE_UNLOCK_TUTORIAL_ID = "Tutorial_MineralModeUnlock";
-
     // Branch 스텝의 targetUIId에 이 값을 쓰면 점프 대신 튜토리얼을 완료 처리
     public const string BRANCH_JUMP_END = "END";
 
@@ -19,26 +16,28 @@ public class TutorialManager : MonoSingleton<TutorialManager>
     // 데이터(잠금 여부 등)에 따라 대상 행이 달라지는 스텝용. 예: 언락 안 된 최저 티어 함체의 언락 버튼
     public const string DYNAMIC_TARGET_LOWEST_LOCKED_HULL_UNLOCK_BUTTON = "@LowestLockedHullUnlockButton";
 
-    // 함체 언락 안내 — 업적포인트가 티어4 함체 언락 비용에 도달한 뒤 업적 패널이 닫힐 때 TryStartHullUnlockTutorial()이 대기 등록, TryStartPendingTutorial()이 시작시킴
+    // 함선 언락/배치해제/배치 안내 — 함대 패널을 열었을 때 CanStartHullUnlockTutorial() 조건을 만족하면 시작
     public const string HULL_UNLOCK_TUTORIAL_ID = "Tutorial_HullUnlock";
-    private const int HULL_UNLOCK_TUTORIAL_MIN_ACHIEVEMENT_POINT = 500; // DataTableModule 티어4 함체의 unlockAchievementPointCost
+    // 모듈 강화 안내 — 함대 패널을 열었을 때 CanStartModuleReinforceTutorial() 조건(업적포인트로 강화 가능한 항목 존재)을 만족하면 시작
+    public const string MODULE_REINFORCE_TUTORIAL_ID = "Tutorial_ModuleReinforce";
+    public const string DYNAMIC_TARGET_REINFORCE_SHIP_MANAGE_BUTTON = "@ReinforceShipManageButton";       // UIPanelFleet — 강화 대상 함선 행의 관리 버튼
+    public const string DYNAMIC_TARGET_REINFORCE_MODULE_MANAGE_BUTTON = "@ReinforceModuleManageButton";   // UIShipLoadoutEditorView — 강화 대상 모듈 행의 관리 버튼
+    public const string DYNAMIC_TARGET_REINFORCE_LEVEL_UP_BUTTON = "@ReinforceLevelUpButton";             // UIPopupModuleReinforce — 강화 버튼
+    public const string DYNAMIC_TARGET_REINFORCE_CLOSE_BUTTON = "@ReinforceCloseButton";                  // UIPopupModuleReinforce — 닫기 버튼
+    public const string DYNAMIC_TARGET_HULL_UNLOCK_SLOT_SELECT_BUTTON = "@HullUnlockSlotSelectButton"; // UIPanelFleet — 튜토리얼 대상 슬롯의 함체 선택 버튼
+    public const string DYNAMIC_TARGET_UNPLACE_CURRENT_HULL_BUTTON = "@UnplaceCurrentHullButton";   // UIHullPickerView — 슬롯에 배치된 함체를 선택해 배치해제 버튼을 가리킴
+    public const string DYNAMIC_TARGET_PLACE_UNLOCKED_HULL_BUTTON = "@PlaceUnlockedHullButton";     // UIHullPickerView — 언락된 최저 티어 함체를 선택해 배치 버튼을 가리킴
 
     public const string DYNAMIC_TARGET_LOADOUT_CONFIRM_BUTTON = "@LoadoutConfirmButton";           // UIShipLoadoutEditorView — 확인 버튼
-
-    // 순서대로 진행되는 온보딩 튜토리얼 — ObjectManager.RunTutorialSequence가 이 순서대로 재생하고,
-    // 스킵 버튼 클릭 시(SkipTutorial) 이 목록 전체를 한 번에 완료 처리한 뒤 노말 플레이로 전환함
-    public static readonly string[] ONBOARDING_TUTORIAL_SEQUENCE =
-    {
-        "Tutorial_FirstPlay",
-        "Tutorial_FirstPlay_ManageShip",
-        "Tutorial_FirstPlay_Battle",
-        "Tutorial_FirstPlay_Complete"
-    };
 
     private TutorialData m_currentTutorial;
     private int m_currentStepIndex;
     private bool m_isPlaying;
     private bool m_isServerLoaded;
+    private int m_hullUnlockSlotIndex;
+    private int m_reinforceFleetSlotIndex;
+    private EModuleType m_reinforceModuleType;
+    private int m_reinforceCategorySlotIndex;
     private TutorialUI m_tutorialUI;
     private HashSet<string> m_completedTutorials = new HashSet<string>();
     private System.Action<string> m_onCompleteCallback;
@@ -51,13 +50,14 @@ public class TutorialManager : MonoSingleton<TutorialManager>
     private float m_cameraZoomAccumulated;
     private float m_lastCameraZoom;
     private SpaceShip m_pendingNewShip; // ShipArrivedAtFormation 조건이 대기할 함선 (UITabFleet에서 함선 생성 직후 등록)
-    private TutorialBattleCinematic m_battleCinematic; // Tutorial_FirstPlay_Battle/Complete 전용 전투 연출(웨이브/탈출함선/기함폭발) 상태 및 로직 — OnInitialize에서 생성
     private System.Action m_zoneBattleEndHandler; // WaitForZoneBattleEnd 조건용(그리드 복귀 시점 대기) — StopTutorialCondition에서 해제
     // UI 상호작용 잠금 해제 전용 — 스텝 전환(ZoneCellReturnedToGrid, 보상카드 팝업까지 처리된 뒤)보다 먼저, 실제 전투가
     // 끝나는 즉시(ZoneStageBattleEnd) 풀어야 함. 안 그러면 보상카드 팝업 처리하는 동안 UIPanelBattle이 계속 잠긴 채로
     // 남아있다가(그 시점엔 이미 안 보여서 못 느끼지만) 다음 실전투 때도 잠긴 채로 다시 나타나는 문제가 있었음
     private System.Action<bool> m_zoneBattleEndUnlockHandler;
     private System.Action<GridCell3D> m_gridCellClickedHandler; // WaitForGridCellClicked 조건용 — StopTutorialCondition에서 해제
+    private System.Action<bool> m_rewardCardDefeatHandler; // WaitForRewardCardPopup 조건용(패배 시 튜토리얼 종료 + UI 잠금 해제) — StopTutorialCondition에서 해제
+    private int m_rewardCardPopupWaitStepIndex = -1; // WaitForRewardCardPopup을 기다리는 스텝 인덱스, 대기 중이 아니면 -1
 
     // Branch 스텝 조건 평가자 — 해당 UI 컴포넌트가 Awake에서 등록, OnDestroy에서 해제(로그아웃 초기화 대상 아님)
     private readonly Dictionary<ETutorialConditionType, System.Func<bool>> m_branchConditionEvaluators = new Dictionary<ETutorialConditionType, System.Func<bool>>();
@@ -65,16 +65,17 @@ public class TutorialManager : MonoSingleton<TutorialManager>
     // '@' 동적 타겟 리졸버 — 해당 UI 컴포넌트가 Awake에서 등록, OnDestroy에서 해제(로그아웃 초기화 대상 아님)
     private readonly Dictionary<string, System.Func<RectTransform>> m_dynamicTargetResolvers = new Dictionary<string, System.Func<RectTransform>>();
 
-    // 조건형 튜토리얼(함체 언락) 대기 상태 — 시작 조건이 갖춰질 때까지 보류
-    private readonly List<string> m_pendingTutorialIds = new List<string>();
-    private bool m_isPendingTutorialStartScheduled;
+    // 패널 이름 → 그 패널을 처음 열 때 시작할 튜토리얼 id
+    private readonly Dictionary<string, string[]> m_panelFirstOpenTutorialIds = new Dictionary<string, string[]>
+    {
+        { "UIPanelCommander", new string[] { "Tutorial_CommanderPanel" } },
+        { "UIPanelRank", new string[] { "Tutorial_RankPanel" } },
+        { "UIPanelExplorationGrid", new string[] { "Tutorial_Exploration" } },
+        { "UIPanelFleet", new string[] { MODULE_REINFORCE_TUTORIAL_ID, HULL_UNLOCK_TUTORIAL_ID, "Tutorial_Tactics" } }, // 조건 없는 설명형(Tactics)은 항상 마지막 — 조건형이 먼저 검사되도록
+    };
 
     // 튜토리얼 완료 이벤트 (tutorialId 전달)
     public event System.Action<string> OnTutorialCompleted;
-
-    // 스킵 버튼으로 튜토리얼을 도중에 끝낼 때 발생 — 온보딩 시퀀스를 진행하던 쪽(ObjectManager)이
-    // 이 이벤트를 받아 다음 튜토리얼로 이어가지 않고 바로 노말 플레이로 전환하도록 함
-    public event System.Action OnTutorialSkipRequested;
 
     protected override bool ShouldDontDestroyOnLoad => true;
 
@@ -82,7 +83,6 @@ public class TutorialManager : MonoSingleton<TutorialManager>
     {
         EventManager.Subscribe_ConsumeAnyClick(ConsumeAnyClick);
         EventManager.Subscribe_CurrentPanelChanged(OnCurrentPanelChanged);
-        m_battleCinematic = new TutorialBattleCinematic(this);
     }
 
     // 로그아웃 시 호출 — TutorialManager는 DontDestroyOnLoad라 로그아웃해도 인스턴스가 안 죽어서
@@ -91,7 +91,6 @@ public class TutorialManager : MonoSingleton<TutorialManager>
     public void ResetForLogout()
     {
         StopTutorialCondition();
-        CleanupTutorialCombatArtifacts();
 
         m_currentTutorial = null;
         m_currentStepIndex = 0;
@@ -109,8 +108,6 @@ public class TutorialManager : MonoSingleton<TutorialManager>
 
         m_completedTutorials.Clear();
         m_isServerLoaded = false;
-        m_pendingTutorialIds.Clear();
-        m_isPendingTutorialStartScheduled = false;
 
         // EventManager.UnsubscribeAll()로 지워진 이 매니저 자신의 구독 복구 —
         // 먼저 해제 후 재구독해야 호출 시점과 무관하게 항상 구독이 정확히 1개만 남음(중복 구독 방지)
@@ -164,19 +161,6 @@ public class TutorialManager : MonoSingleton<TutorialManager>
         }
     }
 
-    // 모듈 미네랄 강화 모드 언락 여부 — 이미 언락됐으면 true
-    public bool IsMineralModeUnlocked()
-    {
-        return IsTutorialCompleted(MINERAL_MODE_UNLOCK_TUTORIAL_ID);
-    }
-
-    // 특정 스테이지 이후 전멸/후퇴 시 호출 — 아직 언락 전이면 설명 튜토리얼 시작(완료되면 그 자체가 언락 플래그)
-    public void TryUnlockMineralMode()
-    {
-        if (IsMineralModeUnlocked() == true) return;
-        StartTutorial(MINERAL_MODE_UNLOCK_TUTORIAL_ID);
-    }
-
     // 해당 조건을 소유한 UI가 Awake에서 등록/OnDestroy에서 해제 — 등록된 평가자가 없으면 거짓으로 처리(직선 진행)
     public void RegisterBranchCondition(ETutorialConditionType conditionType, System.Func<bool> evaluator)
     {
@@ -194,6 +178,7 @@ public class TutorialManager : MonoSingleton<TutorialManager>
     private bool EvaluateBranchCondition(ETutorialConditionType conditionType)
     {
         if (conditionType == ETutorialConditionType.Always) return true;
+        if (conditionType == ETutorialConditionType.ExplorationRunActive) return ObjectManager.Instance.IsExplorationRunActive();
         if (m_branchConditionEvaluators.TryGetValue(conditionType, out System.Func<bool> evaluator) == false) return false;
 
         return evaluator();
@@ -219,92 +204,184 @@ public class TutorialManager : MonoSingleton<TutorialManager>
         return resolver();
     }
 
-    // 업적 패널이 닫히는 순간 호출 — 보유 업적포인트가 티어4 함체 언락 비용 이상이고 아직 안 본 경우 대기 등록
-    public void TryStartHullUnlockTutorial(int achievementPoint)
-    {
-        if (achievementPoint < HULL_UNLOCK_TUTORIAL_MIN_ACHIEVEMENT_POINT) return;
-        RequestPendingTutorial(HULL_UNLOCK_TUTORIAL_ID);
-    }
-
-    // 로그인 후 메인 진입 시 호출 — 조건(업적포인트/함선 슬롯)은 만족했지만 튜토리얼을 끝까지 못 본 채 종료·재접속한 경우 다시 대기 등록
-    public void RestoreConditionTutorials()
+    // 함선 언락 안내 시작 조건 — 아직 직접 언락한 함체가 없고, 함선이 배치된 슬롯 중 하나를 비웠다고 가정했을 때
+    // 지휘력·업적포인트 모두 감당되는 언락 가능 함체(레벨1 행 기준)가 있을 때. 만족하는 첫 슬롯을 튜토리얼 대상 슬롯으로 기록
+    private bool CanStartHullUnlockTutorial()
     {
         Commander commander = DataManager.Instance.m_currentCommander;
-        if (commander == null) return;
+        FleetComposition composition = DataManager.Instance.m_currentFleetComposition;
+        if (commander == null || composition == null) return false;
+        if (commander.HasAnyUnlockedHull() == true) return false;
 
         int achievementPoint = commander.GetAchievementPoint();
-        if (achievementPoint >= HULL_UNLOCK_TUTORIAL_MIN_ACHIEVEMENT_POINT)
-            RequestPendingTutorial(HULL_UNLOCK_TUTORIAL_ID);
-    }
+        int maxCommandPower = composition.GetMaxCommandPower();
+        int usedCommandPower = composition.GetUsedCommandPower();
+        List<FleetSlotEntry> placedShips = composition.GetPlacedShips();
+        List<ModuleData> hulls = DataManager.Instance.m_dataTableModule.HullModules.modules;
 
-    // 조건형 튜토리얼이 이미 필요 없어진 상태인지 — 함체 언락은 하나라도 언락했으면, 함선 슬롯은 빈 슬롯이 없으면 안내 대상이 아님
-    private bool IsConditionTutorialObsolete(string tutorialId)
-    {
-        if (tutorialId == HULL_UNLOCK_TUTORIAL_ID)
+        for (int slotIndex = 0; slotIndex < placedShips.Count; slotIndex++)
         {
-            Commander commander = DataManager.Instance.m_currentCommander;
-            return commander != null && commander.HasAnyUnlockedHull() == true;
+            if (string.IsNullOrEmpty(placedShips[slotIndex].hullSubType) == true) continue;
+
+            int usedCommandPowerExcludingSlot = usedCommandPower - composition.GetSlotCommandCost(slotIndex);
+            for (int i = 0; i < hulls.Count; i++)
+            {
+                ModuleData hull = hulls[i];
+                if (hull.isEnemyOnly == true) continue;
+                if (hull.moduleSubType.EndsWith("_1") == false) continue;
+                if (CommonUtility.ParseTier(hull.moduleSubType) <= 1) continue;
+
+                bool isAffordableByAchievementPoint = hull.unlockAchievementPointCost <= achievementPoint;
+                bool isAffordableByCommandPower = usedCommandPowerExcludingSlot + hull.statPoint <= maxCommandPower;
+                if (isAffordableByAchievementPoint == false || isAffordableByCommandPower == false) continue;
+
+                m_hullUnlockSlotIndex = slotIndex;
+                return true;
+            }
         }
 
         return false;
     }
 
+    // 모듈 강화 안내 시작 조건 — 배치된 함선들의 강화 항목(함체/빔/미사일/격납고/해금된 실드·요격체) 중
+    // 다음 레벨 비용을 보유 업적포인트로 감당할 수 있는 항목이 있을 때. 그중 가장 싼 항목을 튜토리얼 대상으로 기록
+    private bool CanStartModuleReinforceTutorial()
+    {
+        Commander commander = DataManager.Instance.m_currentCommander;
+        FleetComposition composition = DataManager.Instance.m_currentFleetComposition;
+        if (commander == null || composition == null) return false;
+
+        int achievementPoint = commander.GetAchievementPoint();
+        int cheapestCost = int.MaxValue;
+        List<FleetSlotEntry> placedShips = composition.GetPlacedShips();
+
+        for (int slotIndex = 0; slotIndex < placedShips.Count; slotIndex++)
+        {
+            string hullSubType = placedShips[slotIndex].hullSubType;
+            if (string.IsNullOrEmpty(hullSubType) == true) continue;
+
+            ModuleData hullData = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(hullSubType);
+            if (hullData == null || string.IsNullOrEmpty(hullData.hullArchetype) == true) continue;
+
+            int[] maxSlots = FleetComposition.ParseMaxSlotsFromHullSubType(hullSubType); // [beam, missile, hangar, shield, interceptor]
+            TryPickCheaperReinforceTarget(slotIndex, hullSubType, hullData.hullArchetype, EModuleType.hull, 1, achievementPoint, ref cheapestCost);
+            TryPickCheaperReinforceTarget(slotIndex, hullSubType, hullData.hullArchetype, EModuleType.beam, maxSlots[0], achievementPoint, ref cheapestCost);
+            TryPickCheaperReinforceTarget(slotIndex, hullSubType, hullData.hullArchetype, EModuleType.missile, maxSlots[1], achievementPoint, ref cheapestCost);
+            TryPickCheaperReinforceTarget(slotIndex, hullSubType, hullData.hullArchetype, EModuleType.hangar, maxSlots[2], achievementPoint, ref cheapestCost);
+            TryPickCheaperReinforceTarget(slotIndex, hullSubType, hullData.hullArchetype, EModuleType.shield, maxSlots[3] > 0 ? 1 : 0, achievementPoint, ref cheapestCost);
+            TryPickCheaperReinforceTarget(slotIndex, hullSubType, hullData.hullArchetype, EModuleType.interceptor, maxSlots[4] > 0 ? 1 : 0, achievementPoint, ref cheapestCost);
+        }
+
+        return cheapestCost != int.MaxValue;
+    }
+
+    // moduleType의 slotCount개 슬롯 각각의 다음 레벨 비용을 확인해, 감당 가능하고 지금까지의 최저가보다 싸면 튜토리얼 대상으로 기록
+    private void TryPickCheaperReinforceTarget(int fleetSlotIndex, string hullSubType, string hullArchetype, EModuleType moduleType, int slotCount, int achievementPoint, ref int cheapestCost)
+    {
+        if (HullArchetypePassiveUnlock.IsModuleUnlocked(hullArchetype, moduleType) == false) return;
+
+        DataTableModule moduleTable = DataManager.Instance.m_dataTableModule;
+        for (int categorySlotIndex = 0; categorySlotIndex < slotCount; categorySlotIndex++)
+        {
+            int nextLevel = ArchetypeUpgradeLevelLookup.GetLevel(hullArchetype, moduleType, categorySlotIndex) + 1;
+            string nextLevelKey = moduleType == EModuleType.hull
+                ? CommonUtility.BuildHullArchetypeLevelKey(hullSubType, nextLevel)
+                : $"{moduleType}_{nextLevel}_1";
+
+            ModuleData nextLevelData = moduleTable.GetModuleDataFromTable(nextLevelKey);
+            if (nextLevelData == null) continue; // 최대 레벨
+
+            int cost = nextLevelData.unlockAchievementPointCost;
+            if (cost > achievementPoint) continue;
+            if (cost >= cheapestCost) continue;
+
+            cheapestCost = cost;
+            m_reinforceFleetSlotIndex = fleetSlotIndex;
+            m_reinforceModuleType = moduleType;
+            m_reinforceCategorySlotIndex = categorySlotIndex;
+        }
+    }
+
+    // 모듈 강화 튜토리얼 대상 — CanStartModuleReinforceTutorial이 시작 직전에 기록
+    public int GetReinforceFleetSlotIndex() { return m_reinforceFleetSlotIndex; }
+    public EModuleType GetReinforceModuleType() { return m_reinforceModuleType; }
+    public int GetReinforceCategorySlotIndex() { return m_reinforceCategorySlotIndex; }
+
+    // 함선 언락 튜토리얼이 배치해제/재배치 대상으로 삼는 슬롯 — CanStartHullUnlockTutorial이 시작 직전에 기록
+    public int GetHullUnlockSlotIndex()
+    {
+        return m_hullUnlockSlotIndex;
+    }
+
+    // 튜토리얼별 시작 조건 — 조건이 없는 튜토리얼은 항상 true
+    private bool IsPanelFirstOpenConditionMet(string tutorialId)
+    {
+        if (tutorialId == HULL_UNLOCK_TUTORIAL_ID)
+            return CanStartHullUnlockTutorial();
+        if (tutorialId == MODULE_REINFORCE_TUTORIAL_ID)
+            return CanStartModuleReinforceTutorial();
+
+        return true;
+    }
+
     private void OnCurrentPanelChanged(string panelName)
     {
-        TryStartPendingTutorial();
+        TryStartPanelFirstOpenTutorial(panelName);
     }
 
-    // 시작 조건이 갖춰질 때까지 보류할 튜토리얼 등록 — 이미 완료했거나 이미 등록된 id는 무시
-    private void RequestPendingTutorial(string tutorialId)
+    // 패널을 처음 열 때 시작하는 설명 튜토리얼 — 서버 진행도를 아직 못 받았거나, 이미 완료했거나, 다른 튜토리얼이 재생 중이거나, 시작 조건이 안 맞으면 시작하지 않음(다음에 열 때 다시 확인)
+    // 한 패널에 튜토리얼이 여러 개면 배열 앞쪽부터 검사해 조건을 만족하는 첫 번째만 시작
+    private void TryStartPanelFirstOpenTutorial(string panelName)
     {
-        bool isCompleted = IsTutorialCompleted(tutorialId);
-        bool isObsolete = IsConditionTutorialObsolete(tutorialId);
-        if (isCompleted == true) return;
-        if (isObsolete == true) return;
-        if (m_pendingTutorialIds.Contains(tutorialId) == false)
-            m_pendingTutorialIds.Add(tutorialId);
+        if (m_panelFirstOpenTutorialIds.TryGetValue(panelName, out string[] tutorialIds) == false) return;
+        if (m_isServerLoaded == false) return;
+        if (m_isPlaying == true) return;
 
-        TryStartPendingTutorial();
+        for (int i = 0; i < tutorialIds.Length; i++)
+        {
+            string tutorialId = tutorialIds[i];
+            if (IsTutorialCompleted(tutorialId) == true) continue;
+            if (IsPanelFirstOpenConditionMet(tutorialId) == false) continue;
+
+            StartCoroutine(StartPanelFirstOpenTutorialDeferred(panelName, tutorialId));
+            return;
+        }
     }
 
-    // 대기 중인 튜토리얼의 시작 조건 확인 — 팝업 닫힘 / 패널 변경 / 다른 튜토리얼 종료 시점마다 재확인됨
-    private void TryStartPendingTutorial()
-    {
-        if (CanStartPendingTutorial() == false) return;
-        if (m_isPendingTutorialStartScheduled == true) return;
-
-        m_isPendingTutorialStartScheduled = true;
-        StartCoroutine(StartPendingTutorialDeferred());
-    }
-
-    private bool CanStartPendingTutorial()
-    {
-        if (m_pendingTutorialIds.Count == 0) return false;
-
-        int panelStackDepth = UIManager.Instance.GetPanelStackDepth();
-        bool isMainPanelOnTop = panelStackDepth <= 1;
-        if (m_isPlaying == true) return false;
-
-        return isMainPanelOnTop;
-    }
-
-    // 패널 전환/팝업 정리가 끝난 뒤 시작하도록 한 프레임 미룬 다음 조건을 다시 확인
-    private IEnumerator StartPendingTutorialDeferred()
+    // 패널 열림 직후 레이아웃이 자리 잡도록 2프레임 미룬 뒤, 그 패널이 아직 맨 위일 때만 시작
+    private IEnumerator StartPanelFirstOpenTutorialDeferred(string panelName, string tutorialId)
     {
         yield return null;
-        m_isPendingTutorialStartScheduled = false;
+        yield return null;
 
-        if (CanStartPendingTutorial() == false) yield break;
+        if (m_isPlaying == true) yield break;
+        if (IsTutorialCompleted(tutorialId) == true) yield break;
+        if (UIManager.Instance.GetTopPanelName() != panelName) yield break;
 
-        string tutorialId = m_pendingTutorialIds[0];
-        m_pendingTutorialIds.RemoveAt(0);
+        StartTutorial(tutorialId);
+    }
 
-        // 대기하는 사이 안내할 필요가 없어졌으면(이미 언락/이미 슬롯 채움) 시작하지 않고 폐기
-        if (IsConditionTutorialObsolete(tutorialId) == false)
-            StartTutorial(tutorialId);
+    // 패널 첫 오픈이 아니라 특정 UI가 나타나는 시점(팝업 표시, 버튼 활성화 등)에 호출 — 서버 진행도 미수신/이미 완료/다른 튜토리얼 재생 중이면 시작하지 않음.
+    // requiredTopPanelName이 비어있지 않으면 시작 시점에 그 패널이 맨 위일 때만 시작(팝업은 패널 스택에 없으므로 빈 값)
+    public void TryStartTutorialDeferred(string tutorialId, string requiredTopPanelName = "")
+    {
+        if (m_isServerLoaded == false) return;
+        if (m_isPlaying == true) return;
+        if (IsTutorialCompleted(tutorialId) == true) return;
 
-        // 완료돼 있던 id라 StartTutorial이 바로 끝났거나 아직 대기열이 남았으면 이어서 확인
-        TryStartPendingTutorial();
+        StartCoroutine(StartTutorialDeferred(tutorialId, requiredTopPanelName));
+    }
+
+    private IEnumerator StartTutorialDeferred(string tutorialId, string requiredTopPanelName)
+    {
+        yield return null;
+        yield return null;
+
+        if (m_isPlaying == true) yield break;
+        if (IsTutorialCompleted(tutorialId) == true) yield break;
+        if (string.IsNullOrEmpty(requiredTopPanelName) == false && UIManager.Instance.GetTopPanelName() != requiredTopPanelName) yield break;
+
+        StartTutorial(tutorialId);
     }
 
     // 현재 진행 중인 튜토리얼이 스킵 버튼을 숨기도록 설정됐는지 — TutorialUI가 스킵 버튼 표시 여부를 결정할 때 사용
@@ -335,14 +412,6 @@ public class TutorialManager : MonoSingleton<TutorialManager>
             return;
         }
 
-        // 함대편성 패널이 열린 채로 전투 연출이 시작되면 화면을 가리므로, 시작 시점에 미리 닫아둠(기존엔 전투 직전까지 열려있었음)
-        if (tutorialId == "Tutorial_FirstPlay_Battle")
-            UIManager.Instance.ShowMainPanel();
-
-        // 업적 패널이 닫힌 직후 발동 — 1스텝이 가리키는 FleetButton이 보이도록 메인 UI로 복귀시킨 뒤 시작
-        if (tutorialId == HULL_UNLOCK_TUTORIAL_ID)
-            UIManager.Instance.ShowMainPanel();
-
         m_currentStepIndex = 0;
         m_isPlaying = true;
         EnsureTutorialUI();
@@ -370,43 +439,7 @@ public class TutorialManager : MonoSingleton<TutorialManager>
     {
         if (!m_isPlaying) return;
         StopTutorialCondition();
-        CleanupTutorialCombatArtifacts();
-
-        string tutorialId = m_currentTutorial != null ? m_currentTutorial.tutorialId : null;
-        bool isOnboardingTutorial = System.Array.IndexOf(ONBOARDING_TUTORIAL_SEQUENCE, tutorialId) >= 0;
-        if (isOnboardingTutorial == true)
-        {
-            SkipOnboardingSequence();
-            return;
-        }
-
         CompleteTutorial();
-    }
-
-    // Tutorial_FirstPlay* 온보딩 시퀀스는 어느 단계에서 스킵하든 전부 완료 처리하고 곧바로 노말 플레이로 전환
-    private void SkipOnboardingSequence()
-    {
-        foreach (string tutorialId in ONBOARDING_TUTORIAL_SEQUENCE)
-            CompleteTutorialWithoutPlaying(tutorialId);
-
-        m_isPlaying = false;
-        m_pendingNewShip = null;
-        m_onCompleteCallback = null; // 다음 튜토리얼로 이어가는 콜백 체인을 버림 — 노말 플레이로 바로 전환
-        if (m_tutorialUI != null)
-            m_tutorialUI.HideTutorialUI();
-        NotifyWaitingForAnyClickChanged();
-
-        string completedId = m_currentTutorial != null ? m_currentTutorial.tutorialId : null;
-        Debug.Log($"[Tutorial] 온보딩 스킵: {completedId}");
-        m_currentTutorial = null;
-
-        OnTutorialSkipRequested?.Invoke();
-    }
-
-    // 스킵 등으로 튜토리얼을 도중에 끝낼 때 남아있는 연출용 함대(탈출선/적 웨이브)를 정리
-    private void CleanupTutorialCombatArtifacts()
-    {
-        m_battleCinematic.Cleanup();
     }
 
     // 특정 UI 클릭 시 호출
@@ -569,22 +602,6 @@ public class TutorialManager : MonoSingleton<TutorialManager>
 
         // 이벤트 발생
         OnTutorialCompleted?.Invoke(completedId);
-
-        // 다른 튜토리얼이 재생 중이라 보류됐던 조건형 튜토리얼 재확인
-        TryStartPendingTutorial();
-    }
-
-    // 스킵으로 플레이하지 않고 건너뛴 튜토리얼을 완료 처리 — 다음 실행 시 다시 뜨지 않도록 서버에도 저장
-    private void CompleteTutorialWithoutPlaying(string tutorialId)
-    {
-        if (string.IsNullOrEmpty(tutorialId)) return;
-        if (m_completedTutorials.Contains(tutorialId) == true) return;
-
-        m_completedTutorials.Add(tutorialId);
-        _ = SaveTutorialToServerAsync(tutorialId);
-
-        // 정상 완료가 아니어도 OnTutorialCompleted 구독자(UITabShip 등)는 동일하게 통지받아야 함
-        OnTutorialCompleted?.Invoke(tutorialId);
     }
 
     // 서버에 튜토리얼 완료 저장 (fire and forget)
@@ -685,19 +702,20 @@ public class TutorialManager : MonoSingleton<TutorialManager>
                 EventManager.Subscribe_ZoneStageBattleEnd(m_zoneBattleEndUnlockHandler);
                 break;
 
+            case ETutorialConditionType.WaitForRewardCardPopup:
+                m_rewardCardPopupWaitStepIndex = ownerStepIndex;
+                m_rewardCardDefeatHandler = (isVictory) =>
+                {
+                    UIManager.Instance.SetTopPanelInteractable(true);
+                    if (isVictory == false && ownerStepIndex == m_currentStepIndex)
+                        CompleteTutorial();
+                };
+                EventManager.Subscribe_ZoneStageBattleEnd(m_rewardCardDefeatHandler);
+                break;
+
             case ETutorialConditionType.WaitForGridCellClicked:
                 m_gridCellClickedHandler = (cell) => RequestNextStep(ownerStepIndex);
                 EventManager.Subscribe_ExplorationGridCellClicked(m_gridCellClickedHandler);
-                break;
-
-            case ETutorialConditionType.EscapeShipDistanceFromFlagship:
-            case ETutorialConditionType.EnemyWave1:
-            case ETutorialConditionType.EnemyWave2:
-            case ETutorialConditionType.FlagshipHealthBelowPercent:
-            case ETutorialConditionType.SiegfriedFlagshipExplosion:
-            case ETutorialConditionType.CleanupEscapeFleet:
-                // Tutorial_FirstPlay_Battle/Complete 전용 연출 조건
-                m_battleCinematic.StartCondition(step, ownerStepIndex);
                 break;
         }
     }
@@ -742,6 +760,30 @@ public class TutorialManager : MonoSingleton<TutorialManager>
             EventManager.Unsubscribe_ExplorationGridCellClicked(m_gridCellClickedHandler);
             m_gridCellClickedHandler = null;
         }
+
+        if (m_rewardCardDefeatHandler != null)
+        {
+            EventManager.Unsubscribe_ZoneStageBattleEnd(m_rewardCardDefeatHandler);
+            m_rewardCardDefeatHandler = null;
+        }
+        m_rewardCardPopupWaitStepIndex = -1;
+    }
+
+    // 보상 카드 팝업이 뜬 직후 호출 — WaitForRewardCardPopup 대기 중일 때만, 카드 목록 레이아웃이 자리 잡도록 2프레임 뒤 다음 스텝으로
+    public void NotifyRewardCardPopupShown()
+    {
+        if (m_isPlaying == false) return;
+        if (m_rewardCardPopupWaitStepIndex < 0) return;
+
+        StartCoroutine(AdvanceAfterRewardCardPopupShown(m_rewardCardPopupWaitStepIndex));
+    }
+
+    private IEnumerator AdvanceAfterRewardCardPopupShown(int ownerStepIndex)
+    {
+        yield return null;
+        yield return null;
+
+        RequestNextStep(ownerStepIndex);
     }
 
     // m_pendingNewShip이 대형 자리에 도착(Moving 상태 해제)할 때까지 대기

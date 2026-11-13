@@ -112,6 +112,18 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         else
             Debug.LogError("EffectIntercept not found at Resources/Prefabs/Effect/EffectIntercept");
 
+        EffectScout effectScoutPrefab = ResourceManager.Instance.Load<EffectScout>("Prefabs/Effect/EffectScout");
+        if (effectScoutPrefab != null)
+            m_poolManager.CreatePool(EPoolName.EFFECT_SCOUT, effectScoutPrefab, 3, 10);
+        else
+            Debug.LogError("EffectScout not found at Resources/Prefabs/Effect/EffectScout");
+
+        EffectBase effectSupportSparklePrefab = ResourceManager.Instance.Load<EffectBase>("Prefabs/Effect/EffectSupportSparkle");
+        if (effectSupportSparklePrefab != null)
+            m_poolManager.CreatePool(EPoolName.EFFECT_SUPPORT_SPARKLE, effectSupportSparklePrefab, 3, 10);
+        else
+            Debug.LogError("EffectSupportSparkle not found at Resources/Prefabs/Effect/EffectSupportSparkle");
+
         EffectBase effectWarpSpeedLinesPrefab = ResourceManager.Instance.Load<EffectBase>("Prefabs/Effect/WarpSpeedLines");
         if (effectWarpSpeedLinesPrefab != null)
             m_poolManager.CreatePool(EPoolName.EFFECT_WARP_SPEEDLINES, effectWarpSpeedLinesPrefab, 5, 20);
@@ -158,15 +170,6 @@ public class ObjectManager : MonoSingleton<ObjectManager>
     // ObjectManager는 내 함대 스폰 시(SpawnFleetFromPreset) 이 값을 읽어 최종 스탯에 적용만 함(소유권은 그리드 패널에 있음)
     public RewardCardSessionState m_rewardCardSessionState = new RewardCardSessionState();
 
-    // 지크프리트(튜토리얼 연출용) 함대 사용 중 여부 — 튜토리얼 종료 시 실제 함대로 전환하는 데 사용
-    private bool m_isSiegfriedFleetActive = false;
-    public bool IsSiegfriedFleetActive() => m_isSiegfriedFleetActive;
-    private int m_realCommanderLevelBackup;
-    private FleetComposition m_realFleetCompositionBackup;
-
-    // 온보딩 튜토리얼(TutorialManager.ONBOARDING_TUTORIAL_SEQUENCE) 진행 중 스킵 버튼을 눌렀는지 여부
-    private bool m_isOnboardingTutorialSkipped = false;
-
     // 내 팀의 대표 함대(=기존 m_myFleet) — 팀 리스트 순서(index)가 아닌 fleetSource로 실제 플레이어 함대를 식별
     // (시네마틱 함대도 같은 TeamA에 등록될 수 있어 리스트 첫 번째로 판단하면 오판 가능)
     public SpaceFleet GetMyFleet()
@@ -182,6 +185,27 @@ public class ObjectManager : MonoSingleton<ObjectManager>
 
     // 보상카드 지속버프가 바뀔 때(카드 선택/런 종료 초기화) 호출 — 이미 스폰된 내 함대의 모든 함선에 최신 배율을 다시 반영하고,
     // 버프 아이콘 UI(UIPanelExplorationGrid/UIPanelBattle의 UIRewardCardBuffDisplay)도 즉시 갱신되도록 이벤트 발행
+    // 아키타입 패시브 효과(능력치 배율 등)가 바뀌었을 때(함선 생성/파괴/배치 해제, 패시브 해금) 호출 — 모든 함선의 효과 캐시를 먼저 비우고 모듈 값(체력/공격력/실드)을 다시 계산
+    // 캐시를 전부 비운 뒤에 다시 계산해야 함 — 함선별로 비우고 계산하면 아직 비우지 않은 다른 함선의 낡은 값을 참조함
+    public void RefreshPassiveEffectsOnFleet(SpaceFleet fleet)
+    {
+        if (fleet == null) return;
+
+        foreach (SpaceShip ship in fleet.m_ships)
+            if (ship != null) ship.InvalidatePassiveEffectCache();
+
+        foreach (SpaceShip ship in fleet.m_ships)
+            if (ship != null) ship.RefreshRewardCardBuffs();
+
+        EventManager.Trigger_FleetUpdateHP();
+        EventManager.Trigger_ShipUpdateHP();
+    }
+
+    public void RefreshPassiveEffectsOnMyFleet()
+    {
+        RefreshPassiveEffectsOnFleet(GetMyFleet());
+    }
+
     public void RefreshRewardCardBuffsOnMyFleet()
     {
         SpaceFleet myFleet = GetMyFleet();
@@ -261,9 +285,8 @@ public class ObjectManager : MonoSingleton<ObjectManager>
             m_debrisFieldSpawner.SpawnZone(GetInitialZoneIndex());
         AdManager.Instance.ToString();// 광고 초기화 (존 입장 전 미리 로드)
 
-        // 튜토리얼 진행도는 SelectCommander 응답 시점(UIMain.cs)에 이미 확보되어 있음 — 씬 로드 중 깜빡임 없이 바로 결정
-        // 완료 여부 체크는 StartTutorial() 코루틴 내부에서 처리 — 이미 완료된 경우 즉시 StartNormalPlay()로 넘어감
-        StartCoroutine(StartTutorial());
+        // 튜토리얼 진행도는 SelectCommander 응답 시점(UIMain.cs)에 이미 확보되어 있음
+        StartNormalPlay();
     }
 
     // 탐사 그리드를 연 적이 없어도, UITabExplorationGrid가 실제로 계산할 것과 동일한 시작 셀 월드좌표를 미리 구함 —
@@ -292,8 +315,6 @@ public class ObjectManager : MonoSingleton<ObjectManager>
     protected override void OnDestroy()
     {
         EventManager.Unsubscribe_MyFleetDestroyed(OnMyFleetDestroyed);
-        if (TutorialManager.Instance != null)
-            TutorialManager.Instance.OnTutorialSkipRequested -= OnOnboardingTutorialSkipRequested;
         base.OnDestroy();
     }
 
@@ -320,6 +341,7 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         if (delaySec > 0f)
             yield return new WaitForSeconds(delaySec);
 
+        PassiveAudit.OnCombatEnd(isVictory);
         SpaceFleet myFleet = GetMyFleet();
         bool isPvp = myFleet != null && myFleet.m_fleetState == EUnitState.BattlePvp;
 
@@ -364,82 +386,19 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         }
     }
 
-    private IEnumerator StartTutorial()
-    {
-        if (TutorialManager.Instance == null)
-        { Debug.LogError("TutorialManager.Instance == null"); yield break; }
-
-        if (TutorialManager.Instance.IsTutorialCompleted("Tutorial_FirstPlay_Complete") == true)
-        { StartNormalPlay(); yield break; }
-
-        m_isSiegfriedFleetActive = true;
-
-        // 함선 수 요구 레벨 계산(GrantTutorialCommanderLevel)이 지크프리트 함대의 기존 함선 수를 참조하므로 스폰이 먼저 일어나야 함
-        SpawnSiegfriedFleet();
-        SwapToSiegfriedFleetComposition();
-        GrantTutorialCommanderLevel();
-
-        // Tutorial 안에 함선추가 등 실제 UI 조작 스텝이 있어 메인 패널(TapButtons 등)이 미리 열려있어야 함
-        UIManager.Instance.ShowMainPanel();
-
-        // 서버에서 튜토리얼 진행도 로드 대기 — UIMain.cs에서 이미 확보됐으면 즉시 반환(no-op)
-        var loadTask = TutorialManager.Instance.LoadProgressFromServerAsync();
-        while (!loadTask.IsCompleted)
-        {
-            yield return null;
-        }
-
-        // 스킵 버튼으로 온보딩 시퀀스 전체를 건너뛴 경우 다음 튜토리얼로 이어가지 않고 바로 노말 플레이로 전환
-        TutorialManager.Instance.OnTutorialSkipRequested += OnOnboardingTutorialSkipRequested;
-        RunTutorialSequence(0);
-    }
-
-    // TutorialManager.ONBOARDING_TUTORIAL_SEQUENCE를 index부터 순서대로 진행 — 마지막까지 끝나면 StartNormalPlay 호출
-    private void RunTutorialSequence(int index)
-    {
-        if (m_isOnboardingTutorialSkipped == true) return;
-
-        if (index >= TutorialManager.ONBOARDING_TUTORIAL_SEQUENCE.Length)
-        {
-            StartNormalPlay();
-            return;
-        }
-
-        TutorialManager.Instance.StartTutorial(TutorialManager.ONBOARDING_TUTORIAL_SEQUENCE[index], (tutorialId) =>
-        {
-            RunTutorialSequence(index + 1);
-        });
-    }
-
-    // 스킵 버튼 클릭으로 온보딩 시퀀스 전체가 완료 처리됐을 때 호출 — 남은 시퀀스 진행 없이 바로 노말 플레이로 전환
-    private void OnOnboardingTutorialSkipRequested()
-    {
-        TutorialManager.Instance.OnTutorialSkipRequested -= OnOnboardingTutorialSkipRequested;
-        m_isOnboardingTutorialSkipped = true;
-        StartNormalPlay();
-    }
-
     private void StartNormalPlay()
     {
-        if (m_isSiegfriedFleetActive == true)
-            SwitchFromSiegfriedFleetToRealFleet();
-        else
-            SpawnFleet();
+        SpawnFleet();
         ApplyPendingActiveZoneRunProgress();
         EventManager.Subscribe_MyFleetDestroyed(OnMyFleetDestroyed);// 플레이어 함대 전멸 이벤트 구독
         NetworkManager.Instance.StartHeartbeat();
         UIManager.Instance.ShowMainPanel();
 
-        // 온보딩(ONBOARDING_TUTORIAL_SEQUENCE) 완료 후 실제 함대로 최초 진입한 시점 — 이미 완료된 경우 StartTutorial이 즉시 no-op
         // 출석 보상은 자동 지급되지 않고 레드닷만 갱신되므로(달력은 유저가 직접 열어야 함) 튜토리얼 시작을 지연시킬 필요 없음
         if (DailyBonusManager.Instance != null)
             DailyBonusManager.Instance.CheckDailyBonusStatus();
         if (NoticeManager.Instance != null)
             NoticeManager.Instance.CheckAndShowNotices();
-        TutorialManager.Instance.StartTutorial("Tutorial_Exploration");
-
-        // 조건(업적포인트/함선 슬롯 수)은 이미 만족했는데 튜토리얼을 끝까지 못 본 채 재접속한 경우 이어서 진행 — 재생 중인 튜토리얼이 있으면 끝난 뒤 시작됨
-        TutorialManager.Instance.RestoreConditionTutorials();
     }
 
     // MainScene(UIMain.SelectCommander)에서 SpaceScene 진입 전에 미리 받아둔 진행중 존런 스냅샷(있으면)을
@@ -615,7 +574,9 @@ public class ObjectManager : MonoSingleton<ObjectManager>
 
     // PvP 전투 시작 - 서버에서 받은 상대 FleetInfo로 적 함대 생성
     // 함선 시스템 대격변으로 주석처리됐던 것을 UIPanelRank 2단계 구현에 맞춰 복원(의존 메서드 전부 현재 시그니처와 일치 확인함)
-    public void StartPvpBattle(FleetInfo opponentFleetInfo)
+    // opponentPassiveProgress: 상대 지휘관의 아키타입 패시브 진행도 — 함선 스폰 전에 함대에 심어서 상대 함선도 같은 패시브 능력치 효과를 받게 함
+    // opponentArchetypeUpgrades: 상대 지휘관의 아키타입 모듈강화 레벨 — 상대 함선 모듈이 내 강화 레벨이 아니라 상대 자신의 레벨로 만들어지게 함(함선 스폰 전에 심음)
+    public void StartPvpBattle(FleetInfo opponentFleetInfo, List<HullArchetypeProgressInfo> opponentPassiveProgress, List<ArchetypeUpgradeInfo> opponentArchetypeUpgrades)
     {
         SpaceFleet myFleet = GetMyFleet();
         if (opponentFleetInfo == null || myFleet == null)
@@ -634,6 +595,10 @@ public class ObjectManager : MonoSingleton<ObjectManager>
 
         ETeam enemyTeam = GetOpposingTeam(m_myTeam);
         SpaceFleet enemyFleet = fleetObj.AddComponent<SpaceFleet>();
+        // 진행도 응답이 없는 경우(구버전 서버 등)도 빈 목록으로 두어 문턱 0 단계(1단계)는 상대에게도 적용되게 함
+        List<HullArchetypeProgressInfo> passiveProgress = opponentPassiveProgress != null ? opponentPassiveProgress : new List<HullArchetypeProgressInfo>();
+        List<ArchetypeUpgradeInfo> archetypeUpgrades = opponentArchetypeUpgrades != null ? opponentArchetypeUpgrades : new List<ArchetypeUpgradeInfo>();
+        enemyFleet.m_remoteBuildData = new CommanderBuildData(passiveProgress, archetypeUpgrades);
         enemyFleet.InitializeSpaceFleet(opponentFleetInfo, enemyTeam, EFleetSource.fleet_source_player_remote, EUnitState.Move);
         enemyFleet.StartFleetWarpIn(() =>
         {
@@ -651,6 +616,7 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         if (myFleet == null) return;
         if (enemyFleet == null) return;
 
+        PassiveAudit.OnCombatStart(myFleet, enemyFleet);
         myFleet.SetFleetState(battleState);
         enemyFleet.SetFleetState(battleState);
         StartCoroutine(DelayedStartCombat(myFleet,    playerDelay));
@@ -673,7 +639,7 @@ public class ObjectManager : MonoSingleton<ObjectManager>
 
         List<SpaceFleet> enemyTeamFleets = GetOpposingTeamFleets(m_myTeam);
         enemyTeamFleets.Remove(fleet);
-        Destroy(fleet.gameObject);
+        DestroyFleet(fleet);
 
         SpaceFleet myFleet = GetMyFleet();
         if (myFleet != null && myFleet.m_fleetState == EUnitState.BattlePvp && enemyTeamFleets.Count == 0)
@@ -788,9 +754,16 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         for (int i = enemyTeamFleets.Count - 1; i >= 0; i--)
         {
             if (enemyTeamFleets[i] != null)
-                Destroy(enemyTeamFleets[i].gameObject);
+                DestroyFleet(enemyTeamFleets[i]);
         }
         enemyTeamFleets.Clear();
+    }
+
+    // 함대 GameObject 파괴 공통 경로 — 요격체 유닛은 함선 자식으로 붙어 있어 함대와 같이 파괴되면 풀 반납(SetParent)이 막히므로, 파괴 전에 먼저 풀로 반납
+    private void DestroyFleet(SpaceFleet fleet)
+    {
+        fleet.ClearAllInterceptorUnits();
+        Destroy(fleet.gameObject);
     }
 
     // 모든 활성 빔/미사일: 코루틴/이펙트 정리 후 풀 반환 — 씬 전체 스캔 대신 풀 하위만 순회
@@ -815,86 +788,6 @@ public class ObjectManager : MonoSingleton<ObjectManager>
     {
         foreach (var aircraft in m_poolManager.GetActiveInstances<AircraftStandard>(EPoolName.AIRCRAFT_STANDARD))
             aircraft.ForceReturnToCarrier();
-    }
-
-    // 귀환 연출 없이 활성화된 모든 함재기를 즉시 풀로 반환 — 튜토리얼 종료 등 즉시 정리가 필요할 때 사용
-    public void DestroyAllAircraft()
-    {
-        foreach (var aircraft in m_poolManager.GetActiveInstances<AircraftStandard>(EPoolName.AIRCRAFT_STANDARD))
-            aircraft.ForceReturnToPoolImmediate();
-    }
-
-    // 지크프리트 함대(연출용, 서버 미등록)를 실제 함대 자리에 스폰 — fleet_source_player로 등록해야
-    // GetMyFleet()을 참조하는 카메라/UI 탭들이 정상적으로 "내 함대"로 인식함(fleet_source_cinematic은 전멸해도 게임 상태가 안 바뀌는 NPC 전용)
-    private void SpawnSiegfriedFleet()
-    {
-        FleetInfo fleetInfo = TutorialCinematicController.BuildSiegfriedFleetInfo("Siegfried Fleet");
-        Vector3 startPos = GetInitialGridStartCellPosition();
-
-        GameObject fleetObj = new GameObject("SiegfriedFleet");
-        fleetObj.transform.position = startPos;
-        SpaceFleet fleet = fleetObj.AddComponent<SpaceFleet>();
-        fleet.InitializeSpaceFleet(fleetInfo, m_myTeam, EFleetSource.fleet_source_player, EUnitState.Idle);
-        GetTeamFleets(m_myTeam).Add(fleet);
-
-        FinalizeMyFleetSpawn(fleet, warpIn: false);
-    }
-
-    // UIPanelFleet(함대편성 UI)는 3D 씬의 SpaceFleet이 아니라 DataManager.m_currentFleetComposition만 읽으므로,
-    // 지크프리트 함대 구성도 여기 그대로 반영해야 튜토리얼 중 화면에 지크프리트 함선이 보임 — 실제 계정 데이터는 백업 후 복원
-    private void SwapToSiegfriedFleetComposition()
-    {
-        m_realFleetCompositionBackup = DataManager.Instance.m_currentFleetComposition;
-
-        const int k_tutorialCommandPowerCap = 999999; // 튜토리얼 중 지휘력 부족으로 배치/강화가 막히지 않도록 넉넉한 임시값
-        FleetComposition siegfriedComposition = new FleetComposition(k_tutorialCommandPowerCap, DataManager.Instance.m_dataTableModule);
-
-        FleetInfo fleetInfo = TutorialCinematicController.BuildSiegfriedFleetInfo("Siegfried Fleet");
-        for (int i = 0; i < fleetInfo.ships.Count; i++)
-        {
-            ShipInfo shipInfo = fleetInfo.ships[i];
-            ModuleHullInfo modules = shipInfo.hulls != null && shipInfo.hulls.Count > 0 ? shipInfo.hulls[0] : null;
-            siegfriedComposition.TryPlaceShip(shipInfo.hullSubType, isFront: true, modules); // 지크프리트 함대는 전원 전방 배치
-        }
-
-        DataManager.Instance.m_currentFleetComposition = siegfriedComposition;
-    }
-
-    // 함선 수는 더 이상 지휘관 레벨로 제한되지 않음(함대 슬롯은 고정 상한, 배치 가능 여부는 지휘력만으로 결정) — 레벨을 올릴 필요가 없어졌지만,
-    // SwitchFromSiegfriedFleetToRealFleet이 이 백업값으로 복귀시키므로 원래 레벨을 그대로 기록만 해둠
-    private void GrantTutorialCommanderLevel()
-    {
-        Commander commander = DataManager.Instance.m_currentCommander;
-        if (commander == null) return;
-
-        m_realCommanderLevelBackup = commander.GetCommanderLevel();
-    }
-
-    // 튜토리얼 임시 함대(지크프리트 등 연출용)만 제거 — 실제 함대 스폰은 하지 않음
-    // (탈출 함선 폭발 연출 직후처럼, 실제 스폰은 StartNormalPlay()에서 한 번만 일어나야 할 때 사용)
-    public void DestroyTutorialFleet(SpaceFleet fleet)
-    {
-        if (fleet == null) return;
-        GetTeamFleets(m_myTeam).Remove(fleet);
-        Destroy(fleet.gameObject);
-    }
-
-    // 지크프리트(연출용) 함대를 제거하고 실제 함대로 전환
-    private void SwitchFromSiegfriedFleetToRealFleet()
-    {
-        m_isSiegfriedFleetActive = false;
-
-        DestroyTutorialFleet(GetMyFleet());
-
-        Commander commander = DataManager.Instance.m_currentCommander;
-        if (commander != null)
-        {
-            commander.UpdateCommanderLevel(m_realCommanderLevelBackup);
-        }
-
-        DataManager.Instance.m_currentFleetComposition = m_realFleetCompositionBackup;
-
-        SpawnFleet(warpIn: true);
     }
 
     private void SpawnFleet(bool warpIn = false)
@@ -943,7 +836,9 @@ public class ObjectManager : MonoSingleton<ObjectManager>
                 // 보상카드 지속버프는 여기서 미리 곱해두지 않음 — 스폰되는 모듈들이 자기 자신의 RefreshRewardCardBuff()에서
                 // 그 시점의 최신 배율을 직접 읽어 반영함(내 함대가 아니면 배율은 항상 1). 이러면 스폰 이후 카드를 더 골라도
                 // ObjectManager.RefreshRewardCardBuffsOnMyFleet()가 같은 모듈들을 다시 갱신해주기만 하면 됨
-                ShipFinalStats finalStats = ShipStatCalculator.Calculate(allocation, formula, bodyModuleData, moduleTable);
+                // 아키타입 모듈강화(M6)는 내 함대에만 적용 — 적 함대는 강화 없이 서브타입 원본 수치
+                string upgradeArchetype = source == EFleetSource.fleet_source_player ? bodyModuleData.hullArchetype : null;
+                ShipFinalStats finalStats = ShipStatCalculator.Calculate(allocation, formula, bodyModuleData, moduleTable, upgradeArchetype);
                 ExplorationShipSpawnBridge.SpawnShip(fleet, bodyModuleData, finalStats, actualModules, shipIndex, shipSlot.isFront, shipSlot.healthMultiplier, shipSlot.attackMultiplier, shipSlot.id);
             }
         }
@@ -1022,7 +917,7 @@ public class ObjectManager : MonoSingleton<ObjectManager>
 
         ShipStatFormulaSettings formula = DataManager.Instance.m_dataTableConfig.gameSettings.shipStatFormula;
         ShipStatAllocation allocation = ShipStatAllocation.BuildFromModuleHullInfo(formula.maxModuleSlots, modules);
-        ShipFinalStats finalStats = ShipStatCalculator.Calculate(allocation, formula, bodyModuleData, moduleTable);
+        ShipFinalStats finalStats = ShipStatCalculator.Calculate(allocation, formula, bodyModuleData, moduleTable, bodyModuleData.hullArchetype);
 
         // 슬롯 정체성(id)은 함체가 바뀌어도 유지 — 비어있던 슬롯이었으면(oldShip null) 아직 서버에 확정된 id가 없으므로 0
         long preservedId = oldShip != null ? oldShip.m_shipInfo.id : 0;
@@ -1045,6 +940,14 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         myFleet.UpdateShipFormation(myFleet.m_currentFormationType, bSmooth: isNewShip, excludeShip: isNewShip ? newShip : null);
     }
 
+    // 내 함대에 배치된 함선이 하나라도 있는지 — 함대편성에서 전부 해제할 수 있어 PVP/탐사 진입 직전에 확인(함대 정보 기준, 전투 중 생존 여부와 무관)
+    public bool HasAnyShipInMyFleet()
+    {
+        SpaceFleet myFleet = GetMyFleet();
+        if (myFleet == null || myFleet.m_fleetInfo == null || myFleet.m_fleetInfo.ships == null) return false;
+        return myFleet.m_fleetInfo.ships.Count > 0;
+    }
+
     // 함대편성 UI의 Remove로 슬롯을 비울 때 호출 — 그 슬롯의 함선만 파괴. 다른 슬롯의 positionIndex는 건드리지 않음(자리 유지, 압축 없음)
     public void RemoveMyFleetShipAt(int positionIndex)
     {
@@ -1059,6 +962,9 @@ public class ObjectManager : MonoSingleton<ObjectManager>
             myFleet.m_fleetInfo.ships.RemoveAll(s => s.positionIndex == positionIndex);
 
         myFleet.UpdateShipFormation(myFleet.m_currentFormationType, bSmooth: false);
+
+        // 빠진 함선이 주던 함대 범위 패시브 효과를 남은 함선들에서 제거
+        RefreshPassiveEffectsOnFleet(myFleet);
     }
 
     // myFleet.m_fleetInfo.ships에서 positionIndex가 일치하는 항목을 새 ShipInfo로 교체(없으면 추가) — ReplaceMyFleetShipAt 전용
@@ -1266,7 +1172,7 @@ public class ObjectManager : MonoSingleton<ObjectManager>
                 if (enemyTeamFleets[i] == null) { enemyTeamFleets.RemoveAt(i); continue; }
                 if (enemyTeamFleets[i].IsFleetAlive() == false)
                 {
-                    Destroy(enemyTeamFleets[i].gameObject);
+                    DestroyFleet(enemyTeamFleets[i]);
                     enemyTeamFleets.RemoveAt(i);
                 }
             }

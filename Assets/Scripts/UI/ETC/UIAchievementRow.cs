@@ -16,6 +16,7 @@ public class UIAchievementRow : MonoBehaviour
     [SerializeField] private GameObject m_itemRedDot; // 이 항목이 완료+미수령 상태일 때만 표시
     [SerializeField] private TMP_Text m_nameText;
     [SerializeField] private TMP_Text m_descText;
+    [SerializeField] private TMP_Text m_difficultyText; // 일일퀘스트 행에서만 사용(쉬움/중간/어려움) — 비워두면 무시
 
     [Header("일반 보상")]
     [SerializeField] private RowLabelValue m_rewardRow;
@@ -50,8 +51,9 @@ public class UIAchievementRow : MonoBehaviour
             m_headerRedDot.SetActive(hasUnclaimed);
     }
 
+    // rewardBonusPercent: 일일퀘스트 연속 달성 가산 %(표시용 — 실제 지급액은 서버가 같은 규칙으로 계산)
     public void SetupItem(AchievementData data, int currentValue, bool isClaimed, bool isVipClaimed, bool isVipActive,
-        System.Action<string, bool> onClaimClick)
+        System.Action<string, bool> onClaimClick, int rewardBonusPercent = 0)
     {
         gameObject.SetActive(true);
         if (m_headerRoot != null) m_headerRoot.SetActive(false);
@@ -78,12 +80,14 @@ public class UIAchievementRow : MonoBehaviour
             m_descText.text = string.Format(LocalizationManager.Instance.Get(data.descKey), conditionParamDisplay, data.threshold, data.achievementPointReward);
         if (m_rewardRow != null)
         {
-            string rewardText = CommonUtility.FormatNumber(data.achievementPointReward);
+            int bonusReward = data.achievementPointReward * (100 + rewardBonusPercent) / 100;
+            string rewardText = CommonUtility.FormatNumber(bonusReward);
             m_rewardRow.SetRow("UIAchievement_Reward", $"+{rewardText}", rawValue: true);
         }
         if (m_vipRewardRow != null)
         {
-            string vipRewardText = CommonUtility.FormatNumber(data.achievementPointRewardVip);
+            int bonusVipReward = data.achievementPointRewardVip * (100 + rewardBonusPercent) / 100;
+            string vipRewardText = CommonUtility.FormatNumber(bonusVipReward);
             m_vipRewardRow.SetRow("UIAchievement_RewardVip", $"+{vipRewardText}", rawValue: true);
         }
 
@@ -108,6 +112,13 @@ public class UIAchievementRow : MonoBehaviour
         bool hasUnclaimedVip = isVipActive == true && isCompleted == true && isVipClaimed == false;
         if (m_itemRedDot != null)
             m_itemRedDot.SetActive(hasUnclaimedNormal || hasUnclaimedVip);
+    }
+
+    // difficulty는 AchievementData.difficulty("easy"/"normal"/"hard") — SetupItem 이후 호출
+    public void SetDifficultyLabel(string difficulty)
+    {
+        if (m_difficultyText == null) return;
+        CommonUtility.SetUILocText(m_difficultyText, $"UIDailyAchievement_Difficulty_{difficulty}");
     }
 
     private void OnClaimButtonClicked()

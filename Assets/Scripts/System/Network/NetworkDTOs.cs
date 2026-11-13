@@ -64,8 +64,6 @@ public class ModuleHullInfo
     // 실드/요격체 장착 서브타입 — 빈 문자열이면 미장착. 적함대 존 데이터 배관용으로 서버가 채워 보냄(클라 소비 로직은 후속 작업)
     public string shieldModuleSubType = "";
     public string interceptorModuleSubType = "";
-    // 현재 체력 (절대값). 0 이하 = 기본값(만피). 서버 저장/복원용
-    public float currentHealth;
 }
 
 [System.Serializable]
@@ -134,8 +132,10 @@ public class ArchetypeUpgradeInfo
 public class HullArchetypeProgressInfo
 {
     public string hullArchetype;
-    public string counterType;  // 아키타입별로 의미가 다른 자유 문자열(예: "destroyed_ship", "zone_run_cleared")
-    public long counterValue;
+    public int stage;           // 패시브 단계(1~4) — (아키타입, 단계)마다 진행도가 독립이고 앞 단계가 완료돼야 다음 단계가 세기 시작함
+    public string counterType;  // 이 단계가 세는 카운터. DataTableHullArchetypePassive.counter_type과 같은 문자열(예: "destroy_enemy_ship", "zone_run_clear")
+    public long counterValue;   // 이 단계 안에서의 진행도(0부터, 문턱을 넘는 값은 서버가 문턱까지만 저장)
+    public bool completed;      // 이 단계 해금 여부 — 서버가 판정, 한 번 true면 영구
 }
 
 
@@ -362,18 +362,41 @@ public class ClearExplorationCellRequest
     public int resource; // 셀 클리어 시점의 자원 현재치 — ZoneRun.resource에 확정 저장(전투 중엔 서버에 실시간 저장하지 않고 클리어 시에만 확정)
     public int mineralAmount; // 셀 클리어 시점의 광물 현재치 — ZoneRun.mineralAmount에 확정 저장(존런 전용, 서버 검증 없이 클라 보고값을 그대로 신뢰)
     public string challengeToken; // EnterExplorationCellResponse.challengeToken을 그대로 반환 — enter-cell 없이 clear-cell만 반복 호출하는 것을 막음
+    public int enemyShipKills; // 이번 셀 전투에서 격침한 적 함선 수 — 일일퀘스트 집계용(클라 보고값, 서버가 상한으로 보정)
+    public int aircraftLaunches; // 이번 셀 전투에서 내 함재기가 출격한 횟수 — 일일퀘스트 집계용(클라 보고값, 서버가 상한으로 보정)
+    public int scavengedMineral; // 이번 셀 전투에서 함재기 약탈로 얻은 광물 합계 — 서버가 mineralGained에 합산해 지급(상한 없음)하고 corsair scavenge_mineral 카운터에 더함
+    public int scoutedMineral; // 이번 셀 전투에서 탐사(argus) 성공으로 얻은 광물 합계 — 서버가 mineralGained에 합산해 지급(상한 없음)
+    public List<ArchetypeCounterReport> archetypeCounters; // 이번 셀 전투에서 "그 함선 자신"이 겪은 아키타입 패시브 카운터(받은 데미지/실드 흡수량/요격 횟수) — 서버가 해당 아키타입에 누적
+    public bool isMissileOnlyClear;  // 이번 셀 전투를 빔·함재기 없이 미사일만 써서 이겼는지 — 일일퀘스트 집계용(클라 보고값)
+    public bool isAircraftOnlyClear; // 이번 셀 전투를 빔·미사일 없이 함재기만 써서 이겼는지 — 일일퀘스트 집계용(클라 보고값)
+    public bool isNoShieldClear;     // 이번 셀 전투에서 실드가 피해를 한 번도 흡수하지 않았는지 — 일일퀘스트 집계용(클라 보고값)
+    public int shieldAbsorbAmount;   // 이번 셀 전투에서 내 함대 실드가 막은 피해 합계 — 일일퀘스트 집계용(클라 보고값)
+    public int interceptCount;       // 이번 셀 전투에서 내 함대 요격체가 요격한 횟수 — 일일퀘스트 집계용(클라 보고값)
+    public int fleetRepairAmount;    // 이번 셀 전투에서 내 함대가 수리한 체력 합계(수리 전술 + 아군 수리) — 일일퀘스트 집계용(클라 보고값)
+}
+
+[System.Serializable]
+public class ArchetypeCounterReport
+{
+    public string hullArchetype; // 카운터를 겪은 함선의 아키타입
+    public string counterType;   // damage_taken_cumulative / shield_absorb_amount / intercept_count / scout_success
+    public long value;           // 이번 셀 전투에서의 누적량
 }
 
 [System.Serializable]
 public class ClearExplorationCellResponse
 {
-    public int mineralGained;          // 이 클리어로 방금 지급된 광물(존 고정값 + Treasure/VIP/버프 반영분) — mineralAmount는 누적 총량, 이건 델타
+    public int mineralGained;          // 이 클리어로 방금 지급된 광물 합계(존 고정값 + Treasure/VIP/버프 반영분 + 약탈 + 탐사) — mineralAmount는 누적 총량, 이건 델타
+    public int scavengedMineral;       // mineralGained 중 함재기 약탈분 — 클리어 보상 화면에서 따로 표시
+    public int scoutedMineral;         // mineralGained 중 탐사(argus)분 — 클리어 보상 화면에서 따로 표시
     public List<string> rewardCardCandidates; // 서버가 추첨한 보상카드 후보 3개(cardId) — 탈출 셀이거나 보상이 없는 셀(빈 셀)은 null
     public ETreasureRewardType treasureRewardType; // None이면 Treasure 보상 아님(Mineral이면 mineralAmount에 이미 반영됨)
     public float treasureRewardRatio;              // treasureRewardType이 ShipHealthHeal일 때만 유효한 회복 비율(0~1)
     public int resource;                        // 이 클리어 확정 후 서버가 확정한 자원 현재치(권위값) — 항상 채워짐
     public int mineralAmount;                       // 이 클리어 확정 후 서버에 저장된 광물 현재치(존 고정지급분까지 서버가 반영한 권위값)
     public int rerollRemain;                       // 현재 보상카드 리롤 가능 횟수(충전식, 계정 전체 공유) — rewardCardCandidates가 null이면 무의미
+    public List<HullArchetypeProgressInfo> hullArchetypePassiveProgress; // 이 클리어 반영 후 아키타입 패시브 해금 카운터 전체 목록(권위값) — 패시브 탭 진행도 갱신용
+    public FleetInfo fleetInfo; // 이 클리어로 실드/요격체 해금 단계가 완료됐을 때만 채워지는 갱신된 내 함대(권위값) — 다음 셀 전투부터 반영, 평소엔 null
 }
 
 [System.Serializable]
@@ -469,6 +492,8 @@ public class EscapeExplorationZoneResponse
     public int highestClearedZoneNumber; // 탈출 성공 시 갱신된 값(권위값) — 클라 GetInitialZoneIndex()가 이 값 기준으로 다음 존을 계산
     public int resource;              // 런 종료로 회복된 자원 현재치(=resourceMax, 권위값)
     public bool hasUnclaimedAchievement; // 이 존런 정산 시점 기준 완료+미수령 업적 존재 여부(업적 버튼 레드닷용)
+    public List<HullArchetypeProgressInfo> hullArchetypePassiveProgress; // 이 정산 반영 후 아키타입 패시브 해금 카운터 전체 목록(권위값) — 패시브 탭 진행도 갱신용
+    public FleetInfo fleetInfo; // 이 정산으로 실드/요격체 해금 단계가 완료됐을 때만 채워지는 갱신된 내 함대(권위값) — 평소엔 null
 }
 
 [System.Serializable]
@@ -485,7 +510,11 @@ public class AbandonZoneRunResponse
 }
 
 [System.Serializable]
-public class ChargeResourceRequest { } // 진행 중인 런의 광물을 소모해 자원 게이지를 즉시 채움 — IN_PROGRESS 런은 1개뿐이라 zoneNumber 불필요. 환산량은 서버가 권위적으로 계산(ZoneRun.resource/mineralAmount 갱신)
+public class ChargeResourceRequest
+{
+    // 진행 중인 런의 광물을 소모해 자원 게이지를 목표치까지 채움 — IN_PROGRESS 런은 1개뿐이라 zoneNumber 불필요. 환산량은 서버가 권위적으로 계산(ZoneRun.resource/mineralAmount 갱신)
+    public int targetResource; // 충전 후 도달할 자원 목표치 — 서버가 [현재치, resourceMax]로 제한하고, 광물이 모자라면 살 수 있는 만큼만 충전
+}
 
 [System.Serializable]
 public class ChargeResourceResponse
@@ -588,6 +617,7 @@ public class GetDailyAchievementListRequest { }
 public class GetDailyAchievementListResponse
 {
     public List<DailyAchievementStatus> achievements;
+    public int streakDays; // 오늘 보상에 적용 중인 연속 달성 일수(최대치로 보정됨) — 가산 %는 클라가 UIDailyStreakBanner 규칙으로 계산
 }
 
 [System.Serializable]
@@ -649,6 +679,30 @@ public class PvpOpponentInfo
     public int pvpScore;
     public int rank;
     public FleetInfo fleetInfo;
+    public List<HullArchetypeProgressInfo> passiveProgress;  // 상대 패시브 진행도 — 최종 전투 스탯 계산 입력(화면에 단계 자체는 노출하지 않음)
+    public List<ArchetypeUpgradeInfo> archetypeUpgrades;      // 상대 아키타입 강화 레벨 — 최종 전투 스탯 계산 입력(화면에 레벨 자체는 노출하지 않음)
+}
+
+[System.Serializable]
+public class PvpOpponentDetailRequest
+{
+    public long targetCommanderId; // 상세 정보를 볼 지휘관(PVP 상대 카드/랭킹 항목)
+}
+
+[System.Serializable]
+public class PvpOpponentDetailResponse
+{
+    // 상대 상세 정보 — 항상 실시간 값. 클라가 fleetInfo + 빌드 데이터로 전투와 같은 규칙의 최종 스탯을 계산해 표시
+    public long commanderId;
+    public string commanderName;
+    public int commanderLevel;
+    public int pvpScore;      // PVP 기록이 없으면 0
+    public int rank;          // PVP 순위, 기록이 없으면 0
+    public int wins;
+    public int losses;
+    public FleetInfo fleetInfo; // 활성 함대 — 없으면 null
+    public List<HullArchetypeProgressInfo> passiveProgress;
+    public List<ArchetypeUpgradeInfo> archetypeUpgrades;
 }
 
 [System.Serializable]
@@ -690,6 +744,8 @@ public class PvpBattleStartResponse
 {
     public FleetInfo opponentFleetInfo;
     public string battleToken;
+    public List<HullArchetypeProgressInfo> opponentPassiveProgress; // 상대 지휘관의 아키타입 패시브 진행도 전체(권위값) — 상대 함대에도 같은 패시브 능력치 효과를 적용하기 위함
+    public List<ArchetypeUpgradeInfo> opponentArchetypeUpgrades; // 상대 지휘관의 아키타입 모듈강화 레벨 전체(구매 횟수, 권위값) — 상대 함선이 상대 자신의 강화 레벨로 만들어지게 함
 }
 
 [System.Serializable]
@@ -714,11 +770,6 @@ public class RankingEntry
     public long commanderId;
     public string commanderName;
     public string score;
-    public int shipCount;      // 함선 수
-    public float statHealth;   // 총 체력
-    public float statAttack;   // 총 공격력
-    public int statAirCount;   // 함재기 수
-    public int statAirAttack;  // 함재기 공격력
     public bool isPerfectClear;  // Zone 랭킹 전용 - 1존부터 score(=highestClearedZoneNumber)까지 전부 완벽클리어(이탈 없이 전체 셀 클리어)했는지, PVP는 항상 false
     // PVP/Zone/Attack 랭킹 공용 엔트리. score는 항상 string
 }

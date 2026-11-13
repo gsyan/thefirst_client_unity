@@ -17,6 +17,8 @@ public class UIPopupRewardCardSelect : UIPopupBase
     [FormerlySerializedAs("m_expGainedRow")]
     [FormerlySerializedAs("m_mineralGainedRow")]
     [SerializeField] private RowLabelValue m_rewardAmountRow; // 일반 셀 클리어는 이번에 얻은 광물, 탈출 셀은 그 존의 탈출 보상 경험치(미리보기) — 팝업이 뜰 때 1회만 표시, 이후 구매와 무관하게 갱신 안 함. 0이면 행 자체를 숨김(BuyCardButton으로 연 경우 등)
+    [SerializeField] private RowLabelValue m_scavengedMineralRow; // 이번 전투 함재기 약탈로 얻은 광물 — 0이면 행 숨김(탈출 셀은 항상 숨김)
+    [SerializeField] private RowLabelValue m_scoutedMineralRow; // 이번 전투 탐사(argus)로 얻은 광물 — 0이면 행 숨김(탈출 셀은 항상 숨김)
     [SerializeField] private GameObject m_rewardCardButtonContainer; // 카드 버튼 3개를 담은 오브젝트 — 카드 후보가 없을 때(탈출 셀 등) 통째로 숨김
     [SerializeField] private Button m_confirmButton; // 닫기 버튼 — 이름은 과거(확정) 흐름의 잔재, 역할은 "닫고 다음으로 진행"
     [SerializeField] private TMP_Text m_confirmButtonText;
@@ -50,7 +52,7 @@ public class UIPopupRewardCardSelect : UIPopupBase
             m_rerollButton.onClick.AddListener(OnRerollClicked);
     }
 
-    public void ShowPopupRewardCardSelect(int rewardAmount, List<string> candidateCardIds, bool isEscapeCell, int zoneNumber, int cellRow, int cellCol, int rerollRemain, System.Action onClosed)
+    public void ShowPopupRewardCardSelect(int rewardAmount, List<string> candidateCardIds, bool isEscapeCell, int zoneNumber, int cellRow, int cellCol, int rerollRemain, System.Action onClosed, int scavengedMineral = 0, int scoutedMineral = 0)
     {
         base.ShowPopup();
         // 이전에 열렸다 닫힌 팝업의 대기 중 재바인딩이 남아있으면 버림(비활성화로 코루틴 자체는 이미 멈춰있음)
@@ -80,6 +82,10 @@ public class UIPopupRewardCardSelect : UIPopupBase
             titleKey = "UIPopupRewardCardSelect_Title";
         CommonUtility.SetUILocText(m_titleText, titleKey);
 
+        // 살 수 있는 카드가 있는 일반 셀 보상 팝업이 뜬 것을 탐사 튜토리얼에 알림(탈출/트레저 결과 팝업은 대상 아님)
+        if (isEscapeCell == false && hasCardCandidates == true)
+            TutorialManager.Instance.NotifyRewardCardPopupShown();
+
         // 탈출 셀은 보상이 광물이 아니라 경험치라 보유 광물 표시가 의미 없음 — 컨테이너 자체를 숨김
         if (m_totalMineralContainer != null)
             m_totalMineralContainer.SetActive(isEscapeCell == false);
@@ -97,6 +103,23 @@ public class UIPopupRewardCardSelect : UIPopupBase
                 m_rewardAmountRow.SetRow(rewardLabelKey, rewardAmount.ToString(), rawValue: true);
             }
         }
+
+        // 약탈/탐사 광물은 기본 보상과 구분되도록 별도 행으로 표시 — 탈출 셀은 전투가 없어 항상 숨김
+        bool showScavenged = isEscapeCell == false && scavengedMineral > 0;
+        bool showScouted = isEscapeCell == false && scoutedMineral > 0;
+        if (m_scavengedMineralRow != null)
+        {
+            m_scavengedMineralRow.gameObject.SetActive(showScavenged);
+            if (showScavenged == true)
+                m_scavengedMineralRow.SetRow("UIPopupRewardCardSelect_ScavengedLabel", scavengedMineral.ToString(), rawValue: true);
+        }
+        if (m_scoutedMineralRow != null)
+        {
+            m_scoutedMineralRow.gameObject.SetActive(showScouted);
+            if (showScouted == true)
+                m_scoutedMineralRow.SetRow("UIPopupRewardCardSelect_ScoutedLabel", scoutedMineral.ToString(), rawValue: true);
+        }
+        RebuildRewardRowsLayout();
 
         m_rewardCardButtonContainer.SetActive(hasCardCandidates);
         if (hasCardCandidates == true)
@@ -132,6 +155,25 @@ public class UIPopupRewardCardSelect : UIPopupBase
         LayoutRebuilder.ForceRebuildLayoutImmediate(m_totalMineralRow.transform as RectTransform);
     }
 
+    // 기본/약탈/탐사 보상 행은 부모(MineralReward)의 가로 레이아웃 안에 있어 값이 바뀌면 행 폭이 달라지므로, 값 기입 직후 각 행 → 부모 순으로 강제 재계산
+    private void RebuildRewardRowsLayout()
+    {
+        RebuildRowLayout(m_rewardAmountRow);
+        RebuildRowLayout(m_scavengedMineralRow);
+        RebuildRowLayout(m_scoutedMineralRow);
+
+        RectTransform parentRect = m_rewardAmountRow != null ? m_rewardAmountRow.transform.parent as RectTransform : null;
+        if (parentRect != null)
+            LayoutRebuilder.ForceRebuildLayoutImmediate(parentRect);
+    }
+
+    private void RebuildRowLayout(RowLabelValue row)
+    {
+        if (row == null || row.gameObject.activeSelf == false) return;
+
+        LayoutRebuilder.ForceRebuildLayoutImmediate(row.transform as RectTransform);
+    }
+
     private void BindCardButtons(List<string> candidateCardIds)
     {
         DataTableRewardCard table = DataManager.Instance.m_dataTableRewardCard;
@@ -150,7 +192,8 @@ public class UIPopupRewardCardSelect : UIPopupBase
             RewardCardData card = table.GetCard(candidateCardIds[index]);
             int cost = card != null ? sessionState.GetCurrentCost(card) : 0;
             m_candidateCosts[index] = cost;
-            m_cardButtons[index].SetCard(card, cost, () => OnCardBuyClicked(index));
+            float ownedValueSum = card != null ? sessionState.GetValueSum(card.effectType) : 0f;
+            m_cardButtons[index].SetCard(card, cost, ownedValueSum, () => OnCardBuyClicked(index));
             float enterDelay = k_cardEnterStagger * index;
             m_cardButtons[index].PlayEnter(enterDelay);
         }

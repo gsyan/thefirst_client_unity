@@ -119,7 +119,10 @@ public class TutorialUI : UIPopupBase
         if (m_mask != null)
         {
             if (m_targetRect != null)
+            {
                 m_mask.ShowDimWithHole(m_targetRect); // targetUIId가 있으면 dim+hole 표시
+                m_mask.SetHolePassThrough(step.triggerType != ETutorialTrigger.AnyClick); // 설명형(AnyClick) 스텝은 강조된 대상이 눌리지 않게 구멍 안도 막음
+            }
             else
                 m_mask.HideDim(); // targetUIId가 없으면 dim 없이 완전히 열림
         }

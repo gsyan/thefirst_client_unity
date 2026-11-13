@@ -365,6 +365,7 @@ public static class CommonUtility
     // EModuleType -> 모듈 타입명 단독 표시용 로컬라이즈 키
     public static string GetModuleTypeLabelKey(EModuleType moduleType)
     {
+        if (moduleType == EModuleType.hull) return "module_type_hull";
         if (moduleType == EModuleType.beam) return "module_type_beam";
         if (moduleType == EModuleType.missile) return "module_type_missile";
         if (moduleType == EModuleType.hangar) return "module_type_hangar";

@@ -124,8 +124,6 @@ public class DataTableModuleEditor : Editor
             EditorGUI.indentLevel--;
         }
 
-        module.unlockAchievementPointCost = EditorGUILayout.IntField(new GUIContent("Unlock Achievement Point Cost", "0이면 즉시 사용 가능(티어1~3). 0보다 크면 업적포인트를 이만큼 소모해야 언락(티어4+)"), module.unlockAchievementPointCost);
-
         EditorGUILayout.LabelField("Stats", EditorStyles.boldLabel);
         module.health = EditorGUILayout.FloatField("Health", module.health);
         module.repair = EditorGUILayout.FloatField("Repair", module.repair);
@@ -337,6 +335,7 @@ public class DataTableModuleEditor : Editor
     {
         EditorGUILayout.LabelField("Install Cost", EditorStyles.boldLabel);
         module.statPoint = EditorGUILayout.IntField("Stat Point", module.statPoint);
+        module.unlockAchievementPointCost = EditorGUILayout.IntField(new GUIContent("Unlock Achievement Point Cost", "0이면 즉시 사용 가능(티어1~3). 0보다 크면 업적포인트를 이만큼 소모해야 언락(티어4+)"), module.unlockAchievementPointCost);
     }
 
     #region Utility Tools
@@ -413,6 +412,40 @@ public class DataTableModuleEditor : Editor
             }
 
             EditorGUILayout.EndHorizontal();
+
+            EditorGUILayout.Space(5);
+            EditorGUILayout.BeginHorizontal();
+
+            if (GUILayout.Button("Import Enemy Module CSV"))
+            {
+                string csvPath = Application.dataPath + "/Resources/DataTable/Module/datatable_enemy_module.csv";
+                if (System.IO.File.Exists(csvPath) == false)
+                {
+                    EditorUtility.DisplayDialog("Error", $"CSV 파일을 찾을 수 없습니다:\n{csvPath}", "OK");
+                }
+                else if (EditorUtility.DisplayDialog("Import Enemy Module CSV",
+                    $"적 전용 무기(빔/미사일/격납고) 데이터를 읽어 갱신합니다(플레이어 무기 데이터는 영향 없음).\n\n{csvPath}\n\n계속하시겠습니까?", "Import", "Cancel"))
+                {
+                    string csvText = System.IO.File.ReadAllText(csvPath, System.Text.Encoding.UTF8);
+                    dataTableModule.LoadEnemyModuleCsv(csvText);
+                    EditorUtility.DisplayDialog("완료", "적 전용 무기 CSV Import가 완료되었습니다.", "OK");
+                }
+            }
+
+            if (GUILayout.Button("Export Enemy Module CSV"))
+            {
+                string csvPath = Application.dataPath + "/Resources/DataTable/Module/datatable_enemy_module.csv";
+                if (EditorUtility.DisplayDialog("Export Enemy Module CSV",
+                    $"현재 적 전용 무기 데이터를 CSV 파일로 덮어씁니다.\n\n{csvPath}\n\n계속하시겠습니까?", "Export", "Cancel"))
+                {
+                    string csv = ExportEnemyModuleCsv();
+                    System.IO.File.WriteAllText(csvPath, csv, System.Text.Encoding.UTF8);
+                    AssetDatabase.Refresh();
+                    EditorUtility.DisplayDialog("완료", "적 전용 무기 CSV Export가 완료되었습니다.", "OK");
+                }
+            }
+
+            EditorGUILayout.EndHorizontal();
         }
 
         EditorGUILayout.EndVertical();
@@ -438,11 +471,40 @@ public class DataTableModuleEditor : Editor
         return sb.ToString();
     }
 
+    // 컬럼 순서는 DataTableModule.LoadEnemyModuleCsv와 1:1
+    private string ExportEnemyModuleCsv()
+    {
+        var ic = System.Globalization.CultureInfo.InvariantCulture;
+        var sb = new System.Text.StringBuilder();
+        sb.AppendLine("type_level,health,speed,attack,splash_radius,attack_cool,silence_time,air_count,air_maintenance_time,air_health,air_attack,air_attack_to_fighter,air_attack_range,air_attack_cool,air_speed,air_ammo,air_detect_radius,air_avoid_radius,air_disrupt,crit_chance,crit_damage");
+
+        var weaponGroups = new List<ModuleSubTypeGroup>();
+        weaponGroups.AddRange(dataTableModule.BeamGroups);
+        weaponGroups.AddRange(dataTableModule.MissileGroups);
+        weaponGroups.AddRange(dataTableModule.HangarGroups);
+
+        foreach (var group in weaponGroups)
+        {
+            foreach (var d in group.modules)
+            {
+                if (d.isEnemyOnly == false) continue;
+                sb.AppendLine(string.Format(ic,
+                    "{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16},{17},{18},{19},{20}",
+                    d.moduleSubType, d.health, d.speed,
+                    d.attack, d.splashRadius, d.attackCool, d.silenceTime,
+                    d.airCount, d.airMaintenanceTime, d.airHealth, d.airAttackToShip, d.airAttackToFighter, d.airAttackRange,
+                    d.airAttackCool, d.airSpeed, d.airAmmo, d.airDetectRadius, d.airAvoidRadius, d.airDisrupt,
+                    d.critChance, d.critDamage));
+            }
+        }
+        return sb.ToString();
+    }
+
     private string ExportToCsv()
     {
         var ic = System.Globalization.CultureInfo.InvariantCulture;
         var sb = new System.Text.StringBuilder();
-        sb.AppendLine("type_level,unlock_achievement_point_cost,hull_archetype,stat_point,health,repair,speed,turn_rate,attack,splash_radius,attack_cool,silence_time,air_count,air_maintenance_time,air_health,air_attack,air_attack_to_fighter,air_attack_range,air_attack_cool,air_speed,air_ammo,air_detect_radius,air_avoid_radius,air_disrupt,shield_gauge,shield_regen_rate,interceptor_count,interceptor_regen_time,description_key,has_shield,has_interceptor");
+        sb.AppendLine("type_level,unlock_achievement_point_cost,hull_archetype,stat_point,health,repair,speed,turn_rate,attack,splash_radius,attack_cool,silence_time,air_count,air_maintenance_time,air_health,air_attack,air_attack_to_fighter,air_attack_range,air_attack_cool,air_speed,air_ammo,air_detect_radius,air_avoid_radius,air_disrupt,shield_gauge,shield_regen_rate,interceptor_count,interceptor_regen_time,description_key,has_shield,has_interceptor,crit_chance,crit_damage");
 
         var allGroups = new List<ModuleSubTypeGroup>();
         allGroups.AddRange(dataTableModule.HullGroups);
@@ -456,9 +518,9 @@ public class DataTableModuleEditor : Editor
         {
             foreach (var d in group.modules)
             {
-                if (d.isEnemyOnly == true) continue; // 적 전용 hull은 datatable_enemy_hull.csv(ExportEnemyHullCsv)로만 내보냄
+                if (d.isEnemyOnly == true) continue; // 적 전용 행은 datatable_enemy_hull.csv/datatable_enemy_module.csv로만 내보냄
                 sb.AppendLine(string.Format(ic,
-                    "{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16},{17},{18},{19},{20},{21},{22},{23},{24},{25},{26},{27},{28},{29},{30}",
+                    "{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16},{17},{18},{19},{20},{21},{22},{23},{24},{25},{26},{27},{28},{29},{30},{31},{32}",
                     d.moduleSubType,
                     d.unlockAchievementPointCost,
                     d.hullArchetype,
@@ -474,7 +536,8 @@ public class DataTableModuleEditor : Editor
                     d.interceptorCount, d.interceptorRegenTime,
                     d.descriptionKey,
                     d.hasShield == true ? 1 : 0,
-                    d.hasInterceptor == true ? 1 : 0));
+                    d.hasInterceptor == true ? 1 : 0,
+                    d.critChance, d.critDamage));
             }
         }
         return sb.ToString();

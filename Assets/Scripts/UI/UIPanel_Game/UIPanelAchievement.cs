@@ -1,6 +1,5 @@
-// 업적 패널 — 일일 업적(오늘 UTC 기준, 자정 리셋) 카테고리를 상단에, 영구 업적 카테고리를 그 아래에 이어 붙여
-// 하나의 InfiniteScrollView에 순서대로 펼쳐서 표시. 두 목록은 서버 API/데이터 테이블이 서로 다르지만
-// 화면에서는 카테고리 헤더로만 시각적으로 구분됨(일일/영구 조건타입 값이 겹칠 수 있어 isDaily로 구분)
+// 업적 패널 — 일일퀘스트 탭(오늘 UTC 기준 3개: 쉬움/중간/어려움, 고정 행)과 업적 탭(영구 업적, InfiniteScrollView) 중 하나만 활성화
+// 일일퀘스트와 영구 업적은 서버 API/데이터 테이블이 서로 달라 각자 응답이 도착하는 대로 따로 그림
 // 완료된 업적은 유저가 직접 "받기"를 눌러야 업적포인트가 지급됨(자동 지급 아님)
 using System.Collections.Generic;
 using TMPro;
@@ -9,9 +8,19 @@ using UnityEngine.UI;
 
 public class UIPanelAchievement : UIPanelBase
 {
+    [Header("탭")]
+    [SerializeField] private Button m_tabDailyButton;
+    [SerializeField] private Button m_tabAchievementButton;
+    [SerializeField] private GameObject m_tabDailyRoot;
+    [SerializeField] private GameObject m_tabAchievementRoot;
+    [SerializeField] private UIDailyStreakBanner m_streakBanner; // 일일퀘스트 탭 상단 연속 달성 배너(ContinueDescription에 부착)
+
+    [Header("일일퀘스트 탭")]
+    [SerializeField] private Transform m_dailyRowsParent; // 자식 UIAchievementRow를 하이어라키 순서대로 수집 — 쉬움 → 중간 → 어려움 순으로 채워짐
+
+    [Header("업적 탭")]
     [SerializeField] private InfiniteScrollView m_scrollView;
     [SerializeField] private UIAchievementRow m_rowPrefab;
-    [SerializeField] private TMP_Text m_titleText;
     [SerializeField] private GameObject m_titleRedDot;
     [SerializeField] private RowLabelValue m_achievementPointRow; // 타이틀 아래 보유 업적포인트 상시 표시
     [SerializeField] private Button m_claimAllButton;
@@ -21,17 +30,10 @@ public class UIPanelAchievement : UIPanelBase
     [SerializeField] private ToggleButton m_hideCompletedToggle; // 수령까지 완전히 끝난 업적을 목록에서 숨김(미수령 보상은 항상 노출)
 
     private const string k_hideCompletedPrefKey = "UIPanelAchievement_HideCompleted";
+    private static readonly Color k_tabUnselectedColor = new Color(0.5f, 0.5f, 0.5f, 1f);
     private bool m_hideCompleted;
 
-    // 일일 업적 카테고리 표시 순서 — 상단에 먼저 표시됨. 일일 업적은 CellClear/EventCell/ZoneClearTotal만 지원(DailyAchievementService 참고)
-    private static readonly EAchievementConditionType[] k_dailyCategoryOrder =
-    {
-        EAchievementConditionType.CellClear,
-        EAchievementConditionType.EventCell,
-        EAchievementConditionType.ZoneClearTotal,
-    };
-
-    // 영구 업적 카테고리 표시 순서 — 일일 목록 다음에 이어서 표시됨
+    // 영구 업적 카테고리 표시 순서
     private static readonly EAchievementConditionType[] k_categoryOrder =
     {
         EAchievementConditionType.CellClear,
@@ -47,12 +49,10 @@ public class UIPanelAchievement : UIPanelBase
         EAchievementConditionType.HullUnlocked,
     };
 
-    // 평탄화 리스트의 행 1개 — 헤더 또는 업적 항목 중 하나만 유효. category는 헤더/항목 둘 다 채워서 항목→헤더 역참조(레드닷 재계산)에 사용
-    // isDaily는 일일/영구 조건타입 값이 겹칠 수 있어(둘 다 CellClear 등 사용) 카테고리 매칭 및 수령 API 라우팅에 반드시 필요
+    // 업적/일일퀘스트 항목 1개(또는 영구 업적 목록의 카테고리 헤더) — 헤더면 isHeader만 유효. category는 항목→헤더 역참조(레드닷 재계산)에 사용
     private class AchievementListEntry
     {
         public bool isHeader;
-        public bool isDaily;
         public EAchievementConditionType category;
         public string headerLabel;
         public bool headerHasUnclaimed; // 헤더 전용 — 이 카테고리 안에 완료+미수령 항목이 있는지
@@ -62,14 +62,12 @@ public class UIPanelAchievement : UIPanelBase
         public bool isVipClaimed;
     }
 
-    private readonly List<AchievementListEntry> m_flattenedList = new();
+    private readonly List<AchievementListEntry> m_flattenedList = new(); // 영구 업적(헤더+항목)
     private readonly List<int> m_visibleIndices = new(); // 스크롤뷰 dataIndex → m_flattenedList 인덱스 매핑(완료 숨기기 필터 반영본)
+    private readonly List<AchievementListEntry> m_dailyEntries = new(); // 오늘의 일일퀘스트(쉬움/중간/어려움 순)
+    private readonly List<UIAchievementRow> m_dailyRows = new(); // m_dailyRowsParent의 자식 행(Awake에서 수집)
+    private int m_dailyStreakDays; // 서버가 내려준 오늘 보상 적용 연속 일수
     private int m_lastFoundUnclaimedIndex = -1; // "다음 찾기" 순환 검색 시작점 — 목록을 새로 받을 때마다 리셋
-
-    private Dictionary<string, AchievementStatus> m_lastPermanentStatusById;
-    private Dictionary<string, DailyAchievementStatus> m_lastDailyStatusById;
-    private bool m_permanentListReceived;
-    private bool m_dailyListReceived;
 
     private void Awake()
     {
@@ -79,6 +77,12 @@ public class UIPanelAchievement : UIPanelBase
             m_claimAllButton.onClick.AddListener(OnClaimAllClicked);
         if (m_findNextUnclaimedButton != null)
             m_findNextUnclaimedButton.onClick.AddListener(OnFindNextUnclaimedClicked);
+        if (m_tabDailyButton != null)
+            m_tabDailyButton.onClick.AddListener(OnTabDailyClicked);
+        if (m_tabAchievementButton != null)
+            m_tabAchievementButton.onClick.AddListener(OnTabAchievementClicked);
+        if (m_dailyRowsParent != null)
+            m_dailyRowsParent.GetComponentsInChildren(true, m_dailyRows);
     }
 
     public override void InitializeUIPanel()
@@ -86,8 +90,8 @@ public class UIPanelAchievement : UIPanelBase
         EventManager.Subscribe_AchievementPointChanged(OnAchievementPointChanged);
         RefreshAchievementPointRow();
 
-        if (m_titleText != null)
-            CommonUtility.SetUILocText(m_titleText, "UI_Achievement");
+        SetTabButtonText(m_tabDailyButton, "UIAchievement_TabDaily");
+        SetTabButtonText(m_tabAchievementButton, "UIAchievement_TabAchievement");
         if (m_claimAllButtonText != null)
             CommonUtility.SetUILocText(m_claimAllButtonText, "UIAchievement_ClaimAllButton");
         if (m_findNextUnclaimedButtonText != null)
@@ -102,6 +106,62 @@ public class UIPanelAchievement : UIPanelBase
         }
     }
 
+    private void OnDestroy()
+    {
+        EventManager.Unsubscribe_AchievementPointChanged(OnAchievementPointChanged);
+    }
+
+    private void OnTabDailyClicked()
+    {
+        SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true);
+        SelectTab(true);
+    }
+
+    private void OnTabAchievementClicked()
+    {
+        SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true);
+        SelectTab(false);
+    }
+
+    // 두 탭 루트 중 하나만 활성화하고 탭 버튼 색으로 선택 상태 표시
+    private void SelectTab(bool isDailyTab)
+    {
+        if (m_tabDailyRoot != null)
+            m_tabDailyRoot.SetActive(isDailyTab);
+        if (m_tabAchievementRoot != null)
+            m_tabAchievementRoot.SetActive(isDailyTab == false);
+
+        SetTabButtonSelected(m_tabDailyButton, isDailyTab == true);
+        SetTabButtonSelected(m_tabAchievementButton, isDailyTab == false);
+
+        // 비활성 상태에서 초기화된 스크롤뷰는 뷰포트 크기를 못 읽으므로 탭이 열리는 시점에 다시 초기화
+        if (isDailyTab == false)
+            RefreshScrollView();
+    }
+
+    private void SetTabButtonText(Button button, string locKey)
+    {
+        if (button == null) return;
+        TMP_Text label = button.GetComponentInChildren<TMP_Text>(true);
+        if (label != null)
+            CommonUtility.SetUILocText(label, locKey);
+    }
+
+    // 선택된 탭은 프리팹 원래 색, 선택 안 된 탭은 어둡게 — 둘 다 클릭 가능 상태 유지
+    private void SetTabButtonSelected(Button button, bool isSelected)
+    {
+        if (button == null || button.targetGraphic == null) return;
+        button.targetGraphic.color = isSelected == true ? Color.white : k_tabUnselectedColor;
+    }
+
+    private void RefreshScrollView()
+    {
+        if (m_scrollView == null || m_rowPrefab == null) return;
+        // 업적 탭이 비활성이면 스크롤뷰 Awake 전이라 초기화 불가 — 탭이 열릴 때 SelectTab에서 다시 호출됨
+        if (m_scrollView.gameObject.activeInHierarchy == false) return;
+        m_scrollView.Initialize(m_visibleIndices.Count, m_rowPrefab.gameObject);
+    }
+
     private void OnHideCompletedToggleClicked()
     {
         SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true);
@@ -112,13 +172,7 @@ public class UIPanelAchievement : UIPanelBase
         PlayerPrefs.Save();
 
         RebuildVisibleIndices();
-        if (m_scrollView != null && m_rowPrefab != null)
-            m_scrollView.Initialize(m_visibleIndices.Count, m_rowPrefab.gameObject);
-    }
-
-    private void OnDestroy()
-    {
-        EventManager.Unsubscribe_AchievementPointChanged(OnAchievementPointChanged);
+        RefreshScrollView();
     }
 
     // 다른 화면(함체 언락 등)에서 업적포인트가 바뀌면 이 패널이 열려있지 않아도 안전하게 호출됨
@@ -138,25 +192,22 @@ public class UIPanelAchievement : UIPanelBase
         LayoutRebuilder.ForceRebuildLayoutImmediate(m_achievementPointRow.transform as RectTransform);
     }
 
-    // 업적 보상 수령으로 업적포인트가 티어4 함체 언락 비용에 도달했으면, 패널을 닫는 순간 함체 언락 안내 튜토리얼 시작(최초 1회, 판정은 TutorialManager)
-    public override void OnHideUIPanel()
-    {
-        base.OnHideUIPanel();
-
-        Commander commander = DataManager.Instance.m_currentCommander;
-        if (commander == null) return;
-
-        int ownedAchievementPoint = commander.GetAchievementPoint();
-        TutorialManager.Instance.TryStartHullUnlockTutorial(ownedAchievementPoint);
-    }
-
     public override void OnShowUIPanel()
     {
         base.OnShowUIPanel();
 
-        m_permanentListReceived = false;
-        m_dailyListReceived = false;
+        SelectTab(true);
+        RequestPermanentList();
+        RequestDailyList();
+    }
+
+    private void RequestPermanentList()
+    {
         NetworkManager.Instance.GetAchievementList(new GetAchievementListRequest(), OnGetAchievementListResponse);
+    }
+
+    private void RequestDailyList()
+    {
         NetworkManager.Instance.GetDailyAchievementList(new GetDailyAchievementListRequest(), OnGetDailyAchievementListResponse);
     }
 
@@ -168,14 +219,18 @@ public class UIPanelAchievement : UIPanelBase
             return;
         }
 
-        m_lastPermanentStatusById = new Dictionary<string, AchievementStatus>();
+        Dictionary<string, AchievementStatus> statusById = new Dictionary<string, AchievementStatus>();
         if (response.data.achievements != null)
         {
             foreach (AchievementStatus status in response.data.achievements)
-                m_lastPermanentStatusById[status.achievementId] = status;
+                statusById[status.achievementId] = status;
         }
-        m_permanentListReceived = true;
-        TryBuildFlattenedListWhenReady();
+
+        BuildFlattenedList(statusById);
+        RefreshUnclaimedIndicators();
+        RebuildVisibleIndices();
+        m_lastFoundUnclaimedIndex = -1;
+        RefreshScrollView();
     }
 
     private void OnGetDailyAchievementListResponse(ApiResponse<GetDailyAchievementListResponse> response)
@@ -186,28 +241,90 @@ public class UIPanelAchievement : UIPanelBase
             return;
         }
 
-        m_lastDailyStatusById = new Dictionary<string, DailyAchievementStatus>();
+        Dictionary<string, DailyAchievementStatus> statusById = new Dictionary<string, DailyAchievementStatus>();
         if (response.data.achievements != null)
         {
             foreach (DailyAchievementStatus status in response.data.achievements)
-                m_lastDailyStatusById[status.achievementId] = status;
+                statusById[status.achievementId] = status;
         }
-        m_dailyListReceived = true;
-        TryBuildFlattenedListWhenReady();
+
+        m_dailyStreakDays = response.data.streakDays;
+
+        BuildDailyEntries(statusById);
+        RefreshDailyRows();
+        RefreshUnclaimedIndicators();
     }
 
-    // 일일/영구 두 목록이 모두 도착한 뒤에만 하나의 리스트로 합쳐서 그림 — 한쪽만 먼저 와서 목록이 절반만 보이는 걸 방지
-    private void TryBuildFlattenedListWhenReady()
+    private int GetDifficultyRank(string difficulty)
     {
-        if (m_permanentListReceived == false || m_dailyListReceived == false) return;
+        if (difficulty == "easy") return 0;
+        if (difficulty == "normal") return 1;
+        if (difficulty == "hard") return 2;
+        return 3;
+    }
 
-        BuildFlattenedList(m_lastPermanentStatusById, m_lastDailyStatusById);
-        RefreshUnclaimedIndicators();
-        RebuildVisibleIndices();
-        m_lastFoundUnclaimedIndex = -1;
+    // 서버가 내려준 오늘의 일일퀘스트(id 목록)만 골라 난이도 순으로 정렬
+    private void BuildDailyEntries(Dictionary<string, DailyAchievementStatus> statusById)
+    {
+        m_dailyEntries.Clear();
 
-        if (m_scrollView != null && m_rowPrefab != null)
-            m_scrollView.Initialize(m_visibleIndices.Count, m_rowPrefab.gameObject);
+        List<AchievementData> dailyAchievements = DataManager.Instance.m_dataTableDailyAchievement.GetDailyAchievementDataList();
+        foreach (AchievementData data in dailyAchievements)
+        {
+            if (statusById.TryGetValue(data.achievementId, out DailyAchievementStatus status) == false) continue;
+
+            m_dailyEntries.Add(new AchievementListEntry
+            {
+                isHeader = false,
+                data = data,
+                currentValue = status.currentValue,
+                isClaimed = status.isClaimed,
+                isVipClaimed = status.isVipClaimed,
+            });
+        }
+
+        m_dailyEntries.Sort((a, b) => GetDifficultyRank(a.data.difficulty).CompareTo(GetDifficultyRank(b.data.difficulty)));
+    }
+
+    private void RefreshDailyRows()
+    {
+        bool isVipActive = IAPManager.Instance.IsVipActive();
+        int bonusPercent = UIDailyStreakBanner.GetBonusPercent(m_dailyStreakDays);
+        for (int i = 0; i < m_dailyRows.Count; i++)
+        {
+            UIAchievementRow row = m_dailyRows[i];
+            if (row == null) continue;
+
+            if (i >= m_dailyEntries.Count)
+            {
+                row.gameObject.SetActive(false);
+                continue;
+            }
+
+            AchievementListEntry entry = m_dailyEntries[i];
+            row.SetupItem(entry.data, entry.currentValue, entry.isClaimed, entry.isVipClaimed, isVipActive, OnClaimClicked, bonusPercent);
+            row.SetDifficultyLabel(entry.data.difficulty);
+        }
+
+        RefreshStreakBanner();
+    }
+
+    // 서버의 연속 일수 갱신 조건과 동일 — 오늘의 일일퀘스트 전부 일반 보상 수령(VIP 수령은 무관)
+    private bool IsTodayDailyAllClaimed()
+    {
+        if (m_dailyEntries.Count == 0) return false;
+        for (int i = 0; i < m_dailyEntries.Count; i++)
+        {
+            if (m_dailyEntries[i].isClaimed == false) return false;
+        }
+        return true;
+    }
+
+    private void RefreshStreakBanner()
+    {
+        if (m_streakBanner == null) return;
+        bool isTodayCompleted = IsTodayDailyAllClaimed();
+        m_streakBanner.Refresh(m_dailyStreakDays, isTodayCompleted);
     }
 
     // m_hideCompleted가 켜져 있으면 "완료 + 전부 수령됨"(IsEntryUnclaimed == false)인 항목을 걸러냄 —
@@ -246,47 +363,9 @@ public class UIPanelAchievement : UIPanelBase
         m_visibleIndices.Sort();
     }
 
-    private void BuildFlattenedList(Dictionary<string, AchievementStatus> permanentStatusById, Dictionary<string, DailyAchievementStatus> dailyStatusById)
+    private void BuildFlattenedList(Dictionary<string, AchievementStatus> statusById)
     {
         m_flattenedList.Clear();
-
-        List<AchievementData> dailyAchievements = DataManager.Instance.m_dataTableDailyAchievement.GetDailyAchievementDataList();
-        foreach (EAchievementConditionType category in k_dailyCategoryOrder)
-        {
-            List<AchievementData> categoryAchievements = dailyAchievements.FindAll(a => a.conditionType == category);
-            if (categoryAchievements.Count == 0) continue;
-
-            AchievementListEntry headerEntry = new AchievementListEntry
-            {
-                isHeader = true,
-                isDaily = true,
-                category = category,
-                headerLabel = LocalizationManager.Instance.Get(GetCategoryLocKey(true, category)),
-            };
-            m_flattenedList.Add(headerEntry);
-
-            foreach (AchievementData data in categoryAchievements)
-            {
-                dailyStatusById.TryGetValue(data.achievementId, out DailyAchievementStatus status);
-                int currentValue = status != null ? status.currentValue : 0;
-                bool isClaimed = status != null && status.isClaimed;
-                bool isVipClaimed = status != null && status.isVipClaimed;
-
-                m_flattenedList.Add(new AchievementListEntry
-                {
-                    isHeader = false,
-                    isDaily = true,
-                    category = category,
-                    data = data,
-                    currentValue = currentValue,
-                    isClaimed = isClaimed,
-                    isVipClaimed = isVipClaimed,
-                });
-
-                if (IsEntryUnclaimed(currentValue, data.threshold, isClaimed, isVipClaimed) == true)
-                    headerEntry.headerHasUnclaimed = true;
-            }
-        }
 
         List<AchievementData> permanentAchievements = DataManager.Instance.m_dataTableAchievement.GetAchievementDataList();
         foreach (EAchievementConditionType category in k_categoryOrder)
@@ -297,15 +376,14 @@ public class UIPanelAchievement : UIPanelBase
             AchievementListEntry headerEntry = new AchievementListEntry
             {
                 isHeader = true,
-                isDaily = false,
                 category = category,
-                headerLabel = LocalizationManager.Instance.Get(GetCategoryLocKey(false, category)),
+                headerLabel = LocalizationManager.Instance.Get(GetCategoryLocKey(category)),
             };
             m_flattenedList.Add(headerEntry);
 
             foreach (AchievementData data in categoryAchievements)
             {
-                permanentStatusById.TryGetValue(data.achievementId, out AchievementStatus status);
+                statusById.TryGetValue(data.achievementId, out AchievementStatus status);
                 int currentValue = status != null ? status.currentValue : 0;
                 bool isClaimed = status != null && status.isClaimed;
                 bool isVipClaimed = status != null && status.isVipClaimed;
@@ -313,7 +391,6 @@ public class UIPanelAchievement : UIPanelBase
                 m_flattenedList.Add(new AchievementListEntry
                 {
                     isHeader = false,
-                    isDaily = false,
                     category = category,
                     data = data,
                     currentValue = currentValue,
@@ -327,29 +404,39 @@ public class UIPanelAchievement : UIPanelBase
         }
     }
 
-    // 카테고리 헤더 레드닷(headerHasUnclaimed 이미 계산됨) 종합해서 타이틀 레드닷 + Commander 캐시(다른 화면 버튼 레드닷)까지 갱신
+    // 업적 탭(타이틀 레드닷/전체 받기/다음 찾기)은 영구 업적 기준, Commander 캐시(다른 화면 버튼 레드닷)는 일일퀘스트까지 합쳐서 갱신
     private void RefreshUnclaimedIndicators()
     {
-        bool anyUnclaimed = false;
+        bool permanentUnclaimed = false;
         foreach (AchievementListEntry entry in m_flattenedList)
         {
             if (entry.isHeader == true && entry.headerHasUnclaimed == true)
             {
-                anyUnclaimed = true;
+                permanentUnclaimed = true;
+                break;
+            }
+        }
+
+        bool dailyUnclaimed = false;
+        foreach (AchievementListEntry entry in m_dailyEntries)
+        {
+            if (IsEntryUnclaimed(entry.currentValue, entry.data.threshold, entry.isClaimed, entry.isVipClaimed) == true)
+            {
+                dailyUnclaimed = true;
                 break;
             }
         }
 
         if (m_titleRedDot != null)
-            m_titleRedDot.SetActive(anyUnclaimed);
+            m_titleRedDot.SetActive(permanentUnclaimed);
         if (m_claimAllButton != null)
-            m_claimAllButton.interactable = anyUnclaimed;
+            m_claimAllButton.interactable = permanentUnclaimed;
         if (m_findNextUnclaimedButton != null)
-            m_findNextUnclaimedButton.interactable = anyUnclaimed;
+            m_findNextUnclaimedButton.interactable = permanentUnclaimed;
 
         Commander commander = DataManager.Instance.m_currentCommander;
         if (commander != null)
-            commander.UpdateHasUnclaimedAchievement(anyUnclaimed);
+            commander.UpdateHasUnclaimedAchievement(permanentUnclaimed || dailyUnclaimed);
     }
 
     private void OnItemBind(int dataIndex, GameObject rowObject)
@@ -368,10 +455,8 @@ public class UIPanelAchievement : UIPanelBase
 
     private void OnClaimClicked(string achievementId, bool claimVip)
     {
-        AchievementListEntry entry = m_flattenedList.Find(e => e.isHeader == false && e.data.achievementId == achievementId);
-        if (entry == null) return;
-
-        if (entry.isDaily == true)
+        AchievementListEntry dailyEntry = m_dailyEntries.Find(e => e.data.achievementId == achievementId);
+        if (dailyEntry != null)
         {
             ClaimDailyAchievementRequest request = new ClaimDailyAchievementRequest { achievementId = achievementId, claimVip = claimVip };
             NetworkManager.Instance.ClaimDailyAchievement(request, response =>
@@ -381,26 +466,44 @@ public class UIPanelAchievement : UIPanelBase
                     Debug.LogError($"[UIPanelAchievement] ClaimDailyAchievement 실패: {response.errorCode}");
                     return;
                 }
-                ApplyClaimResult(achievementId, claimVip, response.data.achievementPointRemain);
+                ApplyDailyClaimResult(achievementId, claimVip, response.data.achievementPointRemain);
             });
+            return;
         }
-        else
+
+        AchievementListEntry permanentEntry = m_flattenedList.Find(e => e.isHeader == false && e.data.achievementId == achievementId);
+        if (permanentEntry == null) return;
+
+        ClaimAchievementRequest permanentRequest = new ClaimAchievementRequest { achievementId = achievementId, claimVip = claimVip };
+        NetworkManager.Instance.ClaimAchievement(permanentRequest, response =>
         {
-            ClaimAchievementRequest request = new ClaimAchievementRequest { achievementId = achievementId, claimVip = claimVip };
-            NetworkManager.Instance.ClaimAchievement(request, response =>
+            if (response.errorCode != 0)
             {
-                if (response.errorCode != 0)
-                {
-                    Debug.LogError($"[UIPanelAchievement] ClaimAchievement 실패: {response.errorCode}");
-                    return;
-                }
-                ApplyClaimResult(achievementId, claimVip, response.data.achievementPointRemain);
-            });
-        }
+                Debug.LogError($"[UIPanelAchievement] ClaimAchievement 실패: {response.errorCode}");
+                return;
+            }
+            ApplyPermanentClaimResult(achievementId, claimVip, response.data.achievementPointRemain);
+        });
     }
 
-    // 일일/영구 수령 응답 처리가 완전히 동일해서 공용화 — achievementId로 엔트리를 다시 찾는 이유는 클로저로 넘긴 entry가 그 사이 리스트 갱신으로 바뀌었을 가능성을 배제하기 위함
-    private void ApplyClaimResult(string achievementId, bool claimVip, int achievementPointRemain)
+    // achievementId로 엔트리를 다시 찾는 이유는 클로저로 넘긴 entry가 그 사이 목록 갱신으로 바뀌었을 가능성을 배제하기 위함
+    private void ApplyDailyClaimResult(string achievementId, bool claimVip, int achievementPointRemain)
+    {
+        AchievementListEntry entry = m_dailyEntries.Find(e => e.data.achievementId == achievementId);
+        if (entry != null)
+        {
+            if (claimVip == true)
+                entry.isVipClaimed = true;
+            else
+                entry.isClaimed = true;
+        }
+
+        RefreshDailyRows();
+        RefreshUnclaimedIndicators();
+        UpdateCommanderAchievementPoint(achievementPointRemain);
+    }
+
+    private void ApplyPermanentClaimResult(string achievementId, bool claimVip, int achievementPointRemain)
     {
         AchievementListEntry entry = m_flattenedList.Find(e => e.isHeader == false && e.data.achievementId == achievementId);
         if (entry != null)
@@ -413,10 +516,7 @@ public class UIPanelAchievement : UIPanelBase
 
         RecomputeCategoryHeaderUnclaimed(entry);
         RefreshUnclaimedIndicators();
-
-        Commander commander = DataManager.Instance.m_currentCommander;
-        if (commander != null)
-            commander.UpdateAchievementPoint(achievementPointRemain);
+        UpdateCommanderAchievementPoint(achievementPointRemain);
 
         // 방금 수령으로 완료 처리된 항목이 숨김 대상이 될 수 있어(개수가 줄 수 있음) 개수를 갱신하되,
         // Initialize(스크롤 최상단 리셋)가 아니라 UpdateTotalCount로 수령 버튼을 누른 그 스크롤 위치를 유지
@@ -425,22 +525,29 @@ public class UIPanelAchievement : UIPanelBase
             m_scrollView.UpdateTotalCount(m_visibleIndices.Count);
     }
 
+    private void UpdateCommanderAchievementPoint(int achievementPointRemain)
+    {
+        Commander commander = DataManager.Instance.m_currentCommander;
+        if (commander != null)
+            commander.UpdateAchievementPoint(achievementPointRemain);
+    }
+
     // claimedEntry가 속한 카테고리의 헤더 엔트리를 찾아 headerHasUnclaimed를 다시 계산 — 수령으로 그 카테고리의 마지막 미수령 항목이 없어졌을 수 있어서 단순 false 대입이 아니라 재순회 필요
     private void RecomputeCategoryHeaderUnclaimed(AchievementListEntry claimedEntry)
     {
         if (claimedEntry == null) return;
 
-        AchievementListEntry headerEntry = m_flattenedList.Find(e => e.isHeader == true && e.isDaily == claimedEntry.isDaily && e.category == claimedEntry.category);
+        AchievementListEntry headerEntry = m_flattenedList.Find(e => e.isHeader == true && e.category == claimedEntry.category);
         if (headerEntry == null) return;
 
-        headerEntry.headerHasUnclaimed = ComputeCategoryHasUnclaimed(claimedEntry.isDaily, claimedEntry.category);
+        headerEntry.headerHasUnclaimed = ComputeCategoryHasUnclaimed(claimedEntry.category);
     }
 
-    private bool ComputeCategoryHasUnclaimed(bool isDaily, EAchievementConditionType category)
+    private bool ComputeCategoryHasUnclaimed(EAchievementConditionType category)
     {
         foreach (AchievementListEntry entry in m_flattenedList)
         {
-            if (entry.isHeader == true || entry.isDaily != isDaily || entry.category != category) continue;
+            if (entry.isHeader == true || entry.category != category) continue;
             if (IsEntryUnclaimed(entry.currentValue, entry.data.threshold, entry.isClaimed, entry.isVipClaimed) == true)
                 return true;
         }
@@ -457,49 +564,30 @@ public class UIPanelAchievement : UIPanelBase
         return normalUnclaimed || vipUnclaimed;
     }
 
-    // 일일 → 영구 순서로 이어서 호출 — 두 API가 같은 commander.achievementPoint를 각자 트랜잭션으로 갱신하므로
-    // 동시 호출 시 나중에 도착한 응답의 remain 값이 먼저 처리된 쪽의 지급분을 반영 못 할 수 있어 순차 처리로 확정값 보장.
+    // 업적 탭의 전체 받기 — 영구 업적만 수령(일일퀘스트는 각 행의 받기 버튼).
     // VIP 유저는 일반+VIP 보상이 서버에서 한 번에 같이 스윕되는데 응답엔 VIP 수령 id 목록이 없어 로컬 패치 대신 목록을 통째로 재조회해서 정확한 상태로 맞춤
     private void OnClaimAllClicked()
     {
         SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true);
 
-        NetworkManager.Instance.ClaimAllDailyAchievements(new ClaimAllDailyAchievementsRequest(), dailyResponse =>
+        NetworkManager.Instance.ClaimAllAchievements(new ClaimAllAchievementsRequest(), response =>
         {
-            int dailyGranted = 0;
-            if (dailyResponse.errorCode == 0)
-                dailyGranted = dailyResponse.data.totalAchievementPointGranted;
-            else
-                Debug.LogError($"[UIPanelAchievement] ClaimAllDailyAchievements 실패: {dailyResponse.errorCode}");
-
-            NetworkManager.Instance.ClaimAllAchievements(new ClaimAllAchievementsRequest(), permanentResponse =>
+            if (response.errorCode != 0)
             {
-                int permanentGranted = 0;
-                if (permanentResponse.errorCode == 0)
-                {
-                    permanentGranted = permanentResponse.data.totalAchievementPointGranted;
-                    Commander commander = DataManager.Instance.m_currentCommander;
-                    if (commander != null)
-                        commander.UpdateAchievementPoint(permanentResponse.data.achievementPointRemain);
-                }
-                else
-                {
-                    Debug.LogError($"[UIPanelAchievement] ClaimAllAchievements 실패: {permanentResponse.errorCode}");
-                }
+                Debug.LogError($"[UIPanelAchievement] ClaimAllAchievements 실패: {response.errorCode}");
+                return;
+            }
 
-                int totalGranted = dailyGranted + permanentGranted;
-                if (totalGranted <= 0) return;
+            int totalGranted = response.data.totalAchievementPointGranted;
+            UpdateCommanderAchievementPoint(response.data.achievementPointRemain);
+            if (totalGranted <= 0) return;
 
-                m_permanentListReceived = false;
-                m_dailyListReceived = false;
-                NetworkManager.Instance.GetAchievementList(new GetAchievementListRequest(), OnGetAchievementListResponse);
-                NetworkManager.Instance.GetDailyAchievementList(new GetDailyAchievementListRequest(), OnGetDailyAchievementListResponse);
+            RequestPermanentList();
 
-                UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig
-                {
-                    message = LocalizationManager.Instance.Get("DailyBonus_DescAchievement", totalGranted),
-                    autoCloseSec = 3f,
-                });
+            UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig
+            {
+                message = LocalizationManager.Instance.Get("DailyBonus_DescAchievement", totalGranted),
+                autoCloseSec = 3f,
             });
         });
     }
@@ -529,9 +617,8 @@ public class UIPanelAchievement : UIPanelBase
         }
     }
 
-    private string GetCategoryLocKey(bool isDaily, EAchievementConditionType category)
+    private string GetCategoryLocKey(EAchievementConditionType category)
     {
-        string prefix = isDaily == true ? "UIDailyAchievement_Category_" : "UIAchievement_Category_";
-        return $"{prefix}{category}";
+        return $"UIAchievement_Category_{category}";
     }
 }

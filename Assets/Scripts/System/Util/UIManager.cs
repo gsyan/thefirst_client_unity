@@ -459,6 +459,13 @@ public class UIManager : MonoSingleton<UIManager>
         return m_panelStack.Count;
     }
 
+    // 패널 스택 맨 위 패널의 panelName — 스택이 비어 있으면 빈 문자열
+    public string GetTopPanelName()
+    {
+        if (m_panelStack.Count == 0) return "";
+        return m_panelStack[m_panelStack.Count - 1].panelName;
+    }
+
     // ---------------------------------------------------------------------------------
     // Popup Layer System
     // ---------------------------------------------------------------------------------
@@ -628,8 +635,9 @@ public class UIManager : MonoSingleton<UIManager>
     }
 
     // 셀 클리어 보상(광물/경험치 안내 + 보상카드 구매) 통합 팝업 — 카드는 클릭 즉시 구매되고(별도 확인 없음), 닫기 버튼을 눌러야 다음으로 진행됨
-    // rewardAmount: 일반 셀 클리어는 이번에 획득한 광물, 탈출 셀은 그 존의 탈출 보상 경험치(미리보기) — isEscapeCell로 어느 쪽인지 구분해 표시
-    public void ShowRewardCardSelectPopup(int rewardAmount, System.Collections.Generic.List<string> candidateCardIds, bool isEscapeCell, int zoneNumber, int cellRow, int cellCol, int rerollRemain, System.Action onClosed)
+    // rewardAmount: 일반 셀 클리어는 이번에 획득한 기본 광물(약탈/탐사 제외), 탈출 셀은 그 존의 탈출 보상 경험치(미리보기) — isEscapeCell로 어느 쪽인지 구분해 표시
+    // scavengedMineral/scoutedMineral: 이번 전투의 함재기 약탈분/탐사분 광물 — 기본 광물과 별도 행으로 표시(0이면 행 숨김)
+    public void ShowRewardCardSelectPopup(int rewardAmount, System.Collections.Generic.List<string> candidateCardIds, bool isEscapeCell, int zoneNumber, int cellRow, int cellCol, int rerollRemain, System.Action onClosed, int scavengedMineral = 0, int scoutedMineral = 0)
     {
         UIPopupRewardCardSelect popup = GetOrCreatePopup<UIPopupRewardCardSelect>("UIPopupRewardCardSelect", EPopupLayer.Overlay);
         if (popup == null) return;
@@ -640,7 +648,7 @@ public class UIManager : MonoSingleton<UIManager>
         {
             CloseTopPopup(EPopupLayer.Overlay);
             onClosed?.Invoke();
-        });
+        }, scavengedMineral, scoutedMineral);
     }
 
 
@@ -668,14 +676,51 @@ public class UIManager : MonoSingleton<UIManager>
     }
 
     // 함선 로드아웃 슬롯의 모듈 레벨업 팝업(UIShipLoadoutEditorView의 ManageButton에서 오픈) — 업적포인트 기반 아키타입단위 영구강화(M6)
-    public void ShowModuleReinforcePopup(string hullArchetype, EModuleType moduleType, int slotIndex)
+    // onClosed: 팝업이 닫힌 뒤 호출(레벨업으로 바뀐 값을 호출 화면이 다시 그릴 때 사용) — 필요 없으면 null
+    public void ShowModuleReinforcePopup(string hullArchetype, EModuleType moduleType, int slotIndex, System.Action onClosed = null)
     {
         UIPopupModuleReinforce popup = GetOrCreatePopup<UIPopupModuleReinforce>("UIPopupModuleReinforce", EPopupLayer.Normal);
         if (popup == null) return;
 
         ReplacePopup(popup, EPopupLayer.Normal);
         popup.ShowPopupModuleReinforce(hullArchetype, moduleType, slotIndex,
-            onClose: () => CloseTopPopup(EPopupLayer.Normal));
+            onClose: () =>
+            {
+                CloseTopPopup(EPopupLayer.Normal);
+                if (onClosed != null) onClosed();
+            });
+    }
+
+    // 자원 충전 팝업 — 슬라이더로 충전량을 정해 충전. onCharged: (자원 현재치, 광물 현재치) 서버 권위값
+    public void ShowChargeResourcePopup(System.Action<int, int> onCharged)
+    {
+        UIPopupChargeResource popup = GetOrCreatePopup<UIPopupChargeResource>("UIPopupChargeResource", EPopupLayer.Overlay);
+        if (popup == null) return;
+
+        PushPopup(popup, EPopupLayer.Overlay);
+        popup.ShowPopupChargeResource(() => CloseTopPopup(EPopupLayer.Overlay), onCharged);
+    }
+
+    // 상대 지휘관 상세 정보 팝업 — 서버 상세 조회(실시간) 후 표시. 랭킹/PVP 화면 위에 쌓아야 하므로 Overlay 층에 push
+    // onConfirm: PVP 공격 확인용(취소/확인 버튼, 확인 시 팝업을 닫고 호출) — null이면 열람 전용(닫기 버튼)
+    public void ShowOpponentDetailPopup(long targetCommanderId, System.Action onConfirm = null)
+    {
+        PvpOpponentDetailRequest request = new PvpOpponentDetailRequest { targetCommanderId = targetCommanderId };
+        NetworkManager.Instance.PvpOpponentDetail(request, response =>
+        {
+            if (response == null || response.errorCode != 0 || response.data == null)
+            {
+                int errorCode = response != null ? response.errorCode : 0;
+                NetworkManager.Instance.ShowRequestFailedPopup(errorCode);
+                return;
+            }
+
+            UIPopupOpponentDetail popup = GetOrCreatePopup<UIPopupOpponentDetail>("UIPopupOpponentDetail", EPopupLayer.Overlay);
+            if (popup == null) return;
+
+            PushPopup(popup, EPopupLayer.Overlay);
+            popup.ShowPopupOpponentDetail(response.data, () => CloseTopPopup(EPopupLayer.Overlay), onConfirm);
+        });
     }
 
     // 외부 라이센스 고지 팝업

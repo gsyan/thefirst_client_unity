@@ -4,16 +4,15 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class UIPopupModuleReinforce : UIPopupBase
 {
     [SerializeField] private RowLabelValue m_commandPowerRow; // 보유 업적포인트 표시로 재활용
     [SerializeField] private TMP_Text m_titleText;
-    [SerializeField] private Button m_confirmButton; // 미사용(숨김) — 레벨업은 즉시 서버에 반영되는 단일 액션이라 별도 커밋 단계가 없음
-    [SerializeField] private TMP_Text m_confirmButtonText;
-    [SerializeField] private Button m_cancelButton; // 닫기
-    [SerializeField] private TMP_Text m_cancelButtonText;
+    [FormerlySerializedAs("m_confirmButton")] [SerializeField] private Button m_closeButton; // 팝업 닫기 — 레벨업은 즉시 서버에 반영되는 단일 액션이라 별도 확인/취소 단계가 없음
+    [FormerlySerializedAs("m_confirmButtonText")] [SerializeField] private TMP_Text m_closeButtonText;
 
     [Header("레벨업 — 티어업/다운 버튼 자리를 레벨업 단일 액션으로 재활용(다운그레이드 없음)")]
     [SerializeField] private TMP_Text m_tierText;
@@ -28,20 +27,47 @@ public class UIPopupModuleReinforce : UIPopupBase
     private string m_hullArchetype;
     private EModuleType m_moduleType;
     private int m_slotIndex;
+    private string m_hullBaseSubType = ""; // hull 강화일 때만 — 레벨 행 키 조립용 이 아키타입의 hull 서브타입
     private System.Action m_onClose;
+    private System.Func<RectTransform> m_levelUpButtonTargetResolver; // 등록/해제 시 같은 델리게이트 인스턴스를 써야 하므로 보관
+    private System.Func<RectTransform> m_closeButtonTargetResolver;
     private List<(string labelKey, float value)> m_statEntries = new();
 
     protected override void Awake()
     {
         base.Awake();
-        if (m_confirmButton != null) m_confirmButton.gameObject.SetActive(false);
-        if (m_cancelButton != null) m_cancelButton.onClick.AddListener(OnCloseClicked);
+        if (m_closeButton != null) m_closeButton.onClick.AddListener(OnCloseClicked);
         if (m_tierUpButton != null) m_tierUpButton.onClick.AddListener(OnLevelUpClicked);
         if (m_statsScrollView != null) m_statsScrollView.onItemBind = OnStatsItemBind;
 
-        CommonUtility.SetUILocText(m_titleText, "UI_ModuleLevelUp");
-        CommonUtility.SetUILocText(m_cancelButtonText, "UI_Cancel");
+        CommonUtility.SetUILocText(m_closeButtonText, "UI_Close");
         CommonUtility.SetUILocText(m_tierUpButtonText, "UI_ModuleLevelUpButton");
+
+        m_levelUpButtonTargetResolver = ResolveLevelUpButton;
+        TutorialManager.Instance.RegisterDynamicTarget(TutorialManager.DYNAMIC_TARGET_REINFORCE_LEVEL_UP_BUTTON, m_levelUpButtonTargetResolver);
+        m_closeButtonTargetResolver = ResolveCloseButton;
+        TutorialManager.Instance.RegisterDynamicTarget(TutorialManager.DYNAMIC_TARGET_REINFORCE_CLOSE_BUTTON, m_closeButtonTargetResolver);
+    }
+
+    private void OnDestroy()
+    {
+        TutorialManager tutorialManager = TutorialManager.Instance; // 종료 중이면 null
+        if (tutorialManager == null) return;
+
+        tutorialManager.UnregisterDynamicTarget(TutorialManager.DYNAMIC_TARGET_REINFORCE_LEVEL_UP_BUTTON, m_levelUpButtonTargetResolver);
+        tutorialManager.UnregisterDynamicTarget(TutorialManager.DYNAMIC_TARGET_REINFORCE_CLOSE_BUTTON, m_closeButtonTargetResolver);
+    }
+
+    private RectTransform ResolveLevelUpButton()
+    {
+        if (m_tierUpButton == null || m_tierUpButton.gameObject.activeInHierarchy == false) return null;
+        return m_tierUpButton.transform as RectTransform;
+    }
+
+    private RectTransform ResolveCloseButton()
+    {
+        if (m_closeButton == null || m_closeButton.gameObject.activeInHierarchy == false) return null;
+        return m_closeButton.transform as RectTransform;
     }
 
     public void ShowPopupModuleReinforce(string hullArchetype, EModuleType moduleType, int slotIndex, System.Action onClose)
@@ -50,6 +76,13 @@ public class UIPopupModuleReinforce : UIPopupBase
         m_moduleType = moduleType;
         m_slotIndex = slotIndex;
         m_onClose = onClose;
+        m_hullBaseSubType = moduleType == EModuleType.hull ? FindHullBaseSubType(hullArchetype) : "";
+
+        if (m_titleText != null)
+        {
+            string moduleTypeName = LocalizationManager.Instance.Get(CommonUtility.GetModuleTypeLabelKey(moduleType));
+            m_titleText.text = LocalizationManager.Instance.Get("UI_ModuleLevelUpTitle", (object)moduleTypeName);
+        }
 
         RefreshDisplay();
         ShowPopup();
@@ -58,9 +91,27 @@ public class UIPopupModuleReinforce : UIPopupBase
     // 다음 레벨 행의 ap_cost — 더 올릴 레벨 데이터가 CSV에 없으면(최대 레벨) null
     private int? GetNextLevelCost(int nextLevel)
     {
-        string key = $"{m_moduleType}_{nextLevel}_1";
-        ModuleData data = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(key);
+        ModuleData data = GetLevelData(nextLevel);
         return data != null ? data.unlockAchievementPointCost : (int?)null;
+    }
+
+    // 레벨 행 조회 — hull은 아키타입별 행(hull_{tier}_{archetype}_{level}, 서버 buildArchetypeLevelKey와 동일), 그 외는 공용 행({type}_{level}_1)
+    private ModuleData GetLevelData(int level)
+    {
+        DataTableModule moduleTable = DataManager.Instance.m_dataTableModule;
+        if (m_moduleType != EModuleType.hull)
+            return moduleTable.GetModuleDataFromTable($"{m_moduleType}_{level}_1");
+
+        if (string.IsNullOrEmpty(m_hullBaseSubType) == true) return null;
+        string levelKey = CommonUtility.BuildHullArchetypeLevelKey(m_hullBaseSubType, level);
+        return moduleTable.GetModuleDataFromTable(levelKey);
+    }
+
+    // 이 아키타입의 hull 행 서브타입 하나 — 레벨 키 조립(tier 토큰)용. HullModules는 호출마다 리스트를 새로 만들어 팝업을 열 때 1회만 조회
+    private string FindHullBaseSubType(string hullArchetype)
+    {
+        ModuleData hullRow = DataManager.Instance.m_dataTableModule.HullModules.Find(d => d.hullArchetype == hullArchetype);
+        return hullRow != null ? hullRow.moduleSubType : "";
     }
 
     // 현재 레벨/다음 레벨/다음 레벨 ap_cost(최대 레벨이면 null) — RefreshDisplay와 OnLevelUpClicked 공용
@@ -111,8 +162,7 @@ public class UIPopupModuleReinforce : UIPopupBase
     {
         if (m_statsScrollView == null || m_statsRowPrefab == null) return;
 
-        string key = $"{m_moduleType}_{currentLevel}_1";
-        ModuleData data = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable(key);
+        ModuleData data = GetLevelData(currentLevel);
         m_statEntries = BuildStatEntries(data);
         m_statsScrollView.Initialize(m_statEntries.Count, m_statsRowPrefab.gameObject);
     }
@@ -123,7 +173,14 @@ public class UIPopupModuleReinforce : UIPopupBase
         List<(string labelKey, float value)> entries = new();
         if (data == null) return entries;
 
-        if (m_moduleType == EModuleType.beam)
+        if (m_moduleType == EModuleType.hull)
+        {
+            entries.Add(("UIModuleReinforce_Health", data.health));
+            entries.Add(("UIModuleReinforce_Repair", data.repair));
+            entries.Add(("UIModuleReinforce_TurnRate", data.turnRate));
+            entries.Add(("UIModuleReinforce_Speed", data.speed));
+        }
+        else if (m_moduleType == EModuleType.beam)
         {
             entries.Add(("UIModuleReinforce_Attack", data.attack));
             entries.Add(("UIModuleReinforce_FireRate", data.attackCool));
@@ -133,6 +190,16 @@ public class UIPopupModuleReinforce : UIPopupBase
             entries.Add(("UIModuleReinforce_Attack", data.attack));
             entries.Add(("UIModuleReinforce_FireRate", data.attackCool));
             entries.Add(("UIModuleReinforce_SilenceTime", data.silenceTime));
+        }
+        else if (m_moduleType == EModuleType.shield)
+        {
+            entries.Add(("UIModuleReinforce_ShieldGauge", data.shieldGauge));
+            entries.Add(("UIModuleReinforce_ShieldRegenRate", data.shieldRegenRate));
+        }
+        else if (m_moduleType == EModuleType.interceptor)
+        {
+            entries.Add(("UIModuleReinforce_InterceptorCount", data.interceptorCount));
+            entries.Add(("UIModuleReinforce_InterceptorRegenTime", data.interceptorRegenTime));
         }
         else if (m_moduleType == EModuleType.hangar)
         {
@@ -178,9 +245,8 @@ public class UIPopupModuleReinforce : UIPopupBase
     // 현재 레벨 → 다음 레벨 스탯 비교 행("10.0 → 12.0" 형식) — BuildStatEntries와 같은 순서로 1:1 대응되므로 인덱스로 짝지음
     private List<(string label, string value, Color? color)> BuildComparisonRows(int currentLevel, int nextLevel)
     {
-        DataTableModule moduleTable = DataManager.Instance.m_dataTableModule;
-        ModuleData currentData = moduleTable.GetModuleDataFromTable($"{m_moduleType}_{currentLevel}_1");
-        ModuleData nextData = moduleTable.GetModuleDataFromTable($"{m_moduleType}_{nextLevel}_1");
+        ModuleData currentData = GetLevelData(currentLevel);
+        ModuleData nextData = GetLevelData(nextLevel);
 
         List<(string labelKey, float value)> currentEntries = BuildStatEntries(currentData);
         List<(string labelKey, float value)> nextEntries = BuildStatEntries(nextData);

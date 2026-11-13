@@ -465,11 +465,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 66832217635946497
-    m_Localized: Beam Rate of Fire Up
+    m_Localized: Beam Delay Down
     m_Metadata:
       m_Items: []
   - m_Id: 66832217640140800
-    m_Localized: Beam rate of fire +{0:P0}
+    m_Localized: Beam delay -{0:P0}
     m_Metadata:
       m_Items: []
   - m_Id: 66832217640140801
@@ -481,11 +481,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 66832217640140803
-    m_Localized: Missile Rate of Fire Up
+    m_Localized: Missile Delay Down
     m_Metadata:
       m_Items: []
   - m_Id: 66832217640140804
-    m_Localized: Missile rate of fire +{0:P0}
+    m_Localized: Missile delay -{0:P0}
     m_Metadata:
       m_Items: []
   - m_Id: 66832217640140805
@@ -935,19 +935,19 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 79331435256610816
-    m_Localized: Clear {1} Cells Today
+    m_Localized: Clear {1} Cells
     m_Metadata:
       m_Items: []
   - m_Id: 79331435256610817
-    m_Localized: Clear {1} normal (non-event) cells today
+    m_Localized: Clear {1} normal (non-event) cells
     m_Metadata:
       m_Items: []
   - m_Id: 79331435256610824
-    m_Localized: Clear {1} Zones Today
+    m_Localized: Clear {1} Zones
     m_Metadata:
       m_Items: []
   - m_Id: 79331435256610825
-    m_Localized: Escape {1} zone runs today (revisiting cleared zones counts too)
+    m_Localized: Escape {1} zone runs, including revisits of cleared zones
     m_Metadata:
       m_Items: []
   - m_Id: 79336418345615360
@@ -991,11 +991,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 80415901962076161
-    m_Localized: Event Cell Visit x{1} Today
+    m_Localized: Event Cell Visit x{1}
     m_Metadata:
       m_Items: []
   - m_Id: 80415901962076162
-    m_Localized: Clear event cells {1} times today
+    m_Localized: Clear event cells {1} times
     m_Metadata:
       m_Items: []
   - m_Id: 80555228943745024
@@ -1128,7 +1128,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 84572619860213760
-    m_Localized: 'Tip: If a ship''s health is running low'
+    m_Localized: 'Tip: If a ship''s health is running low, try moving it to the rear.'
     m_Metadata:
       m_Items: []
   - m_Id: 84572619914739712
@@ -1225,11 +1225,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 96410851941941253
-    m_Localized: Beam attack power +5% per hit (stacking)
+    m_Localized: Beam attack power +5% per shot (stacking up to 50%)
     m_Metadata:
       m_Items: []
   - m_Id: 96410851941941254
-    m_Localized: Missile silence effect +100%
+    m_Localized: Missile silence duration x2
     m_Metadata:
       m_Items: []
   - m_Id: 96410851941941255
@@ -1289,20 +1289,21 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 96410851941941269
-    m_Localized: Fleet combat resource charge efficiency +100%
+    m_Localized: Fleet resource usage -25%
     m_Metadata:
       m_Items: []
   - m_Id: 96410851941941270
-    m_Localized: Fleet beam/missile/hangar attack power +10%
+    m_Localized: Fleet resource usage additional -25%, fleet beam/missile/hangar
+      attack power +10%
     m_Metadata:
       m_Items: []
   - m_Id: 96410851941941271
     m_Localized: Fleet health regen +50%, shield gauge regen +50%, interceptor cooldown
-      -50%
+      -0.3s
     m_Metadata:
       m_Items: []
   - m_Id: 96410851941941272
-    m_Localized: 'Fleet tactic: Berserker mode unlockable'
+    m_Localized: 'Berserker: fleet attack x2/x3/x4 while resource is below 50%/30%/10%'
     m_Metadata:
       m_Items: []
   - m_Id: 96410851941941273
@@ -1310,11 +1311,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 96410851941941274
-    m_Localized: Hangar-vs-ship attack scavenging chance +1% (stacking)
+    m_Localized: Hangar scavenging chance +10% (additional)
     m_Metadata:
       m_Items: []
   - m_Id: 96410851941941275
-    m_Localized: Hangar-vs-hangar attack scavenging chance +1% (stacking)
+    m_Localized: Hangar scavenging chance +10% (additional)
     m_Metadata:
       m_Items: []
   - m_Id: 96410851941941276
@@ -1338,19 +1339,19 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 96410851941941281
-    m_Localized: Beam critical chance +100%
+    m_Localized: Beam critical chance +5%
     m_Metadata:
       m_Items: []
   - m_Id: 96410851941941282
-    m_Localized: Missile critical chance +100%
+    m_Localized: Missile critical chance +5%
     m_Metadata:
       m_Items: []
   - m_Id: 96410851941941283
-    m_Localized: Hangar critical chance +100%
+    m_Localized: Hangar critical chance +5%
     m_Metadata:
       m_Items: []
   - m_Id: 96410851941941284
-    m_Localized: Fleet-wide critical chance +100%
+    m_Localized: Fleet-wide critical chance +5%
     m_Metadata:
       m_Items: []
   - m_Id: 96410851941941285
@@ -1390,7 +1391,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 96410851941941294
-    m_Localized: Shield efficiency +100%
+    m_Localized: Shield gauge cost per damage -10%
     m_Metadata:
       m_Items: []
   - m_Id: 96410851941941295
@@ -1398,7 +1399,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 96410851941941296
-    m_Localized: Fleet-wide shield efficiency +100%
+    m_Localized: Fleet-wide shield gauge cost per damage -10%
     m_Metadata:
       m_Items: []
   - m_Id: 96410851941941297
@@ -1406,15 +1407,15 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 96410851941941298
-    m_Localized: Interceptor efficiency +100%
+    m_Localized: Each interceptor blocks 2 missiles
     m_Metadata:
       m_Items: []
   - m_Id: 96410851941941299
-    m_Localized: Interceptor cooldown -50%
+    m_Localized: Interceptor recharge time -0.3s
     m_Metadata:
       m_Items: []
   - m_Id: 96410851941941300
-    m_Localized: Fleet-wide interceptor cooldown -30%
+    m_Localized: Fleet-wide interceptor recharge time -0.2s
     m_Metadata:
       m_Items: []
   - m_Id: 96424402014306304
@@ -1447,10 +1448,6 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 96848683789582337
     m_Localized: Cumulative damage taken
-    m_Metadata:
-      m_Items: []
-  - m_Id: 96848683789582338
-    m_Localized: Fleet combat resource charge
     m_Metadata:
       m_Items: []
   - m_Id: 96848683789582339
@@ -1591,6 +1588,296 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 98414821719801856
     m_Localized: Mineral Gained
+    m_Metadata:
+      m_Items: []
+  - m_Id: 98855777619279872
+    m_Localized: Easy
+    m_Metadata:
+      m_Items: []
+  - m_Id: 98855777711554560
+    m_Localized: Normal
+    m_Metadata:
+      m_Items: []
+  - m_Id: 98855777711554561
+    m_Localized: Hard
+    m_Metadata:
+      m_Items: []
+  - m_Id: 98855777732526080
+    m_Localized: Escape Zone {0} x{1}
+    m_Metadata:
+      m_Items: []
+  - m_Id: 98855777732526081
+    m_Localized: Escape zone {0} {1} times
+    m_Metadata:
+      m_Items: []
+  - m_Id: 98855777732526082
+    m_Localized: Buy {1} Reward Cards
+    m_Metadata:
+      m_Items: []
+  - m_Id: 98855777732526083
+    m_Localized: Buy {1} reward cards
+    m_Metadata:
+      m_Items: []
+  - m_Id: 98855777732526084
+    m_Localized: Earn {1} Minerals
+    m_Metadata:
+      m_Items: []
+  - m_Id: 98855777732526085
+    m_Localized: Earn {1} minerals from cell clears
+    m_Metadata:
+      m_Items: []
+  - m_Id: 98855777732526086
+    m_Localized: Spend {1} Minerals
+    m_Metadata:
+      m_Items: []
+  - m_Id: 98855777732526087
+    m_Localized: Spend {1} minerals on reward cards or resource charge
+    m_Metadata:
+      m_Items: []
+  - m_Id: 98855777732526090
+    m_Localized: PVP Battle x{1}
+    m_Metadata:
+      m_Items: []
+  - m_Id: 98855777732526091
+    m_Localized: Attack in PVP {1} times
+    m_Metadata:
+      m_Items: []
+  - m_Id: 98855777732526092
+    m_Localized: PVP Victory x{1}
+    m_Metadata:
+      m_Items: []
+  - m_Id: 98855777732526093
+    m_Localized: Win {1} PVP attacks
+    m_Metadata:
+      m_Items: []
+  - m_Id: 98855777732526094
+    m_Localized: Claim Ad Reward x{1}
+    m_Metadata:
+      m_Items: []
+  - m_Id: 98855777732526095
+    m_Localized: Claim ad rewards {1} times
+    m_Metadata:
+      m_Items: []
+  - m_Id: 98858372916183040
+    m_Localized: Daily Quests
+    m_Metadata:
+      m_Items: []
+  - m_Id: 98858372979097600
+    m_Localized: Achievements
+    m_Metadata:
+      m_Items: []
+  - m_Id: 98858372979097601
+    m_Localized: Daily Quest Streak
+    m_Metadata:
+      m_Items: []
+  - m_Id: 98858372979097602
+    m_Localized: Claim all 3 daily quests each day to gain +{0}% daily quest rewards
+      per day (max +{1}%)
+    m_Metadata:
+      m_Items: []
+  - m_Id: 98858372979097603
+    m_Localized: MAX
+    m_Metadata:
+      m_Items: []
+  - m_Id: 98859064854708224
+    m_Localized: Destroy {1} Enemy Ships
+    m_Metadata:
+      m_Items: []
+  - m_Id: 98859064863096832
+    m_Localized: Destroy {1} enemy ships in exploration battles
+    m_Metadata:
+      m_Items: []
+  - m_Id: 98859064863096833
+    m_Localized: Launch Aircraft x{1}
+    m_Metadata:
+      m_Items: []
+  - m_Id: 98859064863096834
+    m_Localized: Launch your aircraft {1} times in exploration battles
+    m_Metadata:
+      m_Items: []
+  - m_Id: 99299614980440064
+    m_Localized: "Beam attack {0:P0} <voffset=6>\u2192</voffset> {1:P0}"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 99299615030771712
+    m_Localized: "Beam delay -{0:P0} <voffset=6>\u2192</voffset> -{1:P0}"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 99299615030771713
+    m_Localized: "Missile attack {0:P0} <voffset=6>\u2192</voffset> {1:P0}"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 99299615030771714
+    m_Localized: "Missile delay -{0:P0} <voffset=6>\u2192</voffset> -{1:P0}"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 99299615030771715
+    m_Localized: "Missile silence effect {0:P0} <voffset=6>\u2192</voffset> {1:P0}"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 99299615030771716
+    m_Localized: "Fighter anti-ship attack {0:P0} <voffset=6>\u2192</voffset> {1:P0}"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 99299615030771717
+    m_Localized: "Fighter dogfight attack {0:P0} <voffset=6>\u2192</voffset> {1:P0}"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 99299615030771718
+    m_Localized: "Max ship health {0:P0} <voffset=6>\u2192</voffset> {1:P0}"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 99299615030771719
+    m_Localized: "Mineral gain {0:P0} <voffset=6>\u2192</voffset> {1:P0}"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 99703893306245120
+    m_Localized: Unlocks at passive stage {0}
+    m_Metadata:
+      m_Items: []
+  - m_Id: 99717845700444160
+    m_Localized: Scavenged Mineral
+    m_Metadata:
+      m_Items: []
+  - m_Id: 99717845759164416
+    m_Localized: Scouted Mineral
+    m_Metadata:
+      m_Items: []
+  - m_Id: 99764641525006336
+    m_Localized: Level
+    m_Metadata:
+      m_Items: []
+  - m_Id: 99764641525006337
+    m_Localized: PVP Score
+    m_Metadata:
+      m_Items: []
+  - m_Id: 99764641525006338
+    m_Localized: PVP Rank
+    m_Metadata:
+      m_Items: []
+  - m_Id: 99764641525006339
+    m_Localized: Record
+    m_Metadata:
+      m_Items: []
+  - m_Id: 99764641525006340
+    m_Localized: '{0}W {1}L ({2}%)'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 99764641525006341
+    m_Localized: '{0} (blocks {1})'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 99802339560259584
+    m_Localized: Shield Regen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 99994941937025024
+    m_Localized: There are no ships in your fleet. Deploy at least one ship first.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 100042550177300480
+    m_Localized: CHARGE RESOURCE
+    m_Metadata:
+      m_Items: []
+  - m_Id: 100042550244409344
+    m_Localized: Current
+    m_Metadata:
+      m_Items: []
+  - m_Id: 100042550244409345
+    m_Localized: After charge
+    m_Metadata:
+      m_Items: []
+  - m_Id: 100042550244409346
+    m_Localized: Mineral cost
+    m_Metadata:
+      m_Items: []
+  - m_Id: 100042550244409347
+    m_Localized: Charge amount
+    m_Metadata:
+      m_Items: []
+  - m_Id: 100042550261186560
+    m_Localized: Fleet resource saved
+    m_Metadata:
+      m_Items: []
+  - m_Id: 100404887631560704
+    m_Localized: Missile-Only Clear x{1}
+    m_Metadata:
+      m_Items: []
+  - m_Id: 100404887694475264
+    m_Localized: Win {1} cell battles using only missiles (no beams or aircraft)
+    m_Metadata:
+      m_Items: []
+  - m_Id: 100404887694475265
+    m_Localized: Aircraft-Only Clear x{1}
+    m_Metadata:
+      m_Items: []
+  - m_Id: 100404887694475266
+    m_Localized: Win {1} cell battles using only aircraft (no beams or missiles)
+    m_Metadata:
+      m_Items: []
+  - m_Id: 100404887694475267
+    m_Localized: No-Shield Clear x{1}
+    m_Metadata:
+      m_Items: []
+  - m_Id: 100404887694475268
+    m_Localized: Win {1} cell battles without your shields absorbing any damage
+    m_Metadata:
+      m_Items: []
+  - m_Id: 100404887694475269
+    m_Localized: Block {1} Damage with Shields
+    m_Metadata:
+      m_Items: []
+  - m_Id: 100404887694475270
+    m_Localized: Block {1} damage with your fleet shields in exploration battles
+    m_Metadata:
+      m_Items: []
+  - m_Id: 100404887694475271
+    m_Localized: Intercept x{1}
+    m_Metadata:
+      m_Items: []
+  - m_Id: 100404887694475272
+    m_Localized: Intercept {1} times with your interceptors in exploration battles
+    m_Metadata:
+      m_Items: []
+  - m_Id: 100404887694475273
+    m_Localized: Repair {1} Health
+    m_Metadata:
+      m_Items: []
+  - m_Id: 100404887694475274
+    m_Localized: Repair {1} health across your fleet in exploration battles (repair
+      tactic and ally repair)
+    m_Metadata:
+      m_Items: []
+  - m_Id: 100404887694475275
+    m_Localized: Scavenge {1} Minerals
+    m_Metadata:
+      m_Items: []
+  - m_Id: 100404887694475276
+    m_Localized: Gain {1} minerals by aircraft scavenging
+    m_Metadata:
+      m_Items: []
+  - m_Id: 100429028334108672
+    m_Localized: Speed
+    m_Metadata:
+      m_Items: []
+  - m_Id: 100429028392828928
+    m_Localized: Hull
+    m_Metadata:
+      m_Items: []
+  - m_Id: 100429028392828929
+    m_Localized: Repair
+    m_Metadata:
+      m_Items: []
+  - m_Id: 100429028392828930
+    m_Localized: Turn Rate
+    m_Metadata:
+      m_Items: []
+  - m_Id: 100429028392828931
+    m_Localized: Speed
+    m_Metadata:
+      m_Items: []
+  - m_Id: 100854743844126720
+    m_Localized: '{0} Reinforcement'
     m_Metadata:
       m_Items: []
   references:

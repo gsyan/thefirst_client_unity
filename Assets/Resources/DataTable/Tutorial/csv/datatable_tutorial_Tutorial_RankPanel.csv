@@ -1,0 +1,6 @@
+stepId,message,triggerType,targetPanelName,targetUIId,showArrow,arrowDirection,textBoxOffsetX,textBoxOffsetY,textBoxSizeX,textBoxSizeY,textBoxPositionX,textBoxPositionY,autoNextDelay,preActionPanelName,preActionTabName,conditionType,conditionThreshold,conditionCount,targetModuleType
+step1,Tutorial_RankPanel_MyInfo,AnyClick,UIPanelRank,MyInfoContainer,True,Auto,0,0,0,0,0,-500,0,,,None,90,3,none
+step2,Tutorial_RankPanel_Cards,AnyClick,UIPanelRank,PvpCards,True,Auto,0,0,0,0,0,-500,0,,,None,90,3,none
+step3,Tutorial_RankPanel_Refresh,AnyClick,UIPanelRank,RefreshButton,True,Auto,0,0,0,0,0,-500,0,,,None,90,3,none
+step4,Tutorial_RankPanel_RankTab,TargetClick,UIPanelRank,RankingListButton,True,Auto,0,0,0,0,0,-500,0,,,None,90,3,none
+step5,Tutorial_RankPanel_RankList,AnyClick,UIPanelRank,ToggleContainer,True,Auto,0,0,0,0,0,-500,0,,,None,90,3,none

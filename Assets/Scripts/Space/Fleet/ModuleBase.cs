@@ -24,7 +24,11 @@ public class ModuleBase : MonoBehaviour
     protected float m_attackPhaseOffset = 0f;
     protected float m_attackSignalArmedTime = 0f;
     protected bool m_isAttackSignalFired = false;
-    private const float k_attackJitterMin = 0.1f;
+    public const float k_attackJitterMin = 0.1f; // 전투 시작 첫 발 지터 최솟값 — 탐사 첫 판정(SpaceShip.Co_Scout)도 같은 값 사용
+
+    // 치명타 — 무기(빔/미사일/격납고) 데이터의 기본값. 확률은 발사 시점에 패시브 가산(%p)을 더해 판정(RollCritMultiplier)
+    protected float m_critChancePercent = 0f;
+    protected float m_critDamageMultiplier = 1f;
 
     public virtual void Start()
     {
@@ -53,8 +57,14 @@ public class ModuleBase : MonoBehaviour
 
         // 전투 종료 중 얼어붙은 낡은 쿨다운/무장신호가 다음 전투로 새는 것을 방지 — 새 전투 진입 시 항상 깨끗한 상태로 시작
         if (m_moduleState.IsBattleState() == true && wasBattleState == false)
+        {
             ResetAttackSignal();
+            OnEnterBattleState();
+        }
     }
+
+    // 새 전투 진입 시 모듈별 전투 한정 상태(누적 버프 등)를 초기화 — 필요한 모듈에서 override
+    protected virtual void OnEnterBattleState() { }
 
     // 전투 상태로 새로 진입할 때 호출 — 직전 전투에서 이월된 낡은 무장신호/쿨다운 baseline을 지움
     // 쿨다운을 이미 다 채운 것처럼(Time.time - 쿨다운) baseline을 세워 첫 발사가 지터(0.1~2초)만큼만 지연되게 함 —
@@ -285,12 +295,64 @@ public class ModuleBase : MonoBehaviour
         // 기본 구현 없음 - 각 모듈에서 필요시 override
     }
 
+    // 딜레이 감소 카드를 아무리 쌓아도 기본 딜레이 대비 이 비율 아래로는 내려가지 않음
+    protected const float k_minDelayRatio = 0.2f;
+
     // 보상카드 지속버프 배율 — 내 함대(fleet_source_player) 모듈에서만 1이 아님. 공격/쿨다운 등 "사용 시점에 즉시 반영되어야 하는" 값에 매번 곱해서 씀
     // (스폰 시 1회성으로 구워넣지 않는 이유: 버프는 존 런 도중에도 계속 늘어나므로, 이미 스폰된 함선도 다음 공격부터 바로 반영되어야 함)
     public float GetRewardCardBuffMultiplier(ECardEffectType effectType)
     {
         if (m_ownerFleet == null || m_ownerFleet.m_fleetSource != EFleetSource.fleet_source_player) return 1f;
         return ObjectManager.Instance.m_rewardCardSessionState.GetMultiplier(effectType);
+    }
+
+    // 무기 수치 출처 행 — 존 적은 장착 서브타입 행 그대로(적 전용 무기 데이터, 굴린 티어 유지), 그 외(내 함대/PVP 상대/시네마틱)는
+    // 아키타입 강화 레벨 행({type}_{level}_1), 레벨 행이 없으면 장착 서브타입 행
+    protected ModuleData ResolveWeaponLevelData(ModuleData subTypeData, EModuleType moduleType, int archetypeLevel)
+    {
+        SpaceFleet ownerFleet = ResolveOwnerFleet();
+        if (ownerFleet != null && ownerFleet.IsZoneEnemy == true) return subTypeData;
+
+        ModuleData levelData = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable($"{moduleType}_{archetypeLevel}_1");
+        return levelData != null ? levelData : subTypeData;
+    }
+
+    // 무기 데이터의 치명타 기본값 저장 — 시네마틱(튜토리얼 연출) 함대는 연출 중 예상 밖 피해가 나지 않게 치명타 없음
+    protected void SetCritStats(ModuleData sourceData)
+    {
+        SpaceFleet ownerFleet = ResolveOwnerFleet();
+        bool isCinematic = ownerFleet != null && ownerFleet.IsCinematic == true;
+        m_critChancePercent = isCinematic == true || sourceData == null ? 0f : sourceData.critChance;
+        m_critDamageMultiplier = sourceData != null && sourceData.critDamage > 0f ? sourceData.critDamage : 1f;
+    }
+
+    // 발사 1회의 치명타 판정 — 확률 = 기본 확률 + 패시브 가산(passiveCritEffectType, %p). 치명타면 피해 배수, 아니면 1
+    public float RollCritMultiplier(string passiveCritEffectType)
+    {
+        float passiveBonusPercent = GetPassiveEffect(passiveCritEffectType);
+        float critChancePercent = m_critChancePercent + passiveBonusPercent;
+        if (critChancePercent <= 0f) return 1f;
+
+        float rollPercent = UnityEngine.Random.value * 100f;
+        bool isCritical = rollPercent < critChancePercent;
+        return isCritical == true ? m_critDamageMultiplier : 1f;
+    }
+
+    // 이 모듈이 속한 함대 — 모듈 초기화 중(AutoDetectFleetInfo 이전)에도 함선 계층에서 찾아 반환. 아키타입 강화 레벨 조회(함대별 지휘관 구분)에 사용
+    protected SpaceFleet ResolveOwnerFleet()
+    {
+        if (m_ownerFleet != null) return m_ownerFleet;
+
+        SpaceShip ship = m_ownerShip != null ? m_ownerShip : GetComponentInParent<SpaceShip>();
+        return ship != null ? ship.m_ownerFleet : null;
+    }
+
+    // 아키타입 패시브 수치 효과 — 내 함대 모듈에서만 0이 아님. 능력치를 "사용 시점/갱신 시점"에 이 값으로 곱해 씀(보상카드 배율과 같은 방식)
+    public float GetPassiveEffect(string effectType)
+    {
+        SpaceShip ship = m_ownerShip != null ? m_ownerShip : GetSpaceShip();
+        if (ship == null) return 0f;
+        return ship.GetPassiveEffect(effectType);
     }
 
     public SpaceShip GetSpaceShip()

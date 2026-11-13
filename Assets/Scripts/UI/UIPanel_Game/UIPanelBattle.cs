@@ -108,13 +108,7 @@ public class UIPanelBattle : UIPanelBase
 
     private void RefreshVisibility()
     {
-        // Tutorial_FirstPlay_Battle(전투 연출)~Tutorial_FirstPlay_Complete(기함 폭발 후 탈출 연출)까지는 하나로 이어지는
-        // 연출 구간이라 이 패널(존 정보/전술 토글 등)을 노출하지 않음 — 기함 전투 상태가 탈출 단계까지 남아있을 수 있음
-        bool isTutorialBattle = TutorialActionGate.IsTutorial("Tutorial_FirstPlay_Battle")
-            || TutorialActionGate.IsTutorial("Tutorial_FirstPlay_Complete");
-            // || TutorialActionGate.IsTutorial("Tutorial_Exploration");
-
-        bool shouldShow = m_fleetState.IsBattleState() == true && m_isExplorationOpen == false && isTutorialBattle == false;
+        bool shouldShow = m_fleetState.IsBattleState() == true && m_isExplorationOpen == false;
 
         if (shouldShow == true)
             UIManager.Instance.ShowPanel(panelName);

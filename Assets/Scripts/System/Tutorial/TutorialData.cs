@@ -31,16 +31,13 @@ public enum ETutorialConditionType
     SpecificModuleSelected = 5,   // 특정 모듈 선택
     // 6 = (구)CinematicOpeningBattle, 삭제됨 — 기존 .asset 직렬화 값 호환을 위해 번호 재사용 금지
     ShipArrivedAtFormation = 7,   // TutorialManager.SetPendingNewShip으로 등록된 함선이 대형 자리에 도착할 때까지 대기
-    EscapeShipDistanceFromFlagship = 8, // 지크프리트 기함 뒤에서 탈출 함선을 스폰하고, conditionThreshold 거리만큼 멀어질 때까지 대기
-    EnemyWave1 = 9, // step2 — 5개 함대([7,3,3] 구성), 10초 간격 스폰, 전멸까지 대기
-    EnemyWave2 = 10, // step4 — 10개 함대([9,5,5,3,3] 구성), 5초 간격 스폰. 애초에 전멸이 불가능한 물량 — 다음 스텝 전환은 FlagshipHealthBelowPercent가 별도로 감시
-    FlagshipHealthBelowPercent = 11, // 내 함대 기함 체력 비율이 conditionThreshold(0~1) 이하로 떨어질 때까지 대기
-    SiegfriedFlagshipExplosion = 12, // step7 — 카메라를 탈출 함선으로 전환 + 지크프리트 기함 폭발 연출 후 conditionThreshold초 대기, 완료되면 다음 스텝
-    CleanupEscapeFleet = 13, // Tutorial_FirstPlay_Complete 마지막 스텝 — 탈출선 연출(워프이펙트/이동) 정리 후 즉시 다음 스텝(=튜토리얼 종료)
+    // 8~13 = 삭제된 전투 연출 조건 — 기존 .asset 직렬화 값 호환을 위해 번호 재사용 금지
     WaitForZoneBattleEnd = 14, // Tutorial_Exploration — 셀 전투 결과가 완전히 반영되어 그리드 패널로 복귀할 때까지 대기(EventManager.ZoneCellReturnedToGrid), 승패 무관하게 진행
     WaitForGridCellClicked = 15, // Tutorial_Exploration step3 — 3D 탐사 그리드 셀을 클릭할 때까지 대기(유효성 검사 이전 원시 클릭 이벤트라 어떤 셀을 눌러도 진행)
     CommandPowerInsufficientForPickedHull = 16, // Branch 전용 — 함체 선택 팝업에서 고른 함체를 배치하면 지휘력이 최대치를 넘는지
     Always = 17, // Branch 전용 — 항상 참(무조건 점프)
+    ExplorationRunActive = 19, // Branch 전용 — 진행 중인 존런이 있는지(셀을 한 번이라도 클리어한 뒤 재시작한 경우 앞 단계 건너뛰기용)
+    WaitForRewardCardPopup = 18, // Tutorial_Exploration — 전투 승리 후 보상 카드 팝업이 뜰 때까지 대기(패배하면 튜토리얼 종료)
 }
 
 // 화살표 방향 — Auto면 TutorialArrow가 화면 여유 공간을 보고 자동 결정, 그 외는 강제 지정

@@ -17,6 +17,7 @@ public class InterceptorUnit : MonoBehaviour
 
     private ModuleInterceptor m_owner;
     private int m_slotIndex;
+    private int m_hitsLeft; // 이 유닛이 앞으로 막을 수 있는 미사일 수 — 0이 되면 소모됨(생성 시 owner.GetHitsPerUnit()로 정해짐)
     private Transform m_shipTransform; // 회전(정면 바라보기) 계산에만 사용 — 위치는 부모(m_orbitCenter) 기준 로컬 좌표로만 다룸
     private Transform m_orbitCenter; // 궤도 중심점 — 함체 프리팹에 배치된 오브젝트(없으면 함체 피벗 그대로). 활성 중엔 이 오브젝트의 자식으로 붙음
     private float m_orbitRadius;
@@ -38,6 +39,7 @@ public class InterceptorUnit : MonoBehaviour
     {
         m_owner = owner;
         m_slotIndex = slotIndex;
+        m_hitsLeft = owner.GetHitsPerUnit();
         m_shipTransform = shipTransform;
         m_orbitCenter = orbitCenter;
         m_orbitRadius = orbitRadius;
@@ -140,6 +142,15 @@ public class InterceptorUnit : MonoBehaviour
     {
         ModuleInterceptor owner = m_owner;
         int consumedIndex = m_slotIndex;
+
+        // 아키타입 패시브 intercept_count — 이 요격체가 미사일을 막을 때마다 소유 함선에 +1
+        if (owner != null)
+            BattleStatTracker.AddShipArchetypeCounter(owner.GetSpaceShip(), BattleStatTracker.k_counterIntercept, 1f);
+
+        // 1기당 요격 횟수가 남아 있으면 유닛은 소모되지 않고 계속 가드(요격 1회당 1씩 차감)
+        m_hitsLeft--;
+        if (m_hitsLeft > 0) return;
+
         ReturnToPoolImmediate();
         owner.OnUnitConsumed(consumedIndex);
     }

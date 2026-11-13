@@ -25,6 +25,10 @@ public static class ExplorationShipSpawnBridge
         spaceShip.m_attackMultiplier = attackMultiplier;
         spaceShip.InitializeSpaceShip(fleet, shipInfo, finalStats);
         fleet.AddShip(spaceShip, bWarp: bWarp);
+
+        // 함선이 함대에 들어왔으니 함대 범위 패시브/기존 함선들의 패시브 효과를 함대 전체 기준으로 다시 반영(패시브를 받는 함대만)
+        if (fleet.HasPassiveSource() == true)
+            ObjectManager.Instance.RefreshPassiveEffectsOnFleet(fleet);
         return spaceShip;
     }
 

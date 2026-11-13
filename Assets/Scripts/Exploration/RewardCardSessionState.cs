@@ -74,6 +74,14 @@ public class RewardCardSessionState
         //UnityEngine.Debug.Log($"[RewardCard] ApplyCard effectType={card.effectType} stackCount={entry.stackCount} valueSum={entry.valueSum}");
     }
 
+    // 이 effectType의 현재 누적 value1 합(보유 전이면 0) — 카드 설명의 "누적 A → B" 표시용
+    public float GetValueSum(ECardEffectType effectType)
+    {
+        RewardCardBuffEntry entry;
+        bool found = m_buffs.TryGetValue(effectType, out entry);
+        return found ? entry.valueSum : 0f;
+    }
+
     public float GetMultiplier(ECardEffectType effectType)
     {
         RewardCardBuffEntry entry;

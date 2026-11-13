@@ -16,6 +16,68 @@ public class GameSettings
     public ExplorationSettings exploration = new ExplorationSettings();
     public ShipStatFormulaSettings shipStatFormula = new ShipStatFormulaSettings();
     public ArchetypeUpgradeSettings archetypeUpgrade = new ArchetypeUpgradeSettings();
+    public DailyQuestSettings dailyQuest = new DailyQuestSettings();
+    public ScavengeSettings scavenge = new ScavengeSettings();
+    public ScoutSettings scout = new ScoutSettings();
+    public SupportAbilitySettings supportAbility = new SupportAbilitySettings();
+}
+
+// 지원 능력(phoenix 아군 수리 / halcyon 아군 실드 충전 부스트) — 능력이 있는 함선이 전투 중 매 틱 대상을 잡아 지원, 동시 대상 수는 패시브 효과가 결정
+// 대상 선정: 체력(실드) 비율이 가장 낮은 아군을 잡고, 해제 비율에 도달할 때까지 유지한 뒤 다시 탐색
+[System.Serializable]
+public class SupportAbilitySettings
+{
+    [Tooltip("지원 틱 간격(초) — 이 간격마다 대상 갱신 + 대상 1척당 1회 지원")]
+    public int tickSeconds = 1;
+    [Tooltip("수리 1회(대상 1척, 1틱)당 소모하는 전투자원 — 회복량은 수리하는 함선의 수리력(datatable_module.csv hull repair)")]
+    public int repairCostPerTick = 10;
+    [Tooltip("수리 대상이 이 체력 비율(퍼센트)에 도달하면 대상을 풀고 다시 탐색(80 = 80%)")]
+    public int repairReleaseRatioPercent = 80;
+    [Tooltip("실드 충전 부스트가 대상의 기본 실드 회복에 더하는 추가량 — 기본 회복량 대비 퍼센트(100 = 기본의 100%, 즉 2배)")]
+    public int shieldChargeBonusPercent = 100;
+    [Tooltip("실드 충전 1회(대상 1척, 1틱)당 소모하는 전투자원")]
+    public int shieldChargeCostPerTick = 10;
+    [Tooltip("실드 충전 대상이 이 게이지 비율(퍼센트)에 도달하면 대상을 풀고 다시 탐색(80 = 80%)")]
+    public int shieldChargeReleaseRatioPercent = 80;
+}
+
+// 탐사(argus) — 전투 중 탐사 능력이 있는 함선이 일정 간격으로 슬롯마다 독립 확률 판정, 성공 시 광물 획득(클라 판정, 셀 클리어 시 서버로 합계 보고)
+// 확률/슬롯 수는 패시브 효과(scout_chance/scout_slot)가 결정하고 여기는 판정 간격과 광물량만 가짐
+[System.Serializable]
+public class ScoutSettings
+{
+    [Tooltip("탐사 판정 쿨타임(초) — 빔/미사일 쿨타임에 준함. 전투 시작 후 무기와 같은 지터만큼 지난 뒤 첫 판정, 이후 이 간격마다 탐사 슬롯 수만큼 독립 판정")]
+    public float intervalSeconds = 3f;
+    [Tooltip("탐사 1회 성공 광물량 최솟값")]
+    public int mineralMin = 10;
+    [Tooltip("탐사 1회 성공 광물량 최댓값")]
+    public int mineralMax = 50;
+    [Tooltip("탐사 광물량 단위 — 최솟값부터 최댓값까지 이 간격의 값 중 균등 랜덤(이펙트 색 구분은 이 단계 순서를 따름)")]
+    public int mineralStep = 10;
+}
+
+// 함재기 약탈 — 플레이어 함재기가 적 함선을 명중시킬 때마다 확률로 광물을 얻음(클라 판정, 셀 클리어 시 서버로 합계 보고)
+[System.Serializable]
+public class ScavengeSettings
+{
+    [Tooltip("모든 함재기의 기본 약탈 확률(퍼센트, 10 = 10%) — 아키타입 패시브 scavenge_chance 효과가 여기에 더해짐")]
+    public int baseChancePercent = 10;
+    [Tooltip("약탈 1회 광물량 최솟값")]
+    public int mineralMin = 10;
+    [Tooltip("약탈 1회 광물량 최댓값")]
+    public int mineralMax = 50;
+    [Tooltip("약탈 광물량 단위 — 최솟값부터 최댓값까지 이 간격의 값 중 균등 랜덤(10~50, 10 = 10/20/30/40/50)")]
+    public int mineralStep = 10;
+}
+
+// 일일퀘스트 연속 달성 보너스 — 서버가 보상 계산에, 클라가 배너/보상 표시에 같은 값을 사용
+[System.Serializable]
+public class DailyQuestSettings
+{
+    [Tooltip("연속 달성 1일당 보상 가산 퍼센트(5 = 하루당 +5%)")]
+    public int streakPercentPerDay = 5;
+    [Tooltip("보너스가 적용되는 최대 연속 일수 — 최대 가산 = 이 값 × 일당 퍼센트")]
+    public int streakMaxDays = 10;
 }
 
 // 아키타입 단위 영구 모듈강화(M6) — 업적포인트 소모, 모듈 타입(빔/미사일/격납고)별 레벨을 올림
@@ -74,19 +136,32 @@ public class ExplorationSettings
 public class TacticSettings
 {
     [Tooltip("수리 전술 ON 시 회복 틱마다, 체력이 100%가 아닌 함선 1척당 소모하는 탐험 포인트")]
-    public int tacticRepairCost = 10;
+    public int tacticRepairCost = 100;
     [Tooltip("빔 전술 ON 시 빔 발사 1건마다 소모하는 탐험 포인트")]
-    public int tacticBeamCost = 1;
+    public int tacticBeamCost = 10;
     [Tooltip("미사일 전술 ON 시 미사일 발사 1건마다 소모하는 탐험 포인트")]
-    public int tacticMissileCost = 1;
+    public int tacticMissileCost = 10;
     [Tooltip("함재기 전술 ON 시 함재기 발진 1건마다 소모하는 탐험 포인트")]
-    public int tacticHangerCost = 1;
+    public int tacticHangerCost = 10;
     [Tooltip("실드 전술 ON 시 실드 회복 틱마다, 게이지가 가득 차지 않은 함선 1척당 소모하는 탐험 포인트")]
-    public int tacticShieldCost = 10;
+    public int tacticShieldCost = 100;
     [Tooltip("요격체 전술 ON 시 요격체 1기 생성마다 소모하는 탐험 포인트")]
-    public int tacticInterceptorCost = 10;
-    [Tooltip("자원 게이지(전술력) 수동 충전 — 광물 1개당 채워지는 자원 게이지 포인트(1:1)")]
-    public int mineralToResourceRatio = 1;
+    public int tacticInterceptorCost = 100;
+    [Tooltip("자원 게이지(전술력) 수동 충전 — 광물 1개당 채워지는 자원 게이지 포인트")]
+    public int mineralToResourceRatio = 10;
+
+    [Tooltip("버서커(leviathan 4단계) — 자원이 최대치의 이 %미만이면 1단계 배율")]
+    public float berserkerThreshold1Percent = 50f;
+    [Tooltip("버서커 — 자원이 최대치의 이 %미만이면 2단계 배율")]
+    public float berserkerThreshold2Percent = 30f;
+    [Tooltip("버서커 — 자원이 최대치의 이 %미만이면 3단계 배율")]
+    public float berserkerThreshold3Percent = 10f;
+    [Tooltip("버서커 1단계 함대 공격력 배율")]
+    public float berserkerAttackMultiplier1 = 2f;
+    [Tooltip("버서커 2단계 함대 공격력 배율")]
+    public float berserkerAttackMultiplier2 = 3f;
+    [Tooltip("버서커 3단계 함대 공격력 배율")]
+    public float berserkerAttackMultiplier3 = 4f;
 }
 
 // 성능포인트 1000 배분 → 최종 전투 수치 변환 공식의 기준값/계수

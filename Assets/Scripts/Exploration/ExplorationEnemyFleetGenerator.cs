@@ -157,14 +157,18 @@ public static class ExplorationEnemyFleetGenerator
         ship.hull = hull;
         int[] maxSlots = FleetComposition.ParseMaxSlotsFromHullSubType(hull.moduleSubType); // [beam, missile, hangar, shield, interceptor]
 
-        FillSlotsBySlotChance(ship.beams, EModuleType.beam, moduleTable.BeamModules, hullTier, maxSlots[0], zoneConfig, random);
-        FillSlotsBySlotChance(ship.missiles, EModuleType.missile, moduleTable.MissileModules, hullTier, maxSlots[1], zoneConfig, random);
-        FillSlotsBySlotChance(ship.hangars, EModuleType.hangar, moduleTable.HangarModules, hullTier, maxSlots[2], zoneConfig, random);
+        // 적 무기는 적 전용 무기 데이터(datatable_enemy_module.csv, {type}_{tier}_enemy)에서만 고름 — 플레이어 무기와 수치/치명타를 따로 조절
+        ModuleDataList enemyBeams = moduleTable.EnemyBeamModules;
+        ModuleDataList enemyMissiles = moduleTable.EnemyMissileModules;
+        ModuleDataList enemyHangars = moduleTable.EnemyHangarModules;
+        FillSlotsBySlotChance(ship.beams, EModuleType.beam, enemyBeams, hullTier, maxSlots[0], zoneConfig, random);
+        FillSlotsBySlotChance(ship.missiles, EModuleType.missile, enemyMissiles, hullTier, maxSlots[1], zoneConfig, random);
+        FillSlotsBySlotChance(ship.hangars, EModuleType.hangar, enemyHangars, hullTier, maxSlots[2], zoneConfig, random);
 
         // 배치확률이 낮으면 슬롯 전부가 미장착으로 굴러 공격수단이 하나도 없는 함선이 나올 수 있음 —
         // 최소한의 전투력 보장을 위해 그럴 땐 빔 슬롯 0번만은 배치확률 체크 없이 강제 장착(티어는 정규분포 굴림을 그대로 적용)
         if (ship.beams.Count == 0 && ship.missiles.Count == 0 && ship.hangars.Count == 0 && maxSlots[0] > 0)
-            TryEquipModuleAtSlot(ship.beams, EModuleType.beam, moduleTable.BeamModules, hullTier, 0, zoneConfig, random);
+            TryEquipModuleAtSlot(ship.beams, EModuleType.beam, enemyBeams, hullTier, 0, zoneConfig, random);
 
         // 실드/요격체 둘 다 함체 변형 선택 단계(ResolveHullVariant)에서 이미 유무가 결정됨(슬롯 있으면 항상 장착)
         ship.shieldSubType = maxSlots[3] > 0 ? "shield_1_1" : "";

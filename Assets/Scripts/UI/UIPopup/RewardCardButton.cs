@@ -44,7 +44,8 @@ public class RewardCardButton : MonoBehaviour
             m_canvasGroup = gameObject.AddComponent<CanvasGroup>();
     }
 
-    public void SetCard(RewardCardData card, int mineralCost, System.Action onClicked)
+    // ownedValueSum: 이번 런에서 같은 effectType으로 이미 누적된 value1 합 — 0보다 크면 설명 끝에 "누적 A → B"를 덧붙임
+    public void SetCard(RewardCardData card, int mineralCost, float ownedValueSum, System.Action onClicked)
     {
         gameObject.SetActive(true);
         m_onClicked = onClicked;
@@ -62,7 +63,17 @@ public class RewardCardButton : MonoBehaviour
         CommonUtility.SetUILocText(m_nameText, card.nameKey);
         // Buff_MineralFlatBonus는 실제 가산량이 card.value1이 아니라 "이번에 지불할 비용 그대로"라, 설명에도 value1 대신 이번 비용을 보여줌
         float descValue1 = card.effectType == ECardEffectType.Buff_MineralFlatBonus ? mineralCost : card.value1;
-        m_descText.text = LocalizationManager.Instance.Get(card.descKey, descValue1, card.value2);
+        string descText = LocalizationManager.Instance.Get(card.descKey, descValue1, card.value2);
+
+        // 합산형 지속버프(%)만 "현재 → 구매 후" 한 줄로 대체 — 즉시효과·광물 고정가산(대체형)은 제외. 키는 descKey + "_Stacked"
+        bool isStackedPercentCard = card.isPersistent == true && card.effectType != ECardEffectType.Buff_MineralFlatBonus;
+        if (isStackedPercentCard == true && ownedValueSum > 0f)
+        {
+            float afterValueSum = ownedValueSum + card.value1;
+            string stackedDescKey = card.descKey + "_Stacked";
+            descText = LocalizationManager.Instance.Get(stackedDescKey, ownedValueSum, afterValueSum);
+        }
+        m_descText.text = descText;
         if (m_mineralCostText != null)
             m_mineralCostText.text = LocalizationManager.Instance.Get("RewardCardButton_MineralCost", mineralCost);
         if (m_iconImage != null)

@@ -19,7 +19,25 @@ public class ModuleMissile : ModuleBase
 
     // 강화 포인트 반영을 마친 침묵시간(보상카드 버프 미반영) — ProjectileMissile이 발사 시 기본값으로 사용
     private float m_finalSilenceTime;
-    public float GetFinalSilenceTime() { return m_finalSilenceTime; }
+
+    // 발사 시점에 쓰는 침묵시간 — 아키타입 패시브(사일런스 지속시간 +N%, 100이면 ×2)를 곱함
+    public float GetFinalSilenceTime()
+    {
+        float passiveSilenceMultiplier = 1f + GetPassiveEffect(HullArchetypePassiveEffects.k_missileSilenceTimePercent) / 100f;
+        return m_finalSilenceTime * passiveSilenceMultiplier;
+    }
+
+    // 발사 시점에 쓰는 폭발 범위 배율 — 아키타입 패시브(폭발 범위 +N%)
+    public float GetBlastRadiusMultiplier()
+    {
+        return 1f + GetPassiveEffect(HullArchetypePassiveEffects.k_missileBlastRadiusPercent) / 100f;
+    }
+
+    // 발사 시점에 쓰는 미사일 속도 배율 — 아키타입 패시브(미사일 속도 +N%)
+    public float GetSpeedMultiplier()
+    {
+        return 1f + GetPassiveEffect(HullArchetypePassiveEffects.k_missileSpeedPercent) / 100f;
+    }
 
     // 발사대 관련
     [SerializeField] private List<LauncherBase> m_launchers = new List<LauncherBase>();
@@ -40,8 +58,12 @@ public class ModuleMissile : ModuleBase
     // 보상카드 지속버프 배율이 바뀔 때마다(카드 선택/런 종료 초기화) 호출 — m_baseAttack/m_baseAttackCoolTime을 기준으로 다시 계산
     public void RefreshRewardCardBuff()
     {
-        m_attack = m_baseAttack * GetRewardCardBuffMultiplier(ECardEffectType.Buff_MissileAttack);
-        m_attackCoolTime = m_baseAttackCoolTime / GetRewardCardBuffMultiplier(ECardEffectType.Buff_MissileFireRate);
+        // 아키타입 패시브(미사일 공격력 +N%)는 보상카드 배율과 곱해짐 — 패시브 효과가 바뀔 때도 같은 갱신 경로로 반영
+        float passiveAttackMultiplier = 1f + GetPassiveEffect(HullArchetypePassiveEffects.k_missileAttackPercent) / 100f;
+        m_attack = m_baseAttack * GetRewardCardBuffMultiplier(ECardEffectType.Buff_MissileAttack) * passiveAttackMultiplier;
+        float delayReductionRatio = GetRewardCardBuffMultiplier(ECardEffectType.Buff_MissileFireRate) - 1f;
+        float delayRatio = Mathf.Max(1f - delayReductionRatio, k_minDelayRatio);
+        m_attackCoolTime = m_baseAttackCoolTime * delayRatio;
     }
 
     public override EModuleType GetModuleType()
@@ -90,11 +112,13 @@ public class ModuleMissile : ModuleBase
         m_healthMax = moduleData.health;
 
         // 아키타입 단위 영구 모듈강화(M6) — 이 함체의 아키타입+이 미사일 슬롯(slotIndex) 기준 레벨(최소 1)에 해당하는 티어 데이터(missile_{level}_1)를 그대로 사용
-        int archetypeLevel = parentBody != null ? ArchetypeUpgradeLevelLookup.GetLevel(parentBody.GetHullArchetype(), EModuleType.missile, m_moduleInfo.slotIndex) : 1;
-        ModuleData levelModuleData = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable($"missile_{archetypeLevel}_1");
-        float levelAttack = levelModuleData != null ? levelModuleData.attack : moduleData.attack;
-        float levelAttackCool = levelModuleData != null ? levelModuleData.attackCool : moduleData.attackCool;
-        float levelSilenceTime = levelModuleData != null ? levelModuleData.silenceTime : moduleData.silenceTime;
+        // 존 적은 강화 개념이 없어 장착한 적 전용 무기 행을 그대로 사용(ResolveWeaponLevelData)
+        int archetypeLevel = parentBody != null ? ArchetypeUpgradeLevelLookup.GetLevel(ResolveOwnerFleet(), parentBody.GetHullArchetype(), EModuleType.missile, m_moduleInfo.slotIndex) : 1;
+        ModuleData levelModuleData = ResolveWeaponLevelData(moduleData, EModuleType.missile, archetypeLevel);
+        float levelAttack = levelModuleData.attack;
+        float levelAttackCool = levelModuleData.attackCool;
+        float levelSilenceTime = levelModuleData.silenceTime;
+        SetCritStats(levelModuleData);
         float baseAttack = attackOverride ?? levelAttack;
         float baseAttackCool = attackCoolOverride ?? levelAttackCool;
         float baseSilenceTime = silenceTimeOverride ?? levelSilenceTime;
@@ -132,6 +156,9 @@ public class ModuleMissile : ModuleBase
 
     private void InitializeByModuleSlot(ModuleData moduleData)
     {
+        // 재초기화(함선 편집 미리보기) 때 발사기가 중복 등록되면 한 번에 여러 발이 나가므로 최초 1회만 생성
+        if (m_launchers.Count > 0) return;
+
         EPoolName poolName = GetMissilePoolName(m_moduleInfo.moduleSubType);
         float ejectSpeed = m_moduleSlot != null ? m_moduleSlot.m_missileEjectSpeed * m_moduleSlot.transform.lossyScale.x : 1f;
         Vector3 slotScale = m_moduleSlot != null ? m_moduleSlot.transform.lossyScale : Vector3.one;
@@ -213,29 +240,34 @@ public class ModuleMissile : ModuleBase
         // 미사일 전술 토글이 꺼져 있으면 발사 자체를 하지 않음(쿨다운은 그대로 흘러감 — 토글을 다시 켜면 바로 쏠 수 있음)
         if (m_ownerFleet != null && m_ownerFleet.IsMissileTacticOn() == false) return;
 
-        float shipCountMultiplier = m_ownerFleet != null ? m_ownerFleet.GetShipCountAttackMultiplier() : 1f;
-        float formationMultiplier = m_ownerFleet != null ? m_ownerFleet.GetFormationAttackMultiplier() : 1f;
-        float tacticMultiplier    = m_ownerFleet != null ? m_ownerFleet.GetMissileTacticAttackMultiplier() : 1f;
-
-        // 전술 보너스가 실제로 적용 중일 때만 발사 1건당 과금 — 여유가 없으면 이번 발사만 보너스 없이 그대로 발사(토글은 유지)
-        if (tacticMultiplier > 1f)
+        // 발사 1건당 자원 과금 — 여유가 없으면 이번 발사는 하지 않음(토글은 유지)
+        if (m_ownerFleet != null)
         {
             int tacticMissileCost = DataManager.Instance.m_dataTableConfig.gameSettings.tactic.tacticMissileCost;
-            if (m_ownerFleet.TryChargeMissileTacticCost(tacticMissileCost) == false)
-                tacticMultiplier = 1f;
+            if (m_ownerFleet.TryChargeMissileTacticCost(tacticMissileCost) == false) return;
         }
+
+        float shipCountMultiplier = m_ownerFleet != null ? m_ownerFleet.GetShipCountAttackMultiplier() : 1f;
+        float formationMultiplier = m_ownerFleet != null ? m_ownerFleet.GetFormationAttackMultiplier() : 1f;
+        float berserkerMultiplier = m_ownerFleet != null ? m_ownerFleet.GetBerserkerAttackMultiplier() : 1f;
+
+        // 치명타 — 발사 1회에 한 번 판정(폭발 범위 피해에도 같은 배율이 이어짐)
+        float critMultiplier = RollCritMultiplier(HullArchetypePassiveEffects.k_missileCritChance);
 
         DamageInfo damageInfo = new DamageInfo
         {
             baseDamage       = m_attack,
-            attackMultiplier = shipCountMultiplier * formationMultiplier * tacticMultiplier,
+            attackMultiplier = shipCountMultiplier * formationMultiplier * berserkerMultiplier * critMultiplier,
             damageType       = EDamageType.Missile,
         };
 
+        float blastRadiusMultiplier = GetBlastRadiusMultiplier();
+        PassiveAudit.RecordDetail(m_ownerShip, $"미사일{m_moduleInfo.slotIndex}발사", $"공격={m_attack} 함선수={shipCountMultiplier} 진형={formationMultiplier} 버서커={berserkerMultiplier} 치명타={critMultiplier}(기본확률 {m_critChancePercent}%) 범위배율={blastRadiusMultiplier} 속도배율={GetSpeedMultiplier()} 침묵={GetFinalSilenceTime()}");
+        BattleStatTracker.MarkMissileFired(m_ownerShip);
         foreach (var launcher in m_launchers)
         {
             if (launcher != null)
-                launcher.FireAtTarget(target.transform, damageInfo, this);
+                launcher.FireAtTarget(target.transform, damageInfo, this, default, blastRadiusMultiplier);
         }
     }
 

@@ -47,8 +47,13 @@ public class ModuleInterceptor : ModuleBase
             return;
         }
 
-        m_maxCount = moduleData.interceptorCount;
-        m_regenTime = moduleData.interceptorRegenTime;
+        // 아키타입 단위 영구 모듈강화(M6) — 이 함체 아키타입의 요격체 레벨(최소 1)에 해당하는 행(interceptor_{level}_1)의 개수/회복시간, 행이 없으면 장착 서브타입 원본
+        int archetypeLevel = m_parentBody != null ? ArchetypeUpgradeLevelLookup.GetLevel(ResolveOwnerFleet(), m_parentBody.GetHullArchetype(), EModuleType.interceptor) : 1;
+        ModuleData levelModuleData = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable($"interceptor_{archetypeLevel}_1");
+        ModuleData sourceData = levelModuleData != null ? levelModuleData : moduleData;
+
+        m_maxCount = sourceData.interceptorCount;
+        m_regenTime = sourceData.interceptorRegenTime;
         m_slots = new InterceptorUnit[m_maxCount];
         m_regenProgress = 0f;
 
@@ -71,6 +76,22 @@ public class ModuleInterceptor : ModuleBase
     public bool IsEquipped()
     {
         return m_maxCount > 0;
+    }
+
+    // 요격체 1기가 막을 수 있는 미사일 수 — 기본 1발에 아키타입 패시브(요격체 1기당 추가 요격 횟수)를 더함. 유닛 생성 시점에 정해짐
+    public int GetHitsPerUnit()
+    {
+        float extraHits = GetPassiveEffect(HullArchetypePassiveEffects.k_interceptorHitsPerUnit);
+        return 1 + Mathf.RoundToInt(extraHits);
+    }
+
+    // 요격체 1기 재생 대기시간(초) — 원본에서 아키타입 패시브(재생 대기시간 -N초)만큼 빼되, 원본의 일정 비율 아래로는 내려가지 않음
+    private float GetEffectiveRegenTime()
+    {
+        float reductionSeconds = GetPassiveEffect(HullArchetypePassiveEffects.k_interceptorRegenTimeReductionSec);
+        float reducedTime = m_regenTime - reductionSeconds;
+        float minimumTime = m_regenTime * k_minDelayRatio;
+        return Mathf.Max(reducedTime, minimumTime);
     }
 
     // ProjectileMissile.CheckCollision이 요격체 명중 시 소속 함대(적/아군) 판정에 사용
@@ -104,9 +125,10 @@ public class ModuleInterceptor : ModuleBase
         }
 
         int tacticInterceptorCost = DataManager.Instance.m_dataTableConfig.gameSettings.tactic.tacticInterceptorCost;
+        float effectiveRegenTime = GetEffectiveRegenTime();
 
         m_regenProgress += tickSeconds;
-        while (m_regenProgress >= m_regenTime)
+        while (m_regenProgress >= effectiveRegenTime)
         {
             int emptyIndex = FindLowestEmptyIndex();
             if (emptyIndex < 0)
@@ -122,7 +144,7 @@ public class ModuleInterceptor : ModuleBase
             }
 
             SpawnInterceptorUnitAt(emptyIndex);
-            m_regenProgress -= m_regenTime;
+            m_regenProgress -= effectiveRegenTime;
         }
     }
 
@@ -217,8 +239,18 @@ public class ModuleInterceptor : ModuleBase
         RefreshGuard();
     }
 
+    // 안전망 — 정리 없이 함선째 파괴되는 경로(씬 언로드 등)에서는 이 함선 자식으로 붙은 유닛이 같이 파괴 중이라 풀 반납(SetParent)이 불가하므로 참조만 비움
     private void OnDestroy()
     {
-        ClearAllSlots();
+        if (m_slots == null) return;
+
+        Transform shipRoot = m_ownerShip != null ? m_ownerShip.transform : transform.root;
+        for (int i = 0; i < m_slots.Length; i++)
+        {
+            InterceptorUnit unit = m_slots[i];
+            if (unit != null && unit.transform.IsChildOf(shipRoot) == false)
+                unit.ReturnToPoolImmediate();
+            m_slots[i] = null;
+        }
     }
 }

@@ -15,114 +15,6 @@ MonoBehaviour:
   m_TableCollectionName: Tutorial
   m_TableCollectionNameGuidString: 0ded921c495564e4396ea127f3f166c8
   m_Entries:
-  - m_Id: 263406917386240
-    m_Key: Tutorial_FirstPlay_AiFirstHello
-    m_Metadata:
-      m_Items: []
-  - m_Id: 267705026215936
-    m_Key: Tutorial_FirstPlay_SiegfriedAddShip
-    m_Metadata:
-      m_Items: []
-  - m_Id: 26288532360134656
-    m_Key: Tutorial_FirstPlay_OpenFleetPanel
-    m_Metadata:
-      m_Items: []
-  - m_Id: 26434500229464064
-    m_Key: Tutorial_FirstPlay_DeployShip
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1319437449691136
-    m_Key: Tutorial_FirstPlay_CheckCommanderLevel
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1319437483245568
-    m_Key: Tutorial_FirstPlay_CheckModulePoint
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1319437483245569
-    m_Key: Tutorial_FirstPlay_AddShipConfirm
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1336507092566016
-    m_Key: Tutorial_FirstPlay_AddShipComplete
-    m_Metadata:
-      m_Items: []
-  - m_Id: 26469773436911616
-    m_Key: Tutorial_FirstPlay_SelectPlacedShip
-    m_Metadata:
-      m_Items: []
-  - m_Id: 26469773495631872
-    m_Key: Tutorial_FirstPlay_OpenLoadoutEditor
-    m_Metadata:
-      m_Items: []
-  - m_Id: 26469773495631873
-    m_Key: Tutorial_FirstPlay_ToggleBeamInstall
-    m_Metadata:
-      m_Items: []
-  - m_Id: 26469773495631874
-    m_Key: Tutorial_FirstPlay_LoadoutConfirm
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1380098930245632
-    m_Key: Tutorial_FirstPlay_ManageShipComplete
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1380098980577280
-    m_Key: Tutorial_FirstPlay_EnemyAlert
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1380098984771584
-    m_Key: Tutorial_FirstPlay_EnemyFleetWrapIn
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1380098988965888
-    m_Key: Tutorial_FirstPlay_FleetBattle
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1380098993160192
-    m_Key: Tutorial_FirstPlay_EnemyFleetWrapIn2
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1380098997354496
-    m_Key: Tutorial_FirstPlay_Defeat
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1380099001548800
-    m_Key: Tutorial_FirstPlay_EscapeAlert
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1380099005743104
-    m_Key: Tutorial_FirstPlay_Escape
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1328699047542784
-    m_Key: Tutorial_FirstPlay_Complete
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1726800145022976
-    m_Key: Tutorial_MineralUnlock_Intro
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1726800233103360
-    m_Key: Tutorial_MineralUnlock_ToggleButton
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1726800233103361
-    m_Key: Tutorial_MineralUnlock_ExplainUiPosition
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1726800233103362
-    m_Key: Tutorial_MineralUnlock_ExplainCost
-    m_Metadata:
-      m_Items: []
-  - m_Id: 5392725658435584
-    m_Key: Tutorial_Exploration_Intro
-    m_Metadata:
-      m_Items: []
-  - m_Id: 26655375268642816
-    m_Key: Tutorial_Exploration_CheckResource
-    m_Metadata:
-      m_Items: []
   - m_Id: 5392725700378625
     m_Key: Tutorial_Exploration_Enter
     m_Metadata:
@@ -133,10 +25,6 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 26653119160909825
     m_Key: Tutorial_Exploration_StartBattle
-    m_Metadata:
-      m_Items: []
-  - m_Id: 26653119160909826
-    m_Key: Tutorial_Exploration_RewardBanked
     m_Metadata:
       m_Items: []
   - m_Id: 26653119160909827
@@ -161,10 +49,6 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 26917950392762371
     m_Key: Tutorial_CommandPowerIncrease_Complete
-    m_Metadata:
-      m_Items: []
-  - m_Id: 28403527176814592
-    m_Key: Tutorial_HullUnlock_OpenFleet
     m_Metadata:
       m_Items: []
   - m_Id: 28403527231340544
@@ -203,32 +87,112 @@ MonoBehaviour:
     m_Key: Tutorial_ShipSlotIncrease_LowCommandPower
     m_Metadata:
       m_Items: []
-  - m_Id: 29210315732156416
-    m_Key: Tutorial_ModuleTierUp_OpenFleet
+  - m_Id: 48467487145984000
+    m_Key: Tutorial_CommanderPanel_ShipSlots
     m_Metadata:
       m_Items: []
-  - m_Id: 29210315782488064
-    m_Key: Tutorial_ModuleTierUp_OpenLoadout
+  - m_Id: 48467487208898560
+    m_Key: Tutorial_CommanderPanel_CommandPower
     m_Metadata:
       m_Items: []
-  - m_Id: 29210315782488065
-    m_Key: Tutorial_ModuleTierUp_SelectModule
+  - m_Id: 48491535926165504
+    m_Key: Tutorial_HullUnlock_Unplace
     m_Metadata:
       m_Items: []
-  - m_Id: 29210315782488066
-    m_Key: Tutorial_ModuleTierUp_TierUp
+  - m_Id: 48491535989080064
+    m_Key: Tutorial_HullUnlock_ConfirmUnplace
     m_Metadata:
       m_Items: []
-  - m_Id: 29210315782488067
-    m_Key: Tutorial_ModuleTierUp_ConfirmReinforce
+  - m_Id: 48491535989080065
+    m_Key: Tutorial_HullUnlock_SelectEmptySlot
     m_Metadata:
       m_Items: []
-  - m_Id: 29210315782488068
-    m_Key: Tutorial_ModuleTierUp_ConfirmLoadout
+  - m_Id: 48491535989080066
+    m_Key: Tutorial_HullUnlock_Place
     m_Metadata:
       m_Items: []
-  - m_Id: 29210315782488069
-    m_Key: Tutorial_ModuleTierUp_Complete
+  - m_Id: 48491535989080067
+    m_Key: Tutorial_HullUnlock_Complete
+    m_Metadata:
+      m_Items: []
+  - m_Id: 48491535989080068
+    m_Key: Tutorial_ModuleReinforce_OpenLoadout
+    m_Metadata:
+      m_Items: []
+  - m_Id: 48491535989080069
+    m_Key: Tutorial_ModuleReinforce_SelectModule
+    m_Metadata:
+      m_Items: []
+  - m_Id: 48491535989080070
+    m_Key: Tutorial_ModuleReinforce_LevelUp
+    m_Metadata:
+      m_Items: []
+  - m_Id: 48491535989080071
+    m_Key: Tutorial_ModuleReinforce_ConfirmReinforce
+    m_Metadata:
+      m_Items: []
+  - m_Id: 48491535989080072
+    m_Key: Tutorial_ModuleReinforce_Close
+    m_Metadata:
+      m_Items: []
+  - m_Id: 48491535989080073
+    m_Key: Tutorial_ModuleReinforce_Complete
+    m_Metadata:
+      m_Items: []
+  - m_Id: 48491535989080074
+    m_Key: Tutorial_RankPanel_Cards
+    m_Metadata:
+      m_Items: []
+  - m_Id: 48491535989080075
+    m_Key: Tutorial_RankPanel_MyInfo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 48491535989080076
+    m_Key: Tutorial_RankPanel_Refresh
+    m_Metadata:
+      m_Items: []
+  - m_Id: 48491535989080077
+    m_Key: Tutorial_RankPanel_RankTab
+    m_Metadata:
+      m_Items: []
+  - m_Id: 48491535989080078
+    m_Key: Tutorial_RankPanel_RankList
+    m_Metadata:
+      m_Items: []
+  - m_Id: 48492889763610627
+    m_Key: Tutorial_AbandonRun_Button
+    m_Metadata:
+      m_Items: []
+  - m_Id: 48492889767804928
+    m_Key: Tutorial_AbandonRun_Escape
+    m_Metadata:
+      m_Items: []
+  - m_Id: 48492889767804929
+    m_Key: Tutorial_Tactics_Row
+    m_Metadata:
+      m_Items: []
+  - m_Id: 48501020866510848
+    m_Key: Tutorial_Exploration_MineralGained
+    m_Metadata:
+      m_Items: []
+  - m_Id: 48501020929425408
+    m_Key: Tutorial_Exploration_Cards
+    m_Metadata:
+      m_Items: []
+  - m_Id: 48501020929425409
+    m_Key: Tutorial_Exploration_Reroll
+    m_Metadata:
+      m_Items: []
+  - m_Id: 48501020929425410
+    m_Key: Tutorial_Exploration_ClosePopup
+    m_Metadata:
+      m_Items: []
+  - m_Id: 48502460200648704
+    m_Key: Tutorial_Exploration_BuyCardButton
+    m_Metadata:
+      m_Items: []
+  - m_Id: 48507305666150400
+    m_Key: Tutorial_Exploration_BuyCardPress
     m_Metadata:
       m_Items: []
   m_Metadata:

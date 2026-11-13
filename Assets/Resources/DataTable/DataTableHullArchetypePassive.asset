@@ -18,258 +18,414 @@ MonoBehaviour:
     counterType: destroy_enemy_ship
     threshold: 0
     descriptionKey: HullArchetypePassive_centurion_1
+    effectType: beam_attack_percent
+    effectValue: 10
+    effectScope: self
   - hullArchetype: centurion
     stage: 2
     counterType: destroy_enemy_ship
     threshold: 10
     descriptionKey: HullArchetypePassive_centurion_2
+    effectType: missile_attack_percent
+    effectValue: 10
+    effectScope: self
   - hullArchetype: centurion
     stage: 3
     counterType: destroy_enemy_ship
     threshold: 20
     descriptionKey: HullArchetypePassive_centurion_3
+    effectType: ship_health_percent
+    effectValue: 50
+    effectScope: self
   - hullArchetype: centurion
     stage: 4
     counterType: zone_run_clear
     threshold: 10
     descriptionKey: HullArchetypePassive_centurion_4
+    effectType: beam_attack_percent
+    effectValue: 10
+    effectScope: fleet
   - hullArchetype: talon
     stage: 1
     counterType: destroy_enemy_ship
     threshold: 0
     descriptionKey: HullArchetypePassive_talon_1
+    effectType: beam_attack_stack_percent;beam_attack_stack_max_percent
+    effectValue: 5;50
+    effectScope: self
   - hullArchetype: talon
     stage: 2
     counterType: destroy_enemy_ship
     threshold: 40
     descriptionKey: HullArchetypePassive_talon_2
+    effectType: missile_silence_time_percent
+    effectValue: 100
+    effectScope: self
   - hullArchetype: talon
     stage: 3
     counterType: destroy_enemy_ship
     threshold: 400
     descriptionKey: HullArchetypePassive_talon_3
+    effectType: hangar_attack_percent
+    effectValue: 100
+    effectScope: self
   - hullArchetype: talon
     stage: 4
     counterType: zone_run_clear
     threshold: 40
     descriptionKey: HullArchetypePassive_talon_4
+    effectType: beam_attack_percent;missile_attack_percent;hangar_attack_percent
+    effectValue: 50;50;50
+    effectScope: fleet
   - hullArchetype: prism
     stage: 1
     counterType: destroy_enemy_ship
     threshold: 0
     descriptionKey: HullArchetypePassive_prism_1
+    effectType: beam_attack_percent
+    effectValue: 10
+    effectScope: self
   - hullArchetype: prism
     stage: 2
     counterType: destroy_enemy_ship
     threshold: 40
     descriptionKey: HullArchetypePassive_prism_2
+    effectType: beam_attack_percent
+    effectValue: 15
+    effectScope: self
   - hullArchetype: prism
     stage: 3
     counterType: destroy_enemy_ship
     threshold: 80
     descriptionKey: HullArchetypePassive_prism_3
+    effectType: beam_attack_percent
+    effectValue: 20
+    effectScope: self
   - hullArchetype: prism
     stage: 4
     counterType: zone_run_clear
     threshold: 20
     descriptionKey: HullArchetypePassive_prism_4
+    effectType: beam_attack_percent
+    effectValue: 20
+    effectScope: fleet
   - hullArchetype: argus
     stage: 1
     counterType: scout_success
     threshold: 0
     descriptionKey: HullArchetypePassive_argus_1
+    effectType: scout_chance
+    effectValue: 10
+    effectScope: self
   - hullArchetype: argus
     stage: 2
     counterType: scout_success
     threshold: 100
     descriptionKey: HullArchetypePassive_argus_2
+    effectType: scout_slot
+    effectValue: 1
+    effectScope: self
   - hullArchetype: argus
     stage: 3
     counterType: scout_success
     threshold: 3000
     descriptionKey: HullArchetypePassive_argus_3
+    effectType: scout_slot
+    effectValue: 1
+    effectScope: self
   - hullArchetype: argus
     stage: 4
     counterType: zone_run_clear
     threshold: 20
     descriptionKey: HullArchetypePassive_argus_4
+    effectType: scout_chance
+    effectValue: 10
+    effectScope: fleet
   - hullArchetype: colossus
     stage: 1
     counterType: damage_taken_cumulative
     threshold: 0
     descriptionKey: HullArchetypePassive_colossus_1
+    effectType: ship_health_percent
+    effectValue: 100
+    effectScope: self
   - hullArchetype: colossus
     stage: 2
     counterType: damage_taken_cumulative
     threshold: 5000
     descriptionKey: HullArchetypePassive_colossus_2
+    effectType: unlock_interceptor
+    effectValue: 1
+    effectScope: self
   - hullArchetype: colossus
     stage: 3
     counterType: damage_taken_cumulative
     threshold: 500000
     descriptionKey: HullArchetypePassive_colossus_3
+    effectType: unlock_shield
+    effectValue: 1
+    effectScope: self
   - hullArchetype: colossus
     stage: 4
     counterType: zone_run_clear
     threshold: 30
     descriptionKey: HullArchetypePassive_colossus_4
+    effectType: ship_health_percent
+    effectValue: 50
+    effectScope: fleet
   - hullArchetype: leviathan
     stage: 1
-    counterType: fleet_resource_charge
+    counterType: fleet_resource_saved
     threshold: 0
     descriptionKey: HullArchetypePassive_leviathan_1
+    effectType: resource_cost_reduction_percent
+    effectValue: 25
+    effectScope: fleet
   - hullArchetype: leviathan
     stage: 2
-    counterType: fleet_resource_charge
-    threshold: 100
+    counterType: fleet_resource_saved
+    threshold: 10000
     descriptionKey: HullArchetypePassive_leviathan_2
+    effectType: resource_cost_reduction_percent;beam_attack_percent;missile_attack_percent;hangar_attack_percent
+    effectValue: 25;10;10;10
+    effectScope: fleet
   - hullArchetype: leviathan
     stage: 3
-    counterType: fleet_resource_charge
-    threshold: 3000
+    counterType: fleet_resource_saved
+    threshold: 30000
     descriptionKey: HullArchetypePassive_leviathan_3
+    effectType: health_regen_percent;shield_regen_percent;interceptor_regen_time_reduction_sec
+    effectValue: 50;50;0.3
+    effectScope: fleet
   - hullArchetype: leviathan
     stage: 4
     counterType: zone_run_clear
     threshold: 30
     descriptionKey: HullArchetypePassive_leviathan_4
+    effectType: berserker_mode
+    effectValue: 1
+    effectScope: fleet
   - hullArchetype: corsair
     stage: 1
     counterType: scavenge_mineral
     threshold: 0
     descriptionKey: HullArchetypePassive_corsair_1
+    effectType: scavenge_chance
+    effectValue: 10
+    effectScope: self
   - hullArchetype: corsair
     stage: 2
     counterType: scavenge_mineral
     threshold: 5000
     descriptionKey: HullArchetypePassive_corsair_2
+    effectType: scavenge_chance
+    effectValue: 10
+    effectScope: self
   - hullArchetype: corsair
     stage: 3
     counterType: scavenge_mineral
     threshold: 500000
     descriptionKey: HullArchetypePassive_corsair_3
+    effectType: scavenge_chance
+    effectValue: 10
+    effectScope: self
   - hullArchetype: corsair
     stage: 4
     counterType: zone_run_clear
     threshold: 40
     descriptionKey: HullArchetypePassive_corsair_4
+    effectType: scavenge_chance
+    effectValue: 10
+    effectScope: fleet
   - hullArchetype: vulcan
     stage: 1
     counterType: destroy_enemy_ship
     threshold: 0
     descriptionKey: HullArchetypePassive_vulcan_1
+    effectType: missile_blast_radius_percent
+    effectValue: 100
+    effectScope: self
   - hullArchetype: vulcan
     stage: 2
     counterType: destroy_enemy_ship
     threshold: 40
     descriptionKey: HullArchetypePassive_vulcan_2
+    effectType: missile_attack_percent
+    effectValue: 100
+    effectScope: self
   - hullArchetype: vulcan
     stage: 3
     counterType: destroy_enemy_ship
     threshold: 400
     descriptionKey: HullArchetypePassive_vulcan_3
+    effectType: missile_speed_percent
+    effectValue: 100
+    effectScope: self
   - hullArchetype: vulcan
     stage: 4
     counterType: zone_run_clear
     threshold: 40
     descriptionKey: HullArchetypePassive_vulcan_4
+    effectType: missile_attack_percent;missile_speed_percent
+    effectValue: 100;100
+    effectScope: fleet
   - hullArchetype: nemesis
     stage: 1
     counterType: destroy_enemy_ship
     threshold: 0
     descriptionKey: HullArchetypePassive_nemesis_1
+    effectType: beam_crit_chance
+    effectValue: 5
+    effectScope: self
   - hullArchetype: nemesis
     stage: 2
     counterType: destroy_enemy_ship
     threshold: 50
     descriptionKey: HullArchetypePassive_nemesis_2
+    effectType: missile_crit_chance
+    effectValue: 5
+    effectScope: self
   - hullArchetype: nemesis
     stage: 3
     counterType: destroy_enemy_ship
     threshold: 500
     descriptionKey: HullArchetypePassive_nemesis_3
+    effectType: hangar_crit_chance
+    effectValue: 5
+    effectScope: self
   - hullArchetype: nemesis
     stage: 4
     counterType: zone_run_clear
     threshold: 50
     descriptionKey: HullArchetypePassive_nemesis_4
+    effectType: beam_crit_chance;missile_crit_chance;hangar_crit_chance
+    effectValue: 5;5;5
+    effectScope: fleet
   - hullArchetype: phoenix
     stage: 1
     counterType: ally_repair_amount
     threshold: 0
     descriptionKey: HullArchetypePassive_phoenix_1
+    effectType: ally_repair_slot
+    effectValue: 1
+    effectScope: self
   - hullArchetype: phoenix
     stage: 2
     counterType: ally_repair_amount
     threshold: 50000
     descriptionKey: HullArchetypePassive_phoenix_2
+    effectType: ally_repair_slot
+    effectValue: 1
+    effectScope: self
   - hullArchetype: phoenix
     stage: 3
     counterType: ally_repair_amount
     threshold: 5000000
     descriptionKey: HullArchetypePassive_phoenix_3
+    effectType: ally_repair_slot
+    effectValue: 1
+    effectScope: self
   - hullArchetype: phoenix
     stage: 4
     counterType: zone_run_clear
     threshold: 50
     descriptionKey: HullArchetypePassive_phoenix_4
+    effectType: ship_health_percent
+    effectValue: 100
+    effectScope: fleet
   - hullArchetype: halcyon
     stage: 1
     counterType: ally_shield_charge_amount
     threshold: 0
     descriptionKey: HullArchetypePassive_halcyon_1
+    effectType: ally_shield_charge_slot
+    effectValue: 1
+    effectScope: self
   - hullArchetype: halcyon
     stage: 2
     counterType: ally_shield_charge_amount
     threshold: 50000
     descriptionKey: HullArchetypePassive_halcyon_2
+    effectType: ally_shield_charge_slot
+    effectValue: 1
+    effectScope: self
   - hullArchetype: halcyon
     stage: 3
     counterType: ally_shield_charge_amount
     threshold: 5000000
     descriptionKey: HullArchetypePassive_halcyon_3
+    effectType: ally_shield_charge_slot
+    effectValue: 1
+    effectScope: self
   - hullArchetype: halcyon
     stage: 4
     counterType: zone_run_clear
     threshold: 50
     descriptionKey: HullArchetypePassive_halcyon_4
+    effectType: shield_gauge_percent
+    effectValue: 100
+    effectScope: fleet
   - hullArchetype: aegis
     stage: 1
     counterType: shield_absorb_amount
     threshold: 0
     descriptionKey: HullArchetypePassive_aegis_1
+    effectType: unlock_shield_interceptor
+    effectValue: 1
+    effectScope: self
   - hullArchetype: aegis
     stage: 2
     counterType: shield_absorb_amount
     threshold: 50000
     descriptionKey: HullArchetypePassive_aegis_2
+    effectType: shield_damage_cost_reduction_percent
+    effectValue: 10
+    effectScope: self
   - hullArchetype: aegis
     stage: 3
     counterType: shield_absorb_amount
     threshold: 5000000
     descriptionKey: HullArchetypePassive_aegis_3
+    effectType: shield_gauge_percent
+    effectValue: 100
+    effectScope: self
   - hullArchetype: aegis
     stage: 4
     counterType: zone_run_clear
     threshold: 50
     descriptionKey: HullArchetypePassive_aegis_4
+    effectType: shield_damage_cost_reduction_percent
+    effectValue: 10
+    effectScope: fleet
   - hullArchetype: sentinel
     stage: 1
     counterType: intercept_count
     threshold: 0
     descriptionKey: HullArchetypePassive_sentinel_1
+    effectType: unlock_shield_interceptor
+    effectValue: 1
+    effectScope: self
   - hullArchetype: sentinel
     stage: 2
     counterType: intercept_count
     threshold: 1000
     descriptionKey: HullArchetypePassive_sentinel_2
+    effectType: interceptor_hits_per_unit
+    effectValue: 1
+    effectScope: self
   - hullArchetype: sentinel
     stage: 3
     counterType: intercept_count
     threshold: 5000
     descriptionKey: HullArchetypePassive_sentinel_3
+    effectType: interceptor_regen_time_reduction_sec
+    effectValue: 0.3
+    effectScope: self
   - hullArchetype: sentinel
     stage: 4
     counterType: zone_run_clear
     threshold: 50
     descriptionKey: HullArchetypePassive_sentinel_4
+    effectType: interceptor_regen_time_reduction_sec
+    effectValue: 0.2
+    effectScope: fleet

@@ -18,298 +18,298 @@ MonoBehaviour:
     commandPower: 300
   - commanderLevel: 2
     requireExp: 100
-    commandPower: 340
+    commandPower: 350
   - commanderLevel: 3
     requireExp: 200
-    commandPower: 380
+    commandPower: 400
   - commanderLevel: 4
     requireExp: 300
-    commandPower: 420
+    commandPower: 450
   - commanderLevel: 5
     requireExp: 400
-    commandPower: 460
+    commandPower: 500
   - commanderLevel: 6
     requireExp: 500
-    commandPower: 500
+    commandPower: 550
   - commanderLevel: 7
     requireExp: 600
-    commandPower: 540
+    commandPower: 600
   - commanderLevel: 8
     requireExp: 700
-    commandPower: 580
+    commandPower: 650
   - commanderLevel: 9
     requireExp: 800
-    commandPower: 620
+    commandPower: 700
   - commanderLevel: 10
     requireExp: 900
-    commandPower: 660
+    commandPower: 750
   - commanderLevel: 11
     requireExp: 1100
-    commandPower: 700
+    commandPower: 800
   - commanderLevel: 12
     requireExp: 1300
-    commandPower: 740
+    commandPower: 850
   - commanderLevel: 13
     requireExp: 1500
-    commandPower: 780
+    commandPower: 900
   - commanderLevel: 14
     requireExp: 1700
-    commandPower: 820
+    commandPower: 950
   - commanderLevel: 15
     requireExp: 1900
-    commandPower: 860
+    commandPower: 1000
   - commanderLevel: 16
     requireExp: 2100
-    commandPower: 900
+    commandPower: 1050
   - commanderLevel: 17
     requireExp: 2300
-    commandPower: 940
+    commandPower: 1100
   - commanderLevel: 18
     requireExp: 2500
-    commandPower: 980
+    commandPower: 1150
   - commanderLevel: 19
     requireExp: 2700
-    commandPower: 1020
+    commandPower: 1200
   - commanderLevel: 20
     requireExp: 2900
-    commandPower: 1060
+    commandPower: 1250
   - commanderLevel: 21
     requireExp: 3100
-    commandPower: 1100
+    commandPower: 1300
   - commanderLevel: 22
     requireExp: 3300
-    commandPower: 1140
+    commandPower: 1350
   - commanderLevel: 23
     requireExp: 3500
-    commandPower: 1180
+    commandPower: 1400
   - commanderLevel: 24
     requireExp: 3700
-    commandPower: 1220
+    commandPower: 1450
   - commanderLevel: 25
     requireExp: 3900
-    commandPower: 1260
+    commandPower: 1500
   - commanderLevel: 26
     requireExp: 4100
-    commandPower: 1300
+    commandPower: 1550
   - commanderLevel: 27
     requireExp: 4300
-    commandPower: 1340
+    commandPower: 1600
   - commanderLevel: 28
     requireExp: 4500
-    commandPower: 1380
+    commandPower: 1650
   - commanderLevel: 29
     requireExp: 4700
-    commandPower: 1420
+    commandPower: 1700
   - commanderLevel: 30
     requireExp: 5000
-    commandPower: 1460
+    commandPower: 1750
   - commanderLevel: 31
     requireExp: 7000
-    commandPower: 1500
+    commandPower: 1800
   - commanderLevel: 32
     requireExp: 9000
-    commandPower: 1540
+    commandPower: 1850
   - commanderLevel: 33
     requireExp: 11000
-    commandPower: 1580
+    commandPower: 1900
   - commanderLevel: 34
     requireExp: 13000
-    commandPower: 1620
+    commandPower: 1950
   - commanderLevel: 35
     requireExp: 15000
-    commandPower: 1660
+    commandPower: 2000
   - commanderLevel: 36
     requireExp: 17000
-    commandPower: 1700
+    commandPower: 2050
   - commanderLevel: 37
     requireExp: 19000
-    commandPower: 1740
+    commandPower: 2100
   - commanderLevel: 38
     requireExp: 21000
-    commandPower: 1780
+    commandPower: 2150
   - commanderLevel: 39
     requireExp: 23000
-    commandPower: 1820
+    commandPower: 2200
   - commanderLevel: 40
     requireExp: 25000
-    commandPower: 1860
+    commandPower: 2250
   - commanderLevel: 41
     requireExp: 29000
-    commandPower: 1900
+    commandPower: 2300
   - commanderLevel: 42
     requireExp: 33000
-    commandPower: 1940
+    commandPower: 2350
   - commanderLevel: 43
     requireExp: 37000
-    commandPower: 1980
+    commandPower: 2400
   - commanderLevel: 44
     requireExp: 41000
-    commandPower: 2020
+    commandPower: 2450
   - commanderLevel: 45
     requireExp: 45000
-    commandPower: 2060
+    commandPower: 2500
   - commanderLevel: 46
     requireExp: 49000
-    commandPower: 2100
+    commandPower: 2550
   - commanderLevel: 47
     requireExp: 53000
-    commandPower: 2140
+    commandPower: 2600
   - commanderLevel: 48
     requireExp: 57000
-    commandPower: 2180
+    commandPower: 2650
   - commanderLevel: 49
     requireExp: 61000
-    commandPower: 2220
+    commandPower: 2700
   - commanderLevel: 50
     requireExp: 65000
-    commandPower: 2260
+    commandPower: 2750
   - commanderLevel: 51
     requireExp: 71000
-    commandPower: 2300
+    commandPower: 2800
   - commanderLevel: 52
     requireExp: 77000
-    commandPower: 2340
+    commandPower: 2850
   - commanderLevel: 53
     requireExp: 83000
-    commandPower: 2380
+    commandPower: 2900
   - commanderLevel: 54
     requireExp: 89000
-    commandPower: 2420
+    commandPower: 2950
   - commanderLevel: 55
     requireExp: 95000
-    commandPower: 2460
+    commandPower: 3000
   - commanderLevel: 56
     requireExp: 101000
-    commandPower: 2500
+    commandPower: 3050
   - commanderLevel: 57
     requireExp: 107000
-    commandPower: 2540
+    commandPower: 3100
   - commanderLevel: 58
     requireExp: 113000
-    commandPower: 2580
+    commandPower: 3150
   - commanderLevel: 59
     requireExp: 119000
-    commandPower: 2620
+    commandPower: 3200
   - commanderLevel: 60
     requireExp: 125000
-    commandPower: 2660
+    commandPower: 3250
   - commanderLevel: 61
     requireExp: 133000
-    commandPower: 2700
+    commandPower: 3300
   - commanderLevel: 62
     requireExp: 141000
-    commandPower: 2740
+    commandPower: 3350
   - commanderLevel: 63
     requireExp: 149000
-    commandPower: 2780
+    commandPower: 3400
   - commanderLevel: 64
     requireExp: 157000
-    commandPower: 2820
+    commandPower: 3450
   - commanderLevel: 65
     requireExp: 165000
-    commandPower: 2860
+    commandPower: 3500
   - commanderLevel: 66
     requireExp: 173000
-    commandPower: 2900
+    commandPower: 3550
   - commanderLevel: 67
     requireExp: 181000
-    commandPower: 2940
+    commandPower: 3600
   - commanderLevel: 68
     requireExp: 189000
-    commandPower: 2980
+    commandPower: 3650
   - commanderLevel: 69
     requireExp: 197000
-    commandPower: 3020
+    commandPower: 3700
   - commanderLevel: 70
     requireExp: 205000
-    commandPower: 3060
+    commandPower: 3750
   - commanderLevel: 71
     requireExp: 215000
-    commandPower: 3100
+    commandPower: 3800
   - commanderLevel: 72
     requireExp: 225000
-    commandPower: 3140
+    commandPower: 3850
   - commanderLevel: 73
     requireExp: 235000
-    commandPower: 3180
+    commandPower: 3900
   - commanderLevel: 74
     requireExp: 245000
-    commandPower: 3220
+    commandPower: 3950
   - commanderLevel: 75
     requireExp: 255000
-    commandPower: 3260
+    commandPower: 4000
   - commanderLevel: 76
     requireExp: 265000
-    commandPower: 3300
+    commandPower: 4050
   - commanderLevel: 77
     requireExp: 275000
-    commandPower: 3340
+    commandPower: 4100
   - commanderLevel: 78
     requireExp: 285000
-    commandPower: 3380
+    commandPower: 4150
   - commanderLevel: 79
     requireExp: 295000
-    commandPower: 3420
+    commandPower: 4200
   - commanderLevel: 80
     requireExp: 305000
-    commandPower: 3460
+    commandPower: 4250
   - commanderLevel: 81
     requireExp: 325000
-    commandPower: 3500
+    commandPower: 4300
   - commanderLevel: 82
     requireExp: 345000
-    commandPower: 3540
+    commandPower: 4350
   - commanderLevel: 83
     requireExp: 365000
-    commandPower: 3580
+    commandPower: 4400
   - commanderLevel: 84
     requireExp: 385000
-    commandPower: 3620
+    commandPower: 4450
   - commanderLevel: 85
     requireExp: 405000
-    commandPower: 3660
+    commandPower: 4500
   - commanderLevel: 86
     requireExp: 425000
-    commandPower: 3700
+    commandPower: 4550
   - commanderLevel: 87
     requireExp: 445000
-    commandPower: 3740
+    commandPower: 4600
   - commanderLevel: 88
     requireExp: 465000
-    commandPower: 3780
+    commandPower: 4650
   - commanderLevel: 89
     requireExp: 485000
-    commandPower: 3820
+    commandPower: 4700
   - commanderLevel: 90
     requireExp: 505000
-    commandPower: 3860
+    commandPower: 4750
   - commanderLevel: 91
     requireExp: 545000
-    commandPower: 3900
+    commandPower: 4800
   - commanderLevel: 92
     requireExp: 585000
-    commandPower: 3940
+    commandPower: 4850
   - commanderLevel: 93
     requireExp: 625000
-    commandPower: 3980
+    commandPower: 4900
   - commanderLevel: 94
     requireExp: 665000
-    commandPower: 4020
+    commandPower: 4950
   - commanderLevel: 95
     requireExp: 705000
-    commandPower: 4060
+    commandPower: 5000
   - commanderLevel: 96
     requireExp: 745000
-    commandPower: 4100
+    commandPower: 5050
   - commanderLevel: 97
     requireExp: 785000
-    commandPower: 4140
+    commandPower: 5100
   - commanderLevel: 98
     requireExp: 825000
-    commandPower: 4180
+    commandPower: 5150
   - commanderLevel: 99
     requireExp: 865000
-    commandPower: 4220
+    commandPower: 5200
   - commanderLevel: 100
     requireExp: 905000
-    commandPower: 4260
+    commandPower: 5250

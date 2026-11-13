@@ -1212,6 +1212,12 @@ public class NetworkManager : MonoSingleton<NetworkManager>
         StartCoroutine(RunAsync(() => m_apiClient.PvpRefreshAsync(request), onComplete));
     }
 
+    public void PvpOpponentDetail(PvpOpponentDetailRequest request, System.Action<ApiResponse<PvpOpponentDetailResponse>> onComplete)
+    {
+        if (m_bConnected == false) return;
+        StartCoroutine(RunAsync(() => m_apiClient.PvpOpponentDetailAsync(request), onComplete));
+    }
+
     public void PvpBattleStart(PvpBattleStartRequest request, System.Action<ApiResponse<PvpBattleStartResponse>> onComplete)
     {
         if (m_bConnected == false) return;

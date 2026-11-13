@@ -1,4 +1,5 @@
-// PvP 상대 선택 카드 - 이름/랭크/점수/함대 스탯/공격 버튼 표시
+// PvP 상대 선택 카드 - 이름/랭크/점수/함대 스탯(최종 전투 스탯 요약)/공격 버튼 표시. 공격 버튼은 상세 팝업(공격 확인 겸용)을 엶
+// 함대 스탯 행은 InfiniteScrollView(보이는 행만 생성/재활용) — 항목 수가 카드 높이를 넘으면 스크롤
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -9,18 +10,18 @@ public class PvpSelectCard : MonoBehaviour
     [SerializeField] private Button m_attackButton;
     [SerializeField] private TMP_Text m_nameText;
     [SerializeField] private TMP_Text m_scoreRankText;
-    [SerializeField] private Transform m_statsContainer;
-    [SerializeField] private UIStatRow m_statRowPrefab; // 컨테이너에 미리 배치된 것보다 더 필요할 때 추가 생성용
+    [SerializeField] private InfiniteScrollView m_statsScrollView;
+    [SerializeField] private UIStatRow m_statRowPrefab;
 
-    private readonly List<UIStatRow> m_statRows = new();
+    private readonly List<(string label, string valueText)> m_statEntries = new List<(string label, string valueText)>();
 
     private PvpOpponentInfo m_opponentInfo;
     public PvpOpponentInfo OpponentInfo => m_opponentInfo;
 
     private void Awake()
     {
-        if (m_statsContainer != null)
-            m_statRows.AddRange(m_statsContainer.GetComponentsInChildren<UIStatRow>(true));
+        if (m_statsScrollView != null)
+            m_statsScrollView.onItemBind = OnStatItemBind;
     }
 
     public void InitializePvpSelectCard(PvpOpponentInfo opponentInfo, UnityEngine.Events.UnityAction onAttack)
@@ -31,14 +32,15 @@ public class PvpSelectCard : MonoBehaviour
         m_attackButton.onClick.AddListener(() => SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true));
         m_attackButton.onClick.AddListener(onAttack);
 
-        CapabilityProfile stats = CommonUtility.GetFleetCapabilityProfile(opponentInfo.fleetInfo);
-        int shipCount = (opponentInfo.fleetInfo != null && opponentInfo.fleetInfo.ships != null)
-            ? opponentInfo.fleetInfo.ships.Count : 0;
+        // 전투 스폰과 같은 규칙의 최종 전투 스탯(강화 레벨 + 패시브 반영) — 상대 빌드 데이터는 계산에만 쓰고 표시하지 않음
+        List<ShipCombatStats> shipStats = PvpOpponentStatRows.BuildShipStats(opponentInfo.fleetInfo, opponentInfo.passiveProgress, opponentInfo.archetypeUpgrades);
+        ShipCombatStats total = FleetCombatStatCalculator.SumFleet(shipStats);
 
         if (m_nameText != null)      m_nameText.text      = Commander.GetDisplayName(opponentInfo.commanderName, opponentInfo.commanderId);
         if (m_scoreRankText != null) m_scoreRankText.text = LocalizationManager.Instance.Get("UITabRank_ScoreRank", opponentInfo.pvpScore, opponentInfo.rank);
 
-        PopulateStats(stats, shipCount);
+        BuildStatEntries(PvpOpponentStatRows.BuildSummaryRows(total, shipStats.Count));
+        RefreshStatsScrollView();
     }
 
     public void SetEmpty()
@@ -47,46 +49,34 @@ public class PvpSelectCard : MonoBehaviour
         m_attackButton.onClick.RemoveAllListeners();
         if (m_nameText != null)      m_nameText.text      = "-";
         if (m_scoreRankText != null) m_scoreRankText.text = "-";
-        HideAllStats();
+        m_statEntries.Clear();
+        RefreshStatsScrollView();
     }
 
-    private void PopulateStats(CapabilityProfile stats, int shipCount)
+    // 라벨은 여기서 로컬라이즈해 둠(행 바인딩 시 재조회 없음)
+    private void BuildStatEntries(List<(string labelKey, string valueText)> rows)
     {
-        var loc = LocalizationManager.Instance;
-        var rows = new List<(string label, string valueText)>
-        {
-            (loc.Get("fleet_ship_count"), shipCount.ToString()),
-            (loc.Get("UIFleet_Stats_Health"), CommonUtility.FormatBigNumber(stats.health)),
-            (loc.Get("Simple_BeamAttack"), CommonUtility.FormatBigNumber(stats.beamAttack)),
-            (loc.Get("Simple_MissileAttack"), CommonUtility.FormatBigNumber(stats.missileAttack)),
-        };
-        if (stats.airCount > 0)
-        {
-            rows.Add((loc.Get("Simple_AirAttack"), CommonUtility.FormatBigNumber(stats.airAttack)));
-            rows.Add((loc.Get("Simple_AirCount"), stats.airCount.ToString()));
-        }
-
-        EnsureStatRowCount(rows.Count);
-        for (int i = 0; i < m_statRows.Count; i++)
-        {
-            if (i < rows.Count) m_statRows[i].SetValueOnly(rows[i].label, rows[i].valueText);
-            else m_statRows[i].Hide();
-        }
-
-        Canvas.ForceUpdateCanvases();
-        LayoutRebuilder.ForceRebuildLayoutImmediate(m_statsContainer as RectTransform);
+        LocalizationManager loc = LocalizationManager.Instance;
+        m_statEntries.Clear();
+        for (int i = 0; i < rows.Count; i++)
+            m_statEntries.Add((loc.Get(rows[i].labelKey), rows[i].valueText));
     }
 
-    private void EnsureStatRowCount(int neededCount)
+    private void RefreshStatsScrollView()
     {
-        if (m_statsContainer == null || m_statRowPrefab == null) return;
-        while (m_statRows.Count < neededCount)
-            m_statRows.Add(Instantiate(m_statRowPrefab, m_statsContainer));
+        if (m_statsScrollView == null || m_statRowPrefab == null) return;
+        // 카드가 비활성 상태에서 먼저 채워지면 Awake 전일 수 있어 바인딩을 여기서도 보장
+        m_statsScrollView.onItemBind = OnStatItemBind;
+        m_statsScrollView.Initialize(m_statEntries.Count, m_statRowPrefab.gameObject);
     }
 
-    private void HideAllStats()
+    private void OnStatItemBind(int dataIndex, GameObject rowObject)
     {
-        for (int i = 0; i < m_statRows.Count; i++)
-            m_statRows[i].Hide();
+        if (dataIndex < 0 || dataIndex >= m_statEntries.Count) return;
+
+        UIStatRow row = rowObject.GetComponent<UIStatRow>();
+        if (row == null) return;
+
+        row.SetValueOnly(m_statEntries[dataIndex].label, m_statEntries[dataIndex].valueText);
     }
 }

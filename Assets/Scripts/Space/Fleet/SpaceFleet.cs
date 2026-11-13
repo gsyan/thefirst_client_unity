@@ -35,6 +35,28 @@ public class SpaceFleet : MonoBehaviour
     public EFormationType m_currentFormationType = EFormationType.linear_horizontal;
     [SerializeField] public List<SpaceShip> m_ships = new List<SpaceShip>();
 
+    // PVP 상대 지휘관의 빌드 데이터(패시브 진행도 + 강화 레벨, 서버가 PVP 시작 응답으로 내려줌) — 상대 함선이 상대 자신의 강화/패시브로 만들어지게 함
+    // 내 함대는 Commander 빌드 데이터를 쓰므로 null, 함선을 스폰하기 전에 세팅해야 함
+    public CommanderBuildData m_remoteBuildData;
+
+    // 이 함대 능력치 계산에 쓰는 지휘관 빌드 데이터 — 내 함대는 내 지휘관, PVP 상대는 받은 데이터, 그 외(존 적/시네마틱)는 null(강화/패시브 없음)
+    public CommanderBuildData GetBuildData()
+    {
+        if (m_fleetSource == EFleetSource.fleet_source_player)
+        {
+            Commander commander = DataManager.Instance.m_currentCommander;
+            return commander != null ? commander.GetBuildData() : null;
+        }
+        if (m_fleetSource == EFleetSource.fleet_source_player_remote) return m_remoteBuildData;
+        return null;
+    }
+
+    // 아키타입 패시브 효과를 받는 함대인지 — 빌드 데이터가 있는 함대(내 함대, 데이터를 받은 PVP 상대)만
+    public bool HasPassiveSource()
+    {
+        return GetBuildData() != null;
+    }
+
     private Coroutine m_warpInCoroutine;
 
     public float GetFleetHealthRatio()
@@ -212,6 +234,10 @@ public class SpaceFleet : MonoBehaviour
         spaceShip.m_attackMultiplier = shipInfo.attackMultiplier;
         spaceShip.InitializeSpaceShip(this, shipInfo);
         AddShip(spaceShip, bWarp: bWarp, bFillNullSlot: bFillNullSlot);
+
+        // 함선이 함대에 들어왔으니 함대 범위 패시브/기존 함선들의 패시브 효과를 함대 전체 기준으로 다시 반영(패시브를 받는 함대만)
+        if (HasPassiveSource() == true && ObjectManager.Instance != null)
+            ObjectManager.Instance.RefreshPassiveEffectsOnFleet(this);
         return spaceShip;
     }
     // 워프 진입 시 이동 속도 배율
@@ -616,6 +642,10 @@ public class SpaceFleet : MonoBehaviour
         int idx = m_ships.IndexOf(ship);
         if (idx >= 0) m_ships[idx] = null;
 
+        // 파괴된 함선이 주던 함대 범위 패시브 효과를 살아남은 함선들에서 제거(내 함대만) — 살아있는 함선만 패시브 효과를 줌
+        if (HasPassiveSource() == true && ObjectManager.Instance != null)
+            ObjectManager.Instance.RefreshPassiveEffectsOnFleet(this);
+
         if (IsFleetAlive() == false)
         {
             if (IsCinematic)
@@ -817,13 +847,19 @@ public class SpaceFleet : MonoBehaviour
     // 전술 토글(수리) ON 상태에서 UIPanelBattle.Co_DrainResource가 1초 간격으로 호출 — 함체별 repair 스탯만큼 체력 회복
     public void ApplyRepairTickToAllShips()
     {
+        float fleetHealedAmount = 0f;
         foreach (SpaceShip ship in m_ships)
         {
             if (ship == null) continue;
             foreach (ModuleHull body in ship.m_moduleHulls)
-                if (body != null) body.ApplyRepairTick();
+            {
+                if (body == null) continue;
+                float bodyHealedAmount = body.ApplyRepairTick();
+                fleetHealedAmount += bodyHealedAmount;
+            }
             ship.UpdateShipStatCur();
         }
+        BattleStatTracker.AddFleetRepair(this, fleetHealedAmount);
         EventManager.Trigger_FleetUpdateHP();
         EventManager.Trigger_ShipUpdateHP();
     }
@@ -1165,25 +1201,23 @@ public class SpaceFleet : MonoBehaviour
         return (m_fleetInfo.tacticOptions & k_aircraftTacticBit) != 0;
     }
 
-    // 빔 전술 토글(idx=0) ON 시 공격력 2배 — 내 함대만 적용(적/PvP상대/시네마틱은 토글 UI가 없어 배율 없음)
-    public float GetBeamTacticAttackMultiplier()
+    // 버서커(leviathan 4단계) 공격력 배율 — 내 함대에 효과가 있을 때 현재 자원 비율이 낮을수록 큰 배율(경계/배율은 TacticSettings)
+    public float GetBerserkerAttackMultiplier()
     {
         if (m_fleetSource != EFleetSource.fleet_source_player) return 1f;
-        return (m_fleetInfo.tacticOptions & k_beamTacticBit) != 0 ? 2f : 1f;
-    }
 
-    // 미사일 전술 토글(idx=1) ON 시 공격력 2배 — 내 함대만 적용(적/PvP상대/시네마틱은 토글 UI가 없어 배율 없음)
-    public float GetMissileTacticAttackMultiplier()
-    {
-        if (m_fleetSource != EFleetSource.fleet_source_player) return 1f;
-        return (m_fleetInfo.tacticOptions & k_missileTacticBit) != 0 ? 2f : 1f;
-    }
+        float berserkerEffect = HullArchetypePassiveEffects.SumFleetScopeEffect(this, HullArchetypePassiveEffects.k_berserkerMode);
+        if (berserkerEffect <= 0f) return 1f;
 
-    // 함재기 전술 토글(idx=2) ON 시 공격력 2배(함선 공격/공중전 모두) — 내 함대만 적용
-    public float GetAircraftTacticAttackMultiplier()
-    {
-        if (m_fleetSource != EFleetSource.fleet_source_player) return 1f;
-        return (m_fleetInfo.tacticOptions & k_aircraftTacticBit) != 0 ? 2f : 1f;
+        Commander commander = DataManager.Instance.m_currentCommander;
+        if (commander == null || commander.m_commanderInfo == null || commander.m_commanderInfo.resourceMax <= 0) return 1f;
+
+        float resourcePercent = commander.GetResource() * 100f / commander.m_commanderInfo.resourceMax;
+        TacticSettings tactic = DataManager.Instance.m_dataTableConfig.gameSettings.tactic;
+        if (resourcePercent < tactic.berserkerThreshold3Percent) return tactic.berserkerAttackMultiplier3;
+        if (resourcePercent < tactic.berserkerThreshold2Percent) return tactic.berserkerAttackMultiplier2;
+        if (resourcePercent < tactic.berserkerThreshold1Percent) return tactic.berserkerAttackMultiplier1;
+        return 1f;
     }
 
     // 실드 전술 토글(idx=4) ON 여부 — 이제 게이지 회복과는 무관하게 "흡수(피해감소) 효과 작동 여부"만 결정.
@@ -1194,25 +1228,44 @@ public class SpaceFleet : MonoBehaviour
         return (m_fleetInfo.tacticOptions & k_shieldTacticBit) != 0;
     }
 
-    // cost를 낼 여유가 있으면 차감하고 true. 없으면 토글은 그대로 둔 채 false만 반환 —
-    // 호출부는 false를 "이번엔 전술 효과 없이 원래대로 진행"하라는 신호로 사용(행동 자체를 막지 않음)
-    private bool TryChargeTacticCost(int cost)
+    // cost(패시브 절감 반영 후)를 낼 여유가 있으면 차감하고 true. 없으면 토글은 그대로 둔 채 false만 반환 —
+    // 호출부는 false를 "자원이 없어 이번 행동(발사/발진/수리/충전/생성)을 하지 않음"으로 처리
+    // tacticIndex: 0=빔, 1=미사일, 2=함재기, 3=수리, 4=실드, 5=요격체 — 지불 표시 UI(OnTacticCostSpent)가 어느 전술 버튼의 소모인지 구분하는 용도
+    private bool TryChargeTacticCost(int cost, int tacticIndex)
     {
         if (m_fleetSource != EFleetSource.fleet_source_player) return true;
 
         Commander commander = DataManager.Instance.m_currentCommander;
-        if (commander == null || commander.GetResource() < cost) return false;
+        if (commander == null) return false;
 
-        commander.SpendResource(cost);
+        int finalCost = ApplyResourceCostReduction(cost);
+        if (commander.GetResource() < finalCost) return false;
+
+        commander.SpendResource(finalCost);
+        if (finalCost > 0)
+            EventManager.Trigger_TacticCostSpent(tacticIndex, finalCost);
+        int savedCost = cost - finalCost;
+        BattleStatTracker.AddFleetResourceSaved(savedCost);
+        PassiveAudit.RecordFleetDetail(this, $"자원비용{cost}", $"원가={cost} 지불={finalCost} 절감={savedCost} 남은자원={commander.GetResource()}/{commander.m_commanderInfo.resourceMax} 버서커배율={GetBerserkerAttackMultiplier()}");
         return true;
     }
 
-    public bool TryChargeRepairTacticCost(int cost) { return TryChargeTacticCost(cost); }
-    public bool TryChargeShieldTacticCost(int cost) { return TryChargeTacticCost(cost); }
-    public bool TryChargeMissileTacticCost(int cost) { return TryChargeTacticCost(cost); }
-    public bool TryChargeAircraftTacticCost(int cost) { return TryChargeTacticCost(cost); }
-    public bool TryChargeInterceptorTacticCost(int cost) { return TryChargeTacticCost(cost); }
-    public bool TryChargeBeamTacticCost(int cost) { return TryChargeTacticCost(cost); }
+    // 아키타입 패시브 자원 사용량 감소(leviathan 1단계, 함대 범위) — 소수점은 올림
+    private int ApplyResourceCostReduction(int cost)
+    {
+        float reductionPercent = HullArchetypePassiveEffects.SumFleetScopeEffect(this, HullArchetypePassiveEffects.k_resourceCostReductionPercent);
+        if (reductionPercent <= 0f) return cost;
+
+        float costRatio = Mathf.Clamp01(1f - reductionPercent / 100f);
+        return Mathf.CeilToInt(cost * costRatio);
+    }
+
+    public bool TryChargeBeamTacticCost(int cost) { return TryChargeTacticCost(cost, 0); }
+    public bool TryChargeMissileTacticCost(int cost) { return TryChargeTacticCost(cost, 1); }
+    public bool TryChargeAircraftTacticCost(int cost) { return TryChargeTacticCost(cost, 2); }
+    public bool TryChargeRepairTacticCost(int cost) { return TryChargeTacticCost(cost, 3); }
+    public bool TryChargeShieldTacticCost(int cost) { return TryChargeTacticCost(cost, 4); }
+    public bool TryChargeInterceptorTacticCost(int cost) { return TryChargeTacticCost(cost, 5); }
 
     // 토글 상태 반영 + 요격체 즉시 전파 + 서버 동기화 — UI 클릭(TryToggleTactic) 전용 경로
     public void ApplyTacticOptions(int newOptions)

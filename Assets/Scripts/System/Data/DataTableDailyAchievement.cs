@@ -62,14 +62,14 @@ public class DataTableDailyAchievement : ScriptableObject
     {
         var ic = System.Globalization.CultureInfo.InvariantCulture;
         var sb = new System.Text.StringBuilder();
-        sb.AppendLine("achievement_id,condition_type,condition_param,threshold,achievement_point_reward,achievement_point_reward_vip,name_key,desc_key");
+        sb.AppendLine("achievement_id,condition_type,condition_param,threshold,achievement_point_reward,achievement_point_reward_vip,name_key,desc_key,difficulty");
 
         for (int i = 0; i < dailyAchievementDataList.Count; i++)
         {
             AchievementData data = dailyAchievementDataList[i];
-            sb.AppendLine(string.Format(ic, "{0},{1},{2},{3},{4},{5},{6},{7}",
+            sb.AppendLine(string.Format(ic, "{0},{1},{2},{3},{4},{5},{6},{7},{8}",
                 data.achievementId, data.conditionType, data.conditionParam,
-                data.threshold, data.achievementPointReward, data.achievementPointRewardVip, data.nameKey, data.descKey));
+                data.threshold, data.achievementPointReward, data.achievementPointRewardVip, data.nameKey, data.descKey, data.difficulty));
         }
 
         return sb.ToString();
@@ -107,6 +107,7 @@ public class DataTableDailyAchievement : ScriptableObject
                 achievementPointRewardVip = ParseInt(GetCol(cols, 5)),
                 nameKey = GetCol(cols, 6),
                 descKey = GetCol(cols, 7),
+                difficulty = GetCol(cols, 8),
             });
         }
 

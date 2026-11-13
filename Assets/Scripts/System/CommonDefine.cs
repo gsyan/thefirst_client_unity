@@ -103,7 +103,7 @@ public enum EAchievementConditionType
     CellClear,             // 일반 셀(비이벤트) 누적 클리어수
     EventCell,              // 이벤트 셀(ETreasureRewardType 종류별) 누적 클리어수
     ZoneClearTotal,        // 누적 존 클리어 개수(Commander.highestClearedZoneNumber 기준)
-    ZoneClearSpecific,     // 특정 존 번호 클리어 여부
+    ZoneClearSpecific,     // 특정 존 번호 클리어 여부(일일퀘스트에서는 오늘 해당 존 탈출 횟수)
     CommanderLevel,        // 지휘관 레벨 스냅샷
     CommandPower,          // 지휘력(commandPowerMax) 스냅샷
     MineralTotal,          // 역대 누적 획득 광물(Commander.mineralEarnedTotal) — 존런 종료로 사라지는 현재 보유량과 별개로 영구 누적
@@ -111,6 +111,22 @@ public enum EAchievementConditionType
     ModuleTierCount,       // 활성 함대 내 특정 카테고리+티어 모듈 동시보유 개수
     HullUnlocked,          // 특정 함체(hullSubType) 언락 여부 — 언락 시 소비한 업적 포인트 일부 환급용
     ZoneFullClear,         // 특정 존의 모든 셀을 한 런 안에서 전부 클리어 여부(conditionParam=존번호)
+    // 아래는 일일퀘스트 전용 — 서버 commander_daily_counter(오늘 UTC)에 누적된 값으로 판정, counter_type = enum 이름
+    RewardCardPurchase,    // 오늘 보상카드 구매 횟수
+    MineralEarned,         // 오늘 셀 클리어로 획득한 광물량(서버 지급분)
+    MineralSpent,          // 오늘 보상카드 구매·자원 충전에 사용한 광물량
+    PvpBattle,             // 오늘 PVP 공격 횟수(승패 무관)
+    PvpVictory,            // 오늘 PVP 공격 승리 횟수
+    AdRewardClaim,         // 오늘 광고 보상 수령 횟수(VIP의 광고 없는 수령도 포함)
+    EnemyShipKill,         // 오늘 탐사 전투에서 격침한 적 함선 수(클라 보고)
+    AircraftLaunch,        // 오늘 탐사 전투에서 출격한 내 함재기 횟수(클라 보고)
+    MissileOnlyCellClear,  // 오늘 빔·함재기 없이 미사일만 써서 이긴 셀 전투 수(클라 보고)
+    AircraftOnlyCellClear, // 오늘 빔·미사일 없이 함재기만 써서 이긴 셀 전투 수(클라 보고)
+    NoShieldCellClear,     // 오늘 실드 피해 흡수 없이 이긴 셀 전투 수(클라 보고)
+    ShieldAbsorb,          // 오늘 탐사 전투에서 내 함대 실드가 막은 피해량(클라 보고)
+    InterceptCount,        // 오늘 탐사 전투에서 내 함대 요격체가 요격한 횟수(클라 보고)
+    FleetRepairAmount,     // 오늘 탐사 전투에서 내 함대가 수리한 체력량 — 수리 전술 + 아군 수리(클라 보고)
+    ScavengedMineral,      // 오늘 함재기 약탈로 얻은 광물량(클라 보고)
 }
 
 // 존 진행(ZoneRun) 상태 — 서버 엔티티 필드용. 클라는 직접 이 값을 받지 않고 EscapeExplorationZoneRequest.isSuccess(bool)로만 결과를 통지하지만,
@@ -129,9 +145,9 @@ public enum EZoneRunStatus
 public enum ECardEffectType
 {
     Buff_BeamAttack,              // 지속버프: 빔 공격력 x(1+value1)
-    Buff_BeamFireRate,            // 지속버프: 빔 연사속도(쿨다운 감소) x(1+value1)
+    Buff_BeamFireRate,            // 지속버프: 빔 딜레이 감소 — 쿨다운 x(1-누적value1), 하한 있음
     Buff_MissileAttack,           // 지속버프: 미사일 공격력 x(1+value1)
-    Buff_MissileFireRate,         // 지속버프: 미사일 연사속도(쿨다운 감소) x(1+value1)
+    Buff_MissileFireRate,         // 지속버프: 미사일 딜레이 감소 — 쿨다운 x(1-누적value1), 하한 있음
     Buff_MissileSilence,          // 지속버프: 미사일 침묵효과(silenceTime) x(1+value1)
     Buff_HangarAttackToShip,      // 지속버프: 함재기 대함 공격력(Phase_AttackShip) x(1+value1)
     Buff_HangarAttackToFighter,   // 지속버프: 함재기 대함재기 공격력(Dogfight) x(1+value1)

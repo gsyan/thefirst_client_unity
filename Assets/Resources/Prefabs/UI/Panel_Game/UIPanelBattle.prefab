@@ -326,6 +326,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d70a861a1703b8b43a412c81be8d7585, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UITacticsToggleRow
+  m_floatingTextPrefab: {fileID: 6390585475058841071, guid: 087a877e3e9b6aa488a9c00c6f03a47a, type: 3}
+  m_floatingRoot: {fileID: 0}
+  m_floatDistance: 60
+  m_floatDuration: 0.8
 --- !u!114 &8945031454985453647
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1451,7 +1455,7 @@ MonoBehaviour:
   m_battleView: {fileID: 4749425291858937154}
   m_gaugeNameText: {fileID: 4843456217754457343}
   m_tacticPowerGauge: {fileID: 5144523167930765176}
-  m_mineralAmountText: {fileID: 281694571814572399}
+  m_resourceText: {fileID: 281694571814572399}
 --- !u!1 &3520218253123073807
 GameObject:
   m_ObjectHideFlags: 0

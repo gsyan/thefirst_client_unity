@@ -25,13 +25,14 @@ public static class ShipStatGaugeBuilder
     // (체력/수리력=healthMultiplier, 공격력 계열=attackMultiplier, 선회력은 배율 미적용)
     // applyBuffs를 넘기면 보상카드 지속버프 배율을 표시값에만 반영(배열 mutate 없이 스칼라만 스케일) — 존 런 중 대치 화면 전용, 그 외 호출부는 null 유지
     // includeBodyStats=false면 Health/TurnRate/Repair(함체 전용 스탯)를 뺌 — 슬롯 1개짜리 단일 모듈 뷰(UIShipLoadoutEditorView)에서 사용
-    public static List<ShipStatRowEntry> Build(ModuleData hullData, ModuleHullInfo actualModules = null, float healthMultiplier = 1f, float attackMultiplier = 1f, RewardCardSessionState applyBuffs = null, bool includeBodyStats = true)
+    // upgradeArchetype: 내 함선/내 함대 후보 열람 때만 함체 아키타입을 넘겨 아키타입 강화 레벨 수치를 표시 — 적 함대 열람은 null(강화 없음)
+    public static List<ShipStatRowEntry> Build(ModuleData hullData, ModuleHullInfo actualModules = null, float healthMultiplier = 1f, float attackMultiplier = 1f, RewardCardSessionState applyBuffs = null, bool includeBodyStats = true, string upgradeArchetype = null)
     {
         DataTableModule moduleTable = DataManager.Instance.m_dataTableModule;
 
         ShipStatFormulaSettings formula = DataManager.Instance.m_dataTableConfig.gameSettings.shipStatFormula;
         ShipStatAllocation allocation = ShipStatAllocation.BuildFromModuleHullInfo(formula.maxModuleSlots, actualModules);
-        ShipFinalStats stats = ShipStatCalculator.Calculate(allocation, formula, hullData, moduleTable);
+        ShipFinalStats stats = ShipStatCalculator.Calculate(allocation, formula, hullData, moduleTable, upgradeArchetype);
 
         List<ShipStatRowEntry> entries = new();
 
@@ -45,11 +46,30 @@ public static class ShipStatGaugeBuilder
         float hangarShipDpsBuffMult = applyBuffs != null ? applyBuffs.GetMultiplier(ECardEffectType.Buff_HangarAttackToShip) : 1f;
         float hangarFighterDpsBuffMult = applyBuffs != null ? applyBuffs.GetMultiplier(ECardEffectType.Buff_HangarAttackToFighter) : 1f;
 
+        // 아키타입 패시브(능력치 배율) — 내 함선/내 함대 후보 열람(upgradeArchetype 지정)일 때만 표시값에 반영. 함대 편성에 배치된 아키타입 기준의 계획값
+        // (전투 중 생존 여부와 무관). 실제 전투/스폰 값은 모듈이 같은 효과로 따로 계산하며 이 표시는 스폰 수치에 영향을 주지 않음
+        float passiveRepairMult = 1f;
+        float passiveShieldGaugeMult = 1f;
+        float passiveShieldRegenMult = 1f;
+        if (string.IsNullOrEmpty(upgradeArchetype) == false)
+        {
+            List<string> plannedFleetArchetypes = HullArchetypePassiveEffects.GetPlannedFleetArchetypes(upgradeArchetype);
+            healthBuffMult *= HullArchetypePassiveEffects.GetPlannedMultiplier(upgradeArchetype, plannedFleetArchetypes, HullArchetypePassiveEffects.k_shipHealthPercent);
+            beamDpsBuffMult *= HullArchetypePassiveEffects.GetPlannedMultiplier(upgradeArchetype, plannedFleetArchetypes, HullArchetypePassiveEffects.k_beamAttackPercent);
+            missileDpsBuffMult *= HullArchetypePassiveEffects.GetPlannedMultiplier(upgradeArchetype, plannedFleetArchetypes, HullArchetypePassiveEffects.k_missileAttackPercent);
+            float hangarPassiveMult = HullArchetypePassiveEffects.GetPlannedMultiplier(upgradeArchetype, plannedFleetArchetypes, HullArchetypePassiveEffects.k_hangarAttackPercent);
+            hangarShipDpsBuffMult *= hangarPassiveMult;
+            hangarFighterDpsBuffMult *= hangarPassiveMult;
+            passiveRepairMult = HullArchetypePassiveEffects.GetPlannedMultiplier(upgradeArchetype, plannedFleetArchetypes, HullArchetypePassiveEffects.k_healthRegenPercent);
+            passiveShieldGaugeMult = HullArchetypePassiveEffects.GetPlannedMultiplier(upgradeArchetype, plannedFleetArchetypes, HullArchetypePassiveEffects.k_shieldGaugePercent);
+            passiveShieldRegenMult = HullArchetypePassiveEffects.GetPlannedMultiplier(upgradeArchetype, plannedFleetArchetypes, HullArchetypePassiveEffects.k_shieldRegenPercent);
+        }
+
         if (includeBodyStats == true)
         {
             entries.Add(MakeNumericStat(loc.Get("UIFleet_Stats_Health"), stats.health * healthMultiplier, healthBuffMult));
             entries.Add(MakeNumericStat(loc.Get("UIFleet_Stats_TurnRate"), stats.turnRate));
-            entries.Add(MakeNumericStat(loc.Get("UIFleet_Stats_Repair"), stats.repair * healthMultiplier));
+            entries.Add(MakeNumericStat(loc.Get("UIFleet_Stats_Repair"), stats.repair * healthMultiplier, passiveRepairMult));
         }
 
         if (HasInstalledSlot(stats.beamModuleSubType) == true)
@@ -76,8 +96,8 @@ public static class ShipStatGaugeBuilder
 
         if (stats.shieldInstalled == true)
         {
-            entries.Add(MakeNumericStat(loc.Get("UIFleet_Stats_ShieldGauge"), stats.shieldGauge));
-            entries.Add(MakeNumericStat(loc.Get("UIFleet_Stats_ShieldRegenRate"), stats.shieldRegenRate));
+            entries.Add(MakeNumericStat(loc.Get("UIFleet_Stats_ShieldGauge"), stats.shieldGauge, passiveShieldGaugeMult));
+            entries.Add(MakeNumericStat(loc.Get("UIFleet_Stats_ShieldRegenRate"), stats.shieldRegenRate, passiveShieldRegenMult));
         }
 
         // 요격체는 모듈 1개만 장착 가능(추가 배치 없음) — 슬롯 종합 없이 그대로 표시
@@ -132,6 +152,12 @@ public static class ShipStatGaugeBuilder
         for (int i = 0; i < values.Length; i++)
             total += values[i];
         return total;
+    }
+
+    // 함체 속도 행 — Build 기본 목록에는 없고 로드아웃 화면의 함체 행 성능에서만 추가로 표시
+    public static ShipStatRowEntry MakeHullSpeedEntry(float speed)
+    {
+        return MakeNumericStat(LocalizationManager.Instance.Get("UIFleet_Stats_Speed"), speed);
     }
 
     // buffMultiplier: 보상카드 지속버프 배율(기본 1=버프 없음) — value에 곱해 최종값을 만들고, 늘어난 만큼은 buffDiffText로 별도 표시

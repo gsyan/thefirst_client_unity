@@ -69,8 +69,7 @@ public class UIPlacedShipRow : MonoBehaviour
         m_isDestroyedThisRun = false;
         m_onTypeSelectClicked = onTypeSelectClicked;
 
-        if (m_shipNameText != null)
-            m_shipNameText.text = "-";
+        SetSlotNumberText(index);
         if (m_shipTypeSelectButton != null)
         {
             m_shipTypeSelectButton.gameObject.SetActive(true);
@@ -99,8 +98,7 @@ public class UIPlacedShipRow : MonoBehaviour
         m_isDestroyedThisRun = false;
         m_onTypeSelectClicked = null;
 
-        if (m_shipNameText != null)
-            m_shipNameText.text = "-";
+        SetSlotNumberText(index);
         if (m_shipTypeSelectButton != null)
             m_shipTypeSelectButton.gameObject.SetActive(false);
         if (m_frontToggleSlide != null)
@@ -119,7 +117,7 @@ public class UIPlacedShipRow : MonoBehaviour
         return m_isLocked;
     }
 
-    // showFrontToggle=false면 전방/후방을 편집 불가능한 라벨 텍스트로만 표시하고 타입선택 버튼도 숨김(적 함대 정보 열람 등 읽기전용 목적)
+    // showFrontToggle=false면 읽기전용 — 전방/후방 토글·관리 버튼은 숨기고, 타입선택 버튼은 함선 이름만 보여주는 비활성 상태로 둠(적 함대 정보 열람 등)
     public void Setup(int index, string hullSubType, bool isFront, System.Action<int, bool> onFrontToggled, System.Action<int, string> onRowClicked, System.Action<int> onTypeSelectClicked, bool showFrontToggle = true, bool isDestroyedThisRun = false, System.Action<int> onManageClicked = null)
     {
         gameObject.SetActive(true);
@@ -137,9 +135,8 @@ public class UIPlacedShipRow : MonoBehaviour
 
         if (showFrontToggle == true)
         {
-            // 이름 칸엔 슬롯 인덱스 기반 "Ship1"(1-based) — 함선 이름 로컬라이즈는 아직 미정. 타입선택 버튼엔 함체 표시명("티어N 함체 M세대")을 표시
-            if (m_shipNameText != null)
-                m_shipNameText.text = $"Ship{index + 1}";
+            // 번호 칸엔 슬롯 번호(1-based)만, 함체 표시명은 타입선택 버튼에 표시 — 행 배치: 번호 / 함선이름(버튼) / 관리 / 전·후방 토글
+            SetSlotNumberText(index);
             if (m_shipTypeButtonText != null)
                 m_shipTypeButtonText.text = CommonUtility.BuildHullDisplayName(hullSubType);
             if (m_shipTypeSelectButton != null)
@@ -166,11 +163,16 @@ public class UIPlacedShipRow : MonoBehaviour
         }
         else
         {
-            // 읽기전용 — 이름 칸에 함체 표시명, 전/후방은 그대로 텍스트로만 표기, 타입선택 버튼은 숨김
-            if (m_shipNameText != null)
-                m_shipNameText.text = CommonUtility.BuildHullDisplayName(hullSubType);
+            // 읽기전용 — 번호 칸엔 연번, 함체 표시명은 타입선택 버튼 텍스트에 표시하되 버튼은 눌리지 않게 비활성화(편집 행과 같은 배치 유지)
+            SetSlotNumberText(index);
+            if (m_shipTypeButtonText != null)
+                m_shipTypeButtonText.text = CommonUtility.BuildHullDisplayName(hullSubType);
             if (m_shipTypeSelectButton != null)
-                m_shipTypeSelectButton.gameObject.SetActive(false);
+            {
+                m_shipTypeSelectButton.gameObject.SetActive(true);
+                m_shipTypeSelectButton.interactable = false;
+            }
+            RebuildTypeSelectButtonLayout();
 
             if (m_frontToggleSlide != null)
                 m_frontToggleSlide.gameObject.SetActive(false);
@@ -188,6 +190,14 @@ public class UIPlacedShipRow : MonoBehaviour
             if (m_frontToggleSlide != null) m_frontToggleSlide.SetInteractable(false);
             if (m_manageButton != null) m_manageButton.interactable = false;
         }
+    }
+
+    // 슬롯 번호(1-based) — 빈 슬롯/잠긴 슬롯/배치된 슬롯 모두 같은 자리에 번호를 표시해 행 정렬 유지
+    private void SetSlotNumberText(int index)
+    {
+        if (m_shipNameText == null) return;
+        int slotNumber = index + 1;
+        m_shipNameText.text = slotNumber.ToString();
     }
 
     // 재사용된(이미 active였던) 풀 오브젝트는 SetActive(true) 호출이 no-op이라 ContentSizeFitter의 OnEnable 재계산이
@@ -217,6 +227,13 @@ public class UIPlacedShipRow : MonoBehaviour
     }
 
     // 튜토리얼 등에서 행 자체 선택(OnRowClicked)은 유지한 채 함체교체 버튼/전후방 토글만 일시적으로 잠글 때 사용
+    // 튜토리얼 동적 타겟용 — 함체 선택 버튼의 rect
+    public RectTransform GetShipTypeSelectButtonRect()
+    {
+        if (m_shipTypeSelectButton == null) return null;
+        return m_shipTypeSelectButton.transform as RectTransform;
+    }
+
     public void SetActionsInteractable(bool interactable)
     {
         if (m_shipTypeSelectButton != null)

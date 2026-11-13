@@ -1,0 +1,7 @@
+stepId,message,triggerType,targetPanelName,targetUIId,showArrow,arrowDirection,textBoxOffsetX,textBoxOffsetY,textBoxSizeX,textBoxSizeY,textBoxPositionX,textBoxPositionY,autoNextDelay,preActionPanelName,preActionTabName,conditionType,conditionThreshold,conditionCount,targetModuleType
+step1,Tutorial_ModuleReinforce_OpenLoadout,TargetClick,,@ReinforceShipManageButton,True,Auto,0,0,0,0,0,-500,0,,,None,90,3,none
+step2,Tutorial_ModuleReinforce_SelectModule,TargetClick,,@ReinforceModuleManageButton,True,Auto,0,0,0,0,0,-500,0,,,None,90,3,none
+step3,Tutorial_ModuleReinforce_LevelUp,TargetClick,,@ReinforceLevelUpButton,True,Auto,0,0,0,0,0,-500,0,,,None,90,3,none
+step4,Tutorial_ModuleReinforce_ConfirmReinforce,TargetClick,UIPopupConfirm,ConfirmButton,True,Auto,0,0,0,0,0,-500,0,,,None,90,3,none
+step5,Tutorial_ModuleReinforce_Close,TargetClick,,@ReinforceCloseButton,True,Auto,0,0,0,0,0,-500,0,,,None,90,3,none
+step6,Tutorial_ModuleReinforce_Complete,AnyClick,,,False,Auto,0,0,0,0,0,-500,0,,,None,90,3,none

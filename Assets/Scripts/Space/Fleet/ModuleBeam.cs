@@ -25,6 +25,9 @@ public class ModuleBeam : ModuleBase
     private Animator m_animator;
     private const float k_beamFireAngle = 5f;
 
+    // 아키타입 패시브 빔 누적 공격력(%) — 이 모듈이 이번 전투에서 쌓은 값, 전투 진입 시 0
+    private float m_attackStackPercent = 0f;
+
     // Body 교체 시 기존 모듈 승계용 — 새 부모 body로 갱신
     public void SetParentBody(ModuleHull parentBody)
     {
@@ -34,8 +37,12 @@ public class ModuleBeam : ModuleBase
     // 보상카드 지속버프 배율이 바뀔 때마다(카드 선택/런 종료 초기화) 호출 — m_baseAttack/m_baseAttackCool을 기준으로 다시 계산
     public void RefreshRewardCardBuff()
     {
-        m_attack = m_baseAttack * GetRewardCardBuffMultiplier(ECardEffectType.Buff_BeamAttack);
-        m_attackCool = m_baseAttackCool / GetRewardCardBuffMultiplier(ECardEffectType.Buff_BeamFireRate);
+        // 아키타입 패시브(빔 공격력 +N%)는 보상카드 배율과 곱해짐 — 패시브 효과가 바뀔 때도 같은 갱신 경로로 반영
+        float passiveAttackMultiplier = 1f + GetPassiveEffect(HullArchetypePassiveEffects.k_beamAttackPercent) / 100f;
+        m_attack = m_baseAttack * GetRewardCardBuffMultiplier(ECardEffectType.Buff_BeamAttack) * passiveAttackMultiplier;
+        float delayReductionRatio = GetRewardCardBuffMultiplier(ECardEffectType.Buff_BeamFireRate) - 1f;
+        float delayRatio = Mathf.Max(1f - delayReductionRatio, k_minDelayRatio);
+        m_attackCool = m_baseAttackCool * delayRatio;
     }
 
 
@@ -85,10 +92,12 @@ public class ModuleBeam : ModuleBase
         m_healthMax = moduleData.health;
 
         // 아키타입 단위 영구 모듈강화(M6) — 이 함체의 아키타입+이 빔 슬롯(slotIndex) 기준 레벨(최소 1)에 해당하는 티어 데이터(beam_{level}_1)의 공격력/쿨다운을 그대로 사용
-        int archetypeLevel = parentBody != null ? ArchetypeUpgradeLevelLookup.GetLevel(parentBody.GetHullArchetype(), EModuleType.beam, m_moduleInfo.slotIndex) : 1;
-        ModuleData levelModuleData = DataManager.Instance.m_dataTableModule.GetModuleDataFromTable($"beam_{archetypeLevel}_1");
-        float levelAttack = levelModuleData != null ? levelModuleData.attack : moduleData.attack;
-        float levelAttackCool = levelModuleData != null ? levelModuleData.attackCool : moduleData.attackCool;
+        // 존 적은 강화 개념이 없어 장착한 적 전용 무기 행을 그대로 사용(ResolveWeaponLevelData)
+        int archetypeLevel = parentBody != null ? ArchetypeUpgradeLevelLookup.GetLevel(ResolveOwnerFleet(), parentBody.GetHullArchetype(), EModuleType.beam, m_moduleInfo.slotIndex) : 1;
+        ModuleData levelModuleData = ResolveWeaponLevelData(moduleData, EModuleType.beam, archetypeLevel);
+        float levelAttack = levelModuleData.attack;
+        float levelAttackCool = levelModuleData.attackCool;
+        SetCritStats(levelModuleData);
         float baseAttack = attackOverride ?? levelAttack;
         float baseAttackCool = attackCoolOverride ?? levelAttackCool;
         m_baseAttack = baseAttack;
@@ -126,6 +135,9 @@ public class ModuleBeam : ModuleBase
     {
         Vector3 slotScale = m_moduleSlot != null ? m_moduleSlot.transform.lossyScale : Vector3.one;
         slotScale *= 0.1f;
+
+        // 재초기화(함선 편집 미리보기) 때 발사기가 중복 등록되면 한 번에 여러 발이 나가므로 최초 1회만 생성
+        if (m_launchers.Count > 0) return;
         LauncherBeam launcher = gameObject.AddComponent<LauncherBeam>();
         launcher.InitializeLauncherBeam(moduleData, 0, m_ownerFleet != null && ObjectManager.Instance.IsEnemyOfMyTeam(m_ownerFleet), slotScale);
         m_launchers.Add(launcher);
@@ -198,32 +210,55 @@ public class ModuleBeam : ModuleBase
         if (m_animator != null)
             m_animator.SetTrigger("Fire");
 
-        float shipCountMultiplier = m_ownerFleet != null ? m_ownerFleet.GetShipCountAttackMultiplier() : 1f;
-        float formationMultiplier = m_ownerFleet != null ? m_ownerFleet.GetFormationAttackMultiplier() : 1f;
-        float tacticMultiplier    = m_ownerFleet != null ? m_ownerFleet.GetBeamTacticAttackMultiplier() : 1f;
-
-        // 전술 보너스가 실제로 적용 중일 때만 발사 1건당 과금 — 여유가 없으면 이번 발사만 보너스 없이 그대로 발사(토글은 유지)
-        if (tacticMultiplier > 1f)
+        // 발사 1건당 자원 과금 — 여유가 없으면 이번 발사는 하지 않음(토글은 유지)
+        if (m_ownerFleet != null)
         {
             int tacticBeamCost = DataManager.Instance.m_dataTableConfig.gameSettings.tactic.tacticBeamCost;
-            if (m_ownerFleet.TryChargeBeamTacticCost(tacticBeamCost) == false)
-                tacticMultiplier = 1f;
+            if (m_ownerFleet.TryChargeBeamTacticCost(tacticBeamCost) == false) return;
         }
+
+        float shipCountMultiplier = m_ownerFleet != null ? m_ownerFleet.GetShipCountAttackMultiplier() : 1f;
+        float formationMultiplier = m_ownerFleet != null ? m_ownerFleet.GetFormationAttackMultiplier() : 1f;
+        float berserkerMultiplier = m_ownerFleet != null ? m_ownerFleet.GetBerserkerAttackMultiplier() : 1f;
+
+        // 치명타 — 발사 1회(모든 발사구 공통)에 한 번 판정
+        float critMultiplier = RollCritMultiplier(HullArchetypePassiveEffects.k_beamCritChance);
+        float stackMultiplier = 1f + m_attackStackPercent / 100f;
 
         DamageInfo damageInfo = new DamageInfo
         {
             baseDamage       = m_attack,
-            attackMultiplier = shipCountMultiplier * formationMultiplier * tacticMultiplier,
+            attackMultiplier = shipCountMultiplier * formationMultiplier * berserkerMultiplier * critMultiplier * stackMultiplier,
             damageType       = EDamageType.Beam,
         };
 
         Vector3 hitPoint = target.GetRandomHitPoint();
+        PassiveAudit.RecordDetail(m_ownerShip, $"빔{m_moduleInfo.slotIndex}발사", $"공격={m_attack} 함선수={shipCountMultiplier} 진형={formationMultiplier} 버서커={berserkerMultiplier} 치명타={critMultiplier}(기본확률 {m_critChancePercent}%) 누적={stackMultiplier}");
+        BattleStatTracker.MarkBeamFired(m_ownerShip);
 
         foreach (var launcher in m_launchers)
         {
             if (launcher == null) continue;
             launcher.FireAtTarget(target.transform, damageInfo, this, hitPoint);
         }
+
+        AddAttackStack();
+    }
+
+    // 발사 1회(모든 발사구 공통)당 한 번 누적 — 이번 발사엔 이전까지 쌓인 값만 적용되고 다음 발사부터 증가분 반영
+    private void AddAttackStack()
+    {
+        float stackPercent = GetPassiveEffect(HullArchetypePassiveEffects.k_beamAttackStackPercent);
+        if (stackPercent <= 0f) return;
+
+        float stackMaxPercent = GetPassiveEffect(HullArchetypePassiveEffects.k_beamAttackStackMaxPercent);
+        float nextStackPercent = m_attackStackPercent + stackPercent;
+        m_attackStackPercent = Mathf.Min(nextStackPercent, stackMaxPercent);
+    }
+
+    protected override void OnEnterBattleState()
+    {
+        m_attackStackPercent = 0f;
     }
 
     public override CapabilityProfile GetModuleCapabilityProfile(bool bByInfo)

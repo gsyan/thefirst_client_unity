@@ -16,6 +16,7 @@ public class TutorialMask : MonoBehaviour, ICanvasRaycastFilter
     private Material m_maskMaterial;
     private RectTransform m_currentTarget;
     private bool m_hasHole;
+    private bool m_isHolePassThrough = true; // false면 구멍 안 클릭도 막음(설명만 하는 스텝에서 강조된 버튼이 눌리지 않게)
     private Canvas m_canvas;
     private Camera m_canvasCamera;
 
@@ -110,10 +111,17 @@ public class TutorialMask : MonoBehaviour, ICanvasRaycastFilter
         return new Vector2(screenPos.x / Screen.width, screenPos.y / Screen.height);
     }
 
+    // 구멍 안 클릭을 아래 UI로 통과시킬지 — TargetClick 스텝은 통과(대상을 눌러야 함), AnyClick 같은 설명형 스텝은 차단
+    public void SetHolePassThrough(bool isPassThrough)
+    {
+        m_isHolePassThrough = isPassThrough;
+    }
+
     // 강조 해제
     public void HideDim()
     {
         m_hasHole = false;
+        m_isHolePassThrough = true;
         m_currentTarget = null;
         SetHoleOff();
 
@@ -140,6 +148,7 @@ public class TutorialMask : MonoBehaviour, ICanvasRaycastFilter
     public bool IsRaycastLocationValid(Vector2 screenPoint, Camera eventCamera)
     {
         if (!m_hasHole) return true;
+        if (m_isHolePassThrough == false) return true; // 구멍 안도 막음
 
         // 타겟 기준으로 구멍 영역 체크 (ShowDimWithHole이 항상 m_currentTarget을 설정하므로 null일 수 없음)
         if (m_currentTarget != null)

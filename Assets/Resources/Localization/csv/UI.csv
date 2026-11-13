@@ -8,7 +8,9 @@ UI_Place,,PLACE,배치
 UI_All,,ALL,전체
 UI_Reset,,RESET,초기화
 UI_TierLabel,,Tier {0},티어 {0}
+UIModuleSlot_LockedByPassive,,Unlocks at passive stage {0},패시브 {0}단계 해금 필요
 UI_ModuleLevelUp,,Module Reinforcement,모듈 강화
+UI_ModuleLevelUpTitle,,{0} Reinforcement,{0} 모듈 강화
 UI_ModuleLevelUpButton,,UPGRADE,강화
 UIPopupModuleReinforce_LevelUpConfirmMessage,,Upgrade to tier {0}?,티어 {0}(으)로 강화하시겠습니까?
 UIPopupModuleReinforce_StatChangeTitle,,STAT CHANGE,스탯 변화
@@ -74,6 +76,11 @@ UIPopupRedeemCode_Success,,Code redeemed successfully,코드가 정상적으로 
 
 UIPanelExplorationGrid_OwnedPoint,,Mineral,광물
 UIPanelExplorationGrid_ChargeResourceConfirmMessage,,Spend {0} mineral to charge {1} combat resource?,광물 {0}을 소모해 전투 자원 {1}을 충전하시겠습니까?
+UIPopupChargeResource_Title,,CHARGE RESOURCE,자원 충전
+UIPopupChargeResource_Current,,Current,현재 자원
+UIPopupChargeResource_Target,,After charge,충전 후 자원
+UIPopupChargeResource_MineralCost,,Mineral cost,소모 광물
+UIPopupChargeResource_Gain,,Charge amount,충전량
 UIPanelFleet_AchievementPoint,,Achievement Point,업적포인트
 UIPopupRewardCardSelect_Title,,Buy a Reward Card,보상 카드를 구매하세요
 UIPopupRewardCardSelect_EscapeTitle,,Escape Point Found,탈출 지점 발견
@@ -91,22 +98,31 @@ UIPanelExplorationGrid_AbandonRunConfirm,,Abandon the exploration in progress?\n
 UI_Abandon,,ABANDON,포기
 RewardCard_BeamAttack_Name,,Beam Power Up,빔 공격력 강화
 RewardCard_BeamAttack_Desc,,Beam attack +{0:P0},빔 공격력 {0:P0} 증가
-RewardCard_BeamFireRate_Name,,Beam Rate of Fire Up,빔 연사속도 강화
-RewardCard_BeamFireRate_Desc,,Beam rate of fire +{0:P0},빔 연사속도 {0:P0} 증가
+RewardCard_BeamAttack_Desc_Stacked,,Beam attack {0:P0} <voffset=6>→</voffset> {1:P0},빔 공격력 {0:P0} <voffset=6>→</voffset> {1:P0}
+RewardCard_BeamFireRate_Name,,Beam Delay Down,빔 딜레이 감소
+RewardCard_BeamFireRate_Desc,,Beam delay -{0:P0},빔 딜레이 {0:P0} 감소
+RewardCard_BeamFireRate_Desc_Stacked,,Beam delay -{0:P0} <voffset=6>→</voffset> -{1:P0},빔 딜레이 {0:P0} <voffset=6>→</voffset> {1:P0} 감소
 RewardCard_MissileAttack_Name,,Missile Power Up,미사일 공격력 강화
 RewardCard_MissileAttack_Desc,,Missile attack +{0:P0},미사일 공격력 {0:P0} 증가
-RewardCard_MissileFireRate_Name,,Missile Rate of Fire Up,미사일 연사속도 강화
-RewardCard_MissileFireRate_Desc,,Missile rate of fire +{0:P0},미사일 연사속도 {0:P0} 증가
+RewardCard_MissileAttack_Desc_Stacked,,Missile attack {0:P0} <voffset=6>→</voffset> {1:P0},미사일 공격력 {0:P0} <voffset=6>→</voffset> {1:P0}
+RewardCard_MissileFireRate_Name,,Missile Delay Down,미사일 딜레이 감소
+RewardCard_MissileFireRate_Desc,,Missile delay -{0:P0},미사일 딜레이 {0:P0} 감소
+RewardCard_MissileFireRate_Desc_Stacked,,Missile delay -{0:P0} <voffset=6>→</voffset> -{1:P0},미사일 딜레이 {0:P0} <voffset=6>→</voffset> {1:P0} 감소
 RewardCard_MissileSilence_Name,,Missile Silence Up,미사일 침묵효과 강화
 RewardCard_MissileSilence_Desc,,Missile silence effect +{0:P0},미사일 침묵효과 {0:P0} 증가
+RewardCard_MissileSilence_Desc_Stacked,,Missile silence effect {0:P0} <voffset=6>→</voffset> {1:P0},미사일 침묵효과 {0:P0} <voffset=6>→</voffset> {1:P0}
 RewardCard_HangarAttackToShip_Name,,Fighter Anti-Ship Power Up,함재기 대함 공격력 강화
 RewardCard_HangarAttackToShip_Desc,,Fighter anti-ship attack +{0:P0},함재기 대함 공격력 {0:P0} 증가
+RewardCard_HangarAttackToShip_Desc_Stacked,,Fighter anti-ship attack {0:P0} <voffset=6>→</voffset> {1:P0},함재기 대함 공격력 {0:P0} <voffset=6>→</voffset> {1:P0}
 RewardCard_HangarAttackToFighter_Name,,Fighter Dogfight Power Up,함재기 대함재기 공격력 강화
 RewardCard_HangarAttackToFighter_Desc,,Fighter dogfight attack +{0:P0},함재기 대함재기 공격력 {0:P0} 증가
+RewardCard_HangarAttackToFighter_Desc_Stacked,,Fighter dogfight attack {0:P0} <voffset=6>→</voffset> {1:P0},함재기 대함재기 공격력 {0:P0} <voffset=6>→</voffset> {1:P0}
 RewardCard_ShipHealth_Name,,Max Health Up,최대 체력 강화
 RewardCard_ShipHealth_Desc,,Max ship health +{0:P0},최대 함선 체력 {0:P0} 증가
+RewardCard_ShipHealth_Desc_Stacked,,Max ship health {0:P0} <voffset=6>→</voffset> {1:P0},최대 함선 체력 {0:P0} <voffset=6>→</voffset> {1:P0}
 RewardCard_PointRate_Name,,Mineral Rate Up,광물 획득량 증가
 RewardCard_PointRate_Desc,,Mineral gain +{0:P0},광물 획득량 {0:P0} 증가
+RewardCard_PointRate_Desc_Stacked,,Mineral gain {0:P0} <voffset=6>→</voffset> {1:P0},광물 획득량 {0:P0} <voffset=6>→</voffset> {1:P0}
 RewardCard_HealthHeal_Name,,Hull Repair,체력 회복
 RewardCard_HealthHeal_Desc,,Restore {0:P0} of hull health,체력 {0:P0} 회복
 RewardCard_ShieldHeal_Name,,Shield Recharge,실드 회복
@@ -134,6 +150,7 @@ UIFleet_ModulesTitle,,Modules,모듈
 UIFleet_Stats_Health,,Health,체력
 UIFleet_Stats_TurnRate,,Turn Rate,선회력
 UIFleet_Stats_Repair,,Repair,수리력
+UIFleet_Stats_Speed,,Speed,속도
 UIFleet_Stats_BeamDps,,Beam Attack,빔 공격력
 UIFleet_Stats_MissileDps,,Missile Attack,미사일 공격력
 UIFleet_Stats_MissileSilenceTime,,Missile Silence,미사일 침묵
@@ -176,6 +193,11 @@ UIAchievement_RewardVip,,VIP Reward,VIP 보상
 UIAchievement_ClaimAllButton,,Claim All,전체 받기
 UIAchievement_FindNextButton,,Find Next,다음 찾기
 UIAchievement_HideCompletedToggle,,Hide Completed Achievements,완료 업적 숨기기
+UIAchievement_TabDaily,,Daily Quests,일일퀘스트
+UIAchievement_TabAchievement,,Achievements,업적
+UIDailyStreak_Title,,Daily Quest Streak,일일 퀘스트 연속 달성
+UIDailyStreak_Desc,,Claim all 3 daily quests each day to gain +{0}% daily quest rewards per day (max +{1}%),일일 퀘스트 3개를 모두 수령하면 다음 날부터 보상이 하루마다 +{0}%씩 늘어납니다(최대 +{1}%)
+UIDailyStreak_Max,,MAX,MAX
 UIAchievement_Category_CellClear,,Cell Clear,셀 클리어
 UIAchievement_Category_EventCell,,Event Cell Clear,이벤트 셀 클리어
 UIAchievement_Category_ZoneClearTotal,,Zone Clear (Total),존 클리어(누적)
@@ -190,12 +212,22 @@ UIAchievement_Category_HullUnlocked,,Hull Unlock,함체 언락
 UIDailyAchievement_Category_CellClear,,Daily Cell Clear,일일 셀 클리어
 UIDailyAchievement_Category_EventCell,,Daily Event Cell Clear,일일 이벤트 셀 클리어
 UIDailyAchievement_Category_ZoneClearTotal,,Daily Zone Clear,일일 존 클리어
+UIDailyAchievement_Difficulty_easy,,Easy,쉬움
+UIDailyAchievement_Difficulty_normal,,Normal,중간
+UIDailyAchievement_Difficulty_hard,,Hard,어려움
 UIFleet_EnemyFleetTitle,,Enemy Fleet,적함대
 
 
 UITabSettings_Info,,INFO,정보
 UITabRank_SeasonNumber,,SEASON {0},시즌 {0}
 UITabRank_ScoreRank,,Score:{0} (Rank {1}),점수:{0} ({1}위)
+UIOpponentDetail_Level,,Level,레벨
+UIOpponentDetail_Score,,PVP Score,PVP 점수
+UIOpponentDetail_Rank,,PVP Rank,PVP 순위
+UIOpponentDetail_Record,,Record,전적
+UIOpponentDetail_RecordValue,,{0}W {1}L ({2}%),{0}승 {1}패 ({2}%)
+UIOpponentDetail_InterceptorWithCapacity,,{0} (blocks {1}),{0} (요격 {1}회)
+UIOpponentDetail_ShieldRegen,,Shield Regen,회복력
 UITabRank_refresh,,REFRESH({0}/{1}),새로고침({0}/{1})
 UITabExploration_RetreatConfirm,,Retreat to the previous zone?,이전 구역으로 퇴각하시겠습니까?
 UITabPvp_RetreatConfirm,,Retreat from the PvP battle?,PvP 전투에서 퇴각하시겠습니까?
@@ -208,6 +240,8 @@ UIPopupConfirm_PvpPointLabel,,PVP Point,PVP 포인트
 UIPopupConfirm_OwnedLabel,,Owned,보유
 UIPopupConfirm_ExpLabel,,EXP,경험치
 UIPopupRewardCardSelect_MineralGainedLabel,,Mineral Gained,획득 광물
+UIPopupRewardCardSelect_ScavengedLabel,,Scavenged Mineral,약탈 광물
+UIPopupRewardCardSelect_ScoutedLabel,,Scouted Mineral,탐사 광물
 Simple_Attack,,Att,공격
 Simple_BeamAttack,,Beam Att,빔 공격
 Simple_MissileAttack,,Missile Att,미사일 공격
@@ -218,6 +252,7 @@ module_type_missile,,Missile,미사일
 module_type_hangar,,Hangar,격납고
 module_type_shield,,Shield,실드
 module_type_interceptor,,Interceptor,요격체
+module_type_hull,,Hull,함체
 UIFleet_ModuleSlot_Installed,,Installed,장착
 UIFleet_ModuleSlot_NotInstalled,,Not Installed,해제
 
@@ -231,6 +266,9 @@ UIModuleReinforce_AttackToShip,,Attack To Ship,대함 공격력
 UIModuleReinforce_AttackToFighter,,Attack To Fighter,대공 공격력
 UIModuleReinforce_Ammo,,Ammo,탄약
 UIModuleReinforce_Health,,Health,체력
+UIModuleReinforce_Repair,,Repair,수리력
+UIModuleReinforce_TurnRate,,Turn Rate,선회력
+UIModuleReinforce_Speed,,Speed,속도
 UIModuleReinforce_Disrupt,,Disrupt,교란
 UIModuleReinforce_ShieldGauge,,Shield Gauge,실드 게이지
 UIModuleReinforce_ShieldRegenRate,,Regen Rate,회복 속도
@@ -268,6 +306,7 @@ UIPopupMessage_MaintenanceRemainingTime,,Time remaining: {0},서버 점검 남�
 UIPopupMessage_PvpSeasonRewardTitle,,PVP Season Reward,PVP 시즌 보상
 UIPopupMessage_PvpSeasonRewardMessage,,Season reward has been granted.,시즌 보상이 지급되었습니다.
 UIPopupMessage_PvpCommanderLevelRequiredMessage,,Commander Level {0} or above is required to enter PVP.,PVP 참가는 지휘 레벨 {0} 이상이 필요합니다.
+UIPopupMessage_FleetEmpty,,There are no ships in your fleet. Deploy at least one ship first.,함대에 배치된 함선이 없습니다. 함선을 먼저 배치하세요.
 CommandPower,,Command Power,지휘력
 TacticPower,,Tactic Power,전술력
 UICOMMON_AdmiralFeature,,Admiral Feature,제독 기능
@@ -276,7 +315,7 @@ loading_tip_1,,Tip: Upgrade ship modules to strengthen your fleet.,팁: 함선 �
 loading_tip_2,,Tip: Earn EXP in expeditions to raise your Commander Level and unlock new modules.,팁: 탐사를 통해 경험치를 쌓아 지휘 레벨을 올리고 새 모듈을 개방하세요.
 loading_tip_3,,Tip: Deploy a mix of ship types for better fleet synergy.,팁: 다양한 함선을 배치하면 함대 시너지가 높아집니다.
 loading_tip_4,,Tip: Run explorations to gather combat resources when you run short.,팁: 전투 자원이 부족할 때는 탐사를 먼저 진행하세요.
-loading_tip_5,,Tip: If a ship's health is running low, try moving it to the rear.,팁: 함선 체력이 얼마 남지 않았다면 후방에 배치해보세요.
+loading_tip_5,,"Tip: If a ship's health is running low, try moving it to the rear.",팁: 함선 체력이 얼마 남지 않았다면 후방에 배치해보세요.
 loading_tip_6,,Tip: Achievement Points are required to unlock higher-tier hulls.,팁: 더 높은 티어의 함체를 언락하려면 업적포인트가 필수입니다.
 loading_tip_7,,Tip: Mineral only lasts while the exploration run is active and resets when it ends. Use it to charge your combat resource or buy reward cards.,팁: 광물은 탐사 진행 중에만 유지되고 탐사가 끝나면 사라집니다. 전투 자원 충전이나 보상카드 구매에 사용하세요.
 ShipName_0,,Alpha,알파
@@ -297,12 +336,44 @@ UIAchievement_Name_event_cell,,Event Cell Visit x{1},이벤트 셀 방문 {1}회
 UIAchievement_Desc_event_cell,,Clear event cells {1} times cumulatively,이벤트 셀을 누적 {1}회 클리어하면 완료
 UIAchievement_Name_zone_clear_total,,Clear {1} Zones,존 {1}개 클리어
 UIAchievement_Desc_zone_clear_total,,Clear {1} different zones cumulatively,서로 다른 존을 누적 {1}개 클리어하면 완료
-UIDailyAchievement_Name_cell_clear,,Clear {1} Cells Today,오늘 셀 클리어 {1}회
-UIDailyAchievement_Desc_cell_clear,,Clear {1} normal (non-event) cells today,오늘 일반(비이벤트) 셀을 {1}회 클리어하면 완료(자정 UTC 리셋)
-UIDailyAchievement_Name_event_cell,,Event Cell Visit x{1} Today,오늘 이벤트 셀 방문 {1}회
-UIDailyAchievement_Desc_event_cell,,Clear event cells {1} times today,오늘 이벤트 셀을 {1}회 클리어하면 완료(자정 UTC 리셋)
-UIDailyAchievement_Name_zone_clear_total,,Clear {1} Zones Today,오늘 존 {1}개 클리어
-UIDailyAchievement_Desc_zone_clear_total,,Escape {1} zone runs today (revisiting cleared zones counts too),오늘 존을 {1}번 탈출(클리어)하면 완료 — 이미 클리어한 존 재방문도 인정(자정 UTC 리셋)
+UIDailyAchievement_Name_cell_clear,,Clear {1} Cells,셀 클리어 {1}회
+UIDailyAchievement_Desc_cell_clear,,Clear {1} normal (non-event) cells,일반(비이벤트) 셀을 {1}회 클리어하면 완료
+UIDailyAchievement_Name_event_cell,,Event Cell Visit x{1},이벤트 셀 방문 {1}회
+UIDailyAchievement_Desc_event_cell,,Clear event cells {1} times,이벤트 셀을 {1}회 클리어하면 완료
+UIDailyAchievement_Name_zone_clear_total,,Clear {1} Zones,존 {1}개 클리어
+UIDailyAchievement_Desc_zone_clear_total,,"Escape {1} zone runs, including revisits of cleared zones",이미 클리어한 존 재방문을 포함해 존을 {1}번 탈출(클리어)하면 완료
+UIDailyAchievement_Name_zone_clear_specific,,Escape Zone {0} x{1},존 {0} 탈출 {1}회
+UIDailyAchievement_Desc_zone_clear_specific,,Escape zone {0} {1} times,존 {0}을 {1}번 탈출(클리어)하면 완료
+UIDailyAchievement_Name_reward_card_purchase,,Buy {1} Reward Cards,보상카드 {1}장 구매
+UIDailyAchievement_Desc_reward_card_purchase,,Buy {1} reward cards,보상카드를 {1}장 구매하면 완료
+UIDailyAchievement_Name_mineral_earned,,Earn {1} Minerals,광물 {1} 획득
+UIDailyAchievement_Desc_mineral_earned,,Earn {1} minerals from cell clears,셀 클리어로 광물을 {1} 획득하면 완료
+UIDailyAchievement_Name_mineral_spent,,Spend {1} Minerals,광물 {1} 사용
+UIDailyAchievement_Desc_mineral_spent,,Spend {1} minerals on reward cards or resource charge,보상카드 구매·자원 충전에 광물을 {1} 사용하면 완료
+UIDailyAchievement_Name_pvp_battle,,PVP Battle x{1},PVP 전투 {1}회
+UIDailyAchievement_Desc_pvp_battle,,Attack in PVP {1} times,PVP 공격을 {1}회 하면 완료
+UIDailyAchievement_Name_pvp_victory,,PVP Victory x{1},PVP 승리 {1}회
+UIDailyAchievement_Desc_pvp_victory,,Win {1} PVP attacks,PVP 공격에서 {1}회 승리하면 완료
+UIDailyAchievement_Name_enemy_kill,,Destroy {1} Enemy Ships,적 함선 {1}척 격침
+UIDailyAchievement_Desc_enemy_kill,,Destroy {1} enemy ships in exploration battles,탐사 전투에서 적 함선을 {1}척 격침하면 완료
+UIDailyAchievement_Name_aircraft_launch,,Launch Aircraft x{1},함재기 {1}회 출격
+UIDailyAchievement_Desc_aircraft_launch,,Launch your aircraft {1} times in exploration battles,탐사 전투에서 함재기를 {1}회 출격시키면 완료
+UIDailyAchievement_Name_ad_reward,,Claim Ad Reward x{1},광고 보상 {1}회 받기
+UIDailyAchievement_Desc_ad_reward,,Claim ad rewards {1} times,광고 보상을 {1}회 받으면 완료
+UIDailyAchievement_Name_missile_only_clear,,Missile-Only Clear x{1},미사일만으로 셀 클리어 {1}회
+UIDailyAchievement_Desc_missile_only_clear,,Win {1} cell battles using only missiles (no beams or aircraft),빔·함재기 없이 미사일만 써서 셀 전투를 {1}회 이기면 완료
+UIDailyAchievement_Name_aircraft_only_clear,,Aircraft-Only Clear x{1},함재기만으로 셀 클리어 {1}회
+UIDailyAchievement_Desc_aircraft_only_clear,,Win {1} cell battles using only aircraft (no beams or missiles),빔·미사일 없이 함재기만 써서 셀 전투를 {1}회 이기면 완료
+UIDailyAchievement_Name_no_shield_clear,,No-Shield Clear x{1},실드 없이 셀 클리어 {1}회
+UIDailyAchievement_Desc_no_shield_clear,,Win {1} cell battles without your shields absorbing any damage,실드가 피해를 한 번도 막지 않은 채로 셀 전투를 {1}회 이기면 완료
+UIDailyAchievement_Name_shield_absorb,,Block {1} Damage with Shields,실드로 피해 {1} 막기
+UIDailyAchievement_Desc_shield_absorb,,Block {1} damage with your fleet shields in exploration battles,탐사 전투에서 함대 실드로 피해를 {1} 막으면 완료
+UIDailyAchievement_Name_intercept,,Intercept x{1},요격 {1}회
+UIDailyAchievement_Desc_intercept,,Intercept {1} times with your interceptors in exploration battles,탐사 전투에서 요격체로 {1}회 요격하면 완료
+UIDailyAchievement_Name_fleet_repair,,Repair {1} Health,함대 수리 {1}
+UIDailyAchievement_Desc_fleet_repair,,Repair {1} health across your fleet in exploration battles (repair tactic and ally repair),탐사 전투에서 함대가 체력을 {1} 수리하면 완료(수리 전술·아군 수리 포함)
+UIDailyAchievement_Name_scavenge,,Scavenge {1} Minerals,약탈 광물 {1} 획득
+UIDailyAchievement_Desc_scavenge,,Gain {1} minerals by aircraft scavenging,함재기 약탈로 광물을 {1} 얻으면 완료
 UIAchievement_Name_zone_clear,,Clear Zone {0},존 {0} 클리어
 UIAchievement_Desc_zone_clear,,Clear Zone {0} for the first time,존 {0}를 처음 클리어하면 완료
 UIAchievement_Name_zone_full_clear,,Fully Clear Zone {0},존 {0} 완전 클리어
@@ -332,8 +403,8 @@ HullArchetypePassive_centurion_1,,Beam attack power +10%,빔 공격력 10% 증�
 HullArchetypePassive_centurion_2,,Missile attack power +10%,미사일 공격력 10% 증가
 HullArchetypePassive_centurion_3,,Ship health +50%,함선 체력 50% 증가
 HullArchetypePassive_centurion_4,,Fleet-wide beam attack power +10%,함대 전체 빔 공격력 10% 증가
-HullArchetypePassive_talon_1,,Beam attack power +5% per hit (stacking),빔 공격시 공격력 5%씩 누적 증가
-HullArchetypePassive_talon_2,,Missile silence effect +100%,미사일 사일런스 효과 100% 증가
+HullArchetypePassive_talon_1,,Beam attack power +5% per shot (stacking up to 50%),빔 공격시 공격력 5%씩 누적 증가(최대 50%)
+HullArchetypePassive_talon_2,,Missile silence duration x2,미사일 사일런스 지속시간 ×2
 HullArchetypePassive_talon_3,,Hangar attack power +100%,함재기 공격력 100% 증가
 HullArchetypePassive_talon_4,,Fleet-wide beam/missile/hangar attack power +50%,"함대 전체 빔, 미사일, 함재기 공격력 50% 증가"
 HullArchetypePassive_prism_1,,Beam attack power +10%,빔 공격력 10% 증가
@@ -348,22 +419,22 @@ HullArchetypePassive_colossus_1,,Ship health +100%,함선 체력 100% 증가
 HullArchetypePassive_colossus_2,,Interceptor enabled,요격체 활성화
 HullArchetypePassive_colossus_3,,Shield enabled,실드 활성화
 HullArchetypePassive_colossus_4,,Fleet-wide health +50%,함대 전체 체력 50% 증가
-HullArchetypePassive_leviathan_1,,Fleet combat resource charge efficiency +100%,함대 전투 자원 충전 효율 100% 증가
-HullArchetypePassive_leviathan_2,,Fleet beam/missile/hangar attack power +10%,"함대 빔, 미사일, 함재기 공격력 10% 상승"
-HullArchetypePassive_leviathan_3,,"Fleet health regen +50%, shield gauge regen +50%, interceptor cooldown -50%","함대 체력회복 +50%, 실드 게이지회복 +50%, 요격체 충전대기시간 -50%"
-HullArchetypePassive_leviathan_4,,Fleet tactic: Berserker mode unlockable,함대 전술에 버서커 모드 발동 가능
+HullArchetypePassive_leviathan_1,,Fleet resource usage -25%,함대 자원 사용량 -25%
+HullArchetypePassive_leviathan_2,,"Fleet resource usage additional -25%, fleet beam/missile/hangar attack power +10%","함대 자원 사용량 추가 -25%, 함대 빔, 미사일, 함재기 공격력 10% 상승"
+HullArchetypePassive_leviathan_3,,"Fleet health regen +50%, shield gauge regen +50%, interceptor cooldown -0.3s","함대 체력회복 +50%, 실드 게이지회복 +50%, 요격체 충전대기시간 -0.3초"
+HullArchetypePassive_leviathan_4,,"Berserker: fleet attack x2/x3/x4 while resource is below 50%/30%/10%","버서커: 자원이 50%/30%/10% 미만이면 함대 공격력 2배/3배/4배"
 HullArchetypePassive_corsair_1,,Hangar scavenging chance +10%,함재기 약탈 확률 10% 증가
-HullArchetypePassive_corsair_2,,Hangar-vs-ship attack scavenging chance +1% (stacking),함재기 -> 함선 공격시 약탈 확률 1%씩 증가
-HullArchetypePassive_corsair_3,,Hangar-vs-hangar attack scavenging chance +1% (stacking),함재기 -> 함재기 공격시 약탈 확률 1%씩 증가
+HullArchetypePassive_corsair_2,,Hangar scavenging chance +10% (additional),함재기 약탈 확률 10% 추가 증가
+HullArchetypePassive_corsair_3,,Hangar scavenging chance +10% (additional),함재기 약탈 확률 10% 추가 증가
 HullArchetypePassive_corsair_4,,Fleet-wide scavenging chance +10%,함대 전체 약탈 확률 10% 증가
 HullArchetypePassive_vulcan_1,,Missile blast radius +100%,미사일 폭발 범위 100% 증가
 HullArchetypePassive_vulcan_2,,Missile attack power +100%,미사일 공격력 100% 증가
 HullArchetypePassive_vulcan_3,,Missile speed +100%,미사일 속도 100% 증가
 HullArchetypePassive_vulcan_4,,Fleet-wide missile attack power & speed +100%,"함대 전체 미사일 공격력, 속도 100% 증가"
-HullArchetypePassive_nemesis_1,,Beam critical chance +100%,빔 치명타 확률 +100%
-HullArchetypePassive_nemesis_2,,Missile critical chance +100%,미사일 치명타 확률 +100%
-HullArchetypePassive_nemesis_3,,Hangar critical chance +100%,함재기 치명타 확률 +100%
-HullArchetypePassive_nemesis_4,,Fleet-wide critical chance +100%,함대 전체 치명타 확률 +100%
+HullArchetypePassive_nemesis_1,,Beam critical chance +5%,빔 치명타 확률 +5%
+HullArchetypePassive_nemesis_2,,Missile critical chance +5%,미사일 치명타 확률 +5%
+HullArchetypePassive_nemesis_3,,Hangar critical chance +5%,함재기 치명타 확률 +5%
+HullArchetypePassive_nemesis_4,,Fleet-wide critical chance +5%,함대 전체 치명타 확률 +5%
 HullArchetypePassive_phoenix_1,,Ally ship repair ability enabled,다른 함선 수리능력 활성화
 HullArchetypePassive_phoenix_2,,Repair ability expanded to 2 ships simultaneously,"함선 수리능력 확장, 동시에 2개 함선"
 HullArchetypePassive_phoenix_3,,Repair ability expanded to 3 ships simultaneously,"함선 수리능력 확장, 동시에 3개 함선"
@@ -373,17 +444,17 @@ HullArchetypePassive_halcyon_2,,Shield regen boost expanded to 2 ships simultane
 HullArchetypePassive_halcyon_3,,Shield regen boost expanded to 3 ships simultaneously,실드 게이지 충전 부스트 능력 확장 동시에 3개 함선
 HullArchetypePassive_halcyon_4,,Fleet shield gauge +100%,함대 실드 게이지 100% 증가
 HullArchetypePassive_aegis_1,,Shield & interceptor enabled,"실드, 요격체 활성화"
-HullArchetypePassive_aegis_2,,Shield efficiency +100%,실드 효율 100% 향상
+HullArchetypePassive_aegis_2,,Shield gauge cost per damage -10%,실드 데미지당 게이지 소모 -10%
 HullArchetypePassive_aegis_3,,Shield gauge +100%,실드 게이지 100% 향상
-HullArchetypePassive_aegis_4,,Fleet-wide shield efficiency +100%,함대 실드 효율 100% 향상
+HullArchetypePassive_aegis_4,,Fleet-wide shield gauge cost per damage -10%,함대 실드 데미지당 게이지 소모 -10%
 HullArchetypePassive_sentinel_1,,Shield & interceptor enabled,"실드, 요격체 활성화"
-HullArchetypePassive_sentinel_2,,Interceptor efficiency +100%,요격체 효율 100% 향상
-HullArchetypePassive_sentinel_3,,Interceptor cooldown -50%,요격체 딜레이 -50%
-HullArchetypePassive_sentinel_4,,Fleet-wide interceptor cooldown -30%,함대 요격체 딜레이 -30%
+HullArchetypePassive_sentinel_2,,Each interceptor blocks 2 missiles,요격체 1기당 미사일 2발 요격
+HullArchetypePassive_sentinel_3,,Interceptor recharge time -0.3s,요격체 충전 대기시간 -0.3초
+HullArchetypePassive_sentinel_4,,Fleet-wide interceptor recharge time -0.2s,함대 요격체 충전 대기시간 -0.2초
 HullArchetypePassiveMission_destroy_enemy_ship,,Destroy enemy ships,적 함선 파괴
 HullArchetypePassiveMission_scout_success,,Scouting success,탐사 성공
 HullArchetypePassiveMission_damage_taken_cumulative,,Cumulative damage taken,받은 누적 데미지
-HullArchetypePassiveMission_fleet_resource_charge,,Fleet combat resource charge,함대 전투 자원 충전
+HullArchetypePassiveMission_fleet_resource_saved,,Fleet resource saved,함대 자원 절감량
 HullArchetypePassiveMission_scavenge_mineral,,Scavenged minerals,약탈 광물 획득
 HullArchetypePassiveMission_ally_repair_amount,,Ally ship repair,아군 함선 수리
 HullArchetypePassiveMission_ally_shield_charge_amount,,Ally shield charge,아군 함선 실드 충전

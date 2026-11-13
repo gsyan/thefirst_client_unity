@@ -60,6 +60,8 @@ public class UIHullPickerView : MonoBehaviour
     private HashSet<string> m_archetypesPlacedElsewhere = new(); // M7 — 다른 슬롯이 이미 쓰고 있는 아키타입(이 슬롯 자신의 현재 함체는 제외) — 행에 "배치됨" 표시용
     private System.Action m_onCancel;
     private System.Func<RectTransform> m_lowestLockedHullTargetResolver; // 등록/해제 시 같은 델리게이트 인스턴스를 써야 하므로 보관
+    private System.Func<RectTransform> m_unplaceCurrentHullTargetResolver;
+    private System.Func<RectTransform> m_placeUnlockedHullTargetResolver;
     private System.Func<bool> m_overCommandPowerEvaluator;
 
     private enum EPickerButtonMode { Place, Unplace, Unlock }
@@ -98,6 +100,11 @@ public class UIHullPickerView : MonoBehaviour
         m_lowestLockedHullTargetResolver = ResolveLowestLockedHullUnlockButton;
         TutorialManager.Instance.RegisterDynamicTarget(TutorialManager.DYNAMIC_TARGET_LOWEST_LOCKED_HULL_UNLOCK_BUTTON, m_lowestLockedHullTargetResolver);
 
+        m_unplaceCurrentHullTargetResolver = ResolveUnplaceCurrentHullButton;
+        TutorialManager.Instance.RegisterDynamicTarget(TutorialManager.DYNAMIC_TARGET_UNPLACE_CURRENT_HULL_BUTTON, m_unplaceCurrentHullTargetResolver);
+        m_placeUnlockedHullTargetResolver = ResolvePlaceUnlockedHullButton;
+        TutorialManager.Instance.RegisterDynamicTarget(TutorialManager.DYNAMIC_TARGET_PLACE_UNLOCKED_HULL_BUTTON, m_placeUnlockedHullTargetResolver);
+
         // 튜토리얼 Branch 스텝이 "고른 함체가 지휘력을 초과하는지"를 물어볼 수 있도록 조건 평가자 등록
         m_overCommandPowerEvaluator = IsSelectedHullOverCommandPower;
         TutorialManager.Instance.RegisterBranchCondition(ETutorialConditionType.CommandPowerInsufficientForPickedHull, m_overCommandPowerEvaluator);
@@ -111,6 +118,8 @@ public class UIHullPickerView : MonoBehaviour
         if (tutorialManager != null)
         {
             tutorialManager.UnregisterDynamicTarget(TutorialManager.DYNAMIC_TARGET_LOWEST_LOCKED_HULL_UNLOCK_BUTTON, m_lowestLockedHullTargetResolver);
+            tutorialManager.UnregisterDynamicTarget(TutorialManager.DYNAMIC_TARGET_UNPLACE_CURRENT_HULL_BUTTON, m_unplaceCurrentHullTargetResolver);
+            tutorialManager.UnregisterDynamicTarget(TutorialManager.DYNAMIC_TARGET_PLACE_UNLOCKED_HULL_BUTTON, m_placeUnlockedHullTargetResolver);
             tutorialManager.UnregisterBranchCondition(ETutorialConditionType.CommandPowerInsufficientForPickedHull, m_overCommandPowerEvaluator);
         }
     }
@@ -139,6 +148,47 @@ public class UIHullPickerView : MonoBehaviour
             OnHullClicked(m_hullsCache[targetDataIndex]);
 
         if (m_confirmButton == null || m_buttonMode != EPickerButtonMode.Unlock) return null;
+        return m_confirmButton.transform as RectTransform;
+    }
+
+    // 이 슬롯에 원래 배치돼 있던 함체를 선택 상태로 만든 뒤, 배치해제 모드일 때 패널 공용 버튼의 rect를 돌려줌
+    private RectTransform ResolveUnplaceCurrentHullButton()
+    {
+        if (m_hasExistingShip == false) return null;
+
+        ModuleData originalHull = m_hullsCache.Find(p => p.moduleSubType == m_originalHullSubType);
+        if (originalHull == null) return null;
+
+        if (m_selectedHullSubType != m_originalHullSubType)
+            OnHullClicked(originalHull);
+
+        if (m_confirmButton == null || m_buttonMode != EPickerButtonMode.Unplace) return null;
+        return m_confirmButton.transform as RectTransform;
+    }
+
+    // 언락된 티어2+ 함체 중 티어가 가장 낮은(같으면 목록 앞쪽) 함체를 선택 상태로 만든 뒤, 배치 모드일 때 패널 공용 버튼의 rect를 돌려줌
+    private RectTransform ResolvePlaceUnlockedHullButton()
+    {
+        int targetDataIndex = -1;
+        int lowestTier = int.MaxValue;
+        for (int i = 0; i < m_hullsCache.Count; i++)
+        {
+            ModuleData hull = m_hullsCache[i];
+            int tier = CommonUtility.ParseTier(hull.moduleSubType);
+            if (tier <= 1) continue;
+            if (IsHullLocked(hull) == true) continue;
+            if (tier >= lowestTier) continue;
+
+            lowestTier = tier;
+            targetDataIndex = i;
+        }
+        if (targetDataIndex < 0) return null;
+
+        string targetHullSubType = m_hullsCache[targetDataIndex].moduleSubType;
+        if (targetHullSubType != m_selectedHullSubType)
+            OnHullClicked(m_hullsCache[targetDataIndex]);
+
+        if (m_confirmButton == null || m_buttonMode != EPickerButtonMode.Place) return null;
         return m_confirmButton.transform as RectTransform;
     }
 
@@ -171,7 +221,7 @@ public class UIHullPickerView : MonoBehaviour
         if (currentHull != null)
         {
             m_currentEntriesByLabel = new Dictionary<string, ShipStatRowEntry>();
-            List<ShipStatRowEntry> currentEntries = ShipStatGaugeBuilder.Build(currentHull, currentModules);
+            List<ShipStatRowEntry> currentEntries = ShipStatGaugeBuilder.Build(currentHull, currentModules, upgradeArchetype: currentHull.hullArchetype);
             for (int i = 0; i < currentEntries.Count; i++)
                 m_currentEntriesByLabel[currentEntries[i].label] = currentEntries[i];
         }
@@ -434,7 +484,7 @@ public class UIHullPickerView : MonoBehaviour
 
         // 함체는 항상 기본 로드아웃(전 슬롯 레벨1 장착) 기준으로 미리보기 — 언락 여부와 무관하게 동일
         ModuleHullInfo previewModules = FleetComposition.BuildDefaultLevel1Modules(m_selectedHullSubType);
-        List<ShipStatRowEntry> entries = ShipStatGaugeBuilder.Build(selectedHull, previewModules);
+        List<ShipStatRowEntry> entries = ShipStatGaugeBuilder.Build(selectedHull, previewModules, upgradeArchetype: selectedHull.hullArchetype);
         AppendRemovedStatEntries(entries);
         m_statEntries = entries;
 
@@ -476,15 +526,16 @@ public class UIHullPickerView : MonoBehaviour
             for (int i = 0; i < passives.Count; i++)
             {
                 HullArchetypePassiveData passive = passives[i];
-                long currentValue = commander != null ? commander.GetHullArchetypePassiveCounterValue(selectedHull.hullArchetype, passive.counterType) : 0;
-                bool isUnlocked = isHullLocked == true || currentValue >= passive.threshold;
+                long currentValue = 0;
+                bool isStageCompleted = passive.threshold <= 0;
+                if (commander != null)
+                    commander.GetHullArchetypePassiveStageProgress(selectedHull.hullArchetype, passive.stage, passive.threshold, out currentValue, out isStageCompleted);
+                bool isUnlocked = isHullLocked == true || isStageCompleted == true;
 
+                // 진행도(현재/문턱)는 상단 게이지(RefreshProgressGauges)에서만 표시 — 목록은 효과 설명만
                 string description = LocalizationManager.Instance.Get(passive.descriptionKey);
-                string displayText = isUnlocked == true
-                    ? description
-                    : $"{description} ({CommonUtility.FormatNumber((int)currentValue)} / {CommonUtility.FormatNumber(passive.threshold)})";
 
-                m_passiveEntries.Add(new PassiveRowEntry { stage = passive.stage, description = displayText, isUnlocked = isUnlocked });
+                m_passiveEntries.Add(new PassiveRowEntry { stage = passive.stage, description = description, isUnlocked = isUnlocked });
             }
         }
 
@@ -507,8 +558,11 @@ public class UIHullPickerView : MonoBehaviour
             for (int i = 0; i < passives.Count; i++)
             {
                 HullArchetypePassiveData passive = passives[i];
-                long currentValue = commander != null ? commander.GetHullArchetypePassiveCounterValue(selectedHull.hullArchetype, passive.counterType) : 0;
-                if (currentValue >= passive.threshold) continue; // 이 단계는 이미 달성 — 다음 단계 확인
+                long currentValue = 0;
+                bool isStageCompleted = passive.threshold <= 0;
+                if (commander != null)
+                    commander.GetHullArchetypePassiveStageProgress(selectedHull.hullArchetype, passive.stage, passive.threshold, out currentValue, out isStageCompleted);
+                if (isStageCompleted == true) continue; // 이 단계는 이미 달성 — 다음 단계 확인
 
                 string missionLabel = LocalizationManager.Instance.Get($"HullArchetypePassiveMission_{passive.counterType}"); // 효과 설명이 아니라 "무엇을 해야 하는지" 조건 라벨
                 nextGoals.Add((passive.counterType, currentValue, passive.threshold, missionLabel));

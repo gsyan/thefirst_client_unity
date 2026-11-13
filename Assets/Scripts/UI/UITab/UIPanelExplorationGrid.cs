@@ -183,43 +183,8 @@ public class UIPanelExplorationGrid : UIPanelBase
 
         SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true);
 
-        (int mineralToSpend, int gainedResource) = ComputeChargeResourcePreview();
-        UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig
-        {
-            message = string.Format(LocalizationManager.Instance.Get("UIPanelExplorationGrid_ChargeResourceConfirmMessage"), mineralToSpend, gainedResource),
-            onConfirm = RequestChargeResource,
-            onCancel = () => { },
-        });
-    }
-
-    // 서버 ExplorationService.chargeResource와 동일한 공식으로 미리 계산 — 확인 팝업에 실제로 소모/충전될 양을 그대로 보여주기 위함(서버가 최종 권위값)
-    private (int mineralToSpend, int gainedResource) ComputeChargeResourcePreview()
-    {
-        CommanderInfo commanderInfo = DataManager.Instance.m_currentCommander != null ? DataManager.Instance.m_currentCommander.m_commanderInfo : null;
-        if (commanderInfo == null) return (0, 0);
-
-        int neededResource = commanderInfo.resourceMax - commanderInfo.resource;
-        if (neededResource <= 0) return (0, 0);
-
-        int ratio = Mathf.Max(1, DataManager.Instance.m_dataTableConfig.gameSettings.tactic.mineralToResourceRatio);
-        int affordableMineral = (neededResource + ratio - 1) / ratio; // 올림 나눗셈
-        int mineralToSpend = Mathf.Min(affordableMineral, commanderInfo.mineralAmount);
-        int gainedResource = Mathf.Min(neededResource, mineralToSpend * ratio);
-        return (mineralToSpend, gainedResource);
-    }
-
-    private void RequestChargeResource()
-    {
-        NetworkManager.Instance.ChargeResource(new ChargeResourceRequest(), response =>
-        {
-            if (response.errorCode != 0)
-            {
-                NetworkManager.Instance.ShowRequestFailedPopup(response.errorCode);
-                return;
-            }
-
-            ApplyChargeResourceResult(response.data.resource, response.data.mineralAmount);
-        });
+        // 충전량은 팝업 슬라이더로 정함(서버 ExplorationService.chargeResource와 같은 공식으로 미리 계산) — 서버 응답(권위값)을 받아 반영
+        UIManager.Instance.ShowChargeResourcePopup(ApplyChargeResourceResult);
     }
 
     // 자원 충전 응답(권위값)을 커맨더 정보에 반영 — 게이지/광물 표시 둘 다 즉시 갱신
@@ -610,41 +575,6 @@ public class UIPanelExplorationGrid : UIPanelBase
 
             RefreshCellStates();
         }
-
-        // 마지막 클리어 셀에 아직 안 닫은 카드 후보 팝업이 있으면(팝업이 뜨기 전에 앱이 꺼진 경우) 재접속 시 다시 띄움
-        if (response.data.pendingRewardCardCandidates != null && response.data.pendingRewardCardCandidates.Count > 0)
-        {
-            // 미확정 후보는 서버 기준 마지막 클리어 셀의 것 — 패널의 현재 좌표가 아니라 clearedCells의 마지막 셀로 구매/닫기 요청을 보내야 함
-            int rewardZoneNumber = response.data.zoneNumber;
-            int rewardCellRow = m_currentRow;
-            int rewardCellCol = m_currentCol;
-            if (clearedCells != null && clearedCells.Length > 0)
-            {
-                bool hasLastCell = TryParseClearedCell(clearedCells[clearedCells.Length - 1], out int lastRow, out int lastCol);
-                if (hasLastCell == true)
-                {
-                    rewardCellRow = lastRow;
-                    rewardCellCol = lastCol;
-                }
-            }
-
-            UIManager.Instance.ShowRewardCardSelectPopup(0, response.data.pendingRewardCardCandidates, false, rewardZoneNumber, rewardCellRow, rewardCellCol, response.data.rerollRemain, () => { });
-        }
-    }
-
-    // 서버 clearedCells의 "row-col"(0-indexed) 문자열을 좌표로 변환
-    private bool TryParseClearedCell(string cell, out int row, out int col)
-    {
-        row = 0;
-        col = 0;
-        if (string.IsNullOrEmpty(cell) == true) return false;
-
-        int dashIdx = cell.IndexOf('-');
-        if (dashIdx <= 0) return false;
-
-        bool rowParsed = int.TryParse(cell.Substring(0, dashIdx), out row);
-        bool colParsed = int.TryParse(cell.Substring(dashIdx + 1), out col);
-        return rowParsed == true && colParsed == true;
     }
 
     // 슬롯 포지션 인덱스 기준으로 함대 체력/실드 비율 스냅샷을 적용 — (1) 재접속 시 서버 저장값 복구, (2) 전투 퇴각/패배 시 진입 직전 상태로 롤백, 두 용도에 재사용.
@@ -761,6 +691,17 @@ public class UIPanelExplorationGrid : UIPanelBase
 
         List<(int row, int col)> path = m_gridData.FindPath(m_currentRow, m_currentCol, row, col);
         if (path == null || path.Count < 2) return; // 도달 불가(Blocked 포함)
+
+        // 그리드 열람은 허용하고, 실제 이동/입장 시도 직전에 빈 함대 차단(다른 존 런 포기·재방문 이동 포함 모든 경로보다 먼저)
+        if (ObjectManager.Instance.HasAnyShipInMyFleet() == false)
+        {
+            UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig
+            {
+                message = LocalizationManager.Instance.Get("UIPopupMessage_FleetEmpty"),
+                onConfirm = () => { },
+            });
+            return;
+        }
 
         // 지금 보고 있는 존이 아닌 다른 존에 진행 중인 런이 있으면, 일반 입장 확인 대신
         // 그 런을 포기할지부터 먼저 물어봄(전투 준비 화면까지 갔다가 서버가 거부하는 것보다 먼저 걸러냄)
@@ -1095,6 +1036,7 @@ public class UIPanelExplorationGrid : UIPanelBase
     {
         // 교전 상태 진입 즉시 발사하면 안되는 경우를 대비해 마련해둠
         const float BATTLE_START_DELAY_SEC = 0.001f;
+        BattleStatTracker.BeginCollecting();
         ObjectManager.Instance.TryStartCombat(m_standoffEnemyFleet, EUnitState.BattleExploration, BATTLE_START_DELAY_SEC, BATTLE_START_DELAY_SEC);
         m_standoffEnemyFleet = null;
 
@@ -1277,6 +1219,9 @@ public class UIPanelExplorationGrid : UIPanelBase
     {
         m_standoffEnemyFleet = null;
 
+        BattleStatTracker.EndCollecting(out int enemyShipKills, out int aircraftLaunches, out int scavengedMineral, out int scoutedMineral, out List<ArchetypeCounterReport> archetypeCounters, out BattleQuestStats questStats);
+        PassiveAudit.LogReportedCounters(archetypeCounters);
+
         if (isVictory == false)
         {
             RestorePreviousCellAfterRetreat();
@@ -1294,6 +1239,17 @@ public class UIPanelExplorationGrid : UIPanelBase
             resource = commanderInfo != null ? commanderInfo.resource : 0,
             mineralAmount = commanderInfo != null ? commanderInfo.mineralAmount : 0,
             challengeToken = m_activeChallengeToken,
+            enemyShipKills = enemyShipKills,
+            aircraftLaunches = aircraftLaunches,
+            scavengedMineral = scavengedMineral,
+            scoutedMineral = scoutedMineral,
+            archetypeCounters = archetypeCounters,
+            isMissileOnlyClear = questStats.isMissileOnlyClear,
+            isAircraftOnlyClear = questStats.isAircraftOnlyClear,
+            isNoShieldClear = questStats.isNoShieldClear,
+            shieldAbsorbAmount = questStats.shieldAbsorbAmount,
+            interceptCount = questStats.interceptCount,
+            fleetRepairAmount = questStats.fleetRepairAmount,
         };
         NetworkManager.Instance.ClearExplorationCell(request, OnClearExplorationCellResponse);
     }
@@ -1315,6 +1271,8 @@ public class UIPanelExplorationGrid : UIPanelBase
         }
 
         int mineralGained = 0;
+        int scavengedMineral = 0;
+        int scoutedMineral = 0;
         List<string> rewardCardCandidates = null;
         ETreasureRewardType treasureRewardType = ETreasureRewardType.None;
         float treasureRewardRatio = 0f;
@@ -1322,11 +1280,15 @@ public class UIPanelExplorationGrid : UIPanelBase
         if (response.data != null)
         {
             mineralGained = response.data.mineralGained;
+            scavengedMineral = response.data.scavengedMineral;
+            scoutedMineral = response.data.scoutedMineral;
             rewardCardCandidates = response.data.rewardCardCandidates; // 탈출 셀/빈 셀은 null — 카드 구매 단계를 건너뜀
             treasureRewardType = response.data.treasureRewardType;
             treasureRewardRatio = response.data.treasureRewardRatio;
             rerollRemain = response.data.rerollRemain;
             ApplyResourceRecovered(response.data.resource);
+            ApplyHullArchetypePassiveProgress(response.data.hullArchetypePassiveProgress);
+            ApplyUnlockedFleetInfo(response.data.fleetInfo);
 
             // 서버 ZoneRun은 첫 셀 클리어 시점에 생성됨 — 로컬 캐시도 이때 갱신해야 포기 버튼/"다른 존 진행중" 판정이 서버와 일치함
             CommanderInfo clearedCommanderInfo = DataManager.Instance.m_currentCommander != null ? DataManager.Instance.m_currentCommander.m_commanderInfo : null;
@@ -1360,7 +1322,8 @@ public class UIPanelExplorationGrid : UIPanelBase
         }
 
         // 탈출 셀은 광물이 아니라 그 존의 확정 탈출 보상 경험치를 미리 보여줌(실제 지급은 ShowEscapeConfirmPopup 확정 후 escapeExplorationZone에서)
-        int rewardAmount = mineralGained;
+        // 일반 셀은 합계에서 약탈/탐사분을 뺀 "기본 보상"을 표시하고, 약탈/탐사는 팝업이 별도 행으로 표시
+        int rewardAmount = mineralGained - scavengedMineral - scoutedMineral;
         if (isEscapeCell == true)
         {
             ZoneConfig zoneConfig = DataManager.Instance.m_dataTableZone.GetZoneByZoneIndex(m_currentZoneNumber);
@@ -1371,7 +1334,7 @@ public class UIPanelExplorationGrid : UIPanelBase
         int rewardZoneNumber = m_currentZoneNumber;
         int rewardCellRow = m_currentRow;
         int rewardCellCol = m_currentCol;
-        UIManager.Instance.ShowRewardCardSelectPopup(rewardAmount, rewardCardCandidates, isEscapeCell, rewardZoneNumber, rewardCellRow, rewardCellCol, rerollRemain, ContinueAfterCellClear);
+        UIManager.Instance.ShowRewardCardSelectPopup(rewardAmount, rewardCardCandidates, isEscapeCell, rewardZoneNumber, rewardCellRow, rewardCellCol, rerollRemain, ContinueAfterCellClear, scavengedMineral, scoutedMineral);
     }
 
     // Treasure(Event) 셀의 체력회복 당첨 — 즉시 효과 적용 후 안내 팝업. 탐사포인트 당첨은 기존 보상카드 팝업 경로를 그대로 재사용하므로 여기서 다루지 않음
@@ -1470,6 +1433,8 @@ public class UIPanelExplorationGrid : UIPanelBase
             ApplyMineralReset(); // 존런 종료 — 남은 광물은 전부 폐기(Commander 영구 자산으로 전환되지 않음)
             RefreshMineralAmountText();
             ApplyHasUnclaimedAchievement(response.data.hasUnclaimedAchievement);
+            ApplyHullArchetypePassiveProgress(response.data.hullArchetypePassiveProgress);
+            ApplyUnlockedFleetInfo(response.data.fleetInfo);
             ClearActiveRunZoneCache();
             ApplyHighestClearedZoneNumber(response.data.highestClearedZoneNumber);
             m_pendingFleetRepositionForZoneAdvance = true;
@@ -1508,8 +1473,13 @@ public class UIPanelExplorationGrid : UIPanelBase
     // 골라 클리어한 경우에도 실제로는 런이 진행 중인데 포기 버튼이 계속 숨겨지는 문제가 있어, 서버 상태(explorationZoneNumber) 기준으로 판정
     private void RefreshAbandonRunButtonState()
     {
+        bool isRunActive = IsActiveExplorationZone(m_currentZoneNumber) == true;
         if (m_abandonRunButton != null)
-            m_abandonRunButton.gameObject.SetActive(IsActiveExplorationZone(m_currentZoneNumber) == true);
+            m_abandonRunButton.gameObject.SetActive(isRunActive);
+
+        // 포기 버튼이 처음 나타나는 시점(진행 중인 존런이 생겼을 때)에 포기 규칙 안내
+        if (isRunActive == true)
+            TutorialManager.Instance.TryStartTutorialDeferred("Tutorial_AbandonRun", "UIPanelExplorationGrid");
     }
 
     // onAnimComplete: 롤링 애니메이션이 실제로 끝난 프레임에 호출됨(코루틴을 아예 못 도는 경로에서도 즉시 호출됨) — 애니메이션과 정확히 동기화해야 하는 후속 로직(예: 탈출 확정 팝업)에 사용
@@ -1535,6 +1505,88 @@ public class UIPanelExplorationGrid : UIPanelBase
     {
         if (DataManager.Instance.m_currentCommander != null)
             DataManager.Instance.m_currentCommander.UpdateHasUnclaimedAchievement(hasUnclaimedAchievement);
+    }
+
+    // 셀 클리어/탈출 응답의 아키타입 패시브 해금 카운터를 커맨더 캐시에 반영 — 패시브 탭 진행도가 재로그인 없이 갱신됨
+    private void ApplyHullArchetypePassiveProgress(List<HullArchetypeProgressInfo> progress)
+    {
+        if (DataManager.Instance.m_currentCommander != null)
+            DataManager.Instance.m_currentCommander.UpdateHullArchetypePassiveProgress(progress);
+
+        // 새로 완료된 패시브 단계의 능력치 효과를 이미 스폰된 내 함선들에 바로 반영(다음 셀 전투부터가 아니라 즉시)
+        ObjectManager.Instance.RefreshPassiveEffectsOnMyFleet();
+    }
+
+    // 셀 클리어/탈출 응답에 실려 온 갱신 함대(실드/요격체 해금 반영, 해금이 없으면 null) — 실드/요격체가 달라진 함선만 편성과 3D 함선에 반영해 다음 셀 전투부터 적용
+    private void ApplyUnlockedFleetInfo(FleetInfo fleetInfo)
+    {
+        if (fleetInfo == null || fleetInfo.ships == null) return;
+
+        FleetComposition composition = DataManager.Instance.m_currentFleetComposition;
+        if (composition == null) return;
+
+        SpaceFleet myFleet = ObjectManager.Instance.GetMyFleet();
+        List<FleetSlotEntry> placedShips = composition.GetPlacedShips();
+
+        for (int i = 0; i < fleetInfo.ships.Count; i++)
+        {
+            ShipInfo serverShip = fleetInfo.ships[i];
+            ModuleHullInfo serverModules = serverShip.hulls != null && serverShip.hulls.Count > 0 ? serverShip.hulls[0] : null;
+            if (serverModules == null) continue;
+
+            int positionIndex = serverShip.positionIndex;
+            ModuleHullInfo localModules = composition.GetSlotModules(positionIndex);
+            if (localModules == null) continue;
+
+            string serverShield = serverModules.shieldModuleSubType != null ? serverModules.shieldModuleSubType : "";
+            string serverInterceptor = serverModules.interceptorModuleSubType != null ? serverModules.interceptorModuleSubType : "";
+            string localShield = localModules.shieldModuleSubType != null ? localModules.shieldModuleSubType : "";
+            string localInterceptor = localModules.interceptorModuleSubType != null ? localModules.interceptorModuleSubType : "";
+            bool isChanged = serverShield != localShield || serverInterceptor != localInterceptor;
+            if (isChanged == false) continue;
+
+            localModules.shieldModuleSubType = serverShield;
+            localModules.interceptorModuleSubType = serverInterceptor;
+            composition.ApplyModuleToggleResult(positionIndex, localModules);
+
+            if (myFleet == null) continue;
+            UpdateFleetInfoShieldInterceptor(myFleet, positionIndex, serverShield, serverInterceptor);
+
+            // 살아 있는 함선만 재스폰(존런 중이면 체력 비율 유지) — 파괴된 함선은 되살리지 않고 전멸 복구용 m_fleetInfo만 갱신
+            SpaceShip liveShip = FindMyFleetShipAt(myFleet, positionIndex);
+            if (liveShip == null || liveShip.IsAlive() == false) continue;
+
+            string hullSubType = placedShips[positionIndex].hullSubType;
+            bool isFront = composition.GetIsFront(positionIndex);
+            ObjectManager.Instance.ReplaceMyFleetShipAt(positionIndex, hullSubType, isFront, localModules);
+        }
+    }
+
+    private SpaceShip FindMyFleetShipAt(SpaceFleet myFleet, int positionIndex)
+    {
+        for (int i = 0; i < myFleet.m_ships.Count; i++)
+        {
+            SpaceShip ship = myFleet.m_ships[i];
+            if (ship != null && ship.m_shipInfo.positionIndex == positionIndex) return ship;
+        }
+        return null;
+    }
+
+    // 전멸 복구(SpaceFleet.RebuildFleet)는 m_fleetInfo로 함선을 재생성하므로 파괴된 함선의 실드/요격체 값도 여기 맞춰둠
+    private void UpdateFleetInfoShieldInterceptor(SpaceFleet myFleet, int positionIndex, string shieldSubType, string interceptorSubType)
+    {
+        if (myFleet.m_fleetInfo == null || myFleet.m_fleetInfo.ships == null) return;
+
+        for (int i = 0; i < myFleet.m_fleetInfo.ships.Count; i++)
+        {
+            ShipInfo shipInfo = myFleet.m_fleetInfo.ships[i];
+            if (shipInfo.positionIndex != positionIndex) continue;
+            if (shipInfo.hulls == null || shipInfo.hulls.Count == 0) return;
+
+            shipInfo.hulls[0].shieldModuleSubType = shieldSubType;
+            shipInfo.hulls[0].interceptorModuleSubType = interceptorSubType;
+            return;
+        }
     }
 
     // 탈출/포기 응답의 resource(런 종료로 회복된 자원 현재치)를 커맨더 정보에 반영 — 게이지 등 다른 열린 UI도 즉시 갱신

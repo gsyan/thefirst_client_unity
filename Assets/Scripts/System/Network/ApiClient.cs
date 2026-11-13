@@ -678,6 +678,11 @@ public class ApiClient
         return await PostAsync<PvpRefreshResponse>("/pvp/refresh", request);
     }
 
+    public async Task<ApiResponse<PvpOpponentDetailResponse>> PvpOpponentDetailAsync(PvpOpponentDetailRequest request)
+    {
+        return await PostAsync<PvpOpponentDetailResponse>("/pvp/opponent-detail", request);
+    }
+
     public async Task<ApiResponse<PvpBattleStartResponse>> PvpBattleStartAsync(PvpBattleStartRequest request)
     {
         return await PostAsync<PvpBattleStartResponse>("/pvp/battle/start", request);

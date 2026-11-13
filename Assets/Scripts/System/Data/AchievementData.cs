@@ -10,4 +10,5 @@ public class AchievementData
     public int achievementPointRewardVip;          // VIP 전용 추가 보상 — 일반 보상과 별개로 독립 수령
     public string nameKey;                         // 로컬라이즈 키
     public string descKey;                         // 로컬라이즈 키
+    public string difficulty;                      // 일일 업적 전용 난이도("easy"/"normal"/"hard") — 고정 업적은 빈 값
 }

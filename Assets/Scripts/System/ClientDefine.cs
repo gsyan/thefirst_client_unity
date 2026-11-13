@@ -25,7 +25,9 @@ public enum EPoolName
     AIRCRAFT_STANDARD,
     DEBRIS_ROCK,
     DEBRIS_JUNK,
-    EFFECT_INTERCEPT
+    EFFECT_INTERCEPT,
+    EFFECT_SCOUT,
+    EFFECT_SUPPORT_SPARKLE
 }
 
 public enum EUnitState

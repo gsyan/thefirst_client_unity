@@ -11067,11 +11067,6 @@ MonoBehaviour:
   bCameraMove: 0
   m_commandPowerRow: {fileID: 1949537279304602989}
   m_tacticsToggleRow: {fileID: 596456485593114169}
-  m_resourceGauge: {fileID: 0}
-  m_resourceText: {fileID: 0}
-  m_gaugeNameText: {fileID: 0}
-  m_chargeResourceButton: {fileID: 0}
-  m_chargeResourceButtonText: {fileID: 0}
   m_statsRowPrefab: {fileID: 9111590323404070704, guid: 813e52443a9ab4f4487ed4676781e65c, type: 3}
   m_placedShipRowPrefab: {fileID: 4677943711482774840, guid: 8b24e6f1979deea4b8d9baf2c5f58345, type: 3}
   m_placedShipsScrollView: {fileID: 98391494410644926}
@@ -13350,7 +13345,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InfiniteScrollView
   m_scrollRect: {fileID: 0}
-  m_itemHeight: 200
+  m_itemHeight: 100
   m_bufferCount: 2
   m_paddingTop: 5
   m_paddingBottom: 5

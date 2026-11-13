@@ -19,7 +19,7 @@ public class UIModuleSlotToggleRow : MonoBehaviour
     private System.Action<EModuleType, int> m_onManageClicked;
 
     public void Setup(EModuleType moduleType, int slotIndex,
-        bool isSelected, string moduleSubType,
+        bool isSelected, int level,
         System.Action<EModuleType, int> onRowSelected,
         System.Action<EModuleType, int> onManageClicked)
     {
@@ -29,12 +29,16 @@ public class UIModuleSlotToggleRow : MonoBehaviour
         m_onManageClicked = onManageClicked;
 
         if (m_nameText != null)
-            m_nameText.text = $"{LocalizationManager.Instance.Get(CommonUtility.GetModuleTypeLabelKey(moduleType))} {slotIndex + 1}";
+        {
+            string typeLabel = LocalizationManager.Instance.Get(CommonUtility.GetModuleTypeLabelKey(moduleType));
+            // 함체는 함선당 1개라 슬롯 번호를 붙이지 않음
+            m_nameText.text = moduleType == EModuleType.hull ? typeLabel : $"{typeLabel} {slotIndex + 1}";
+        }
 
         if (m_levelText != null)
         {
             m_levelText.gameObject.SetActive(true);
-            m_levelText.text = LocalizationManager.Instance.Get("UI_TierLabel", CommonUtility.ParseTier(moduleSubType));
+            m_levelText.text = LocalizationManager.Instance.Get("UI_TierLabel", level);
         }
 
         if (m_manageButton != null)
@@ -51,6 +55,23 @@ public class UIModuleSlotToggleRow : MonoBehaviour
             m_selectButton.onClick.RemoveAllListeners();
             m_selectButton.onClick.AddListener(OnSelectButtonClicked);
         }
+    }
+
+    // 튜토리얼 동적 타겟용 — 강화(관리) 버튼의 rect, 숨겨진 상태면 null
+    public RectTransform GetManageButtonRect()
+    {
+        if (m_manageButton == null || m_manageButton.gameObject.activeInHierarchy == false) return null;
+        return m_manageButton.transform as RectTransform;
+    }
+
+    // 잠긴 슬롯(패시브 미해금 실드/요격체) — Setup 이후 호출, 레벨 자리에 해금 안내를 표시하고 강화 버튼을 숨김
+    public void SetLocked(string lockText)
+    {
+        if (m_levelText != null)
+            m_levelText.text = lockText;
+
+        if (m_manageButton != null)
+            m_manageButton.gameObject.SetActive(false);
     }
 
     public void SetSelected(bool isSelected)

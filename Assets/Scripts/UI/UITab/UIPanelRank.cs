@@ -256,34 +256,23 @@ public class UIPanelRank : UIPanelBase
             return;
         }
 
-        CapabilityProfile stats = CommonUtility.GetFleetCapabilityProfile(opponent.fleetInfo);
-        int shipCount = (opponent.fleetInfo != null && opponent.fleetInfo.ships != null) ? opponent.fleetInfo.ships.Count : 0;
-
-        var rows = new List<(string label, string value)>
-        {
-            ("UIFleet_PlacedShipCount", shipCount.ToString()),
-            ("UIFleet_Stats_Health",    CommonUtility.FormatBigNumber(stats.health)),
-            ("Simple_BeamAttack",       CommonUtility.FormatBigNumber(stats.beamAttack)),
-            ("Simple_MissileAttack",    CommonUtility.FormatBigNumber(stats.missileAttack)),
-        };
-        if (stats.airCount > 0)
-        {
-            rows.Add(("Simple_AirAttack", CommonUtility.FormatBigNumber(stats.airAttack)));
-            rows.Add(("Simple_AirCount", stats.airCount.ToString()));
-        }
-
-        string opponentName = Commander.GetDisplayName(opponent.commanderName, opponent.commanderId);
-        UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig
-        {
-            message         = $"{opponentName}\n{loc.Get("pvp_opponent_info", opponent.pvpScore, opponent.rank)}",
-            pvpOpponentRows = rows,
-            onConfirm       = () => ExecuteAttack(opponent),
-            onCancel        = () => { }
-        });
+        // 공격 확인은 상대 상세 팝업이 겸함 — 실시간 상세 정보(지휘관 정보 + 함선별 최종 스탯)를 보고 확인하면 공격
+        UIManager.Instance.ShowOpponentDetailPopup(opponent.commanderId, () => ExecuteAttack(opponent));
     }
 
     private void ExecuteAttack(PvpOpponentInfo opponent)
     {
+        // 상세 정보 열람은 허용하고, 실제 공격 확정 직전에만 빈 함대 차단
+        if (ObjectManager.Instance.HasAnyShipInMyFleet() == false)
+        {
+            UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig
+            {
+                message   = LocalizationManager.Instance.Get("UIPopupMessage_FleetEmpty"),
+                onConfirm = () => { },
+            });
+            return;
+        }
+
         m_isBattleInProgress = true;
         var request = new PvpBattleStartRequest { opponentCommanderId = opponent.commanderId };
         NetworkManager.Instance.PvpBattleStart(request, OnBattleStartResponse);
@@ -316,6 +305,8 @@ public class UIPanelRank : UIPanelBase
 
         m_currentBattleToken = response.data.battleToken;
         FleetInfo opponentFleetInfo = response.data.opponentFleetInfo;
+        List<HullArchetypeProgressInfo> opponentPassiveProgress = response.data.opponentPassiveProgress;
+        List<ArchetypeUpgradeInfo> opponentArchetypeUpgrades = response.data.opponentArchetypeUpgrades;
 
         ObjectManager.Instance.ChangeZone(1);
         ObjectManager.Instance.SetMyFleetPosition(GetPvpArenaPosition(), 0f);
@@ -323,7 +314,7 @@ public class UIPanelRank : UIPanelBase
 
         ObjectManager.Instance.GetMyFleet().StartFleetWarpIn(onArrived: () =>
         {
-            ObjectManager.Instance.StartPvpBattle(opponentFleetInfo);
+            ObjectManager.Instance.StartPvpBattle(opponentFleetInfo, opponentPassiveProgress, opponentArchetypeUpgrades);
         });
     }
 

@@ -396,6 +396,16 @@ public static class EventManager
     public static void Subscribe_TacticOptionsChanged(Action<int> callback)   { OnTacticOptionsChanged += callback; }
     public static void Unsubscribe_TacticOptionsChanged(Action<int> callback) { OnTacticOptionsChanged -= callback; }
 
+    // 전술 자원 지불 — 내 함대가 전술 행동(발사/발진/수리/충전/요격체 생성) 비용을 실제로 낸 순간 발행. tacticIndex는 tacticOptions 비트 순서와 같음(0=빔 ... 5=요격체), amount는 패시브 절감 반영 후 지불량
+    public static event Action<int, int> OnTacticCostSpent;
+    public static void Trigger_TacticCostSpent(int tacticIndex, int amount)
+    {
+        if (OnTacticCostSpent != null)
+            OnTacticCostSpent.Invoke(tacticIndex, amount);
+    }
+    public static void Subscribe_TacticCostSpent(Action<int, int> callback)   { OnTacticCostSpent += callback; }
+    public static void Unsubscribe_TacticCostSpent(Action<int, int> callback) { OnTacticCostSpent -= callback; }
+
     // 자원(Resource) 현재치 변경 — UIPanelBattle이 매 프레임 소모 계산 후 발행, UIBattleView/UIPanelFleet가 게이지 표시만 갱신
     public static event Action<float, int> OnResourceChanged;
     public static void Trigger_ResourceChanged(float current, int max) { OnResourceChanged?.Invoke(current, max); }

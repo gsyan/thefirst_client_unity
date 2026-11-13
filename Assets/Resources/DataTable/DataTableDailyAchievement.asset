@@ -13,59 +13,390 @@ MonoBehaviour:
   m_Name: DataTableDailyAchievement
   m_EditorClassIdentifier: Assembly-CSharp::DataTableDailyAchievement
   dailyAchievementDataList:
+  - achievementId: daily_cell_clear_3
+    conditionType: 0
+    conditionParam: 
+    threshold: 3
+    achievementPointReward: 100
+    achievementPointRewardVip: 100
+    nameKey: UIDailyAchievement_Name_cell_clear
+    descKey: UIDailyAchievement_Desc_cell_clear
+    difficulty: easy
   - achievementId: daily_cell_clear_5
     conditionType: 0
     conditionParam: 
     threshold: 5
-    achievementPointReward: 50
-    achievementPointRewardVip: 50
-    nameKey: UIDailyAchievement_Name_cell_clear
-    descKey: UIDailyAchievement_Desc_cell_clear
-  - achievementId: daily_cell_clear_10
-    conditionType: 0
-    conditionParam: 
-    threshold: 10
     achievementPointReward: 100
     achievementPointRewardVip: 100
     nameKey: UIDailyAchievement_Name_cell_clear
     descKey: UIDailyAchievement_Desc_cell_clear
-  - achievementId: daily_cell_clear_20
-    conditionType: 0
-    conditionParam: 
-    threshold: 20
-    achievementPointReward: 200
-    achievementPointRewardVip: 200
-    nameKey: UIDailyAchievement_Name_cell_clear
-    descKey: UIDailyAchievement_Desc_cell_clear
-  - achievementId: daily_event_cell_3
-    conditionType: 1
-    conditionParam: 
-    threshold: 3
-    achievementPointReward: 50
-    achievementPointRewardVip: 50
-    nameKey: UIDailyAchievement_Name_event_cell
-    descKey: UIDailyAchievement_Desc_event_cell
-  - achievementId: daily_event_cell_6
-    conditionType: 1
-    conditionParam: 
-    threshold: 6
+    difficulty: easy
+  - achievementId: daily_zone1_clear_1
+    conditionType: 3
+    conditionParam: 1
+    threshold: 1
     achievementPointReward: 100
     achievementPointRewardVip: 100
-    nameKey: UIDailyAchievement_Name_event_cell
-    descKey: UIDailyAchievement_Desc_event_cell
-  - achievementId: daily_zone_clear_total_3
-    conditionType: 2
+    nameKey: UIDailyAchievement_Name_zone_clear_specific
+    descKey: UIDailyAchievement_Desc_zone_clear_specific
+    difficulty: easy
+  - achievementId: daily_reward_card_purchase_2
+    conditionType: 11
     conditionParam: 
-    threshold: 3
-    achievementPointReward: 50
-    achievementPointRewardVip: 50
-    nameKey: UIDailyAchievement_Name_zone_clear_total
-    descKey: UIDailyAchievement_Desc_zone_clear_total
-  - achievementId: daily_zone_clear_total_5
-    conditionType: 2
+    threshold: 2
+    achievementPointReward: 100
+    achievementPointRewardVip: 100
+    nameKey: UIDailyAchievement_Name_reward_card_purchase
+    descKey: UIDailyAchievement_Desc_reward_card_purchase
+    difficulty: easy
+  - achievementId: daily_mineral_earned_500
+    conditionType: 12
+    conditionParam: 
+    threshold: 500
+    achievementPointReward: 100
+    achievementPointRewardVip: 100
+    nameKey: UIDailyAchievement_Name_mineral_earned
+    descKey: UIDailyAchievement_Desc_mineral_earned
+    difficulty: easy
+  - achievementId: daily_ad_reward_1
+    conditionType: 16
+    conditionParam: 
+    threshold: 1
+    achievementPointReward: 100
+    achievementPointRewardVip: 100
+    nameKey: UIDailyAchievement_Name_ad_reward
+    descKey: UIDailyAchievement_Desc_ad_reward
+    difficulty: easy
+  - achievementId: daily_enemy_kill_5
+    conditionType: 17
     conditionParam: 
     threshold: 5
     achievementPointReward: 100
     achievementPointRewardVip: 100
+    nameKey: UIDailyAchievement_Name_enemy_kill
+    descKey: UIDailyAchievement_Desc_enemy_kill
+    difficulty: easy
+  - achievementId: daily_aircraft_launch_30
+    conditionType: 18
+    conditionParam: 
+    threshold: 30
+    achievementPointReward: 100
+    achievementPointRewardVip: 100
+    nameKey: UIDailyAchievement_Name_aircraft_launch
+    descKey: UIDailyAchievement_Desc_aircraft_launch
+    difficulty: easy
+  - achievementId: daily_event_cell_3
+    conditionType: 1
+    conditionParam: 
+    threshold: 3
+    achievementPointReward: 250
+    achievementPointRewardVip: 250
+    nameKey: UIDailyAchievement_Name_event_cell
+    descKey: UIDailyAchievement_Desc_event_cell
+    difficulty: normal
+  - achievementId: daily_cell_clear_10
+    conditionType: 0
+    conditionParam: 
+    threshold: 10
+    achievementPointReward: 250
+    achievementPointRewardVip: 250
+    nameKey: UIDailyAchievement_Name_cell_clear
+    descKey: UIDailyAchievement_Desc_cell_clear
+    difficulty: normal
+  - achievementId: daily_reward_card_purchase_5
+    conditionType: 11
+    conditionParam: 
+    threshold: 5
+    achievementPointReward: 250
+    achievementPointRewardVip: 250
+    nameKey: UIDailyAchievement_Name_reward_card_purchase
+    descKey: UIDailyAchievement_Desc_reward_card_purchase
+    difficulty: normal
+  - achievementId: daily_mineral_spent_300
+    conditionType: 13
+    conditionParam: 
+    threshold: 300
+    achievementPointReward: 250
+    achievementPointRewardVip: 250
+    nameKey: UIDailyAchievement_Name_mineral_spent
+    descKey: UIDailyAchievement_Desc_mineral_spent
+    difficulty: normal
+  - achievementId: daily_pvp_battle_3
+    conditionType: 14
+    conditionParam: 
+    threshold: 3
+    achievementPointReward: 250
+    achievementPointRewardVip: 250
+    nameKey: UIDailyAchievement_Name_pvp_battle
+    descKey: UIDailyAchievement_Desc_pvp_battle
+    difficulty: normal
+  - achievementId: daily_enemy_kill_15
+    conditionType: 17
+    conditionParam: 
+    threshold: 15
+    achievementPointReward: 250
+    achievementPointRewardVip: 250
+    nameKey: UIDailyAchievement_Name_enemy_kill
+    descKey: UIDailyAchievement_Desc_enemy_kill
+    difficulty: normal
+  - achievementId: daily_aircraft_launch_50
+    conditionType: 18
+    conditionParam: 
+    threshold: 50
+    achievementPointReward: 250
+    achievementPointRewardVip: 250
+    nameKey: UIDailyAchievement_Name_aircraft_launch
+    descKey: UIDailyAchievement_Desc_aircraft_launch
+    difficulty: normal
+  - achievementId: daily_zone_clear_total_5
+    conditionType: 2
+    conditionParam: 
+    threshold: 5
+    achievementPointReward: 500
+    achievementPointRewardVip: 500
     nameKey: UIDailyAchievement_Name_zone_clear_total
     descKey: UIDailyAchievement_Desc_zone_clear_total
+    difficulty: hard
+  - achievementId: daily_cell_clear_20
+    conditionType: 0
+    conditionParam: 
+    threshold: 20
+    achievementPointReward: 500
+    achievementPointRewardVip: 500
+    nameKey: UIDailyAchievement_Name_cell_clear
+    descKey: UIDailyAchievement_Desc_cell_clear
+    difficulty: hard
+  - achievementId: daily_mineral_earned_2000
+    conditionType: 12
+    conditionParam: 
+    threshold: 2000
+    achievementPointReward: 500
+    achievementPointRewardVip: 500
+    nameKey: UIDailyAchievement_Name_mineral_earned
+    descKey: UIDailyAchievement_Desc_mineral_earned
+    difficulty: hard
+  - achievementId: daily_mineral_spent_1000
+    conditionType: 13
+    conditionParam: 
+    threshold: 1000
+    achievementPointReward: 500
+    achievementPointRewardVip: 500
+    nameKey: UIDailyAchievement_Name_mineral_spent
+    descKey: UIDailyAchievement_Desc_mineral_spent
+    difficulty: hard
+  - achievementId: daily_enemy_kill_40
+    conditionType: 17
+    conditionParam: 
+    threshold: 40
+    achievementPointReward: 500
+    achievementPointRewardVip: 500
+    nameKey: UIDailyAchievement_Name_enemy_kill
+    descKey: UIDailyAchievement_Desc_enemy_kill
+    difficulty: hard
+  - achievementId: daily_aircraft_launch_300
+    conditionType: 18
+    conditionParam: 
+    threshold: 300
+    achievementPointReward: 500
+    achievementPointRewardVip: 500
+    nameKey: UIDailyAchievement_Name_aircraft_launch
+    descKey: UIDailyAchievement_Desc_aircraft_launch
+    difficulty: hard
+  - achievementId: daily_pvp_victory_3
+    conditionType: 15
+    conditionParam: 
+    threshold: 3
+    achievementPointReward: 500
+    achievementPointRewardVip: 500
+    nameKey: UIDailyAchievement_Name_pvp_victory
+    descKey: UIDailyAchievement_Desc_pvp_victory
+    difficulty: hard
+  - achievementId: daily_missile_only_clear_1
+    conditionType: 19
+    conditionParam: 
+    threshold: 1
+    achievementPointReward: 100
+    achievementPointRewardVip: 100
+    nameKey: UIDailyAchievement_Name_missile_only_clear
+    descKey: UIDailyAchievement_Desc_missile_only_clear
+    difficulty: easy
+  - achievementId: daily_missile_only_clear_3
+    conditionType: 19
+    conditionParam: 
+    threshold: 3
+    achievementPointReward: 250
+    achievementPointRewardVip: 250
+    nameKey: UIDailyAchievement_Name_missile_only_clear
+    descKey: UIDailyAchievement_Desc_missile_only_clear
+    difficulty: normal
+  - achievementId: daily_missile_only_clear_6
+    conditionType: 19
+    conditionParam: 
+    threshold: 6
+    achievementPointReward: 500
+    achievementPointRewardVip: 500
+    nameKey: UIDailyAchievement_Name_missile_only_clear
+    descKey: UIDailyAchievement_Desc_missile_only_clear
+    difficulty: hard
+  - achievementId: daily_aircraft_only_clear_1
+    conditionType: 20
+    conditionParam: 
+    threshold: 1
+    achievementPointReward: 100
+    achievementPointRewardVip: 100
+    nameKey: UIDailyAchievement_Name_aircraft_only_clear
+    descKey: UIDailyAchievement_Desc_aircraft_only_clear
+    difficulty: easy
+  - achievementId: daily_aircraft_only_clear_3
+    conditionType: 20
+    conditionParam: 
+    threshold: 3
+    achievementPointReward: 250
+    achievementPointRewardVip: 250
+    nameKey: UIDailyAchievement_Name_aircraft_only_clear
+    descKey: UIDailyAchievement_Desc_aircraft_only_clear
+    difficulty: normal
+  - achievementId: daily_aircraft_only_clear_6
+    conditionType: 20
+    conditionParam: 
+    threshold: 6
+    achievementPointReward: 500
+    achievementPointRewardVip: 500
+    nameKey: UIDailyAchievement_Name_aircraft_only_clear
+    descKey: UIDailyAchievement_Desc_aircraft_only_clear
+    difficulty: hard
+  - achievementId: daily_no_shield_clear_2
+    conditionType: 21
+    conditionParam: 
+    threshold: 2
+    achievementPointReward: 100
+    achievementPointRewardVip: 100
+    nameKey: UIDailyAchievement_Name_no_shield_clear
+    descKey: UIDailyAchievement_Desc_no_shield_clear
+    difficulty: easy
+  - achievementId: daily_no_shield_clear_5
+    conditionType: 21
+    conditionParam: 
+    threshold: 5
+    achievementPointReward: 250
+    achievementPointRewardVip: 250
+    nameKey: UIDailyAchievement_Name_no_shield_clear
+    descKey: UIDailyAchievement_Desc_no_shield_clear
+    difficulty: normal
+  - achievementId: daily_no_shield_clear_10
+    conditionType: 21
+    conditionParam: 
+    threshold: 10
+    achievementPointReward: 500
+    achievementPointRewardVip: 500
+    nameKey: UIDailyAchievement_Name_no_shield_clear
+    descKey: UIDailyAchievement_Desc_no_shield_clear
+    difficulty: hard
+  - achievementId: daily_shield_absorb_300
+    conditionType: 22
+    conditionParam: 
+    threshold: 300
+    achievementPointReward: 100
+    achievementPointRewardVip: 100
+    nameKey: UIDailyAchievement_Name_shield_absorb
+    descKey: UIDailyAchievement_Desc_shield_absorb
+    difficulty: easy
+  - achievementId: daily_shield_absorb_1000
+    conditionType: 22
+    conditionParam: 
+    threshold: 1000
+    achievementPointReward: 250
+    achievementPointRewardVip: 250
+    nameKey: UIDailyAchievement_Name_shield_absorb
+    descKey: UIDailyAchievement_Desc_shield_absorb
+    difficulty: normal
+  - achievementId: daily_shield_absorb_3000
+    conditionType: 22
+    conditionParam: 
+    threshold: 3000
+    achievementPointReward: 500
+    achievementPointRewardVip: 500
+    nameKey: UIDailyAchievement_Name_shield_absorb
+    descKey: UIDailyAchievement_Desc_shield_absorb
+    difficulty: hard
+  - achievementId: daily_intercept_3
+    conditionType: 23
+    conditionParam: 
+    threshold: 3
+    achievementPointReward: 100
+    achievementPointRewardVip: 100
+    nameKey: UIDailyAchievement_Name_intercept
+    descKey: UIDailyAchievement_Desc_intercept
+    difficulty: easy
+  - achievementId: daily_intercept_10
+    conditionType: 23
+    conditionParam: 
+    threshold: 10
+    achievementPointReward: 250
+    achievementPointRewardVip: 250
+    nameKey: UIDailyAchievement_Name_intercept
+    descKey: UIDailyAchievement_Desc_intercept
+    difficulty: normal
+  - achievementId: daily_intercept_30
+    conditionType: 23
+    conditionParam: 
+    threshold: 30
+    achievementPointReward: 500
+    achievementPointRewardVip: 500
+    nameKey: UIDailyAchievement_Name_intercept
+    descKey: UIDailyAchievement_Desc_intercept
+    difficulty: hard
+  - achievementId: daily_fleet_repair_500
+    conditionType: 24
+    conditionParam: 
+    threshold: 500
+    achievementPointReward: 100
+    achievementPointRewardVip: 100
+    nameKey: UIDailyAchievement_Name_fleet_repair
+    descKey: UIDailyAchievement_Desc_fleet_repair
+    difficulty: easy
+  - achievementId: daily_fleet_repair_2000
+    conditionType: 24
+    conditionParam: 
+    threshold: 2000
+    achievementPointReward: 250
+    achievementPointRewardVip: 250
+    nameKey: UIDailyAchievement_Name_fleet_repair
+    descKey: UIDailyAchievement_Desc_fleet_repair
+    difficulty: normal
+  - achievementId: daily_fleet_repair_6000
+    conditionType: 24
+    conditionParam: 
+    threshold: 6000
+    achievementPointReward: 500
+    achievementPointRewardVip: 500
+    nameKey: UIDailyAchievement_Name_fleet_repair
+    descKey: UIDailyAchievement_Desc_fleet_repair
+    difficulty: hard
+  - achievementId: daily_scavenge_100
+    conditionType: 25
+    conditionParam: 
+    threshold: 100
+    achievementPointReward: 100
+    achievementPointRewardVip: 100
+    nameKey: UIDailyAchievement_Name_scavenge
+    descKey: UIDailyAchievement_Desc_scavenge
+    difficulty: easy
+  - achievementId: daily_scavenge_300
+    conditionType: 25
+    conditionParam: 
+    threshold: 300
+    achievementPointReward: 250
+    achievementPointRewardVip: 250
+    nameKey: UIDailyAchievement_Name_scavenge
+    descKey: UIDailyAchievement_Desc_scavenge
+    difficulty: normal
+  - achievementId: daily_scavenge_1000
+    conditionType: 25
+    conditionParam: 
+    threshold: 1000
+    achievementPointReward: 500
+    achievementPointRewardVip: 500
+    nameKey: UIDailyAchievement_Name_scavenge
+    descKey: UIDailyAchievement_Desc_scavenge
+    difficulty: hard

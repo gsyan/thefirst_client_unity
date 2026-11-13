@@ -35,6 +35,7 @@ public class ProjectileMissile : ProjectileBase
     private EFlightPhase m_phase;
     private Vector3 m_prevLocalDir;
     private float m_splashRadius;
+    private bool m_isSplashApplied; // 이번 비행에서 범위 피해를 실제로 줬는지 — 충격파 구는 이때만 표시
     private EMissileSource m_missileSource;
 
     // 발사 시점의 소속 팀 — 발사 함선이 도중에 파괴돼도(m_sourceShip == null) 요격체 판정이 유지되도록 별도 저장
@@ -74,6 +75,7 @@ public class ProjectileMissile : ProjectileBase
      ModuleBase sourceModuleBase, Vector3 initialDirection, float ejectSpeed, float explosionMultiplier = 1f)
     {
         SetCommonData(firePointTransform, target, damageInfo, sourceModuleBase);
+        m_isSplashApplied = false;
         m_missileSource = (sourceModuleBase is ModuleHangar) ? EMissileSource.Aircraft : EMissileSource.Ship;
 
         m_hasSourceTeam = m_sourceShip != null && m_sourceShip.m_ownerFleet != null;
@@ -87,7 +89,9 @@ public class ProjectileMissile : ProjectileBase
         if (m_missileSource != EMissileSource.Aircraft)
             ObjectManager.Instance.RegisterMissile(this, isEnemy);
 
-        m_missileSpeed = moduleData.speed; // 발사체 이동속도는 speed 필드 재사용(미사일 행은 body 이동속도 개념이 없음)
+        // 발사체 이동속도는 speed 필드 재사용(미사일 행은 body 이동속도 개념이 없음) — 미사일 모듈이 쏜 경우 아키타입 패시브(미사일 속도 +N%) 반영
+        float speedMultiplier = sourceModuleBase is ModuleMissile speedSourceMissile ? speedSourceMissile.GetSpeedMultiplier() : 1f;
+        m_missileSpeed = moduleData.speed * speedMultiplier;
         float silenceBuffMult = sourceModuleBase != null ? sourceModuleBase.GetRewardCardBuffMultiplier(ECardEffectType.Buff_MissileSilence) : 1f;
         float baseSilenceTime = sourceModuleBase is ModuleMissile sourceMissile ? sourceMissile.GetFinalSilenceTime() : moduleData.silenceTime;
         m_silenceTime  = baseSilenceTime * silenceBuffMult;
@@ -116,6 +120,7 @@ public class ProjectileMissile : ProjectileBase
     public void FireInstantHit(Transform firePointTransform, Transform target, DamageInfo damageInfo, ModuleData moduleData, ModuleBase sourceModuleBase)
     {
         SetCommonData(firePointTransform, target, damageInfo, sourceModuleBase);
+        m_isSplashApplied = false;
         m_missileSource = EMissileSource.Aircraft;
         m_splashRadius = moduleData.splashRadius;
 
@@ -133,6 +138,8 @@ public class ProjectileMissile : ProjectileBase
             ApplySplashDamage(hitPoint, hitShip);
         else
             hitShip.TakeDamage(m_damageInfo, hitPoint);
+
+        AircraftScavenge.TryScavenge(m_sourceShip); // 함재기→함선 명중 1회마다 약탈 판정(함재기 대 함재기는 제외)
 
         SoundManager.Instance.PlayFX(EFx.Explosion_Aircraft_Missile, hitPoint);
         ReturnToPool(hitPosition: hitPoint);
@@ -212,6 +219,8 @@ public class ProjectileMissile : ProjectileBase
     private static readonly Collider[]   s_overlapResults = new Collider[32];
     private static readonly RaycastHit[] s_raycastHits    = new RaycastHit[16];
     private static int s_splashMask = 0;
+    // 범위 피해 대상 함선(중복 제거) — 함선 하나에 콜라이더가 여러 개라 OverlapSphere 결과를 함선 단위로 묶음, 매 폭발마다 재사용
+    private static readonly List<SpaceShip> s_splashShips = new List<SpaceShip>();
 
     // 이 미사일을 쏜 팀과 다른 팀 소속 요격체인지 — 발사 시점에 저장한 팀 기준
     private bool IsOpposingInterceptor(InterceptorUnit unit)
@@ -323,22 +332,31 @@ public class ProjectileMissile : ProjectileBase
     {
         // 직격 함선은 미사일 실제 충돌 지점(center == hit.point)을 그대로 사용
         directHitShip.TakeDamage(m_damageInfo, center);
+        m_isSplashApplied = true;
 
         if (s_splashMask == 0)
             s_splashMask = ~LayerMask.GetMask("Shield", "Interceptor");
 
         int count = Physics.OverlapSphereNonAlloc(center, m_splashRadius, s_overlapResults, s_splashMask);
+        s_splashShips.Clear();
         for (int i = 0; i < count; i++)
         {
             SpaceShip ship = s_overlapResults[i].GetComponentInParent<SpaceShip>();
             if (ship == null) continue;
             if (ship == directHitShip) continue;
             if (m_sourceShip != null && ship.m_ownerFleet == m_sourceShip.m_ownerFleet) continue;
+            if (s_splashShips.Contains(ship) == true) continue;
+            s_splashShips.Add(ship);
+        }
 
-            float dist = Vector3.Distance(center, s_overlapResults[i].transform.position);
-            float splashRatio = 1.0f - 0.5f * (dist / m_splashRadius);
-            // 폭발 중심에서 콜라이더 표면까지의 가장 가까운 지점 = 실제 피탄 지점
-            Vector3 splashHitPoint = s_overlapResults[i].ClosestPoint(center);
+        for (int i = 0; i < s_splashShips.Count; i++)
+        {
+            SpaceShip ship = s_splashShips[i];
+            // 폭발 중심에서 가장 가까운 함체 피격 지점 = 실제 피탄 지점(콜라이더 모양과 무관한 베이킹 지점 사용)
+            Vector3 splashHitPoint = GetClosestShipHitPoint(ship, center);
+            float dist = Vector3.Distance(center, splashHitPoint);
+            float clampedDist = Mathf.Min(dist, m_splashRadius);
+            float splashRatio = 1.0f - 0.5f * (clampedDist / m_splashRadius);
             DamageInfo splashDamageInfo = new DamageInfo
             {
                 baseDamage       = m_damageInfo.baseDamage * splashRatio,
@@ -347,6 +365,27 @@ public class ProjectileMissile : ProjectileBase
             };
             ship.TakeDamage(splashDamageInfo, splashHitPoint);
         }
+        s_splashShips.Clear();
+    }
+
+    // 함선의 모든 함체 중 worldFrom에서 가장 가까운 베이킹 피격 지점
+    private static Vector3 GetClosestShipHitPoint(SpaceShip ship, Vector3 worldFrom)
+    {
+        Vector3 closestPoint = ship.transform.position;
+        float closestSqrDist = float.MaxValue;
+        for (int b = 0; b < ship.m_moduleHulls.Count; b++)
+        {
+            ModuleHull hull = ship.m_moduleHulls[b];
+            if (hull == null) continue;
+            Vector3 candidatePoint = hull.GetClosestHitPoint(worldFrom);
+            float candidateSqrDist = (candidatePoint - worldFrom).sqrMagnitude;
+            if (candidateSqrDist < closestSqrDist)
+            {
+                closestSqrDist = candidateSqrDist;
+                closestPoint = candidatePoint;
+            }
+        }
+        return closestPoint;
     }
 
     // 꼬리가 발사구를 벗어났으면 Steering 전환
@@ -462,6 +501,12 @@ public class ProjectileMissile : ProjectileBase
                 ? Vector3.one * (1f + m_splashRadius * 0.1f)
                 : Vector3.one;
             effect.PlayEffect();
+            // 범위 피해 판정 반경을 충격파 구로 표시 — 실제로 범위 피해를 준 폭발만(미사일끼리 충돌/목표 통과 소멸은 제외)
+            if (effect.TryGetComponent(out ExplosionShockwave shockwave) == true)
+            {
+                float shockwaveRadius = m_isSplashApplied == true ? m_splashRadius : 0f;
+                shockwave.Play(shockwaveRadius);
+            }
         }
 
         ObjectManager.Instance.UnregisterMissile(this);
