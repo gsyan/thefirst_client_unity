@@ -46,6 +46,11 @@ UITabSettings_Logout,,LOGOUT,로그아웃
 UITabSettings_General,,GENERAL,일반
 UITabSettings_Language,,LANGUAGE,언어
 UITabSettings_License,,THIRD-PARTY LICENSES,외부 라이센스
+UITabSettings_Support,,SUPPORT,고객지원
+UITabSettings_ContactEmail,,CONTACT BY EMAIL,이메일 문의
+UITabSettings_ContactEmailSubject,,[{0}] Inquiry,[{0}] 문의
+UITabSettings_ContactEmailBodyGuide,,"Please write your inquiry below. The information at the bottom helps us look into your issue, so please do not delete it.","아래에 문의 내용을 작성해 주세요. 맨 아래 정보는 문제 확인에 필요하니 지우지 말아 주세요."
+UITabSettings_Dev,,DEV,개발자
 
 tab_ship,,Ship,함선
 fleet_ship_count,,Ships,함선 수
@@ -285,8 +290,9 @@ UIVipStatus_BenefitTitle,,ADMIRAL's Benefit,제독 혜택
 UIVipStatus_Expired,,(Expired),(만료)
 UIVipStatus_ExpiryDays,,(D-{0}),(D-{0})
 UIVipStatus_Benefit_NoAds,,No Ads,광고 없음
+UIVipStatus_Benefit_UnlimitedReroll,,Unlimited Reward Card Rerolls,보상 카드 다시뽑기 무제한
 UIVipStatus_Benefit_Daily,,Exclusive Daily Rewards,전용 일일 보상
-UIVipStatus_Benefit_DoubleExploration,,2x Mineral & EXP,광물·경험치 2배 획득
+UIVipStatus_Benefit_DoubleExploration,,2x Cell Clear Minerals & EXP,셀 클리어 광물·경험치 2배 획득
 UIVipStatus_Benefit_AchievementBonus,,Bonus Achievement Rewards,업적 전용 보너스 보상
 UIVipStatus_Benefit_BattleSpeed,,Adjustable Battle Speed,전투 배속 조절
 UIVipStatus_PurchaseTitle,,BECOME ADMIRAL,제독 승급
@@ -474,3 +480,6 @@ ModuleDescription_phoenix,,A repair ship that keeps allied ships' combat strengt
 ModuleDescription_halcyon,,A support ship that charges allies' shield gauges,아군의 실드 게이지를 충전해주는 회복함
 ModuleDescription_aegis,,A shield ship that protects allies with powerful shields,강력한 실드로 아군을 보호하는 실더
 ModuleDescription_sentinel,,An interceptor that eliminates enemy threats in advance with interceptors,요격체로 적의 위협을 사전에 제거하는 요격자
+UI_Notice,,NOTICE,공지사항
+UI_Back,,BACK,뒤로
+UIPopupNotice_Empty,,No notices.,등록된 공지가 없습니다.

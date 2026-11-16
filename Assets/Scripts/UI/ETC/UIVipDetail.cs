@@ -49,7 +49,7 @@ public class UIVipDetail : MonoBehaviour
 
     private void InitBenefitTexts()
     {
-        if (m_benefits == null || m_benefits.Length < 5) return;
+        if (m_benefits == null) return;
         if (IAPManager.Instance == null) return;
 
         var loc = LocalizationManager.Instance;
@@ -57,12 +57,15 @@ public class UIVipDetail : MonoBehaviour
         string[] texts =
         {
             loc.Get("UIVipStatus_Benefit_NoAds"),
+            loc.Get("UIVipStatus_Benefit_UnlimitedReroll"),
             loc.Get("UIVipStatus_Benefit_Daily"),
             loc.Get("UIVipStatus_Benefit_DoubleExploration"),
             loc.Get("UIVipStatus_Benefit_AchievementBonus"),
             loc.Get("UIVipStatus_Benefit_BattleSpeed"),
         };
-        for (int i = 0; i < texts.Length; i++)
+        // 프리팹에 배치된 혜택 텍스트 수만큼만 채움(부족하면 뒤쪽 혜택은 표시되지 않음)
+        int fillCount = Mathf.Min(texts.Length, m_benefits.Length);
+        for (int i = 0; i < fillCount; i++)
         {
             if (m_benefits[i] == null) continue;
             m_benefits[i].text = $"• {texts[i]}";

@@ -488,4 +488,10 @@ public static class EventManager
     public static void TriggerVipStatusChanged() { OnVipStatusChanged?.Invoke(); }
     public static void Subscribe_VipStatusChanged(Action callback)   { OnVipStatusChanged += callback; }
     public static void Unsubscribe_VipStatusChanged(Action callback) { OnVipStatusChanged -= callback; }
+
+    // 안 읽은 공지 유무 변경 (NoticeManager가 목록 조회/읽음 처리 후 발행) — 공지 버튼 레드닷
+    public static event Action<bool> OnNoticeUnreadChanged;
+    public static void Trigger_NoticeUnreadChanged(bool hasUnread) { OnNoticeUnreadChanged?.Invoke(hasUnread); }
+    public static void Subscribe_NoticeUnreadChanged(Action<bool> callback)   { OnNoticeUnreadChanged += callback; }
+    public static void Unsubscribe_NoticeUnreadChanged(Action<bool> callback) { OnNoticeUnreadChanged -= callback; }
 }

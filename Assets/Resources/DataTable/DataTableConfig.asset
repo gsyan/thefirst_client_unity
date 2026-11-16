@@ -25,7 +25,8 @@ MonoBehaviour:
       pvpRankScoreInit: 1000
       pvpRankScorePenalty: 1
     tactic:
-      tacticRepairCost: 100
+      tacticRepairHealthUnit: 10
+      tacticRepairCostPerUnit: 10
       tacticBeamCost: 10
       tacticMissileCost: 10
       tacticHangerCost: 10
@@ -85,7 +86,7 @@ MonoBehaviour:
       mineralStep: 10
     supportAbility:
       tickSeconds: 1
-      repairCostPerTick: 10
+      repairShipCostPercent: 50
       repairReleaseRatioPercent: 80
       shieldChargeBonusPercent: 100
       shieldChargeCostPerTick: 10

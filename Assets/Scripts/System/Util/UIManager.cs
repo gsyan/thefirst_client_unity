@@ -733,4 +733,15 @@ public class UIManager : MonoSingleton<UIManager>
         popup.ShowPopupLicense(() => CloseTopPopup(EPopupLayer.Normal));
     }
 
+    // 공지 팝업 — notices가 null이면 팝업이 목록을 새로 받음(공지 버튼), 있으면 그대로 사용(로그인 시 자동 표시)
+    // autoOpenSingleUnread: 안 읽은 공지가 1개뿐이면 목록 대신 그 본문을 바로 엶
+    public void ShowNoticePopup(List<NoticeItem> notices = null, bool autoOpenSingleUnread = false)
+    {
+        UIPopupNotice popup = GetOrCreatePopup<UIPopupNotice>("UIPopupNotice", EPopupLayer.Normal);
+        if (popup == null) return;
+
+        ReplacePopup(popup, EPopupLayer.Normal);
+        popup.ShowPopupNotice(notices, autoOpenSingleUnread, () => CloseTopPopup(EPopupLayer.Normal));
+    }
+
 }

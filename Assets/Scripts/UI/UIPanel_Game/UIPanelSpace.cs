@@ -140,6 +140,10 @@ public class UIPanelSpace : UIPanelBase
         var entryButtons = m_tapButtons.GetComponentsInChildren<UIPanelEntryButton>(true);
         for (int i = 0; i < entryButtons.Length; i++)
             entryButtons[i].SetInteractable(!isBlocked);
+
+        var noticeButtons = m_tapButtons.GetComponentsInChildren<UINoticeButton>(true);
+        for (int i = 0; i < noticeButtons.Length; i++)
+            noticeButtons[i].SetInteractable(isBlocked == false);
     }
 
 }

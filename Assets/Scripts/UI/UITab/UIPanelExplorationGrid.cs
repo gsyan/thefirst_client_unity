@@ -1386,6 +1386,12 @@ public class UIPanelExplorationGrid : UIPanelBase
         }
 
         RefreshAbandonRunButtonState();
+
+        // 포기 규칙 안내는 셀 클리어 보상 팝업이 닫힌 이 시점에서만 시작(완료 여부는 TutorialManager가 판정) — 탈출 셀은 탈출 확정 팝업이 뜨므로 제외
+        bool isRunActive = IsActiveExplorationZone(m_currentZoneNumber) == true;
+        if (reachedEscape == false && isRunActive == true)
+            TutorialManager.Instance.TryStartTutorialDeferred("Tutorial_AbandonRun", "UIPanelExplorationGrid");
+
         m_battleZoneNumber = 0; // 셀 클리어 처리 완료 — 이후 패널 재오픈은 서버 기준 목표 존을 따름
         EventManager.TriggerZoneCellReturnedToGrid();
     }
@@ -1476,10 +1482,6 @@ public class UIPanelExplorationGrid : UIPanelBase
         bool isRunActive = IsActiveExplorationZone(m_currentZoneNumber) == true;
         if (m_abandonRunButton != null)
             m_abandonRunButton.gameObject.SetActive(isRunActive);
-
-        // 포기 버튼이 처음 나타나는 시점(진행 중인 존런이 생겼을 때)에 포기 규칙 안내
-        if (isRunActive == true)
-            TutorialManager.Instance.TryStartTutorialDeferred("Tutorial_AbandonRun", "UIPanelExplorationGrid");
     }
 
     // onAnimComplete: 롤링 애니메이션이 실제로 끝난 프레임에 호출됨(코루틴을 아예 못 도는 경로에서도 즉시 호출됨) — 애니메이션과 정확히 동기화해야 하는 후속 로직(예: 탈출 확정 팝업)에 사용

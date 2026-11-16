@@ -319,6 +319,15 @@ public class ApiClient
         }
     }
 
+    // 모든 API 요청에 붙는 앱 버전 헤더 — 서버 AppVersionCheckFilter가 최소 허용 버전과 비교(NetworkManager가 시작 시 1회 설정)
+    private const string HEADER_APP_VERSION_CODE = "X-App-Version-Code";
+    private string m_appVersionCodeText = "0";
+
+    public void SetAppVersionCode(int versionCode)
+    {
+        m_appVersionCodeText = versionCode.ToString();
+    }
+
     // requireAuth인데 accessToken이 비어있으면 요청 없이 즉시 에러 반환
     private async Task<ApiResponse<TRes>> PostAsync<TRes>(string path, object requestBody, bool requireAuth = true)
     {
@@ -331,6 +340,7 @@ public class ApiClient
         webRequest.uploadHandler = new UploadHandlerRaw(bodyBytes);
         webRequest.downloadHandler = new DownloadHandlerBuffer();
         webRequest.SetRequestHeader("Content-Type", "application/json");
+        webRequest.SetRequestHeader(HEADER_APP_VERSION_CODE, m_appVersionCodeText);
         if (requireAuth == true)
             webRequest.SetRequestHeader("Authorization", $"Bearer {accessToken}");
 
@@ -346,6 +356,7 @@ public class ApiClient
         using var webRequest = new UnityWebRequest($"{m_baseUrl}{path}", "GET");
         webRequest.downloadHandler = new DownloadHandlerBuffer();
         webRequest.SetRequestHeader("Content-Type", "application/json");
+        webRequest.SetRequestHeader(HEADER_APP_VERSION_CODE, m_appVersionCodeText);
         if (requireAuth == true)
             webRequest.SetRequestHeader("Authorization", $"Bearer {accessToken}");
 
@@ -361,6 +372,7 @@ public class ApiClient
         using var webRequest = new UnityWebRequest($"{m_baseUrl}{path}", "DELETE");
         webRequest.downloadHandler = new DownloadHandlerBuffer();
         webRequest.SetRequestHeader("Content-Type", "application/json");
+        webRequest.SetRequestHeader(HEADER_APP_VERSION_CODE, m_appVersionCodeText);
         webRequest.SetRequestHeader("Authorization", $"Bearer {accessToken}");
 
         await SendRequestAsync(webRequest);
@@ -730,9 +742,14 @@ public class ApiClient
         return await GetAsync<DailyBonusStatusResponse>("/iap/vip/daily-reward/status");
     }
 
-    public async Task<ApiResponse<NoticeResponse>> GetNoticeAsync()
+    public async Task<ApiResponse<NoticeResponse>> GetNoticeListAsync()
     {
-        return await GetAsync<NoticeResponse>("/notice");
+        return await GetAsync<NoticeResponse>("/notice/list");
+    }
+
+    public async Task<ApiResponse<NoticeReadResponse>> MarkNoticeReadAsync(NoticeReadRequest request)
+    {
+        return await PostAsync<NoticeReadResponse>("/notice/read", request);
     }
 
 #if UNITY_EDITOR

@@ -967,7 +967,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 79919752008302592
-    m_Localized: 2x Mineral & EXP
+    m_Localized: 2x Cell Clear Minerals & EXP
     m_Metadata:
       m_Items: []
   - m_Id: 79919752054439936
@@ -1878,6 +1878,43 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 100854743844126720
     m_Localized: '{0} Reinforcement'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 101632902311051264
+    m_Localized: Unlimited Reward Card Rerolls
+    m_Metadata:
+      m_Items: []
+  - m_Id: 101632902373965824
+    m_Localized: NOTICE
+    m_Metadata:
+      m_Items: []
+  - m_Id: 101632902373965825
+    m_Localized: BACK
+    m_Metadata:
+      m_Items: []
+  - m_Id: 101632902373965826
+    m_Localized: No notices.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 101944871710752768
+    m_Localized: SUPPORT
+    m_Metadata:
+      m_Items: []
+  - m_Id: 101944871765278720
+    m_Localized: CONTACT BY EMAIL
+    m_Metadata:
+      m_Items: []
+  - m_Id: 101944871765278721
+    m_Localized: '[{0}] Inquiry'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 101944871769473024
+    m_Localized: Please write your inquiry below. The information at the bottom helps
+      us look into your issue, so please do not delete it.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 101944871769473025
+    m_Localized: DEV
     m_Metadata:
       m_Items: []
   references:

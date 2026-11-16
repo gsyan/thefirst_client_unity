@@ -818,6 +818,39 @@ public class SpaceShip : MonoBehaviour
         return repairPower;
     }
 
+    // 패시브 미반영 원본 수리력 합 — 수리 비용 계산용(늘어난 회복량은 비용에서 제외)
+    public float GetBaseRepairPower()
+    {
+        float baseRepairPower = 0f;
+        foreach (ModuleHull body in m_moduleHulls)
+        {
+            if (body == null) continue;
+            baseRepairPower += body.GetBaseRepair();
+        }
+        return baseRepairPower;
+    }
+
+    // 아군 수리 능력(ally_repair_slot 패시브)이 있는 수리함인지 — 수리 비용 할인(repairShipCostPercent) 대상 판정
+    public bool IsRepairShip()
+    {
+        float repairSlotCount = HullArchetypePassiveEffects.SumEffect(this, "ally_repair_slot");
+        return repairSlotCount > 0f;
+    }
+
+    // HealByAmount(healAmount)가 실제로 회복할 양 — 살아있는 바디의 부족한 체력 합까지만. 아군 수리 비용을 회복 전에 계산할 때 사용
+    public float GetHealableAmount(float healAmount)
+    {
+        if (healAmount <= 0f) return 0f;
+
+        float missingHealth = 0f;
+        foreach (ModuleHull body in m_moduleHulls)
+        {
+            if (body == null || body.m_health <= 0f) continue;
+            missingHealth += Mathf.Max(0f, body.m_healthMax - body.m_health);
+        }
+        return Mathf.Min(healAmount, missingHealth);
+    }
+
     // 현재 체력에 healAmount만큼 가산(지원 능력 수리용) — 바디 순서대로 채우며 남은 양을 다음 바디로 넘김. 실제로 회복된 체력 합계를 반환, 파괴된 바디는 되살리지 않음
     public float HealByAmount(float healAmount)
     {

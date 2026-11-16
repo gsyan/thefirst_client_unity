@@ -92,7 +92,7 @@ public class UIPopupRewardCardSelect : UIPopupBase
         if (isEscapeCell == false)
             RefreshTotalMineralDisplay(false);
 
-        // 이번 셀 클리어 보상 안내는 팝업이 뜨는 시점에 1회만 표시 — 카드를 구매해도 바뀌지 않으므로 갱신하지 않음
+        // 이번 셀 클리어 보상 안내는 팝업이 뜨는 시점에만 표시 — 카드를 구매하면 HideCellRewardRows로 숨김
         // 탈출 셀은 광물이 아니라 경험치 라벨을 씀(값 자체는 호출부가 이미 올바른 의미로 넘겨줌)
         if (m_rewardAmountRow != null)
         {
@@ -153,6 +153,15 @@ public class UIPopupRewardCardSelect : UIPopupBase
     private void RebuildTotalMineralLayout()
     {
         LayoutRebuilder.ForceRebuildLayoutImmediate(m_totalMineralRow.transform as RectTransform);
+    }
+
+    // 기본/약탈/탐사 획득 광물 행을 모두 숨김 — 팝업이 뜬 직후에만 보여주는 정보
+    private void HideCellRewardRows()
+    {
+        if (m_rewardAmountRow != null) m_rewardAmountRow.gameObject.SetActive(false);
+        if (m_scavengedMineralRow != null) m_scavengedMineralRow.gameObject.SetActive(false);
+        if (m_scoutedMineralRow != null) m_scoutedMineralRow.gameObject.SetActive(false);
+        RebuildRewardRowsLayout();
     }
 
     // 기본/약탈/탐사 보상 행은 부모(MineralReward)의 가로 레이아웃 안에 있어 값이 바뀌면 행 폭이 달라지므로, 값 기입 직후 각 행 → 부모 순으로 강제 재계산
@@ -284,6 +293,8 @@ public class UIPopupRewardCardSelect : UIPopupBase
         info.mineralAmount -= cost;
         EventManager.Trigger_MineralAmountChanged(info.mineralAmount);
         RefreshTotalMineralDisplay(true);
+
+        HideCellRewardRows(); // 셀 클리어 직후 보상 안내는 첫 구매 시점부터 숨김
 
         ObjectManager.Instance.m_rewardCardSessionState.IncrementPurchaseCount(cardId);
         ApplyCardEffect(card, cost);

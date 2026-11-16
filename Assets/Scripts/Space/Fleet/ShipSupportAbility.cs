@@ -5,7 +5,7 @@ using UnityEngine;
 // 동시 대상 수 = 패시브 효과(ally_repair_slot / ally_shield_charge_slot) 합, 0이면 그 능력 없음. 플레이어 함대 함선만 작동
 // 대상 선정: 체력(실드) 비율이 가장 낮은 아군(자기 제외, 이미 대상인 함선 제외)을 잡고, 해제 비율에 도달할 때까지 유지한 뒤 다시 탐색 — 매 틱 대상을 갈아타지 않게 함
 // 수리량은 이 함선의 수리력(repair 스탯, 초당), 실드 충전은 대상의 기본 실드 회복량에 설정 비율을 더한 값
-// 지원 1회(대상 1척, 1틱)마다 전투자원 소모, 자원이 부족하면 그 대상은 이번 틱에 지원하지 않음. 대상 함선에는 지원이 이어지는 동안 반짝임 이펙트가 붙음
+// 수리는 실제 회복량에 비례해(SpaceFleet.CalcRepairCost, 수리함 할인 적용), 실드 충전은 1회(대상 1척, 1틱)마다 전투자원 소모, 자원이 부족하면 그 대상은 이번 틱에 지원하지 않음. 대상 함선에는 지원이 이어지는 동안 반짝임 이펙트가 붙음
 public class ShipSupportAbility
 {
     private const string k_effectRepairSlot = "ally_repair_slot";
@@ -79,15 +79,20 @@ public class ShipSupportAbility
         float repairPower = m_ship.GetRepairPower();
         if (repairPower > 0f)
         {
+            // 패시브로 늘어난 회복량은 비용에서 제외 — 회복량 × (원본 수리력 / 패시브 반영 수리력)을 비용 기준으로 씀
+            float baseRatio = m_ship.GetBaseRepairPower() / repairPower;
             for (int i = 0; i < m_repairTargets.Count; i++)
             {
                 SpaceShip target = m_repairTargets[i];
-                if (target.GetHealthRatio() >= 1f) continue;
+                float healableAmount = target.GetHealableAmount(repairPower);
+                if (healableAmount <= 0f) continue;
 
-                bool isPaid = m_ship.m_ownerFleet.TryChargeRepairTacticCost(settings.repairCostPerTick);
+                float costBaseAmount = healableAmount * baseRatio;
+                int repairCost = SpaceFleet.CalcRepairCost(costBaseAmount, m_ship);
+                bool isPaid = m_ship.m_ownerFleet.TryChargeRepairTacticCost(repairCost);
                 if (isPaid == false) break;
 
-                float healedAmount = target.HealByAmount(repairPower);
+                float healedAmount = target.HealByAmount(healableAmount);
                 BattleStatTracker.AddShipArchetypeCounter(m_ship, BattleStatTracker.k_counterAllyRepair, healedAmount);
             }
         }

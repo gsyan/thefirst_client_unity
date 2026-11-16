@@ -22,6 +22,7 @@ public class NetworkManager : MonoSingleton<NetworkManager>
     protected override void OnInitialize()
     {
         m_apiClient = new ApiClient();
+        m_apiClient.SetAppVersionCode(GetAppVersionCode());
         m_apiClient.LoadRefreshToken();
         m_apiClient.LoadGuestSecret();
     }
@@ -78,6 +79,7 @@ public class NetworkManager : MonoSingleton<NetworkManager>
             GameObject.Find("UICanvas")?.TryGetComponent(out m_uIManager);
             m_bConnected = false;
             m_heartbeatStarted = false;
+            m_isReturningForUpdate = false;
             m_bNetworkPopupShown = false;
             m_checkingInternetAccess = false;
             m_serverSelectShown = false;
@@ -240,7 +242,16 @@ public class NetworkManager : MonoSingleton<NetworkManager>
                 yield break;
             }
 
-            if (serverStatus.working == false)
+            bool isMaintenance = serverStatus.working == false;
+#if UNITY_EDITOR
+            // 에디터는 점검 중에도 접속 허용 — 배포 직후 점검 해제 전에 실서버를 직접 확인하기 위함
+            if (isMaintenance == true)
+            {
+                Debug.LogWarning("[NetworkManager] 서버 점검 중 — 에디터라 점검 안내를 건너뛰고 접속");
+                isMaintenance = false;
+            }
+#endif
+            if (isMaintenance == true)
             {
                 m_checkingInternetAccess = false;
                 string reason           = LocalizationManager.Instance.Get("UIPopupMessage_MaintenanceInProgress");
@@ -360,7 +371,30 @@ public class NetworkManager : MonoSingleton<NetworkManager>
         if (isWaitActive == true)
             EndRequestWait(policy, generation);
 
+        // 서버가 이 앱 버전을 더 이상 받지 않음 — 호출부 실패 처리(에러 팝업 등) 없이 메인 화면으로 보내 업데이트 안내를 띄움
+        bool isUpdateRequired = attemptResult.response != null && attemptResult.response.errorCode == (int)ServerErrorCode.APP_VERSION_FAIL_UPDATE_REQUIRED;
+        if (isUpdateRequired == true)
+        {
+            ReturnToMainSceneForUpdate();
+            yield break;
+        }
+
         onComplete?.Invoke(attemptResult.response);
+    }
+
+    private bool m_isReturningForUpdate = false;
+
+    // MainScene 진입 시 서버 상태 확인(CheckInternetAccess)이 다시 돌아 업데이트 안내 팝업이 뜸 — 여러 요청이 동시에 거절돼도 한 번만 이동
+    private void ReturnToMainSceneForUpdate()
+    {
+        if (m_isReturningForUpdate == true) return;
+        m_isReturningForUpdate = true;
+
+        Debug.LogWarning("[NetworkManager] 서버가 이 앱 버전을 거절 — 업데이트 안내를 위해 MainScene으로 이동");
+        CancelInvoke(nameof(Heartbeat));
+        m_heartbeatStarted = false;
+        m_heartbeatFailCount = 0;
+        LoadingManager.LoadSceneWithLoading("MainScene");
     }
 
     // 401 토큰 갱신 재시도를 포함한 요청 1회 시도
@@ -1128,9 +1162,16 @@ public class NetworkManager : MonoSingleton<NetworkManager>
         StartCoroutine(RunAsync(() => m_apiClient.GetDailyBonusStatusAsync(), onComplete, policy: ERequestPolicy.Read));
     }
 
-    public void GetNotice(System.Action<ApiResponse<NoticeResponse>> onComplete)
+    // 활성 공지 전체 + 항목별 읽음 여부
+    public void GetNoticeList(System.Action<ApiResponse<NoticeResponse>> onComplete)
     {
-        StartCoroutine(RunAsync(() => m_apiClient.GetNoticeAsync(), onComplete, policy: ERequestPolicy.Read));
+        StartCoroutine(RunAsync(() => m_apiClient.GetNoticeListAsync(), onComplete, policy: ERequestPolicy.Read));
+    }
+
+    // 본문을 열었을 때 읽음 처리 — 실패해도 레드닷이 남을 뿐이라 실패 팝업 없이 조용히 처리
+    public void MarkNoticeRead(NoticeReadRequest request, System.Action<ApiResponse<NoticeReadResponse>> onComplete)
+    {
+        StartCoroutine(RunAsync(() => m_apiClient.MarkNoticeReadAsync(request), onComplete, policy: ERequestPolicy.Silent));
     }
 
 #if UNITY_EDITOR

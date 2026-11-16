@@ -187,6 +187,26 @@ MonoBehaviour:
     m_Key: UITabSettings_License
     m_Metadata:
       m_Items: []
+  - m_Id: 101944871710752768
+    m_Key: UITabSettings_Support
+    m_Metadata:
+      m_Items: []
+  - m_Id: 101944871765278720
+    m_Key: UITabSettings_ContactEmail
+    m_Metadata:
+      m_Items: []
+  - m_Id: 101944871765278721
+    m_Key: UITabSettings_ContactEmailSubject
+    m_Metadata:
+      m_Items: []
+  - m_Id: 101944871769473024
+    m_Key: UITabSettings_ContactEmailBodyGuide
+    m_Metadata:
+      m_Items: []
+  - m_Id: 101944871769473025
+    m_Key: UITabSettings_Dev
+    m_Metadata:
+      m_Items: []
   - m_Id: 2924654624636928
     m_Key: tab_ship
     m_Metadata:
@@ -1103,6 +1123,10 @@ MonoBehaviour:
     m_Key: UIVipStatus_Benefit_NoAds
     m_Metadata:
       m_Items: []
+  - m_Id: 101632902311051264
+    m_Key: UIVipStatus_Benefit_UnlimitedReroll
+    m_Metadata:
+      m_Items: []
   - m_Id: 40210342097059842
     m_Key: UIVipStatus_Benefit_Daily
     m_Metadata:
@@ -1857,6 +1881,18 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 96931116144787467
     m_Key: ModuleDescription_sentinel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 101632902373965824
+    m_Key: UI_Notice
+    m_Metadata:
+      m_Items: []
+  - m_Id: 101632902373965825
+    m_Key: UI_Back
+    m_Metadata:
+      m_Items: []
+  - m_Id: 101632902373965826
+    m_Key: UIPopupNotice_Empty
     m_Metadata:
       m_Items: []
   m_Metadata:

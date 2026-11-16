@@ -1,18 +1,40 @@
-// 설정 패널 — 섹션(계정/일반/기타) 구조, 로그아웃, 언어 설정, 구글 계정 연동/해제, 개발자 자원 추가. UIManager가 관리하는 독립 패널(다른 진입 화면과 배타적)
+// 설정 패널 — 왼쪽 탭(계정/일반/고객지원/정보/개발자)을 누르면 오른쪽에 그 탭의 스크롤뷰만 표시. UIManager가 관리하는 독립 패널(다른 진입 화면과 배타적)
+// 로그아웃, 언어/사운드 설정, 구글 계정 연동/해제, 개발자 이메일 문의, 개발자 자원 추가
 using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Localization;
 using TMPro;
 
 
+// 왼쪽 탭 버튼과 오른쪽 스크롤뷰 한 쌍 — 탭을 누르면 이 스크롤뷰만 켜짐
+[System.Serializable]
+public class SettingsTab
+{
+    public Button     button;
+    public GameObject scrollView;
+    public string     titleLocKey; // 탭 버튼 라벨 로컬라이즈 키
+    public bool       isDevOnly;   // 에디터·개발 빌드에서만 표시
+}
+
 public class UIPanelSettings : UIPanelBase
 {
+    private const string k_contactEmailAddress = "fidforge.thefirst@gmail.com";
+
     [SerializeField] private TMP_Text m_versionText;
     [SerializeField] private TMP_Text m_panelTitleText;
 
+    [Header("탭")]
+    [SerializeField] private SettingsTab[] m_tabs;
+
+    private ButtonGroupSystem m_tabGroup; // 선택된 탭 버튼 색 표시 + 클릭 효과음 — 스크롤뷰 전환은 각 항목의 onSelected가 처리
+    private readonly List<SettingsTab> m_visibleTabs = new List<SettingsTab>();
+
+    [Header("고객지원")]
+    [SerializeField] private Button m_contactEmailButton;
+
     [Header("계정")]
-    [SerializeField] private TMP_Text m_sectionAccountText;
     [SerializeField] private TMP_Text m_nameText;
     [SerializeField] private Button m_renameCommanderButton;
     [SerializeField] private Button m_redeemCodeButton;
@@ -21,7 +43,6 @@ public class UIPanelSettings : UIPanelBase
     [SerializeField] private Button m_logoutButton;
 
     [Header("General")]
-    [SerializeField] private TMP_Text m_sectionGeneralText;
     [SerializeField] private TMP_Text m_languageText;
     [SerializeField] private TMP_Dropdown m_languageDropdown;
     [SerializeField] private TMP_Text m_bgmLabelText;
@@ -38,7 +59,6 @@ public class UIPanelSettings : UIPanelBase
 
 
     [Header("라이센스")]
-    [SerializeField] private TMP_Text m_sectionInfolText;
     [SerializeField] private Button m_licenseButton;
 
     [Header("개발자 도구")]
@@ -80,6 +100,9 @@ public class UIPanelSettings : UIPanelBase
 
         if (m_licenseButton != null)
             m_licenseButton.onClick.AddListener(() => UIManager.Instance.ShowLicensePopup());
+
+        if (m_contactEmailButton != null)
+            m_contactEmailButton.onClick.AddListener(OnContactEmailButtonClicked);
 
         if (m_pvpSeasonEndButton != null)
         {
@@ -123,11 +146,89 @@ public class UIPanelSettings : UIPanelBase
             });
         }
 
+        InitializeTabs();
         InitializeLanguageDropdown();
         InitializeSoundSettings();
         RefreshGoogleLinkUI();
         RefreshStaticLocText();
         RefreshVersionText();
+    }
+
+    // 개발 빌드가 아니면 개발자 전용 탭(버튼+스크롤뷰)을 숨기고, 보이는 탭만 버튼 그룹에 등록 — 첫 탭이 기본 선택
+    private void InitializeTabs()
+    {
+        if (m_tabs == null) return;
+
+        bool isDevBuild = false;
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+        isDevBuild = true;
+#endif
+
+        m_tabGroup = gameObject.AddComponent<ButtonGroupSystem>();
+        m_tabGroup.defaultIndex = 0;
+
+        for (int i = 0; i < m_tabs.Length; i++)
+        {
+            SettingsTab tab = m_tabs[i];
+            if (tab == null || tab.button == null) continue;
+
+            bool isVisible = tab.isDevOnly == false || isDevBuild == true;
+            tab.button.gameObject.SetActive(isVisible);
+            if (tab.scrollView != null)
+                tab.scrollView.SetActive(false);
+            if (isVisible == false) continue;
+
+            if (string.IsNullOrEmpty(tab.titleLocKey) == false)
+                SetButtonLocText(tab.button, tab.titleLocKey);
+
+            SettingsTab capturedTab = tab;
+            ButtonGroupItem item = new ButtonGroupItem { button = tab.button };
+            item.onSelected = () => ShowTabScrollView(capturedTab);
+            m_tabGroup.items.Add(item);
+            m_visibleTabs.Add(tab);
+        }
+
+        m_tabGroup.Initialize();
+    }
+
+    private void ShowTabScrollView(SettingsTab selectedTab)
+    {
+        for (int i = 0; i < m_visibleTabs.Count; i++)
+        {
+            SettingsTab tab = m_visibleTabs[i];
+            if (tab.scrollView != null)
+                tab.scrollView.SetActive(tab == selectedTab);
+        }
+    }
+
+    // 메일 앱을 열어 개발자 주소로 문의 작성 — 본문 맨 아래에 지휘관 ID/버전/기기 정보를 미리 채워 문의 확인을 돕게 함
+    private void OnContactEmailButtonClicked()
+    {
+        SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true);
+
+        string subject = string.Format(LocalizationManager.Instance.Get("UITabSettings_ContactEmailSubject"), Application.productName);
+        string body = BuildContactEmailBody();
+        string escapedSubject = System.Uri.EscapeDataString(subject); // mailto는 공백을 %20으로 받아야 메일 앱에 그대로 보임('+' 금지)
+        string escapedBody = System.Uri.EscapeDataString(body);
+        string mailtoUrl = "mailto:" + k_contactEmailAddress + "?subject=" + escapedSubject + "&body=" + escapedBody;
+        Application.OpenURL(mailtoUrl);
+    }
+
+    private string BuildContactEmailBody()
+    {
+        Commander commander = DataManager.Instance.m_currentCommander;
+        long commanderId = (commander != null && commander.m_commanderInfo != null) ? commander.m_commanderInfo.commanderId : 0;
+
+        StringBuilder sb = new StringBuilder();
+        sb.Append(LocalizationManager.Instance.Get("UITabSettings_ContactEmailBodyGuide"));
+        sb.Append("\n\n\n\n\n");
+        sb.Append("----------\n");
+        sb.Append("Commander ID: ").Append(commanderId).Append('\n');
+        sb.Append("App Version: ").Append(Application.version).Append('\n');
+        sb.Append("Device: ").Append(SystemInfo.deviceModel).Append('\n');
+        sb.Append("OS: ").Append(SystemInfo.operatingSystem).Append('\n');
+        sb.Append("Language: ").Append(LocalizationManager.Instance.GetCurrentLocaleCode());
+        return sb.ToString();
     }
 
     private void RefreshVersionText()
@@ -221,9 +322,6 @@ public class UIPanelSettings : UIPanelBase
     private void RefreshStaticLocText()
     {
         CommonUtility.SetUILocText(m_panelTitleText,     "UI_Settings");
-        CommonUtility.SetUILocText(m_sectionAccountText, "UI_Account");
-        CommonUtility.SetUILocText(m_sectionGeneralText, "UITabSettings_General");
-        CommonUtility.SetUILocText(m_sectionInfolText,   "UITabSettings_Info");
         CommonUtility.SetUILocText(m_languageText,       "UITabSettings_Language");
         CommonUtility.SetUILocText(m_bgmLabelText,       "UI_Bgm");
         CommonUtility.SetUILocText(m_fxLabelText,        "UI_Fx");
@@ -235,6 +333,7 @@ public class UIPanelSettings : UIPanelBase
         SetButtonLocText(m_redeemCodeButton,      "UITabSettings_RedeemCode");
         SetButtonLocText(m_logoutButton,          "UITabSettings_Logout");
         SetButtonLocText(m_licenseButton,         "UITabSettings_License");
+        SetButtonLocText(m_contactEmailButton,    "UITabSettings_ContactEmail");
     }
 
     private void SetButtonLocText(Button btn, string key)

@@ -175,11 +175,7 @@ public class UIPanelBattle : UIPanelBase
             bool interceptorHasEffect = myFleet.HasAnyInterceptorBelowMax();
 
             if ((tacticOptions & (1 << 3)) != 0 && repairHasEffect == true)
-            {
-                int shipsNeedingRepair = myFleet.CountShipsNeedingRepair();
-                if (shipsNeedingRepair > 0 && myFleet.TryChargeRepairTacticCost(shipsNeedingRepair * gameSettings.tactic.tacticRepairCost) == true)
-                    myFleet.ApplyRepairTickToAllShips();
-            }
+                myFleet.ApplyRepairTickToAllShips(); // 비용은 함선별 회복량에 비례해 내부에서 과금
             if (shieldHasEffect == true)
             {
                 int shipsNeedingShield = myFleet.CountShipsNeedingShieldRegen();

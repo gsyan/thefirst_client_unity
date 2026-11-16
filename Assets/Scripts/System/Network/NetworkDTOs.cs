@@ -914,18 +914,39 @@ public class ServerStatusResponse
 }
 
 [System.Serializable]
-public class NoticeItem
+public class NoticeText
 {
-    public long noticeId;
-    public int version;
+    public string locale; // 클라 로케일 코드(en, ko 등)
     public string title;
     public string body;
 }
 
 [System.Serializable]
+public class NoticeItem
+{
+    public long noticeId;
+    public int version;
+    public List<NoticeText> texts; // 언어별 제목/본문 — 클라가 현재 언어로 골라 표시(NoticeManager.PickText)
+    public bool isRead; // 이 지휘관이 현재 버전 본문을 열어봤는지 — 목록 행/공지 버튼 레드닷 기준
+}
+
+[System.Serializable]
 public class NoticeResponse
 {
-    public List<NoticeItem> notices; // 로그인 시 안 읽은 활성 공지 목록, display_order 순 — 이 호출 자체가 열람 처리(서버가 commander_notice_seen에 기록)
+    public List<NoticeItem> notices; // /notice/list: 활성 공지 전체(display_order 순), 항목마다 읽음 여부 포함
+}
+
+[System.Serializable]
+public class NoticeReadRequest
+{
+    public long noticeId;
+    public int version; // 클라가 열어본 본문의 버전 — 서버 현재 버전과 같을 때만 읽음 처리
+}
+
+[System.Serializable]
+public class NoticeReadResponse
+{
+    public bool hasUnread; // 읽음 처리 후에도 안 읽은 활성 공지가 남았는지(공지 버튼 레드닷)
 }
 #endregion
 #endregion

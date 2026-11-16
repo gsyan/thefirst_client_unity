@@ -2,14 +2,16 @@
 // 서버가 내려준 nextUpdatedAt 기준으로 캐시 재활용, 만료 시 재요청
 using System;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UIPanelRank_Leaderboard : MonoBehaviour
 {
     private enum RankingType { Pvp, Zone }
 
-    [SerializeField] private ToggleButton m_pvpToggle;
-    [SerializeField] private ToggleButton m_zoneToggle;
+    [SerializeField] private Button m_pvpButton;
+    [SerializeField] private Button m_zoneButton;
     [SerializeField] private ScrollViewRankingItem m_myRankInfo;
     [SerializeField] private InfiniteScrollView m_rankingScrollView;
     [SerializeField] private GameObject m_rankingItemPrefab;
@@ -26,7 +28,12 @@ public class UIPanelRank_Leaderboard : MonoBehaviour
     private DateTime? m_pvpNextUpdatedAt;
     private DateTime? m_zoneNextUpdatedAt;
 
+    // 탭별 전체 순위 수 — 스크롤뷰는 마지막 Initialize의 개수만 기억하므로, 캐시로 탭을 복귀할 때 이 값으로 다시 초기화
+    private int m_pvpTotalCount;
+    private int m_zoneTotalCount;
+
     private RankingType m_currentType = RankingType.Pvp;
+    private ButtonGroupSystem m_buttonGroup; // 선택된 버튼 색 표시 전담(클릭 효과음도 이쪽에서 재생) — 로딩은 각 버튼 onClick이 처리
 
     private void Awake()
     {
@@ -35,16 +42,31 @@ public class UIPanelRank_Leaderboard : MonoBehaviour
             m_rankingScrollView.onItemBind = OnItemBind;
             m_rankingScrollView.onNeedData = OnNeedData;
         }
-        if (m_pvpToggle != null)
+
+        // defaultIndex=-1: 초기 선택은 OnEnable의 LoadTab이 정함(Initialize가 선택 콜백으로 로딩을 먼저 일으키지 않게)
+        m_buttonGroup = gameObject.AddComponent<ButtonGroupSystem>();
+        m_buttonGroup.defaultIndex = -1;
+        m_buttonGroup.items.Add(new ButtonGroupItem { button = m_pvpButton });
+        m_buttonGroup.items.Add(new ButtonGroupItem { button = m_zoneButton });
+        m_buttonGroup.Initialize();
+
+        if (m_pvpButton != null)
         {
-            m_pvpToggle.SetTexts("UI_Pvp", "");
-            m_pvpToggle.button.onClick.AddListener(() => OnRankingTabClicked(RankingType.Pvp));
+            SetButtonLabel(m_pvpButton, "UI_Pvp");
+            m_pvpButton.onClick.AddListener(() => OnRankingTabClicked(RankingType.Pvp));
         }
-        if (m_zoneToggle != null)
+        if (m_zoneButton != null)
         {
-            m_zoneToggle.SetTexts("UI_Exploration", "");
-            m_zoneToggle.button.onClick.AddListener(() => OnRankingTabClicked(RankingType.Zone));
+            SetButtonLabel(m_zoneButton, "UI_Exploration");
+            m_zoneButton.onClick.AddListener(() => OnRankingTabClicked(RankingType.Zone));
         }
+    }
+
+    private void SetButtonLabel(Button button, string locKey)
+    {
+        TMP_Text label = button.GetComponentInChildren<TMP_Text>(true);
+        if (label != null)
+            CommonUtility.SetUILocText(label, locKey);
     }
 
     // TabSystem이 이 GameObject를 SetActive(true)로 켤 때마다 호출됨 — 구 UITabBase.OnTabActivated 대응
@@ -56,13 +78,12 @@ public class UIPanelRank_Leaderboard : MonoBehaviour
 
     private void UpdateToggleState()
     {
-        if (m_pvpToggle != null) m_pvpToggle.SetSelected(m_currentType == RankingType.Pvp);
-        if (m_zoneToggle != null) m_zoneToggle.SetSelected(m_currentType == RankingType.Zone);
+        int selectedIndex = m_currentType == RankingType.Pvp ? 0 : 1;
+        m_buttonGroup.Select(selectedIndex);
     }
 
     private void OnRankingTabClicked(RankingType type)
     {
-        SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true);
         if (m_currentType == type) return;
         LoadTab(type);
     }
@@ -79,7 +100,7 @@ public class UIPanelRank_Leaderboard : MonoBehaviour
             {
                 RefreshMyInfoName(m_pvpMyInfo);
                 ApplyMyInfo(m_pvpMyInfo);
-                m_rankingScrollView.RefreshVisible();
+                m_rankingScrollView.Initialize(m_pvpTotalCount, m_rankingItemPrefab);
                 return;
             }
             m_pvpCache.Clear();
@@ -92,7 +113,7 @@ public class UIPanelRank_Leaderboard : MonoBehaviour
             {
                 RefreshMyInfoName(m_zoneMyInfo);
                 ApplyMyInfo(m_zoneMyInfo);
-                m_rankingScrollView.RefreshVisible();
+                m_rankingScrollView.Initialize(m_zoneTotalCount, m_rankingItemPrefab);
                 return;
             }
             m_zoneCache.Clear();
@@ -118,6 +139,7 @@ public class UIPanelRank_Leaderboard : MonoBehaviour
 
         m_pvpMyInfo = response.data.myInfo;
         m_pvpNextUpdatedAt = ParseUpdatedAt(response.data.lastUpdatedAt);
+        m_pvpTotalCount = response.data.totalCount;
 
         ApplyMyInfo(m_pvpMyInfo);
         m_rankingScrollView.Initialize(response.data.totalCount, m_rankingItemPrefab);
@@ -140,6 +162,7 @@ public class UIPanelRank_Leaderboard : MonoBehaviour
 
         m_zoneMyInfo = response.data.myInfo;
         m_zoneNextUpdatedAt = ParseUpdatedAt(response.data.lastUpdatedAt);
+        m_zoneTotalCount = response.data.totalCount;
 
         ApplyMyInfo(m_zoneMyInfo);
         m_rankingScrollView.Initialize(response.data.totalCount, m_rankingItemPrefab);

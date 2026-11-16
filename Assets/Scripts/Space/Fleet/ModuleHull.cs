@@ -880,10 +880,23 @@ public class ModuleHull : ModuleBase
         return m_healthMax > 0 ? m_health / m_healthMax : 0f;
     }
 
-    // 초당 수리량 — SpaceFleet.CountShipsNeedingRepair가 수리 능력 없는 함체를 집계에서 제외하기 위해 조회
+    // 초당 수리량 — 지원 능력(아군 수리)의 수리력 합산에 사용
     public float GetRepair()
     {
         return m_repair;
+    }
+
+    // 이번 수리 틱에 실제로 회복될 양(수리력과 부족한 체력 중 작은 값) — 수리 전술 비용을 회복 전에 계산하기 위해 ApplyRepairTick과 같은 식을 씀
+    public float GetRepairTickAmount()
+    {
+        float missingHealth = Mathf.Max(0f, m_healthMax - m_health);
+        return Mathf.Min(m_repair, missingHealth);
+    }
+
+    // 패시브(체력회복 +N%) 미반영 원본 수리력 — 수리 비용은 늘어난 회복량을 빼고 이 값 기준으로 매김
+    public float GetBaseRepair()
+    {
+        return m_baseRepair;
     }
 
     // 전술 토글(수리) ON 상태에서 UIPanelBattle.Co_DrainResource가 1초 간격으로 호출 — m_repair는 이미 초당 단위라 deltaTime 계산 불필요

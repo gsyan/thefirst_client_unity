@@ -821,36 +821,49 @@ public class SpaceFleet : MonoBehaviour
         }
     }
 
-    // 수리 전술 비용 계산용 — 체력비율(함선 단위 합산)이 1 미만인 함선 수. 상태 변경 없는 순수 카운트
-    public int CountShipsNeedingRepair()
+    // 수리 비용 —비용 기준 회복량(패시브로 늘어난 몫 제외) healthUnit당 costPerUnit, 수리함(repairShip)이 수리하면 repairShipCostPercent 적용, 소수점은 올림
+    public static int CalcRepairCost(float costBaseAmount, SpaceShip repairShip)
     {
-        int count = 0;
-        foreach (SpaceShip ship in m_ships)
-        {
-            if (ship == null) continue;
+        GameSettings gameSettings = DataManager.Instance.m_dataTableConfig.gameSettings;
+        int healthUnit = gameSettings.tactic.tacticRepairHealthUnit;
+        int costPerUnit = gameSettings.tactic.tacticRepairCostPerUnit;
+        if (costBaseAmount <= 0f || healthUnit <= 0 || costPerUnit <= 0) return 0;
 
-            float shipHealth = 0f, shipHealthMax = 0f, shipRepair = 0f;
-            foreach (ModuleHull body in ship.m_moduleHulls)
-            {
-                if (body == null) continue;
-                shipHealth    += body.m_health;
-                shipHealthMax += body.m_healthMax;
-                shipRepair    += body.GetRepair();
-            }
-            // 수리 능력(repair)이 0인 함체는 체력이 덜 찼어도 토글로 회복될 수 없으므로 집계에서 제외 —
-            // 포함시키면 ApplyRepairTick이 실제로는 아무 효과가 없는데도 전술력만 깎임
-            if (shipHealthMax > 0f && shipHealth < shipHealthMax && shipRepair > 0f) count++;
-        }
-        return count;
+        float costPercent = 100f;
+        if (repairShip != null && repairShip.IsRepairShip() == true)
+            costPercent = gameSettings.supportAbility.repairShipCostPercent;
+
+        float rawCost = costBaseAmount * costPerUnit / healthUnit * costPercent / 100f;
+        return Mathf.CeilToInt(rawCost);
     }
 
-    // 전술 토글(수리) ON 상태에서 UIPanelBattle.Co_DrainResource가 1초 간격으로 호출 — 함체별 repair 스탯만큼 체력 회복
+    // 전술 토글(수리) ON 상태에서 UIPanelBattle.Co_DrainResource가 1초 간격으로 호출 — 함선마다 이번 틱 회복량만큼 비용을 내고 repair 스탯만큼 회복
+    // 자원이 부족해 비용을 못 내는 함선부터는 이번 틱에 회복하지 않음
     public void ApplyRepairTickToAllShips()
     {
         float fleetHealedAmount = 0f;
         foreach (SpaceShip ship in m_ships)
         {
             if (ship == null) continue;
+
+            // 비용 기준 회복량 = 바디별 회복량 × (원본 수리력 / 패시브 반영 수리력) — 체력회복 +N% 패시브로 늘어난 회복량은 비용에 넣지 않음
+            float shipTickAmount = 0f;
+            float shipCostBaseAmount = 0f;
+            foreach (ModuleHull body in ship.m_moduleHulls)
+            {
+                if (body == null) continue;
+                float bodyTickAmount = body.GetRepairTickAmount();
+                float bodyRepair = body.GetRepair();
+                float bodyBaseRatio = bodyRepair > 0f ? body.GetBaseRepair() / bodyRepair : 0f;
+                shipTickAmount += bodyTickAmount;
+                shipCostBaseAmount += bodyTickAmount * bodyBaseRatio;
+            }
+            if (shipTickAmount <= 0f) continue;
+
+            int shipRepairCost = CalcRepairCost(shipCostBaseAmount, ship);
+            bool isPaid = TryChargeRepairTacticCost(shipRepairCost);
+            if (isPaid == false) break;
+
             foreach (ModuleHull body in ship.m_moduleHulls)
             {
                 if (body == null) continue;
@@ -859,6 +872,9 @@ public class SpaceFleet : MonoBehaviour
             }
             ship.UpdateShipStatCur();
         }
+
+        if (fleetHealedAmount <= 0f) return;
+
         BattleStatTracker.AddFleetRepair(this, fleetHealedAmount);
         EventManager.Trigger_FleetUpdateHP();
         EventManager.Trigger_ShipUpdateHP();

@@ -29,8 +29,8 @@ public class SupportAbilitySettings
 {
     [Tooltip("지원 틱 간격(초) — 이 간격마다 대상 갱신 + 대상 1척당 1회 지원")]
     public int tickSeconds = 1;
-    [Tooltip("수리 1회(대상 1척, 1틱)당 소모하는 전투자원 — 회복량은 수리하는 함선의 수리력(datatable_module.csv hull repair)")]
-    public int repairCostPerTick = 10;
+    [Tooltip("아군 수리 능력(ally_repair_slot)이 있는 함선의 수리 비용 비율(퍼센트, 50 = 절반) — 자가 수리(수리 전술)·아군 수리 모두 적용. 기준 비용은 TacticSettings의 수리 전술 비용")]
+    public int repairShipCostPercent = 50;
     [Tooltip("수리 대상이 이 체력 비율(퍼센트)에 도달하면 대상을 풀고 다시 탐색(80 = 80%)")]
     public int repairReleaseRatioPercent = 80;
     [Tooltip("실드 충전 부스트가 대상의 기본 실드 회복에 더하는 추가량 — 기본 회복량 대비 퍼센트(100 = 기본의 100%, 즉 2배)")]
@@ -135,8 +135,10 @@ public class ExplorationSettings
 [System.Serializable]
 public class TacticSettings
 {
-    [Tooltip("수리 전술 ON 시 회복 틱마다, 체력이 100%가 아닌 함선 1척당 소모하는 탐험 포인트")]
-    public int tacticRepairCost = 100;
+    [Tooltip("수리 비용 기준 체력 — 이 체력을 회복할 때마다 tacticRepairCostPerUnit만큼 소모(회복량에 비례, 소수점은 올림). 자가 수리·아군 수리 공통, 패시브로 늘어난 회복량은 비용에서 제외")]
+    public int tacticRepairHealthUnit = 10;
+    [Tooltip("수리 전술로 tacticRepairHealthUnit만큼 회복할 때 소모하는 탐험 포인트")]
+    public int tacticRepairCostPerUnit = 10;
     [Tooltip("빔 전술 ON 시 빔 발사 1건마다 소모하는 탐험 포인트")]
     public int tacticBeamCost = 10;
     [Tooltip("미사일 전술 ON 시 미사일 발사 1건마다 소모하는 탐험 포인트")]

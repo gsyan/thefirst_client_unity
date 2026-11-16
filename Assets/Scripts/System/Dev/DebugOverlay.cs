@@ -67,7 +67,7 @@ public class DebugOverlay : MonoSingleton<DebugOverlay>
         rt.sizeDelta = new Vector2(800, 300);
     }
 
-    // 좌측 상단 버튼 3개(CalandarButton 등, anchoredPosition 116,0 / sizeDelta 100,100) 바로 아래 고정 배치 —
+    // 좌측 상단 버튼 3개(NoticeButton 등, anchoredPosition 116,0 / sizeDelta 100,100) 바로 아래 고정 배치 —
     // Resources/Prefabs/UI/Dev/FpsText 프리팹이 있으면 그 프리팹의 RectTransform/TextMeshProUGUI 값이 우선 적용되고, 이 상수들은 프리팹이 없을 때만 씀
     private static readonly Vector2 k_fpsAnchoredPosition = new Vector2(116, -150);
     private static readonly Vector2 k_fpsSize = new Vector2(700, 80);
