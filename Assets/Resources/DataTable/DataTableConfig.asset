@@ -73,7 +73,6 @@ MonoBehaviour:
     dailyQuest:
       streakPercentPerDay: 5
       streakMaxDays: 10
-      pvpQuestMinShipCount: 2
     scavenge:
       baseChancePercent: 10
       mineralMin: 10
