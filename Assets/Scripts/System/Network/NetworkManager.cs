@@ -80,6 +80,7 @@ public class NetworkManager : MonoSingleton<NetworkManager>
             m_bConnected = false;
             m_heartbeatStarted = false;
             m_isReturningForUpdate = false;
+            m_isReturningForAuthLost = false;
             m_bNetworkPopupShown = false;
             m_checkingInternetAccess = false;
             m_serverSelectShown = false;
@@ -332,6 +333,7 @@ public class NetworkManager : MonoSingleton<NetworkManager>
     private class RequestAttemptResult<T>
     {
         public ApiResponse<T> response;
+        public bool isAuthLost; // 401 후 토큰 갱신이 계정/토큰 무효로 실패 — 서버 DB 초기화 등으로 로그인 상태를 잃음
     }
 
     // 대기 UI(입력 차단막/스피너) 표시 → 요청 → 무응답이면 안내 팝업(Read는 재시도 선택 가능) → 대기 UI 해제 후 콜백
@@ -346,6 +348,7 @@ public class NetworkManager : MonoSingleton<NetworkManager>
         while (true)
         {
             attemptResult.response = null;
+            attemptResult.isAuthLost = false;
             yield return RunAsyncAttempt(taskFunc, attemptResult, maxRetries);
 
             bool isNoResponse = attemptResult.response != null && attemptResult.response.errorCode == (int)ServerErrorCode.CLIENT_REQUEST_NO_RESPONSE;
@@ -379,7 +382,51 @@ public class NetworkManager : MonoSingleton<NetworkManager>
             yield break;
         }
 
+        // 로그인 상태를 잃음 — 호출부 실패 처리 없이 MainScene으로 보내 자동 로그인부터 다시 진행. MainScene에서는 기존 로그인 실패 처리에 맡김(반복 이동 방지)
+        bool isInMainScene = SceneManager.GetActiveScene().name == "MainScene";
+        if (attemptResult.isAuthLost == true && isInMainScene == false)
+        {
+            ReturnToMainSceneForAuthLost();
+            yield break;
+        }
+
         onComplete?.Invoke(attemptResult.response);
+    }
+
+    private bool m_isReturningForAuthLost = false;
+
+    // 여러 요청이 동시에 실패해도 한 번만 이동. MainScene 진입 시 자동 로그인이 다시 돌도록 시도 플래그를 초기화
+    private void ReturnToMainSceneForAuthLost()
+    {
+        if (m_isReturningForAuthLost == true) return;
+        m_isReturningForAuthLost = true;
+
+        Debug.LogWarning("[NetworkManager] 토큰 갱신 실패로 로그인 상태를 잃음 — 재접속을 위해 MainScene으로 이동");
+        CancelInvoke(nameof(Heartbeat));
+        m_heartbeatStarted = false;
+        m_heartbeatFailCount = 0;
+        m_autoLoginAttempted = false;
+        m_guestAutoRecoverAttempted = false;
+        LoadingManager.LoadSceneWithLoading("MainScene");
+    }
+
+    // 토큰 갱신 실패 중 재로그인이 필요한 코드 — 네트워크 무응답/서버 500은 일시 장애라 제외
+    private static bool IsAuthLostErrorCode(ServerErrorCode errorCode)
+    {
+        switch (errorCode)
+        {
+            case ServerErrorCode.CLIENT_REFRESH_TOKEN_NULL:
+            case ServerErrorCode.HTTP_UNAUTHORIZED_401:
+            case ServerErrorCode.REFRESH_TOKEN_FAIL_NULL_TOKEN:
+            case ServerErrorCode.REFRESH_TOKEN_FAIL_EMPTY_TOKEN:
+            case ServerErrorCode.REFRESH_TOKEN_FAIL_INVALID_TOKEN:
+            case ServerErrorCode.REFRESH_TOKEN_FAIL_INVALID_TOKEN2:
+            case ServerErrorCode.REFRESH_TOKEN_FAIL_ACCOUNT_NOT_FOUND:
+            case ServerErrorCode.REFRESH_TOKEN_FAIL_REUSE_DETECTED:
+                return true;
+            default:
+                return false;
+        }
     }
 
     private bool m_isReturningForUpdate = false;
@@ -437,6 +484,7 @@ public class NetworkManager : MonoSingleton<NetworkManager>
                         if (refreshException is CustomException refreshCustomEx)
                             refreshErrorCode = refreshCustomEx.ErrorCode;
                         response = ApiResponse<T>.error((int)refreshErrorCode);
+                        result.isAuthLost = IsAuthLostErrorCode(refreshErrorCode);
                         break;
                     }
 
@@ -444,6 +492,7 @@ public class NetworkManager : MonoSingleton<NetworkManager>
                     {
                         Debug.LogError("refreshTask.Result.errorCode != 0");
                         response = ApiResponse<T>.error(refreshTask.Result.errorCode);
+                        result.isAuthLost = IsAuthLostErrorCode((ServerErrorCode)refreshTask.Result.errorCode);
                         break;
                     }
 
@@ -1213,6 +1262,9 @@ public class NetworkManager : MonoSingleton<NetworkManager>
             CancelInvoke(nameof(Heartbeat));
             m_heartbeatStarted = false;
             m_heartbeatFailCount = 0;
+            // MainScene 진입 시 자동 로그인이 다시 돌도록 시도 플래그 초기화
+            m_autoLoginAttempted = false;
+            m_guestAutoRecoverAttempted = false;
             LoadingManager.LoadSceneWithLoading("MainScene");
         }
     }
