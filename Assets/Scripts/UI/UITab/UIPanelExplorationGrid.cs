@@ -16,6 +16,7 @@ public class UIPanelExplorationGrid : UIPanelBase
 
     [Header("광물 표시 / 런 포기")]
     [SerializeField] private RowLabelValue m_mineralAmountRow; // 진행 중인 런의 광물 현재치 상시 표시(런 종료 시 소멸)
+    [SerializeField] private GameObject m_abandonRunContainer; // 포기 버튼 묶음 — 런 진행 중에만 표시
     [SerializeField] private UnityEngine.UI.Button m_abandonRunButton; // 진행 중인 런을 포기(적립분의 50%만 확정 지급)
     [SerializeField] private TMP_Text m_abandonRunButtonText;
 
@@ -262,8 +263,8 @@ public class UIPanelExplorationGrid : UIPanelBase
         // 존 탭/포인트 표시/버튼/그리드 버튼 전부 SettleZoneEntry(카메라 정착 후)에서 한 번에 세팅됨 —
         // 그 전까지 이전 존의 잔상이 보이지 않도록 버튼만 즉시 비우고, 포기 버튼/존 탭은 기본값(비표시)으로 되돌려둠
         ReturnAllButtonsToPool();
-        if (m_abandonRunButton != null)
-            m_abandonRunButton.gameObject.SetActive(false);
+        if (m_abandonRunContainer != null)
+            m_abandonRunContainer.SetActive(false);
         if (m_zoneTabScroll != null)
             m_zoneTabScroll.gameObject.SetActive(false);
 
@@ -1480,8 +1481,8 @@ public class UIPanelExplorationGrid : UIPanelBase
     private void RefreshAbandonRunButtonState()
     {
         bool isRunActive = IsActiveExplorationZone(m_currentZoneNumber) == true;
-        if (m_abandonRunButton != null)
-            m_abandonRunButton.gameObject.SetActive(isRunActive);
+        if (m_abandonRunContainer != null)
+            m_abandonRunContainer.SetActive(isRunActive);
     }
 
     // onAnimComplete: 롤링 애니메이션이 실제로 끝난 프레임에 호출됨(코루틴을 아예 못 도는 경로에서도 즉시 호출됨) — 애니메이션과 정확히 동기화해야 하는 후속 로직(예: 탈출 확정 팝업)에 사용
