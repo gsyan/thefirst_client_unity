@@ -20,6 +20,9 @@ public class UIVipDetail : MonoBehaviour
     [SerializeField] private TMP_Text   m_purchaseLabel1;  // TextBecomeAdmiral
     [SerializeField] private TMP_Text   m_purchaseLabel2;  // TextCommanderLevel2
 
+    private static readonly Color k_vipColor = new Color(0.91764706f, 0.69411767f, 0.12156863f);        // 제독 승급 버튼 라벨 색
+    private static readonly Color k_vipInactiveBenefitColor = new Color(0.6216f, 0.4958f, 0.1184f);   // VIP 비활성 시 혜택 목록 색
+
     private RectTransform m_rectTransform;
 
     private void Awake()
@@ -87,14 +90,9 @@ public class UIVipDetail : MonoBehaviour
             m_benefitName.text = loc.Get("UIVipStatus_BenefitTitle") + " " + status;
         }
 
-        Color titleColor = isAdmiral
-            ? CommonUtility.PaletteColor("Vip")
-            : CommonUtility.PaletteColor("VipDark");
-
-        // 혜택 목록은 VipDark 대비 차이가 미미해서 더 어두운 VipDark2 사용
-        Color benefitColor = isAdmiral
-            ? CommonUtility.PaletteColor("Vip")
-            : CommonUtility.PaletteColor("VipDark2");
+        // 제목/배지는 항상 제독 승급 버튼과 같은 색, 혜택 목록은 비VIP일 때만 한 단계 어둡게
+        Color titleColor = k_vipColor;
+        Color benefitColor = isAdmiral ? k_vipColor : k_vipInactiveBenefitColor;
 
         if (m_benefitName != null)
             m_benefitName.color = titleColor;
