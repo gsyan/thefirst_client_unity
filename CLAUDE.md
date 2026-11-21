@@ -11,11 +11,11 @@
 ## 서버 프로젝트(Java Spring)
 - 루트: D:\BK\thefirst\thefirst_server 또는 C:\bk\thefirst\thefirst_server
 - **[필수] 서버의 모든 DateTime은 반드시 UTC(`Instant.now()`)로 저장할 것** — `LocalDateTime.now()`, `LocalDate.now()` 사용 금지. 날짜 비교가 필요한 경우 `LocalDate.now(ZoneOffset.UTC)` 명시
-- **[필수] 실서버에 배포된 마이그레이션은 동결(현재 V1~V3), 실서버에 아직 안 나간 변경은 그 다음 번호 파일 하나에만 모음(현재 `V4__release_1_1.sql`)** — 스키마/데이터 변경은 이 파일에 추가/수정하고, 번호는 그 파일을 실서버에 배포하는 순간에만 올림(실서버 배포 후 다음 변경은 V5)
-- **테스트 서버에만 들어간 파일(현재 V4)은 수정 가능** — 단 테스트 서버 DB의 Flyway checksum이 어긋나 다음 기동이 실패하므로, 수정했으면 사용자가 Jenkins `DB_CREATE`로 테스트 서버 DB를 재생성해야 한다고 반드시 알릴 것
+- **[필수] 실서버에 배포된 마이그레이션은 동결(현재 V1~V4), 실서버에 아직 안 나간 변경은 그 다음 번호 파일 하나에만 모음(현재 `V5__release_1_2.sql`)** — 스키마/데이터 변경은 이 파일에 추가/수정하고, 번호는 그 파일을 실서버에 배포하는 순간에만 올림(실서버 배포 후 다음 변경은 V6)
+- **테스트 서버에만 들어간 파일(현재 V5)은 수정 가능** — 단 테스트 서버 DB의 Flyway checksum이 어긋나 다음 기동이 실패하므로, 수정했으면 사용자가 Jenkins `DB_CREATE`로 테스트 서버 DB를 재생성해야 한다고 반드시 알릴 것
 - 개발 DB는 **사용자가** `db_create.bat`(schema.sql=V1 적용) 후 서버를 기동해 V2부터 처음부터 다시 적용함 — Claude는 이 초기화를 실행/권유하지 않고, 미배포 파일을 수정했으면 "db_create.bat 후 서버 기동"이 필요하다고 알리기만 함. `db_sync_v1_migration.bat`(V2+ 파일을 삭제함)은 배포된 V2·V3까지 지우므로 사용 금지, Jenkins `DB_CREATE`는 prod 초기화 도구라 Claude는 건드리지 않음
-- **[금지] 실서버에 배포된 마이그레이션 파일(V1~V3) 수정/삭제 금지, `sql/schema.sql` 수정·실행 금지** — schema.sql은 DROP을 포함한 V1 스냅샷이며 배포된 DB 기준선임
-- **실서버 배포 전 검증** — `db_backup_prod.bat`(실서버 덤프 → `db_backup/`, git 제외) 후 `db_backup/db_local_restore_to_backup.bat`(`GameDB_prod.sql`을 로컬 GameDB로 복원)으로 실서버 데이터를 재현하고, 로컬 서버 기동으로 V4가 기존 데이터 위에 적용되는지 확인. Claude가 SQL만 따로 검증할 때는 별도 DB(예: `GameDB_v4test`)에 복원해서 할 것
+- **[금지] 실서버에 배포된 마이그레이션 파일(V1~V4) 수정/삭제 금지, `sql/schema.sql` 수정·실행 금지** — schema.sql은 DROP을 포함한 V1 스냅샷이며 배포된 DB 기준선임
+- **실서버 배포 전 검증** — `db_backup_prod.bat`(실서버 덤프 → `db_backup/`, git 제외) 후 `db_backup/db_local_restore_to_backup.bat`(`GameDB_prod.sql`을 로컬 GameDB로 복원)으로 실서버 데이터를 재현하고, 로컬 서버 기동으로 V5가 기존 데이터 위에 적용되는지 확인. Claude가 SQL만 따로 검증할 때는 별도 DB(예: `GameDB_v5test`)에 복원해서 할 것
 - 마이그레이션 작성 규칙: 기존 데이터가 있으므로 NOT NULL 컬럼 추가 시 DEFAULT 지정, 엔티티(`ddl-auto=validate`)와 컬럼/타입이 일치해야 서버가 기동됨
 
 ## 코드 생성 도구

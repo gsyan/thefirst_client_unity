@@ -21,8 +21,8 @@ public class CustomException : Exception
 
 public static class ApiServerUrl
 {
-    // Dev server — Windows 포트 예약 범위(8080/8081)를 피해 서버 application-dev.properties에서 8888로 변경됨
-    public const string Dev     = "http://localhost:8888/api";
+    // Dev server — 서버 application-dev.properties의 server.port와 맞춤(Windows 포트 예약 범위 밖)
+    public const string Dev     = "http://localhost:18888/api";
     //public const string Dev     = "http://192.168.50.51:8080/api";
 
     // test server

@@ -571,6 +571,14 @@ MonoBehaviour:
     m_Key: UIFleet_PlaceFailed_DuplicateArchetype
     m_Metadata:
       m_Items: []
+  - m_Id: 103842786922332160
+    m_Key: UIFleet_RemoveBlockedDuringZoneRun
+    m_Metadata:
+      m_Items: []
+  - m_Id: 103842786989441024
+    m_Key: UIFleet_ReplaceBlockedDuringZoneRun
+    m_Metadata:
+      m_Items: []
   - m_Id: 61639704184750085
     m_Key: UIFleet_PlacedShipsTitle
     m_Metadata:
@@ -925,6 +933,10 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 80217713703518208
     m_Key: UI_AutoEnterBattle
+    m_Metadata:
+      m_Items: []
+  - m_Id: 103685866265640960
+    m_Key: UI_SkipStandoff
     m_Metadata:
       m_Items: []
   - m_Id: 26480402604359680

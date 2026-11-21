@@ -148,6 +148,8 @@ UIFleet_PlaceFailed_Locked,,This slot is locked. Raise your commander level to u
 UIFleet_PlaceFailed_NotEnoughCommandPower,,Not enough command power.,지휘력이 부족합니다.
 UIFleet_PlaceFailed_HullNotFound,,This hull is unavailable.,사용할 수 없는 함체입니다.
 UIFleet_PlaceFailed_DuplicateArchetype,,This ship type is already in your fleet.,이미 함대에 같은 종류의 함선이 있습니다.
+UIFleet_RemoveBlockedDuringZoneRun,,You cannot remove ships during a zone run.,존런 중에는 배치해제 할 수 없습니다.
+UIFleet_ReplaceBlockedDuringZoneRun,,You cannot replace ships during a zone run.,존런 중에는 함선 교체를 할 수 없습니다.
 UIFleet_PlacedShipsTitle,,Fleet,함대구성
 UIFleet_StatsTitle,,Stats,성능
 UIFleet_PassiveTabTitle,,Passive,패시브
@@ -239,6 +241,7 @@ UITabPvp_RetreatConfirm,,Retreat from the PvP battle?,PvP 전투에서 퇴각하
 UI_Retreat,,RETREAT,퇴각
 UI_StartBattle,,START BATTLE,전투시작
 UI_AutoEnterBattle,,AUTO ENTER,자동 진입
+UI_SkipStandoff,,SKIP STANDOFF,대치 건너뛰기
 require_level_compare,,Lv.{0} (Current Lv.{1}),Lv.{0} (현재 Lv.{1})
 UIPopupConfirm_RequireLevel,,Required Level,필요 레벨
 UIPopupConfirm_PvpPointLabel,,PVP Point,PVP 포인트
@@ -473,7 +476,7 @@ ModuleDescription_prism,,A focused-fire warship specialized in beam weapons,빔 
 ModuleDescription_argus,,A scouting warship that discovers minerals while exploring during combat,전투 중 주변을 탐사해 광물을 발견하는 탐사형 전투함
 ModuleDescription_colossus,,A tank ship that holds the front line with heavy armor and high health,두꺼운 장갑과 높은 체력으로 전선을 지키는 탱커함
 ModuleDescription_leviathan,,A transport ship responsible for the fleet's combat resource supply,함대의 전투 자원 조달과 보급을 책임지는 수송선
-ModuleDescription_corsair,,A raider that secures minerals by scavenging enemy fighters,적 함재기를 약탈해 광물을 확보하는 약탈선
+ModuleDescription_corsair,,A raider whose fighters excel at scavenging minerals,함재기의 약탈 능력이 강화된 약탈선
 ModuleDescription_vulcan,,A bomber that wipes out enemy fleets with wide-area explosions,광범위 폭발로 적 함대를 쓸어버리는 폭탄선
 ModuleDescription_nemesis,,An assassin ship aiming for a decisive blow with a high critical hit chance,높은 치명타 확률로 결정적 한 방을 노리는 치명선
 ModuleDescription_phoenix,,A repair ship that keeps allied ships' combat strength up by repairing them,아군 함선을 수리해 전투력을 유지시키는 수리함

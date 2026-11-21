@@ -730,20 +730,20 @@ public class SpaceFleet : MonoBehaviour
     // 파괴된 함선만 복구 (퇴각용, 살아있는 함선은 현재 체력 유지)
     public void RestoreDestroyedShips(float healthRatio = 0.1f)
     {
-        HashSet<long> aliveShipIds = new HashSet<long>();
+        // 슬롯 위치(positionIndex)로 생존 판정 — 편성에서 새로 배치한 함선은 서버 id가 없어 id=0으로 중복될 수 있음
+        HashSet<int> alivePositionIndices = new HashSet<int>();
         foreach (SpaceShip ship in m_ships)
         {
             if (ship != null)
-                aliveShipIds.Add(ship.m_shipInfo.id);
+                alivePositionIndices.Add(ship.m_shipInfo.positionIndex);
         }
 
         bool hasRestored = false;
         foreach (ShipInfo shipInfo in m_fleetInfo.ships)
         {
-            if (aliveShipIds.Contains(shipInfo.id)) continue;
+            if (alivePositionIndices.Contains(shipInfo.positionIndex)) continue;
 
-            CreateSpaceShipByInfo(shipInfo, bWarp: true, bFillNullSlot: true);
-            SpaceShip newShip = FindShip(shipInfo.id);
+            SpaceShip newShip = CreateSpaceShipByInfo(shipInfo, bWarp: true, bFillNullSlot: true);
             if (newShip != null)
             {
                 foreach (ModuleHull body in newShip.m_moduleHulls)

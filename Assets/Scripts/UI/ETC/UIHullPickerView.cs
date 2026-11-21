@@ -381,6 +381,13 @@ public class UIHullPickerView : MonoBehaviour
     {
         if (m_onRemove == null) return;
 
+        // 존런 중 배치해제 금지 — 해제 후 재배치로 손상/파괴된 함선이 만피로 되살아나는 것을 막음(서버도 같은 규칙으로 거부)
+        if (ObjectManager.Instance.IsExplorationRunActive() == true)
+        {
+            ShowBlockedDuringZoneRunPopup("UIFleet_RemoveBlockedDuringZoneRun");
+            return;
+        }
+
         UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig
         {
             message = LocalizationManager.Instance.Get("UIHullPicker_RemoveConfirmMessage"),
@@ -391,6 +398,16 @@ public class UIHullPickerView : MonoBehaviour
                 m_onRemove(OnConfirmProcessed);
             },
             onCancel = () => { },
+        });
+    }
+
+    private void ShowBlockedDuringZoneRunPopup(string messageKey)
+    {
+        UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig
+        {
+            message = LocalizationManager.Instance.Get(messageKey),
+            onConfirm = () => { },
+            autoCloseSec = 2.5f,
         });
     }
 
@@ -655,6 +672,14 @@ public class UIHullPickerView : MonoBehaviour
     private void OnPlaceClicked()
     {
         if (m_onConfirm == null) return;
+
+        // 존런 중엔 빈 슬롯 배치만 허용 — 함선이 있는 슬롯의 함체 교체는 금지(서버도 같은 규칙으로 거부)
+        bool isReplaceDuringRun = m_hasExistingShip == true && ObjectManager.Instance.IsExplorationRunActive() == true;
+        if (isReplaceDuringRun == true)
+        {
+            ShowBlockedDuringZoneRunPopup("UIFleet_ReplaceBlockedDuringZoneRun");
+            return;
+        }
 
         // 서버 응답이 올 때까지 팝업을 열어둠 — 중복 확정을 막기 위해 확인 버튼만 잠근다
         if (m_confirmButton != null)

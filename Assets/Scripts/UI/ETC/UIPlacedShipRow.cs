@@ -236,12 +236,14 @@ public class UIPlacedShipRow : MonoBehaviour
 
     public void SetActionsInteractable(bool interactable)
     {
+        // 잠금을 풀 때도 Setup이 막아둔 상태(콜백 없음/이번 존런 파괴)는 그대로 유지
+        bool isUsable = interactable == true && m_isDestroyedThisRun == false;
         if (m_shipTypeSelectButton != null)
-            m_shipTypeSelectButton.interactable = interactable;
+            m_shipTypeSelectButton.interactable = isUsable == true && m_onTypeSelectClicked != null;
         if (m_frontToggleSlide != null)
-            m_frontToggleSlide.SetInteractable(interactable);
+            m_frontToggleSlide.SetInteractable(isUsable);
         if (m_manageButton != null)
-            m_manageButton.interactable = interactable;
+            m_manageButton.interactable = isUsable == true && m_onManageClicked != null;
     }
 
     // isOn=true는 스위치가 오른쪽(후방)에 있다는 뜻이라 전방 여부로 다시 반전

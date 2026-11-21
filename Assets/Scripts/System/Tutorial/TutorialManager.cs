@@ -212,6 +212,7 @@ public class TutorialManager : MonoSingleton<TutorialManager>
         FleetComposition composition = DataManager.Instance.m_currentFleetComposition;
         if (commander == null || composition == null) return false;
         if (commander.HasAnyUnlockedHull() == true) return false;
+        if (ObjectManager.Instance.IsExplorationRunActive() == true) return false; // 배치해제 단계가 있어 존런 중엔 시작 불가(교체/해제 금지) — 런 밖에서 패널을 다시 열 때 시작
 
         int achievementPoint = commander.GetAchievementPoint();
         int maxCommandPower = composition.GetMaxCommandPower();

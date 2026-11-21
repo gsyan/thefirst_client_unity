@@ -737,11 +737,19 @@ public class UIPanelExplorationGrid : UIPanelBase
         }
 
         string targetCellDisplay = FormatCellForDisplay($"{row}-{col}");
+        // 대치 건너뛰기 체크박스는 적 함대가 있는 셀에서만, 튜토리얼 중이 아닐 때만 노출(설정은 UIPanelPrepareBattle이 보관)
+        List<FleetInfo> targetWaves = GetCellEnemyWaves(row, col);
+        bool isBattleCell = targetWaves != null && targetWaves.Count > 0 && targetWaves[0].ships != null && targetWaves[0].ships.Count > 0;
+        bool isTutorialPlaying = TutorialManager.Instance != null && TutorialManager.Instance.IsPlaying == true;
+        bool showSkipStandoffToggle = isBattleCell == true && isTutorialPlaying == false;
         UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig
         {
             message = LocalizationManager.Instance.Get("UIPopupMessage_ConfirmTryCell", m_currentZoneNumber, targetCellDisplay),
             onConfirm = () => ConfirmEnterCell(row, col),
-            onCancel = () => { }
+            onCancel = () => { },
+            optionToggleLocKey = showSkipStandoffToggle == true ? "UI_SkipStandoff" : null,
+            optionToggleValue = UIPanelPrepareBattle.IsSkipStandoffEnabled(),
+            onOptionToggleChanged = UIPanelPrepareBattle.SetSkipStandoffEnabled,
         });
     }
 
@@ -954,7 +962,8 @@ public class UIPanelExplorationGrid : UIPanelBase
         m_currentCol = m_pendingCellCol;
 
         ObjectManager.Instance.SetMyFleetPosition(m_pendingCellWorldPos, 0f);
-        myFleet.StartFleetWarpIn();
+        m_isMyFleetWarpArrived = false;
+        myFleet.StartFleetWarpIn(OnMyFleetWarpArrived);
         SpawnConfirmedEnemyFleet(myFleet);
     }
 
@@ -1015,6 +1024,7 @@ public class UIPanelExplorationGrid : UIPanelBase
     {
         if (response.errorCode == (int)ServerErrorCode.EXPLORATION_ANOTHER_ZONE_IN_PROGRESS)
         {
+            ShowSkippedStandoffAfterStartFailed();
             ShowAbandonAnotherRunConfirmPopup();
             return;
         }
@@ -1023,6 +1033,7 @@ public class UIPanelExplorationGrid : UIPanelBase
         {
             // 전투는 시작하지 않음 — 대치 화면은 그대로 남아있어 유저가 다시 시도하거나 퇴각할 수 있음
             Debug.LogError($"[UIPanelExplorationGrid] EnterExplorationCell(전투시작) 실패: {response.errorCode}");
+            ShowSkippedStandoffAfterStartFailed();
             NetworkManager.Instance.ShowRequestFailedPopup(response.errorCode);
             return;
         }
@@ -1032,8 +1043,61 @@ public class UIPanelExplorationGrid : UIPanelBase
         StartConfirmedLocalCombat();
     }
 
+    // 대치 건너뛰기로 대치 화면 없이 시작했다가 실패하면 재시도/퇴각 버튼이 없으므로 대치 화면을 띄움
+    private void ShowSkippedStandoffAfterStartFailed()
+    {
+        UIPanelPrepareBattle panel = UIManager.Instance.GetPanel<UIPanelPrepareBattle>("UIPanelPrepareBattle");
+        if (panel != null)
+            panel.ShowStandoffIfSkipped();
+    }
+
     // 적 함대는 이미 로컬에 스폰돼 있으므로 별도 통신 없이 바로 교전 전환
+    // 두 함대 워프인이 아직 안 끝났으면 도착 후 시작 — 이동 중 교전하면 빔이 이미 지나간 자리에 맞거나 미사일이 꺾여 날아감(대치 건너뛰기/빠른 시작 버튼)
     private void StartConfirmedLocalCombat()
+    {
+        bool isBothFleetsArrived = m_isMyFleetWarpArrived == true && m_isEnemyFleetWarpArrived == true;
+        if (isBothFleetsArrived == true)
+        {
+            BeginLocalCombat();
+            return;
+        }
+
+        if (m_waitFleetsArrivedCoroutine != null) return;
+        // 이 패널은 전투 화면 아래에서 비활성일 수 있어 항상 살아있는 ObjectManager에서 대기 코루틴을 돌림
+        m_waitFleetsArrivedCoroutine = ObjectManager.Instance.StartCoroutine(WaitFleetsArrivedThenBeginCombat());
+    }
+
+    private const float k_fleetArriveWaitMaxSec = 5f; // 워프인 콜백이 끝내 안 오는 경우(함대 재생성 등) 대비 상한
+    private bool m_isMyFleetWarpArrived = true;
+    private bool m_isEnemyFleetWarpArrived = true;
+    private Coroutine m_waitFleetsArrivedCoroutine;
+
+    private void OnMyFleetWarpArrived() { m_isMyFleetWarpArrived = true; }
+    private void OnEnemyFleetWarpArrived() { m_isEnemyFleetWarpArrived = true; }
+
+    private IEnumerator WaitFleetsArrivedThenBeginCombat()
+    {
+        float waitStartTime = Time.realtimeSinceStartup;
+        while (m_isMyFleetWarpArrived == false || m_isEnemyFleetWarpArrived == false)
+        {
+            float waitedSec = Time.realtimeSinceStartup - waitStartTime;
+            if (waitedSec >= k_fleetArriveWaitMaxSec) break;
+            yield return null;
+        }
+        m_waitFleetsArrivedCoroutine = null;
+
+        if (m_standoffEnemyFleet == null) yield break; // 기다리는 사이 퇴각 등으로 대치가 정리됨
+        BeginLocalCombat();
+    }
+
+    private void StopWaitingFleetsArrived()
+    {
+        if (m_waitFleetsArrivedCoroutine == null) return;
+        ObjectManager.Instance.StopCoroutine(m_waitFleetsArrivedCoroutine);
+        m_waitFleetsArrivedCoroutine = null;
+    }
+
+    private void BeginLocalCombat()
     {
         // 교전 상태 진입 즉시 발사하면 안되는 경우를 대비해 마련해둠
         const float BATTLE_START_DELAY_SEC = 0.001f;
@@ -1195,7 +1259,8 @@ public class UIPanelExplorationGrid : UIPanelBase
         // enemyFleetInfo.ships[i].healthMultiplier/attackMultiplier 값을 그대로 씀(SpawnFleetFromPreset 내부에서 처리)
         SpaceFleet enemyFleet = ObjectManager.Instance.SpawnFleetFromPreset(enemyFleetInfo, enemyTeam, EFleetSource.fleet_source_zone_data, enemyPos, enemyRot, "EnemyFleet");
         m_standoffEnemyFleet = enemyFleet;
-        enemyFleet.StartFleetWarpIn();
+        m_isEnemyFleetWarpArrived = false;
+        enemyFleet.StartFleetWarpIn(OnEnemyFleetWarpArrived);
 
         ShowPrepareBattlePanel(myFleet, enemyFleet);
     }
@@ -1270,6 +1335,8 @@ public class UIPanelExplorationGrid : UIPanelBase
             OnClearExplorationCellFailed(response.errorCode);
             return;
         }
+
+        EventManager.Trigger_DailyProgressConfirmed();
 
         int mineralGained = 0;
         int scavengedMineral = 0;
@@ -1433,6 +1500,7 @@ public class UIPanelExplorationGrid : UIPanelBase
             }
 
             EventManager.Trigger_ZoneRunEnded();
+            EventManager.Trigger_DailyProgressConfirmed();
 
             RefreshAbandonRunButtonState();
             ApplyExpAndLevel(response.data.totalExp, response.data.commanderLevel);
@@ -1715,6 +1783,7 @@ public class UIPanelExplorationGrid : UIPanelBase
     // 퇴각 — 적 함대만 제거하고 내 함대를 대치 진입 직전 위치/셀로 복귀
     private void OnConfirmRetreat()
     {
+        StopWaitingFleetsArrived();
         if (m_standoffEnemyFleet != null)
         {
             ObjectManager.Instance.RemoveEnemyFleet(m_standoffEnemyFleet);

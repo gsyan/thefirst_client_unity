@@ -1008,10 +1008,10 @@ public class NetworkManager : MonoSingleton<NetworkManager>
         StartCoroutine(RunAsync(() => m_apiClient.ClaimAllAchievementsAsync(request), onComplete));
     }
 
-    public void GetDailyAchievementList(GetDailyAchievementListRequest request, System.Action<ApiResponse<GetDailyAchievementListResponse>> onComplete)
+    public void GetDailyAchievementList(GetDailyAchievementListRequest request, System.Action<ApiResponse<GetDailyAchievementListResponse>> onComplete, ERequestPolicy policy = ERequestPolicy.Read)
     {
         if (m_bConnected == false) return;
-        StartCoroutine(RunAsync(() => m_apiClient.GetDailyAchievementListAsync(request), onComplete, policy: ERequestPolicy.Read));
+        StartCoroutine(RunAsync(() => m_apiClient.GetDailyAchievementListAsync(request), onComplete, policy: policy));
     }
 
     public void ClaimDailyAchievement(ClaimDailyAchievementRequest request, System.Action<ApiResponse<ClaimDailyAchievementResponse>> onComplete)

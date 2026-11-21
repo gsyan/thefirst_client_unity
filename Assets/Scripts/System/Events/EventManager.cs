@@ -309,6 +309,24 @@ public static class EventManager
     public static void Subscribe_RetreatPvp(Action callback)   { OnRetreatPvp += callback; }
     public static void Unsubscribe_RetreatPvp(Action callback) { OnRetreatPvp -= callback; }
 
+    // 탐사 셀 전투 통계(BattleStatTracker) 집계 시작(true)/종료(false) — 전투 중 퀘스트 진행도 알림(UIBattleProgressNotice)용
+    public static event Action<bool> OnBattleStatCollectingChanged;
+    public static void Trigger_BattleStatCollectingChanged(bool isCollecting)
+    {
+        if (OnBattleStatCollectingChanged != null) OnBattleStatCollectingChanged(isCollecting);
+    }
+    public static void Subscribe_BattleStatCollectingChanged(Action<bool> callback)   { OnBattleStatCollectingChanged += callback; }
+    public static void Unsubscribe_BattleStatCollectingChanged(Action<bool> callback) { OnBattleStatCollectingChanged -= callback; }
+
+    // 셀 클리어/존 탈출을 서버가 확정한 응답을 받은 시점 — 서버에서만 오르는 일일퀘스트 진행도(셀 클리어 등)를 다시 받아 알림 표시용
+    public static event Action OnDailyProgressConfirmed;
+    public static void Trigger_DailyProgressConfirmed()
+    {
+        if (OnDailyProgressConfirmed != null) OnDailyProgressConfirmed();
+    }
+    public static void Subscribe_DailyProgressConfirmed(Action callback)   { OnDailyProgressConfirmed += callback; }
+    public static void Unsubscribe_DailyProgressConfirmed(Action callback) { OnDailyProgressConfirmed -= callback; }
+
     public static event Action<bool> OnZoneStageBattleEnd;
     public static void TriggerZoneStageBattleEnd(bool isVictory) { OnZoneStageBattleEnd?.Invoke(isVictory); }
     public static void Subscribe_ZoneStageBattleEnd(Action<bool> callback)   { OnZoneStageBattleEnd += callback; }

@@ -63,6 +63,36 @@ public static class BattleStatTracker
         s_scoutedMineral = 0;
         s_archetypeCounters.Clear();
         ResetQuestStats();
+        EventManager.Trigger_BattleStatCollectingChanged(true);
+    }
+
+    // 일일퀘스트 조건 중 전투 도중 값이 오르는 종류의 이번 전투 누적값 — 셀 클리어로만 정해지는 조건이면 false
+    // MineralEarned는 셀 보상분 없이 약탈+탐사 광물만(셀 보상은 클리어 확정 시 서버 지급)
+    public static bool TryGetLiveDailyCounter(EAchievementConditionType conditionType, out long value)
+    {
+        value = 0;
+        if (conditionType == EAchievementConditionType.EnemyShipKill) value = s_enemyShipKills;
+        else if (conditionType == EAchievementConditionType.AircraftLaunch) value = s_aircraftLaunches;
+        else if (conditionType == EAchievementConditionType.ScavengedMineral) value = s_scavengedMineral;
+        else if (conditionType == EAchievementConditionType.MineralEarned) value = s_scavengedMineral + s_scoutedMineral;
+        else if (conditionType == EAchievementConditionType.ShieldAbsorb) value = (long)System.Math.Round(s_shieldAbsorbTotal);
+        else if (conditionType == EAchievementConditionType.InterceptCount) value = s_interceptTotal;
+        else if (conditionType == EAchievementConditionType.FleetRepairAmount) value = (long)System.Math.Round(s_fleetRepairTotal);
+        else return false;
+        return true;
+    }
+
+    // 이번 전투에서 (아키타입, 카운터 종류)에 쌓인 값 — 없으면 0
+    public static long GetArchetypeCounterValue(string hullArchetype, string counterType)
+    {
+        for (int i = 0; i < s_archetypeCounters.Count; i++)
+        {
+            ArchetypeCounterEntry entry = s_archetypeCounters[i];
+            if (entry.hullArchetype != hullArchetype || entry.counterType != counterType) continue;
+
+            return (long)System.Math.Round(entry.amount);
+        }
+        return 0;
     }
 
     private static void ResetQuestStats()
@@ -104,6 +134,7 @@ public static class BattleStatTracker
             archetypeCounters.Add(new ArchetypeCounterReport { hullArchetype = entry.hullArchetype, counterType = entry.counterType, value = value });
         }
 
+        bool wasCollecting = s_isCollecting;
         s_isCollecting = false;
         s_enemyShipKills = 0;
         s_aircraftLaunches = 0;
@@ -111,6 +142,8 @@ public static class BattleStatTracker
         s_scoutedMineral = 0;
         s_archetypeCounters.Clear();
         ResetQuestStats();
+        if (wasCollecting == true)
+            EventManager.Trigger_BattleStatCollectingChanged(false);
     }
 
     // 내 함대 빔 발사 — 일일퀘스트 "미사일만/함재기만" 판정용

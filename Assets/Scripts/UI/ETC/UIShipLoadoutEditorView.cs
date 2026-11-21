@@ -1,6 +1,6 @@
 // 함선 로드아웃 편집 화면 — UIHullPickerView가 "바디(함체) 선택"을 담당한다면, 이 컴포넌트는 그 다음 단계인
 // "슬롯별 모듈 레벨 편집(ManageButton → M6 레벨업 팝업)"을 담당한다. 모듈은 항상 설치된 상태 — 설치/해제 개념 없음.
-// 레벨업은 로컬 미리보기 상태로 바뀌고, Confirm을 눌러야 서버에 실제로 반영됨(UIHullPickerView와 동일 패턴)
+// 레벨업은 강화 팝업에서 즉시 서버에 반영되고, 이 화면의 버튼은 닫기 하나 — 닫을 때 빈 슬롯을 기본 모듈로 채울 게 있으면 그때만 서버에 저장
 // 카테고리별 최대 슬롯 수는 FleetComposition.ParseMaxSlotsFromHullSubType으로 hullSubType에서 파싱(빔/미사일/격납고/실드/요격체 —
 // 티어6+ 함체는 실드/요격체 슬롯을 항상 보유, 슬롯만 있으면 바로 사용 가능)
 // 빔/미사일/격납고 슬롯을 하나의 InfiniteScrollView에 순서대로(빔 전부 → 미사일 전부 → 격납고 전부) 나열
@@ -14,13 +14,11 @@ public class UIShipLoadoutEditorView : MonoBehaviour
     [SerializeField] private TMP_Text m_titleText;
     [SerializeField] private TMP_Text m_statsTitleText;
     [SerializeField] private TMP_Text m_confirmButtonText;
-    [SerializeField] private TMP_Text m_cancelButtonText;
     [SerializeField] private InfiniteScrollView m_moduleScrollView;
     [SerializeField] private UIModuleSlotToggleRow m_rowPrefab; // 카테고리 공용 — 슬롯 1칸당 행 1개
 
     [SerializeField] private RowLabelValue m_commandPowerRow; // 상단 지휘력 요약(UIPanelFleet 성능 컬럼과 동일 구성)
-    [SerializeField] private Button m_confirmButton; // 예산 초과 시 비활성화
-    [SerializeField] private Button m_cancelButton;
+    [SerializeField] private Button m_confirmButton; // 닫기 버튼(화면의 유일한 버튼) — 튜토리얼 강조 대상(DYNAMIC_TARGET_LOADOUT_CONFIRM_BUTTON)
 
     [SerializeField] private UIStatRow m_statsRowPrefab; // 선택된 슬롯 하나의 현재/팬딩 비교 — UIHullPickerView.Column_Stats와 동일 구조/프리팹 재사용
     [SerializeField] private InfiniteScrollView m_statsScrollView;
@@ -41,7 +39,7 @@ public class UIShipLoadoutEditorView : MonoBehaviour
     // m_moduleSlotEntries와 1:1 대응 — 슬롯의 현재 편집 상태(서브타입). 모듈은 항상 설치된 상태로 취급(설치/해제 없음)
     // 실드/요격체는 ModuleHullInfo 필드가 아니라 이 형태로 편집(ApplyEditInfoToHull/CreateEditInfoFromHull로 변환)
     private readonly List<ModuleInfo> m_pendingModules = new();
-    private ModuleHullInfo m_originalModules; // Confirm 시 이 값과 비교해 실제로 바뀐 슬롯만 서버로 전송
+    private ModuleHullInfo m_originalModules; // 닫기 시 이 값과 비교해 바뀐 슬롯이 있을 때만 서버로 전송
 
     private List<ShipStatRowEntry> m_statEntries = new();
     private Dictionary<string, ShipStatRowEntry> m_selectedOriginalEntriesByLabel = new(); // 비교 기준 — 선택된 슬롯의 원래(팝업을 열 때) 장착 상태, 선택이 바뀔 때마다 재계산
@@ -49,14 +47,12 @@ public class UIShipLoadoutEditorView : MonoBehaviour
     private int m_selectedDataIndex; // 좌측에서 선택된 행 — 기본값은 항상 최상단(0)
 
     private int m_slotIndex = -1; // 편집 대상 — 함대편성(FleetComposition) 슬롯 인덱스
-    private System.Action m_onChanged; // Confirm으로 실제 반영이 끝난 뒤 호출 — 호출부(UIPanelFleet)가 함대구성 화면(지휘력 요약 등)을 새로고침하도록
+    private System.Action m_onChanged; // 닫기에서 서버 저장이 끝난 뒤 호출 — 호출부(UIPanelFleet)가 함대구성 화면(지휘력 요약 등)을 새로고침하도록
 
     private void Awake()
     {
         if (m_confirmButton != null)
-            m_confirmButton.onClick.AddListener(OnConfirmClicked);
-        if (m_cancelButton != null)
-            m_cancelButton.onClick.AddListener(OnCancelClicked);
+            m_confirmButton.onClick.AddListener(OnCloseClicked);
         if (m_moduleScrollView != null)
             m_moduleScrollView.onItemBind = OnModuleSlotItemBind;
         if (m_statsScrollView != null)
@@ -68,11 +64,9 @@ public class UIShipLoadoutEditorView : MonoBehaviour
         if (m_statsTitleText != null)
             CommonUtility.SetUILocText(m_statsTitleText, "UIFleet_StatsTitle");
         if (m_confirmButtonText != null)
-            CommonUtility.SetUILocText(m_confirmButtonText, "UI_Confirm");
-        if (m_cancelButtonText != null)
-            CommonUtility.SetUILocText(m_cancelButtonText, "UI_Cancel");
+            CommonUtility.SetUILocText(m_confirmButtonText, "UI_Close");
 
-        // 로드아웃 확인 버튼을 가리킬 수 있도록 리졸버 등록
+        // 로드아웃 닫기 버튼을 가리킬 수 있도록 리졸버 등록
         m_confirmButtonResolver = ResolveConfirmButton;
         TutorialManager.Instance.RegisterDynamicTarget(TutorialManager.DYNAMIC_TARGET_LOADOUT_CONFIRM_BUTTON, m_confirmButtonResolver);
         m_reinforceModuleManageResolver = ResolveReinforceModuleManageButton;
@@ -201,7 +195,7 @@ public class UIShipLoadoutEditorView : MonoBehaviour
     {
         ClearSelectedModuleHighlight();
 
-        // 편집 중 꺼뒀던 함체 전체 아웃라인을 원래대로 복원 — 모듈 Confirm으로 함선이 재스폰됐어도
+        // 편집 중 꺼뒀던 함체 전체 아웃라인을 원래대로 복원 — 닫기 저장으로 함선이 재스폰됐어도
         // FindEditingShip이 최신 인스턴스를 다시 조회하므로 새 인스턴스에도 정상 적용됨
         SpaceShip editingShip = FindEditingShip();
         if (editingShip != null)
@@ -254,7 +248,7 @@ public class UIShipLoadoutEditorView : MonoBehaviour
         SyncSelectedModuleHighlight();
     }
 
-    // 함체 강화 행(목록 맨 위) — 장착 대상이 아니라 강화 레벨만 다루므로 Confirm 전송/변경 감지/3D 프리뷰에서는 제외(IsHullEntry)
+    // 함체 강화 행(목록 맨 위) — 장착 대상이 아니라 강화 레벨만 다루므로 닫기 저장/변경 감지/3D 프리뷰에서는 제외(IsHullEntry)
     private void AppendHullRow()
     {
         m_moduleSlotEntries.Add(new ModuleSlotEntry(EModuleType.hull, 0));
@@ -468,7 +462,7 @@ public class UIShipLoadoutEditorView : MonoBehaviour
         return myFleet.m_ships.Find(s => s != null && s.m_shipInfo.positionIndex == m_slotIndex);
     }
 
-    // 편집 대상 함선(FindEditingShip)의 해당 슬롯에 레벨 변경을 즉시 반영 — Confirm 전 3D 실시간 프리뷰
+    // 편집 대상 함선(FindEditingShip)의 해당 슬롯에 레벨 변경을 즉시 반영 — 3D 실시간 프리뷰
     // 실드는 3D 비주얼이 없는 논리 컴포넌트라(ModuleShield.cs 주석 참고) 로직 값만 갱신되고 외형 변화는 없음
     private void ApplyModulePreviewToShip(int dataIndex, ModuleInfo info)
     {
@@ -601,7 +595,7 @@ public class UIShipLoadoutEditorView : MonoBehaviour
         return FindInstalledModule(GetModulesListForType(m_originalModules, entry.moduleType), entry.slotIndex);
     }
 
-    // 지금 pending 상태가 편집 시작 시점(원본)과 하나라도 다른 슬롯이 있는지 — CONFIRM에서 무변경이면 서버 요청/재스폰을 생략하기 위한 가드
+    // 지금 pending 상태가 편집 시작 시점(원본)과 하나라도 다른 슬롯이 있는지 — 닫기에서 무변경이면 서버 요청/재스폰을 생략하기 위한 가드
     private bool HasPendingChanges()
     {
         for (int i = 0; i < m_moduleSlotEntries.Count; i++)
@@ -616,7 +610,7 @@ public class UIShipLoadoutEditorView : MonoBehaviour
     private bool IsSlotChangedFromOriginal(int dataIndex)
     {
         ModuleSlotEntry entry = m_moduleSlotEntries[dataIndex];
-        if (IsHullEntry(entry) == true) return false; // 함체 강화는 팝업에서 즉시 서버 반영 — Confirm 대상 아님
+        if (IsHullEntry(entry) == true) return false; // 함체 강화는 팝업에서 즉시 서버 반영 — 닫기 저장 대상 아님
         ModuleInfo original = TryGetOriginalModuleInfo(entry);
         bool wasInstalled = original != null;
         ModuleInfo pending = m_pendingModules[dataIndex];
@@ -654,7 +648,7 @@ public class UIShipLoadoutEditorView : MonoBehaviour
             row.SetValueOnly(entry.label, entry.rawValueText, diffText);
     }
 
-    // 현재 로컬 편집 상태(m_pendingModules, 전 슬롯 설치 상태)를 ModuleHullInfo로 구성 — OnConfirmClicked의 desired 구성과 동일 로직
+    // 현재 로컬 편집 상태(m_pendingModules, 전 슬롯 설치 상태)를 ModuleHullInfo로 구성 — OnCloseClicked의 desired 구성과 동일 로직
     private ModuleHullInfo BuildPendingModuleHullInfo()
     {
         ModuleHullInfo pending = new ModuleHullInfo { beams = new List<ModuleInfo>(), missiles = new List<ModuleInfo>(), hangars = new List<ModuleInfo>(), shieldModuleSubType = "" };
@@ -692,9 +686,6 @@ public class UIShipLoadoutEditorView : MonoBehaviour
         m_commandPowerRow.SetRow("UI_CommandPower", $"{projectedUsedText} / {maxText}", rawValue: true);
         m_commandPowerRow.SetValueColor(CommonUtility.PaletteColor(isOverCommandPower == true ? "Text.Warning" : "Text.Dark1"));
         LayoutRebuilder.ForceRebuildLayoutImmediate(m_commandPowerRow.transform as RectTransform);
-
-        if (m_confirmButton != null)
-            m_confirmButton.interactable = isOverCommandPower == false;
     }
 
     // 바디(hull) 자신의 설치비만 지휘력(CP)에 반영 — 모듈 설치/해제는 캐파와 무관(M13, 서버 FleetService.computeShipCommandCost와 동일 계산)
@@ -718,9 +709,9 @@ public class UIShipLoadoutEditorView : MonoBehaviour
         return "";
     }
 
-    // 로컬 편집 상태(m_pendingModules) 전체를 최종 장착 구성으로 한 번에 서버에 전송 — 낱개로 순서대로 보내면
-    // (해제 먼저든 장착 먼저든) 중간 상태에서 예산/공격모듈 0개 검증에 걸릴 수 있어, 서버가 결과 상태만 검증하도록 배치 전송
-    private void OnConfirmClicked()
+    // 닫기 — 빈 슬롯을 기본 모듈로 채울 게 있으면(HasPendingChanges) 로컬 편집 상태 전체를 최종 장착 구성으로 한 번에 서버에 저장한 뒤 닫음.
+    // 낱개로 보내면 중간 상태에서 예산/공격모듈 0개 검증에 걸릴 수 있어 서버가 결과 상태만 검증하도록 배치 전송
+    private void OnCloseClicked()
     {
         // 아무 것도 안 바뀌었으면 서버 요청/함선 재스폰 없이 그냥 닫음 — 3D 프리뷰는 이미 pending 값과 항상 동기화돼 있어 별도 되돌림도 불필요
         if (HasPendingChanges() == false)
@@ -742,7 +733,10 @@ public class UIShipLoadoutEditorView : MonoBehaviour
             if (response.errorCode != 0)
             {
                 Debug.LogError($"[UIShipLoadoutEditorView] SetModule 실패: {response.errorCode}");
-                NetworkManager.Instance.ShowRequestFailedPopup(response.errorCode); // 화면은 그대로 유지 — 다시 Confirm하거나 Cancel로 원본 복원
+                NetworkManager.Instance.ShowRequestFailedPopup(response.errorCode);
+                // 닫기 버튼 하나뿐이라 화면을 남겨두면 다시 실패를 반복하며 못 나감 — 3D 프리뷰를 원본으로 되돌리고 닫음
+                RevertAllModulePreviewsToOriginal();
+                Close();
                 return;
             }
 
@@ -753,11 +747,5 @@ public class UIShipLoadoutEditorView : MonoBehaviour
             if (m_onChanged != null) m_onChanged();
             Close();
         });
-    }
-
-    private void OnCancelClicked()
-    {
-        RevertAllModulePreviewsToOriginal();
-        Close();
     }
 }

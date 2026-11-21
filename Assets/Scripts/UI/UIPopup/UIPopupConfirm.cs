@@ -31,6 +31,11 @@ public class ConfirmPopupConfig
     // 3번째 버튼(선택) — extraText1/onExtra 둘 다 null이면 버튼 자체가 숨겨짐(기존 2버튼 팝업과 동일하게 동작)
     public string extraText1;
     public Action onExtra;
+
+    // 하단 옵션 체크박스(선택) — optionToggleLocKey가 비어 있으면 체크박스 자체가 숨겨짐. 체크할 때마다 onOptionToggleChanged가 바뀐 값으로 즉시 호출됨
+    public string optionToggleLocKey;
+    public bool optionToggleValue;
+    public Action<bool> onOptionToggleChanged;
 }
 
 // 확인/취소 팝업: bodyText에 message + detailText를 표시, 요구/비용은 UISection으로 표시
@@ -55,9 +60,14 @@ public class UIPopupConfirm : UIPopupBase
     [SerializeField] private Button m_extraButton;
     [SerializeField] private TMP_Text m_extraText1;
 
+    [SerializeField] private ToggleButton m_optionToggle; // 하단 옵션 체크박스 — config.optionToggleLocKey가 있을 때만 표시
+    [SerializeField] private GameObject m_optionToggleRow; // 체크박스를 감싼 줄(Panel 세로 레이아웃의 자식) — 줄째로 꺼야 레이아웃 높이/간격에서 빠짐
+
     private Action onCancelCallback;
     private Action onConfirmCallback;
     private Action onExtraCallback;
+    private Action<bool> onOptionToggleChangedCallback;
+    private bool m_optionToggleValue;
     private Coroutine m_autoCloseCoroutine;
     private static readonly WaitForSecondsRealtime s_wait1Sec = new WaitForSecondsRealtime(1f);
 
@@ -71,6 +81,21 @@ public class UIPopupConfirm : UIPopupBase
             confirmButton.onClick.AddListener(OnConfirmClicked);
         if (m_extraButton != null)
             m_extraButton.onClick.AddListener(OnExtraClicked);
+        if (m_optionToggle != null)
+        {
+            m_optionToggle.SetSelected(false); // ToggleButton 지연 초기화 — button 참조를 확보한 뒤 리스너 등록
+            if (m_optionToggle.button != null)
+                m_optionToggle.button.onClick.AddListener(OnOptionToggleClicked);
+        }
+    }
+
+    private void OnOptionToggleClicked()
+    {
+        SoundManager.Instance.PlayFX(EFx.Button_Clicked, retrigger: true);
+        m_optionToggleValue = m_optionToggleValue == false;
+        m_optionToggle.SetSelected(m_optionToggleValue);
+        if (onOptionToggleChangedCallback != null)
+            onOptionToggleChangedCallback(m_optionToggleValue);
     }
 
     private void OnCancelClicked()
@@ -123,6 +148,7 @@ public class UIPopupConfirm : UIPopupBase
         if (canAfford == false) canConfirm = false;
 
         BuildButtonSection(config);
+        BuildOptionToggle(config);
         if (confirmButton != null) confirmButton.interactable = canConfirm;
 
         onCancelCallback = config.onCancel;
@@ -341,6 +367,23 @@ public class UIPopupConfirm : UIPopupBase
         if (showExtra && m_extraText1 != null) m_extraText1.text = config.extraText1 ?? "";
     }
 
+    private void BuildOptionToggle(ConfirmPopupConfig config)
+    {
+        onOptionToggleChangedCallback = config.onOptionToggleChanged;
+        m_optionToggleValue = config.optionToggleValue;
+
+        bool showToggle = string.IsNullOrEmpty(config.optionToggleLocKey) == false;
+        if (m_optionToggleRow != null)
+            m_optionToggleRow.SetActive(showToggle);
+        if (m_optionToggle == null) return;
+
+        m_optionToggle.gameObject.SetActive(showToggle);
+        if (showToggle == false) return;
+
+        m_optionToggle.SetTexts(config.optionToggleLocKey, "");
+        m_optionToggle.SetSelected(m_optionToggleValue);
+    }
+
     private void RebuildLayout()
     {
         for (int i = 0; i < m_sectionCache.Count; i++)
@@ -354,6 +397,8 @@ public class UIPopupConfirm : UIPopupBase
         if (cancelButton != null) LayoutRebuilder.ForceRebuildLayoutImmediate(cancelButton.GetComponent<RectTransform>());
         if (confirmButton != null) LayoutRebuilder.ForceRebuildLayoutImmediate(confirmButton.GetComponent<RectTransform>());
         if (m_extraButton != null) LayoutRebuilder.ForceRebuildLayoutImmediate(m_extraButton.GetComponent<RectTransform>());
+        if (m_optionToggle != null && m_optionToggle.gameObject.activeInHierarchy == true)
+            LayoutRebuilder.ForceRebuildLayoutImmediate(m_optionToggle.transform as RectTransform);
         if (m_layoutRoot != null) LayoutRebuilder.ForceRebuildLayoutImmediate(m_layoutRoot);
     }
 

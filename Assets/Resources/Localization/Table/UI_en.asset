@@ -1501,7 +1501,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 96931116144787461
-    m_Localized: A raider that secures minerals by scavenging enemy fighters
+    m_Localized: A raider whose fighters excel at scavenging minerals
     m_Metadata:
       m_Items: []
   - m_Id: 96931116144787462
@@ -1915,6 +1915,18 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 101944871769473025
     m_Localized: DEV
+    m_Metadata:
+      m_Items: []
+  - m_Id: 103685866265640960
+    m_Localized: SKIP STANDOFF
+    m_Metadata:
+      m_Items: []
+  - m_Id: 103842786922332160
+    m_Localized: You cannot remove ships during a zone run.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 103842786989441024
+    m_Localized: You cannot replace ships during a zone run.
     m_Metadata:
       m_Items: []
   references:
