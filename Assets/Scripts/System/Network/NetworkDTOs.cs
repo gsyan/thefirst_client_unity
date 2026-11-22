@@ -389,6 +389,9 @@ public class ClearExplorationCellResponse
     public int mineralGained;          // 이 클리어로 방금 지급된 광물 합계(존 고정값 + Treasure/VIP/버프 반영분 + 약탈 + 탐사) — mineralAmount는 누적 총량, 이건 델타
     public int scavengedMineral;       // mineralGained 중 함재기 약탈분 — 클리어 보상 화면에서 따로 표시
     public int scoutedMineral;         // mineralGained 중 탐사(argus)분 — 클리어 보상 화면에서 따로 표시
+    public int expGained;              // 이 클리어로 방금 지급된 지휘관 경험치(존의 셀당 경험치, VIP 2배 반영) — 재방문/빈 셀은 0
+    public int totalExp;               // 지급 반영 후 지휘관 누적 경험치(권위값)
+    public int commanderLevel;         // 지급 반영 후 지휘관 레벨(권위값, 레벨업 반영)
     public List<string> rewardCardCandidates; // 서버가 추첨한 보상카드 후보 3개(cardId) — 탈출 셀이거나 보상이 없는 셀(빈 셀)은 null
     public ETreasureRewardType treasureRewardType; // None이면 Treasure 보상 아님(Mineral이면 mineralAmount에 이미 반영됨)
     public float treasureRewardRatio;              // treasureRewardType이 ShipHealthHeal일 때만 유효한 회복 비율(0~1)

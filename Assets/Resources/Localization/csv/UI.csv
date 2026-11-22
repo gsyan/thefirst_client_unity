@@ -95,7 +95,7 @@ RewardCardButton_MineralCost,,Cost: Mineral {0},비용: 광물 {0}
 RewardCardButton_InsufficientMineral,,Not enough mineral. (Have: {0} / Need: {1}),보유 광물이 부족합니다. (보유: {0} / 필요: {1})
 UIPanelExplorationGrid_BuyCardButton,,Buy Card,카드 구매
 UIPopupRewardCardSelect_RerollChargeAd,,Reroll charges used up. Watch an ad to recharge 10?,리롤 횟수를 모두 사용했습니다. 광고를 보고 10회를 충전하시겠습니까?
-UIPanelExplorationGrid_EscapeConfirmMessage,,Escape Reward,탈출 보상
+UIPanelExplorationGrid_EscapeConfirmMessage,,Escape this zone?,존을 탈출하시겠습니까?
 UIPanelExplorationGrid_TreasureHealthHeal,,Fleet health restored by {0}%!,함대 체력을 {0}% 회복했습니다!
 UIPanelExplorationGrid_OtherRunInProgress,,There is another exploration in progress.\nZone {0} / Cell {1} / Mineral {2}\nAbandoning it grants no reward. Abandon it and start a new challenge in the selected zone?,진행 중인 다른 탐험이 있습니다.\n존 {0} / 구역 {1} / 광물 {2}\n포기하면 보상을 받을 수 없습니다. 포기하고 선택한 존에 새로 도전하시겠습니까?
 UIPanelExplorationGrid_AbandonAnotherRunConfirm,,There is an exploration in progress in another zone. Abandoning it grants no reward. Abandon it and start a new challenge?,다른 존에 진행 중인 탐험이 있습니다. 포기하면 보상을 받을 수 없습니다. 포기하고 새로 도전하시겠습니까?

@@ -12,6 +12,7 @@
 - 루트: D:\BK\thefirst\thefirst_server 또는 C:\bk\thefirst\thefirst_server
 - **[필수] 서버의 모든 DateTime은 반드시 UTC(`Instant.now()`)로 저장할 것** — `LocalDateTime.now()`, `LocalDate.now()` 사용 금지. 날짜 비교가 필요한 경우 `LocalDate.now(ZoneOffset.UTC)` 명시
 - **[필수] 실서버에 배포된 마이그레이션은 동결(현재 V1~V4), 실서버에 아직 안 나간 변경은 그 다음 번호 파일 하나에만 모음(현재 `V5__release_1_2.sql`)** — 스키마/데이터 변경은 이 파일에 추가/수정하고, 번호는 그 파일을 실서버에 배포하는 순간에만 올림(실서버 배포 후 다음 변경은 V6)
+- **[금지] 새 마이그레이션 파일명에 릴리즈 버전(예: `release_1_2`) 넣지 말 것** — 실제 출시 버전과 어긋나기 쉽고, 적용 후엔 이름(설명)을 바꾸면 Flyway 검증이 실패함. 설명부는 버전과 무관한 이름 사용
 - **테스트 서버에만 들어간 파일(현재 V5)은 수정 가능** — 단 테스트 서버 DB의 Flyway checksum이 어긋나 다음 기동이 실패하므로, 수정했으면 사용자가 Jenkins `DB_CREATE`로 테스트 서버 DB를 재생성해야 한다고 반드시 알릴 것
 - 개발 DB는 **사용자가** `db_create.bat`(schema.sql=V1 적용) 후 서버를 기동해 V2부터 처음부터 다시 적용함 — Claude는 이 초기화를 실행/권유하지 않고, 미배포 파일을 수정했으면 "db_create.bat 후 서버 기동"이 필요하다고 알리기만 함. `db_sync_v1_migration.bat`(V2+ 파일을 삭제함)은 배포된 V2·V3까지 지우므로 사용 금지, Jenkins `DB_CREATE`는 prod 초기화 도구라 Claude는 건드리지 않음
 - **[금지] 실서버에 배포된 마이그레이션 파일(V1~V4) 수정/삭제 금지, `sql/schema.sql` 수정·실행 금지** — schema.sql은 DROP을 포함한 V1 스냅샷이며 배포된 DB 기준선임

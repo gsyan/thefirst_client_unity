@@ -29,7 +29,7 @@ public static class DataTableZoneCSVUtility
     {
         const string path = "Assets/Resources/DataTable/Zone/datatable_zone_grid.csv";
         var sb = new StringBuilder();
-        sb.AppendLine("zone_index,grid_width,grid_height,hull_tier_sum,base_hull_tier,max_ship_count,module_placement_prob,module_performance_prob,hull_weight_none,hull_weight_shield,hull_weight_interceptor,hull_weight_both,health_multiplier,attack_multiplier,wave_spawn_term_sec,mineral_reward,commander_exp_reward");
+        sb.AppendLine("zone_index,grid_width,grid_height,hull_tier_sum,base_hull_tier,max_ship_count,module_placement_prob,module_performance_prob,hull_weight_none,hull_weight_shield,hull_weight_interceptor,hull_weight_both,health_multiplier,attack_multiplier,wave_spawn_term_sec,mineral_reward,commander_exp_reward_per_cell");
         foreach (ZoneConfig z in table.zoneList)
         {
             sb.AppendLine(
@@ -38,7 +38,7 @@ public static class DataTableZoneCSVUtility
                 $"{z.enemyModulePlacementProbability},{z.enemyModulePerformanceProbability}," +
                 $"{z.enemyHullWeightNone},{z.enemyHullWeightShield},{z.enemyHullWeightInterceptor},{z.enemyHullWeightBoth}," +
                 $"{z.enemyHealthMultiplier},{z.enemyAttackMultiplier},{z.enemyWaveSpawnTermSec}," +
-                $"{z.mineralReward},{z.commanderExpReward}");
+                $"{z.mineralReward},{z.commanderExpRewardPerCell}");
         }
         File.WriteAllText(path, sb.ToString(), Encoding.UTF8);
     }

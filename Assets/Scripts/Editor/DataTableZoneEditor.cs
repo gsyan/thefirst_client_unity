@@ -142,7 +142,7 @@ public class DataTableZoneEditor : Editor
                 enemyAttackMultiplier = oldZone != null ? oldZone.enemyAttackMultiplier : 1f,
                 enemyWaveSpawnTermSec = oldZone != null ? oldZone.enemyWaveSpawnTermSec : 5f,
                 mineralReward = oldZone != null ? oldZone.mineralReward : 0,
-                commanderExpReward     = oldZone != null ? oldZone.commanderExpReward     : 0,
+                commanderExpRewardPerCell = oldZone != null ? oldZone.commanderExpRewardPerCell : 0,
             });
         }
         EditorUtility.SetDirty(m_dataTableZone);
@@ -225,7 +225,7 @@ public class DataTableZoneEditor : Editor
             float.TryParse(col[13], out zc.enemyAttackMultiplier);
             float.TryParse(col[14], out zc.enemyWaveSpawnTermSec);
             int.TryParse(col[15], out zc.mineralReward);
-            int.TryParse(col[16], out zc.commanderExpReward);
+            int.TryParse(col[16], out zc.commanderExpRewardPerCell);
         }
         EditorUtility.SetDirty(m_dataTableZone);
         AssetDatabase.Refresh();
@@ -849,7 +849,7 @@ public class DataTableZoneEditor : Editor
         EditorGUILayout.Space(4);
         EditorGUILayout.LabelField("셀 클리어 보상 (웨이브 있던 셀만 적립)", EditorStyles.miniBoldLabel);
         zoneConfig.mineralReward = EditorGUILayout.IntField(new GUIContent("Mineral Reward", "적 함대 성능과 무관한 고정 광물 지급량"), zoneConfig.mineralReward);
-        zoneConfig.commanderExpReward     = EditorGUILayout.IntField(new GUIContent("Commander Exp Reward",     "고정 지휘관 경험치 적립량"),                     zoneConfig.commanderExpReward);
+        zoneConfig.commanderExpRewardPerCell = EditorGUILayout.IntField(new GUIContent("Commander Exp Per Cell", "셀 클리어 1회당 지휘관 경험치 적립량"), zoneConfig.commanderExpRewardPerCell);
 
         EditorGUI.indentLevel--;
 

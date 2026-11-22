@@ -16,7 +16,8 @@ public class UIPopupRewardCardSelect : UIPopupBase
     [SerializeField] private RowLabelValue m_totalMineralRow; // 우측 상단 — 보유 광물 현재치 상시 표시(구매할 때마다 갱신)
     [FormerlySerializedAs("m_expGainedRow")]
     [FormerlySerializedAs("m_mineralGainedRow")]
-    [SerializeField] private RowLabelValue m_rewardAmountRow; // 일반 셀 클리어는 이번에 얻은 광물, 탈출 셀은 그 존의 탈출 보상 경험치(미리보기) — 팝업이 뜰 때 1회만 표시, 이후 구매와 무관하게 갱신 안 함. 0이면 행 자체를 숨김(BuyCardButton으로 연 경우 등)
+    [SerializeField] private RowLabelValue m_rewardAmountRow; // 이번 셀 클리어로 얻은 기본 광물 — 팝업이 뜰 때 1회만 표시, 이후 구매와 무관하게 갱신 안 함. 0이면 행 자체를 숨김(BuyCardButton으로 연 경우, 탈출 셀 등)
+    [SerializeField] private RowLabelValue m_cellExpRow; // 이번 셀 클리어로 얻은 지휘관 경험치 — 광물 행 앞에 표시, 0이면 행 숨김
     [SerializeField] private RowLabelValue m_scavengedMineralRow; // 이번 전투 함재기 약탈로 얻은 광물 — 0이면 행 숨김(탈출 셀은 항상 숨김)
     [SerializeField] private RowLabelValue m_scoutedMineralRow; // 이번 전투 탐사(argus)로 얻은 광물 — 0이면 행 숨김(탈출 셀은 항상 숨김)
     [SerializeField] private GameObject m_rewardCardButtonContainer; // 카드 버튼 3개를 담은 오브젝트 — 카드 후보가 없을 때(탈출 셀 등) 통째로 숨김
@@ -52,7 +53,7 @@ public class UIPopupRewardCardSelect : UIPopupBase
             m_rerollButton.onClick.AddListener(OnRerollClicked);
     }
 
-    public void ShowPopupRewardCardSelect(int rewardAmount, List<string> candidateCardIds, bool isEscapeCell, int zoneNumber, int cellRow, int cellCol, int rerollRemain, System.Action onClosed, int scavengedMineral = 0, int scoutedMineral = 0)
+    public void ShowPopupRewardCardSelect(int rewardAmount, List<string> candidateCardIds, bool isEscapeCell, int zoneNumber, int cellRow, int cellCol, int rerollRemain, System.Action onClosed, int scavengedMineral = 0, int scoutedMineral = 0, int expGained = 0)
     {
         base.ShowPopup();
         // 이전에 열렸다 닫힌 팝업의 대기 중 재바인딩이 남아있으면 버림(비활성화로 코루틴 자체는 이미 멈춰있음)
@@ -93,15 +94,20 @@ public class UIPopupRewardCardSelect : UIPopupBase
             RefreshTotalMineralDisplay(false);
 
         // 이번 셀 클리어 보상 안내는 팝업이 뜨는 시점에만 표시 — 카드를 구매하면 HideCellRewardRows로 숨김
-        // 탈출 셀은 광물이 아니라 경험치 라벨을 씀(값 자체는 호출부가 이미 올바른 의미로 넘겨줌)
+        if (m_cellExpRow != null)
+        {
+            m_cellExpRow.gameObject.SetActive(expGained > 0);
+            if (expGained > 0)
+                m_cellExpRow.SetRow("UIPopupConfirm_ExpLabel", expGained.ToString(), rawValue: true);
+        }
+
+        // 탈출 셀은 런 종료와 함께 광물이 폐기되므로 획득 광물은 표시하지 않음
+        bool showMineralReward = isEscapeCell == false && rewardAmount > 0;
         if (m_rewardAmountRow != null)
         {
-            m_rewardAmountRow.gameObject.SetActive(rewardAmount > 0);
-            if (rewardAmount > 0)
-            {
-                string rewardLabelKey = isEscapeCell == true ? "UIPopupConfirm_ExpLabel" : "UIPopupRewardCardSelect_MineralGainedLabel";
-                m_rewardAmountRow.SetRow(rewardLabelKey, rewardAmount.ToString(), rawValue: true);
-            }
+            m_rewardAmountRow.gameObject.SetActive(showMineralReward);
+            if (showMineralReward == true)
+                m_rewardAmountRow.SetRow("UIPopupRewardCardSelect_MineralGainedLabel", rewardAmount.ToString(), rawValue: true);
         }
 
         // 약탈/탐사 광물은 기본 보상과 구분되도록 별도 행으로 표시 — 탈출 셀은 전투가 없어 항상 숨김
@@ -158,6 +164,7 @@ public class UIPopupRewardCardSelect : UIPopupBase
     // 기본/약탈/탐사 획득 광물 행을 모두 숨김 — 팝업이 뜬 직후에만 보여주는 정보
     private void HideCellRewardRows()
     {
+        if (m_cellExpRow != null) m_cellExpRow.gameObject.SetActive(false);
         if (m_rewardAmountRow != null) m_rewardAmountRow.gameObject.SetActive(false);
         if (m_scavengedMineralRow != null) m_scavengedMineralRow.gameObject.SetActive(false);
         if (m_scoutedMineralRow != null) m_scoutedMineralRow.gameObject.SetActive(false);
@@ -167,6 +174,7 @@ public class UIPopupRewardCardSelect : UIPopupBase
     // 기본/약탈/탐사 보상 행은 부모(MineralReward)의 가로 레이아웃 안에 있어 값이 바뀌면 행 폭이 달라지므로, 값 기입 직후 각 행 → 부모 순으로 강제 재계산
     private void RebuildRewardRowsLayout()
     {
+        RebuildRowLayout(m_cellExpRow);
         RebuildRowLayout(m_rewardAmountRow);
         RebuildRowLayout(m_scavengedMineralRow);
         RebuildRowLayout(m_scoutedMineralRow);

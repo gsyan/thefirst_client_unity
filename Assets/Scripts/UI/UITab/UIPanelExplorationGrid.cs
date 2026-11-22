@@ -1341,6 +1341,7 @@ public class UIPanelExplorationGrid : UIPanelBase
         int mineralGained = 0;
         int scavengedMineral = 0;
         int scoutedMineral = 0;
+        int expGained = 0;
         List<string> rewardCardCandidates = null;
         ETreasureRewardType treasureRewardType = ETreasureRewardType.None;
         float treasureRewardRatio = 0f;
@@ -1350,6 +1351,8 @@ public class UIPanelExplorationGrid : UIPanelBase
             mineralGained = response.data.mineralGained;
             scavengedMineral = response.data.scavengedMineral;
             scoutedMineral = response.data.scoutedMineral;
+            expGained = response.data.expGained;
+            ApplyExpAndLevel(response.data.totalExp, response.data.commanderLevel); // 경험치는 셀 클리어 즉시 확정(서버 권위값)
             rewardCardCandidates = response.data.rewardCardCandidates; // 탈출 셀/빈 셀은 null — 카드 구매 단계를 건너뜀
             treasureRewardType = response.data.treasureRewardType;
             treasureRewardRatio = response.data.treasureRewardRatio;
@@ -1381,28 +1384,21 @@ public class UIPanelExplorationGrid : UIPanelBase
         // 탈출 셀 여부는 카드 후보 유무로 추측하지 않고 그리드 데이터로 직접 판정(Treasure도 카드 후보가 없어서 구분이 안 되므로)
         bool isEscapeCell = m_gridData != null && m_gridData.IsInBounds(m_currentRow, m_currentCol) == true && m_gridData.GetCell(m_currentRow, m_currentCol).isEscape;
 
-        // 빈 셀(적 없음)은 획득 광물도 카드도 없음 — 팝업 없이 바로 기존 흐름 진행. 탈출 셀은 전투가 없어 항상 이 조건에 걸리지만
-        // "탈출 보상 경험치" 안내를 보여줘야 하므로 건너뛰지 않음
-        if (isEscapeCell == false && mineralGained <= 0 && rewardCardCandidates == null)
+        // 빈 셀(적 없음)/재방문은 획득 광물·경험치·카드가 모두 없음 — 팝업 없이 바로 기존 흐름 진행
+        if (mineralGained <= 0 && expGained <= 0 && rewardCardCandidates == null)
         {
             ContinueAfterCellClear();
             return;
         }
 
-        // 탈출 셀은 광물이 아니라 그 존의 확정 탈출 보상 경험치를 미리 보여줌(실제 지급은 ShowEscapeConfirmPopup 확정 후 escapeExplorationZone에서)
-        // 일반 셀은 합계에서 약탈/탐사분을 뺀 "기본 보상"을 표시하고, 약탈/탐사는 팝업이 별도 행으로 표시
+        // 일반 셀은 합계에서 약탈/탐사분을 뺀 "기본 보상"을 표시하고, 약탈/탐사는 팝업이 별도 행으로 표시(탈출 셀은 광물 행을 숨기고 경험치만 표시)
         int rewardAmount = mineralGained - scavengedMineral - scoutedMineral;
-        if (isEscapeCell == true)
-        {
-            ZoneConfig zoneConfig = DataManager.Instance.m_dataTableZone.GetZoneByZoneIndex(m_currentZoneNumber);
-            rewardAmount = zoneConfig != null ? zoneConfig.commanderExpReward : 0;
-        }
 
         // 광물/경험치 안내와 보상카드 3택1을 한 팝업에서 함께 처리 — 카드 후보가 없으면(탈출 셀, Treasure 등) 팝업이 카드 섹션만 숨기고 안내만 보여줌
         int rewardZoneNumber = m_currentZoneNumber;
         int rewardCellRow = m_currentRow;
         int rewardCellCol = m_currentCol;
-        UIManager.Instance.ShowRewardCardSelectPopup(rewardAmount, rewardCardCandidates, isEscapeCell, rewardZoneNumber, rewardCellRow, rewardCellCol, rerollRemain, ContinueAfterCellClear, scavengedMineral, scoutedMineral);
+        UIManager.Instance.ShowRewardCardSelectPopup(rewardAmount, rewardCardCandidates, isEscapeCell, rewardZoneNumber, rewardCellRow, rewardCellCol, rerollRemain, ContinueAfterCellClear, scavengedMineral, scoutedMineral, expGained);
     }
 
     // Treasure(Event) 셀의 체력회복 당첨 — 즉시 효과 적용 후 안내 팝업. 탐사포인트 당첨은 기존 보상카드 팝업 경로를 그대로 재사용하므로 여기서 다루지 않음
@@ -1464,21 +1460,16 @@ public class UIPanelExplorationGrid : UIPanelBase
         EventManager.TriggerZoneCellReturnedToGrid();
     }
 
-    // 탈출 셀 클리어 직후(ContinueAfterCellClear의 롤링 애니메이션 콜백)에만 호출됨 — 확정 전 실제로 받게 될 경험치를 미리 보여줌
-    // (광물은 탈출 확정 시 "지급"이 아니라 이미 가진 값 그대로 — 예고할 델타가 없어 여기서 다루지 않음)
-    // 지휘관 경험치는 셀 클리어로는 쌓이지 않고 존의 commander_exp_reward 값을 탈출 확정 시 1회만 받으므로, 여기서 데이터테이블 값을 그대로 미리보기로 씀
+    // 탈출 셀 클리어 직후(ContinueAfterCellClear의 롤링 애니메이션 콜백)에만 호출됨 — 탈출 확정 여부만 물음
+    // 지휘관 경험치는 셀 클리어마다 이미 지급되므로 탈출 확정 시 추가로 받는 보상이 없어 미리보기도 없음
     private void ShowEscapeConfirmPopup()
     {
         if (m_inputBlockOverlay != null)
             m_inputBlockOverlay.SetActive(false);
 
-        ZoneConfig zoneConfig = DataManager.Instance.m_dataTableZone.GetZoneByZoneIndex(m_currentZoneNumber);
-        int expOnEscape = zoneConfig != null ? zoneConfig.commanderExpReward : 0;
-
         UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig
         {
             message = LocalizationManager.Instance.Get("UIPanelExplorationGrid_EscapeConfirmMessage"),
-            rewardAmounts = new List<int> { expOnEscape },
             onConfirm = OnConfirmEscape,
         });
     }
@@ -1679,7 +1670,7 @@ public class UIPanelExplorationGrid : UIPanelBase
         commanderInfo.mineralAmount = 0;
     }
 
-    // 탈출/포기 정산 응답(totalExp/commanderLevel, 권위값)을 커맨더 정보에 반영 — 레벨업 시 알림 표시
+    // 셀 클리어/탈출/포기 응답(totalExp/commanderLevel, 권위값)을 커맨더 정보에 반영 — 레벨업 시 알림 표시
     private void ApplyExpAndLevel(int totalExp, int commanderLevel)
     {
         Commander commander = DataManager.Instance.m_currentCommander;

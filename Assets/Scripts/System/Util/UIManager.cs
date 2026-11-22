@@ -637,7 +637,7 @@ public class UIManager : MonoSingleton<UIManager>
     // 셀 클리어 보상(광물/경험치 안내 + 보상카드 구매) 통합 팝업 — 카드는 클릭 즉시 구매되고(별도 확인 없음), 닫기 버튼을 눌러야 다음으로 진행됨
     // rewardAmount: 일반 셀 클리어는 이번에 획득한 기본 광물(약탈/탐사 제외), 탈출 셀은 그 존의 탈출 보상 경험치(미리보기) — isEscapeCell로 어느 쪽인지 구분해 표시
     // scavengedMineral/scoutedMineral: 이번 전투의 함재기 약탈분/탐사분 광물 — 기본 광물과 별도 행으로 표시(0이면 행 숨김)
-    public void ShowRewardCardSelectPopup(int rewardAmount, System.Collections.Generic.List<string> candidateCardIds, bool isEscapeCell, int zoneNumber, int cellRow, int cellCol, int rerollRemain, System.Action onClosed, int scavengedMineral = 0, int scoutedMineral = 0)
+    public void ShowRewardCardSelectPopup(int rewardAmount, System.Collections.Generic.List<string> candidateCardIds, bool isEscapeCell, int zoneNumber, int cellRow, int cellCol, int rerollRemain, System.Action onClosed, int scavengedMineral = 0, int scoutedMineral = 0, int expGained = 0)
     {
         UIPopupRewardCardSelect popup = GetOrCreatePopup<UIPopupRewardCardSelect>("UIPopupRewardCardSelect", EPopupLayer.Overlay);
         if (popup == null) return;
@@ -648,7 +648,7 @@ public class UIManager : MonoSingleton<UIManager>
         {
             CloseTopPopup(EPopupLayer.Overlay);
             onClosed?.Invoke();
-        }, scavengedMineral, scoutedMineral);
+        }, scavengedMineral, scoutedMineral, expGained);
     }
 
 
