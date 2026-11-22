@@ -41,6 +41,7 @@ public class UIManager : MonoSingleton<UIManager>
     private readonly Dictionary<string, Queue<UIPopupBase>> m_popupPool = new(); // prefabName → free instances
     private readonly Queue<ConfirmPopupConfig> m_confirmPopupQueue = new();  // 팝업 큐: 겹침 방지
     private bool m_isConfirmPopupShowing;
+    private readonly Queue<System.Action> m_waitingPopupQueue = new();       // 열린 팝업이 모두 닫히면 순서대로 띄울 자동 팝업(셀 보상/레벨업)
     private UIPopupNetworkWait m_networkWaitPopup;   // 서버 요청 대기 화면 — 풀/스택 없이 한 인스턴스를 재사용
     private bool m_networkWaitLoadFailed;            // 프리팹 로드 실패 시 매 요청마다 에러 로그가 반복되지 않게 함
     private Canvas mainCanvas;
@@ -109,6 +110,7 @@ public class UIManager : MonoSingleton<UIManager>
 
         for (int i = 0; i < layerCount; i++)
             m_popupStacks[i] = new Stack<UIPopupBase>();
+        m_waitingPopupQueue.Clear(); // 이전 씬에서 대기하던 팝업은 버림
 
         m_tutorialContainer = FindContainer("UITutorialContainer");
 
@@ -533,6 +535,64 @@ public class UIManager : MonoSingleton<UIManager>
         ReturnToPool(popup);
     }
 
+    // 지정한 팝업만 닫음 — 그 위에 다른 팝업이 쌓여 있어도 위 팝업은 순서 그대로 유지
+    private void ClosePopup(UIPopupBase popup, EPopupLayer layer)
+    {
+        Stack<UIPopupBase> stack = m_popupStacks[(int)layer];
+        if (stack.Contains(popup) == false) return;
+
+        if (stack.Peek() == popup)
+        {
+            CloseTopPopup(layer);
+            ShowNextWaitingPopup();
+            return;
+        }
+
+        UIPopupBase[] topToBottom = stack.ToArray();
+        stack.Clear();
+        for (int i = topToBottom.Length - 1; i >= 0; i--)
+        {
+            if (topToBottom[i] != popup)
+                stack.Push(topToBottom[i]);
+        }
+        ReturnToPool(popup);
+    }
+
+    // Overlay 층에 표시 중이거나 표시를 기다리는 팝업이 있는지
+    public bool HasOverlayPopupOpenOrWaiting()
+    {
+        if (m_isConfirmPopupShowing == true || m_waitingPopupQueue.Count > 0) return true;
+        return m_popupStacks != null && m_popupStacks[(int)EPopupLayer.Overlay].Count > 0;
+    }
+
+    // 게임 진행 중 자동으로 뜨는 팝업 — 열린 팝업이 있으면 닫힌 뒤 순서대로 표시
+    // 열린 팝업 안의 버튼이 띄우는 확인 팝업은 그 위에 바로 떠야 하므로 이 경로를 쓰지 않음
+    private void ShowPopupInOrder(System.Action show)
+    {
+        if (HasOverlayPopupOpenOrWaiting() == true)
+        {
+            m_waitingPopupQueue.Enqueue(show);
+            return;
+        }
+        show();
+    }
+
+    // 열려 있거나 순서를 기다리는 팝업이 모두 닫힌 뒤 실행(없으면 즉시 실행)
+    public void RunAfterPopupsClosed(System.Action action)
+    {
+        ShowPopupInOrder(action);
+    }
+
+    private void ShowNextWaitingPopup()
+    {
+        if (m_waitingPopupQueue.Count == 0) return;
+        if (m_isConfirmPopupShowing == true || m_popupStacks[(int)EPopupLayer.Overlay].Count > 0) return;
+
+        System.Action show = m_waitingPopupQueue.Dequeue();
+        show();
+        ShowNextWaitingPopup(); // 팝업을 열지 않는 동작이었다면 이어서 다음 순서를 처리
+    }
+
     private void ReturnToPool(UIPopupBase popup)
     {
         popup.HidePopup();
@@ -562,6 +622,7 @@ public class UIManager : MonoSingleton<UIManager>
         if (m_confirmPopupQueue.Count == 0)
         {
             m_isConfirmPopupShowing = false;
+            ShowNextWaitingPopup();
             return;
         }
 
@@ -576,12 +637,12 @@ public class UIManager : MonoSingleton<UIManager>
         System.Action userConfirm = config.onConfirm;
         System.Action userCancel  = config.onCancel;
         System.Action userExtra   = config.onExtra;
-        config.onConfirm = () => { userConfirm?.Invoke(); CloseTopPopup(EPopupLayer.Overlay); ShowNextConfirmPopup(); };
+        config.onConfirm = () => { userConfirm?.Invoke(); ClosePopup(popup, EPopupLayer.Overlay); ShowNextConfirmPopup(); };
         config.onCancel  = userCancel != null
-            ? () => { userCancel.Invoke(); CloseTopPopup(EPopupLayer.Overlay); ShowNextConfirmPopup(); }
+            ? () => { userCancel.Invoke(); ClosePopup(popup, EPopupLayer.Overlay); ShowNextConfirmPopup(); }
             : (System.Action)null;
         config.onExtra   = userExtra != null
-            ? () => { userExtra.Invoke(); CloseTopPopup(EPopupLayer.Overlay); ShowNextConfirmPopup(); }
+            ? () => { userExtra.Invoke(); ClosePopup(popup, EPopupLayer.Overlay); ShowNextConfirmPopup(); }
             : (System.Action)null;
 
         popup.ShowPopupConfirm(config);
@@ -618,6 +679,11 @@ public class UIManager : MonoSingleton<UIManager>
     // onClosed: 팝업이 확인 클릭 또는 자동 닫힘으로 닫힐 때 호출(선택)
     public void ShowCommanderLevelupNotify(int newLevel, System.Action onClosed = null)
     {
+        ShowPopupInOrder(() => OpenCommanderLevelupNotify(newLevel, onClosed));
+    }
+
+    private void OpenCommanderLevelupNotify(int newLevel, System.Action onClosed)
+    {
         SoundManager.Instance.PlayFX(EFx.Commander_Level_Up);
         Color defaultColor = CommonUtility.PaletteColor("General.Bright1");
         var rows = new List<(string label, string value, Color? color)>
@@ -639,6 +705,11 @@ public class UIManager : MonoSingleton<UIManager>
     // scavengedMineral/scoutedMineral: 이번 전투의 함재기 약탈분/탐사분 광물 — 기본 광물과 별도 행으로 표시(0이면 행 숨김)
     public void ShowRewardCardSelectPopup(int rewardAmount, System.Collections.Generic.List<string> candidateCardIds, bool isEscapeCell, int zoneNumber, int cellRow, int cellCol, int rerollRemain, System.Action onClosed, int scavengedMineral = 0, int scoutedMineral = 0, int expGained = 0)
     {
+        ShowPopupInOrder(() => OpenRewardCardSelectPopup(rewardAmount, candidateCardIds, isEscapeCell, zoneNumber, cellRow, cellCol, rerollRemain, onClosed, scavengedMineral, scoutedMineral, expGained));
+    }
+
+    private void OpenRewardCardSelectPopup(int rewardAmount, System.Collections.Generic.List<string> candidateCardIds, bool isEscapeCell, int zoneNumber, int cellRow, int cellCol, int rerollRemain, System.Action onClosed, int scavengedMineral, int scoutedMineral, int expGained)
+    {
         UIPopupRewardCardSelect popup = GetOrCreatePopup<UIPopupRewardCardSelect>("UIPopupRewardCardSelect", EPopupLayer.Overlay);
         if (popup == null) return;
 
@@ -646,7 +717,7 @@ public class UIManager : MonoSingleton<UIManager>
 
         popup.ShowPopupRewardCardSelect(rewardAmount, candidateCardIds, isEscapeCell, zoneNumber, cellRow, cellCol, rerollRemain, () =>
         {
-            CloseTopPopup(EPopupLayer.Overlay);
+            ClosePopup(popup, EPopupLayer.Overlay);
             onClosed?.Invoke();
         }, scavengedMineral, scoutedMineral, expGained);
     }
@@ -698,7 +769,7 @@ public class UIManager : MonoSingleton<UIManager>
         if (popup == null) return;
 
         PushPopup(popup, EPopupLayer.Overlay);
-        popup.ShowPopupChargeResource(() => CloseTopPopup(EPopupLayer.Overlay), onCharged);
+        popup.ShowPopupChargeResource(() => ClosePopup(popup, EPopupLayer.Overlay), onCharged);
     }
 
     // 상대 지휘관 상세 정보 팝업 — 서버 상세 조회(실시간) 후 표시. 랭킹/PVP 화면 위에 쌓아야 하므로 Overlay 층에 push
@@ -719,7 +790,7 @@ public class UIManager : MonoSingleton<UIManager>
             if (popup == null) return;
 
             PushPopup(popup, EPopupLayer.Overlay);
-            popup.ShowPopupOpponentDetail(response.data, () => CloseTopPopup(EPopupLayer.Overlay), onConfirm);
+            popup.ShowPopupOpponentDetail(response.data, () => ClosePopup(popup, EPopupLayer.Overlay), onConfirm);
         });
     }
 

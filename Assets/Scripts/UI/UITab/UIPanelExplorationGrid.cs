@@ -33,7 +33,7 @@ public class UIPanelExplorationGrid : UIPanelBase
     [SerializeField] private InfiniteScrollViewH m_zoneTabScroll;
     [SerializeField] private GameObject m_zoneTabNodePrefab;
 
-    // 셀 클리어 직후부터 탈출 확정 팝업이 실제로 뜨기 전까지, 그리드/빈 공간 조작(3D 레이캐스트)을 막기 위한 화면 전체 raycastable 오버레이
+    // 탈출 셀 클리어 직후부터 탈출 요청을 보내기 전까지, 그리드/빈 공간 조작(3D 레이캐스트)을 막기 위한 화면 전체 raycastable 오버레이
     [Header("입력 차단")]
     [SerializeField] private GameObject m_inputBlockOverlay;
     // 락/클리어 표시 등 실제 진행도 연동은 후속 작업(clearedZones가 아직 구식 스테이지 포맷)
@@ -276,6 +276,7 @@ public class UIPanelExplorationGrid : UIPanelBase
         ZoneConfig zoneConfig = DataManager.Instance.m_dataTableZone.GetZoneByZoneIndex(zoneNumber);
         if (zoneConfig != null && CameraController.Instance != null)
         {
+            m_isWaitingGalaxyViewSettled = true;
             EventManager.Subscribe_GalaxyViewSettled(OnGalaxyViewSettled);
             CameraController.Instance.EnterGalaxyView(zoneConfig.galaxyCameraTarget, zoneConfig.galaxyCameraZoom, zoneConfig.galaxyCameraRotX, zoneConfig.galaxyCameraRotY);
         }
@@ -297,6 +298,10 @@ public class UIPanelExplorationGrid : UIPanelBase
 
         EventManager.Unsubscribe_ExplorationGridCellClicked(OnGridCellClicked);
         EventManager.Unsubscribe_GalaxyViewSettled(OnGalaxyViewSettled);
+        m_isWaitingGalaxyViewSettled = false;
+        m_isEscapePendingUntilSettled = false;
+        if (m_inputBlockOverlay != null)
+            m_inputBlockOverlay.SetActive(false);
 
         // 존 탭 스크롤 관성이 남아있으면 패널이 닫힌 뒤에도 onCenterIndexChanged -> NavigateToZone -> BuildCellButtons()가
         // 뒤늦게 실행되어 m_cellRoot(패널과 무관한 독립 루트)에 그리드 셀이 다시 살아날 수 있음 — 먼저 관성부터 멈춤
@@ -342,11 +347,18 @@ public class UIPanelExplorationGrid : UIPanelBase
     private void OnGalaxyViewSettled()
     {
         EventManager.Unsubscribe_GalaxyViewSettled(OnGalaxyViewSettled);
+        m_isWaitingGalaxyViewSettled = false;
         SettleZoneEntry(m_pendingZoneNumber);
+
+        if (m_isEscapePendingUntilSettled == true)
+        {
+            m_isEscapePendingUntilSettled = false;
+            RequestEscapeZone();
+        }
     }
 
     // "실제로 이 존에 정착한다"는 단일 지점 — 존 탭/광물/그리드(좌표·적립경험치·버튼) 표시를 이 시점에 한 번에 갱신.
-    // 셀 클리어 결과 확정(적립 보상 반영, 탈출 팝업)은 여기서 하지 않음 — ContinueAfterCellClear가 그 결과를 아는 시점에 직접 처리함
+    // 셀 클리어 결과 확정(적립 보상 반영, 탈출)은 여기서 하지 않음 — ContinueAfterCellClear가 그 결과를 아는 시점에 직접 처리함
     // (예전엔 여기서 처리했는데, 이 함수가 언제 호출되는지와 셀 클리어 서버 응답이 언제 오는지가 서로 무관해서 순서가 꼬이는 문제가 있었음)
     private void SettleZoneEntry(int zoneNumber)
     {
@@ -686,9 +698,16 @@ public class UIPanelExplorationGrid : UIPanelBase
         }
 
         bool isCurrentCell = row == m_currentRow && col == m_currentCol;
+        GridCellData clickedCellData = m_gridData.GetCell(row, col);
+        bool isClearedEscapeCell = clickedCellData.isEscape == true && clickedCellData.isCleared == true;
         // 현재 서 있는 셀(이미 클리어됨)을 다시 클릭하는 건 아무 동작도 하지 않음 —
-        // 탈출 셀도 클리어 즉시 SettleZoneEntry가 자동으로 탈출 확정 팝업을 띄우므로 여기 도달할 일 자체가 없음
-        if (isCurrentCell) return;
+        // 단 클리어한 탈출 셀 위라면(탈출 처리 전 재접속 등) 바로 탈출
+        if (isCurrentCell == true)
+        {
+            if (isClearedEscapeCell == true)
+                EscapeAfterPopupsClosed();
+            return;
+        }
 
         List<(int row, int col)> path = m_gridData.FindPath(m_currentRow, m_currentCol, row, col);
         if (path == null || path.Count < 2) return; // 도달 불가(Blocked 포함)
@@ -718,10 +737,11 @@ public class UIPanelExplorationGrid : UIPanelBase
 
         // 이번 런에서 이미 클리어한 셀·시작 셀로의 이동(재방문)은 전투/보상 없이 위치만 옮기므로 도전 확인 팝업 없이 바로 진행 —
         // 거리와 무관하게(인접한 1칸이어도) 항상 점프 이동(MoveToExplorationCell)으로 통일, 경유 칸마다 서버 왕복하지 않음
+        // 탈출 셀은 서버가 점프 목적지로 허용하지 않으므로 클리어했어도 제외(직전 칸까지 점프 후 enter-cell로 진입)
         GridCellData targetCellData = m_gridData.GetCell(row, col);
         bool isAlreadyClearedTargetCell = targetCellData.isCleared;
         bool isStartTargetCell = targetCellData.isStart;
-        bool isRevisitTargetCell = isAlreadyClearedTargetCell == true || isStartTargetCell == true;
+        bool isRevisitTargetCell = isClearedEscapeCell == false && (isAlreadyClearedTargetCell == true || isStartTargetCell == true);
         if (isRevisitTargetCell == true)
         {
             StartJumpMove(path, path.Count - 1, onWalkComplete: null);
@@ -733,6 +753,13 @@ public class UIPanelExplorationGrid : UIPanelBase
         if (path.Count > 2)
         {
             StartJumpMove(path, path.Count - 2, onWalkComplete: () => OnCellClicked(row, col));
+            return;
+        }
+
+        // 클리어한 탈출 셀 — 전투가 없으므로 도전 확인 없이 진입, 도착하면 바로 탈출(MoveToConfirmedCellWithoutBattle)
+        if (isClearedEscapeCell == true)
+        {
+            ConfirmEnterCell(row, col);
             return;
         }
 
@@ -1190,7 +1217,7 @@ public class UIPanelExplorationGrid : UIPanelBase
     }
 
     // 전투 없이 확정된 셀(재방문/빈 셀)로 이동 — 카메라는 갤럭시뷰에 그대로 둔 채 함대 오브젝트만 워프인.
-    // 탈출 셀 재방문(예: 탈출 확정 팝업 뜨기 전에 앱 종료 후 재접속)도 여기서 처리 — 카메라 정착 대기 없이 이미 갤럭시뷰이므로 팝업 즉시 표시
+    // 탈출 셀 재방문(예: 탈출 처리 전에 앱 종료 후 재접속)도 여기서 처리 — 곧바로 탈출해 다음 존으로 가므로 워프인 연출은 생략
     private void MoveToConfirmedCellWithoutBattle()
     {
         SpaceFleet myFleet = ObjectManager.Instance.GetMyFleet();
@@ -1199,14 +1226,16 @@ public class UIPanelExplorationGrid : UIPanelBase
         m_currentRow = m_pendingCellRow;
         m_currentCol = m_pendingCellCol;
 
+        bool reachedEscape = m_gridData != null && m_gridData.GetCell(m_currentRow, m_currentCol).isEscape;
+
         ObjectManager.Instance.SetMyFleetPosition(m_pendingCellWorldPos, 0f);
-        myFleet.StartFleetWarpIn();
+        if (reachedEscape == false)
+            myFleet.StartFleetWarpIn();
 
         RefreshCellStates();
 
-        bool reachedEscape = m_gridData != null && m_gridData.GetCell(m_currentRow, m_currentCol).isEscape;
         if (reachedEscape == true)
-            ShowEscapeConfirmPopup();
+            EscapeAfterPopupsClosed();
     }
 
     // 전투 없는 첫 클리어(Event 등)로 이동 — 위치는 로컬로 먼저 옮기되, 서버는 아직 위치를 확정하지 않았으므로(canConfirmPositionOnEnter가
@@ -1346,13 +1375,14 @@ public class UIPanelExplorationGrid : UIPanelBase
         ETreasureRewardType treasureRewardType = ETreasureRewardType.None;
         float treasureRewardRatio = 0f;
         int rerollRemain = 0;
+        int levelupLevel = 0; // 레벨업했으면 새 레벨 — 알림은 보상 팝업 다음 순서로 표시
         if (response.data != null)
         {
             mineralGained = response.data.mineralGained;
             scavengedMineral = response.data.scavengedMineral;
             scoutedMineral = response.data.scoutedMineral;
             expGained = response.data.expGained;
-            ApplyExpAndLevel(response.data.totalExp, response.data.commanderLevel); // 경험치는 셀 클리어 즉시 확정(서버 권위값)
+            levelupLevel = UpdateExpAndLevel(response.data.totalExp, response.data.commanderLevel); // 경험치는 셀 클리어 즉시 확정(서버 권위값)
             rewardCardCandidates = response.data.rewardCardCandidates; // 탈출 셀/빈 셀은 null — 카드 구매 단계를 건너뜀
             treasureRewardType = response.data.treasureRewardType;
             treasureRewardRatio = response.data.treasureRewardRatio;
@@ -1378,6 +1408,7 @@ public class UIPanelExplorationGrid : UIPanelBase
         if (treasureRewardType == ETreasureRewardType.ShipHealthHeal)
         {
             ShowTreasureEffectPopup(treasureRewardRatio);
+            ShowLevelupNotifyIfNeeded(levelupLevel);
             return;
         }
 
@@ -1387,6 +1418,7 @@ public class UIPanelExplorationGrid : UIPanelBase
         // 빈 셀(적 없음)/재방문은 획득 광물·경험치·카드가 모두 없음 — 팝업 없이 바로 기존 흐름 진행
         if (mineralGained <= 0 && expGained <= 0 && rewardCardCandidates == null)
         {
+            ShowLevelupNotifyIfNeeded(levelupLevel);
             ContinueAfterCellClear();
             return;
         }
@@ -1399,6 +1431,7 @@ public class UIPanelExplorationGrid : UIPanelBase
         int rewardCellRow = m_currentRow;
         int rewardCellCol = m_currentCol;
         UIManager.Instance.ShowRewardCardSelectPopup(rewardAmount, rewardCardCandidates, isEscapeCell, rewardZoneNumber, rewardCellRow, rewardCellCol, rerollRemain, ContinueAfterCellClear, scavengedMineral, scoutedMineral, expGained);
+        ShowLevelupNotifyIfNeeded(levelupLevel);
     }
 
     // Treasure(Event) 셀의 체력회복 당첨 — 즉시 효과 적용 후 안내 팝업. 탐사포인트 당첨은 기존 보상카드 팝업 경로를 그대로 재사용하므로 여기서 다루지 않음
@@ -1425,7 +1458,7 @@ public class UIPanelExplorationGrid : UIPanelBase
             UIManager.Instance.HideCurrentPanel();
     }
 
-    // 셀 클리어 결과를 실제로 확정하는 단일 지점 — 이 시점에만 적립 보상을 반영하고, 탈출 셀이면 여기서 바로 팝업을 예약함
+    // 셀 클리어 결과를 실제로 확정하는 단일 지점 — 이 시점에만 적립 보상을 반영하고, 탈출 셀이면 여기서 바로 탈출을 예약함
     // (그리드 패널이 이 시점에 이미 top인지 아닌지와 무관하게 항상 동작해야 함 — Battle 패널이 fleet state 변화로
     // 먼저 스스로 닫혀 그리드가 미리 top이 돼 있는 경우가 있어서, "그리드로 복귀하는 시점에 반영"하는 방식은 그 복귀가
     // 안 일어나면(이미 top이면) 반영 자체가 누락되는 문제가 있었음)
@@ -1437,12 +1470,12 @@ public class UIPanelExplorationGrid : UIPanelBase
 
         if (reachedEscape == true)
         {
-            // 탈출 확정 팝업이 실제로 뜨기 전까지 그리드/빈 공간 조작이 끼어들지 못하게 미리 차단
+            // 탈출 요청을 보내기 전까지 그리드/빈 공간 조작이 끼어들지 못하게 미리 차단
             if (m_inputBlockOverlay != null)
                 m_inputBlockOverlay.SetActive(true);
 
-            // 롤링 애니메이션이 실제로 끝나는 콜백 시점에 탈출 확정 팝업을 띄움(별도 타이머 추정 없이 정확한 동기화)
-            RefreshMineralAmountText(ShowEscapeConfirmPopup);
+            // 롤링 애니메이션이 실제로 끝나는 콜백 시점에 탈출을 진행(별도 타이머 추정 없이 정확한 동기화)
+            RefreshMineralAmountText(EscapeAfterPopupsClosed);
         }
         else
         {
@@ -1451,7 +1484,7 @@ public class UIPanelExplorationGrid : UIPanelBase
 
         RefreshAbandonRunButtonState();
 
-        // 포기 규칙 안내는 셀 클리어 보상 팝업이 닫힌 이 시점에서만 시작(완료 여부는 TutorialManager가 판정) — 탈출 셀은 탈출 확정 팝업이 뜨므로 제외
+        // 포기 규칙 안내는 셀 클리어 보상 팝업이 닫힌 이 시점에서만 시작(완료 여부는 TutorialManager가 판정) — 탈출 셀은 바로 탈출하므로 제외
         bool isRunActive = IsActiveExplorationZone(m_currentZoneNumber) == true;
         if (reachedEscape == false && isRunActive == true)
             TutorialManager.Instance.TryStartTutorialDeferred("Tutorial_AbandonRun", "UIPanelExplorationGrid");
@@ -1460,22 +1493,32 @@ public class UIPanelExplorationGrid : UIPanelBase
         EventManager.TriggerZoneCellReturnedToGrid();
     }
 
-    // 탈출 셀 클리어 직후(ContinueAfterCellClear의 롤링 애니메이션 콜백)에만 호출됨 — 탈출 확정 여부만 물음
-    // 지휘관 경험치는 셀 클리어마다 이미 지급되므로 탈출 확정 시 추가로 받는 보상이 없어 미리보기도 없음
-    private void ShowEscapeConfirmPopup()
+    private bool m_isWaitingGalaxyViewSettled; // EnterZone의 갤럭시뷰 전환이 아직 정착하지 않음
+    private bool m_isEscapePendingUntilSettled; // 갤럭시뷰 정착 직후 탈출 요청을 보내야 함
+
+    // 탈출 셀에 도착하면 확인 없이 탈출 — 레벨업 알림 등 열린 팝업이 모두 닫힌 뒤 진행
+    private void EscapeAfterPopupsClosed()
+    {
+        UIManager.Instance.RunAfterPopupsClosed(EscapeAfterGalaxyViewSettled);
+    }
+
+    // 갤럭시뷰 전환 중에 탈출하면 뒤이은 정착 처리(OnGalaxyViewSettled)가 이전 존 그리드를 다시 그리므로 정착까지 대기
+    private void EscapeAfterGalaxyViewSettled()
+    {
+        if (m_isWaitingGalaxyViewSettled == true)
+        {
+            m_isEscapePendingUntilSettled = true;
+            return;
+        }
+        RequestEscapeZone();
+    }
+
+    // 탈출 요청 — 지휘관 경험치는 셀 클리어마다 이미 지급되므로 탈출 시 추가로 받는 보상은 없음
+    private void RequestEscapeZone()
     {
         if (m_inputBlockOverlay != null)
             m_inputBlockOverlay.SetActive(false);
 
-        UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig
-        {
-            message = LocalizationManager.Instance.Get("UIPanelExplorationGrid_EscapeConfirmMessage"),
-            onConfirm = OnConfirmEscape,
-        });
-    }
-
-    private void OnConfirmEscape()
-    {
         EscapeExplorationZoneRequest request = new EscapeExplorationZoneRequest
         {
             zoneNumber = m_currentZoneNumber,
@@ -1486,6 +1529,7 @@ public class UIPanelExplorationGrid : UIPanelBase
             if (response.errorCode != 0)
             {
                 Debug.LogError($"[UIPanelExplorationGrid] EscapeExplorationZone 실패: {response.errorCode}");
+                NetworkManager.Instance.ShowRequestFailedPopup(response.errorCode); // 탈출 셀을 다시 누르면 재시도됨
                 ReturnToGridPanel(); // 이미 top이면 no-op, 위에 뭔가 덮여 있었다면 걷어내고 복구
                 return;
             }
@@ -1544,7 +1588,7 @@ public class UIPanelExplorationGrid : UIPanelBase
             m_abandonRunContainer.SetActive(isRunActive);
     }
 
-    // onAnimComplete: 롤링 애니메이션이 실제로 끝난 프레임에 호출됨(코루틴을 아예 못 도는 경로에서도 즉시 호출됨) — 애니메이션과 정확히 동기화해야 하는 후속 로직(예: 탈출 확정 팝업)에 사용
+    // onAnimComplete: 롤링 애니메이션이 실제로 끝난 프레임에 호출됨(코루틴을 아예 못 도는 경로에서도 즉시 호출됨) — 애니메이션과 정확히 동기화해야 하는 후속 로직(예: 탈출 진행)에 사용
     // 광물은 은행/적립 개념 없이 commanderInfo.mineralAmount가 항상 최신 권위값이라 그 값을 그대로 표시
     private void RefreshMineralAmountText(System.Action onAnimComplete = null)
     {
@@ -1673,15 +1717,29 @@ public class UIPanelExplorationGrid : UIPanelBase
     // 셀 클리어/탈출/포기 응답(totalExp/commanderLevel, 권위값)을 커맨더 정보에 반영 — 레벨업 시 알림 표시
     private void ApplyExpAndLevel(int totalExp, int commanderLevel)
     {
+        int levelupLevel = UpdateExpAndLevel(totalExp, commanderLevel);
+        ShowLevelupNotifyIfNeeded(levelupLevel);
+    }
+
+    // 경험치/레벨 값만 반영 — 레벨업했으면 새 레벨, 아니면 0을 반환
+    private int UpdateExpAndLevel(int totalExp, int commanderLevel)
+    {
         Commander commander = DataManager.Instance.m_currentCommander;
-        if (commander == null) return;
+        if (commander == null) return 0;
 
         int prevLevel = commander.GetCommanderLevel();
         commander.UpdateExp(totalExp);
         commander.UpdateCommanderLevel(commanderLevel);
-        if (commanderLevel <= prevLevel) return;
+        if (commanderLevel <= prevLevel) return 0;
 
-        UIManager.Instance.ShowCommanderLevelupNotify(commanderLevel);
+        return commanderLevel;
+    }
+
+    private void ShowLevelupNotifyIfNeeded(int levelupLevel)
+    {
+        if (levelupLevel <= 0) return;
+
+        UIManager.Instance.ShowCommanderLevelupNotify(levelupLevel);
     }
 
     // 탈출/포기로 런이 종료된 직후 로컬 캐시도 즉시 비워야 "다른 존 진행중" 판정이 이번 세션 내내 정확함

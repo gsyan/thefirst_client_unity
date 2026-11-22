@@ -378,8 +378,13 @@ public class TutorialManager : MonoSingleton<TutorialManager>
         yield return null;
         yield return null;
 
+        // 레벨업 알림 등 열려 있는 팝업이 모두 닫힌 뒤 시작
+        while (UIManager.Instance != null && UIManager.Instance.HasOverlayPopupOpenOrWaiting() == true)
+            yield return null;
+
         if (m_isPlaying == true) yield break;
         if (IsTutorialCompleted(tutorialId) == true) yield break;
+        if (UIManager.Instance == null) yield break;
         if (string.IsNullOrEmpty(requiredTopPanelName) == false && UIManager.Instance.GetTopPanelName() != requiredTopPanelName) yield break;
 
         StartTutorial(tutorialId);
