@@ -33,7 +33,7 @@ public class UIPanelAchievement : UIPanelBase
     private static readonly Color k_tabUnselectedColor = new Color(0.5f, 0.5f, 0.5f, 1f);
     private bool m_hideCompleted;
 
-    // 영구 업적 카테고리 표시 순서
+    // 영구 업적 카테고리 표시 순서 — 아키타입 업적은 이 뒤에 아키타입별 묶음으로 표시
     private static readonly EAchievementConditionType[] k_categoryOrder =
     {
         EAchievementConditionType.CellClear,
@@ -44,16 +44,13 @@ public class UIPanelAchievement : UIPanelBase
         EAchievementConditionType.CommanderLevel,
         EAchievementConditionType.CommandPower,
         EAchievementConditionType.MineralTotal,
-        EAchievementConditionType.HullTierCount,
-        EAchievementConditionType.ModuleTierCount,
-        EAchievementConditionType.HullUnlocked,
     };
 
-    // 업적/일일퀘스트 항목 1개(또는 영구 업적 목록의 카테고리 헤더) — 헤더면 isHeader만 유효. category는 항목→헤더 역참조(레드닷 재계산)에 사용
+    // 업적/일일퀘스트 항목 1개(또는 영구 업적 목록의 카테고리 헤더) — 헤더면 isHeader만 유효. groupKey는 항목→헤더 역참조(레드닷 재계산)에 사용
     private class AchievementListEntry
     {
         public bool isHeader;
-        public EAchievementConditionType category;
+        public string groupKey; // 조건 타입 이름 또는 함체 아키타입
         public string headerLabel;
         public bool headerHasUnclaimed; // 헤더 전용 — 이 카테고리 안에 완료+미수령 항목이 있는지
         public AchievementData data;
@@ -371,36 +368,56 @@ public class UIPanelAchievement : UIPanelBase
         foreach (EAchievementConditionType category in k_categoryOrder)
         {
             List<AchievementData> categoryAchievements = permanentAchievements.FindAll(a => a.conditionType == category);
-            if (categoryAchievements.Count == 0) continue;
+            AddGroup(category.ToString(), GetCategoryLocKey(category), categoryAchievements, statusById);
+        }
 
-            AchievementListEntry headerEntry = new AchievementListEntry
+        // 아키타입 업적 — 테이블에 처음 나오는 순서대로 아키타입별 헤더로 묶음
+        List<AchievementData> archetypeAchievements = permanentAchievements.FindAll(a => CommonUtility.IsHullArchetypeAchievement(a.conditionType));
+        List<string> hullArchetypes = new List<string>();
+        foreach (AchievementData data in archetypeAchievements)
+        {
+            if (hullArchetypes.Contains(data.conditionParam) == false)
+                hullArchetypes.Add(data.conditionParam);
+        }
+        foreach (string hullArchetype in hullArchetypes)
+        {
+            List<AchievementData> groupAchievements = archetypeAchievements.FindAll(a => a.conditionParam == hullArchetype);
+            AddGroup(hullArchetype, $"HullArchetype_{hullArchetype}", groupAchievements, statusById);
+        }
+    }
+
+    // 헤더 1개와 그 아래 항목들을 m_flattenedList에 추가 — 항목이 없으면 헤더도 추가하지 않음
+    private void AddGroup(string groupKey, string headerLocKey, List<AchievementData> achievements, Dictionary<string, AchievementStatus> statusById)
+    {
+        if (achievements.Count == 0) return;
+
+        AchievementListEntry headerEntry = new AchievementListEntry
+        {
+            isHeader = true,
+            groupKey = groupKey,
+            headerLabel = LocalizationManager.Instance.Get(headerLocKey),
+        };
+        m_flattenedList.Add(headerEntry);
+
+        foreach (AchievementData data in achievements)
+        {
+            statusById.TryGetValue(data.achievementId, out AchievementStatus status);
+            int currentValue = status != null ? status.currentValue : 0;
+            bool isClaimed = status != null && status.isClaimed;
+            bool isVipClaimed = status != null && status.isVipClaimed;
+
+            m_flattenedList.Add(new AchievementListEntry
             {
-                isHeader = true,
-                category = category,
-                headerLabel = LocalizationManager.Instance.Get(GetCategoryLocKey(category)),
-            };
-            m_flattenedList.Add(headerEntry);
+                isHeader = false,
+                groupKey = groupKey,
+                data = data,
+                currentValue = currentValue,
+                isClaimed = isClaimed,
+                isVipClaimed = isVipClaimed,
+            });
 
-            foreach (AchievementData data in categoryAchievements)
-            {
-                statusById.TryGetValue(data.achievementId, out AchievementStatus status);
-                int currentValue = status != null ? status.currentValue : 0;
-                bool isClaimed = status != null && status.isClaimed;
-                bool isVipClaimed = status != null && status.isVipClaimed;
-
-                m_flattenedList.Add(new AchievementListEntry
-                {
-                    isHeader = false,
-                    category = category,
-                    data = data,
-                    currentValue = currentValue,
-                    isClaimed = isClaimed,
-                    isVipClaimed = isVipClaimed,
-                });
-
-                if (IsEntryUnclaimed(currentValue, data.threshold, isClaimed, isVipClaimed) == true)
-                    headerEntry.headerHasUnclaimed = true;
-            }
+            if (IsEntryUnclaimed(currentValue, data.threshold, isClaimed, isVipClaimed) == true)
+                headerEntry.headerHasUnclaimed = true;
         }
     }
 
@@ -514,7 +531,7 @@ public class UIPanelAchievement : UIPanelBase
                 entry.isClaimed = true;
         }
 
-        RecomputeCategoryHeaderUnclaimed(entry);
+        RecomputeGroupHeaderUnclaimed(entry);
         RefreshUnclaimedIndicators();
         UpdateCommanderAchievementPoint(achievementPointRemain);
 
@@ -533,21 +550,21 @@ public class UIPanelAchievement : UIPanelBase
     }
 
     // claimedEntry가 속한 카테고리의 헤더 엔트리를 찾아 headerHasUnclaimed를 다시 계산 — 수령으로 그 카테고리의 마지막 미수령 항목이 없어졌을 수 있어서 단순 false 대입이 아니라 재순회 필요
-    private void RecomputeCategoryHeaderUnclaimed(AchievementListEntry claimedEntry)
+    private void RecomputeGroupHeaderUnclaimed(AchievementListEntry claimedEntry)
     {
         if (claimedEntry == null) return;
 
-        AchievementListEntry headerEntry = m_flattenedList.Find(e => e.isHeader == true && e.category == claimedEntry.category);
+        AchievementListEntry headerEntry = m_flattenedList.Find(e => e.isHeader == true && e.groupKey == claimedEntry.groupKey);
         if (headerEntry == null) return;
 
-        headerEntry.headerHasUnclaimed = ComputeCategoryHasUnclaimed(claimedEntry.category);
+        headerEntry.headerHasUnclaimed = ComputeGroupHasUnclaimed(claimedEntry.groupKey);
     }
 
-    private bool ComputeCategoryHasUnclaimed(EAchievementConditionType category)
+    private bool ComputeGroupHasUnclaimed(string groupKey)
     {
         foreach (AchievementListEntry entry in m_flattenedList)
         {
-            if (entry.isHeader == true || entry.category != category) continue;
+            if (entry.isHeader == true || entry.groupKey != groupKey) continue;
             if (IsEntryUnclaimed(entry.currentValue, entry.data.threshold, entry.isClaimed, entry.isVipClaimed) == true)
                 return true;
         }

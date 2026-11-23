@@ -64,12 +64,10 @@ public class UIAchievementRow : MonoBehaviour
 
         bool isCompleted = currentValue >= data.threshold;
 
-        // HullUnlocked/ModuleTierCount는 conditionParam이 원본 코드(예: hull_7_1_32211, beam_2)라 표시 전 사람이 읽을 이름으로 변환해야 함
+        // 아키타입 업적은 conditionParam이 아키타입 코드(예: argus)라 표시 전 함체명으로 변환해야 함
         string conditionParamDisplay = data.conditionParam;
-        if (data.conditionType == EAchievementConditionType.HullUnlocked)
-            conditionParamDisplay = CommonUtility.BuildHullDisplayName(data.conditionParam);
-        else if (data.conditionType == EAchievementConditionType.ModuleTierCount)
-            conditionParamDisplay = CommonUtility.BuildModuleTierDisplayName(data.conditionParam);
+        if (CommonUtility.IsHullArchetypeAchievement(data.conditionType) == true)
+            conditionParamDisplay = LocalizationManager.Instance.Get($"HullArchetype_{data.conditionParam}");
 
         string achievementName = string.Format(LocalizationManager.Instance.Get(data.nameKey), conditionParamDisplay, data.threshold, data.achievementPointReward);
         string progressLabel = LocalizationManager.Instance.Get("UIAchievement_Progress");

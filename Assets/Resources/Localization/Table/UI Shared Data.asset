@@ -827,20 +827,8 @@ MonoBehaviour:
     m_Key: UIAchievement_Category_CommandPower
     m_Metadata:
       m_Items: []
-  - m_Id: 76604851655409671
-    m_Key: UIAchievement_Category_ExplorationPointTotal
-    m_Metadata:
-      m_Items: []
-  - m_Id: 76604851655409672
-    m_Key: UIAchievement_Category_HullTierCount
-    m_Metadata:
-      m_Items: []
-  - m_Id: 76604851655409673
-    m_Key: UIAchievement_Category_ModuleTierCount
-    m_Metadata:
-      m_Items: []
-  - m_Id: 78132264847671296
-    m_Key: UIAchievement_Category_HullUnlocked
+  - m_Id: 104405113086279680
+    m_Key: UIAchievement_Category_MineralTotal
     m_Metadata:
       m_Items: []
   - m_Id: 79331435193696256
@@ -1491,6 +1479,82 @@ MonoBehaviour:
     m_Key: UIDailyAchievement_Name_scavenge
     m_Metadata:
       m_Items: []
+  - m_Id: 104411371688296448
+    m_Key: UIDailyAchievement_Notice_cell_clear
+    m_Metadata:
+      m_Items: []
+  - m_Id: 104411371747016704
+    m_Key: UIDailyAchievement_Notice_event_cell
+    m_Metadata:
+      m_Items: []
+  - m_Id: 104411371747016705
+    m_Key: UIDailyAchievement_Notice_zone_clear_total
+    m_Metadata:
+      m_Items: []
+  - m_Id: 104411371747016706
+    m_Key: UIDailyAchievement_Notice_zone_clear_specific
+    m_Metadata:
+      m_Items: []
+  - m_Id: 104411371747016707
+    m_Key: UIDailyAchievement_Notice_reward_card_purchase
+    m_Metadata:
+      m_Items: []
+  - m_Id: 104411371747016708
+    m_Key: UIDailyAchievement_Notice_mineral_earned
+    m_Metadata:
+      m_Items: []
+  - m_Id: 104411371747016709
+    m_Key: UIDailyAchievement_Notice_mineral_spent
+    m_Metadata:
+      m_Items: []
+  - m_Id: 104411371747016710
+    m_Key: UIDailyAchievement_Notice_pvp_battle
+    m_Metadata:
+      m_Items: []
+  - m_Id: 104411371747016711
+    m_Key: UIDailyAchievement_Notice_pvp_victory
+    m_Metadata:
+      m_Items: []
+  - m_Id: 104411371747016712
+    m_Key: UIDailyAchievement_Notice_enemy_kill
+    m_Metadata:
+      m_Items: []
+  - m_Id: 104411371747016713
+    m_Key: UIDailyAchievement_Notice_aircraft_launch
+    m_Metadata:
+      m_Items: []
+  - m_Id: 104411371747016714
+    m_Key: UIDailyAchievement_Notice_ad_reward
+    m_Metadata:
+      m_Items: []
+  - m_Id: 104411371747016715
+    m_Key: UIDailyAchievement_Notice_missile_only_clear
+    m_Metadata:
+      m_Items: []
+  - m_Id: 104411371751211008
+    m_Key: UIDailyAchievement_Notice_aircraft_only_clear
+    m_Metadata:
+      m_Items: []
+  - m_Id: 104411371751211009
+    m_Key: UIDailyAchievement_Notice_no_shield_clear
+    m_Metadata:
+      m_Items: []
+  - m_Id: 104411371751211010
+    m_Key: UIDailyAchievement_Notice_shield_absorb
+    m_Metadata:
+      m_Items: []
+  - m_Id: 104411371751211011
+    m_Key: UIDailyAchievement_Notice_intercept
+    m_Metadata:
+      m_Items: []
+  - m_Id: 104411371751211012
+    m_Key: UIDailyAchievement_Notice_fleet_repair
+    m_Metadata:
+      m_Items: []
+  - m_Id: 104411371751211013
+    m_Key: UIDailyAchievement_Notice_scavenge
+    m_Metadata:
+      m_Items: []
   - m_Id: 100404887694475276
     m_Key: UIDailyAchievement_Desc_scavenge
     m_Metadata:
@@ -1535,20 +1599,20 @@ MonoBehaviour:
     m_Key: UIAchievement_Desc_exploration_point_total
     m_Metadata:
       m_Items: []
-  - m_Id: 78447295728582676
-    m_Key: UIAchievement_Name_hull_tier_count
+  - m_Id: 104405113165971456
+    m_Key: UIAchievement_Name_hull_passive
     m_Metadata:
       m_Items: []
-  - m_Id: 78447295728582677
-    m_Key: UIAchievement_Desc_hull_tier_count
+  - m_Id: 104405113165971457
+    m_Key: UIAchievement_Desc_hull_passive
     m_Metadata:
       m_Items: []
-  - m_Id: 78447295728582678
-    m_Key: UIAchievement_Name_module_tier_count
+  - m_Id: 104405113165971458
+    m_Key: UIAchievement_Name_hull_reinforce
     m_Metadata:
       m_Items: []
-  - m_Id: 78447295728582679
-    m_Key: UIAchievement_Desc_module_tier_count
+  - m_Id: 104405113165971459
+    m_Key: UIAchievement_Desc_hull_reinforce
     m_Metadata:
       m_Items: []
   - m_Id: 78447295728582680
@@ -1557,10 +1621,6 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 78447295728582681
     m_Key: UIAchievement_Desc_hull_unlock
-    m_Metadata:
-      m_Items: []
-  - m_Id: 84870060622872576
-    m_Key: UIAchievement_ModuleTierName
     m_Metadata:
       m_Items: []
   - m_Id: 82671357333995520
@@ -1801,6 +1861,14 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 96410851941941300
     m_Key: HullArchetypePassive_sentinel_4
+    m_Metadata:
+      m_Items: []
+  - m_Id: 104410136893587456
+    m_Key: UIBattleProgressNotice_DailyPrefix
+    m_Metadata:
+      m_Items: []
+  - m_Id: 104410136939724800
+    m_Key: UIBattleProgressNotice_PassivePrefix
     m_Metadata:
       m_Items: []
   - m_Id: 96848683730862080

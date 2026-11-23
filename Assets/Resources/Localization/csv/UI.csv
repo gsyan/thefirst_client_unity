@@ -212,10 +212,7 @@ UIAchievement_Category_ZoneClearSpecific,,Zone Clear,존 클리어
 UIAchievement_Category_ZoneFullClear,,Zone Full Clear,존 완전 클리어
 UIAchievement_Category_CommanderLevel,,Commander Level,지휘관 레벨
 UIAchievement_Category_CommandPower,,Command Power,지휘력
-UIAchievement_Category_ExplorationPointTotal,,Mineral (Total),광물(누적)
-UIAchievement_Category_HullTierCount,,Hull Tier,함체 티어
-UIAchievement_Category_ModuleTierCount,,Module Tier,모듈 티어
-UIAchievement_Category_HullUnlocked,,Hull Unlock,함체 언락
+UIAchievement_Category_MineralTotal,,Mineral (Total),광물(누적)
 UIDailyAchievement_Category_CellClear,,Daily Cell Clear,일일 셀 클리어
 UIDailyAchievement_Category_EventCell,,Daily Event Cell Clear,일일 이벤트 셀 클리어
 UIDailyAchievement_Category_ZoneClearTotal,,Daily Zone Clear,일일 존 클리어
@@ -382,6 +379,25 @@ UIDailyAchievement_Desc_intercept,,Intercept {1} times with your interceptors in
 UIDailyAchievement_Name_fleet_repair,,Repair {1} Health,함대 수리 {1}
 UIDailyAchievement_Desc_fleet_repair,,Repair {1} health across your fleet in exploration battles (repair tactic and ally repair),탐사 전투에서 함대가 체력을 {1} 수리하면 완료(수리 전술·아군 수리 포함)
 UIDailyAchievement_Name_scavenge,,Scavenge {1} Minerals,약탈 광물 {1} 획득
+UIDailyAchievement_Notice_cell_clear,,Cell Clear,셀 클리어
+UIDailyAchievement_Notice_event_cell,,Event Cell Visit,이벤트 셀 방문
+UIDailyAchievement_Notice_zone_clear_total,,Zone Clear,존 클리어
+UIDailyAchievement_Notice_zone_clear_specific,,Escape Zone {0},존 {0} 탈출
+UIDailyAchievement_Notice_reward_card_purchase,,Buy Reward Cards,보상카드 구매
+UIDailyAchievement_Notice_mineral_earned,,Earn Minerals,광물 획득
+UIDailyAchievement_Notice_mineral_spent,,Spend Minerals,광물 사용
+UIDailyAchievement_Notice_pvp_battle,,PVP Battle,PVP 전투
+UIDailyAchievement_Notice_pvp_victory,,PVP Victory,PVP 승리
+UIDailyAchievement_Notice_enemy_kill,,Destroy Enemy Ships,적 함선 격침
+UIDailyAchievement_Notice_aircraft_launch,,Launch Aircraft,함재기 출격
+UIDailyAchievement_Notice_ad_reward,,Claim Ad Reward,광고 보상 받기
+UIDailyAchievement_Notice_missile_only_clear,,Missile-Only Clear,미사일만으로 셀 클리어
+UIDailyAchievement_Notice_aircraft_only_clear,,Aircraft-Only Clear,함재기만으로 셀 클리어
+UIDailyAchievement_Notice_no_shield_clear,,No-Shield Clear,실드 없이 셀 클리어
+UIDailyAchievement_Notice_shield_absorb,,Block Damage with Shields,실드로 피해 막기
+UIDailyAchievement_Notice_intercept,,Intercept,요격
+UIDailyAchievement_Notice_fleet_repair,,Fleet Repair,함대 수리
+UIDailyAchievement_Notice_scavenge,,Scavenge Minerals,약탈 광물 획득
 UIDailyAchievement_Desc_scavenge,,Gain {1} minerals by aircraft scavenging,함재기 약탈로 광물을 {1} 얻으면 완료
 UIAchievement_Name_zone_clear,,Clear Zone {0},존 {0} 클리어
 UIAchievement_Desc_zone_clear,,Clear Zone {0} for the first time,존 {0}를 처음 클리어하면 완료
@@ -393,13 +409,12 @@ UIAchievement_Name_command_power,,Reach {1} Command Power,지휘력 {1} 달성
 UIAchievement_Desc_command_power,,Reach {1} Command Power,지휘력 {1}에 도달하면 완료
 UIAchievement_Name_exploration_point_total,,Earn {1} Mineral (Total),누적 광물 {1} 획득
 UIAchievement_Desc_exploration_point_total,,"Earn {1} Mineral cumulatively (lifetime, not current balance)",역대 누적 획득 광물이 {1}에 도달하면 완료(현재 잔액이 아닌 역대 총 획득량 기준)
-UIAchievement_Name_hull_tier_count,,Deploy {1} Tier {0}+ Hulls,티어{0} 이상 함체 {1}척 동시 보유
-UIAchievement_Desc_hull_tier_count,,Have {1} hulls of Tier {0} or higher in your active fleet at the same time (stays completed once achieved),활성 함대에 티어{0} 이상 함체를 동시에 {1}척 보유하면 완료 (달성 후 함대를 바꿔도 유지)
-UIAchievement_Name_module_tier_count,,Equip {1} {0} or higher Modules,{0} 이상 모듈 {1}개 동시 장착
-UIAchievement_Desc_module_tier_count,,Have {1} {0} or higher modules equipped in your active fleet at the same time (stays completed once achieved),활성 함대에 {0} 이상 모듈을 동시에 {1}개 장착하면 완료 (달성 후 함대를 바꿔도 유지)
+UIAchievement_Name_hull_passive,,{0} Passive Stage {1},{0} 패시브 {1}단계 달성
+UIAchievement_Desc_hull_passive,,Complete passive stage {1} of the {0},{0}의 패시브 {1}단계를 완료하면 달성
+UIAchievement_Name_hull_reinforce,,Reinforce {0} {1} Times,{0} 강화 {1}회
+UIAchievement_Desc_hull_reinforce,,Reinforce the hull and modules of the {0} {1} times in total,{0}의 함체와 모듈을 합쳐 {1}회 강화하면 달성
 UIAchievement_Name_hull_unlock,,Unlock {0},{0} 언락
-UIAchievement_Desc_hull_unlock,,Unlock the {0} hull to complete. Refunds 10% of the achievement points spent.,{0} 함체를 언락하면 완료 — 소비한 업적 포인트의 10% 환급
-UIAchievement_ModuleTierName,,Tier{0} {1},티어{0} {1}
+UIAchievement_Desc_hull_unlock,,Unlock the {0} to complete,{0}을 언락하면 달성
 UI_Retry,,RETRY,재시도
 UIPopupMessage_NetworkWaiting,,Communicating with the server...,서버와 통신 중입니다...
 UIPopupMessage_NetworkNoResponseRead,,No response from the server. Do you want to retry?,서버 응답이 없습니다. 다시 시도할까요?
@@ -460,6 +475,8 @@ HullArchetypePassive_sentinel_1,,Shield & interceptor enabled,"실드, 요격체
 HullArchetypePassive_sentinel_2,,Each interceptor blocks 2 missiles,요격체 1기당 미사일 2발 요격
 HullArchetypePassive_sentinel_3,,Interceptor recharge time -0.3s,요격체 충전 대기시간 -0.3초
 HullArchetypePassive_sentinel_4,,Fleet-wide interceptor recharge time -0.2s,함대 요격체 충전 대기시간 -0.2초
+UIBattleProgressNotice_DailyPrefix,,Daily Quest {0},일일퀘스트{0}
+UIBattleProgressNotice_PassivePrefix,,{0} Passive {1} Quest,{0} 패시브{1} 퀘스트
 HullArchetypePassiveMission_destroy_enemy_ship,,Destroy enemy ships,적 함선 파괴
 HullArchetypePassiveMission_scout_success,,Scouting success,탐사 성공
 HullArchetypePassiveMission_damage_taken_cumulative,,Cumulative damage taken,받은 누적 데미지

@@ -671,18 +671,6 @@ MonoBehaviour:
     m_Localized: Command Power
     m_Metadata:
       m_Items: []
-  - m_Id: 76604851655409671
-    m_Localized: Mineral (Total)
-    m_Metadata:
-      m_Items: []
-  - m_Id: 76604851655409672
-    m_Localized: Hull Tier
-    m_Metadata:
-      m_Items: []
-  - m_Id: 76604851655409673
-    m_Localized: Module Tier
-    m_Metadata:
-      m_Items: []
   - m_Id: 76833988689133568
     m_Localized: AP Reward
     m_Metadata:
@@ -733,10 +721,6 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 78109183722782720
     m_Localized: Treasure Reward
-    m_Metadata:
-      m_Items: []
-  - m_Id: 78132264847671296
-    m_Localized: Hull Unlock
     m_Metadata:
       m_Items: []
   - m_Id: 78447295653085184
@@ -791,31 +775,12 @@ MonoBehaviour:
     m_Localized: Earn {1} Mineral cumulatively (lifetime, not current balance)
     m_Metadata:
       m_Items: []
-  - m_Id: 78447295728582676
-    m_Localized: Deploy {1} Tier {0}+ Hulls
-    m_Metadata:
-      m_Items: []
-  - m_Id: 78447295728582677
-    m_Localized: Have {1} hulls of Tier {0} or higher in your active fleet at the
-      same time (stays completed once achieved)
-    m_Metadata:
-      m_Items: []
-  - m_Id: 78447295728582678
-    m_Localized: Equip {1} {0} or higher Modules
-    m_Metadata:
-      m_Items: []
-  - m_Id: 78447295728582679
-    m_Localized: Have {1} {0} or higher modules equipped in your active fleet at
-      the same time (stays completed once achieved)
-    m_Metadata:
-      m_Items: []
   - m_Id: 78447295728582680
     m_Localized: Unlock {0}
     m_Metadata:
       m_Items: []
   - m_Id: 78447295728582681
-    m_Localized: Unlock the {0} hull to complete. Refunds 10% of the achievement
-      points spent.
+    m_Localized: Unlock the {0} to complete
     m_Metadata:
       m_Items: []
   - m_Id: 78718003033538560
@@ -1138,10 +1103,6 @@ MonoBehaviour:
   - m_Id: 84572619914739713
     m_Localized: 'Tip: Mineral only lasts while the exploration run is active and
       resets when it ends. Use it to charge your combat resource or buy reward cards.'
-    m_Metadata:
-      m_Items: []
-  - m_Id: 84870060622872576
-    m_Localized: Tier{0} {1}
     m_Metadata:
       m_Items: []
   - m_Id: 95713217811972096
@@ -1927,6 +1888,110 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 103842786989441024
     m_Localized: You cannot replace ships during a zone run.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 104405113086279680
+    m_Localized: Mineral (Total)
+    m_Metadata:
+      m_Items: []
+  - m_Id: 104405113165971456
+    m_Localized: '{0} Passive Stage {1}'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 104405113165971457
+    m_Localized: Complete passive stage {1} of the {0}
+    m_Metadata:
+      m_Items: []
+  - m_Id: 104405113165971458
+    m_Localized: Reinforce {0} {1} Times
+    m_Metadata:
+      m_Items: []
+  - m_Id: 104405113165971459
+    m_Localized: Reinforce the hull and modules of the {0} {1} times in total
+    m_Metadata:
+      m_Items: []
+  - m_Id: 104410136893587456
+    m_Localized: Daily Quest {0}
+    m_Metadata:
+      m_Items: []
+  - m_Id: 104410136939724800
+    m_Localized: '{0} Passive {1} Quest'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 104411371688296448
+    m_Localized: Cell Clear
+    m_Metadata:
+      m_Items: []
+  - m_Id: 104411371747016704
+    m_Localized: Event Cell Visit
+    m_Metadata:
+      m_Items: []
+  - m_Id: 104411371747016705
+    m_Localized: Zone Clear
+    m_Metadata:
+      m_Items: []
+  - m_Id: 104411371747016706
+    m_Localized: Escape Zone {0}
+    m_Metadata:
+      m_Items: []
+  - m_Id: 104411371747016707
+    m_Localized: Buy Reward Cards
+    m_Metadata:
+      m_Items: []
+  - m_Id: 104411371747016708
+    m_Localized: Earn Minerals
+    m_Metadata:
+      m_Items: []
+  - m_Id: 104411371747016709
+    m_Localized: Spend Minerals
+    m_Metadata:
+      m_Items: []
+  - m_Id: 104411371747016710
+    m_Localized: PVP Battle
+    m_Metadata:
+      m_Items: []
+  - m_Id: 104411371747016711
+    m_Localized: PVP Victory
+    m_Metadata:
+      m_Items: []
+  - m_Id: 104411371747016712
+    m_Localized: Destroy Enemy Ships
+    m_Metadata:
+      m_Items: []
+  - m_Id: 104411371747016713
+    m_Localized: Launch Aircraft
+    m_Metadata:
+      m_Items: []
+  - m_Id: 104411371747016714
+    m_Localized: Claim Ad Reward
+    m_Metadata:
+      m_Items: []
+  - m_Id: 104411371747016715
+    m_Localized: Missile-Only Clear
+    m_Metadata:
+      m_Items: []
+  - m_Id: 104411371751211008
+    m_Localized: Aircraft-Only Clear
+    m_Metadata:
+      m_Items: []
+  - m_Id: 104411371751211009
+    m_Localized: No-Shield Clear
+    m_Metadata:
+      m_Items: []
+  - m_Id: 104411371751211010
+    m_Localized: Block Damage with Shields
+    m_Metadata:
+      m_Items: []
+  - m_Id: 104411371751211011
+    m_Localized: Intercept
+    m_Metadata:
+      m_Items: []
+  - m_Id: 104411371751211012
+    m_Localized: Fleet Repair
+    m_Metadata:
+      m_Items: []
+  - m_Id: 104411371751211013
+    m_Localized: Scavenge Minerals
     m_Metadata:
       m_Items: []
   references:

@@ -96,7 +96,7 @@ public enum ETreasureRewardType
 }
 
 // 업적 조건 타입 — AchievementData.conditionType. conditionParam 해석은 타입별로 다름(예: ZoneClearSpecific="존번호", EventCell="ETreasureRewardType 이름",
-// HullTierCount="티어 숫자", ModuleTierCount="{EModuleType 이름}_{티어}"), 나머지 타입은 conditionParam 미사용
+// HullPassiveStage/HullReinforceTotal/HullUnlocked="함체 아키타입"), 나머지 타입은 conditionParam 미사용
 [System.Serializable]
 public enum EAchievementConditionType
 {
@@ -107,9 +107,9 @@ public enum EAchievementConditionType
     CommanderLevel,        // 지휘관 레벨 스냅샷
     CommandPower,          // 지휘력(commandPowerMax) 스냅샷
     MineralTotal,          // 역대 누적 획득 광물(Commander.mineralEarnedTotal) — 존런 종료로 사라지는 현재 보유량과 별개로 영구 누적
-    HullTierCount,         // 활성 함대 내 특정 티어 함체 동시보유 개수
-    ModuleTierCount,       // 활성 함대 내 특정 카테고리+티어 모듈 동시보유 개수
-    HullUnlocked,          // 특정 함체(hullSubType) 언락 여부 — 언락 시 소비한 업적 포인트 일부 환급용
+    HullPassiveStage,      // 특정 아키타입의 완료한 패시브 단계(threshold=단계)
+    HullReinforceTotal,    // 특정 아키타입의 강화 횟수 합계(함체+모듈 전체 슬롯)
+    HullUnlocked,          // 특정 아키타입 함체 언락 여부
     ZoneFullClear,         // 특정 존의 모든 셀을 한 런 안에서 전부 클리어 여부(conditionParam=존번호)
     // 아래는 일일퀘스트 전용 — 서버 commander_daily_counter(오늘 UTC)에 누적된 값으로 판정, counter_type = enum 이름
     RewardCardPurchase,    // 오늘 보상카드 구매 횟수

@@ -374,14 +374,12 @@ public static class CommonUtility
         return "";
     }
 
-    // "{EModuleType 이름}_{티어}" 코드를 유저 표시용 이름으로 변환 (예: "beam_2" -> "티어2 빔") — 업적 ModuleTierCount conditionParam 표시용
-    public static string BuildModuleTierDisplayName(string moduleTypeAndTier)
+    // conditionParam이 함체 아키타입인 업적인지 — 표시명 변환과 업적 목록의 아키타입별 묶음에 사용
+    public static bool IsHullArchetypeAchievement(EAchievementConditionType conditionType)
     {
-        EModuleType moduleType = ParseModuleType(moduleTypeAndTier);
-        int tier = ParseTier(moduleTypeAndTier);
-        string moduleTypeName = LocalizationManager.Instance.Get(GetModuleTypeLabelKey(moduleType));
-
-        return LocalizationManager.Instance.Get("UIAchievement_ModuleTierName", tier, moduleTypeName);
+        return conditionType == EAchievementConditionType.HullUnlocked
+            || conditionType == EAchievementConditionType.HullPassiveStage
+            || conditionType == EAchievementConditionType.HullReinforceTotal;
     }
 
     #endregion Module Type end -----------------------------------------------------------------------------------

@@ -36,7 +36,7 @@ public class UIBattleProgressNotice : MonoBehaviour
         public string key;      // "아키타입:카운터" — 줄 식별용(폴링 중 문자열 생성을 피하려고 미리 만들어 둠)
         public string hullArchetype;
         public string counterType;
-        public string label;    // "켄투리온함 적 함선 파괴"
+        public string label;    // "켄투리온함 패시브2 퀘스트 : 적 함선 파괴"
         public int threshold;
         public long baseValue;  // 전투 시작 시점 서버 진행도(이 단계 안에서의 값)
         public long lastShown;
@@ -162,13 +162,14 @@ public class UIBattleProgressNotice : MonoBehaviour
 
                 string archetypeName = LocalizationManager.Instance.Get($"HullArchetype_{hullArchetype}");
                 string missionLabel = LocalizationManager.Instance.Get($"HullArchetypePassiveMission_{passive.counterType}");
+                string passivePrefix = LocalizationManager.Instance.Get("UIBattleProgressNotice_PassivePrefix", archetypeName, passive.stage);
                 long liveValue = BattleStatTracker.GetArchetypeCounterValue(hullArchetype, passive.counterType);
                 m_passiveTracks.Add(new PassiveTrack
                 {
                     key = $"{hullArchetype}:{passive.counterType}",
                     hullArchetype = hullArchetype,
                     counterType = passive.counterType,
-                    label = $"{archetypeName} {missionLabel}",
+                    label = $"{passivePrefix} : {missionLabel}",
                     threshold = passive.threshold,
                     baseValue = currentValue,
                     lastShown = currentValue + liveValue,
@@ -231,12 +232,33 @@ public class UIBattleProgressNotice : MonoBehaviour
         }
     }
 
-    // UIAchievementRow와 같은 포맷 인자({0}=조건 파라미터, {1}=목표치, {2}=보상) + 진행도
+    // UIAchievementRow와 같은 포맷 인자({0}=조건 파라미터, {1}=목표치, {2}=보상) + 진행도, 앞에 업적 패널 순서 번호(쉬움1/중간2/어려움3)
     private string BuildDailyMessage(AchievementData data, long value)
     {
         long shownValue = System.Math.Min(value, data.threshold);
-        string questName = string.Format(LocalizationManager.Instance.Get(data.nameKey), data.conditionParam, data.threshold, data.achievementPointReward);
-        return $"{questName} {CommonUtility.FormatNumber(shownValue)}/{CommonUtility.FormatNumber(data.threshold)}";
+        int questNumber = GetDailyQuestNumber(data.difficulty);
+        string dailyPrefix = LocalizationManager.Instance.Get("UIBattleProgressNotice_DailyPrefix", questNumber);
+        string questName = BuildDailyNoticeName(data);
+        return $"{dailyPrefix} : {questName} {CommonUtility.FormatNumber(shownValue)}/{CommonUtility.FormatNumber(data.threshold)}";
+    }
+
+    // 목표치는 진행도에 이미 나오므로 숫자 없는 알림용 이름(UIDailyAchievement_Notice_*)을 우선 사용, 키가 없으면 원래 이름
+    private string BuildDailyNoticeName(AchievementData data)
+    {
+        string noticeKey = data.nameKey.Replace("UIDailyAchievement_Name_", "UIDailyAchievement_Notice_");
+        string noticeFormat = LocalizationManager.Instance.Get(noticeKey);
+        bool hasNoticeName = noticeFormat != noticeKey;
+        string format = hasNoticeName == true ? noticeFormat : LocalizationManager.Instance.Get(data.nameKey);
+        return string.Format(format, data.conditionParam, data.threshold, data.achievementPointReward);
+    }
+
+    // UIPanelAchievement.GetDifficultyRank와 같은 순서
+    private int GetDailyQuestNumber(string difficulty)
+    {
+        if (difficulty == "easy") return 1;
+        if (difficulty == "normal") return 2;
+        if (difficulty == "hard") return 3;
+        return 0;
     }
 
     // 같은 항목이 떠 있으면 그 줄만 갱신, 없으면 빈 줄(없으면 가장 오래 갱신 안 된 줄)을 새 항목으로 사용

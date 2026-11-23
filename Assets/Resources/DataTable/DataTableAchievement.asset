@@ -2758,2154 +2758,813 @@ MonoBehaviour:
     nameKey: UIAchievement_Name_exploration_point_total
     descKey: UIAchievement_Desc_exploration_point_total
     difficulty: 
-  - achievementId: hull_tier4_count_1
+  - achievementId: hull_passive_centurion_2
     conditionType: 7
-    conditionParam: 4
-    threshold: 1
-    achievementPointReward: 10
-    achievementPointRewardVip: 10
-    nameKey: UIAchievement_Name_hull_tier_count
-    descKey: UIAchievement_Desc_hull_tier_count
-    difficulty: 
-  - achievementId: hull_tier4_count_2
-    conditionType: 7
-    conditionParam: 4
+    conditionParam: centurion
     threshold: 2
     achievementPointReward: 10
     achievementPointRewardVip: 10
-    nameKey: UIAchievement_Name_hull_tier_count
-    descKey: UIAchievement_Desc_hull_tier_count
+    nameKey: UIAchievement_Name_hull_passive
+    descKey: UIAchievement_Desc_hull_passive
     difficulty: 
-  - achievementId: hull_tier4_count_3
+  - achievementId: hull_passive_centurion_3
     conditionType: 7
-    conditionParam: 4
-    threshold: 3
-    achievementPointReward: 10
-    achievementPointRewardVip: 10
-    nameKey: UIAchievement_Name_hull_tier_count
-    descKey: UIAchievement_Desc_hull_tier_count
-    difficulty: 
-  - achievementId: hull_tier5_count_1
-    conditionType: 7
-    conditionParam: 5
-    threshold: 1
-    achievementPointReward: 20
-    achievementPointRewardVip: 20
-    nameKey: UIAchievement_Name_hull_tier_count
-    descKey: UIAchievement_Desc_hull_tier_count
-    difficulty: 
-  - achievementId: hull_tier5_count_2
-    conditionType: 7
-    conditionParam: 5
-    threshold: 2
-    achievementPointReward: 20
-    achievementPointRewardVip: 20
-    nameKey: UIAchievement_Name_hull_tier_count
-    descKey: UIAchievement_Desc_hull_tier_count
-    difficulty: 
-  - achievementId: hull_tier5_count_3
-    conditionType: 7
-    conditionParam: 5
+    conditionParam: centurion
     threshold: 3
     achievementPointReward: 20
     achievementPointRewardVip: 20
-    nameKey: UIAchievement_Name_hull_tier_count
-    descKey: UIAchievement_Desc_hull_tier_count
+    nameKey: UIAchievement_Name_hull_passive
+    descKey: UIAchievement_Desc_hull_passive
     difficulty: 
-  - achievementId: hull_tier6_count_1
+  - achievementId: hull_passive_centurion_4
     conditionType: 7
-    conditionParam: 6
-    threshold: 1
-    achievementPointReward: 30
-    achievementPointRewardVip: 30
-    nameKey: UIAchievement_Name_hull_tier_count
-    descKey: UIAchievement_Desc_hull_tier_count
-    difficulty: 
-  - achievementId: hull_tier6_count_2
-    conditionType: 7
-    conditionParam: 6
-    threshold: 2
-    achievementPointReward: 30
-    achievementPointRewardVip: 30
-    nameKey: UIAchievement_Name_hull_tier_count
-    descKey: UIAchievement_Desc_hull_tier_count
-    difficulty: 
-  - achievementId: hull_tier6_count_3
-    conditionType: 7
-    conditionParam: 6
-    threshold: 3
-    achievementPointReward: 30
-    achievementPointRewardVip: 30
-    nameKey: UIAchievement_Name_hull_tier_count
-    descKey: UIAchievement_Desc_hull_tier_count
-    difficulty: 
-  - achievementId: hull_tier7_count_1
-    conditionType: 7
-    conditionParam: 7
-    threshold: 1
+    conditionParam: centurion
+    threshold: 4
     achievementPointReward: 40
     achievementPointRewardVip: 40
-    nameKey: UIAchievement_Name_hull_tier_count
-    descKey: UIAchievement_Desc_hull_tier_count
+    nameKey: UIAchievement_Name_hull_passive
+    descKey: UIAchievement_Desc_hull_passive
     difficulty: 
-  - achievementId: hull_tier7_count_2
-    conditionType: 7
-    conditionParam: 7
-    threshold: 2
-    achievementPointReward: 40
-    achievementPointRewardVip: 40
-    nameKey: UIAchievement_Name_hull_tier_count
-    descKey: UIAchievement_Desc_hull_tier_count
-    difficulty: 
-  - achievementId: hull_tier7_count_3
-    conditionType: 7
-    conditionParam: 7
-    threshold: 3
-    achievementPointReward: 40
-    achievementPointRewardVip: 40
-    nameKey: UIAchievement_Name_hull_tier_count
-    descKey: UIAchievement_Desc_hull_tier_count
-    difficulty: 
-  - achievementId: hull_tier8_count_1
-    conditionType: 7
-    conditionParam: 8
-    threshold: 1
-    achievementPointReward: 50
-    achievementPointRewardVip: 50
-    nameKey: UIAchievement_Name_hull_tier_count
-    descKey: UIAchievement_Desc_hull_tier_count
-    difficulty: 
-  - achievementId: hull_tier8_count_2
-    conditionType: 7
-    conditionParam: 8
-    threshold: 2
-    achievementPointReward: 50
-    achievementPointRewardVip: 50
-    nameKey: UIAchievement_Name_hull_tier_count
-    descKey: UIAchievement_Desc_hull_tier_count
-    difficulty: 
-  - achievementId: hull_tier8_count_3
-    conditionType: 7
-    conditionParam: 8
-    threshold: 3
-    achievementPointReward: 50
-    achievementPointRewardVip: 50
-    nameKey: UIAchievement_Name_hull_tier_count
-    descKey: UIAchievement_Desc_hull_tier_count
-    difficulty: 
-  - achievementId: hull_tier9_count_1
-    conditionType: 7
-    conditionParam: 9
-    threshold: 1
-    achievementPointReward: 60
-    achievementPointRewardVip: 60
-    nameKey: UIAchievement_Name_hull_tier_count
-    descKey: UIAchievement_Desc_hull_tier_count
-    difficulty: 
-  - achievementId: hull_tier9_count_2
-    conditionType: 7
-    conditionParam: 9
-    threshold: 2
-    achievementPointReward: 60
-    achievementPointRewardVip: 60
-    nameKey: UIAchievement_Name_hull_tier_count
-    descKey: UIAchievement_Desc_hull_tier_count
-    difficulty: 
-  - achievementId: hull_tier9_count_3
-    conditionType: 7
-    conditionParam: 9
-    threshold: 3
-    achievementPointReward: 60
-    achievementPointRewardVip: 60
-    nameKey: UIAchievement_Name_hull_tier_count
-    descKey: UIAchievement_Desc_hull_tier_count
-    difficulty: 
-  - achievementId: hull_tier10_count_1
-    conditionType: 7
-    conditionParam: 10
-    threshold: 1
-    achievementPointReward: 70
-    achievementPointRewardVip: 70
-    nameKey: UIAchievement_Name_hull_tier_count
-    descKey: UIAchievement_Desc_hull_tier_count
-    difficulty: 
-  - achievementId: hull_tier10_count_2
-    conditionType: 7
-    conditionParam: 10
-    threshold: 2
-    achievementPointReward: 70
-    achievementPointRewardVip: 70
-    nameKey: UIAchievement_Name_hull_tier_count
-    descKey: UIAchievement_Desc_hull_tier_count
-    difficulty: 
-  - achievementId: hull_tier10_count_3
-    conditionType: 7
-    conditionParam: 10
-    threshold: 3
-    achievementPointReward: 70
-    achievementPointRewardVip: 70
-    nameKey: UIAchievement_Name_hull_tier_count
-    descKey: UIAchievement_Desc_hull_tier_count
-    difficulty: 
-  - achievementId: hull_tier11_count_1
-    conditionType: 7
-    conditionParam: 11
-    threshold: 1
-    achievementPointReward: 80
-    achievementPointRewardVip: 80
-    nameKey: UIAchievement_Name_hull_tier_count
-    descKey: UIAchievement_Desc_hull_tier_count
-    difficulty: 
-  - achievementId: hull_tier11_count_2
-    conditionType: 7
-    conditionParam: 11
-    threshold: 2
-    achievementPointReward: 80
-    achievementPointRewardVip: 80
-    nameKey: UIAchievement_Name_hull_tier_count
-    descKey: UIAchievement_Desc_hull_tier_count
-    difficulty: 
-  - achievementId: hull_tier11_count_3
-    conditionType: 7
-    conditionParam: 11
-    threshold: 3
-    achievementPointReward: 80
-    achievementPointRewardVip: 80
-    nameKey: UIAchievement_Name_hull_tier_count
-    descKey: UIAchievement_Desc_hull_tier_count
-    difficulty: 
-  - achievementId: hull_tier12_count_1
-    conditionType: 7
-    conditionParam: 12
-    threshold: 1
-    achievementPointReward: 90
-    achievementPointRewardVip: 90
-    nameKey: UIAchievement_Name_hull_tier_count
-    descKey: UIAchievement_Desc_hull_tier_count
-    difficulty: 
-  - achievementId: hull_tier12_count_2
-    conditionType: 7
-    conditionParam: 12
-    threshold: 2
-    achievementPointReward: 90
-    achievementPointRewardVip: 90
-    nameKey: UIAchievement_Name_hull_tier_count
-    descKey: UIAchievement_Desc_hull_tier_count
-    difficulty: 
-  - achievementId: hull_tier12_count_3
-    conditionType: 7
-    conditionParam: 12
-    threshold: 3
-    achievementPointReward: 90
-    achievementPointRewardVip: 90
-    nameKey: UIAchievement_Name_hull_tier_count
-    descKey: UIAchievement_Desc_hull_tier_count
-    difficulty: 
-  - achievementId: hull_tier13_count_1
-    conditionType: 7
-    conditionParam: 13
-    threshold: 1
-    achievementPointReward: 100
-    achievementPointRewardVip: 100
-    nameKey: UIAchievement_Name_hull_tier_count
-    descKey: UIAchievement_Desc_hull_tier_count
-    difficulty: 
-  - achievementId: hull_tier13_count_2
-    conditionType: 7
-    conditionParam: 13
-    threshold: 2
-    achievementPointReward: 100
-    achievementPointRewardVip: 100
-    nameKey: UIAchievement_Name_hull_tier_count
-    descKey: UIAchievement_Desc_hull_tier_count
-    difficulty: 
-  - achievementId: hull_tier13_count_3
-    conditionType: 7
-    conditionParam: 13
-    threshold: 3
-    achievementPointReward: 100
-    achievementPointRewardVip: 100
-    nameKey: UIAchievement_Name_hull_tier_count
-    descKey: UIAchievement_Desc_hull_tier_count
-    difficulty: 
-  - achievementId: hull_tier14_count_1
-    conditionType: 7
-    conditionParam: 14
-    threshold: 1
-    achievementPointReward: 100
-    achievementPointRewardVip: 100
-    nameKey: UIAchievement_Name_hull_tier_count
-    descKey: UIAchievement_Desc_hull_tier_count
-    difficulty: 
-  - achievementId: hull_tier14_count_2
-    conditionType: 7
-    conditionParam: 14
-    threshold: 2
-    achievementPointReward: 100
-    achievementPointRewardVip: 100
-    nameKey: UIAchievement_Name_hull_tier_count
-    descKey: UIAchievement_Desc_hull_tier_count
-    difficulty: 
-  - achievementId: hull_tier14_count_3
-    conditionType: 7
-    conditionParam: 14
-    threshold: 3
-    achievementPointReward: 100
-    achievementPointRewardVip: 100
-    nameKey: UIAchievement_Name_hull_tier_count
-    descKey: UIAchievement_Desc_hull_tier_count
-    difficulty: 
-  - achievementId: module_beam_tier2_count_1
+  - achievementId: hull_reinforce_centurion_5
     conditionType: 8
-    conditionParam: beam_2
-    threshold: 1
+    conditionParam: centurion
+    threshold: 5
     achievementPointReward: 10
     achievementPointRewardVip: 10
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
+    nameKey: UIAchievement_Name_hull_reinforce
+    descKey: UIAchievement_Desc_hull_reinforce
     difficulty: 
-  - achievementId: module_beam_tier2_count_2
+  - achievementId: hull_reinforce_centurion_10
     conditionType: 8
-    conditionParam: beam_2
-    threshold: 2
-    achievementPointReward: 10
-    achievementPointRewardVip: 10
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_beam_tier2_count_3
-    conditionType: 8
-    conditionParam: beam_2
-    threshold: 3
-    achievementPointReward: 10
-    achievementPointRewardVip: 10
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_beam_tier3_count_1
-    conditionType: 8
-    conditionParam: beam_3
-    threshold: 1
-    achievementPointReward: 10
-    achievementPointRewardVip: 10
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_beam_tier3_count_2
-    conditionType: 8
-    conditionParam: beam_3
-    threshold: 2
-    achievementPointReward: 10
-    achievementPointRewardVip: 10
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_beam_tier3_count_3
-    conditionType: 8
-    conditionParam: beam_3
-    threshold: 3
-    achievementPointReward: 10
-    achievementPointRewardVip: 10
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_beam_tier4_count_1
-    conditionType: 8
-    conditionParam: beam_4
-    threshold: 1
-    achievementPointReward: 10
-    achievementPointRewardVip: 10
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_beam_tier4_count_2
-    conditionType: 8
-    conditionParam: beam_4
-    threshold: 2
-    achievementPointReward: 10
-    achievementPointRewardVip: 10
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_beam_tier4_count_3
-    conditionType: 8
-    conditionParam: beam_4
-    threshold: 3
-    achievementPointReward: 10
-    achievementPointRewardVip: 10
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_beam_tier5_count_1
-    conditionType: 8
-    conditionParam: beam_5
-    threshold: 1
+    conditionParam: centurion
+    threshold: 10
     achievementPointReward: 20
     achievementPointRewardVip: 20
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
+    nameKey: UIAchievement_Name_hull_reinforce
+    descKey: UIAchievement_Desc_hull_reinforce
     difficulty: 
-  - achievementId: module_beam_tier5_count_2
+  - achievementId: hull_reinforce_centurion_20
     conditionType: 8
-    conditionParam: beam_5
-    threshold: 2
-    achievementPointReward: 20
-    achievementPointRewardVip: 20
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_beam_tier5_count_3
-    conditionType: 8
-    conditionParam: beam_5
-    threshold: 3
-    achievementPointReward: 20
-    achievementPointRewardVip: 20
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_beam_tier6_count_1
-    conditionType: 8
-    conditionParam: beam_6
-    threshold: 1
-    achievementPointReward: 30
-    achievementPointRewardVip: 30
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_beam_tier6_count_2
-    conditionType: 8
-    conditionParam: beam_6
-    threshold: 2
-    achievementPointReward: 30
-    achievementPointRewardVip: 30
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_beam_tier6_count_3
-    conditionType: 8
-    conditionParam: beam_6
-    threshold: 3
-    achievementPointReward: 30
-    achievementPointRewardVip: 30
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_beam_tier7_count_1
-    conditionType: 8
-    conditionParam: beam_7
-    threshold: 1
+    conditionParam: centurion
+    threshold: 20
     achievementPointReward: 40
     achievementPointRewardVip: 40
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
+    nameKey: UIAchievement_Name_hull_reinforce
+    descKey: UIAchievement_Desc_hull_reinforce
     difficulty: 
-  - achievementId: module_beam_tier7_count_2
-    conditionType: 8
-    conditionParam: beam_7
-    threshold: 2
-    achievementPointReward: 40
-    achievementPointRewardVip: 40
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_beam_tier7_count_3
-    conditionType: 8
-    conditionParam: beam_7
-    threshold: 3
-    achievementPointReward: 40
-    achievementPointRewardVip: 40
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_beam_tier8_count_1
-    conditionType: 8
-    conditionParam: beam_8
-    threshold: 1
-    achievementPointReward: 50
-    achievementPointRewardVip: 50
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_beam_tier8_count_2
-    conditionType: 8
-    conditionParam: beam_8
-    threshold: 2
-    achievementPointReward: 50
-    achievementPointRewardVip: 50
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_beam_tier8_count_3
-    conditionType: 8
-    conditionParam: beam_8
-    threshold: 3
-    achievementPointReward: 50
-    achievementPointRewardVip: 50
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_beam_tier9_count_1
-    conditionType: 8
-    conditionParam: beam_9
-    threshold: 1
-    achievementPointReward: 60
-    achievementPointRewardVip: 60
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_beam_tier9_count_2
-    conditionType: 8
-    conditionParam: beam_9
-    threshold: 2
-    achievementPointReward: 60
-    achievementPointRewardVip: 60
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_beam_tier9_count_3
-    conditionType: 8
-    conditionParam: beam_9
-    threshold: 3
-    achievementPointReward: 60
-    achievementPointRewardVip: 60
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_beam_tier10_count_1
-    conditionType: 8
-    conditionParam: beam_10
-    threshold: 1
-    achievementPointReward: 70
-    achievementPointRewardVip: 70
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_beam_tier10_count_2
-    conditionType: 8
-    conditionParam: beam_10
-    threshold: 2
-    achievementPointReward: 70
-    achievementPointRewardVip: 70
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_beam_tier10_count_3
-    conditionType: 8
-    conditionParam: beam_10
-    threshold: 3
-    achievementPointReward: 70
-    achievementPointRewardVip: 70
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_beam_tier11_count_1
-    conditionType: 8
-    conditionParam: beam_11
-    threshold: 1
-    achievementPointReward: 80
-    achievementPointRewardVip: 80
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_beam_tier11_count_2
-    conditionType: 8
-    conditionParam: beam_11
-    threshold: 2
-    achievementPointReward: 80
-    achievementPointRewardVip: 80
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_beam_tier11_count_3
-    conditionType: 8
-    conditionParam: beam_11
-    threshold: 3
-    achievementPointReward: 80
-    achievementPointRewardVip: 80
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_beam_tier12_count_1
-    conditionType: 8
-    conditionParam: beam_12
-    threshold: 1
-    achievementPointReward: 90
-    achievementPointRewardVip: 90
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_beam_tier12_count_2
-    conditionType: 8
-    conditionParam: beam_12
-    threshold: 2
-    achievementPointReward: 90
-    achievementPointRewardVip: 90
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_beam_tier12_count_3
-    conditionType: 8
-    conditionParam: beam_12
-    threshold: 3
-    achievementPointReward: 90
-    achievementPointRewardVip: 90
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_beam_tier13_count_1
-    conditionType: 8
-    conditionParam: beam_13
-    threshold: 1
-    achievementPointReward: 100
-    achievementPointRewardVip: 100
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_beam_tier13_count_2
-    conditionType: 8
-    conditionParam: beam_13
-    threshold: 2
-    achievementPointReward: 100
-    achievementPointRewardVip: 100
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_beam_tier13_count_3
-    conditionType: 8
-    conditionParam: beam_13
-    threshold: 3
-    achievementPointReward: 100
-    achievementPointRewardVip: 100
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_beam_tier14_count_1
-    conditionType: 8
-    conditionParam: beam_14
-    threshold: 1
-    achievementPointReward: 100
-    achievementPointRewardVip: 100
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_beam_tier14_count_2
-    conditionType: 8
-    conditionParam: beam_14
-    threshold: 2
-    achievementPointReward: 100
-    achievementPointRewardVip: 100
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_beam_tier14_count_3
-    conditionType: 8
-    conditionParam: beam_14
-    threshold: 3
-    achievementPointReward: 100
-    achievementPointRewardVip: 100
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_missile_tier2_count_1
-    conditionType: 8
-    conditionParam: missile_2
-    threshold: 1
-    achievementPointReward: 10
-    achievementPointRewardVip: 10
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_missile_tier2_count_2
-    conditionType: 8
-    conditionParam: missile_2
-    threshold: 2
-    achievementPointReward: 10
-    achievementPointRewardVip: 10
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_missile_tier2_count_3
-    conditionType: 8
-    conditionParam: missile_2
-    threshold: 3
-    achievementPointReward: 10
-    achievementPointRewardVip: 10
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_missile_tier3_count_1
-    conditionType: 8
-    conditionParam: missile_3
-    threshold: 1
-    achievementPointReward: 10
-    achievementPointRewardVip: 10
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_missile_tier3_count_2
-    conditionType: 8
-    conditionParam: missile_3
-    threshold: 2
-    achievementPointReward: 10
-    achievementPointRewardVip: 10
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_missile_tier3_count_3
-    conditionType: 8
-    conditionParam: missile_3
-    threshold: 3
-    achievementPointReward: 10
-    achievementPointRewardVip: 10
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_missile_tier4_count_1
-    conditionType: 8
-    conditionParam: missile_4
-    threshold: 1
-    achievementPointReward: 10
-    achievementPointRewardVip: 10
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_missile_tier4_count_2
-    conditionType: 8
-    conditionParam: missile_4
-    threshold: 2
-    achievementPointReward: 10
-    achievementPointRewardVip: 10
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_missile_tier4_count_3
-    conditionType: 8
-    conditionParam: missile_4
-    threshold: 3
-    achievementPointReward: 10
-    achievementPointRewardVip: 10
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_missile_tier5_count_1
-    conditionType: 8
-    conditionParam: missile_5
-    threshold: 1
-    achievementPointReward: 20
-    achievementPointRewardVip: 20
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_missile_tier5_count_2
-    conditionType: 8
-    conditionParam: missile_5
-    threshold: 2
-    achievementPointReward: 20
-    achievementPointRewardVip: 20
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_missile_tier5_count_3
-    conditionType: 8
-    conditionParam: missile_5
-    threshold: 3
-    achievementPointReward: 20
-    achievementPointRewardVip: 20
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_missile_tier6_count_1
-    conditionType: 8
-    conditionParam: missile_6
-    threshold: 1
-    achievementPointReward: 30
-    achievementPointRewardVip: 30
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_missile_tier6_count_2
-    conditionType: 8
-    conditionParam: missile_6
-    threshold: 2
-    achievementPointReward: 30
-    achievementPointRewardVip: 30
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_missile_tier6_count_3
-    conditionType: 8
-    conditionParam: missile_6
-    threshold: 3
-    achievementPointReward: 30
-    achievementPointRewardVip: 30
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_missile_tier7_count_1
-    conditionType: 8
-    conditionParam: missile_7
-    threshold: 1
-    achievementPointReward: 40
-    achievementPointRewardVip: 40
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_missile_tier7_count_2
-    conditionType: 8
-    conditionParam: missile_7
-    threshold: 2
-    achievementPointReward: 40
-    achievementPointRewardVip: 40
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_missile_tier7_count_3
-    conditionType: 8
-    conditionParam: missile_7
-    threshold: 3
-    achievementPointReward: 40
-    achievementPointRewardVip: 40
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_missile_tier8_count_1
-    conditionType: 8
-    conditionParam: missile_8
-    threshold: 1
-    achievementPointReward: 50
-    achievementPointRewardVip: 50
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_missile_tier8_count_2
-    conditionType: 8
-    conditionParam: missile_8
-    threshold: 2
-    achievementPointReward: 50
-    achievementPointRewardVip: 50
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_missile_tier8_count_3
-    conditionType: 8
-    conditionParam: missile_8
-    threshold: 3
-    achievementPointReward: 50
-    achievementPointRewardVip: 50
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_missile_tier9_count_1
-    conditionType: 8
-    conditionParam: missile_9
-    threshold: 1
-    achievementPointReward: 60
-    achievementPointRewardVip: 60
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_missile_tier9_count_2
-    conditionType: 8
-    conditionParam: missile_9
-    threshold: 2
-    achievementPointReward: 60
-    achievementPointRewardVip: 60
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_missile_tier9_count_3
-    conditionType: 8
-    conditionParam: missile_9
-    threshold: 3
-    achievementPointReward: 60
-    achievementPointRewardVip: 60
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_missile_tier10_count_1
-    conditionType: 8
-    conditionParam: missile_10
-    threshold: 1
-    achievementPointReward: 70
-    achievementPointRewardVip: 70
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_missile_tier10_count_2
-    conditionType: 8
-    conditionParam: missile_10
-    threshold: 2
-    achievementPointReward: 70
-    achievementPointRewardVip: 70
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_missile_tier10_count_3
-    conditionType: 8
-    conditionParam: missile_10
-    threshold: 3
-    achievementPointReward: 70
-    achievementPointRewardVip: 70
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_missile_tier11_count_1
-    conditionType: 8
-    conditionParam: missile_11
-    threshold: 1
-    achievementPointReward: 80
-    achievementPointRewardVip: 80
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_missile_tier11_count_2
-    conditionType: 8
-    conditionParam: missile_11
-    threshold: 2
-    achievementPointReward: 80
-    achievementPointRewardVip: 80
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_missile_tier11_count_3
-    conditionType: 8
-    conditionParam: missile_11
-    threshold: 3
-    achievementPointReward: 80
-    achievementPointRewardVip: 80
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_missile_tier12_count_1
-    conditionType: 8
-    conditionParam: missile_12
-    threshold: 1
-    achievementPointReward: 90
-    achievementPointRewardVip: 90
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_missile_tier12_count_2
-    conditionType: 8
-    conditionParam: missile_12
-    threshold: 2
-    achievementPointReward: 90
-    achievementPointRewardVip: 90
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_missile_tier12_count_3
-    conditionType: 8
-    conditionParam: missile_12
-    threshold: 3
-    achievementPointReward: 90
-    achievementPointRewardVip: 90
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_missile_tier13_count_1
-    conditionType: 8
-    conditionParam: missile_13
-    threshold: 1
-    achievementPointReward: 100
-    achievementPointRewardVip: 100
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_missile_tier13_count_2
-    conditionType: 8
-    conditionParam: missile_13
-    threshold: 2
-    achievementPointReward: 100
-    achievementPointRewardVip: 100
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_missile_tier13_count_3
-    conditionType: 8
-    conditionParam: missile_13
-    threshold: 3
-    achievementPointReward: 100
-    achievementPointRewardVip: 100
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_missile_tier14_count_1
-    conditionType: 8
-    conditionParam: missile_14
-    threshold: 1
-    achievementPointReward: 100
-    achievementPointRewardVip: 100
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_missile_tier14_count_2
-    conditionType: 8
-    conditionParam: missile_14
-    threshold: 2
-    achievementPointReward: 100
-    achievementPointRewardVip: 100
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_missile_tier14_count_3
-    conditionType: 8
-    conditionParam: missile_14
-    threshold: 3
-    achievementPointReward: 100
-    achievementPointRewardVip: 100
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_hangar_tier2_count_1
-    conditionType: 8
-    conditionParam: hangar_2
-    threshold: 1
-    achievementPointReward: 10
-    achievementPointRewardVip: 10
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_hangar_tier2_count_2
-    conditionType: 8
-    conditionParam: hangar_2
-    threshold: 2
-    achievementPointReward: 10
-    achievementPointRewardVip: 10
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_hangar_tier2_count_3
-    conditionType: 8
-    conditionParam: hangar_2
-    threshold: 3
-    achievementPointReward: 10
-    achievementPointRewardVip: 10
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_hangar_tier3_count_1
-    conditionType: 8
-    conditionParam: hangar_3
-    threshold: 1
-    achievementPointReward: 10
-    achievementPointRewardVip: 10
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_hangar_tier3_count_2
-    conditionType: 8
-    conditionParam: hangar_3
-    threshold: 2
-    achievementPointReward: 10
-    achievementPointRewardVip: 10
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_hangar_tier3_count_3
-    conditionType: 8
-    conditionParam: hangar_3
-    threshold: 3
-    achievementPointReward: 10
-    achievementPointRewardVip: 10
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_hangar_tier4_count_1
-    conditionType: 8
-    conditionParam: hangar_4
-    threshold: 1
-    achievementPointReward: 10
-    achievementPointRewardVip: 10
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_hangar_tier4_count_2
-    conditionType: 8
-    conditionParam: hangar_4
-    threshold: 2
-    achievementPointReward: 10
-    achievementPointRewardVip: 10
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_hangar_tier4_count_3
-    conditionType: 8
-    conditionParam: hangar_4
-    threshold: 3
-    achievementPointReward: 10
-    achievementPointRewardVip: 10
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_hangar_tier5_count_1
-    conditionType: 8
-    conditionParam: hangar_5
-    threshold: 1
-    achievementPointReward: 20
-    achievementPointRewardVip: 20
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_hangar_tier5_count_2
-    conditionType: 8
-    conditionParam: hangar_5
-    threshold: 2
-    achievementPointReward: 20
-    achievementPointRewardVip: 20
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_hangar_tier5_count_3
-    conditionType: 8
-    conditionParam: hangar_5
-    threshold: 3
-    achievementPointReward: 20
-    achievementPointRewardVip: 20
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_hangar_tier6_count_1
-    conditionType: 8
-    conditionParam: hangar_6
-    threshold: 1
-    achievementPointReward: 30
-    achievementPointRewardVip: 30
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_hangar_tier6_count_2
-    conditionType: 8
-    conditionParam: hangar_6
-    threshold: 2
-    achievementPointReward: 30
-    achievementPointRewardVip: 30
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_hangar_tier6_count_3
-    conditionType: 8
-    conditionParam: hangar_6
-    threshold: 3
-    achievementPointReward: 30
-    achievementPointRewardVip: 30
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_hangar_tier7_count_1
-    conditionType: 8
-    conditionParam: hangar_7
-    threshold: 1
-    achievementPointReward: 40
-    achievementPointRewardVip: 40
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_hangar_tier7_count_2
-    conditionType: 8
-    conditionParam: hangar_7
-    threshold: 2
-    achievementPointReward: 40
-    achievementPointRewardVip: 40
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_hangar_tier7_count_3
-    conditionType: 8
-    conditionParam: hangar_7
-    threshold: 3
-    achievementPointReward: 40
-    achievementPointRewardVip: 40
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_hangar_tier8_count_1
-    conditionType: 8
-    conditionParam: hangar_8
-    threshold: 1
-    achievementPointReward: 50
-    achievementPointRewardVip: 50
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_hangar_tier8_count_2
-    conditionType: 8
-    conditionParam: hangar_8
-    threshold: 2
-    achievementPointReward: 50
-    achievementPointRewardVip: 50
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_hangar_tier8_count_3
-    conditionType: 8
-    conditionParam: hangar_8
-    threshold: 3
-    achievementPointReward: 50
-    achievementPointRewardVip: 50
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_hangar_tier9_count_1
-    conditionType: 8
-    conditionParam: hangar_9
-    threshold: 1
-    achievementPointReward: 60
-    achievementPointRewardVip: 60
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_hangar_tier9_count_2
-    conditionType: 8
-    conditionParam: hangar_9
-    threshold: 2
-    achievementPointReward: 60
-    achievementPointRewardVip: 60
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_hangar_tier9_count_3
-    conditionType: 8
-    conditionParam: hangar_9
-    threshold: 3
-    achievementPointReward: 60
-    achievementPointRewardVip: 60
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_hangar_tier10_count_1
-    conditionType: 8
-    conditionParam: hangar_10
-    threshold: 1
-    achievementPointReward: 70
-    achievementPointRewardVip: 70
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_hangar_tier10_count_2
-    conditionType: 8
-    conditionParam: hangar_10
-    threshold: 2
-    achievementPointReward: 70
-    achievementPointRewardVip: 70
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_hangar_tier10_count_3
-    conditionType: 8
-    conditionParam: hangar_10
-    threshold: 3
-    achievementPointReward: 70
-    achievementPointRewardVip: 70
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_hangar_tier11_count_1
-    conditionType: 8
-    conditionParam: hangar_11
-    threshold: 1
-    achievementPointReward: 80
-    achievementPointRewardVip: 80
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_hangar_tier11_count_2
-    conditionType: 8
-    conditionParam: hangar_11
-    threshold: 2
-    achievementPointReward: 80
-    achievementPointRewardVip: 80
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_hangar_tier11_count_3
-    conditionType: 8
-    conditionParam: hangar_11
-    threshold: 3
-    achievementPointReward: 80
-    achievementPointRewardVip: 80
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_hangar_tier12_count_1
-    conditionType: 8
-    conditionParam: hangar_12
-    threshold: 1
-    achievementPointReward: 90
-    achievementPointRewardVip: 90
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_hangar_tier12_count_2
-    conditionType: 8
-    conditionParam: hangar_12
-    threshold: 2
-    achievementPointReward: 90
-    achievementPointRewardVip: 90
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_hangar_tier12_count_3
-    conditionType: 8
-    conditionParam: hangar_12
-    threshold: 3
-    achievementPointReward: 90
-    achievementPointRewardVip: 90
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_hangar_tier13_count_1
-    conditionType: 8
-    conditionParam: hangar_13
-    threshold: 1
-    achievementPointReward: 100
-    achievementPointRewardVip: 100
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_hangar_tier13_count_2
-    conditionType: 8
-    conditionParam: hangar_13
-    threshold: 2
-    achievementPointReward: 100
-    achievementPointRewardVip: 100
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_hangar_tier13_count_3
-    conditionType: 8
-    conditionParam: hangar_13
-    threshold: 3
-    achievementPointReward: 100
-    achievementPointRewardVip: 100
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_hangar_tier14_count_1
-    conditionType: 8
-    conditionParam: hangar_14
-    threshold: 1
-    achievementPointReward: 100
-    achievementPointRewardVip: 100
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_hangar_tier14_count_2
-    conditionType: 8
-    conditionParam: hangar_14
-    threshold: 2
-    achievementPointReward: 100
-    achievementPointRewardVip: 100
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_hangar_tier14_count_3
-    conditionType: 8
-    conditionParam: hangar_14
-    threshold: 3
-    achievementPointReward: 100
-    achievementPointRewardVip: 100
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_shield_tier2_count_1
-    conditionType: 8
-    conditionParam: shield_2
-    threshold: 1
-    achievementPointReward: 10
-    achievementPointRewardVip: 10
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_shield_tier2_count_2
-    conditionType: 8
-    conditionParam: shield_2
-    threshold: 2
-    achievementPointReward: 10
-    achievementPointRewardVip: 10
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_shield_tier2_count_3
-    conditionType: 8
-    conditionParam: shield_2
-    threshold: 3
-    achievementPointReward: 10
-    achievementPointRewardVip: 10
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_shield_tier3_count_1
-    conditionType: 8
-    conditionParam: shield_3
-    threshold: 1
-    achievementPointReward: 10
-    achievementPointRewardVip: 10
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_shield_tier3_count_2
-    conditionType: 8
-    conditionParam: shield_3
-    threshold: 2
-    achievementPointReward: 10
-    achievementPointRewardVip: 10
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_shield_tier3_count_3
-    conditionType: 8
-    conditionParam: shield_3
-    threshold: 3
-    achievementPointReward: 10
-    achievementPointRewardVip: 10
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_shield_tier4_count_1
-    conditionType: 8
-    conditionParam: shield_4
-    threshold: 1
-    achievementPointReward: 10
-    achievementPointRewardVip: 10
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_shield_tier4_count_2
-    conditionType: 8
-    conditionParam: shield_4
-    threshold: 2
-    achievementPointReward: 10
-    achievementPointRewardVip: 10
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_shield_tier4_count_3
-    conditionType: 8
-    conditionParam: shield_4
-    threshold: 3
-    achievementPointReward: 10
-    achievementPointRewardVip: 10
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_shield_tier5_count_1
-    conditionType: 8
-    conditionParam: shield_5
-    threshold: 1
-    achievementPointReward: 20
-    achievementPointRewardVip: 20
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_shield_tier5_count_2
-    conditionType: 8
-    conditionParam: shield_5
-    threshold: 2
-    achievementPointReward: 20
-    achievementPointRewardVip: 20
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_shield_tier5_count_3
-    conditionType: 8
-    conditionParam: shield_5
-    threshold: 3
-    achievementPointReward: 20
-    achievementPointRewardVip: 20
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_shield_tier6_count_1
-    conditionType: 8
-    conditionParam: shield_6
-    threshold: 1
-    achievementPointReward: 30
-    achievementPointRewardVip: 30
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_shield_tier6_count_2
-    conditionType: 8
-    conditionParam: shield_6
-    threshold: 2
-    achievementPointReward: 30
-    achievementPointRewardVip: 30
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_shield_tier6_count_3
-    conditionType: 8
-    conditionParam: shield_6
-    threshold: 3
-    achievementPointReward: 30
-    achievementPointRewardVip: 30
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_shield_tier7_count_1
-    conditionType: 8
-    conditionParam: shield_7
-    threshold: 1
-    achievementPointReward: 40
-    achievementPointRewardVip: 40
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_shield_tier7_count_2
-    conditionType: 8
-    conditionParam: shield_7
-    threshold: 2
-    achievementPointReward: 40
-    achievementPointRewardVip: 40
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_shield_tier7_count_3
-    conditionType: 8
-    conditionParam: shield_7
-    threshold: 3
-    achievementPointReward: 40
-    achievementPointRewardVip: 40
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_shield_tier8_count_1
-    conditionType: 8
-    conditionParam: shield_8
-    threshold: 1
-    achievementPointReward: 50
-    achievementPointRewardVip: 50
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_shield_tier8_count_2
-    conditionType: 8
-    conditionParam: shield_8
-    threshold: 2
-    achievementPointReward: 50
-    achievementPointRewardVip: 50
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_shield_tier8_count_3
-    conditionType: 8
-    conditionParam: shield_8
-    threshold: 3
-    achievementPointReward: 50
-    achievementPointRewardVip: 50
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_shield_tier9_count_1
-    conditionType: 8
-    conditionParam: shield_9
-    threshold: 1
-    achievementPointReward: 60
-    achievementPointRewardVip: 60
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_shield_tier9_count_2
-    conditionType: 8
-    conditionParam: shield_9
-    threshold: 2
-    achievementPointReward: 60
-    achievementPointRewardVip: 60
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_shield_tier9_count_3
-    conditionType: 8
-    conditionParam: shield_9
-    threshold: 3
-    achievementPointReward: 60
-    achievementPointRewardVip: 60
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_shield_tier10_count_1
-    conditionType: 8
-    conditionParam: shield_10
-    threshold: 1
-    achievementPointReward: 70
-    achievementPointRewardVip: 70
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_shield_tier10_count_2
-    conditionType: 8
-    conditionParam: shield_10
-    threshold: 2
-    achievementPointReward: 70
-    achievementPointRewardVip: 70
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_shield_tier10_count_3
-    conditionType: 8
-    conditionParam: shield_10
-    threshold: 3
-    achievementPointReward: 70
-    achievementPointRewardVip: 70
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_shield_tier11_count_1
-    conditionType: 8
-    conditionParam: shield_11
-    threshold: 1
-    achievementPointReward: 80
-    achievementPointRewardVip: 80
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_shield_tier11_count_2
-    conditionType: 8
-    conditionParam: shield_11
-    threshold: 2
-    achievementPointReward: 80
-    achievementPointRewardVip: 80
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_shield_tier11_count_3
-    conditionType: 8
-    conditionParam: shield_11
-    threshold: 3
-    achievementPointReward: 80
-    achievementPointRewardVip: 80
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_shield_tier12_count_1
-    conditionType: 8
-    conditionParam: shield_12
-    threshold: 1
-    achievementPointReward: 90
-    achievementPointRewardVip: 90
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_shield_tier12_count_2
-    conditionType: 8
-    conditionParam: shield_12
-    threshold: 2
-    achievementPointReward: 90
-    achievementPointRewardVip: 90
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_shield_tier12_count_3
-    conditionType: 8
-    conditionParam: shield_12
-    threshold: 3
-    achievementPointReward: 90
-    achievementPointRewardVip: 90
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_shield_tier13_count_1
-    conditionType: 8
-    conditionParam: shield_13
-    threshold: 1
-    achievementPointReward: 100
-    achievementPointRewardVip: 100
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_shield_tier13_count_2
-    conditionType: 8
-    conditionParam: shield_13
-    threshold: 2
-    achievementPointReward: 100
-    achievementPointRewardVip: 100
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_shield_tier13_count_3
-    conditionType: 8
-    conditionParam: shield_13
-    threshold: 3
-    achievementPointReward: 100
-    achievementPointRewardVip: 100
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_shield_tier14_count_1
-    conditionType: 8
-    conditionParam: shield_14
-    threshold: 1
-    achievementPointReward: 100
-    achievementPointRewardVip: 100
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_shield_tier14_count_2
-    conditionType: 8
-    conditionParam: shield_14
-    threshold: 2
-    achievementPointReward: 100
-    achievementPointRewardVip: 100
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_shield_tier14_count_3
-    conditionType: 8
-    conditionParam: shield_14
-    threshold: 3
-    achievementPointReward: 100
-    achievementPointRewardVip: 100
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_interceptor_tier2_count_1
-    conditionType: 8
-    conditionParam: interceptor_2
-    threshold: 1
-    achievementPointReward: 10
-    achievementPointRewardVip: 10
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_interceptor_tier2_count_2
-    conditionType: 8
-    conditionParam: interceptor_2
-    threshold: 2
-    achievementPointReward: 10
-    achievementPointRewardVip: 10
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_interceptor_tier2_count_3
-    conditionType: 8
-    conditionParam: interceptor_2
-    threshold: 3
-    achievementPointReward: 10
-    achievementPointRewardVip: 10
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_interceptor_tier3_count_1
-    conditionType: 8
-    conditionParam: interceptor_3
-    threshold: 1
-    achievementPointReward: 10
-    achievementPointRewardVip: 10
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_interceptor_tier3_count_2
-    conditionType: 8
-    conditionParam: interceptor_3
-    threshold: 2
-    achievementPointReward: 10
-    achievementPointRewardVip: 10
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_interceptor_tier3_count_3
-    conditionType: 8
-    conditionParam: interceptor_3
-    threshold: 3
-    achievementPointReward: 10
-    achievementPointRewardVip: 10
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_interceptor_tier4_count_1
-    conditionType: 8
-    conditionParam: interceptor_4
-    threshold: 1
-    achievementPointReward: 10
-    achievementPointRewardVip: 10
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_interceptor_tier4_count_2
-    conditionType: 8
-    conditionParam: interceptor_4
-    threshold: 2
-    achievementPointReward: 10
-    achievementPointRewardVip: 10
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_interceptor_tier4_count_3
-    conditionType: 8
-    conditionParam: interceptor_4
-    threshold: 3
-    achievementPointReward: 10
-    achievementPointRewardVip: 10
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_interceptor_tier5_count_1
-    conditionType: 8
-    conditionParam: interceptor_5
-    threshold: 1
-    achievementPointReward: 20
-    achievementPointRewardVip: 20
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_interceptor_tier5_count_2
-    conditionType: 8
-    conditionParam: interceptor_5
-    threshold: 2
-    achievementPointReward: 20
-    achievementPointRewardVip: 20
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_interceptor_tier5_count_3
-    conditionType: 8
-    conditionParam: interceptor_5
-    threshold: 3
-    achievementPointReward: 20
-    achievementPointRewardVip: 20
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_interceptor_tier6_count_1
-    conditionType: 8
-    conditionParam: interceptor_6
-    threshold: 1
-    achievementPointReward: 30
-    achievementPointRewardVip: 30
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_interceptor_tier6_count_2
-    conditionType: 8
-    conditionParam: interceptor_6
-    threshold: 2
-    achievementPointReward: 30
-    achievementPointRewardVip: 30
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_interceptor_tier6_count_3
-    conditionType: 8
-    conditionParam: interceptor_6
-    threshold: 3
-    achievementPointReward: 30
-    achievementPointRewardVip: 30
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_interceptor_tier7_count_1
-    conditionType: 8
-    conditionParam: interceptor_7
-    threshold: 1
-    achievementPointReward: 40
-    achievementPointRewardVip: 40
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_interceptor_tier7_count_2
-    conditionType: 8
-    conditionParam: interceptor_7
-    threshold: 2
-    achievementPointReward: 40
-    achievementPointRewardVip: 40
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_interceptor_tier7_count_3
-    conditionType: 8
-    conditionParam: interceptor_7
-    threshold: 3
-    achievementPointReward: 40
-    achievementPointRewardVip: 40
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_interceptor_tier8_count_1
-    conditionType: 8
-    conditionParam: interceptor_8
-    threshold: 1
-    achievementPointReward: 50
-    achievementPointRewardVip: 50
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_interceptor_tier8_count_2
-    conditionType: 8
-    conditionParam: interceptor_8
-    threshold: 2
-    achievementPointReward: 50
-    achievementPointRewardVip: 50
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_interceptor_tier8_count_3
-    conditionType: 8
-    conditionParam: interceptor_8
-    threshold: 3
-    achievementPointReward: 50
-    achievementPointRewardVip: 50
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_interceptor_tier9_count_1
-    conditionType: 8
-    conditionParam: interceptor_9
-    threshold: 1
-    achievementPointReward: 60
-    achievementPointRewardVip: 60
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_interceptor_tier9_count_2
-    conditionType: 8
-    conditionParam: interceptor_9
-    threshold: 2
-    achievementPointReward: 60
-    achievementPointRewardVip: 60
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_interceptor_tier9_count_3
-    conditionType: 8
-    conditionParam: interceptor_9
-    threshold: 3
-    achievementPointReward: 60
-    achievementPointRewardVip: 60
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_interceptor_tier10_count_1
-    conditionType: 8
-    conditionParam: interceptor_10
-    threshold: 1
-    achievementPointReward: 70
-    achievementPointRewardVip: 70
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_interceptor_tier10_count_2
-    conditionType: 8
-    conditionParam: interceptor_10
-    threshold: 2
-    achievementPointReward: 70
-    achievementPointRewardVip: 70
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_interceptor_tier10_count_3
-    conditionType: 8
-    conditionParam: interceptor_10
-    threshold: 3
-    achievementPointReward: 70
-    achievementPointRewardVip: 70
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_interceptor_tier11_count_1
-    conditionType: 8
-    conditionParam: interceptor_11
-    threshold: 1
-    achievementPointReward: 80
-    achievementPointRewardVip: 80
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_interceptor_tier11_count_2
-    conditionType: 8
-    conditionParam: interceptor_11
-    threshold: 2
-    achievementPointReward: 80
-    achievementPointRewardVip: 80
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_interceptor_tier11_count_3
-    conditionType: 8
-    conditionParam: interceptor_11
-    threshold: 3
-    achievementPointReward: 80
-    achievementPointRewardVip: 80
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_interceptor_tier12_count_1
-    conditionType: 8
-    conditionParam: interceptor_12
-    threshold: 1
-    achievementPointReward: 90
-    achievementPointRewardVip: 90
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_interceptor_tier12_count_2
-    conditionType: 8
-    conditionParam: interceptor_12
-    threshold: 2
-    achievementPointReward: 90
-    achievementPointRewardVip: 90
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_interceptor_tier12_count_3
-    conditionType: 8
-    conditionParam: interceptor_12
-    threshold: 3
-    achievementPointReward: 90
-    achievementPointRewardVip: 90
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_interceptor_tier13_count_1
-    conditionType: 8
-    conditionParam: interceptor_13
-    threshold: 1
-    achievementPointReward: 100
-    achievementPointRewardVip: 100
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_interceptor_tier13_count_2
-    conditionType: 8
-    conditionParam: interceptor_13
-    threshold: 2
-    achievementPointReward: 100
-    achievementPointRewardVip: 100
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_interceptor_tier13_count_3
-    conditionType: 8
-    conditionParam: interceptor_13
-    threshold: 3
-    achievementPointReward: 100
-    achievementPointRewardVip: 100
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_interceptor_tier14_count_1
-    conditionType: 8
-    conditionParam: interceptor_14
-    threshold: 1
-    achievementPointReward: 100
-    achievementPointRewardVip: 100
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_interceptor_tier14_count_2
-    conditionType: 8
-    conditionParam: interceptor_14
-    threshold: 2
-    achievementPointReward: 100
-    achievementPointRewardVip: 100
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: module_interceptor_tier14_count_3
-    conditionType: 8
-    conditionParam: interceptor_14
-    threshold: 3
-    achievementPointReward: 100
-    achievementPointRewardVip: 100
-    nameKey: UIAchievement_Name_module_tier_count
-    descKey: UIAchievement_Desc_module_tier_count
-    difficulty: 
-  - achievementId: hull_unlock_hull_4_1_21100
+  - achievementId: hull_unlock_argus
     conditionType: 9
-    conditionParam: hull_4_1_21100
+    conditionParam: argus
     threshold: 1
-    achievementPointReward: 40
-    achievementPointRewardVip: 40
+    achievementPointReward: 200
+    achievementPointRewardVip: 200
     nameKey: UIAchievement_Name_hull_unlock
     descKey: UIAchievement_Desc_hull_unlock
     difficulty: 
-  - achievementId: hull_unlock_hull_5_1_22100
-    conditionType: 9
-    conditionParam: hull_5_1_22100
-    threshold: 1
-    achievementPointReward: 50
-    achievementPointRewardVip: 50
-    nameKey: UIAchievement_Name_hull_unlock
-    descKey: UIAchievement_Desc_hull_unlock
+  - achievementId: hull_passive_argus_2
+    conditionType: 7
+    conditionParam: argus
+    threshold: 2
+    achievementPointReward: 20
+    achievementPointRewardVip: 20
+    nameKey: UIAchievement_Name_hull_passive
+    descKey: UIAchievement_Desc_hull_passive
     difficulty: 
-  - achievementId: hull_unlock_hull_6_1_22211
-    conditionType: 9
-    conditionParam: hull_6_1_22211
-    threshold: 1
-    achievementPointReward: 60
-    achievementPointRewardVip: 60
-    nameKey: UIAchievement_Name_hull_unlock
-    descKey: UIAchievement_Desc_hull_unlock
+  - achievementId: hull_passive_argus_3
+    conditionType: 7
+    conditionParam: argus
+    threshold: 3
+    achievementPointReward: 40
+    achievementPointRewardVip: 40
+    nameKey: UIAchievement_Name_hull_passive
+    descKey: UIAchievement_Desc_hull_passive
     difficulty: 
-  - achievementId: hull_unlock_hull_7_1_32211
-    conditionType: 9
-    conditionParam: hull_7_1_32211
-    threshold: 1
-    achievementPointReward: 70
-    achievementPointRewardVip: 70
-    nameKey: UIAchievement_Name_hull_unlock
-    descKey: UIAchievement_Desc_hull_unlock
-    difficulty: 
-  - achievementId: hull_unlock_hull_8_1_33211
-    conditionType: 9
-    conditionParam: hull_8_1_33211
-    threshold: 1
+  - achievementId: hull_passive_argus_4
+    conditionType: 7
+    conditionParam: argus
+    threshold: 4
     achievementPointReward: 80
     achievementPointRewardVip: 80
+    nameKey: UIAchievement_Name_hull_passive
+    descKey: UIAchievement_Desc_hull_passive
+    difficulty: 
+  - achievementId: hull_reinforce_argus_5
+    conditionType: 8
+    conditionParam: argus
+    threshold: 5
+    achievementPointReward: 20
+    achievementPointRewardVip: 20
+    nameKey: UIAchievement_Name_hull_reinforce
+    descKey: UIAchievement_Desc_hull_reinforce
+    difficulty: 
+  - achievementId: hull_reinforce_argus_10
+    conditionType: 8
+    conditionParam: argus
+    threshold: 10
+    achievementPointReward: 40
+    achievementPointRewardVip: 40
+    nameKey: UIAchievement_Name_hull_reinforce
+    descKey: UIAchievement_Desc_hull_reinforce
+    difficulty: 
+  - achievementId: hull_reinforce_argus_20
+    conditionType: 8
+    conditionParam: argus
+    threshold: 20
+    achievementPointReward: 80
+    achievementPointRewardVip: 80
+    nameKey: UIAchievement_Name_hull_reinforce
+    descKey: UIAchievement_Desc_hull_reinforce
+    difficulty: 
+  - achievementId: hull_unlock_prism
+    conditionType: 9
+    conditionParam: prism
+    threshold: 1
+    achievementPointReward: 200
+    achievementPointRewardVip: 200
     nameKey: UIAchievement_Name_hull_unlock
     descKey: UIAchievement_Desc_hull_unlock
     difficulty: 
-  - achievementId: hull_unlock_hull_9_1_33311
+  - achievementId: hull_passive_prism_2
+    conditionType: 7
+    conditionParam: prism
+    threshold: 2
+    achievementPointReward: 20
+    achievementPointRewardVip: 20
+    nameKey: UIAchievement_Name_hull_passive
+    descKey: UIAchievement_Desc_hull_passive
+    difficulty: 
+  - achievementId: hull_passive_prism_3
+    conditionType: 7
+    conditionParam: prism
+    threshold: 3
+    achievementPointReward: 40
+    achievementPointRewardVip: 40
+    nameKey: UIAchievement_Name_hull_passive
+    descKey: UIAchievement_Desc_hull_passive
+    difficulty: 
+  - achievementId: hull_passive_prism_4
+    conditionType: 7
+    conditionParam: prism
+    threshold: 4
+    achievementPointReward: 80
+    achievementPointRewardVip: 80
+    nameKey: UIAchievement_Name_hull_passive
+    descKey: UIAchievement_Desc_hull_passive
+    difficulty: 
+  - achievementId: hull_reinforce_prism_5
+    conditionType: 8
+    conditionParam: prism
+    threshold: 5
+    achievementPointReward: 20
+    achievementPointRewardVip: 20
+    nameKey: UIAchievement_Name_hull_reinforce
+    descKey: UIAchievement_Desc_hull_reinforce
+    difficulty: 
+  - achievementId: hull_reinforce_prism_10
+    conditionType: 8
+    conditionParam: prism
+    threshold: 10
+    achievementPointReward: 40
+    achievementPointRewardVip: 40
+    nameKey: UIAchievement_Name_hull_reinforce
+    descKey: UIAchievement_Desc_hull_reinforce
+    difficulty: 
+  - achievementId: hull_reinforce_prism_20
+    conditionType: 8
+    conditionParam: prism
+    threshold: 20
+    achievementPointReward: 80
+    achievementPointRewardVip: 80
+    nameKey: UIAchievement_Name_hull_reinforce
+    descKey: UIAchievement_Desc_hull_reinforce
+    difficulty: 
+  - achievementId: hull_unlock_colossus
     conditionType: 9
-    conditionParam: hull_9_1_33311
+    conditionParam: colossus
     threshold: 1
-    achievementPointReward: 90
-    achievementPointRewardVip: 90
+    achievementPointReward: 300
+    achievementPointRewardVip: 300
     nameKey: UIAchievement_Name_hull_unlock
     descKey: UIAchievement_Desc_hull_unlock
     difficulty: 
-  - achievementId: hull_unlock_hull_10_1_43311
-    conditionType: 9
-    conditionParam: hull_10_1_43311
-    threshold: 1
-    achievementPointReward: 100
-    achievementPointRewardVip: 100
-    nameKey: UIAchievement_Name_hull_unlock
-    descKey: UIAchievement_Desc_hull_unlock
+  - achievementId: hull_passive_colossus_2
+    conditionType: 7
+    conditionParam: colossus
+    threshold: 2
+    achievementPointReward: 30
+    achievementPointRewardVip: 30
+    nameKey: UIAchievement_Name_hull_passive
+    descKey: UIAchievement_Desc_hull_passive
     difficulty: 
-  - achievementId: hull_unlock_hull_11_1_44311
-    conditionType: 9
-    conditionParam: hull_11_1_44311
-    threshold: 1
-    achievementPointReward: 110
-    achievementPointRewardVip: 110
-    nameKey: UIAchievement_Name_hull_unlock
-    descKey: UIAchievement_Desc_hull_unlock
+  - achievementId: hull_passive_colossus_3
+    conditionType: 7
+    conditionParam: colossus
+    threshold: 3
+    achievementPointReward: 60
+    achievementPointRewardVip: 60
+    nameKey: UIAchievement_Name_hull_passive
+    descKey: UIAchievement_Desc_hull_passive
     difficulty: 
-  - achievementId: hull_unlock_hull_12_1_44411
-    conditionType: 9
-    conditionParam: hull_12_1_44411
-    threshold: 1
+  - achievementId: hull_passive_colossus_4
+    conditionType: 7
+    conditionParam: colossus
+    threshold: 4
     achievementPointReward: 120
     achievementPointRewardVip: 120
+    nameKey: UIAchievement_Name_hull_passive
+    descKey: UIAchievement_Desc_hull_passive
+    difficulty: 
+  - achievementId: hull_reinforce_colossus_5
+    conditionType: 8
+    conditionParam: colossus
+    threshold: 5
+    achievementPointReward: 30
+    achievementPointRewardVip: 30
+    nameKey: UIAchievement_Name_hull_reinforce
+    descKey: UIAchievement_Desc_hull_reinforce
+    difficulty: 
+  - achievementId: hull_reinforce_colossus_10
+    conditionType: 8
+    conditionParam: colossus
+    threshold: 10
+    achievementPointReward: 60
+    achievementPointRewardVip: 60
+    nameKey: UIAchievement_Name_hull_reinforce
+    descKey: UIAchievement_Desc_hull_reinforce
+    difficulty: 
+  - achievementId: hull_reinforce_colossus_20
+    conditionType: 8
+    conditionParam: colossus
+    threshold: 20
+    achievementPointReward: 120
+    achievementPointRewardVip: 120
+    nameKey: UIAchievement_Name_hull_reinforce
+    descKey: UIAchievement_Desc_hull_reinforce
+    difficulty: 
+  - achievementId: hull_unlock_leviathan
+    conditionType: 9
+    conditionParam: leviathan
+    threshold: 1
+    achievementPointReward: 300
+    achievementPointRewardVip: 300
     nameKey: UIAchievement_Name_hull_unlock
     descKey: UIAchievement_Desc_hull_unlock
     difficulty: 
-  - achievementId: hull_unlock_hull_13_1_54411
+  - achievementId: hull_passive_leviathan_2
+    conditionType: 7
+    conditionParam: leviathan
+    threshold: 2
+    achievementPointReward: 30
+    achievementPointRewardVip: 30
+    nameKey: UIAchievement_Name_hull_passive
+    descKey: UIAchievement_Desc_hull_passive
+    difficulty: 
+  - achievementId: hull_passive_leviathan_3
+    conditionType: 7
+    conditionParam: leviathan
+    threshold: 3
+    achievementPointReward: 60
+    achievementPointRewardVip: 60
+    nameKey: UIAchievement_Name_hull_passive
+    descKey: UIAchievement_Desc_hull_passive
+    difficulty: 
+  - achievementId: hull_passive_leviathan_4
+    conditionType: 7
+    conditionParam: leviathan
+    threshold: 4
+    achievementPointReward: 120
+    achievementPointRewardVip: 120
+    nameKey: UIAchievement_Name_hull_passive
+    descKey: UIAchievement_Desc_hull_passive
+    difficulty: 
+  - achievementId: hull_reinforce_leviathan_5
+    conditionType: 8
+    conditionParam: leviathan
+    threshold: 5
+    achievementPointReward: 30
+    achievementPointRewardVip: 30
+    nameKey: UIAchievement_Name_hull_reinforce
+    descKey: UIAchievement_Desc_hull_reinforce
+    difficulty: 
+  - achievementId: hull_reinforce_leviathan_10
+    conditionType: 8
+    conditionParam: leviathan
+    threshold: 10
+    achievementPointReward: 60
+    achievementPointRewardVip: 60
+    nameKey: UIAchievement_Name_hull_reinforce
+    descKey: UIAchievement_Desc_hull_reinforce
+    difficulty: 
+  - achievementId: hull_reinforce_leviathan_20
+    conditionType: 8
+    conditionParam: leviathan
+    threshold: 20
+    achievementPointReward: 120
+    achievementPointRewardVip: 120
+    nameKey: UIAchievement_Name_hull_reinforce
+    descKey: UIAchievement_Desc_hull_reinforce
+    difficulty: 
+  - achievementId: hull_unlock_corsair
     conditionType: 9
-    conditionParam: hull_13_1_54411
+    conditionParam: corsair
     threshold: 1
-    achievementPointReward: 130
-    achievementPointRewardVip: 130
+    achievementPointReward: 400
+    achievementPointRewardVip: 400
     nameKey: UIAchievement_Name_hull_unlock
     descKey: UIAchievement_Desc_hull_unlock
     difficulty: 
-  - achievementId: hull_unlock_hull_14_1_55411
+  - achievementId: hull_passive_corsair_2
+    conditionType: 7
+    conditionParam: corsair
+    threshold: 2
+    achievementPointReward: 40
+    achievementPointRewardVip: 40
+    nameKey: UIAchievement_Name_hull_passive
+    descKey: UIAchievement_Desc_hull_passive
+    difficulty: 
+  - achievementId: hull_passive_corsair_3
+    conditionType: 7
+    conditionParam: corsair
+    threshold: 3
+    achievementPointReward: 80
+    achievementPointRewardVip: 80
+    nameKey: UIAchievement_Name_hull_passive
+    descKey: UIAchievement_Desc_hull_passive
+    difficulty: 
+  - achievementId: hull_passive_corsair_4
+    conditionType: 7
+    conditionParam: corsair
+    threshold: 4
+    achievementPointReward: 160
+    achievementPointRewardVip: 160
+    nameKey: UIAchievement_Name_hull_passive
+    descKey: UIAchievement_Desc_hull_passive
+    difficulty: 
+  - achievementId: hull_reinforce_corsair_5
+    conditionType: 8
+    conditionParam: corsair
+    threshold: 5
+    achievementPointReward: 40
+    achievementPointRewardVip: 40
+    nameKey: UIAchievement_Name_hull_reinforce
+    descKey: UIAchievement_Desc_hull_reinforce
+    difficulty: 
+  - achievementId: hull_reinforce_corsair_10
+    conditionType: 8
+    conditionParam: corsair
+    threshold: 10
+    achievementPointReward: 80
+    achievementPointRewardVip: 80
+    nameKey: UIAchievement_Name_hull_reinforce
+    descKey: UIAchievement_Desc_hull_reinforce
+    difficulty: 
+  - achievementId: hull_reinforce_corsair_20
+    conditionType: 8
+    conditionParam: corsair
+    threshold: 20
+    achievementPointReward: 160
+    achievementPointRewardVip: 160
+    nameKey: UIAchievement_Name_hull_reinforce
+    descKey: UIAchievement_Desc_hull_reinforce
+    difficulty: 
+  - achievementId: hull_unlock_talon
     conditionType: 9
-    conditionParam: hull_14_1_55411
+    conditionParam: talon
     threshold: 1
-    achievementPointReward: 140
-    achievementPointRewardVip: 140
+    achievementPointReward: 400
+    achievementPointRewardVip: 400
     nameKey: UIAchievement_Name_hull_unlock
     descKey: UIAchievement_Desc_hull_unlock
+    difficulty: 
+  - achievementId: hull_passive_talon_2
+    conditionType: 7
+    conditionParam: talon
+    threshold: 2
+    achievementPointReward: 40
+    achievementPointRewardVip: 40
+    nameKey: UIAchievement_Name_hull_passive
+    descKey: UIAchievement_Desc_hull_passive
+    difficulty: 
+  - achievementId: hull_passive_talon_3
+    conditionType: 7
+    conditionParam: talon
+    threshold: 3
+    achievementPointReward: 80
+    achievementPointRewardVip: 80
+    nameKey: UIAchievement_Name_hull_passive
+    descKey: UIAchievement_Desc_hull_passive
+    difficulty: 
+  - achievementId: hull_passive_talon_4
+    conditionType: 7
+    conditionParam: talon
+    threshold: 4
+    achievementPointReward: 160
+    achievementPointRewardVip: 160
+    nameKey: UIAchievement_Name_hull_passive
+    descKey: UIAchievement_Desc_hull_passive
+    difficulty: 
+  - achievementId: hull_reinforce_talon_5
+    conditionType: 8
+    conditionParam: talon
+    threshold: 5
+    achievementPointReward: 40
+    achievementPointRewardVip: 40
+    nameKey: UIAchievement_Name_hull_reinforce
+    descKey: UIAchievement_Desc_hull_reinforce
+    difficulty: 
+  - achievementId: hull_reinforce_talon_10
+    conditionType: 8
+    conditionParam: talon
+    threshold: 10
+    achievementPointReward: 80
+    achievementPointRewardVip: 80
+    nameKey: UIAchievement_Name_hull_reinforce
+    descKey: UIAchievement_Desc_hull_reinforce
+    difficulty: 
+  - achievementId: hull_reinforce_talon_20
+    conditionType: 8
+    conditionParam: talon
+    threshold: 20
+    achievementPointReward: 160
+    achievementPointRewardVip: 160
+    nameKey: UIAchievement_Name_hull_reinforce
+    descKey: UIAchievement_Desc_hull_reinforce
+    difficulty: 
+  - achievementId: hull_unlock_vulcan
+    conditionType: 9
+    conditionParam: vulcan
+    threshold: 1
+    achievementPointReward: 400
+    achievementPointRewardVip: 400
+    nameKey: UIAchievement_Name_hull_unlock
+    descKey: UIAchievement_Desc_hull_unlock
+    difficulty: 
+  - achievementId: hull_passive_vulcan_2
+    conditionType: 7
+    conditionParam: vulcan
+    threshold: 2
+    achievementPointReward: 40
+    achievementPointRewardVip: 40
+    nameKey: UIAchievement_Name_hull_passive
+    descKey: UIAchievement_Desc_hull_passive
+    difficulty: 
+  - achievementId: hull_passive_vulcan_3
+    conditionType: 7
+    conditionParam: vulcan
+    threshold: 3
+    achievementPointReward: 80
+    achievementPointRewardVip: 80
+    nameKey: UIAchievement_Name_hull_passive
+    descKey: UIAchievement_Desc_hull_passive
+    difficulty: 
+  - achievementId: hull_passive_vulcan_4
+    conditionType: 7
+    conditionParam: vulcan
+    threshold: 4
+    achievementPointReward: 160
+    achievementPointRewardVip: 160
+    nameKey: UIAchievement_Name_hull_passive
+    descKey: UIAchievement_Desc_hull_passive
+    difficulty: 
+  - achievementId: hull_reinforce_vulcan_5
+    conditionType: 8
+    conditionParam: vulcan
+    threshold: 5
+    achievementPointReward: 40
+    achievementPointRewardVip: 40
+    nameKey: UIAchievement_Name_hull_reinforce
+    descKey: UIAchievement_Desc_hull_reinforce
+    difficulty: 
+  - achievementId: hull_reinforce_vulcan_10
+    conditionType: 8
+    conditionParam: vulcan
+    threshold: 10
+    achievementPointReward: 80
+    achievementPointRewardVip: 80
+    nameKey: UIAchievement_Name_hull_reinforce
+    descKey: UIAchievement_Desc_hull_reinforce
+    difficulty: 
+  - achievementId: hull_reinforce_vulcan_20
+    conditionType: 8
+    conditionParam: vulcan
+    threshold: 20
+    achievementPointReward: 160
+    achievementPointRewardVip: 160
+    nameKey: UIAchievement_Name_hull_reinforce
+    descKey: UIAchievement_Desc_hull_reinforce
+    difficulty: 
+  - achievementId: hull_unlock_aegis
+    conditionType: 9
+    conditionParam: aegis
+    threshold: 1
+    achievementPointReward: 500
+    achievementPointRewardVip: 500
+    nameKey: UIAchievement_Name_hull_unlock
+    descKey: UIAchievement_Desc_hull_unlock
+    difficulty: 
+  - achievementId: hull_passive_aegis_2
+    conditionType: 7
+    conditionParam: aegis
+    threshold: 2
+    achievementPointReward: 50
+    achievementPointRewardVip: 50
+    nameKey: UIAchievement_Name_hull_passive
+    descKey: UIAchievement_Desc_hull_passive
+    difficulty: 
+  - achievementId: hull_passive_aegis_3
+    conditionType: 7
+    conditionParam: aegis
+    threshold: 3
+    achievementPointReward: 100
+    achievementPointRewardVip: 100
+    nameKey: UIAchievement_Name_hull_passive
+    descKey: UIAchievement_Desc_hull_passive
+    difficulty: 
+  - achievementId: hull_passive_aegis_4
+    conditionType: 7
+    conditionParam: aegis
+    threshold: 4
+    achievementPointReward: 200
+    achievementPointRewardVip: 200
+    nameKey: UIAchievement_Name_hull_passive
+    descKey: UIAchievement_Desc_hull_passive
+    difficulty: 
+  - achievementId: hull_reinforce_aegis_5
+    conditionType: 8
+    conditionParam: aegis
+    threshold: 5
+    achievementPointReward: 50
+    achievementPointRewardVip: 50
+    nameKey: UIAchievement_Name_hull_reinforce
+    descKey: UIAchievement_Desc_hull_reinforce
+    difficulty: 
+  - achievementId: hull_reinforce_aegis_10
+    conditionType: 8
+    conditionParam: aegis
+    threshold: 10
+    achievementPointReward: 100
+    achievementPointRewardVip: 100
+    nameKey: UIAchievement_Name_hull_reinforce
+    descKey: UIAchievement_Desc_hull_reinforce
+    difficulty: 
+  - achievementId: hull_reinforce_aegis_20
+    conditionType: 8
+    conditionParam: aegis
+    threshold: 20
+    achievementPointReward: 200
+    achievementPointRewardVip: 200
+    nameKey: UIAchievement_Name_hull_reinforce
+    descKey: UIAchievement_Desc_hull_reinforce
+    difficulty: 
+  - achievementId: hull_unlock_halcyon
+    conditionType: 9
+    conditionParam: halcyon
+    threshold: 1
+    achievementPointReward: 500
+    achievementPointRewardVip: 500
+    nameKey: UIAchievement_Name_hull_unlock
+    descKey: UIAchievement_Desc_hull_unlock
+    difficulty: 
+  - achievementId: hull_passive_halcyon_2
+    conditionType: 7
+    conditionParam: halcyon
+    threshold: 2
+    achievementPointReward: 50
+    achievementPointRewardVip: 50
+    nameKey: UIAchievement_Name_hull_passive
+    descKey: UIAchievement_Desc_hull_passive
+    difficulty: 
+  - achievementId: hull_passive_halcyon_3
+    conditionType: 7
+    conditionParam: halcyon
+    threshold: 3
+    achievementPointReward: 100
+    achievementPointRewardVip: 100
+    nameKey: UIAchievement_Name_hull_passive
+    descKey: UIAchievement_Desc_hull_passive
+    difficulty: 
+  - achievementId: hull_passive_halcyon_4
+    conditionType: 7
+    conditionParam: halcyon
+    threshold: 4
+    achievementPointReward: 200
+    achievementPointRewardVip: 200
+    nameKey: UIAchievement_Name_hull_passive
+    descKey: UIAchievement_Desc_hull_passive
+    difficulty: 
+  - achievementId: hull_reinforce_halcyon_5
+    conditionType: 8
+    conditionParam: halcyon
+    threshold: 5
+    achievementPointReward: 50
+    achievementPointRewardVip: 50
+    nameKey: UIAchievement_Name_hull_reinforce
+    descKey: UIAchievement_Desc_hull_reinforce
+    difficulty: 
+  - achievementId: hull_reinforce_halcyon_10
+    conditionType: 8
+    conditionParam: halcyon
+    threshold: 10
+    achievementPointReward: 100
+    achievementPointRewardVip: 100
+    nameKey: UIAchievement_Name_hull_reinforce
+    descKey: UIAchievement_Desc_hull_reinforce
+    difficulty: 
+  - achievementId: hull_reinforce_halcyon_20
+    conditionType: 8
+    conditionParam: halcyon
+    threshold: 20
+    achievementPointReward: 200
+    achievementPointRewardVip: 200
+    nameKey: UIAchievement_Name_hull_reinforce
+    descKey: UIAchievement_Desc_hull_reinforce
+    difficulty: 
+  - achievementId: hull_unlock_nemesis
+    conditionType: 9
+    conditionParam: nemesis
+    threshold: 1
+    achievementPointReward: 500
+    achievementPointRewardVip: 500
+    nameKey: UIAchievement_Name_hull_unlock
+    descKey: UIAchievement_Desc_hull_unlock
+    difficulty: 
+  - achievementId: hull_passive_nemesis_2
+    conditionType: 7
+    conditionParam: nemesis
+    threshold: 2
+    achievementPointReward: 50
+    achievementPointRewardVip: 50
+    nameKey: UIAchievement_Name_hull_passive
+    descKey: UIAchievement_Desc_hull_passive
+    difficulty: 
+  - achievementId: hull_passive_nemesis_3
+    conditionType: 7
+    conditionParam: nemesis
+    threshold: 3
+    achievementPointReward: 100
+    achievementPointRewardVip: 100
+    nameKey: UIAchievement_Name_hull_passive
+    descKey: UIAchievement_Desc_hull_passive
+    difficulty: 
+  - achievementId: hull_passive_nemesis_4
+    conditionType: 7
+    conditionParam: nemesis
+    threshold: 4
+    achievementPointReward: 200
+    achievementPointRewardVip: 200
+    nameKey: UIAchievement_Name_hull_passive
+    descKey: UIAchievement_Desc_hull_passive
+    difficulty: 
+  - achievementId: hull_reinforce_nemesis_5
+    conditionType: 8
+    conditionParam: nemesis
+    threshold: 5
+    achievementPointReward: 50
+    achievementPointRewardVip: 50
+    nameKey: UIAchievement_Name_hull_reinforce
+    descKey: UIAchievement_Desc_hull_reinforce
+    difficulty: 
+  - achievementId: hull_reinforce_nemesis_10
+    conditionType: 8
+    conditionParam: nemesis
+    threshold: 10
+    achievementPointReward: 100
+    achievementPointRewardVip: 100
+    nameKey: UIAchievement_Name_hull_reinforce
+    descKey: UIAchievement_Desc_hull_reinforce
+    difficulty: 
+  - achievementId: hull_reinforce_nemesis_20
+    conditionType: 8
+    conditionParam: nemesis
+    threshold: 20
+    achievementPointReward: 200
+    achievementPointRewardVip: 200
+    nameKey: UIAchievement_Name_hull_reinforce
+    descKey: UIAchievement_Desc_hull_reinforce
+    difficulty: 
+  - achievementId: hull_unlock_phoenix
+    conditionType: 9
+    conditionParam: phoenix
+    threshold: 1
+    achievementPointReward: 500
+    achievementPointRewardVip: 500
+    nameKey: UIAchievement_Name_hull_unlock
+    descKey: UIAchievement_Desc_hull_unlock
+    difficulty: 
+  - achievementId: hull_passive_phoenix_2
+    conditionType: 7
+    conditionParam: phoenix
+    threshold: 2
+    achievementPointReward: 50
+    achievementPointRewardVip: 50
+    nameKey: UIAchievement_Name_hull_passive
+    descKey: UIAchievement_Desc_hull_passive
+    difficulty: 
+  - achievementId: hull_passive_phoenix_3
+    conditionType: 7
+    conditionParam: phoenix
+    threshold: 3
+    achievementPointReward: 100
+    achievementPointRewardVip: 100
+    nameKey: UIAchievement_Name_hull_passive
+    descKey: UIAchievement_Desc_hull_passive
+    difficulty: 
+  - achievementId: hull_passive_phoenix_4
+    conditionType: 7
+    conditionParam: phoenix
+    threshold: 4
+    achievementPointReward: 200
+    achievementPointRewardVip: 200
+    nameKey: UIAchievement_Name_hull_passive
+    descKey: UIAchievement_Desc_hull_passive
+    difficulty: 
+  - achievementId: hull_reinforce_phoenix_5
+    conditionType: 8
+    conditionParam: phoenix
+    threshold: 5
+    achievementPointReward: 50
+    achievementPointRewardVip: 50
+    nameKey: UIAchievement_Name_hull_reinforce
+    descKey: UIAchievement_Desc_hull_reinforce
+    difficulty: 
+  - achievementId: hull_reinforce_phoenix_10
+    conditionType: 8
+    conditionParam: phoenix
+    threshold: 10
+    achievementPointReward: 100
+    achievementPointRewardVip: 100
+    nameKey: UIAchievement_Name_hull_reinforce
+    descKey: UIAchievement_Desc_hull_reinforce
+    difficulty: 
+  - achievementId: hull_reinforce_phoenix_20
+    conditionType: 8
+    conditionParam: phoenix
+    threshold: 20
+    achievementPointReward: 200
+    achievementPointRewardVip: 200
+    nameKey: UIAchievement_Name_hull_reinforce
+    descKey: UIAchievement_Desc_hull_reinforce
+    difficulty: 
+  - achievementId: hull_unlock_sentinel
+    conditionType: 9
+    conditionParam: sentinel
+    threshold: 1
+    achievementPointReward: 500
+    achievementPointRewardVip: 500
+    nameKey: UIAchievement_Name_hull_unlock
+    descKey: UIAchievement_Desc_hull_unlock
+    difficulty: 
+  - achievementId: hull_passive_sentinel_2
+    conditionType: 7
+    conditionParam: sentinel
+    threshold: 2
+    achievementPointReward: 50
+    achievementPointRewardVip: 50
+    nameKey: UIAchievement_Name_hull_passive
+    descKey: UIAchievement_Desc_hull_passive
+    difficulty: 
+  - achievementId: hull_passive_sentinel_3
+    conditionType: 7
+    conditionParam: sentinel
+    threshold: 3
+    achievementPointReward: 100
+    achievementPointRewardVip: 100
+    nameKey: UIAchievement_Name_hull_passive
+    descKey: UIAchievement_Desc_hull_passive
+    difficulty: 
+  - achievementId: hull_passive_sentinel_4
+    conditionType: 7
+    conditionParam: sentinel
+    threshold: 4
+    achievementPointReward: 200
+    achievementPointRewardVip: 200
+    nameKey: UIAchievement_Name_hull_passive
+    descKey: UIAchievement_Desc_hull_passive
+    difficulty: 
+  - achievementId: hull_reinforce_sentinel_5
+    conditionType: 8
+    conditionParam: sentinel
+    threshold: 5
+    achievementPointReward: 50
+    achievementPointRewardVip: 50
+    nameKey: UIAchievement_Name_hull_reinforce
+    descKey: UIAchievement_Desc_hull_reinforce
+    difficulty: 
+  - achievementId: hull_reinforce_sentinel_10
+    conditionType: 8
+    conditionParam: sentinel
+    threshold: 10
+    achievementPointReward: 100
+    achievementPointRewardVip: 100
+    nameKey: UIAchievement_Name_hull_reinforce
+    descKey: UIAchievement_Desc_hull_reinforce
+    difficulty: 
+  - achievementId: hull_reinforce_sentinel_20
+    conditionType: 8
+    conditionParam: sentinel
+    threshold: 20
+    achievementPointReward: 200
+    achievementPointRewardVip: 200
+    nameKey: UIAchievement_Name_hull_reinforce
+    descKey: UIAchievement_Desc_hull_reinforce
     difficulty: 
