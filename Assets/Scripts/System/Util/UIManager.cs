@@ -722,6 +722,27 @@ public class UIManager : MonoSingleton<UIManager>
         }, scavengedMineral, scoutedMineral, expGained);
     }
 
+    // 이벤트(Treasure) 셀 무료 보상 선택 — 선택이 서버에 확정되면 팝업을 닫고 응답을 넘김
+    public void ShowTreasureSelectPopup(System.Collections.Generic.List<TreasureChoiceInfo> choices, int zoneNumber, System.Action<SelectTreasureRewardResponse> onSelected)
+    {
+        ShowPopupInOrder(() => OpenTreasureSelectPopup(choices, zoneNumber, onSelected));
+    }
+
+    private void OpenTreasureSelectPopup(System.Collections.Generic.List<TreasureChoiceInfo> choices, int zoneNumber, System.Action<SelectTreasureRewardResponse> onSelected)
+    {
+        UIPopupTreasureSelect popup = GetOrCreatePopup<UIPopupTreasureSelect>("UIPopupTreasureSelect", EPopupLayer.Overlay);
+        if (popup == null) return;
+
+        PushPopup(popup, EPopupLayer.Overlay);
+
+        popup.ShowPopupTreasureSelect(choices, zoneNumber, data =>
+        {
+            ClosePopup(popup, EPopupLayer.Overlay);
+            if (onSelected != null)
+                onSelected.Invoke(data);
+        });
+    }
+
 
     // 커맨더 이름 변경 팝업
     public void ShowRenameCommanderPopup(System.Action onRenameSuccess = null)

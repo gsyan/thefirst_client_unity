@@ -635,6 +635,11 @@ public class ApiClient
         return await PostAsync<PurchaseRewardCardResponse>("/exploration/purchase-reward-card", request);
     }
 
+    public async Task<ApiResponse<SelectTreasureRewardResponse>> SelectTreasureRewardAsync(SelectTreasureRewardRequest request)
+    {
+        return await PostAsync<SelectTreasureRewardResponse>("/exploration/select-treasure-reward", request);
+    }
+
     public async Task<ApiResponse<CloseRewardCardPopupResponse>> CloseRewardCardPopupAsync(CloseRewardCardPopupRequest request)
     {
         return await PostAsync<CloseRewardCardPopupResponse>("/exploration/close-reward-card-popup", request);

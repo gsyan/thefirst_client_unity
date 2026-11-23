@@ -938,6 +938,9 @@ public class ObjectManager : MonoSingleton<ObjectManager>
         // 신규 함선(isNewShip)은 이미 워프인 이동 중이므로 재스냅 대상에서 제외 — 나머지 함선만 대형 조정을 위해 부드럽게 슬라이드.
         // 기존 슬롯 함체 교체는 그대로 즉시 배치(bSmooth: false, 연출 없음)
         myFleet.UpdateShipFormation(myFleet.m_currentFormationType, bSmooth: isNewShip, excludeShip: isNewShip ? newShip : null);
+
+        // 갤럭시뷰 함선 체력 목록 등 편성 변경을 따라가야 하는 UI에 알림
+        EventManager.Trigger_FleetShipCountChanged();
     }
 
     // 내 함대에 배치된 함선이 하나라도 있는지 — 함대편성에서 전부 해제할 수 있어 PVP/탐사 진입 직전에 확인(함대 정보 기준, 전투 중 생존 여부와 무관)
@@ -965,6 +968,9 @@ public class ObjectManager : MonoSingleton<ObjectManager>
 
         // 빠진 함선이 주던 함대 범위 패시브 효과를 남은 함선들에서 제거
         RefreshPassiveEffectsOnFleet(myFleet);
+
+        // 갤럭시뷰 함선 체력 목록 등 편성 변경을 따라가야 하는 UI에 알림
+        EventManager.Trigger_FleetShipCountChanged();
     }
 
     // myFleet.m_fleetInfo.ships에서 positionIndex가 일치하는 항목을 새 ShipInfo로 교체(없으면 추가) — ReplaceMyFleetShipAt 전용

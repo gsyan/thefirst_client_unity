@@ -631,10 +631,6 @@ MonoBehaviour:
     m_Localized: Enemy Fleet
     m_Metadata:
       m_Items: []
-  - m_Id: 76543106660302848
-    m_Localized: Fleet health restored by {0}%!
-    m_Metadata:
-      m_Items: []
   - m_Id: 76574125773946880
     m_Localized: Achievement Point
     m_Metadata:
@@ -1992,6 +1988,38 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 104411371751211013
     m_Localized: Scavenge Minerals
+    m_Metadata:
+      m_Items: []
+  - m_Id: 104552259743776768
+    m_Localized: Treasure Found! Choose One
+    m_Metadata:
+      m_Items: []
+  - m_Id: 104552259806691328
+    m_Localized: Free
+    m_Metadata:
+      m_Items: []
+  - m_Id: 104552259806691329
+    m_Localized: Minerals
+    m_Metadata:
+      m_Items: []
+  - m_Id: 104552259806691330
+    m_Localized: Gain {0} minerals
+    m_Metadata:
+      m_Items: []
+  - m_Id: 104552259806691331
+    m_Localized: Fleet Repair
+    m_Metadata:
+      m_Items: []
+  - m_Id: 104552259806691332
+    m_Localized: Restore {0}% of fleet health
+    m_Metadata:
+      m_Items: []
+  - m_Id: 104552259806691333
+    m_Localized: Resource Charge
+    m_Metadata:
+      m_Items: []
+  - m_Id: 104552259806691334
+    m_Localized: Charge {0}% of battle resources
     m_Metadata:
       m_Items: []
   references:

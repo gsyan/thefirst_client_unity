@@ -588,6 +588,11 @@ public class UIPanelExplorationGrid : UIPanelBase
 
             RefreshCellStates();
         }
+
+        // Treasure 셀 무료 보상을 고르기 전에 앱이 꺼졌으면 다시 띄움 — 반드시 하나를 골라야 함
+        List<TreasureChoiceInfo> pendingTreasureChoices = response.data.pendingTreasureChoices;
+        if (pendingTreasureChoices != null && pendingTreasureChoices.Count > 0)
+            ShowTreasureSelectPopup(pendingTreasureChoices, null);
     }
 
     // 슬롯 포지션 인덱스 기준으로 함대 체력/실드 비율 스냅샷을 적용 — (1) 재접속 시 서버 저장값 복구, (2) 전투 퇴각/패배 시 진입 직전 상태로 롤백, 두 용도에 재사용.
@@ -1372,8 +1377,7 @@ public class UIPanelExplorationGrid : UIPanelBase
         int scoutedMineral = 0;
         int expGained = 0;
         List<string> rewardCardCandidates = null;
-        ETreasureRewardType treasureRewardType = ETreasureRewardType.None;
-        float treasureRewardRatio = 0f;
+        List<TreasureChoiceInfo> treasureChoices = null;
         int rerollRemain = 0;
         int levelupLevel = 0; // 레벨업했으면 새 레벨 — 알림은 보상 팝업 다음 순서로 표시
         if (response.data != null)
@@ -1384,8 +1388,7 @@ public class UIPanelExplorationGrid : UIPanelBase
             expGained = response.data.expGained;
             levelupLevel = UpdateExpAndLevel(response.data.totalExp, response.data.commanderLevel); // 경험치는 셀 클리어 즉시 확정(서버 권위값)
             rewardCardCandidates = response.data.rewardCardCandidates; // 탈출 셀/빈 셀은 null — 카드 구매 단계를 건너뜀
-            treasureRewardType = response.data.treasureRewardType;
-            treasureRewardRatio = response.data.treasureRewardRatio;
+            treasureChoices = response.data.treasureChoices; // Treasure 셀 최초 클리어만 채워짐
             rerollRemain = response.data.rerollRemain;
             ApplyResourceRecovered(response.data.resource);
             ApplyHullArchetypePassiveProgress(response.data.hullArchetypePassiveProgress);
@@ -1405,9 +1408,9 @@ public class UIPanelExplorationGrid : UIPanelBase
             m_gridData.SetCellCleared(m_currentRow, m_currentCol, true);
         RefreshCellStates(); // Event 셀(전투 없이 도착)은 패널이 계속 보이는 상태라 여기서 직접 갱신해야 클리어 표시(투명화)가 즉시 반영됨
 
-        if (treasureRewardType == ETreasureRewardType.ShipHealthHeal)
+        if (treasureChoices != null && treasureChoices.Count > 0)
         {
-            ShowTreasureEffectPopup(treasureRewardRatio);
+            ShowTreasureSelectPopup(treasureChoices, ContinueAfterCellClear);
             ShowLevelupNotifyIfNeeded(levelupLevel);
             return;
         }
@@ -1434,20 +1437,37 @@ public class UIPanelExplorationGrid : UIPanelBase
         ShowLevelupNotifyIfNeeded(levelupLevel);
     }
 
-    // Treasure(Event) 셀의 체력회복 당첨 — 즉시 효과 적용 후 안내 팝업. 탐사포인트 당첨은 기존 보상카드 팝업 경로를 그대로 재사용하므로 여기서 다루지 않음
-    private void ShowTreasureEffectPopup(float rewardRatio)
+    // Treasure(Event) 셀 무료 보상 선택 — 서버가 확정한 결과를 반영한 뒤 onDone 진행(셀 클리어 직후면 ContinueAfterCellClear, 재접속 복구면 null)
+    private void ShowTreasureSelectPopup(List<TreasureChoiceInfo> choices, System.Action onDone)
     {
-        SpaceFleet myFleet = ObjectManager.Instance.GetMyFleet();
-        if (myFleet != null)
-            myFleet.HealAllShipsByRatio(rewardRatio);
-        string messageKey = "UIPanelExplorationGrid_TreasureHealthHeal";
-
-        int rewardPercent = Mathf.RoundToInt(rewardRatio * 100f);
-        UIManager.Instance.ShowConfirmPopup(new ConfirmPopupConfig
+        UIManager.Instance.ShowTreasureSelectPopup(choices, m_currentZoneNumber, data =>
         {
-            message = string.Format(LocalizationManager.Instance.Get(messageKey), rewardPercent),
-            onConfirm = ContinueAfterCellClear,
+            ApplyTreasureReward(data);
+            if (onDone != null)
+                onDone.Invoke();
         });
+    }
+
+    // 광물/전투자원은 서버 권위값으로 덮어쓰고, 체력은 서버가 저장한 비율과 같은 값으로 살아있는 함선에 회복 적용
+    private void ApplyTreasureReward(SelectTreasureRewardResponse data)
+    {
+        if (data == null) return;
+
+        CommanderInfo commanderInfo = DataManager.Instance.m_currentCommander != null ? DataManager.Instance.m_currentCommander.m_commanderInfo : null;
+        if (commanderInfo != null)
+        {
+            commanderInfo.mineralAmount = data.mineralAmount;
+            EventManager.Trigger_MineralAmountChanged(commanderInfo.mineralAmount);
+        }
+        RefreshMineralAmountText();
+        ApplyResourceRecovered(data.resource);
+
+        if (data.rewardType == ETreasureRewardType.ShipHealthHeal)
+        {
+            SpaceFleet myFleet = ObjectManager.Instance.GetMyFleet();
+            if (myFleet != null)
+                myFleet.HealAllShipsByRatio(data.ratio);
+        }
     }
 
     // 이 패널 위에 쌓여있던 패널들(대치화면/전투화면 등)을 전부 걷어내고 다시 top으로 노출 — 이 패널은 스택에서

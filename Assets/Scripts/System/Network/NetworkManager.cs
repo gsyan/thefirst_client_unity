@@ -1149,6 +1149,12 @@ public class NetworkManager : MonoSingleton<NetworkManager>
         StartCoroutine(RunAsync(() => m_apiClient.PurchaseRewardCardAsync(request), onComplete));
     }
 
+    public void SelectTreasureReward(SelectTreasureRewardRequest request, System.Action<ApiResponse<SelectTreasureRewardResponse>> onComplete)
+    {
+        if (m_bConnected == false) return;
+        StartCoroutine(RunAsync(() => m_apiClient.SelectTreasureRewardAsync(request), onComplete));
+    }
+
     public void CloseRewardCardPopup(CloseRewardCardPopupRequest request, System.Action<ApiResponse<CloseRewardCardPopupResponse>> onComplete)
     {
         if (m_bConnected == false) return;

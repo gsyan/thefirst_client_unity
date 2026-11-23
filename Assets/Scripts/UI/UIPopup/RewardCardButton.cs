@@ -81,6 +81,25 @@ public class RewardCardButton : MonoBehaviour
         SetSelected(false);
     }
 
+    // 보상카드 데이터 없이 직접 내용을 채움 — 이벤트 셀 무료 보상 선택(UIPopupTreasureSelect)용
+    public void SetCustom(string iconName, string nameText, string descText, string costText, System.Action onClicked)
+    {
+        gameObject.SetActive(true);
+        m_onClicked = onClicked;
+        m_mineralCost = 0;
+
+        m_nameText.text = nameText;
+        m_descText.text = descText;
+        if (m_mineralCostText != null)
+        {
+            m_mineralCostText.text = costText;
+            m_mineralCostText.color = m_defaultMineralCostColor;
+        }
+        if (m_iconImage != null)
+            m_iconImage.sprite = UISpriteCache.Get(iconName);
+        SetSelected(false);
+    }
+
     public void Hide()
     {
         StopAnim();

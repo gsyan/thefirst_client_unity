@@ -363,8 +363,36 @@ MonoBehaviour:
     m_Key: UIPanelExplorationGrid_EscapeConfirmMessage
     m_Metadata:
       m_Items: []
-  - m_Id: 76543106660302848
-    m_Key: UIPanelExplorationGrid_TreasureHealthHeal
+  - m_Id: 104552259743776768
+    m_Key: UIPopupTreasureSelect_Title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 104552259806691328
+    m_Key: UIPopupTreasureSelect_Free
+    m_Metadata:
+      m_Items: []
+  - m_Id: 104552259806691329
+    m_Key: UIPopupTreasureSelect_Mineral_Name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 104552259806691330
+    m_Key: UIPopupTreasureSelect_Mineral_Desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 104552259806691331
+    m_Key: UIPopupTreasureSelect_HealthHeal_Name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 104552259806691332
+    m_Key: UIPopupTreasureSelect_HealthHeal_Desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 104552259806691333
+    m_Key: UIPopupTreasureSelect_ResourceCharge_Name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 104552259806691334
+    m_Key: UIPopupTreasureSelect_ResourceCharge_Desc
     m_Metadata:
       m_Items: []
   - m_Id: 74139633343922176

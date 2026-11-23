@@ -393,13 +393,37 @@ public class ClearExplorationCellResponse
     public int totalExp;               // 지급 반영 후 지휘관 누적 경험치(권위값)
     public int commanderLevel;         // 지급 반영 후 지휘관 레벨(권위값, 레벨업 반영)
     public List<string> rewardCardCandidates; // 서버가 추첨한 보상카드 후보 3개(cardId) — 탈출 셀이거나 보상이 없는 셀(빈 셀)은 null
-    public ETreasureRewardType treasureRewardType; // None이면 Treasure 보상 아님(Mineral이면 mineralAmount에 이미 반영됨)
-    public float treasureRewardRatio;              // treasureRewardType이 ShipHealthHeal일 때만 유효한 회복 비율(0~1)
+    public List<TreasureChoiceInfo> treasureChoices; // Treasure 셀 최초 클리어일 때만 채워지는 무료 선택지 3개 — 지급은 select-treasure-reward에서, 평소엔 null
     public int resource;                        // 이 클리어 확정 후 서버가 확정한 자원 현재치(권위값) — 항상 채워짐
     public int mineralAmount;                       // 이 클리어 확정 후 서버에 저장된 광물 현재치(존 고정지급분까지 서버가 반영한 권위값)
     public int rerollRemain;                       // 현재 보상카드 리롤 가능 횟수(충전식, 계정 전체 공유) — rewardCardCandidates가 null이면 무의미
     public List<HullArchetypeProgressInfo> hullArchetypePassiveProgress; // 이 클리어 반영 후 아키타입 패시브 해금 카운터 전체 목록(권위값) — 패시브 탭 진행도 갱신용
     public FleetInfo fleetInfo; // 이 클리어로 실드/요격체 해금 단계가 완료됐을 때만 채워지는 갱신된 내 함대(권위값) — 다음 셀 전투부터 반영, 평소엔 null
+}
+
+[System.Serializable]
+public class TreasureChoiceInfo
+{
+    public ETreasureRewardType rewardType;
+    public int mineralAmount; // rewardType이 Mineral일 때 지급될 광물(배율/VIP 반영 완료)
+    public float ratio;       // rewardType이 ShipHealthHeal/ResourceCharge일 때 비율(0~1)
+}
+
+[System.Serializable]
+public class SelectTreasureRewardRequest
+{
+    public int zoneNumber;
+    public ETreasureRewardType rewardType; // 서버가 내려준 선택지 중 하나
+}
+
+[System.Serializable]
+public class SelectTreasureRewardResponse
+{
+    public ETreasureRewardType rewardType;
+    public float ratio;          // ShipHealthHeal/ResourceCharge 비율 — 체력 회복은 클라가 이 비율로 적용
+    public int mineralGained;    // Mineral 선택 시 지급된 광물, 그 외 0
+    public int mineralAmount;    // 지급 반영 후 런의 광물 현재치(권위값)
+    public int resource;         // 지급 반영 후 런의 전투자원 현재치(권위값)
 }
 
 [System.Serializable]
@@ -476,6 +500,7 @@ public class GetActiveZoneRunProgressResponse
     public List<string> purchasedRewardCards; // 이번 런에서 구매 확정한 보상카드(cardId) 전체 목록 — 지속버프 여부는 클라가 DataTableRewardCard로 재판별
     public List<string> pendingRewardCardCandidates; // 마지막 클리어 셀에 후보는 있는데 아직 팝업을 닫지 않았으면 그 후보 3개 — 팝업이 뜨기 전에 앱이 꺼진 경우 재접속 시 복구용, 없으면 null
     public int rerollRemain;                          // 현재 보상카드 리롤 가능 횟수(충전식) — pendingRewardCardCandidates가 null이면 무의미
+    public List<TreasureChoiceInfo> pendingTreasureChoices; // Treasure 셀 무료 보상을 아직 고르지 않았으면 그 선택지 3개 — 재접속 시 팝업 복구용, 없으면 null
     public int mineralAmount;                         // 진행 중인 런의 광물 현재치, 없으면 0
 }
 

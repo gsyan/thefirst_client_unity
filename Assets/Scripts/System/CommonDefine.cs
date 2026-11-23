@@ -81,18 +81,19 @@ public enum EGridCellType
 [System.Serializable]
 public enum EGridEventType
 {
-    Treasure, // 탐사포인트/함선체력회복 중 랜덤 1개 지급 — 세부 보상은 ETreasureRewardType 참고
+    Treasure, // 광물/함선체력회복/전투자원충전 3개 중 유저가 무료로 1개 선택 — 세부 보상은 ETreasureRewardType 참고
     Trap,     // TODO: 미구현 — 함선 체력 등 페널티
     Merchant, // TODO: 미구현 — 상인 조우
 }
 
-// Treasure(Event) 셀 클리어 시 랜덤 지급되는 보상 종류 — 매번 진짜 랜덤(결정론적 시드 아님)으로 서버가 1개 선택
+// Treasure(Event) 셀 클리어 시 유저가 고르는 무료 보상 종류 — 서버가 선택지를 내려주고 select-treasure-reward로 지급
 [System.Serializable]
 public enum ETreasureRewardType
 {
     None,               // 이 클리어가 Treasure 보상이 아님(일반 전투/재방문 등)
     Mineral,            // 그 존의 일반 전투 셀 보상의 배율만큼 광물 지급
     ShipHealthHeal,     // 함대 전체 체력 비율 회복
+    ResourceCharge,     // 전투자원을 최대치 대비 비율만큼 충전
 }
 
 // 업적 조건 타입 — AchievementData.conditionType. conditionParam 해석은 타입별로 다름(예: ZoneClearSpecific="존번호", EventCell="ETreasureRewardType 이름",
