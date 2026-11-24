@@ -397,6 +397,7 @@ public class ClearExplorationCellResponse
     public int resource;                        // 이 클리어 확정 후 서버가 확정한 자원 현재치(권위값) — 항상 채워짐
     public int mineralAmount;                       // 이 클리어 확정 후 서버에 저장된 광물 현재치(존 고정지급분까지 서버가 반영한 권위값)
     public int rerollRemain;                       // 현재 보상카드 리롤 가능 횟수(충전식, 계정 전체 공유) — rewardCardCandidates가 null이면 무의미
+    public int rerollNextChargeSec;                // 다음 리롤 1회 충전까지 남은 초 — 최대치면 0
     public List<HullArchetypeProgressInfo> hullArchetypePassiveProgress; // 이 클리어 반영 후 아키타입 패시브 해금 카운터 전체 목록(권위값) — 패시브 탭 진행도 갱신용
     public FleetInfo fleetInfo; // 이 클리어로 실드/요격체 해금 단계가 완료됐을 때만 채워지는 갱신된 내 함대(권위값) — 다음 셀 전투부터 반영, 평소엔 null
 }
@@ -434,6 +435,7 @@ public class GetRewardCardShopResponse
 {
     public List<string> rewardCardCandidates;
     public int rerollRemain;
+    public int rerollNextChargeSec; // 다음 리롤 1회 충전까지 남은 초 — 최대치면 0
 }
 
 [System.Serializable]
@@ -477,6 +479,7 @@ public class RerollRewardCardResponse
 {
     public List<string> rewardCardCandidates; // 서버가 새로 추첨한 후보 3개(cardId)
     public int rerollRemain; // 이번 리롤 이후 남은 리롤 가능 횟수(충전식, 계정 전체 공유)
+    public int rerollNextChargeSec; // 다음 리롤 1회 충전까지 남은 초 — 최대치면 0
 }
 
 [System.Serializable]
@@ -486,6 +489,7 @@ public class WatchAdForRewardCardRerollChargeRequest { } // 리롤 횟수 0 상�
 public class WatchAdForRewardCardRerollChargeResponse
 {
     public int rewardCardRerollCharge; // 충전 반영된 현재 리롤 가능 횟수
+    public int rerollNextChargeSec;    // 다음 리롤 1회 충전까지 남은 초 — 최대치면 0
 }
 
 [System.Serializable]

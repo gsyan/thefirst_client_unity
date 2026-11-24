@@ -2022,6 +2022,10 @@ MonoBehaviour:
     m_Localized: Charge {0}% of battle resources
     m_Metadata:
       m_Items: []
+  - m_Id: 104760924723609600
+    m_Localized: Next charge {0}
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

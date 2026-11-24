@@ -25,6 +25,7 @@ public class UIPopupRewardCardSelect : UIPopupBase
     [SerializeField] private TMP_Text m_confirmButtonText;
     [SerializeField] private Button m_rerollButton; // 카드 후보 다시 뽑기 — 카드 후보가 없는 셀은 통째로 숨김
     [SerializeField] private TMP_Text m_rerollButtonText;
+    [SerializeField] private TMP_Text m_rerollTimerText; // 리롤 버튼 아래 — 최대치 미만일 때 다음 1회 충전까지 남은 시간 표시
 
     private RewardCardButton[] m_cardButtons;
     private List<string> m_candidateCardIds;
@@ -33,6 +34,9 @@ public class UIPopupRewardCardSelect : UIPopupBase
     private int m_cellRow;
     private int m_cellCol;
     private int m_rerollCharge; // 현재 리롤 가능 횟수(충전식, 계정 전체 공유) — 0이면 리롤 버튼 클릭 시 광고 충전 흐름으로 전환
+    private float m_rerollNextChargeRemainSec; // 다음 1회 충전까지 남은 초 — 서버가 내려준 값에서 팝업이 열려 있는 동안 1초씩 감소
+    private Coroutine m_rerollTimerCoroutine;
+    private static readonly WaitForSecondsRealtime s_rerollTimerTick = new WaitForSecondsRealtime(1f);
     private System.Action m_onClosed;
 
     private const float k_cardEnterStagger = 0.07f; // 새 카드가 왼쪽부터 순차적으로 피어나는 간격(초)
@@ -53,7 +57,7 @@ public class UIPopupRewardCardSelect : UIPopupBase
             m_rerollButton.onClick.AddListener(OnRerollClicked);
     }
 
-    public void ShowPopupRewardCardSelect(int rewardAmount, List<string> candidateCardIds, bool isEscapeCell, int zoneNumber, int cellRow, int cellCol, int rerollRemain, System.Action onClosed, int scavengedMineral = 0, int scoutedMineral = 0, int expGained = 0)
+    public void ShowPopupRewardCardSelect(int rewardAmount, List<string> candidateCardIds, bool isEscapeCell, int zoneNumber, int cellRow, int cellCol, int rerollRemain, int rerollNextChargeSec, System.Action onClosed, int scavengedMineral = 0, int scoutedMineral = 0, int expGained = 0)
     {
         base.ShowPopup();
         // 이전에 열렸다 닫힌 팝업의 대기 중 재바인딩이 남아있으면 버림(비활성화로 코루틴 자체는 이미 멈춰있음)
@@ -69,6 +73,7 @@ public class UIPopupRewardCardSelect : UIPopupBase
         m_cellRow = cellRow;
         m_cellCol = cellCol;
         m_rerollCharge = rerollRemain;
+        m_rerollNextChargeRemainSec = rerollNextChargeSec;
 
         // 탈출 셀은 "탈출 지점 발견", 카드 후보 없이 광물만 지급되는 트레저(전투 없는 이벤트 셀에서 광물 당첨)는
         // "트레저 보상"으로 구분 — 카드 구매 문구("Buy a Reward Card")는 실제로 살 카드가 있을 때만 맞는 표현이라
@@ -135,6 +140,7 @@ public class UIPopupRewardCardSelect : UIPopupBase
         }
 
         RefreshRerollButtonState();
+        RestartRerollTimer();
     }
 
     private CommanderInfo GetCommanderInfo()
@@ -455,7 +461,9 @@ public class UIPopupRewardCardSelect : UIPopupBase
         }
 
         m_rerollCharge = response.data.rerollRemain;
+        m_rerollNextChargeRemainSec = response.data.rerollNextChargeSec;
         RefreshRerollButtonState();
+        RestartRerollTimer();
         RebindCardsAfterExit(response.data.rewardCardCandidates);
     }
 
@@ -476,6 +484,72 @@ public class UIPopupRewardCardSelect : UIPopupBase
         if (response.errorCode != 0 || response.data == null) return;
 
         m_rerollCharge = response.data.rewardCardRerollCharge;
+        m_rerollNextChargeRemainSec = response.data.rerollNextChargeSec;
         RefreshRerollButtonState();
+        RestartRerollTimer();
+    }
+
+    // 다음 충전까지 남은 시간 표시 — 리롤 버튼이 보이고, VIP가 아니고, 최대치 미만일 때만 코루틴으로 1초마다 갱신
+    private void RestartRerollTimer()
+    {
+        if (m_rerollTimerCoroutine != null)
+        {
+            StopCoroutine(m_rerollTimerCoroutine);
+            m_rerollTimerCoroutine = null;
+        }
+
+        bool isTimerNeeded = IsRerollTimerNeeded();
+        if (m_rerollTimerText != null)
+            m_rerollTimerText.gameObject.SetActive(isTimerNeeded);
+        if (isTimerNeeded == false || gameObject.activeInHierarchy == false) return;
+
+        UpdateRerollTimerText();
+        m_rerollTimerCoroutine = StartCoroutine(Co_RerollTimer());
+    }
+
+    private bool IsRerollTimerNeeded()
+    {
+        bool hasCardCandidates = m_candidateCardIds != null && m_candidateCardIds.Count > 0;
+        if (hasCardCandidates == false) return false;
+        if (IAPManager.Instance.IsVipActive() == true) return false;
+
+        int rerollChargeMax = DataManager.Instance.m_dataTableConfig.gameSettings.exploration.rewardCardRerollChargeMax;
+        return m_rerollCharge < rerollChargeMax;
+    }
+
+    // 0초가 되면 화면상 횟수만 +1(실제 값은 다음 서버 응답으로 다시 맞춰짐), 아직 최대치 미만이면 다음 주기를 이어서 셈
+    private IEnumerator Co_RerollTimer()
+    {
+        int regenSec = DataManager.Instance.m_dataTableConfig.gameSettings.exploration.rewardCardRerollChargeRegenMinutes * 60;
+        while (true)
+        {
+            yield return s_rerollTimerTick;
+            m_rerollNextChargeRemainSec -= 1f;
+            if (m_rerollNextChargeRemainSec <= 0f)
+            {
+                m_rerollCharge += 1;
+                m_rerollNextChargeRemainSec = regenSec;
+                RefreshRerollButtonState();
+                if (IsRerollTimerNeeded() == false)
+                {
+                    if (m_rerollTimerText != null)
+                        m_rerollTimerText.gameObject.SetActive(false);
+                    m_rerollTimerCoroutine = null;
+                    yield break;
+                }
+            }
+            UpdateRerollTimerText();
+        }
+    }
+
+    private void UpdateRerollTimerText()
+    {
+        if (m_rerollTimerText == null) return;
+
+        int remainSec = Mathf.Max(0, Mathf.CeilToInt(m_rerollNextChargeRemainSec));
+        int minutes = remainSec / 60;
+        int seconds = remainSec % 60;
+        string timeText = $"{minutes:00}:{seconds:00}";
+        m_rerollTimerText.text = LocalizationManager.Instance.Get("UIPopupRewardCardSelect_RerollTimer", (object)timeText);
     }
 }

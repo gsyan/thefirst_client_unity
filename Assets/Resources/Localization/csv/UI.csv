@@ -91,6 +91,7 @@ UIPopupRewardCardSelect_Title,,Buy a Reward Card,보상 카드를 구매하세�
 UIPopupRewardCardSelect_EscapeTitle,,Escape Point Found,탈출 지점 발견
 UIPopupRewardCardSelect_TreasureTitle,,Treasure Reward,트레저 보상
 UIPopupRewardCardSelect_RerollButton,,Reroll,다시 뽑기
+UIPopupRewardCardSelect_RerollTimer,,Next charge {0},다음 충전 {0}
 RewardCardButton_MineralCost,,Cost: Mineral {0},비용: 광물 {0}
 RewardCardButton_InsufficientMineral,,Not enough mineral. (Have: {0} / Need: {1}),보유 광물이 부족합니다. (보유: {0} / 필요: {1})
 UIPanelExplorationGrid_BuyCardButton,,Buy Card,카드 구매

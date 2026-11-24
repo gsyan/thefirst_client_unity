@@ -174,7 +174,7 @@ public class UIPanelExplorationGrid : UIPanelBase
                 return;
             }
 
-            UIManager.Instance.ShowRewardCardSelectPopup(0, response.data.rewardCardCandidates, false, m_currentZoneNumber, m_currentRow, m_currentCol, response.data.rerollRemain, () => { });
+            UIManager.Instance.ShowRewardCardSelectPopup(0, response.data.rewardCardCandidates, false, m_currentZoneNumber, m_currentRow, m_currentCol, response.data.rerollRemain, response.data.rerollNextChargeSec, () => { });
         });
     }
 
@@ -1379,6 +1379,7 @@ public class UIPanelExplorationGrid : UIPanelBase
         List<string> rewardCardCandidates = null;
         List<TreasureChoiceInfo> treasureChoices = null;
         int rerollRemain = 0;
+        int rerollNextChargeSec = 0;
         int levelupLevel = 0; // 레벨업했으면 새 레벨 — 알림은 보상 팝업 다음 순서로 표시
         if (response.data != null)
         {
@@ -1390,6 +1391,7 @@ public class UIPanelExplorationGrid : UIPanelBase
             rewardCardCandidates = response.data.rewardCardCandidates; // 탈출 셀/빈 셀은 null — 카드 구매 단계를 건너뜀
             treasureChoices = response.data.treasureChoices; // Treasure 셀 최초 클리어만 채워짐
             rerollRemain = response.data.rerollRemain;
+            rerollNextChargeSec = response.data.rerollNextChargeSec;
             ApplyResourceRecovered(response.data.resource);
             ApplyHullArchetypePassiveProgress(response.data.hullArchetypePassiveProgress);
             ApplyUnlockedFleetInfo(response.data.fleetInfo);
@@ -1433,7 +1435,7 @@ public class UIPanelExplorationGrid : UIPanelBase
         int rewardZoneNumber = m_currentZoneNumber;
         int rewardCellRow = m_currentRow;
         int rewardCellCol = m_currentCol;
-        UIManager.Instance.ShowRewardCardSelectPopup(rewardAmount, rewardCardCandidates, isEscapeCell, rewardZoneNumber, rewardCellRow, rewardCellCol, rerollRemain, ContinueAfterCellClear, scavengedMineral, scoutedMineral, expGained);
+        UIManager.Instance.ShowRewardCardSelectPopup(rewardAmount, rewardCardCandidates, isEscapeCell, rewardZoneNumber, rewardCellRow, rewardCellCol, rerollRemain, rerollNextChargeSec, ContinueAfterCellClear, scavengedMineral, scoutedMineral, expGained);
         ShowLevelupNotifyIfNeeded(levelupLevel);
     }
 
