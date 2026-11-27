@@ -68,7 +68,10 @@ public class UIPanelBattle : UIPanelBase
     private void OnResourceChanged(float current, int max)
     {
         if (m_tacticPowerGauge != null)
+        {
             m_tacticPowerGauge.fillAmount = max > 0 ? Mathf.Clamp01(current / max) : 0f;
+            m_tacticPowerGauge.color = CommonUtility.GetResourceGaugeColor(current, max);
+        }
 
         if (m_resourceText != null)
             m_resourceText.text = $"{CommonUtility.FormatNumber(Mathf.RoundToInt(current))} / {CommonUtility.FormatNumber(max)}";

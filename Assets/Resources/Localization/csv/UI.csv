@@ -89,6 +89,7 @@ UIPopupChargeResource_Gain,,Charge amount,충전량
 UIPanelFleet_AchievementPoint,,Achievement Point,업적포인트
 UIPopupRewardCardSelect_Title,,Buy a Reward Card,보상 카드를 구매하세요
 UIPopupRewardCardSelect_EscapeTitle,,Escape Point Found,탈출 지점 발견
+UIPopupRewardCardSelect_EscapeAchievementPointLabel,,Achievement Points,업적포인트
 UIPopupRewardCardSelect_TreasureTitle,,Treasure Reward,트레저 보상
 UIPopupRewardCardSelect_RerollButton,,Reroll,다시 뽑기
 UIPopupRewardCardSelect_RerollTimer,,Next charge {0},다음 충전 {0}
@@ -133,6 +134,9 @@ RewardCard_HangarAttackToFighter_Desc_Stacked,,Fighter dogfight attack {0:P0} <v
 RewardCard_ShipHealth_Name,,Max Health Up,최대 체력 강화
 RewardCard_ShipHealth_Desc,,Max ship health +{0:P0},최대 함선 체력 {0:P0} 증가
 RewardCard_ShipHealth_Desc_Stacked,,Max ship health {0:P0} <voffset=6>→</voffset> {1:P0},최대 함선 체력 {0:P0} <voffset=6>→</voffset> {1:P0}
+RewardCard_ScoutChance_Name,,Scout Chance Up,탐사 확률 증가
+RewardCard_ScoutChance_Desc,,Scouting chance +{0:P0},탐사 확률 {0:P0} 증가
+RewardCard_ScoutChance_Desc_Stacked,,Scouting chance +{0:P0} <voffset=6>→</voffset> +{1:P0},탐사 확률 +{0:P0} <voffset=6>→</voffset> +{1:P0}
 RewardCard_PointRate_Name,,Mineral Rate Up,광물 획득량 증가
 RewardCard_PointRate_Desc,,Mineral gain +{0:P0},광물 획득량 {0:P0} 증가
 RewardCard_PointRate_Desc_Stacked,,Mineral gain {0:P0} <voffset=6>→</voffset> {1:P0},광물 획득량 {0:P0} <voffset=6>→</voffset> {1:P0}
@@ -485,6 +489,8 @@ HullArchetypePassive_sentinel_3,,Interceptor recharge time -0.3s,요격체 충�
 HullArchetypePassive_sentinel_4,,Fleet-wide interceptor recharge time -0.2s,함대 요격체 충전 대기시간 -0.2초
 UIBattleProgressNotice_DailyPrefix,,Daily Quest {0},일일퀘스트{0}
 UIBattleProgressNotice_PassivePrefix,,{0} Passive {1} Quest,{0} 패시브{1} 퀘스트
+UIBattleProgressNotice_ResourceWarning,,Battle resources below {0}%,전투자원 {0}% 이하
+UIBattleProgressNotice_ResourceEmpty,,Battle resources depleted!,전투자원이 바닥났습니다!
 HullArchetypePassiveMission_destroy_enemy_ship,,Destroy enemy ships,적 함선 파괴
 HullArchetypePassiveMission_scout_success,,Scouting success,탐사 성공
 HullArchetypePassiveMission_damage_taken_cumulative,,Cumulative damage taken,받은 누적 데미지

@@ -30,6 +30,9 @@ public class UIBattleView : MonoBehaviour
         EventManager.Subscribe_ZoneEntered(OnZoneEntered);
         EventManager.Subscribe_MyFleetStateChanged(OnFleetStateChanged);
         EventManager.Subscribe_ResourceChanged(OnResourceChanged);
+        // 게이지 스프라이트가 흰색이라 첫 자원 이벤트 전에도 평소 색으로 보이게 함
+        if (m_resourceGauge != null)
+            m_resourceGauge.color = CommonUtility.PaletteColor("ResourceGauge.Normal");
 
         if (m_tacticsLabelText != null)
             CommonUtility.SetUILocText(m_tacticsLabelText, "UI_Tactics");
@@ -76,6 +79,7 @@ public class UIBattleView : MonoBehaviour
     {
         if (m_resourceGauge == null) return;
         m_resourceGauge.fillAmount = max > 0 ? Mathf.Clamp01(current / max) : 0f;
+        m_resourceGauge.color = CommonUtility.GetResourceGaugeColor(current, max);
     }
 
     // UIPanelBattle.OnShowUIPanel()이 호출 — 패널이 뜰 때마다 현재 함대 상태로 전술 토글 표시를 직접 동기화

@@ -143,6 +143,7 @@ public class DataTableZoneEditor : Editor
                 enemyWaveSpawnTermSec = oldZone != null ? oldZone.enemyWaveSpawnTermSec : 5f,
                 mineralReward = oldZone != null ? oldZone.mineralReward : 0,
                 commanderExpRewardPerCell = oldZone != null ? oldZone.commanderExpRewardPerCell : 0,
+                achievementPointRewardPerCell = oldZone != null ? oldZone.achievementPointRewardPerCell : 0,
             });
         }
         EditorUtility.SetDirty(m_dataTableZone);
@@ -226,6 +227,8 @@ public class DataTableZoneEditor : Editor
             float.TryParse(col[14], out zc.enemyWaveSpawnTermSec);
             int.TryParse(col[15], out zc.mineralReward);
             int.TryParse(col[16], out zc.commanderExpRewardPerCell);
+            if (col.Length > 17)
+                int.TryParse(col[17], out zc.achievementPointRewardPerCell);
         }
         EditorUtility.SetDirty(m_dataTableZone);
         AssetDatabase.Refresh();
@@ -850,6 +853,7 @@ public class DataTableZoneEditor : Editor
         EditorGUILayout.LabelField("셀 클리어 보상 (웨이브 있던 셀만 적립)", EditorStyles.miniBoldLabel);
         zoneConfig.mineralReward = EditorGUILayout.IntField(new GUIContent("Mineral Reward", "적 함대 성능과 무관한 고정 광물 지급량"), zoneConfig.mineralReward);
         zoneConfig.commanderExpRewardPerCell = EditorGUILayout.IntField(new GUIContent("Commander Exp Per Cell", "셀 클리어 1회당 지휘관 경험치 적립량"), zoneConfig.commanderExpRewardPerCell);
+        zoneConfig.achievementPointRewardPerCell = EditorGUILayout.IntField(new GUIContent("Achievement Point Per Cell", "탈출 성공 시 클리어한 셀(이벤트/탈출 포함) 1개당 업적포인트"), zoneConfig.achievementPointRewardPerCell);
 
         EditorGUI.indentLevel--;
 

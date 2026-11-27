@@ -335,6 +335,10 @@ MonoBehaviour:
     m_Key: UIPopupRewardCardSelect_EscapeTitle
     m_Metadata:
       m_Items: []
+  - m_Id: 105882223843868672
+    m_Key: UIPopupRewardCardSelect_EscapeAchievementPointLabel
+    m_Metadata:
+      m_Items: []
   - m_Id: 78109183722782720
     m_Key: UIPopupRewardCardSelect_TreasureTitle
     m_Metadata:
@@ -509,6 +513,18 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 99299615030771718
     m_Key: RewardCard_ShipHealth_Desc_Stacked
+    m_Metadata:
+      m_Items: []
+  - m_Id: 105886359729602560
+    m_Key: RewardCard_ScoutChance_Name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 105886359737991168
+    m_Key: RewardCard_ScoutChance_Desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 105886359737991169
+    m_Key: RewardCard_ScoutChance_Desc_Stacked
     m_Metadata:
       m_Items: []
   - m_Id: 66832217640140813
@@ -1901,6 +1917,14 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 104410136939724800
     m_Key: UIBattleProgressNotice_PassivePrefix
+    m_Metadata:
+      m_Items: []
+  - m_Id: 105871765200044032
+    m_Key: UIBattleProgressNotice_ResourceWarning
+    m_Metadata:
+      m_Items: []
+  - m_Id: 105871765279735808
+    m_Key: UIBattleProgressNotice_ResourceEmpty
     m_Metadata:
       m_Items: []
   - m_Id: 96848683730862080

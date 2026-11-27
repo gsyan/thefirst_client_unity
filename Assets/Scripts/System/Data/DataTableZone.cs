@@ -99,6 +99,7 @@ public class ZoneConfig
     public int mineralReward = 0; // [server] 적 함대 성능(commandCost)과 무관한 고정 광물 지급량
     [UnityEngine.Serialization.FormerlySerializedAs("commanderExpReward")]
     public int commanderExpRewardPerCell = 0; // [server] 셀 클리어 1회당 지휘관 경험치 적립량
+    public int achievementPointRewardPerCell = 0; // [server] 탈출 성공 시 이번 런에서 클리어한 셀(이벤트/탈출 셀 포함) 1개당 업적포인트
 }
 [CreateAssetMenu(fileName = "DataTableZone", menuName = "Custom/DataTableZone")]
 public class DataTableZone : ScriptableObject
@@ -148,6 +149,7 @@ public class DataTableZone : ScriptableObject
                 gridHeight            = z.gridHeight,
                 mineralReward = z.mineralReward,
                 commanderExpRewardPerCell = z.commanderExpRewardPerCell,
+                achievementPointRewardPerCell = z.achievementPointRewardPerCell,
                 cellOverrides         = z.cellOverrides.ConvertAll(o => (object)new { row = o.row, col = o.col, type = o.type.ToString(), eventType = o.eventType.ToString() }),
             });
         }

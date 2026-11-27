@@ -158,5 +158,6 @@ public enum ECardEffectType
     Instant_HealthHeal,           // 즉시효과: 체력 value1(0~1) 비율만큼 회복
     Instant_ShieldHeal,           // 즉시효과: 실드 value1 비율만큼 회복
     Instant_InterceptorHeal,      // 즉시효과: 요격체 value1 비율만큼 회복
+    Buff_ScoutChance,             // 지속버프: 탐사 능력이 있는 함선의 탐사 성공 확률 +value1(0.01=+1%p) — 에셋에 정수로 저장되므로 끝에 추가
 }
 #endregion

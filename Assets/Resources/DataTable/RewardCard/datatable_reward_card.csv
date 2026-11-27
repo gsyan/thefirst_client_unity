@@ -16,3 +16,4 @@ card_health_heal_50per,RewardCard_HealthHeal_Name,RewardCard_HealthHeal_Desc,3,I
 card_shield_heal,RewardCard_ShieldHeal_Name,RewardCard_ShieldHeal_Desc,1,Instant_ShieldHeal,False,1,0,8,bubble-field,50,20
 card_interceptor_heal,RewardCard_InterceptorHeal_Name,RewardCard_InterceptorHeal_Desc,1,Instant_InterceptorHeal,False,1,0,8,spiky-field,50,20
 card_point_flat,RewardCard_PointFlat_Name,RewardCard_PointFlat_Desc,1,Buff_MineralFlatBonus,True,50,0,10,minerals,50,20
+card_scout_chance,RewardCard_ScoutChance_Name,RewardCard_ScoutChance_Desc,1,Buff_ScoutChance,True,0.01,0,20,radar-sweep,50,20

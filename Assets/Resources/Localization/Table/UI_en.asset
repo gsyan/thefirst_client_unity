@@ -2026,6 +2026,30 @@ MonoBehaviour:
     m_Localized: Next charge {0}
     m_Metadata:
       m_Items: []
+  - m_Id: 105871765200044032
+    m_Localized: Battle resources below {0}%
+    m_Metadata:
+      m_Items: []
+  - m_Id: 105871765279735808
+    m_Localized: Battle resources depleted!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 105882223843868672
+    m_Localized: Achievement Points
+    m_Metadata:
+      m_Items: []
+  - m_Id: 105886359729602560
+    m_Localized: Scout Chance Up
+    m_Metadata:
+      m_Items: []
+  - m_Id: 105886359737991168
+    m_Localized: Scouting chance +{0:P0}
+    m_Metadata:
+      m_Items: []
+  - m_Id: 105886359737991169
+    m_Localized: "Scouting chance +{0:P0} <voffset=6>\u2192</voffset> +{1:P0}"
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

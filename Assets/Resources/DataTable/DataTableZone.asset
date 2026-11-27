@@ -79,6 +79,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     mineralReward: 50
     commanderExpRewardPerCell: 10
+    achievementPointRewardPerCell: 1
   - zoneIndex: 2
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 3000
@@ -145,6 +146,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     mineralReward: 60
     commanderExpRewardPerCell: 15
+    achievementPointRewardPerCell: 1
   - zoneIndex: 3
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 3000
@@ -211,6 +213,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     mineralReward: 70
     commanderExpRewardPerCell: 20
+    achievementPointRewardPerCell: 1
   - zoneIndex: 4
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 3000
@@ -277,6 +280,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     mineralReward: 80
     commanderExpRewardPerCell: 25
+    achievementPointRewardPerCell: 1
   - zoneIndex: 5
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 5000
@@ -351,6 +355,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     mineralReward: 90
     commanderExpRewardPerCell: 30
+    achievementPointRewardPerCell: 1
   - zoneIndex: 6
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 5000
@@ -425,6 +430,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     mineralReward: 100
     commanderExpRewardPerCell: 35
+    achievementPointRewardPerCell: 1
   - zoneIndex: 7
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 5000
@@ -499,6 +505,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     mineralReward: 110
     commanderExpRewardPerCell: 40
+    achievementPointRewardPerCell: 1
   - zoneIndex: 8
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 5000
@@ -573,6 +580,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     mineralReward: 120
     commanderExpRewardPerCell: 45
+    achievementPointRewardPerCell: 1
   - zoneIndex: 9
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 5000
@@ -647,6 +655,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     mineralReward: 130
     commanderExpRewardPerCell: 50
+    achievementPointRewardPerCell: 1
   - zoneIndex: 10
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 5000
@@ -721,6 +730,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     mineralReward: 140
     commanderExpRewardPerCell: 55
+    achievementPointRewardPerCell: 1
   - zoneIndex: 11
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 5000
@@ -795,6 +805,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     mineralReward: 150
     commanderExpRewardPerCell: 60
+    achievementPointRewardPerCell: 2
   - zoneIndex: 12
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 5000
@@ -869,6 +880,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     mineralReward: 160
     commanderExpRewardPerCell: 65
+    achievementPointRewardPerCell: 2
   - zoneIndex: 13
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 5000
@@ -943,6 +955,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     mineralReward: 170
     commanderExpRewardPerCell: 70
+    achievementPointRewardPerCell: 2
   - zoneIndex: 14
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 5000
@@ -1017,6 +1030,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     mineralReward: 180
     commanderExpRewardPerCell: 75
+    achievementPointRewardPerCell: 2
   - zoneIndex: 15
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 5000
@@ -1091,6 +1105,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     mineralReward: 190
     commanderExpRewardPerCell: 80
+    achievementPointRewardPerCell: 2
   - zoneIndex: 16
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 5000
@@ -1165,6 +1180,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     mineralReward: 200
     commanderExpRewardPerCell: 85
+    achievementPointRewardPerCell: 2
   - zoneIndex: 17
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 5000
@@ -1239,6 +1255,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     mineralReward: 210
     commanderExpRewardPerCell: 90
+    achievementPointRewardPerCell: 2
   - zoneIndex: 18
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 5000
@@ -1313,6 +1330,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     mineralReward: 220
     commanderExpRewardPerCell: 95
+    achievementPointRewardPerCell: 2
   - zoneIndex: 19
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 5000
@@ -1387,6 +1405,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     mineralReward: 230
     commanderExpRewardPerCell: 100
+    achievementPointRewardPerCell: 2
   - zoneIndex: 20
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 5000
@@ -1461,6 +1480,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     mineralReward: 240
     commanderExpRewardPerCell: 105
+    achievementPointRewardPerCell: 2
   - zoneIndex: 21
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 5000
@@ -1535,6 +1555,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     mineralReward: 250
     commanderExpRewardPerCell: 110
+    achievementPointRewardPerCell: 3
   - zoneIndex: 22
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 5000
@@ -1609,6 +1630,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     mineralReward: 260
     commanderExpRewardPerCell: 115
+    achievementPointRewardPerCell: 3
   - zoneIndex: 23
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 5000
@@ -1683,6 +1705,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     mineralReward: 270
     commanderExpRewardPerCell: 120
+    achievementPointRewardPerCell: 3
   - zoneIndex: 24
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 5000
@@ -1757,6 +1780,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     mineralReward: 280
     commanderExpRewardPerCell: 125
+    achievementPointRewardPerCell: 3
   - zoneIndex: 25
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 5000
@@ -1831,6 +1855,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     mineralReward: 290
     commanderExpRewardPerCell: 130
+    achievementPointRewardPerCell: 3
   - zoneIndex: 26
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 5000
@@ -1905,6 +1930,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     mineralReward: 300
     commanderExpRewardPerCell: 135
+    achievementPointRewardPerCell: 3
   - zoneIndex: 27
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 5000
@@ -1979,6 +2005,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     mineralReward: 310
     commanderExpRewardPerCell: 140
+    achievementPointRewardPerCell: 3
   - zoneIndex: 28
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 5000
@@ -2053,6 +2080,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     mineralReward: 320
     commanderExpRewardPerCell: 145
+    achievementPointRewardPerCell: 3
   - zoneIndex: 29
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 5000
@@ -2127,6 +2155,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     mineralReward: 330
     commanderExpRewardPerCell: 150
+    achievementPointRewardPerCell: 3
   - zoneIndex: 30
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 5000
@@ -2201,6 +2230,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     mineralReward: 340
     commanderExpRewardPerCell: 155
+    achievementPointRewardPerCell: 3
   - zoneIndex: 31
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -2291,6 +2321,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     mineralReward: 350
     commanderExpRewardPerCell: 160
+    achievementPointRewardPerCell: 4
   - zoneIndex: 32
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -2381,6 +2412,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     mineralReward: 360
     commanderExpRewardPerCell: 165
+    achievementPointRewardPerCell: 4
   - zoneIndex: 33
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -2471,6 +2503,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     mineralReward: 370
     commanderExpRewardPerCell: 170
+    achievementPointRewardPerCell: 4
   - zoneIndex: 34
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -2561,6 +2594,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     mineralReward: 380
     commanderExpRewardPerCell: 175
+    achievementPointRewardPerCell: 4
   - zoneIndex: 35
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -2651,6 +2685,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     mineralReward: 390
     commanderExpRewardPerCell: 180
+    achievementPointRewardPerCell: 4
   - zoneIndex: 36
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -2741,6 +2776,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     mineralReward: 400
     commanderExpRewardPerCell: 185
+    achievementPointRewardPerCell: 4
   - zoneIndex: 37
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -2831,6 +2867,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     mineralReward: 410
     commanderExpRewardPerCell: 190
+    achievementPointRewardPerCell: 4
   - zoneIndex: 38
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -2921,6 +2958,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     mineralReward: 420
     commanderExpRewardPerCell: 195
+    achievementPointRewardPerCell: 4
   - zoneIndex: 39
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -3011,6 +3049,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     mineralReward: 430
     commanderExpRewardPerCell: 200
+    achievementPointRewardPerCell: 4
   - zoneIndex: 40
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -3101,6 +3140,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     mineralReward: 440
     commanderExpRewardPerCell: 205
+    achievementPointRewardPerCell: 4
   - zoneIndex: 41
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -3191,6 +3231,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     mineralReward: 450
     commanderExpRewardPerCell: 210
+    achievementPointRewardPerCell: 5
   - zoneIndex: 42
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -3281,6 +3322,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     mineralReward: 460
     commanderExpRewardPerCell: 215
+    achievementPointRewardPerCell: 5
   - zoneIndex: 43
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -3371,6 +3413,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     mineralReward: 470
     commanderExpRewardPerCell: 220
+    achievementPointRewardPerCell: 5
   - zoneIndex: 44
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -3461,6 +3504,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     mineralReward: 480
     commanderExpRewardPerCell: 225
+    achievementPointRewardPerCell: 5
   - zoneIndex: 45
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -3551,6 +3595,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     mineralReward: 490
     commanderExpRewardPerCell: 230
+    achievementPointRewardPerCell: 5
   - zoneIndex: 46
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -3641,6 +3686,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     mineralReward: 500
     commanderExpRewardPerCell: 235
+    achievementPointRewardPerCell: 5
   - zoneIndex: 47
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -3731,6 +3777,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     mineralReward: 510
     commanderExpRewardPerCell: 240
+    achievementPointRewardPerCell: 5
   - zoneIndex: 48
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -3821,6 +3868,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     mineralReward: 520
     commanderExpRewardPerCell: 245
+    achievementPointRewardPerCell: 5
   - zoneIndex: 49
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -3911,6 +3959,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     mineralReward: 530
     commanderExpRewardPerCell: 250
+    achievementPointRewardPerCell: 5
   - zoneIndex: 50
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -4001,6 +4050,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     mineralReward: 540
     commanderExpRewardPerCell: 255
+    achievementPointRewardPerCell: 5
   - zoneIndex: 51
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -4091,6 +4141,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     mineralReward: 550
     commanderExpRewardPerCell: 260
+    achievementPointRewardPerCell: 6
   - zoneIndex: 52
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -4181,6 +4232,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     mineralReward: 560
     commanderExpRewardPerCell: 265
+    achievementPointRewardPerCell: 6
   - zoneIndex: 53
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -4271,6 +4323,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     mineralReward: 570
     commanderExpRewardPerCell: 270
+    achievementPointRewardPerCell: 6
   - zoneIndex: 54
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -4361,6 +4414,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     mineralReward: 580
     commanderExpRewardPerCell: 275
+    achievementPointRewardPerCell: 6
   - zoneIndex: 55
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -4451,6 +4505,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     mineralReward: 590
     commanderExpRewardPerCell: 280
+    achievementPointRewardPerCell: 6
   - zoneIndex: 56
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -4541,6 +4596,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     mineralReward: 600
     commanderExpRewardPerCell: 285
+    achievementPointRewardPerCell: 6
   - zoneIndex: 57
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -4631,6 +4687,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     mineralReward: 610
     commanderExpRewardPerCell: 290
+    achievementPointRewardPerCell: 6
   - zoneIndex: 58
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -4721,6 +4778,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     mineralReward: 620
     commanderExpRewardPerCell: 295
+    achievementPointRewardPerCell: 6
   - zoneIndex: 59
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -4811,6 +4869,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     mineralReward: 630
     commanderExpRewardPerCell: 300
+    achievementPointRewardPerCell: 6
   - zoneIndex: 60
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -4901,6 +4960,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     mineralReward: 640
     commanderExpRewardPerCell: 305
+    achievementPointRewardPerCell: 6
   - zoneIndex: 61
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -4991,6 +5051,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     mineralReward: 650
     commanderExpRewardPerCell: 310
+    achievementPointRewardPerCell: 7
   - zoneIndex: 62
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -5081,6 +5142,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     mineralReward: 660
     commanderExpRewardPerCell: 315
+    achievementPointRewardPerCell: 7
   - zoneIndex: 63
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -5171,6 +5233,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     mineralReward: 670
     commanderExpRewardPerCell: 320
+    achievementPointRewardPerCell: 7
   - zoneIndex: 64
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -5261,6 +5324,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     mineralReward: 680
     commanderExpRewardPerCell: 325
+    achievementPointRewardPerCell: 7
   - zoneIndex: 65
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -5351,6 +5415,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     mineralReward: 690
     commanderExpRewardPerCell: 330
+    achievementPointRewardPerCell: 7
   - zoneIndex: 66
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -5441,6 +5506,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     mineralReward: 700
     commanderExpRewardPerCell: 335
+    achievementPointRewardPerCell: 7
   - zoneIndex: 67
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -5531,6 +5597,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     mineralReward: 710
     commanderExpRewardPerCell: 340
+    achievementPointRewardPerCell: 7
   - zoneIndex: 68
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -5621,6 +5688,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     mineralReward: 720
     commanderExpRewardPerCell: 345
+    achievementPointRewardPerCell: 7
   - zoneIndex: 69
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -5711,6 +5779,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     mineralReward: 730
     commanderExpRewardPerCell: 350
+    achievementPointRewardPerCell: 7
   - zoneIndex: 70
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -5801,6 +5870,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     mineralReward: 740
     commanderExpRewardPerCell: 355
+    achievementPointRewardPerCell: 7
   - zoneIndex: 71
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -5891,6 +5961,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     mineralReward: 750
     commanderExpRewardPerCell: 360
+    achievementPointRewardPerCell: 8
   - zoneIndex: 72
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -5981,6 +6052,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     mineralReward: 760
     commanderExpRewardPerCell: 365
+    achievementPointRewardPerCell: 8
   - zoneIndex: 73
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -6071,6 +6143,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     mineralReward: 770
     commanderExpRewardPerCell: 370
+    achievementPointRewardPerCell: 8
   - zoneIndex: 74
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -6161,6 +6234,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     mineralReward: 780
     commanderExpRewardPerCell: 375
+    achievementPointRewardPerCell: 8
   - zoneIndex: 75
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -6251,6 +6325,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     mineralReward: 790
     commanderExpRewardPerCell: 380
+    achievementPointRewardPerCell: 8
   - zoneIndex: 76
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -6341,6 +6416,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     mineralReward: 800
     commanderExpRewardPerCell: 385
+    achievementPointRewardPerCell: 8
   - zoneIndex: 77
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -6431,6 +6507,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     mineralReward: 810
     commanderExpRewardPerCell: 390
+    achievementPointRewardPerCell: 8
   - zoneIndex: 78
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -6521,6 +6598,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     mineralReward: 820
     commanderExpRewardPerCell: 395
+    achievementPointRewardPerCell: 8
   - zoneIndex: 79
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -6611,6 +6689,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     mineralReward: 830
     commanderExpRewardPerCell: 400
+    achievementPointRewardPerCell: 8
   - zoneIndex: 80
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -6701,6 +6780,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     mineralReward: 840
     commanderExpRewardPerCell: 405
+    achievementPointRewardPerCell: 8
   - zoneIndex: 81
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -6791,6 +6871,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     mineralReward: 850
     commanderExpRewardPerCell: 410
+    achievementPointRewardPerCell: 9
   - zoneIndex: 82
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -6881,6 +6962,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     mineralReward: 860
     commanderExpRewardPerCell: 415
+    achievementPointRewardPerCell: 9
   - zoneIndex: 83
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -6971,6 +7053,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     mineralReward: 870
     commanderExpRewardPerCell: 420
+    achievementPointRewardPerCell: 9
   - zoneIndex: 84
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -7061,6 +7144,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     mineralReward: 880
     commanderExpRewardPerCell: 425
+    achievementPointRewardPerCell: 9
   - zoneIndex: 85
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -7151,6 +7235,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     mineralReward: 890
     commanderExpRewardPerCell: 430
+    achievementPointRewardPerCell: 9
   - zoneIndex: 86
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -7241,6 +7326,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     mineralReward: 900
     commanderExpRewardPerCell: 435
+    achievementPointRewardPerCell: 9
   - zoneIndex: 87
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -7331,6 +7417,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     mineralReward: 910
     commanderExpRewardPerCell: 440
+    achievementPointRewardPerCell: 9
   - zoneIndex: 88
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -7421,6 +7508,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     mineralReward: 920
     commanderExpRewardPerCell: 445
+    achievementPointRewardPerCell: 9
   - zoneIndex: 89
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -7511,6 +7599,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     mineralReward: 930
     commanderExpRewardPerCell: 450
+    achievementPointRewardPerCell: 9
   - zoneIndex: 90
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -7601,6 +7690,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     mineralReward: 940
     commanderExpRewardPerCell: 455
+    achievementPointRewardPerCell: 9
   - zoneIndex: 91
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -7691,6 +7781,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     mineralReward: 950
     commanderExpRewardPerCell: 460
+    achievementPointRewardPerCell: 10
   - zoneIndex: 92
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -7781,6 +7872,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     mineralReward: 960
     commanderExpRewardPerCell: 465
+    achievementPointRewardPerCell: 10
   - zoneIndex: 93
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -7871,6 +7963,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     mineralReward: 970
     commanderExpRewardPerCell: 470
+    achievementPointRewardPerCell: 10
   - zoneIndex: 94
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -7961,6 +8054,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     mineralReward: 980
     commanderExpRewardPerCell: 475
+    achievementPointRewardPerCell: 10
   - zoneIndex: 95
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -8051,6 +8145,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     mineralReward: 990
     commanderExpRewardPerCell: 480
+    achievementPointRewardPerCell: 10
   - zoneIndex: 96
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -8141,6 +8236,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     mineralReward: 1000
     commanderExpRewardPerCell: 485
+    achievementPointRewardPerCell: 10
   - zoneIndex: 97
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -8231,6 +8327,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     mineralReward: 1010
     commanderExpRewardPerCell: 490
+    achievementPointRewardPerCell: 10
   - zoneIndex: 98
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -8321,6 +8418,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     mineralReward: 1020
     commanderExpRewardPerCell: 495
+    achievementPointRewardPerCell: 10
   - zoneIndex: 99
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -8411,6 +8509,7 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     mineralReward: 1030
     commanderExpRewardPerCell: 500
+    achievementPointRewardPerCell: 10
   - zoneIndex: 100
     galaxyCameraTarget: {x: 0, y: 0, z: 0}
     galaxyCameraZoom: 7000
@@ -8501,3 +8600,4 @@ MonoBehaviour:
     enemyWaveSpawnTermSec: 5
     mineralReward: 1040
     commanderExpRewardPerCell: 505
+    achievementPointRewardPerCell: 10

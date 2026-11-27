@@ -394,6 +394,7 @@ public class ClearExplorationCellResponse
     public int commanderLevel;         // 지급 반영 후 지휘관 레벨(권위값, 레벨업 반영)
     public List<string> rewardCardCandidates; // 서버가 추첨한 보상카드 후보 3개(cardId) — 탈출 셀이거나 보상이 없는 셀(빈 셀)은 null
     public List<TreasureChoiceInfo> treasureChoices; // Treasure 셀 최초 클리어일 때만 채워지는 무료 선택지 3개 — 지급은 select-treasure-reward에서, 평소엔 null
+    public int escapeAchievementPointReward; // 탈출 셀 클리어일 때 탈출 확정 시 받을 업적포인트(클리어한 셀 수 × 존 셀당 값) — 그 외 0
     public int resource;                        // 이 클리어 확정 후 서버가 확정한 자원 현재치(권위값) — 항상 채워짐
     public int mineralAmount;                       // 이 클리어 확정 후 서버에 저장된 광물 현재치(존 고정지급분까지 서버가 반영한 권위값)
     public int rerollRemain;                       // 현재 보상카드 리롤 가능 횟수(충전식, 계정 전체 공유) — rewardCardCandidates가 null이면 무의미
@@ -525,6 +526,8 @@ public class EscapeExplorationZoneResponse
     public int resource;              // 런 종료로 회복된 자원 현재치(=resourceMax, 권위값)
     public bool hasUnclaimedAchievement; // 이 존런 정산 시점 기준 완료+미수령 업적 존재 여부(업적 버튼 레드닷용)
     public List<HullArchetypeProgressInfo> hullArchetypePassiveProgress; // 이 정산 반영 후 아키타입 패시브 해금 카운터 전체 목록(권위값) — 패시브 탭 진행도 갱신용
+    public int achievementPointGained;   // 탈출 성공으로 지급된 업적포인트(클리어한 셀 수 × 존 셀당 값), 실패면 0
+    public int achievementPoint;         // 지급 반영 후 업적포인트(권위값)
     public FleetInfo fleetInfo; // 이 정산으로 실드/요격체 해금 단계가 완료됐을 때만 채워지는 갱신된 내 함대(권위값) — 평소엔 null
 }
 

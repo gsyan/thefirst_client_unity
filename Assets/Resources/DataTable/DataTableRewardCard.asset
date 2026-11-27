@@ -217,3 +217,15 @@ MonoBehaviour:
     weight: 10
     baseMineralCost: 50
     mineralCostStep: 20
+  - cardId: card_scout_chance
+    nameKey: RewardCard_ScoutChance_Name
+    descKey: RewardCard_ScoutChance_Desc
+    iconName: radar-sweep
+    rarity: 1
+    effectType: 13
+    isPersistent: 1
+    value1: 0.01
+    value2: 0
+    weight: 20
+    baseMineralCost: 50
+    mineralCostStep: 20

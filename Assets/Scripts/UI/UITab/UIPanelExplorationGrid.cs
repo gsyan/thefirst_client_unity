@@ -129,7 +129,10 @@ public class UIPanelExplorationGrid : UIPanelBase
     private void OnResourceChanged(float current, int max)
     {
         if (m_resourceGauge != null)
+        {
             m_resourceGauge.fillAmount = max > 0 ? Mathf.Clamp01(current / max) : 0f;
+            m_resourceGauge.color = CommonUtility.GetResourceGaugeColor(current, max);
+        }
 
         if (m_resourceText != null)
             m_resourceText.text = $"{CommonUtility.FormatNumber(Mathf.RoundToInt(current))} / {CommonUtility.FormatNumber(max)}";
@@ -614,6 +617,10 @@ public class UIPanelExplorationGrid : UIPanelBase
             else
                 ship.ApplyHealthAndShieldRatio(entry.healthRatio, entry.shieldRatio);
         }
+
+        // 그리드뷰 함선 체력 목록 등 HP 표시가 롤백된 값을 바로 따라가도록 알림
+        EventManager.Trigger_FleetUpdateHP();
+        EventManager.Trigger_ShipUpdateHP();
     }
 
 
@@ -1380,6 +1387,7 @@ public class UIPanelExplorationGrid : UIPanelBase
         List<TreasureChoiceInfo> treasureChoices = null;
         int rerollRemain = 0;
         int rerollNextChargeSec = 0;
+        int escapeAchievementPoint = 0;
         int levelupLevel = 0; // 레벨업했으면 새 레벨 — 알림은 보상 팝업 다음 순서로 표시
         if (response.data != null)
         {
@@ -1392,6 +1400,7 @@ public class UIPanelExplorationGrid : UIPanelBase
             treasureChoices = response.data.treasureChoices; // Treasure 셀 최초 클리어만 채워짐
             rerollRemain = response.data.rerollRemain;
             rerollNextChargeSec = response.data.rerollNextChargeSec;
+            escapeAchievementPoint = response.data.escapeAchievementPointReward;
             ApplyResourceRecovered(response.data.resource);
             ApplyHullArchetypePassiveProgress(response.data.hullArchetypePassiveProgress);
             ApplyUnlockedFleetInfo(response.data.fleetInfo);
@@ -1435,7 +1444,7 @@ public class UIPanelExplorationGrid : UIPanelBase
         int rewardZoneNumber = m_currentZoneNumber;
         int rewardCellRow = m_currentRow;
         int rewardCellCol = m_currentCol;
-        UIManager.Instance.ShowRewardCardSelectPopup(rewardAmount, rewardCardCandidates, isEscapeCell, rewardZoneNumber, rewardCellRow, rewardCellCol, rerollRemain, rerollNextChargeSec, ContinueAfterCellClear, scavengedMineral, scoutedMineral, expGained);
+        UIManager.Instance.ShowRewardCardSelectPopup(rewardAmount, rewardCardCandidates, isEscapeCell, rewardZoneNumber, rewardCellRow, rewardCellCol, rerollRemain, rerollNextChargeSec, ContinueAfterCellClear, scavengedMineral, scoutedMineral, expGained, escapeAchievementPoint);
         ShowLevelupNotifyIfNeeded(levelupLevel);
     }
 
@@ -1565,6 +1574,7 @@ public class UIPanelExplorationGrid : UIPanelBase
             ApplyMineralReset(); // 존런 종료 — 남은 광물은 전부 폐기(Commander 영구 자산으로 전환되지 않음)
             RefreshMineralAmountText();
             ApplyHasUnclaimedAchievement(response.data.hasUnclaimedAchievement);
+            ApplyEscapeAchievementPoint(response.data.achievementPointGained, response.data.achievementPoint);
             ApplyHullArchetypePassiveProgress(response.data.hullArchetypePassiveProgress);
             ApplyUnlockedFleetInfo(response.data.fleetInfo);
             ClearActiveRunZoneCache();
@@ -1599,6 +1609,16 @@ public class UIPanelExplorationGrid : UIPanelBase
 
             SettleZoneEntry(nextZoneNumber);
         });
+    }
+
+    // 탈출 보상 업적포인트 — 서버 권위값으로 덮어써 상단 재화 표시까지 갱신(지급이 없으면 그대로)
+    private void ApplyEscapeAchievementPoint(int achievementPointGained, int achievementPoint)
+    {
+        if (achievementPointGained <= 0) return;
+
+        Commander commander = DataManager.Instance.m_currentCommander;
+        if (commander != null)
+            commander.UpdateAchievementPoint(achievementPoint);
     }
 
     // 이 존에 서버가 추적 중인 런이 있을 때만 포기 가능 — 적립 포인트 유무로 판정하면 Treasure(체력/전술력 회복 등 포인트 0인 보상)만

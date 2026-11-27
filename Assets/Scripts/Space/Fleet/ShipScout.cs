@@ -2,6 +2,7 @@ using UnityEngine;
 
 // 탐사(argus) — 전투 중 탐사 능력이 있는 함선이 일정 간격으로 슬롯마다 독립 확률 판정(SpaceShip.Co_Scout가 간격마다 호출)
 // 확률 = 패시브 scout_chance 효과 합(self: 그 함선 아키타입, fleet: 함대 전체 부여), 슬롯 수 = 1 + 패시브 scout_slot 효과 합
+// 보상카드 Buff_ScoutChance는 탐사 능력이 있는 함선(확률 > 0)에만 누적값만큼 %p 가산
 // 확률이 0이면 탐사 능력이 없는 함선 — 성공하면 광물을 BattleStatTracker에 누적하고(셀 클리어 때 서버로 보고) 성공 위치에 이펙트 재생
 public static class ShipScout
 {
@@ -27,8 +28,12 @@ public static class ShipScout
         if (ship == null || ship.m_ownerFleet == null) return;
         if (ship.m_ownerFleet.m_fleetSource != EFleetSource.fleet_source_player) return;
 
-        float chancePercent = HullArchetypePassiveEffects.SumEffect(ship, k_effectScoutChance);
-        if (chancePercent <= 0f) return;
+        float passiveChancePercent = HullArchetypePassiveEffects.SumEffect(ship, k_effectScoutChance);
+        if (passiveChancePercent <= 0f) return;
+
+        RewardCardSessionState sessionState = ObjectManager.Instance.m_rewardCardSessionState;
+        float cardChancePercent = sessionState != null ? sessionState.GetValueSum(ECardEffectType.Buff_ScoutChance) * 100f : 0f;
+        float chancePercent = passiveChancePercent + cardChancePercent;
 
         float extraSlotValue = HullArchetypePassiveEffects.SumEffect(ship, k_effectScoutSlot);
         int slotCount = 1 + Mathf.RoundToInt(extraSlotValue);

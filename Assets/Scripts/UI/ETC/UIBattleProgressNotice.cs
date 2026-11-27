@@ -1,4 +1,5 @@
 // 일일퀘스트(파랑)/아키타입 패시브 미션(황금) 진행도가 오르면 화면 상단에 항목마다 한 줄씩 표시 — 일일퀘 줄은 항상 위, 패시브 줄은 항상 아래
+// 존런 중 전투자원이 50/30/10/0% 아래로 처음 내려가면 경고 줄(빨강)을 맨 위에 표시
 // 전투 중 값은 클라 집계(BattleStatTracker) 기준(퇴각 시 서버 미반영), 셀 클리어/존 탈출 확정 후엔 서버값으로 오른 일일퀘스트를 추가 표시. 패널 위·팝업 아래 컨테이너에 배치
 using System.Collections;
 using System.Collections.Generic;
@@ -11,6 +12,8 @@ public class UIBattleProgressNotice : MonoBehaviour
 
     private static readonly Color k_dailyColor = new Color(0.4f, 0.75f, 1f);
     private static readonly Color k_passiveColor = new Color(0.91764706f, 0.69411767f, 0.12156863f); // 제독 승급 버튼 라벨 색과 동일
+    private static readonly Color k_warningColor = new Color(1f, 0.3f, 0.3f);
+    private const string k_resourceWarningKey = "resource_warning";
     private const int k_maxRows = 6;
     private const float k_pollIntervalSec = 0.1f;
     private const float k_holdSec = 3f;   // 마지막 변화 후 유지 시간
@@ -21,6 +24,7 @@ public class UIBattleProgressNotice : MonoBehaviour
         public TMP_Text text;
         public string key;          // 같은 항목이면 이 줄을 그대로 갱신
         public bool isDaily;
+        public bool isWarning;      // 전투자원 경고 줄 — 항상 맨 위
         public float changedTime = -1f; // -1 = 비어 있음
     }
 
@@ -48,6 +52,7 @@ public class UIBattleProgressNotice : MonoBehaviour
     private readonly List<PassiveTrack> m_passiveTracks = new List<PassiveTrack>();
     private readonly Dictionary<string, long> m_knownDailyValues = new Dictionary<string, long>(); // 퀘스트별 마지막으로 알던(표시한) 값 — 서버 확정 후 오른 분량 판정 기준
     private WaitForSecondsRealtime m_pollWait;
+    private int m_resourceWarningLevel = -1; // 지금 들어가 있는 경고 구간 수(0=50% 초과) — -1이면 기준값 미설정(첫 값은 경고 없이 기준으로만 씀)
     private Coroutine m_pollCoroutine;
 
     private void Awake()
@@ -56,12 +61,43 @@ public class UIBattleProgressNotice : MonoBehaviour
         BuildRowPool();
         EventManager.Subscribe_BattleStatCollectingChanged(OnBattleStatCollectingChanged);
         EventManager.Subscribe_DailyProgressConfirmed(OnDailyProgressConfirmed);
+        EventManager.Subscribe_ResourceChanged(OnResourceChanged);
     }
 
     private void OnDestroy()
     {
         EventManager.Unsubscribe_BattleStatCollectingChanged(OnBattleStatCollectingChanged);
         EventManager.Unsubscribe_DailyProgressConfirmed(OnDailyProgressConfirmed);
+        EventManager.Unsubscribe_ResourceChanged(OnResourceChanged);
+    }
+
+    // 더 깊은 구간으로 내려갔을 때만 경고, 충전 등으로 올라가면 구간만 낮춰 두어 다음에 다시 내려가면 또 경고
+    private void OnResourceChanged(float current, int max)
+    {
+        if (ObjectManager.Instance == null || ObjectManager.Instance.IsExplorationRunActive() == false)
+        {
+            m_resourceWarningLevel = -1;
+            return;
+        }
+
+        float ratio = max > 0 ? current / max : 0f;
+        int level = 0;
+        for (int i = 0; i < CommonUtility.k_resourceWarningRatios.Length; i++)
+        {
+            if (ratio <= CommonUtility.k_resourceWarningRatios[i])
+                level = i + 1;
+        }
+
+        int previousLevel = m_resourceWarningLevel;
+        m_resourceWarningLevel = level;
+        if (previousLevel < 0 || level <= previousLevel) return;
+
+        float warningRatio = CommonUtility.k_resourceWarningRatios[level - 1];
+        int warningPercent = Mathf.RoundToInt(warningRatio * 100f);
+        string message = warningPercent > 0
+            ? LocalizationManager.Instance.Get("UIBattleProgressNotice_ResourceWarning", warningPercent)
+            : LocalizationManager.Instance.Get("UIBattleProgressNotice_ResourceEmpty");
+        ShowRow(k_resourceWarningKey, false, true, message);
     }
 
     private void BuildRowPool()
@@ -264,6 +300,11 @@ public class UIBattleProgressNotice : MonoBehaviour
     // 같은 항목이 떠 있으면 그 줄만 갱신, 없으면 빈 줄(없으면 가장 오래 갱신 안 된 줄)을 새 항목으로 사용
     private void ShowNotice(string key, bool isDaily, string message)
     {
+        ShowRow(key, isDaily, false, message);
+    }
+
+    private void ShowRow(string key, bool isDaily, bool isWarning, string message)
+    {
         NoticeRow row = FindVisibleRow(key, isDaily);
         bool isNewRow = row == null;
         if (isNewRow == true)
@@ -272,9 +313,13 @@ public class UIBattleProgressNotice : MonoBehaviour
 
         row.key = key;
         row.isDaily = isDaily;
+        row.isWarning = isWarning;
         row.changedTime = Time.realtimeSinceStartup;
         row.text.text = message;
-        row.text.color = isDaily == true ? k_dailyColor : k_passiveColor;
+        Color rowColor = isDaily == true ? k_dailyColor : k_passiveColor;
+        if (isWarning == true)
+            rowColor = k_warningColor;
+        row.text.color = rowColor;
         row.text.alpha = 1f;
         if (row.text.gameObject.activeSelf == false)
             row.text.gameObject.SetActive(true);
@@ -309,6 +354,12 @@ public class UIBattleProgressNotice : MonoBehaviour
     // 새 줄은 맨 아래로 — 일일퀘 줄이면 떠 있는 패시브 줄들을 기존 순서대로 다시 그 아래로 내려 "일일퀘 위/패시브 아래"를 유지
     private void PlaceNewRow(NoticeRow newRow)
     {
+        if (newRow.isWarning == true)
+        {
+            newRow.text.transform.SetAsFirstSibling();
+            return;
+        }
+
         newRow.text.transform.SetAsLastSibling();
         if (newRow.isDaily == false) return;
 

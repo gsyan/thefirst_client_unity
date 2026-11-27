@@ -489,6 +489,24 @@ public static class CommonUtility
 
     #endregion UI end -----------------------------------------------------------------------------------
 
+    #region Resource Gauge begin -----------------------------------------------------------------------------------
+    // 존런 중 전투자원 경고 구간(비율 이하) — 게이지 색과 UIBattleProgressNotice 경고 메시지가 같은 구간을 씀
+    public static readonly float[] k_resourceWarningRatios = { 0.5f, 0.3f, 0.1f, 0f };
+
+    // 게이지 스프라이트는 흰색 — 색은 팔레트(ResourceGauge.*)로 지정. 존런 중이 아니거나 50% 초과면 Normal
+    public static Color GetResourceGaugeColor(float current, int max)
+    {
+        bool isRunActive = ObjectManager.Instance != null && ObjectManager.Instance.IsExplorationRunActive() == true;
+        if (isRunActive == false) return PaletteColor("ResourceGauge.Normal");
+
+        float ratio = max > 0 ? current / max : 0f;
+        if (ratio <= k_resourceWarningRatios[2]) return PaletteColor("ResourceGauge.Danger");
+        if (ratio <= k_resourceWarningRatios[1]) return PaletteColor("ResourceGauge.Warning");
+        if (ratio <= k_resourceWarningRatios[0]) return PaletteColor("ResourceGauge.Caution");
+        return PaletteColor("ResourceGauge.Normal");
+    }
+    #endregion Resource Gauge end -----------------------------------------------------------------------------------
+
     #region ColorPalette begin -----------------------------------------------------------------------------------
     public static Color PaletteColor(string key)
     {

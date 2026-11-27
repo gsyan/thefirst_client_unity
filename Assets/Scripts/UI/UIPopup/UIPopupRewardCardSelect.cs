@@ -57,7 +57,7 @@ public class UIPopupRewardCardSelect : UIPopupBase
             m_rerollButton.onClick.AddListener(OnRerollClicked);
     }
 
-    public void ShowPopupRewardCardSelect(int rewardAmount, List<string> candidateCardIds, bool isEscapeCell, int zoneNumber, int cellRow, int cellCol, int rerollRemain, int rerollNextChargeSec, System.Action onClosed, int scavengedMineral = 0, int scoutedMineral = 0, int expGained = 0)
+    public void ShowPopupRewardCardSelect(int rewardAmount, List<string> candidateCardIds, bool isEscapeCell, int zoneNumber, int cellRow, int cellCol, int rerollRemain, int rerollNextChargeSec, System.Action onClosed, int scavengedMineral = 0, int scoutedMineral = 0, int expGained = 0, int escapeAchievementPoint = 0)
     {
         base.ShowPopup();
         // 이전에 열렸다 닫힌 팝업의 대기 중 재바인딩이 남아있으면 버림(비활성화로 코루틴 자체는 이미 멈춰있음)
@@ -106,13 +106,16 @@ public class UIPopupRewardCardSelect : UIPopupBase
                 m_cellExpRow.SetRow("UIPopupConfirm_ExpLabel", expGained.ToString(), rawValue: true);
         }
 
-        // 탈출 셀은 런 종료와 함께 광물이 폐기되므로 획득 광물은 표시하지 않음
+        // 탈출 셀은 런 종료와 함께 광물이 폐기되므로 획득 광물은 표시하지 않음 — 같은 행을 탈출 보상 업적포인트 표시에 씀
         bool showMineralReward = isEscapeCell == false && rewardAmount > 0;
+        bool showEscapeAchievementPoint = isEscapeCell == true && escapeAchievementPoint > 0;
         if (m_rewardAmountRow != null)
         {
-            m_rewardAmountRow.gameObject.SetActive(showMineralReward);
+            m_rewardAmountRow.gameObject.SetActive(showMineralReward == true || showEscapeAchievementPoint == true);
             if (showMineralReward == true)
                 m_rewardAmountRow.SetRow("UIPopupRewardCardSelect_MineralGainedLabel", rewardAmount.ToString(), rawValue: true);
+            else if (showEscapeAchievementPoint == true)
+                m_rewardAmountRow.SetRow("UIPopupRewardCardSelect_EscapeAchievementPointLabel", escapeAchievementPoint.ToString(), rawValue: true);
         }
 
         // 약탈/탐사 광물은 기본 보상과 구분되도록 별도 행으로 표시 — 탈출 셀은 전투가 없어 항상 숨김

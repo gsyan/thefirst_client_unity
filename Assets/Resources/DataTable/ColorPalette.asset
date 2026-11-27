@@ -448,6 +448,18 @@ MonoBehaviour:
   - key: PvpSilver
     primitiveKey: Slate300
     color: {r: 1, g: 1, b: 1, a: 1}
+  - key: ResourceGauge.Caution
+    primitiveKey: Amber500
+    color: {r: 1, g: 1, b: 1, a: 1}
+  - key: ResourceGauge.Danger
+    primitiveKey: Red500
+    color: {r: 1, g: 1, b: 1, a: 1}
+  - key: ResourceGauge.Normal
+    primitiveKey: Cyan700
+    color: {r: 1, g: 1, b: 1, a: 1}
+  - key: ResourceGauge.Warning
+    primitiveKey: Orange500
+    color: {r: 1, g: 1, b: 1, a: 1}
   - key: Selected
     primitiveKey: Amber500
     color: {r: 1, g: 1, b: 1, a: 1}
