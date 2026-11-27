@@ -3896,7 +3896,6 @@ MonoBehaviour:
   m_totalMineralRow: {fileID: 6678233839277256436}
   m_rewardAmountRow: {fileID: 8652764472286169530}
   m_cellExpRow: {fileID: 2635265396567022953}
-  m_escapeAchievementPointRow: {fileID: 0}
   m_scavengedMineralRow: {fileID: 7659230390713770161}
   m_scoutedMineralRow: {fileID: 7265902992004874603}
   m_rewardCardButtonContainer: {fileID: 277806604612694621}
